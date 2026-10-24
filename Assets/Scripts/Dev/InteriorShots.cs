@@ -42,6 +42,12 @@ namespace CloneZ
             public string Place, Use, Purpose, Kind, DataUse, Rooms, Error, Troubles;
             public float Area, Angle, Fill;
             public int Verts, RoomCount, Containers, Allotted, Stripped, Lights, Lit, CeilingLamps, Objects, Bodies, Steps;
+            /// <summary>Its meshes' vertices (the interior's root and its overhead root).</summary>
+            public long Vertices;
+            /// <summary>Its renderers and their material slots, and the pieces' renderers merged into rooms' meshes.</summary>
+            public int Renderers, Slots, Merged;
+            /// <summary>Pieces kept out of the rooms' merged meshes, by the component that kept them.</summary>
+            public Dictionary<string, int> Unmerged;
             public double TotalMs, MaxStepMs;
             public string MaxStep;
             /// <summary>Each room's role and how long it took to furnish (ms).</summary>
@@ -282,12 +288,17 @@ namespace CloneZ
                     for (int i = 0; i < bad.Count && i < 12; i++) _md.Append(i > 0 ? "; " : "").Append('`').Append(Md(bad[i])).Append('`');
                     _md.Append("\n\n");
                 }
-                int iObjects = 0, iContainers = 0, iLights = 0, iLit = 0, failed = 0, stripped = 0;
+                int iObjects = 0, iContainers = 0, iLights = 0, iLit = 0, failed = 0, stripped = 0, iRenderers = 0, iSlots = 0, iMerged = 0;
+                long iVerts = 0;
                 double iMs = 0, iMax = 0;
                 foreach (Rec r in recs)
                 {
                     if (r.Error != null) { failed++; continue; }
                     iObjects += r.Objects;
+                    iVerts += r.Vertices;
+                    iRenderers += r.Renderers;
+                    iSlots += r.Slots;
+                    iMerged += r.Merged;
                     iContainers += r.Containers;
                     iLights += r.Lights;
                     iLit += r.Lit;
@@ -300,7 +311,9 @@ namespace CloneZ
                     .Append("| objects | ").Append(F0(objects)).Append(" | ").Append(F0(iObjects)).Append(" |\n")
                     .Append("| loot containers | ").Append(F0(containers)).Append(" | ").Append(F0(iContainers)).Append(" (").Append(F0(stripped)).Append(" more stripped of their storage) |\n")
                     .Append("| lights | ").Append(F0(lights)).Append(" | ").Append(F0(iLights)).Append(" (").Append(F0(iLit)).Append(" rooms left lit) |\n")
-                    .Append("| vertices | ").Append(F0(verts)).Append(" | |\n")
+                    .Append("| vertices | ").Append(F0(verts)).Append(" | ").Append(F0(iVerts)).Append(" |\n")
+                    .Append("| renderers (material slots) | | ").Append(F0(iRenderers)).Append(" (").Append(F0(iSlots)).Append("; ").Append(F0(iMerged))
+                    .Append(" pieces' renderers merged into rooms' furniture meshes) |\n")
                     .Append("| furnishing time | | ").Append(F0(iMs)).Append(" ms in all, slowest step ").Append(F1(iMax)).Append(" ms |\n")
                     .Append("| buildings furnished | | ").Append(recs.Count - failed).Append(" (").Append(failed).Append(" failed) |\n\n");
                 if (failed > 0)
@@ -327,6 +340,45 @@ namespace CloneZ
                 }
                 Buildings(recs);
                 Pictures(recs);
+                DismantleCheck(recs);
+            }
+
+            // Switches off a merged piece that can be dismantled (as dismantling does) and checks its share of its room's
+            // merged mesh went with it.
+            private void DismantleCheck(List<Rec> recs)
+            {
+                foreach (Rec r in recs)
+                {
+                    if (r.Build == null || r.Build.Root == null || r.Build.B == null) continue;
+                    MergedPiece piece = r.Build.Root.GetComponentInChildren<MergedPiece>(true);
+                    if (piece == null) continue;
+                    int before = Collapsed(r.Build);
+                    piece.gameObject.SetActive(false);
+                    int after = Collapsed(r.Build);
+                    _md.Append("Dismantling a merged piece (").Append(Md(piece.name)).Append(" in ").Append(r.Use).Append(' ').Append(r.Id).Append("): ")
+                        .Append(after - before).Append(" of its triangles hidden in its room's furniture mesh, ").Append(after > before ? "**OK**" : "**FAIL**").Append(".\n\n");
+                    if (after <= before) _errors++;
+                    return;
+                }
+                _md.Append("No merged piece that can be dismantled was found to check.\n\n");
+            }
+
+            // The collapsed triangles in a building's merged furniture meshes.
+            private static int Collapsed(InteriorBuild b)
+            {
+                int n = 0;
+                foreach (MeshFilter mf in b.B.Root.GetComponentsInChildren<MeshFilter>(true))
+                {
+                    Mesh m = mf.sharedMesh;
+                    if (m == null || !mf.name.StartsWith("Furniture ", StringComparison.Ordinal) || !m.isReadable) continue;
+                    for (int s = 0; s < m.subMeshCount; s++)
+                    {
+                        int[] ix = m.GetIndices(s);
+                        for (int i = 0; i + 2 < ix.Length; i += 3)
+                            if (ix[i] == ix[i + 1] && ix[i + 1] == ix[i + 2]) n++;
+                    }
+                }
+                return n;
             }
 
             private static Rec Record(InteriorBuild b, Exception e, string place)
@@ -357,6 +409,19 @@ namespace CloneZ
                     if (kv.Value > 1) sb.Append('×').Append(kv.Value);
                 }
                 r.Rooms = sb.ToString();
+                if (b.Root != null) r.Vertices += VerticesUnder(b.Root.transform);
+                if (b.Town != null && b.Town.Overhead != null) r.Vertices += VerticesUnder(b.Town.Overhead);
+                r.Merged = b.Merged;
+                r.Unmerged = b.Unmerged;
+                foreach (Transform t in new[] { b.Root != null ? b.Root.transform : null, b.Town != null ? b.Town.Overhead : null })
+                {
+                    if (t == null) continue;
+                    foreach (Renderer rd in t.GetComponentsInChildren<Renderer>(true))
+                    {
+                        r.Renderers++;
+                        r.Slots += rd.sharedMaterials.Length;
+                    }
+                }
                 if (b.RoomMs != null)
                     for (int k = 0; k < b.RoomMs.Length && k < p.Rooms.Count; k++)
                         r.RoomTimes.Add(new KeyValuePair<string, double>(p.Rooms[k].Role.ToString(), b.RoomMs[k]));
@@ -487,6 +552,7 @@ namespace CloneZ
                         + (string.IsNullOrEmpty(r.DataUse) ? "" : " / " + r.DataUse) + ") " + r.Id + " | " + F0(r.Area) + " m², turned " + F0(r.Angle) + "°, " + r.Verts
                         + " corners, fill " + r.Fill.ToString("0.00", CultureInfo.InvariantCulture) + " | " + r.Rooms + " | " + r.Containers + " (" + r.Allotted + ") | "
                         + r.Lights + (r.Lit > 0 ? ", " + r.Lit + " lit" : "") + " | " + r.Objects + " |");
+                    if (r.Build != null && r.Build.Root != null) _mixes.Add("- `" + file + "`: " + Mix(r.Build));
                 }
                 finally
                 {
@@ -541,8 +607,8 @@ namespace CloneZ
             #region Summary
             private void Summary()
             {
-                _md.Append("## By use (every square)\n\n| use | buildings | failed | rooms (mean) | containers mean / max | allotted mean | lights mean / max | lit rooms | objects mean / max | ms mean / max | slowest step ms |\n")
-                    .Append("|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|\n");
+                _md.Append("## By use (every square)\n\n| use | buildings | failed | rooms (mean) | containers mean / max | allotted mean | lights mean / max | lit rooms | objects mean / max | renderers mean (slots) | vertices mean (k) | ms mean / max | slowest step ms |\n")
+                    .Append("|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|\n");
                 var uses = new SortedDictionary<string, List<Rec>>(StringComparer.Ordinal);
                 foreach (Rec r in _all)
                 {
@@ -553,11 +619,14 @@ namespace CloneZ
                 foreach (KeyValuePair<string, List<Rec>> kv in uses)
                 {
                     int n = 0, failed = 0, rooms = 0, cont = 0, contMax = 0, allot = 0, lights = 0, lightsMax = 0, lit = 0, obj = 0, objMax = 0;
-                    double ms = 0, msMax = 0, step = 0;
+                    double ms = 0, msMax = 0, step = 0, verts = 0, rends = 0, slots = 0;
                     foreach (Rec r in kv.Value)
                     {
                         if (r.Error != null) { failed++; continue; }
                         n++;
+                        verts += r.Vertices;
+                        rends += r.Renderers;
+                        slots += r.Slots;
                         rooms += r.RoomCount;
                         cont += r.Containers;
                         contMax = Math.Max(contMax, r.Containers);
@@ -576,10 +645,16 @@ namespace CloneZ
                     float d = Math.Max(1, n);
                     _md.Append("| ").Append(kv.Key).Append(" | ").Append(n).Append(" | ").Append(failed).Append(" | ").Append(F1(rooms / d)).Append(" | ")
                         .Append(F1(cont / d)).Append(" / ").Append(contMax).Append(" | ").Append(F1(allot / d)).Append(" | ").Append(F1(lights / d)).Append(" / ")
-                        .Append(lightsMax).Append(" | ").Append(lit).Append(" | ").Append(F0(obj / d)).Append(" / ").Append(objMax).Append(" | ").Append(F1(ms / d))
-                        .Append(" / ").Append(F1(msMax)).Append(" | ").Append(F1(step)).Append(" |\n");
+                        .Append(lightsMax).Append(" | ").Append(lit).Append(" | ").Append(F0(obj / d)).Append(" / ").Append(objMax).Append(" | ").Append(F0(rends / d))
+                        .Append(" (").Append(F0(slots / d)).Append(") | ").Append(F1(verts / d / 1000.0))
+                        .Append(" | ").Append(F1(ms / d)).Append(" / ").Append(F1(msMax)).Append(" | ").Append(F1(step)).Append(" |\n");
                 }
                 _md.Append("\n").Append(total).Append(" buildings furnished, ").Append(totalContainers).Append(" loot containers in them.\n\n");
+                var apart = new Dictionary<string, int>(StringComparer.Ordinal);
+                foreach (Rec r in _all)
+                    if (r.Unmerged != null)
+                        foreach (KeyValuePair<string, int> kv in r.Unmerged) Add(apart, kv.Key, kv.Value);
+                if (apart.Count > 0) _md.Append("Pieces kept out of the rooms' merged furniture meshes, by what keeps them apart: ").Append(Top(apart, 16)).Append(".\n\n");
                 RoomTimes();
                 _md.Append("## Pictures\n\nLeft: from straight above in the building's own axes (its front door's wall at the bottom), roofs, upper storeys ")
                     .Append("and ceilings off, plain overcast daylight without shadows. Right: the game's isometric camera (widened to fit the building), the red ")
@@ -588,6 +663,90 @@ namespace CloneZ
                     .Append("| file | place | building | footprint | rooms | containers (allotted) | lights | objects |\n|---|---|---|---|---|--:|--:|--:|\n");
                 foreach (string p in _pictures) _md.Append(p).Append('\n');
                 _md.Append('\n');
+                if (_mixes.Count > 0)
+                {
+                    _md.Append("<details><summary>What the pictured buildings are made of (bodies by name; lights by the body holding them)</summary>\n\n");
+                    foreach (string m in _mixes) _md.Append(m).Append('\n');
+                    _md.Append("\n</details>\n\n");
+                }
+            }
+
+            private readonly List<string> _mixes = new List<string>();
+
+            // The pieces of an interior by name (numbers stripped; a piece is what stands under the building's root, its frame
+            // or the interior's root), the commonest first; the vertices and renderers they take, the heaviest first; and its
+            // lights by the piece holding them.
+            private static string Mix(InteriorBuild b)
+            {
+                Transform root = b.Root.transform, bldg = b.B != null ? b.B.Root : null, frame = b.Frame;
+                var bodies = new Dictionary<string, int>(StringComparer.Ordinal);
+                var verts = new Dictionary<string, int>(StringComparer.Ordinal);
+                var rends = new Dictionary<string, int>(StringComparer.Ordinal);
+                var lights = new Dictionary<string, int>(StringComparer.Ordinal);
+                int pieces = 0, renderers = 0, slots = 0;
+                foreach (Transform holder in new[] { root, bldg, frame })
+                {
+                    if (holder == null) continue;
+                    for (int k = 0; k < holder.childCount; k++)
+                    {
+                        Transform t = holder.GetChild(k);
+                        if (t == bldg || t == frame) continue;
+                        pieces++;
+                        string name = t.name.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '(', ')', '_');
+                        Add(bodies, name, 1);
+                        long own = 0;
+                        foreach (MeshFilter mf in t.GetComponentsInChildren<MeshFilter>(true))
+                            if (mf.sharedMesh != null && !Under(mf.transform, t, bldg, frame)) own += mf.sharedMesh.vertexCount;
+                        Add(verts, name, (int)own);
+                        foreach (Renderer rd in t.GetComponentsInChildren<Renderer>(true))
+                        {
+                            if (Under(rd.transform, t, bldg, frame)) continue;
+                            renderers++;
+                            slots += rd.sharedMaterials.Length;
+                            Add(rends, name, 1);
+                        }
+                        int l = t.GetComponentsInChildren<Light>(true).Length;
+                        if (l > 0) Add(lights, name, l);
+                    }
+                }
+                return "pieces " + pieces + ": " + Top(bodies, 14) + "; vertices " + F0(VerticesUnder(root)) + ": " + Top(verts, 10) + "; renderers " + renderers
+                    + " (" + slots + " material slots): " + Top(rends, 10) + "; lights: " + Top(lights, 10);
+            }
+
+            private static void Add(Dictionary<string, int> d, string key, int n)
+            {
+                d.TryGetValue(key, out int v);
+                d[key] = v + n;
+            }
+
+            // True when `t` (under `piece`) belongs to one of the other holders below it.
+            private static bool Under(Transform t, Transform piece, Transform a, Transform b)
+            {
+                for (Transform p = t; p != null && p != piece; p = p.parent)
+                    if (p == a || p == b) return true;
+                return false;
+            }
+
+            private static long VerticesUnder(Transform t)
+            {
+                long n = 0;
+                foreach (MeshFilter mf in t.GetComponentsInChildren<MeshFilter>(true))
+                    if (mf.sharedMesh != null) n += mf.sharedMesh.vertexCount;
+                return n;
+            }
+
+            private static string Top(Dictionary<string, int> counts, int max)
+            {
+                var list = new List<KeyValuePair<string, int>>(counts);
+                list.Sort((a, b) => a.Value != b.Value ? b.Value.CompareTo(a.Value) : string.CompareOrdinal(a.Key, b.Key));
+                var sb = new StringBuilder();
+                for (int i = 0; i < list.Count && i < max; i++)
+                {
+                    if (sb.Length > 0) sb.Append(", ");
+                    sb.Append(Md(list[i].Key)).Append('×').Append(list[i].Value);
+                }
+                if (list.Count > max) sb.Append(", …");
+                return sb.Length > 0 ? sb.ToString() : "none";
             }
 
             // How long rooms of each role take to furnish: the streamer can't split a room, so the slowest is a frame's hitch.
@@ -673,6 +832,7 @@ namespace CloneZ
 
                     LootMemory(s, focus, middle);
                     Rebuild(place, cx, cz, middle, ref piece);
+                    HeavyPlans();
                 }
                 finally
                 {
@@ -824,6 +984,48 @@ namespace CloneZ
                     h *= 1099511628211UL;
                 }
                 return h;
+            }
+
+            // The plan steps of a dense downtown's pieces (Louisville's middle and its neighbours), timed as the streamer runs
+            // them: the step a streamed piece's interiors take while it's built.
+            private void HeavyPlans()
+            {
+                MapPlace city = _build.FindPlace("Louisville");
+                if (city == null)
+                {
+                    _md.Append("No Louisville in this build to time the plans in.\n\n");
+                    return;
+                }
+                const int size = KentuckyMap.ChunkSize;
+                int cx0 = (int)Math.Floor(city.x / size), cz0 = (int)Math.Floor(city.z / size);
+                _md.Append("Plan steps in downtown Louisville's pieces (a step runs until the site's slice is spent, then finishes the plan or ")
+                    .Append("the wall under way):\n\n| piece | plans ms in all | steps | slowest step ms | slowest single piece of work |\n|---|--:|--:|--:|---|\n");
+                double worst = 0;
+                for (int dz = -1; dz <= 1; dz++)
+                    for (int dx = -1; dx <= 1; dx++)
+                    {
+                        int cx = cx0 + dx, cz = cz0 + dz;
+                        var middle = new Vector3((float)((cx + 0.5) * size - city.x), 0f, (float)((cz + 0.5) * size - city.z));
+                        InteriorPass.ResetPlanTiming();
+                        Piece p = null;
+                        try
+                        {
+                            p = BuildPiece(city, cx, cz, middle);
+                            _md.Append("| ").Append(cx).Append('_').Append(cz).Append(" | ").Append(F1(p.PlanMs)).Append(" | ").Append(p.PlanSteps).Append(" | ")
+                                .Append(F1(p.PlanMaxMs)).Append(" | ").Append(F1(InteriorPass.SlowestPlanMs)).Append(" ms: ").Append(Md(InteriorPass.SlowestPlanWhat)).Append(" |\n");
+                            worst = Math.Max(worst, p.PlanMaxMs);
+                        }
+                        catch (Exception e)
+                        {
+                            _errors++;
+                            _md.Append("| ").Append(cx).Append('_').Append(cz).Append(" | **failed**: `").Append(Md(FirstLine(e.Message))).Append("` | | | |\n");
+                        }
+                        finally
+                        {
+                            if (p != null) Unload(p);
+                        }
+                    }
+                _md.Append("\nSlowest plan step in these pieces: ").Append(F1(worst)).Append(" ms.\n\n");
             }
 
             // KentuckyStreamer's Begin, Steps and Finish for one piece (no loot roll, no NavMesh), its interior plan steps timed.

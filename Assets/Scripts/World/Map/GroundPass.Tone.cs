@@ -5,13 +5,13 @@ using static CloneZ.KentuckyMap;
 
 namespace CloneZ
 {
-    // The snow's tone: one see-through sheet over the ground (a grid of 2.56 m cells on a chunk, about 2.9 m over a fixed
-    // map and its scenery ring), each corner looking up how drifted, scoured, grimy or shaded the snow is there in a
-    // small table (ToneMaterial). Drifts and scoured crust come from noise fixed to the world and drawn out along the wind
-    // (from the north-west), so neighbouring chunks agree; grime from the land use (industry, lots, farmyards, town
-    // centres); shade, calm and leaf litter under the mapped woods. Plazas and
-    // forecourts get trodden snow in broad patches; water and parking lots show through untouched, the lots' stall rows
-    // getting their packed snow as extra geometry in the same mesh (GroundPass.Parking).
+    // The snow's tone: one see-through sheet over the ground (a grid of 2.56 m cells on a chunk, 5.12 m on a Lite one,
+    // about 2.9 m over a fixed map and its scenery ring), each corner looking up how drifted, scoured, grimy or shaded the
+    // snow is there in a small table (ToneMaterial). Drifts and scoured crust come from noise fixed to the world and drawn
+    // out along the wind (from the north-west), so neighbouring chunks agree; grime from the land use (industry, lots,
+    // farmyards, town centres); shade, calm and leaf litter under the mapped woods. Plazas and forecourts get trodden snow
+    // in broad patches; water and parking lots show through untouched, the lots' stall rows getting their packed snow as
+    // extra geometry in the same mesh (GroundPass.Parking).
     internal static partial class GroundPass
     {
         private static readonly Vector2 Downwind = new Vector2(0.7071f, -0.7071f);   // the wind blows to the south-east
@@ -29,17 +29,35 @@ namespace CloneZ
 
         private static Vector2 PackedUv(float amount) => new Vector2(Mathf.Clamp01(amount), ToneBand * 2.5f / ToneH);
 
+        // The tone's working buffers, kept between sites (main thread only), so a streamed piece allocates no more than its
+        // mesh.
+        private static Owner[] s_ToneOwners = new Owner[0];
+        private static Vector2[] s_ToneAt = new Vector2[0];
+        private static int[] s_ToneIndex = new int[0];
+        private static readonly List<Vector3> s_ToneVerts = new List<Vector3>(4096), s_ToneNormals = new List<Vector3>(4096);
+        private static readonly List<Vector2> s_ToneUvs = new List<Vector2>(4096);
+        private static readonly List<int> s_ToneTris = new List<int>(16384);
+
         private static void Tone(Ground g)
         {
             bool chunk = g.Site.Chunked;
             float half = chunk ? g.Half : g.Half + SceneryReach;
-            int cells = chunk ? 50 : Mathf.CeilToInt(half * 2f / 2.9f);
+            // 2.56 m cells on a chunk (5.12 m on a Lite one: far off, the tone's broad anyway), about 2.9 m on a fixed map.
+            int cells = chunk ? (g.Lite ? 25 : 50) : Mathf.CeilToInt(half * 2f / 2.9f);
             float cell = half * 2f / cells;
-            int row = cells + 1;
-            var owners = new Owner[row * row];
+            int row = cells + 1, points = row * row;
+            if (s_ToneOwners.Length < points)
+            {
+                s_ToneOwners = new Owner[points];
+                s_ToneAt = new Vector2[points];
+                s_ToneIndex = new int[points];
+            }
+            Owner[] owners = s_ToneOwners;
+            Vector2[] tone = s_ToneAt;
+            int[] index = s_ToneIndex;
+            System.Array.Clear(owners, 0, points);
             Raster(g.Owners, owners, half, cell, row);
             foreach (List<Owner> band in g.Ring) Raster(band, owners, half, cell, row);
-            var tone = new Vector2[row * row];
             for (int j = 0; j <= cells; j++)
                 for (int i = 0; i <= cells; i++)
                 {
@@ -47,12 +65,14 @@ namespace CloneZ
                     float fade = chunk ? 1f : Mathf.Clamp01((half - Mathf.Max(Mathf.Abs(p.x), Mathf.Abs(p.y))) / 20f);
                     tone[j * row + i] = ToneAt(g, p, owners[j * row + i], fade);
                 }
-            int extra = g.ToneVerts.Count;
-            var verts = new List<Vector3>(row * row / 2 + extra);
-            var uvs = new List<Vector2>(row * row / 2 + extra);
-            var tris = new List<int>(cells * cells * 3 + g.ToneTris.Count);
-            var index = new int[row * row];
-            for (int k = 0; k < index.Length; k++) index[k] = -1;
+            System.Array.Clear(owners, 0, points);   // hold on to no site's areas
+            List<Vector3> verts = s_ToneVerts;
+            List<Vector2> uvs = s_ToneUvs;
+            List<int> tris = s_ToneTris;
+            verts.Clear();
+            uvs.Clear();
+            tris.Clear();
+            for (int k = 0; k < points; k++) index[k] = -1;
             for (int j = 0; j < cells; j++)
                 for (int i = 0; i < cells; i++)
                 {
@@ -72,9 +92,9 @@ namespace CloneZ
             RaidMesh.CreatedMeshes?.Add(mesh);
             if (verts.Count > 65000) mesh.indexFormat = IndexFormat.UInt32;
             mesh.SetVertices(verts);
-            var normals = new List<Vector3>(verts.Count);
-            for (int k = 0; k < verts.Count; k++) normals.Add(Vector3.up);
-            mesh.SetNormals(normals);
+            List<Vector3> normals = s_ToneNormals;
+            while (normals.Count < verts.Count) normals.Add(Vector3.up);
+            mesh.SetNormals(normals, 0, verts.Count);
             mesh.SetUVs(0, uvs);
             mesh.SetTriangles(tris, 0, true);
             var go = new GameObject("SnowTone");

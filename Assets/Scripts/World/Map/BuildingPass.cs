@@ -40,7 +40,10 @@ namespace CloneZ
         internal static IEnumerable<string> Build(Site site)
         {
             site.BeginStep();
+            ProbeStart();
+            PrePaint();
             var ctx = new Context(site);
+            ProbeEnd(-2, null);
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
             var near = new List<Footprint>(16);
@@ -53,18 +56,30 @@ namespace CloneZ
                 bool playable = f.Inside(half, 1f) || (Mathf.Abs(f.Middle.x) < half && Mathf.Abs(f.Middle.y) < half);
                 // A building the fixed square's edge cuts through, its middle outside: solid and whole, but shut.
                 bool edge = !playable && !site.Chunked && f.Bounds.Overlaps(square);
+                ProbeStart();
                 Shape sh = ShapeOf(f);
                 ctx.Near(f, 1.2f, near);
                 Plan plan = Classify(ctx, f, sh, near);
                 if (edge) plan.Enterable = false;
                 job.Begin(f, sh, plan, site.Detail == Detail.Lite || (!playable && !edge), !playable, edge,
                     (playable || edge) && site.Detail == Detail.Full);
-                while (Step(job))
+                ProbeEnd(-1, job);
+                while (true)
+                {
+                    ProbeStart();
+                    int stage = job.Stage;
+                    bool more = Step(job);
+                    ProbeEnd(stage, job);
+                    if (!more) break;
                     if (site.StepDue)
                     {
                         yield return "buildings";
                         site.BeginStep();
                     }
+                }
+#if UNITY_EDITOR
+                if (Inspect != null) Note(job);
+#endif
                 if (playable) site.Buildings++;
                 else site.SceneryBuildings++;
                 if (!site.StepDue) continue;
@@ -93,8 +108,8 @@ namespace CloneZ
             public BuildingShell Shell;
             public EnterableBuilding Record;
             public float Top;
-            /// <summary>The next stage to build (see <see cref="Step"/>).</summary>
-            public int Stage;
+            /// <summary>The next stage to build (see <see cref="Step"/>), and how far into it (the openings drawn).</summary>
+            public int Stage, Cursor;
             public int N;
             public Vector2[] A = new Vector2[32], Dir = new Vector2[32], Out = new Vector2[32];
             public float[] Len = new float[32];
@@ -132,6 +147,7 @@ namespace CloneZ
                 Record = null;
                 Top = 0f;
                 Stage = 0;
+                Cursor = 0;
                 Parts = null;
                 Holes.Clear();
                 DoorEdge = -1;
@@ -196,8 +212,38 @@ namespace CloneZ
             public float FloorY(int k) => k <= 0 ? 0f : P.FirstStorey + (k - 1) * P.Storey;
             public bool Party(int edge) => P.Party != null && edge < P.Party.Length && P.Party[edge];
 
-            /// <summary>The footprint in triangles (index triples into its points), worked out once.</summary>
-            public List<int> Tris => _tris ??= MapGeometry.Triangulate(F.Pts);
+            /// <summary>The footprint in triangles (index triples into <see cref="TriPts"/>), worked out once.</summary>
+            public List<int> Tris
+            {
+                get
+                {
+                    if (_tris != null) return _tris;
+                    if (F.Pts.Count <= MaxTriangulated) _tris = MapGeometry.Triangulate(F.Pts);
+                    else
+                    {
+                        // A very detailed outline: a simplified copy, a little coarser each time until it's small enough.
+                        for (float tol = 0.15f; ; tol *= 2f)
+                        {
+                            Simplify(F.Pts, tol, _simple);
+                            if (_simple.Count <= MaxTriangulated || tol > 3f) break;
+                        }
+                        _tris = MapGeometry.Triangulate(_simple);
+                    }
+                    return _tris;
+                }
+            }
+
+            /// <summary>The points <see cref="Tris"/> indexes: the footprint's own, or its simplified copy.</summary>
+            public List<Vector2> TriPts
+            {
+                get
+                {
+                    List<int> _ = Tris;
+                    return F.Pts.Count <= MaxTriangulated ? F.Pts : _simple;
+                }
+            }
+
+            private readonly List<Vector2> _simple = new List<Vector2>(MaxTriangulated);
 
             /// <summary>The top of wall <paramref name="edge"/> at <paramref name="s"/> along it.</summary>
             public float TopAt(int edge, float s)
@@ -250,21 +296,22 @@ namespace CloneZ
                     Walls(j);
                     return true;
                 case 1:
-                    Openings(j);
+                    if (!Openings(j)) j.Stage = 1;   // more of them: this stage again
                     return true;
                 case 2:
                     Roof(j);
                     return true;
                 case 3:
-                    if (!j.Lite)
-                    {
-                        Frontage(j);
-                        Special(j);
-                    }
+                    if (!j.Lite) Frontage(j);
+                    return true;
+                case 4:
+                    if (!j.Lite) Special(j);
                     else LiteSpecial(j);
                     return true;
                 default:
                     if (!j.Scenery) Inside(j);
+                    // A building the square's edge cuts through keeps the props off the ground it stands on.
+                    else if (j.Edge) Rows(j, false);
                     return Done(j);
             }
         }
@@ -274,6 +321,42 @@ namespace CloneZ
             if (j.Shell != null) j.Shell.Top = Mathf.Max(j.Shell.Top, j.Top);
             j.Stage = int.MaxValue;
             return false;
+        }
+
+        // In the editor, with -clonez-buildings-profile on the command line: every call of the pass slower than 2 ms is
+        // logged with what it was building (stage -2 is the pass's setup, -1 a building's plan).
+#if UNITY_EDITOR
+        private static readonly bool s_Profiling =
+            System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-clonez-buildings-profile") >= 0;
+        private static long s_ProbeAt;
+#endif
+
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private static void ProbeStart()
+        {
+#if UNITY_EDITOR
+            if (s_Profiling) s_ProbeAt = System.Diagnostics.Stopwatch.GetTimestamp();
+#endif
+        }
+
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private static void ProbeEnd(int stage, Job j)
+        {
+#if UNITY_EDITOR
+            if (!s_Profiling) return;
+            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - s_ProbeAt) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            if (ms < 2.0) return;
+            string what = stage == -2 ? "setup" : stage == -1 ? "plan" : stage == 0 ? "walls" : stage == 1 ? "openings"
+                : stage == 2 ? "roof" : stage == 3 ? "frontage" : stage == 4 ? "special" : "inside";
+            if (j == null)
+            {
+                Debug.Log($"[Buildings] {ms:F1} ms {what}");
+                return;
+            }
+            Plan p = j.P;
+            Debug.Log($"[Buildings] {ms:F1} ms {what}: way {j.F.Data.id} {p.Arch} {p.Roof} {j.F.Size:F0} m² {j.F.Pts.Count} corners"
+                + $" ({j.N} drawn) {p.Storeys} storeys, {j.Holes.Count} openings, lite {j.Lite}, scenery {j.Scenery}, at {j.F.Middle}");
+#endif
         }
         #endregion
 
@@ -422,6 +505,7 @@ namespace CloneZ
             if (!j.Lite)
             {
                 List<int> tris = j.Tris;
+                List<Vector2> pts = j.TriPts;
                 Vector3 middle = To3(f.Middle, 0f);
                 RaidMesh floor = j.Site.Town.Out.Flat(middle);
                 RaidMesh ceilings = j.Site.Overhead.At(middle);
@@ -430,7 +514,7 @@ namespace CloneZ
                 float ceiling = p.Storeys == 1 && p.Eave > 4.5f && p.Arch != Arch.Row ? p.Eave - 0.15f : CeilingY;
                 for (int t = 0; t + 2 < tris.Count; t += 3)
                 {
-                    Vector2 a = f.Pts[tris[t]], b = f.Pts[tris[t + 1]], c = f.Pts[tris[t + 2]];
+                    Vector2 a = pts[tris[t]], b = pts[tris[t + 1]], c = pts[tris[t + 2]];
                     floor.Tri(To3(a, 0.02f), To3(b, 0.02f), To3(c, 0.02f), floorSurf);
                     if (roofed) ceilings.Tri(To3(a, ceiling), To3(c, ceiling), To3(b, ceiling), ceilingSurf);
                 }

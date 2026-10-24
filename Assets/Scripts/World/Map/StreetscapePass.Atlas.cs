@@ -380,8 +380,11 @@ namespace CloneZ
         /// </summary>
         internal sealed class NameAtlas
         {
+            // Pixel buffers by side, reused from one site to the next (several sites may be built at once, a step at a time).
+            private static readonly Dictionary<int, Stack<Color32[]>> s_Buffers = new Dictionary<int, Stack<Color32[]>>();
+
             private readonly int _w, _h;
-            private readonly Color32[] _px;
+            private Color32[] _px;
             private readonly Painter _p;
             private readonly Texture2D _tex;
             private readonly Material _mat;
@@ -392,7 +395,7 @@ namespace CloneZ
             public NameAtlas(Site site)
             {
                 _w = _h = site.Chunked ? 256 : 512;
-                _px = new Color32[_w * _h];
+                _px = TakeBuffer(_w);
                 _p = new Painter(_px, _w, _h);
                 _tex = new Texture2D(_w, _h, TextureFormat.RGBA32, true)
                 {
@@ -438,20 +441,29 @@ namespace CloneZ
                 return ok && Cell("shieldback:" + net, s, s, (x, y) => PaintShield(x, y, s, net, number, true), out back);
             }
 
-            /// <summary>Big painted letters on a clear ground (a water tower's name); false when the atlas is full.</summary>
+            /// <summary>Big painted letters on a clear ground (a water tower's name), in a bold stroke that reads from afar;
+            /// false when the atlas is full.</summary>
             public bool Lettering(string text, Color32 ink, out Rect uv, out float aspect)
             {
                 text = text.ToUpperInvariant();
                 if (text.Length > 18) text = text.Substring(0, 18);
-                int scale = DecorFont.Width(text, 4) + 8 <= _w ? 4 : 2;
-                int w = Mathf.Min(_w, DecorFont.Width(text, scale) + 8), h = DecorFont.GlyphH * scale + 8;
+                int scale = DecorFont.Width(text, 4) + 10 <= _w ? 4 : 2;
+                int bold = scale / 2;
+                int w = Mathf.Min(_w, DecorFont.Width(text, scale) + 8 + bold), h = DecorFont.GlyphH * scale + 8 + bold;
                 aspect = w / (float)h;
-                return Cell("letters:" + text, w, h, (x, y) => _p.TextCentred(text, x + w / 2, y + h - 5, scale, ink), out uv);
+                return Cell("letters:" + text, w, h, (x, y) =>
+                {
+                    // The strokes thickened by painting them again a little right and down.
+                    for (int dx = 0; dx <= bold; dx++)
+                        for (int dy = 0; dy <= bold; dy++)
+                            _p.TextCentred(text, x + w / 2 - bold / 2 + dx, y + h - 5 - dy, scale, ink);
+                }, out uv);
             }
 
             private bool Cell(string key, int w, int h, System.Action<int, int> paint, out Rect uv)
             {
                 if (_done.TryGetValue(key, out uv)) return true;
+                if (_px == null) return false;   // finished: nothing more is painted
                 if (_x + w > _w)
                 {
                     _x = 0;
@@ -531,13 +543,30 @@ namespace CloneZ
                 if (net == "I") _p.TextCentred("I", x0 + s / 2, y0 + s - 6, 1, SignWhite);
             }
 
-            /// <summary>Uploads what was painted.</summary>
+            /// <summary>Uploads what was painted (the texture keeps no copy of its own) and lets go of the pixels.</summary>
             public void Finish()
             {
-                if (!_dirty) return;
-                _tex.SetPixels32(_px);
-                _tex.Apply(true, false);
-                _dirty = false;
+                if (_px == null) return;
+                if (_dirty)
+                {
+                    _tex.SetPixels32(_px);
+                    _tex.Apply(true, true);
+                    _dirty = false;
+                }
+                if (!s_Buffers.TryGetValue(_w, out Stack<Color32[]> free)) s_Buffers[_w] = free = new Stack<Color32[]>(2);
+                if (free.Count < 4) free.Push(_px);
+                _px = null;
+            }
+
+            private static Color32[] TakeBuffer(int side)
+            {
+                if (s_Buffers.TryGetValue(side, out Stack<Color32[]> free) && free.Count > 0)
+                {
+                    Color32[] px = free.Pop();
+                    System.Array.Clear(px, 0, px.Length);
+                    return px;
+                }
+                return new Color32[side * side];
             }
         }
 

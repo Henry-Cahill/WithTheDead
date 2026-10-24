@@ -35,12 +35,14 @@ namespace CloneZ
             private void ChunkTimings()
             {
                 _md.Append("## Streamed pieces: build steps\n\nThe piece holding each place's middle, built the way the streamer builds it (`ChunkSteps`, ")
-                    .Append("Full detail, every step timed back to back), after a warm-up build of it: with every building in the shared batches as before ")
-                    .Append("the cutaway, with the shells baked as `CutawayPass` emits them, and queued on the piece's bake (`Site.Bake`, packed in the ")
-                    .Append("piece's `outdoor` step today, off the main thread once the streamer does that). \"interior plans\" is the interiors' tail, ")
-                    .Append("which `CutawayPass` now closes with a step of its own (it used to be charged to \"cutaway\"). Register = switching the piece on ")
-                    .Append("(its buildings into the cutaway's hash); read = every building's meshes read at once (the game reads them one scan at a time).\n\n")
-                    .Append("| piece | shells | total ms | slowest step | cutaway steps: Σ / max ms | interior plans ms | outdoor ms | register ms | read ms ")
+                    .Append("Full detail, every step timed back to back on the main thread; the waits while its meshes are packed on a worker don't count), ")
+                    .Append("after a warm-up build of it, three times each (the middle total is shown, the range in brackets): with every building in the ")
+                    .Append("shared batches as before the cutaway, with the shells baked as `CutawayPass` emits them (on the main thread), and queued on the ")
+                    .Append("piece's bake (`Site.Bake`, packed on a worker with the piece's other meshes: what the game does). \"interior plans\" is the ")
+                    .Append("interiors' tail, which `CutawayPass` closes with a step of its own (it used to be charged to \"cutaway\"); \"meshes\" is the ")
+                    .Append("piece's own objects and meshes steps. Register = switching the piece on (its buildings into the cutaway's hash); read = every ")
+                    .Append("building's meshes read at once (the game reads them a slice a frame round the survivor).\n\n")
+                    .Append("| piece | shells | total ms | slowest step | cutaway steps: Σ / max ms | interior plans ms | meshes ms | register ms | read ms ")
                     .Append("| objects | renderers | vertices |\n|---|---|--:|---|--:|--:|--:|--:|--:|--:|--:|--:|\n");
                 var targets = new[] { new[] { "start-centre", _place.name }, new[] { "lexington-downtown", "Lexington" }, new[] { "louisville-downtown", "Louisville" } };
                 Transform streamed = new GameObject("Streamed").transform, overhead = new GameObject("RaidOverhead").transform;
@@ -63,16 +65,30 @@ namespace CloneZ
                         {
                             MapCutaway.OwnShells = config != 0;
                             CutawayPass.Deferred = config == 2;
-                            Piece piece = BuildPiece(p, cx, cz, middle, streamed, overhead);
-                            try { ReportPiece(t[0] + " " + cx + "_" + cz, config, piece); }
-                            finally { UnloadPiece(piece); }
+                            // Three builds; the one with the middle total is reported (one build's steps are noisy).
+                            var rounds = new List<Piece>(3);
+                            try
+                            {
+                                for (int round = 0; round < 3; round++)
+                                {
+                                    Piece piece = BuildPiece(p, cx, cz, middle, streamed, overhead);
+                                    rounds.Add(piece);
+                                    if (round < 2) HideRound(piece);
+                                }
+                                rounds.Sort((x, y) => x.TotalMs.CompareTo(y.TotalMs));
+                                ReportPiece(t[0] + " " + cx + "_" + cz, config, rounds[1], rounds[0].TotalMs, rounds[2].TotalMs);
+                            }
+                            finally
+                            {
+                                foreach (Piece piece in rounds) UnloadPiece(piece);
+                            }
                         }
                     }
                 }
                 finally
                 {
                     MapCutaway.OwnShells = true;
-                    CutawayPass.Deferred = false;
+                    CutawayPass.Deferred = true;
                     MapCutaway.Clear();
                     Object.DestroyImmediate(streamed.gameObject);
                     Object.DestroyImmediate(overhead.gameObject);
@@ -80,9 +96,16 @@ namespace CloneZ
                 _md.Append('\n');
             }
 
-            private void ReportPiece(string label, int config, Piece piece)
+            // A round kept only for its timing: switched off so the next round's objects don't sit on top of it.
+            private static void HideRound(Piece piece)
             {
-                double cutSum = 0, cutMax = 0, plans = 0, outdoor = 0, slowest = 0;
+                if (piece.Root != null) piece.Root.SetActive(false);
+                if (piece.Over != null) piece.Over.SetActive(false);
+            }
+
+            private void ReportPiece(string label, int config, Piece piece, double fastest, double slowestTotal)
+            {
+                double cutSum = 0, cutMax = 0, plans = 0, meshes = 0, slowest = 0;
                 string slowestName = "";
                 foreach (KeyValuePair<string, double> s in piece.Steps)
                 {
@@ -92,7 +115,7 @@ namespace CloneZ
                         cutMax = Math.Max(cutMax, s.Value);
                     }
                     if (s.Key == "interior plans") plans += s.Value;
-                    if (s.Key == "outdoor") outdoor += s.Value;
+                    if (s.Key == "objects" || s.Key == "meshes") meshes += s.Value;
                     if (s.Value <= slowest) continue;
                     slowest = s.Value;
                     slowestName = s.Key;
@@ -102,6 +125,8 @@ namespace CloneZ
                 if (piece.Site != null)
                 {
                     shells = piece.Site.Buildings.Count;
+                    piece.Root.SetActive(true);
+                    piece.Over.SetActive(true);
                     var sw = Stopwatch.StartNew();
                     piece.Site.Register();
                     register = sw.Elapsed.TotalMilliseconds;
@@ -112,8 +137,9 @@ namespace CloneZ
                 Count(piece.Root.transform, out int o1, out int r1, out long v1);
                 Count(piece.Over.transform, out int o2, out int r2, out long v2);
                 _md.Append("| ").Append(label).Append(" | ").Append(Configs[config]).Append(config > 0 ? " (" + shells + ")" : "").Append(" | ")
-                    .Append(F1(piece.TotalMs)).Append(" | ").Append(slowestName).Append(' ').Append(F1(slowest)).Append(" | ")
-                    .Append(config > 0 ? F1(cutSum) + " / " + F1(cutMax) : "").Append(" | ").Append(F1(plans)).Append(" | ").Append(F1(outdoor)).Append(" | ")
+                    .Append(F1(piece.TotalMs)).Append(" (").Append(F0(fastest)).Append("-").Append(F0(slowestTotal)).Append(") | ")
+                    .Append(slowestName).Append(' ').Append(F1(slowest)).Append(" | ")
+                    .Append(config > 0 ? F1(cutSum) + " / " + F1(cutMax) : "").Append(" | ").Append(F1(plans)).Append(" | ").Append(F1(meshes)).Append(" | ")
                     .Append(config > 0 ? F1(register) : "").Append(" | ").Append(config > 0 ? F1(read) : "").Append(" | ")
                     .Append(F0(o1 + o2)).Append(" | ").Append(F0(r1 + r2)).Append(" | ").Append(F0(v1 + v2)).Append(" |\n");
                 if (piece.Failed) Fail("piece " + label + " (" + Configs[config] + ") threw while building");
@@ -159,20 +185,33 @@ namespace CloneZ
                         .Append(" (Full detail): ").Append(registered).Append(" buildings registered (").Append(MapCutaway.Registered).Append(" in the cutaway, ")
                         .Append(MapCutaway.CellCount).Append(" hash cells).\n\n");
                     if (registered != MapCutaway.Registered) Fail("the pieces registered " + MapCutaway.Registered + " buildings, their lists hold " + registered);
+                    MapCutaway.ResolveAll();
                     CollectLights(new[] { streamed, overhead });
+                    CheckMeshes("the Louisville pieces");
 
-                    // The biggest building of the first piece: stand inside it, cut, photograph.
+                    // The biggest building of the first piece: stand inside it, cut, photograph. The tallest other one with
+                    // a free spot behind it inside the four pieces: stand there.
+                    Vector3 block0 = Middle(lou, cx0, cz0);
+                    Rect block = Rect.MinMaxRect(block0.x - size * 0.5f + 8f, block0.z - size * 0.5f + 8f, block0.x + size * 1.5f - 8f, block0.z + size * 1.5f - 8f);
                     MapCutaway.Building big = null, tall = null;
+                    Vector3 tallSpot = default;
                     if (pieces[0].Site != null)
                         foreach (MapCutaway.Building b in pieces[0].Site.Buildings)
                             if (b.Walls != null && b.Upper != null && (big == null || Area(b.Local) > Area(big.Local))) big = b;
                     foreach (MapCutaway.Building b in _buildings)
-                        if (b.Upper != null && b != big && (tall == null || b.Top > tall.Top)) tall = b;
+                    {
+                        if (b.Upper == null || b == big || (tall != null && b.Top <= tall.Top)) continue;
+                        Vector3? behind = BehindOf(b, _isoYaw);
+                        if (!behind.HasValue || !block.Contains(new Vector2(behind.Value.x, behind.Value.z))) continue;
+                        tall = b;
+                        tallSpot = behind.Value;
+                    }
                     _md.Append("| file | shows | cut away | old test |\n|---|---|---|---|\n");
                     if (tall != null)
                     {
-                        Vector3? behind = BehindOf(tall, _isoYaw);
-                        if (behind.HasValue) Shot("25_louisville_behind.png", "Behind " + Describe(tall) + " in streamed Louisville", behind.Value, _isoYaw, Wide, true, true, false);
+                        string what = "Behind " + Describe(tall) + " in streamed Louisville";
+                        Shot("25_louisville_behind_roofs_on.png", what + ", roofs on (before)", tallSpot, _isoYaw, Wide, true, false, false);
+                        Shot("25_louisville_behind.png", what, tallSpot, _isoYaw, Wide, true, true, false);
                     }
                     if (big == null)
                     {
@@ -181,7 +220,9 @@ namespace CloneZ
                     }
                     long bigId = big.Id;
                     Vector3 at = Inside(big);
-                    Shot("24_louisville_inside.png", "Inside " + Describe(big) + " in streamed piece " + cx0 + "_" + cz0, at, _isoYaw, Wide, true, true, false);
+                    string inside = "Inside " + Describe(big) + " in streamed piece " + cx0 + "_" + cz0;
+                    Shot("24_louisville_inside_roofs_on.png", inside + ", roofs on (before)", at, _isoYaw, Wide, true, false, false);
+                    Shot("24_louisville_inside.png", inside, at, _isoYaw, Wide, true, true, false);
                     _md.Append('\n');
                     int cutBefore = MapCutaway.CutBuildings, overlaysCut = OverlayMeshes();
 
@@ -216,6 +257,7 @@ namespace CloneZ
                             if (b.Id == bigId) same = b;
                     }
                     MapCutaway.RestoreAll();
+                    MapCutaway.ResolveAll();
                     MapCutaway.Run(at, _isoYaw, _isoPitch, Reach(Wide), true, _t += 10f, true);
                     bool recut = same != null && same.Applied != 0;
                     _md.Append("Built again: ").Append(MapCutaway.Registered).Append(" registered; standing in the same spot cuts ")
@@ -295,6 +337,7 @@ namespace CloneZ
                 long emitted = CutawayPass.Emitted, emitTicks = CutawayPass.EmitTicks;
                 var total = Stopwatch.StartNew();
                 var sw = new Stopwatch();
+                double waited = 0;
                 try
                 {
                     using (IEnumerator<string> steps = KentuckyMap.ChunkSteps(job).GetEnumerator())
@@ -302,20 +345,32 @@ namespace CloneZ
                         {
                             sw.Restart();
                             bool more;
-                            try { more = steps.MoveNext(); }
+                            try
+                            {
+                                if (job.Site != null) job.Site.BeginStep();
+                                more = steps.MoveNext();
+                            }
                             catch (Exception e)
                             {
                                 piece.Failed = true;
+                                job.Abandon();
                                 Debug.LogError("[CutawayShots] building piece " + cx + "_" + cz + " threw: " + e);
                                 break;
                             }
                             if (!more) break;
+                            if (steps.Current == KentuckyMap.WaitStep)
+                            {
+                                // The meshes are being packed on a worker: the streamer gives these frames to other work.
+                                System.Threading.Thread.Yield();
+                                waited += sw.Elapsed.TotalMilliseconds;
+                                continue;
+                            }
                             piece.Steps.Add(new KeyValuePair<string, double>(steps.Current, sw.Elapsed.TotalMilliseconds));
                         }
                 }
                 finally
                 {
-                    piece.TotalMs = total.Elapsed.TotalMilliseconds;
+                    piece.TotalMs = total.Elapsed.TotalMilliseconds - waited;
                     piece.Emitted = CutawayPass.Emitted - emitted;
                     piece.EmitTicks = CutawayPass.EmitTicks - emitTicks;
                     RaidMesh.CreatedMeshes = outerMeshes;

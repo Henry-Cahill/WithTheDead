@@ -80,9 +80,9 @@ namespace CloneZ
                 foreach (string step in Markings(net)) yield return step;
                 yield return "road markings";
             }
-            Paths(net);
+            foreach (string step in Paths(net)) yield return step;
             yield return "paths";
-            Railways(net);
+            foreach (string step in Railways(net)) yield return step;
             yield return "railways";
             Bridges(net);
             yield return "bridges";
@@ -121,6 +121,46 @@ namespace CloneZ
         /// <summary>From the street's line to the outer edge of its sidewalk on one side, or 0 when it has none.</summary>
         internal static float SidewalkOuter(Street s, int side)
             => s_Ways.TryGetValue(s, out Way w) && (side >= 0 ? w.L : w.R).Walk ? (side >= 0 ? w.L : w.R).WalkOut : 0f;
+
+        /// <summary>The parking lane on one side of a street, if the roads gave it one (downtown, where a mapped
+        /// sidewalk stands back from the traffic): from <paramref name="inner"/> (the travel lane's edge) to
+        /// <paramref name="outer"/> (the kerb face), offsets from the street's line; <paramref name="angled"/> for
+        /// nose-in stalls at 60 degrees (3.2 m apart along the kerb, leaning the way that side's traffic runs: the way's
+        /// direction on a one-way street, else against it on the left and with it on the right), else parallel stalls
+        /// 6.5 m long. False where there's none.</summary>
+        internal static bool ParkingLane(Street s, int side, out float inner, out float outer, out bool angled)
+        {
+            inner = outer = 0f;
+            angled = false;
+            if (!s_Ways.TryGetValue(s, out Way w) || w.Cls <= Cls.Trunk) return false;
+            Side d = side >= 0 ? w.L : w.R;
+            if (d.Edge - d.Lane < 1.5f) return false;
+            inner = d.Lane;
+            outer = d.Edge;
+            angled = d.Edge - d.Lane > 4f;
+            return true;
+        }
+
+        /// <summary>One stall of a parking lane, as the roads painted it (see <see cref="KerbStalls"/>).</summary>
+        internal struct KerbStall
+        {
+            /// <summary>The stall's middle, site-local: an angled stall's parallelogram's middle (halfway between the
+            /// travel lane's edge and the kerb face), a parallel stall's middle on the parking lane's middle line.</summary>
+            public Vector2 At;
+            /// <summary>Degrees clockwise from +z that a car parked in it points: nose in towards the kerb along the
+            /// stall's 60-degree lean, or along the kerb with that side's traffic.</summary>
+            public float Yaw;
+            public bool Angled;
+            public Street Street;
+        }
+
+        private static readonly ConditionalWeakTable<Site, List<KerbStall>> s_Stalls = new ConditionalWeakTable<Site, List<KerbStall>>();
+
+        /// <summary>Every whole stall of the parking lanes the roads painted on a site (inside its square; stalls whose
+        /// lines the slush hides count, those cut by side roads' mouths, crosswalks and driveways don't). Empty before
+        /// the road pass ran, and in Lite (no paint).</summary>
+        internal static IReadOnlyList<KerbStall> KerbStalls(Site site)
+            => s_Stalls.TryGetValue(site, out List<KerbStall> list) ? list : (IReadOnlyList<KerbStall>)System.Array.Empty<KerbStall>();
 
         /// <summary>Where roadside things (poles, signs, hydrants, mailboxes) stand on one side, from the street's line: on
         /// the sidewalk 0.6 m behind the kerb, or on the verge where the sidewalk is set back, or 1.2 m past an unkerbed
@@ -197,8 +237,8 @@ namespace CloneZ
                 Kerb = DecorPalette.Matte(new Color(0.74f, 0.74f, 0.72f));
                 KerbFace = DecorPalette.Matte(new Color(0.56f, 0.56f, 0.55f));
                 Gutter = DecorPalette.Matte(new Color(0.47f, 0.46f, 0.44f));
-                Slush = DecorPalette.Matte(new Color(0.55f, 0.53f, 0.50f));
-                SlushLight = DecorPalette.Matte(new Color(0.68f, 0.67f, 0.66f));
+                Slush = DecorPalette.Matte(new Color(0.52f, 0.50f, 0.47f));
+                SlushLight = DecorPalette.Matte(new Color(0.47f, 0.46f, 0.44f));
                 Wet = DecorPalette.Gloss(new Color(0.13f, 0.13f, 0.14f));
                 Track = DecorPalette.Matte(new Color(0.42f, 0.40f, 0.38f));
                 TrackGravel = DecorPalette.Matte(new Color(0.46f, 0.39f, 0.31f));
@@ -338,6 +378,8 @@ namespace CloneZ
                 }
                 s_Ways.Add(w.S, w);
             }
+            s_Stalls.Remove(net.Site);
+            s_Stalls.Add(net.Site, net.Stalls);
             if (net.Joints.Count == 0) return;
             var byPoint = new Dictionary<long, Joint>(net.Joints.Count);
             foreach (Joint j in net.Joints) byPoint[SnapKey(j.At)] = j;

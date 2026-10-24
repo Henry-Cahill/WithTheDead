@@ -1,7 +1,9 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace CloneZ
 {
@@ -168,7 +170,7 @@ namespace CloneZ
                 float bestTop = float.MinValue;
                 foreach (MapCutaway.Building b in _buildings)
                 {
-                    if (b.Walls == null || b.Upper == null || b == block || b.Middle.magnitude > 190f) continue;
+                    if (b.Walls == null || b.Upper == null || b == block) continue;
                     float score = (b.Kind == "church" ? 1000f : 0f) + b.Top;
                     if (score > bestTop) { bestTop = score; best = b; }
                 }
@@ -300,20 +302,33 @@ namespace CloneZ
                 for (int i = 0; i < 12; i++) path.Add(entry + outward * 2.5f);
 
                 MapCutaway.RestoreAll();
+                MapCutaway.DropCaches();   // a first visit: the house's roof unread, its stand-in not made
+                int holds = MapCutaway.Holds, made = MapCutaway.OverlaysMade;
                 _md.Append("## Walking in and out\n\nThe stand-in walks at 1.4 m/s ").Append(door ? "through the front door of " : "(no working door found: straight through the wall) into ")
                     .Append(Describe(house)).Append(" from 4 m out, the camera at heading ").Append(Deg(yaw)).Append("° facing that wall, to the middle, waits 1 s and walks ")
-                    .Append("back out; one cutaway frame every 0.1 s, as the game runs it. Pictures `18`-`23` are taken on the way. Changes of the house's cut:\n\n")
+                    .Append("back out, as the game runs it: a cutaway scan every 0.1 s, its work every frame (six a scan), from nothing read or made ")
+                    .Append("(a first visit). Pictures `18`-`23` are taken on the way. Changes of the house's cut:\n\n")
                     .Append("| t (s) | stand-in | house cut |\n|--:|---|---|\n");
                 float now = _t += 100f, start = now;
                 int last = -1, leftFrame = -1;
                 bool wasInside = false, everInside = false;
                 float enteredAt = -1f, cutAt = -1f, leftAt = -1f, restoredAt = -1f;
+                double worst = 0;
+                var frame = new Stopwatch();
                 for (int f = 0; f < path.Count; f++)
                 {
                     Vector2 p = path[f];
                     now += step;
                     var feet = new Vector3(p.x, 0f, p.y);
+                    frame.Restart();
                     MapCutaway.Run(feet, yaw, _isoPitch, Reach(Wide), true, now, false);
+                    for (int k = 0; k < 6; k++)
+                    {
+                        if (k > 0) frame.Restart();
+                        MapCutaway.KeepDoors();
+                        MapCutaway.Work(MapCutaway.WorkBudgetMs);
+                        worst = System.Math.Max(worst, frame.Elapsed.TotalMilliseconds);
+                    }
                     bool inHouse = Contains(house.Pts, p);
                     if (inHouse && !wasInside && enteredAt < 0f) enteredAt = now - start;
                     if (!inHouse && wasInside && f >= back && leftAt < 0f)
@@ -344,7 +359,9 @@ namespace CloneZ
                         .Append(" | ").Append(house.Applied == 0 ? "nothing" : Parts(house.Applied)).Append(" |\n");
                 }
                 _md.Append("\nEntered at ").Append(F1(enteredAt)).Append(" s, cut at ").Append(F1(cutAt)).Append(" s; left at ").Append(F1(leftAt))
-                    .Append(" s, all back at ").Append(F1(restoredAt)).Append(" s (restore delay ").Append(F1(MapCutaway.RestoreDelay)).Append(" s).\n\n");
+                    .Append(" s, all back at ").Append(F1(restoredAt)).Append(" s (restore delay ").Append(F1(MapCutaway.RestoreDelay)).Append(" s). ")
+                    .Append("The worst frame on the way (scan and work): ").Append(F2(worst)).Append(" ms; stand-ins made on the way: ")
+                    .Append(MapCutaway.OverlaysMade - made).Append("; cuts held back for one: ").Append(MapCutaway.Holds - holds).Append(".\n\n");
                 if (_pictureRows.Length > 0)
                     _md.Append("| file | shows | house cut | |\n|---|---|---|---|\n").Append(_pictureRows).Append('\n');
                 _pictureRows.Clear();

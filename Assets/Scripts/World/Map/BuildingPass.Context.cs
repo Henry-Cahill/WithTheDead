@@ -21,18 +21,56 @@ namespace CloneZ
             private readonly List<(Patch patch, Rect bounds)> _areas = new List<(Patch, Rect)>();
             private readonly List<Street> _roads = new List<Street>();
             private readonly List<Spot> _fuel = new List<Spot>();
+            // The roads' segments by grid cell (index into _segA/_segB/_segRoad), and the points of interest by cell.
+            private const float RoadCell = 32f;
+            private readonly Dictionary<long, List<int>> _segGrid = new Dictionary<long, List<int>>();
+            private readonly List<Vector2> _segA = new List<Vector2>(), _segB = new List<Vector2>();
+            private readonly List<int> _segRoad = new List<int>();
+            private readonly Dictionary<long, List<Spot>> _spotGrid = new Dictionary<long, List<Spot>>();
+            /// <summary>A streamed piece knows only its own square: how far its data reaches from the middle.</summary>
+            private readonly float _reach;
 
             public Context(Site site)
             {
                 Site = site;
+                _reach = site.Chunked ? site.Half : site.Half + SceneryReach;
                 foreach (Footprint f in site.Area.Buildings) Add(f);
                 foreach (Footprint f in site.Area.Foreign) Add(f);
                 foreach (Patch a in site.Area.Areas) _areas.Add((a, MapGeometry.Bounds(a.Pts)));
                 foreach (Street s in site.Area.Streets)
-                    if (s.Rank >= 1 && !s.Data.tunnel && s.Pts.Count >= 2) _roads.Add(s);
+                    if (s.Rank >= 1 && !s.Data.tunnel && s.Pts.Count >= 2) AddRoad(s);
                 foreach (Spot p in site.Area.Points)
+                {
                     if (p.Data.kind == "fuel") _fuel.Add(p);
+                    long key = Key(p.At);
+                    if (!_spotGrid.TryGetValue(key, out List<Spot> list)) _spotGrid[key] = list = new List<Spot>(2);
+                    list.Add(p);
+                }
                 HasPlaces = FindPlaces(site, _places);
+            }
+
+            private void AddRoad(Street s)
+            {
+                int index = _roads.Count;
+                _roads.Add(s);
+                List<Vector2> pts = s.Pts;
+                for (int i = 0; i + 1 < pts.Count; i++)
+                {
+                    Vector2 a = pts[i], b = pts[i + 1];
+                    int seg = _segA.Count;
+                    _segA.Add(a);
+                    _segB.Add(b);
+                    _segRoad.Add(index);
+                    int x0 = Mathf.FloorToInt(Mathf.Min(a.x, b.x) / RoadCell), x1 = Mathf.FloorToInt(Mathf.Max(a.x, b.x) / RoadCell);
+                    int z0 = Mathf.FloorToInt(Mathf.Min(a.y, b.y) / RoadCell), z1 = Mathf.FloorToInt(Mathf.Max(a.y, b.y) / RoadCell);
+                    for (int z = z0; z <= z1; z++)
+                        for (int x = x0; x <= x1; x++)
+                        {
+                            long key = ((long)x << 32) | (uint)z;
+                            if (!_segGrid.TryGetValue(key, out List<int> list)) _segGrid[key] = list = new List<int>(4);
+                            list.Add(seg);
+                        }
+                }
             }
 
             private void Add(Footprint f)
@@ -74,7 +112,9 @@ namespace CloneZ
             }
 
             /// <summary>The footprint area within <paramref name="radius"/> of <paramref name="f"/>'s middle as a share
-            /// of the disc, and how many buildings stand within 60 m.</summary>
+            /// of the disc, and how many buildings stand within 60 m; both judged from the part of the neighbourhood the
+            /// site can see (a streamed piece knows nothing past its own square: it takes what's beyond to be like
+            /// what's inside, so the buildings along its edge don't all look like the edge of town).</summary>
             public void Neighbourhood(Footprint f, float radius, out float cover, out int count)
             {
                 float area = 0f;
@@ -95,7 +135,37 @@ namespace CloneZ
                             if (d2 < r2) area += o.Size;
                         }
                     }
-                cover = (area + f.Size) / (Mathf.PI * r2);
+                float seen = Seen(f.Middle, radius), seenFar = Seen(f.Middle, 60f);
+                cover = (area / seen + f.Size) / (Mathf.PI * r2);
+                count = Mathf.RoundToInt(count / seenFar);
+            }
+
+            // Points spread evenly over the unit disc (a sunflower).
+            private static readonly Vector2[] s_Disc = MakeDisc(48);
+
+            private static Vector2[] MakeDisc(int n)
+            {
+                var pts = new Vector2[n];
+                float golden = Mathf.PI * (3f - Mathf.Sqrt(5f));
+                for (int i = 0; i < n; i++)
+                {
+                    float r = Mathf.Sqrt((i + 0.5f) / n), a = i * golden;
+                    pts[i] = new Vector2(Mathf.Cos(a) * r, Mathf.Sin(a) * r);
+                }
+                return pts;
+            }
+
+            // The share of the disc of radius r round p that's inside the data the site holds (at least a third).
+            private float Seen(Vector2 p, float r)
+            {
+                if (Mathf.Abs(p.x) + r <= _reach && Mathf.Abs(p.y) + r <= _reach) return 1f;
+                int inside = 0;
+                for (int i = 0; i < s_Disc.Length; i++)
+                {
+                    Vector2 q = p + s_Disc[i] * r;
+                    if (Mathf.Abs(q.x) <= _reach && Mathf.Abs(q.y) <= _reach) inside++;
+                }
+                return Mathf.Max(0.33f, inside / (float)s_Disc.Length);
             }
 
             /// <summary>The neighbours whose outlines come within <paramref name="margin"/> of <paramref name="f"/>'s
@@ -162,11 +232,18 @@ namespace CloneZ
             {
                 Spot found = null;
                 Rect r = f.Bounds;
-                foreach (Spot s in Site.Area.Points)
-                {
-                    if (!r.Contains(s.At) || !MapGeometry.Contains(f.Pts, s.At)) continue;
-                    if (found == null || (found.Data.kind.StartsWith("shop:") && !s.Data.kind.StartsWith("shop:"))) found = s;
-                }
+                int x0 = Mathf.FloorToInt(r.xMin / Cell), x1 = Mathf.FloorToInt(r.xMax / Cell);
+                int z0 = Mathf.FloorToInt(r.yMin / Cell), z1 = Mathf.FloorToInt(r.yMax / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        if (!_spotGrid.TryGetValue(((long)x << 32) | (uint)z, out List<Spot> list)) continue;
+                        foreach (Spot s in list)
+                        {
+                            if (!r.Contains(s.At) || !MapGeometry.Contains(f.Pts, s.At)) continue;
+                            if (found == null || (found.Data.kind.StartsWith("shop:") && !s.Data.kind.StartsWith("shop:"))) found = s;
+                        }
+                    }
                 return found;
             }
 
@@ -216,25 +293,33 @@ namespace CloneZ
                 road = null;
                 toward = Vector2.zero;
                 float best = float.MaxValue;
-                foreach (Street s in _roads)
-                {
-                    List<Vector2> pts = s.Pts;
-                    for (int i = 0; i + 1 < pts.Count; i++)
+                // The widest road is 30 m: its line can lie that much farther off than its edge.
+                float look = within + 15f;
+                int x0 = Mathf.FloorToInt((p.x - look) / RoadCell), x1 = Mathf.FloorToInt((p.x + look) / RoadCell);
+                int z0 = Mathf.FloorToInt((p.y - look) / RoadCell), z1 = Mathf.FloorToInt((p.y + look) / RoadCell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
                     {
-                        Vector2 a = pts[i], ab = pts[i + 1] - a;
-                        float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
-                        Vector2 to = a + ab * t - p;
-                        float d = Mathf.Max(0f, to.magnitude - s.Width * 0.5f);
-                        if (d > within || to.sqrMagnitude < 1e-6f) continue;
-                        // A main road a little farther off still counts as the one a building faces.
-                        float score = d - s.Rank * 1.5f;
-                        if (score >= best) continue;
-                        best = score;
-                        dist = d;
-                        road = s;
-                        toward = to.normalized;
+                        if (!_segGrid.TryGetValue(((long)x << 32) | (uint)z, out List<int> segs)) continue;
+                        for (int k = 0; k < segs.Count; k++)
+                        {
+                            int i = segs[k];
+                            Street s = _roads[_segRoad[i]];
+                            Vector2 a = _segA[i], ab = _segB[i] - a;
+                            float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
+                            Vector2 to = a + ab * t - p;
+                            float d = Mathf.Max(0f, to.magnitude - s.Width * 0.5f);
+                            if (d > within || to.sqrMagnitude < 1e-6f) continue;
+                            // A main road a little farther off still counts as the one a building faces.
+                            float score = d - s.Rank * 1.5f;
+                            // Ties (a segment seen from two cells) keep the first: the same answer whatever the order.
+                            if (score >= best) continue;
+                            best = score;
+                            dist = d;
+                            road = s;
+                            toward = to.normalized;
+                        }
                     }
-                }
                 return road != null;
             }
 

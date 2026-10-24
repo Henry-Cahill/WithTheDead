@@ -31,13 +31,15 @@ namespace CloneZ
         }
 
         private const float ParapetHeight = 0.82f, ParapetThick = 0.34f;
+        private static readonly List<Vector2> s_Under = new List<Vector2>(8), s_Pieces = new List<Vector2>(8);
 
         private static void Bridges(Net net)
         {
             foreach (Chain c in net.Chains)
             {
                 if (!c.W.Bridge || c.To - c.From < 1f) continue;
-                for (int side = -1; side <= 1; side += 2) Parapet(net, c, side);
+                Underpasses(net, c, c, null, s_Under);
+                for (int side = -1; side <= 1; side += 2) Parapet(net, c, side, s_Under);
                 if (!net.Full) continue;
                 GuardRail(net, c, true);
                 GuardRail(net, c, false);
@@ -46,8 +48,10 @@ namespace CloneZ
         }
 
         // One parapet: a concrete wall just outside the carriageway's edge with a snowy cap, a post at each end, a
-        // collider along it; on the deck, snow the plough pushed against it. Open where a side road joins the bridge.
-        private static void Parapet(Net net, Chain c, int side)
+        // collider along it; on the deck, snow the plough pushed against it. Open where a side road joins the bridge, and
+        // over whatever passes beneath (the map is flat: a road, path or railway under the bridge crosses at grade, so a
+        // wall there would block it), with a post either side of the gap.
+        private static void Parapet(Net net, Chain c, int side, List<Vector2> under)
         {
             Look look = net.Look;
             ProfileSamples(c, c.From, c.To, 0f, net.Samples2);
@@ -55,24 +59,26 @@ namespace CloneZ
             for (int i = 0; i + 1 < s.Count; i++)
             {
                 if (InMouth(c, side, (s[i].S + s[i + 1].S) * 0.5f)) continue;
-                float o0 = side * (EdgeAt(c, side, s[i].S) + ParapetThick * 0.5f + 0.05f);
-                float o1 = side * (EdgeAt(c, side, s[i + 1].S) + ParapetThick * 0.5f + 0.05f);
-                Vector2 a = s[i].P + s[i].N * o0, b = s[i + 1].P + s[i + 1].N * o1;
-                Vector2 dir = b - a;
-                float len = dir.magnitude;
-                if (len < 0.05f) continue;
-                Vector3 mid = To3((a + b) * 0.5f, ParapetHeight * 0.5f);
-                RaidMesh m = net.Out.Solid(mid);
-                Beam(m, a, b, 0f, ParapetHeight, ParapetThick, look.Parapet);
-                Beam(m, a, b, ParapetHeight, 0.06f, ParapetThick + 0.08f, look.ParapetCap);
-                net.Site.Town.PropCollider(mid, new Vector3(len, ParapetHeight + 0.1f, ParapetThick), -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+                Outside(s[i].S, s[i + 1].S, under, s_Pieces);
+                foreach (Vector2 piece in s_Pieces)
+                {
+                    Vector2 a = ParapetPoint(c, side, piece.x, s[i], s[i + 1]), b = ParapetPoint(c, side, piece.y, s[i], s[i + 1]);
+                    Vector2 dir = b - a;
+                    float len = dir.magnitude;
+                    if (len < 0.05f) continue;
+                    Vector3 mid = To3((a + b) * 0.5f, ParapetHeight * 0.5f);
+                    RaidMesh m = net.Out.Solid(mid);
+                    Beam(m, a, b, 0f, ParapetHeight, ParapetThick, look.Parapet);
+                    Beam(m, a, b, ParapetHeight, 0.06f, ParapetThick + 0.08f, look.ParapetCap);
+                    net.Site.Town.PropCollider(mid, new Vector3(len, ParapetHeight + 0.1f, ParapetThick), -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+                    if (piece.x > s[i].S + 1e-3f) EndPost(net, a);
+                    if (piece.y < s[i + 1].S - 1e-3f) EndPost(net, b);
+                }
             }
             if (s.Count >= 2)
             {
-                float e0 = side * (EdgeAt(c, side, s[0].S) + ParapetThick * 0.5f + 0.05f);
-                float e1 = side * (EdgeAt(c, side, s[s.Count - 1].S) + ParapetThick * 0.5f + 0.05f);
-                EndPost(net, s[0].P + s[0].N * e0);
-                EndPost(net, s[s.Count - 1].P + s[s.Count - 1].N * e1);
+                EndPost(net, ParapetPoint(c, side, s[0].S, s[0], s[1]));
+                EndPost(net, ParapetPoint(c, side, s[s.Count - 1].S, s[s.Count - 2], s[s.Count - 1]));
             }
             if (!net.Full) return;
             int seed = Seed(c.W, side > 0 ? 0xB21 : 0xB22);
@@ -85,8 +91,144 @@ namespace CloneZ
                 s_B[i] = side * e;
             }
             for (int i = 0; i + 1 < net.Samples.Count; i++)
-                s_Keep[i] = !InMouth(c, side, (net.Samples[i].S + net.Samples[i + 1].S) * 0.5f);
+            {
+                float sm = (net.Samples[i].S + net.Samples[i + 1].S) * 0.5f;
+                s_Keep[i] = !InMouth(c, side, sm) && !Under(under, sm);
+            }
             Band(net, net.Samples, s_A, s_B, DetailY + 0.001f, DetailY + 0.05f, look.Snow, c.Lift, s_Keep);
+        }
+
+        // The parapet's line at arc length sv between two samples: mitred at the samples themselves.
+        private static Vector2 ParapetPoint(Chain c, int side, float sv, in Sample s0, in Sample s1)
+        {
+            float o = side * (EdgeAt(c, side, sv) + ParapetThick * 0.5f + 0.05f);
+            if (Mathf.Abs(sv - s0.S) < 1e-3f) return s0.P + s0.N * o;
+            if (Mathf.Abs(sv - s1.S) < 1e-3f) return s1.P + s1.N * o;
+            PointOn(c, sv, out Vector2 p, out Vector2 d);
+            return p + Left(d) * o;
+        }
+
+        /// <summary>The stretches of <paramref name="line"/> (arc lengths x to y, sorted, merged) that something else passes
+        /// beneath at grade: another carriageway with its sidewalks, a path or a railway crossing it, widened for the
+        /// angle they cross at. Ways that only join it (ending on it) don't count; nor do <paramref name="self"/> and
+        /// <paramref name="selfRail"/>, the line's own.</summary>
+        private static void Underpasses(Net net, Chain line, Chain self, Line selfRail, List<Vector2> into)
+        {
+            into.Clear();
+            MapGeometry.Extent(line.P, out float x0, out float z0, out float x1, out float z1);
+            var box = Rect.MinMaxRect(x0 - 1f, z0 - 1f, x1 + 1f, z1 + 1f);
+            foreach (Chain o in net.Chains)
+            {
+                if (o == self || o.To - o.From < 0.5f) continue;
+                Vector2 first = o.P[0], last = o.P[o.P.Count - 1];
+                for (int k = 0; k + 1 < o.P.Count; k++)
+                {
+                    if (o.Cum[k + 1] < o.From || o.Cum[k] > o.To || !Overlaps(box, o.P[k], o.P[k + 1])) continue;
+                    if (!CrossAt(line, o.P[k], o.P[k + 1], out float s, out float sin, out float v)) continue;
+                    Vector2 q = Vector2.Lerp(o.P[k], o.P[k + 1], v);
+                    if ((q - first).sqrMagnitude < 1f || (q - last).sqrMagnitude < 1f) continue;
+                    float so = Mathf.Lerp(o.Cum[k], o.Cum[k + 1], v);
+                    float half = 0f;
+                    for (int side = -1; side <= 1; side += 2)
+                    {
+                        ProfAt(o, side, so, out Prof d);
+                        half = Mathf.Max(half, d.Walk ? d.WalkOut : d.Kerb ? d.Edge + KerbWidth : d.Edge + 0.5f);
+                    }
+                    AddUnder(line, s, sin, half, into);
+                }
+            }
+            foreach (Way p in net.Ways)
+            {
+                if (p.Cls != Cls.Path || p.Bridge || p.P.Count < 2) continue;
+                Vector2 first = p.P[0], last = p.P[p.P.Count - 1];
+                for (int k = 0; k + 1 < p.P.Count; k++)
+                {
+                    if (!Overlaps(box, p.P[k], p.P[k + 1]) || !CrossAt(line, p.P[k], p.P[k + 1], out float s, out float sin, out float v)) continue;
+                    Vector2 q = Vector2.Lerp(p.P[k], p.P[k + 1], v);
+                    if ((q - first).sqrMagnitude < 1f || (q - last).sqrMagnitude < 1f) continue;
+                    AddUnder(line, s, sin, Mathf.Clamp(p.Half, 0.5f, 2f) + 0.3f, into);
+                }
+            }
+            foreach (Line l in net.Site.Area.Lines)
+            {
+                if (l == selfRail || !l.IsRailway || l.Data.tunnel || l.Pts.Count < 2) continue;
+                Vector2 first = l.Pts[0], last = l.Pts[l.Pts.Count - 1];
+                for (int k = 0; k + 1 < l.Pts.Count; k++)
+                {
+                    if (!Overlaps(box, l.Pts[k], l.Pts[k + 1]) || !CrossAt(line, l.Pts[k], l.Pts[k + 1], out float s, out float sin, out float v)) continue;
+                    Vector2 q = Vector2.Lerp(l.Pts[k], l.Pts[k + 1], v);
+                    if ((q - first).sqrMagnitude < 1f || (q - last).sqrMagnitude < 1f) continue;
+                    AddUnder(line, s, sin, 2.4f, into);
+                }
+            }
+        }
+
+        private static bool Overlaps(Rect box, Vector2 a, Vector2 b)
+            => Mathf.Max(a.x, b.x) >= box.xMin && Mathf.Min(a.x, b.x) <= box.xMax && Mathf.Max(a.y, b.y) >= box.yMin && Mathf.Min(a.y, b.y) <= box.yMax;
+
+        // Where segment a-b crosses the line: the arc length along the line, the sine of the angle they cross at and how
+        // far along the segment (0 to 1).
+        private static bool CrossAt(Chain line, Vector2 a, Vector2 b, out float s, out float sin, out float v)
+        {
+            s = sin = v = 0f;
+            Vector2 e = b - a;
+            float elen = e.magnitude;
+            if (elen < 1e-4f) return false;
+            for (int k = 0; k + 1 < line.P.Count; k++)
+            {
+                Vector2 p = line.P[k], d = line.P[k + 1] - p;
+                float dlen = line.Cum[k + 1] - line.Cum[k];
+                float den = Cross(d, e);
+                if (dlen < 1e-4f || Mathf.Abs(den) < 1e-6f) continue;
+                Vector2 w = a - p;
+                float t = Cross(w, e) / den, u = Cross(w, d) / den;
+                if (t < 0f || t > 1f || u < 0f || u > 1f) continue;
+                s = line.Cum[k] + t * dlen;
+                sin = Mathf.Abs(den) / (dlen * elen);
+                v = u;
+                return true;
+            }
+            return false;
+        }
+
+        // Adds the stretch a crossing at s takes (half its width either side, over the angle), merging overlaps.
+        private static void AddUnder(Chain line, float s, float sin, float half, List<Vector2> into)
+        {
+            float reach = Mathf.Min(half / Mathf.Max(0.3f, sin) + 0.4f, 40f);
+            float a = Mathf.Max(0f, s - reach), b = Mathf.Min(line.Length, s + reach);
+            for (int i = 0; i < into.Count; i++)
+            {
+                if (b < into[i].x || a > into[i].y) continue;
+                a = Mathf.Min(a, into[i].x);
+                b = Mathf.Max(b, into[i].y);
+                into.RemoveAt(i);
+                i = -1;
+            }
+            int at = 0;
+            while (at < into.Count && into[at].x < a) at++;
+            into.Insert(at, new Vector2(a, b));
+        }
+
+        /// <summary>The parts of [<paramref name="lo"/>, <paramref name="hi"/>] outside the sorted stretches
+        /// <paramref name="under"/>.</summary>
+        private static void Outside(float lo, float hi, List<Vector2> under, List<Vector2> into)
+        {
+            into.Clear();
+            float at = lo;
+            foreach (Vector2 u in under)
+            {
+                if (u.y <= at || u.x >= hi) continue;
+                if (u.x > at) into.Add(new Vector2(at, u.x));
+                at = Mathf.Max(at, u.y);
+            }
+            if (hi > at) into.Add(new Vector2(at, hi));
+        }
+
+        private static bool Under(List<Vector2> under, float s)
+        {
+            foreach (Vector2 u in under)
+                if (s > u.x && s < u.y) return true;
+            return false;
         }
 
         private static void EndPost(Net net, Vector2 at)

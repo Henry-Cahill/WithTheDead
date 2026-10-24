@@ -33,13 +33,17 @@ namespace CloneZ
             new Color(0.10f, 0.22f, 0.52f), new Color(0.85f, 0.85f, 0.82f), new Color(0.15f, 0.40f, 0.75f), new Color(0.85f, 0.75f, 0.15f),
         };
 
-        internal static void Build(Ctx ctx)
+        internal static IEnumerable<string> Build(Ctx ctx)
         {
+            Site site = ctx.Site;
             var hydrants = new List<Vector2>();
             MappedNodes(ctx, hydrants);
+            if (site.StepDue) yield return "street furniture";
             Hydrants(ctx, hydrants);
-            Mailboxes(ctx);
+            if (site.StepDue) yield return "street furniture";
+            foreach (string step in Mailboxes(ctx)) yield return step;
             Downtown(ctx);
+            if (site.StepDue) yield return "street furniture";
             Stores(ctx);
         }
 
@@ -49,7 +53,7 @@ namespace CloneZ
         {
             spot = at;
             facing = Vector2.up;
-            Street s = NearestRoad(ctx.Site, at, 25f, out Vector2 on, out Vector2 d);
+            Street s = NearestRoad(ctx, at, 25f, out Vector2 on, out Vector2 d);
             if (s != null)
             {
                 Vector2 off = at - on;
@@ -200,17 +204,18 @@ namespace CloneZ
 
         #region Mailboxes
         // A mailbox on a post at the road's edge in front of nearly every house and trailer out of the middle of town.
-        private static void Mailboxes(Ctx ctx)
+        private static IEnumerable<string> Mailboxes(Ctx ctx)
         {
             var placed = new List<Vector2>();
             foreach (Footprint f in ctx.Site.Area.Buildings)
             {
+                if (ctx.Site.StepDue) yield return "street furniture";
                 string k = f.Data.kind;
                 if (k != "house" && k != "trailer" || !ctx.Inside(f.Middle) || f.Size < 30f) continue;
                 if (ctx.Density.Downtown(f.Middle)) continue;
                 bool town = ctx.Density.Town(f.Middle);
                 if (MapStyle.Unit(f.Data.id, SaltMail) > (town ? 0.75f : 0.95f)) continue;
-                Street s = NearestRoad(ctx.Site, f.Middle, 40f, out Vector2 on, out Vector2 d, 1);
+                Street s = NearestRoad(ctx, f.Middle, 40f, out Vector2 on, out Vector2 d, 1);
                 if (s == null || RoadRank(s) > 5) continue;
                 Vector2 toHouse = f.Middle - on;
                 if (toHouse.sqrMagnitude < 1f) continue;
@@ -564,7 +569,7 @@ namespace CloneZ
         {
             if (!ctx.Inside(f.Middle)) return;
             // The wall facing the nearest road.
-            Street s = NearestRoad(ctx.Site, f.Middle, 60f, out Vector2 on, out _);
+            Street s = NearestRoad(ctx, f.Middle, 60f, out Vector2 on, out _);
             if (s == null) return;
             int edge = -1;
             float best = -2f;

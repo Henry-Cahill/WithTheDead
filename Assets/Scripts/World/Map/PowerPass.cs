@@ -52,12 +52,13 @@ namespace CloneZ
 
         /// <summary>Works out the lines along the roads: where each pole stands and what it carries, and hangs their
         /// wires. The poles are drawn later (<see cref="DrawPoles"/>), once the street lights have picked theirs.</summary>
-        internal static void PlanStreetLines(Ctx ctx)
+        internal static IEnumerable<string> PlanStreetLines(Ctx ctx)
         {
             Site site = ctx.Site;
             var pieces = new List<Street>();
             foreach (Street s in site.Area.Streets)
                 if (Carries(s) && !NearMappedLine(ctx, s)) pieces.Add(s);
+            if (site.StepDue) yield return "utility lines";
             var crossings = new Dictionary<long, Crossing>(ctx.Crossings.Count);
             foreach (Crossing c in ctx.Crossings) crossings[SnapKey(c.At)] = c;
             int line = ctx.Poles.Count > 0 ? ctx.Poles[ctx.Poles.Count - 1].Line + 1 : 0;
@@ -66,6 +67,7 @@ namespace CloneZ
             {
                 if (ctx.Density.CityCore(chain.C[chain.C.Count / 2])) continue;
                 PlaceLine(ctx, chain, crossings, line++);
+                if (site.StepDue) yield return "utility lines";
             }
             Taps(ctx, firstPole);
         }
@@ -106,7 +108,7 @@ namespace CloneZ
         {
             if (s.Data.tunnel || s.Data.bridge || s.Pts.Count < 2) return false;
             int rank = RoadRank(s);
-            if (rank < 2 || s.Data.kind == "motorway" || s.Data.kind.EndsWith("_link")) return false;
+            if (rank < 2 || s.Data.kind == "motorway" || s.Data.kind.EndsWith("_link", System.StringComparison.Ordinal)) return false;
             if (s.Data.oneway && rank >= 4 && (s.Data.lanes >= 2 || s.Data.kind == "trunk")) return false;
             if ((s.Data.kind == "residential" || s.Data.kind == "living_street") && MapStyle.Unit(NameId(s), SaltRear) < 0.17f) return false;
             return true;
@@ -136,6 +138,17 @@ namespace CloneZ
         {
             var chains = new List<Chain>();
             var used = new bool[pieces.Count];
+            var keys = new string[pieces.Count];
+            // The pieces by where they start and where they end.
+            var starts = new Dictionary<long, List<int>>(pieces.Count);
+            var ends = new Dictionary<long, List<int>>(pieces.Count);
+            for (int i = 0; i < pieces.Count; i++)
+            {
+                List<Vector2> pts = pieces[i].Pts;
+                keys[i] = NameKey(pieces[i]);
+                FileUnder(starts, SnapKey(pts[0]), i);
+                FileUnder(ends, SnapKey(pts[pts.Count - 1]), i);
+            }
             var run = new List<Street>();
             for (int i = 0; i < pieces.Count; i++)
             {
@@ -143,7 +156,7 @@ namespace CloneZ
                 used[i] = true;
                 run.Clear();
                 run.Add(pieces[i]);
-                string name = NameKey(pieces[i]);
+                string name = keys[i];
                 // Forwards from the run's end, then backwards from its start.
                 for (int dirn = 0; dirn < 2; dirn++)
                 {
@@ -153,16 +166,18 @@ namespace CloneZ
                         Vector2 tip = dirn == 0 ? end.Pts[end.Pts.Count - 1] : end.Pts[0];
                         Vector2 inDir = dirn == 0 ? EndDir(end) : StartDir(end);
                         int found = -1;
-                        for (int j = 0; j < pieces.Count && found < 0; j++)
-                        {
-                            if (used[j] || NameKey(pieces[j]) != name) continue;
-                            Street s = pieces[j];
-                            Vector2 joint = dirn == 0 ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
-                            if ((joint - tip).sqrMagnitude > 0.0025f) continue;
-                            Vector2 outDir = dirn == 0 ? StartDir(s) : EndDir(s);
-                            if (Vector2.Angle(inDir, outDir) > 80f) continue;
-                            found = j;
-                        }
+                        if ((dirn == 0 ? starts : ends).TryGetValue(SnapKey(tip), out List<int> near))
+                            foreach (int j in near)
+                            {
+                                if (used[j] || keys[j] != name) continue;
+                                Street s = pieces[j];
+                                Vector2 joint = dirn == 0 ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
+                                if ((joint - tip).sqrMagnitude > 0.0025f) continue;
+                                Vector2 outDir = dirn == 0 ? StartDir(s) : EndDir(s);
+                                if (Vector2.Angle(inDir, outDir) > 80f) continue;
+                                found = j;
+                                break;
+                            }
                         if (found < 0) break;
                         used[found] = true;
                         if (dirn == 0) run.Add(pieces[found]);
@@ -172,6 +187,12 @@ namespace CloneZ
                 chains.Add(MakeChain(ctx, run, name));
             }
             return chains;
+        }
+
+        private static void FileUnder(Dictionary<long, List<int>> map, long key, int i)
+        {
+            if (!map.TryGetValue(key, out List<int> list)) map[key] = list = new List<int>(2);
+            list.Add(i);
         }
 
         private static Vector2 StartDir(Street s) => (s.Pts[1] - s.Pts[0]).normalized;
@@ -186,10 +207,12 @@ namespace CloneZ
             {
                 List<Vector2> moved = MapGeometry.OffsetLine(s.Pts, c.Side * Roadside(s, (int)c.Side));
                 // Where the piece meets the edge, a streamed piece's neighbour carries the line on from a pole they share:
-                // its spot comes from the data alone, so both put it in the same place.
+                // its spot comes from the data (so both put it in the same place), a metre clear of a carriageway the roads
+                // widened, or behind the kerb where the roads drew it wider still (a parking lane).
                 int last = s.Pts.Count - 1;
-                if (OnEdge(ctx, s.Pts[0])) moved[0] = s.Pts[0] + Left(StartDir(s)) * (c.Side * (MappedHalf(s) + Verge(s)));
-                if (OnEdge(ctx, s.Pts[last])) moved[last] = s.Pts[last] + Left(EndDir(s)) * (c.Side * (MappedHalf(s) + Verge(s)));
+                float edgeOff = Mathf.Max(MappedHalf(s) + Verge(s) + 1f, Roadside(s, (int)c.Side));
+                if (OnEdge(ctx, s.Pts[0])) moved[0] = s.Pts[0] + Left(StartDir(s)) * (c.Side * edgeOff);
+                if (OnEdge(ctx, s.Pts[last])) moved[last] = s.Pts[last] + Left(EndDir(s)) * (c.Side * edgeOff);
                 for (int i = 0; i < s.Pts.Count; i++)
                 {
                     Vector2 p = s.Pts[i], q = moved[i];
@@ -336,10 +359,12 @@ namespace CloneZ
                 }
                 Street street = c.Seg[Mathf.Clamp(seg, 0, c.Seg.Count - 1)];
                 long key = ctx.KeyOf(at);
+                // A pole shared with a neighbouring piece is fitted from its own street's data, so both draw it alike.
                 var pole = new Pole
                 {
-                    At = at, Across = across, Height = 9.3f + 1.3f * MapStyle.Unit(key, SaltPole), ThreePhase = three,
-                    Edge = a.Edge, Terminal = a.Terminal, Line = line, Street = street, Key = key, Secondary = secondary,
+                    At = at, Across = across, Height = 9.3f + 1.3f * MapStyle.Unit(key, SaltPole),
+                    ThreePhase = a.Edge ? RoadRank(street) >= 3 : three, Edge = a.Edge, Terminal = a.Terminal, Line = line,
+                    Street = street, Key = key, Secondary = a.Edge ? street.Data.kind != "unclassified" : secondary,
                     Telephone = phone, ToRoad = (-c.Side * Left(dir)).normalized,
                 };
                 if (!a.Edge && secondary && ctx.Density.Homes(at, 35f) > 0 && MapStyle.Unit(key, SaltTransformer) < 0.4f
@@ -377,8 +402,10 @@ namespace CloneZ
 
         private static bool OnEdge(Ctx ctx, Vector2 p) => Mathf.Abs(p.x) >= ctx.Reach - 0.02f || Mathf.Abs(p.y) >= ctx.Reach - 0.02f;
 
-        // A pole on the site's edge: off the carriageways as the roads drew them and out of the buildings.
-        private static bool EdgeClear(Ctx ctx, Vector2 p) => ctx.Roads.Clearance(p, 2f) >= 0.4f && !ctx.Blocks.Contains(p, 0.3f);
+        // A pole on the site's edge: off the carriageways and out of the buildings. A streamed piece judges the carriageways
+        // by the data alone, as its neighbour does, so the pole they share stands or falls in both.
+        private static bool EdgeClear(Ctx ctx, Vector2 p)
+            => ctx.Roads.Clearance(p, 2f, ctx.Site.Chunked) >= 0.4f && !ctx.Blocks.Contains(p, 0.3f);
 
         // How far the line strays from the straight wire between t0 (at a) and t1 (at b).
         private static float Deviation(Chain c, float t0, float t1, Vector2 a, Vector2 b)
@@ -481,13 +508,14 @@ namespace CloneZ
         /// reach, unless a building stands in the way; at most three from a pole. Downtown's shops are fed from the
         /// alleys behind them, out of sight. A drop comes down to a weatherhead on a short mast up the wall (through the
         /// eaves of a single storey; on a taller building, the upper storey's wall), clear of the roof.</summary>
-        internal static void ServiceDrops(Ctx ctx)
+        internal static IEnumerable<string> ServiceDrops(Ctx ctx)
         {
-            if (ctx.Poles.Count == 0) return;
+            if (ctx.Poles.Count == 0) yield break;
             Site site = ctx.Site;
             var drops = new Dictionary<Pole, int>();
             foreach (BuildingShell shell in site.Shells)
             {
+                if (site.StepDue) yield return "service drops";
                 Footprint f = shell.Footprint;
                 if (f == null || !ctx.Inside(f.Middle) || f.Size < 25f || shell.WallTop < 2f || !Powered(f.Data.kind)) continue;
                 bool home = f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments";
@@ -561,10 +589,14 @@ namespace CloneZ
         #region Drawing the poles
         /// <summary>Draws the poles of the lines along the roads (and the mapped distribution lines'), with their
         /// fittings, transformers, guys and street lights.</summary>
-        internal static void DrawPoles(Ctx ctx)
+        internal static IEnumerable<string> DrawPoles(Ctx ctx)
         {
             foreach (Pole p in ctx.Poles)
-                if (p.Height < 15f) DrawPole(ctx, p);
+            {
+                if (p.Height >= 15f) continue;
+                DrawPole(ctx, p);
+                if (ctx.Site.StepDue) yield return "utility poles";
+            }
         }
 
         private static void DrawPole(Ctx ctx, Pole p)
@@ -655,10 +687,10 @@ namespace CloneZ
         private static void Guy(Ctx ctx, Pole p, bool inside)
         {
             Vector2 ground = p.At + p.Guy * (p.Height * 0.42f);
-            if (!ctx.Roadside(ground, 0.3f))
+            if (!ctx.Roadside(ground, 0.3f) || ctx.Blocks.Crosses(p.At, ground, 0.2f))
             {
                 ground = p.At + p.Guy * (p.Height * 0.28f);
-                if (!ctx.Roadside(ground, 0.3f)) return;
+                if (!ctx.Roadside(ground, 0.3f) || ctx.Blocks.Crosses(p.At, ground, 0.2f)) return;
             }
             Vector3 top = To3(p.At, p.Height - 0.7f), anchor = To3(ground, 0.02f);
             ctx.Wires.Add(top, anchor, 0.02f, 0.01f, GuyGrey, !inside);

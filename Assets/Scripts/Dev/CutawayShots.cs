@@ -80,7 +80,7 @@ namespace CloneZ
                             Stage("count the square", CountSquare);
                             Stage("register the shells", RegisterShells);
                             Stage("pictures", Pictures);
-                            Stage("check the meshes", CheckMeshes);
+                            Stage("check the meshes", () => CheckMeshes("the square"));
                             Stage("walk in and out", Walk);
                             Stage("scan timing", Timing);
                         }
@@ -100,14 +100,19 @@ namespace CloneZ
                     catch (Exception e) { _failures++; Debug.LogError("[CutawayShots] cleaning up failed: " + e); }
                     MapCutaway.OwnShells = true;
                     MapCutaway.UseHeights = true;
-                    CutawayPass.Deferred = false;
+                    CutawayPass.Deferred = true;
                     Application.logMessageReceived -= OnLog;
                 }
                 if (code == ExitOk && _failures > 0) code = ExitHarness;
                 if (code == ExitOk && _errors > 0) code = ExitMap;
-                _md.Append("\n## Log\n\n").Append(_errors).Append(" errors, ").Append(_warnings).Append(" warnings logged during the run")
+                _md.Append("\n## Log\n\n").Append(_errors).Append(" errors from the cutaway or its checks, ").Append(_warnings).Append(" warnings logged during the run")
                     .Append(_firstErrors.Count > 0 ? ":\n\n" : ".\n");
                 foreach (string e in _firstErrors) _md.Append("- `").Append(e).Append("`\n");
+                if (_otherErrors > 0)
+                {
+                    _md.Append("\n").Append(_otherErrors).Append(" errors from other parts of the map (not this harness's to judge; listed for their owners):\n\n");
+                    foreach (string e in _firstOther) _md.Append("- `").Append(e).Append("`\n");
+                }
                 _md.Append("\n## Stages\n\n").Append(_log);
                 _md.Append("\n**Exit ").Append(code).Append("** after ").Append(F1(_clock.Elapsed.TotalSeconds)).Append(" s.\n");
                 try { File.WriteAllText(Path.Combine(_out, "report.md"), _md.ToString()); }
@@ -153,9 +158,22 @@ namespace CloneZ
                 if (type != LogType.Error && type != LogType.Exception && type != LogType.Assert) return;
                 // The interiors' clean-up calls Destroy, which edit mode refuses: not the map's error, and not this one's.
                 if (message != null && message.Contains("Destroy may not be called from edit mode")) return;
+                string line = (message ?? "").Replace('\n', ' ').Replace('`', '\'');
+                // What the cutaway's own code logs (or what's thrown through it) fails the run; the rest of the map's errors
+                // are listed for its owners (the map harness reports them too).
+                bool mine = line.Contains("MapCutaway") || line.Contains("CutawayPass") || (stack != null && (stack.Contains("MapCutaway") || stack.Contains("CutawayPass")));
+                if (!mine)
+                {
+                    _otherErrors++;
+                    if (_firstOther.Count < 8) _firstOther.Add(line);
+                    return;
+                }
                 _errors++;
-                if (_firstErrors.Count < 12) _firstErrors.Add((message ?? "").Replace('\n', ' ').Replace('`', '\''));
+                if (_firstErrors.Count < 12) _firstErrors.Add(line);
             }
+
+            private int _otherErrors;
+            private readonly List<string> _firstOther = new List<string>();
 
             #region The square
             private void Setup()
@@ -340,17 +358,31 @@ namespace CloneZ
                     .Append(walls).Append(" with walls, ").Append(uppers).Append(" with an upper part, ").Append(upright)
                     .Append(" reaching 2.5 m or more above their ground storey's walls; ").Append(_doors.Count).Append(" working doors in the square).\n\n");
                 if (MapCutaway.Registered != _buildings.Count) Fail("the registered count (" + MapCutaway.Registered + ") doesn't match the sites' lists (" + _buildings.Count + ")");
-                // Read every building's meshes now, as the scans would one by one, to time it.
+                // Read every building's meshes now (the game reads them a slice a frame round the survivor), timing each.
                 int resolves = MapCutaway.Resolves;
-                double ms = MapCutaway.ResolveMs;
                 long bytes = MapCutaway.HeightBytes;
-                int read = MapCutaway.ResolveAll();
+                double worst = 0, sum = 0;
+                int clipped = 0;
+                foreach (MapCutawaySite s in _sites)
+                    foreach (MapCutaway.Building b in s.Buildings)
+                    {
+                        var sw = Stopwatch.StartNew();
+                        MapCutaway.ResolveOne(b);
+                        double ms = sw.Elapsed.TotalMilliseconds;
+                        sum += ms;
+                        worst = Math.Max(worst, ms);
+                        if (b.ClipWalls) clipped++;
+                    }
                 int n = MapCutaway.Resolves - resolves;
-                _md.Append("Reading their meshes (the heights of each upper part, done by the scans the first time they meet a building, at most ")
-                    .Append(F1(MapCutaway.ResolveBudgetMs)).Append(" ms a scan): ").Append(read).Append(" buildings, ").Append(F1(n > 0 ? (MapCutaway.ResolveMs - ms) / n : 0))
-                    .Append(" ms each on average, ").Append(F1(MapCutaway.ResolveMaxMs)).Append(" ms the longest, ").Append(F0(MapCutaway.HeightBytes - bytes))
-                    .Append(" bytes of heights in all.\n\n");
-                if (read != _buildings.Count) Fail(_buildings.Count - read + " buildings' meshes couldn't be read");
+                _md.Append("Reading their meshes (the game does it a slice of at most ").Append(F1(MapCutaway.WorkBudgetMs))
+                    .Append(" ms a frame for the buildings round the survivor; here all at once): ").Append(n).Append(" roofs read, ")
+                    .Append(F1(n > 0 ? sum / n : 0)).Append(" ms each on average, ").Append(F1(worst)).Append(" ms the longest, ")
+                    .Append(F0(MapCutaway.HeightBytes - bytes)).Append(" bytes of heights in all. ").Append(clipped)
+                    .Append(" buildings' walls reach above their ground storey's top (tall windows, linings): shown clipped while their upper part is lifted.\n\n");
+                int unread = 0;
+                foreach (MapCutaway.Building b in _buildings)
+                    if (!b.Resolved) unread++;
+                if (unread > 0) Fail(unread + " buildings' meshes couldn't be read");
             }
 
             private void DiscardSquare()
@@ -376,7 +408,7 @@ namespace CloneZ
 
             #region Checks and timing
             // Every shell mesh and every stand-in made so far, for NaN or infinite vertices, normals and bounds.
-            private void CheckMeshes()
+            private void CheckMeshes(string where)
             {
                 int meshes = 0, bad = 0;
                 var sb = new StringBuilder();
@@ -392,9 +424,9 @@ namespace CloneZ
                         bad++;
                         if (bad <= 10) sb.Append("- `").Append(m.name).Append("` (").Append(b.Kind).Append(' ').Append(b.Id).Append("): ").Append(why).Append('\n');
                     }
-                _md.Append("## Meshes\n\n").Append(meshes).Append(" shell meshes and stand-ins checked for NaN or infinite vertices, normals and bounds: ")
+                _md.Append("Meshes of ").Append(where).Append(": ").Append(meshes).Append(" shell meshes and stand-ins checked for NaN or infinite vertices, normals and bounds: ")
                     .Append(bad == 0 ? "all sound.\n\n" : "**" + bad + " invalid**:\n\n" + sb + "\n");
-                if (bad > 0) Fail(bad + " shell meshes have invalid vertex data");
+                if (bad > 0) Fail(bad + " shell meshes of " + where + " have invalid vertex data");
             }
 
             private static string Invalid(Mesh m, List<Vector3> v)
@@ -415,54 +447,99 @@ namespace CloneZ
             private static bool Finite(Vector3 p) => !(float.IsNaN(p.x) || float.IsNaN(p.y) || float.IsNaN(p.z)
                 || float.IsInfinity(p.x) || float.IsInfinity(p.y) || float.IsInfinity(p.z));
 
-            // A scan a frame while the stand-in walks a circle through the middle of town: how long, what it allocates once
-            // every building it passes has its cut walls made, and how many buildings it cuts with the roofs told by their
-            // heights and by their footprint up to their top (the old test).
+            // The game's frames while the stand-in walks a circle through the middle of town (a cutaway scan every sixth
+            // frame, its work every frame): a first lap reads the roofs and makes the stand-ins round the path as the game
+            // would; then two laps time the scans and check them for allocations, with the roofs told by their heights and by
+            // their footprint up to their top (the old test), and time the frames with their work.
             private void Timing()
             {
-                const int frames = 3000;
-                _md.Append("## Scan timing\n\n").Append(frames).Append(" scans (one a frame) while the stand-in walks a 70 m circle round the ")
-                    .Append("middle of the square, the camera turning a quarter every 750 (after a first lap that read the buildings and made the cut walls):\n\n")
-                    .Append("| roofs told by | µs a scan | bytes allocated | buildings cut on average | at most | upper parts cut on average |\n|---|--:|--:|--:|--:|--:|\n");
-                for (int mode = 0; mode < 2; mode++)
+                const int scans = 3000, framesPerScan = 6;
+                int keep = MapCutaway.MaxOverlays;
+                float evict = MapCutaway.EvictRadius;
+                MapCutaway.MaxOverlays = 100000;   // the timed laps find the first lap's stand-ins (eviction is timed in the walk)
+                MapCutaway.EvictRadius = 1e6f;
+                try
                 {
-                    MapCutaway.UseHeights = mode == 0;
-                    MapCutaway.RestoreAll();
+                    MapCutaway.DropCaches();
                     float now = _t += 1000f;
-                    for (int pass = 0; pass < 2; pass++)
+                    LapStats warm = Lap(scans, framesPerScan, ref now);
+                    _md.Append("## Scan timing\n\n").Append(scans).Append(" scans while the stand-in walks a 70 m circle round the middle of the square, ")
+                        .Append("the camera turning a quarter every 750, ").Append(framesPerScan).Append(" frames of the cutaway's work after each, after a first ")
+                        .Append("lap that read the roofs and made the stand-ins round the path as it went (its worst frame, scan and work: ").Append(F2(warm.WorstMs))
+                        .Append(" ms):\n\n| roofs told by | µs a scan | bytes the scans allocated | µs a frame (scan and work) | worst frame ms ")
+                        .Append("| buildings cut on average | at most | upper parts cut on average |\n|---|--:|--:|--:|--:|--:|--:|--:|\n");
+                    for (int mode = 0; mode < 2; mode++)
                     {
-                        long bytes = GC.GetAllocatedBytesForCurrentThread();
-                        var sw = Stopwatch.StartNew();
-                        int maxCut = 0;
-                        long sumCut = 0, sumUpper = 0;
-                        for (int i = 0; i < frames; i++)
-                        {
-                            float a = i * Mathf.PI * 2f / frames;
-                            var p = new Vector3(Mathf.Cos(a) * 70f, 0f, Mathf.Sin(a) * 70f);
-                            now += MapCutaway.ScanInterval;
-                            MapCutaway.Run(p, _isoYaw + (i / 750) * 90f, _isoPitch, Reach(Wide), true, now, false);
-                            int cut = MapCutaway.CutBuildings;
-                            maxCut = Mathf.Max(maxCut, cut);
-                            sumCut += cut;
-                            IReadOnlyList<MapCutaway.Building> list = MapCutaway.Cut;
-                            for (int k = 0; k < list.Count; k++)
-                                if ((list[k].Applied & 16) != 0) sumUpper++;
-                        }
-                        double us = sw.Elapsed.TotalMilliseconds * 1000.0 / frames;
-                        long alloc = GC.GetAllocatedBytesForCurrentThread() - bytes;
-                        if (pass == 0) continue;
+                        MapCutaway.UseHeights = mode == 0;
+                        MapCutaway.RestoreAll();
+                        LapStats s = Lap(scans, framesPerScan, ref now);
                         _md.Append("| ").Append(mode == 0 ? "their heights (now)" : "footprint up to the top (before)").Append(" | ")
-                            .Append(us.ToString("0.0", CultureInfo.InvariantCulture)).Append(" | ").Append(F0(alloc)).Append(" | ")
-                            .Append(((double)sumCut / frames).ToString("0.00", CultureInfo.InvariantCulture)).Append(" | ").Append(maxCut).Append(" | ")
-                            .Append(((double)sumUpper / frames).ToString("0.00", CultureInfo.InvariantCulture)).Append(" |\n");
-                        if (alloc > 4096) Fail("the scan allocates (" + alloc + " bytes over " + frames + " scans)");
+                            .Append(s.ScanUs.ToString("0.0", CultureInfo.InvariantCulture)).Append(" | ").Append(F0(s.ScanBytes)).Append(" | ")
+                            .Append(s.FrameUs.ToString("0.0", CultureInfo.InvariantCulture)).Append(" | ").Append(F2(s.WorstMs)).Append(" | ")
+                            .Append(s.AvgCut.ToString("0.00", CultureInfo.InvariantCulture)).Append(" | ").Append(s.MaxCut).Append(" | ")
+                            .Append(s.AvgUpper.ToString("0.00", CultureInfo.InvariantCulture)).Append(" |\n");
+                        if (s.ScanBytes > 4096) Fail("the scan allocates (" + s.ScanBytes + " bytes over " + scans + " scans)");
                     }
                 }
-                MapCutaway.UseHeights = true;
-                MapCutaway.RestoreAll();
-                _md.Append("\nCut walls' stand-ins made so far (each the first time its building's walls are cut): ").Append(MapCutaway.OverlaysMade)
-                    .Append(", ").Append(F1(MapCutaway.OverlaysMade > 0 ? MapCutaway.OverlayMs / MapCutaway.OverlaysMade : 0)).Append(" ms each on average, ")
-                    .Append(F1(MapCutaway.OverlayMaxMs)).Append(" ms the longest. Doors hidden with their walls: ").Append(MapCutaway.DoorsHidden).Append(".\n\n");
+                finally
+                {
+                    MapCutaway.MaxOverlays = keep;
+                    MapCutaway.EvictRadius = evict;
+                    MapCutaway.UseHeights = true;
+                    MapCutaway.RestoreAll();
+                }
+                _md.Append("\nStand-ins made so far: ").Append(MapCutaway.OverlaysMade).Append(" (").Append(F1(MapCutaway.OverlaysMade > 0 ? MapCutaway.OverlayMs / MapCutaway.OverlaysMade : 0))
+                    .Append(" ms each on average in all, the most one took ").Append(F1(MapCutaway.OverlayWholeMaxMs)).Append(" ms, made in slices of at most ")
+                    .Append(F2(MapCutaway.OverlaySliceMaxMs)).Append(" ms); ").Append(MapCutaway.OverlaysEvicted).Append(" let go of. Roofs read in slices of at most ")
+                    .Append(F2(MapCutaway.ResolveSliceMaxMs)).Append(" ms. Cuts held back for a stand-in: ").Append(MapCutaway.Holds).Append(", the longest ")
+                    .Append(MapCutaway.LongestHold).Append(" frame(s). The longest frame's work: ").Append(F2(MapCutaway.WorkMaxMs)).Append(" ms. Door renderers hidden with their walls: ")
+                    .Append(MapCutaway.DoorsHidden).Append(".\n\n");
+            }
+
+            private struct LapStats
+            {
+                public double ScanUs, FrameUs, WorstMs, AvgCut, AvgUpper;
+                public long ScanBytes;
+                public int MaxCut;
+            }
+
+            // One lap of the 70 m circle: a scan per step and `frames` frames of the cutaway's work after it.
+            private LapStats Lap(int scans, int frames, ref float now)
+            {
+                var s = new LapStats();
+                var frame = new Stopwatch();
+                long scanTicks = 0, frameTicks = 0, sumCut = 0, sumUpper = 0;
+                for (int i = 0; i < scans; i++)
+                {
+                    float a = i * Mathf.PI * 2f / scans;
+                    var p = new Vector3(Mathf.Cos(a) * 70f, 0f, Mathf.Sin(a) * 70f);
+                    now += MapCutaway.ScanInterval;
+                    long bytes = GC.GetAllocatedBytesForCurrentThread();
+                    frame.Restart();
+                    MapCutaway.Run(p, _isoYaw + (i / 750) * 90f, _isoPitch, Reach(Wide), true, now, false);
+                    scanTicks += frame.ElapsedTicks;
+                    s.ScanBytes += GC.GetAllocatedBytesForCurrentThread() - bytes;
+                    for (int f = 0; f < frames; f++)
+                    {
+                        if (f > 0) frame.Restart();
+                        MapCutaway.KeepDoors();
+                        MapCutaway.Work(MapCutaway.WorkBudgetMs);
+                        frameTicks += frame.ElapsedTicks;
+                        s.WorstMs = Math.Max(s.WorstMs, frame.Elapsed.TotalMilliseconds);
+                    }
+                    int cut = MapCutaway.CutBuildings;
+                    s.MaxCut = Mathf.Max(s.MaxCut, cut);
+                    sumCut += cut;
+                    IReadOnlyList<MapCutaway.Building> list = MapCutaway.Cut;
+                    for (int k = 0; k < list.Count; k++)
+                        if ((list[k].Applied & 16) != 0) sumUpper++;
+                }
+                double tickUs = 1e6 / Stopwatch.Frequency;
+                s.ScanUs = scanTicks * tickUs / scans;
+                s.FrameUs = frames > 0 ? frameTicks * tickUs / (scans * frames) : s.ScanUs;
+                s.AvgCut = (double)sumCut / scans;
+                s.AvgUpper = (double)sumUpper / scans;
+                return s;
             }
             #endregion
 
@@ -527,6 +604,8 @@ namespace CloneZ
             private static string F0(double v) => v.ToString("N0", CultureInfo.InvariantCulture);
 
             private static string F1(double v) => v.ToString("0.0", CultureInfo.InvariantCulture);
+
+            private static string F2(double v) => v.ToString("0.00", CultureInfo.InvariantCulture);
 
             private static string Signed(int v) => (v >= 0 ? "+" : "") + v.ToString("N0", CultureInfo.InvariantCulture);
         }

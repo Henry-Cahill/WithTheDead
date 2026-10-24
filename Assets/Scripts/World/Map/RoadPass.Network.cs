@@ -92,6 +92,7 @@ namespace CloneZ
             public Vector2 Centre;          // the fillet's centre (Rounded)
             public float Radius, Tangent;   // the fillet's radius, and how far from Meet it leaves each kerb
             public Vector2 DirA, DirB;      // the kerb lines' directions where they meet
+            public readonly List<Vector2> Arc = new List<Vector2>();    // the fillet alone, tangent to tangent
         }
 
         private sealed class Joint
@@ -200,6 +201,7 @@ namespace CloneZ
             public readonly List<Run> Runs = new List<Run>();
             public readonly List<Chain> Chains = new List<Chain>();
             public readonly List<Driveway> Driveways = new List<Driveway>();
+            public readonly List<KerbStall> Stalls = new List<KerbStall>();
             public readonly List<Footprint> Prints = new List<Footprint>();
             public CellGrid PrintGrid, PaveGrid, WalkGrid, EdgeGrid;
             public readonly List<(Chain c, int k)> PaveItems = new List<(Chain, int)>();
@@ -530,7 +532,7 @@ namespace CloneZ
                 left.AddRange(right);
                 w.Setback = Quartile(left);
                 w.Town = (w.Density >= 2.5f && w.Setback <= 12f) || w.Density >= 8f || w.S.Data.lit == 1;
-                w.Downtown = (w.Density >= 4f && w.Setback <= 3.5f) || w.Shops >= 4f;
+                w.Downtown = w.Density >= 4f && w.Setback <= 3.5f;
             }
         }
 
@@ -620,16 +622,17 @@ namespace CloneZ
         }
 
         // Kerbs, sidewalks, berms, edge lines, the winter state and the markings of a carriageway. A footway mapped
-        // along a side is its sidewalk when it runs at the kerb, or past a parking lane (parallel, or angled where the
-        // street is lined with buildings), or past a grass verge on a lesser street; one farther off is a path of its
-        // own, and the side keeps a plain kerb. Without one, the side takes the sidewalk tag, else what the town around it
-        // suggests.
+        // along a side is its sidewalk: at the kerb, or past a parking lane (parallel, or angled where the street is
+        // lined with shops), or past a snowy verge however wide. Without one, the side takes the sidewalk tag, else what
+        // the town around it suggests.
         private static void DecideSides(Net net, Way w)
         {
             if (!w.Carriage) return;
             string tag = w.S.Data.sidewalk ?? "";
             bool townClass = w.Cls >= Cls.Primary && w.Cls <= Cls.Minor && !w.Link;
-            bool main = w.Cls <= Cls.Tertiary;
+            bool main = w.Cls >= Cls.Primary && w.Cls <= Cls.Tertiary && !w.Link;
+            // A shopping street: lined with buildings, most of them shops, offices and the like.
+            bool shopping = w.Density >= 6f && w.Shops >= 0.5f * w.Density;
             if (w.Cls == Cls.Minor && w.Downtown) w.Winter = Winter.Ploughed;
             for (int side = 0; side < 2; side++)
             {
@@ -651,7 +654,7 @@ namespace CloneZ
                         d.WalkIn = d.Edge + KerbWidth;
                         d.WalkOut = Mathf.Max(d.WalkIn + 1.5f, far);
                     }
-                    else if (main && gap <= 4.5f && (w.Downtown || w.Density >= 6f))
+                    else if (main && shopping && gap <= 4.5f)
                     {
                         // A lane of parallel parking between the traffic and the sidewalk.
                         d.Mapped = true;
@@ -659,7 +662,7 @@ namespace CloneZ
                         d.WalkIn = d.Edge + KerbWidth;
                         d.WalkOut = Mathf.Max(d.WalkIn + 1.5f, far);
                     }
-                    else if (main && gap <= 9f && (w.Downtown || w.Density >= 8f))
+                    else if (main && shopping && gap <= 9f)
                     {
                         // Angled parking in front of the buildings.
                         d.Mapped = true;
@@ -667,14 +670,14 @@ namespace CloneZ
                         d.WalkIn = d.Edge + KerbWidth;
                         d.WalkOut = Mathf.Max(d.WalkIn + 1.5f, far);
                     }
-                    else if (gap <= 5f)
+                    else
                     {
-                        // A snowy verge between the kerb and the sidewalk.
+                        // A snowy verge between the kerb and the sidewalk, however wide: a threshold here would flip
+                        // between two chunks that see the footway a little nearer or farther (each measures its own piece).
                         d.Mapped = true;
                         d.WalkIn = Mathf.Max(d.Edge + KerbWidth + 0.4f, dist - FootwayWidth * 0.5f - 0.25f);
                         d.WalkOut = Mathf.Max(d.WalkIn + 1.2f, far);
                     }
-                    else d.Kerb = w.Town;
                 }
                 else if (tagged || (tag != "no" && townClass && w.Town))
                 {
@@ -698,6 +701,8 @@ namespace CloneZ
             }
             // The travel lanes keep the mapped width on the street's line; parking lanes and shoulders lie beyond them.
             w.L.Lane = w.R.Lane = w.Half;
+            // A street parked along is the middle of town.
+            if (main && (w.L.Edge > w.Half + 1f || w.R.Edge > w.Half + 1f)) w.Downtown = true;
             int lanes = w.S.Data.lanes;
             if (w.OneWay)
             {

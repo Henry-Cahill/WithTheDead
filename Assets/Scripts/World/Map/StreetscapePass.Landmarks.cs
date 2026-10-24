@@ -165,19 +165,21 @@ namespace CloneZ
             high.Ellipsoid(new Vector3(0f, top + 1.3f, 0f), new Vector3(0.45f, 0.45f, 0.45f), new Surf(Blinkers.Beacon, Vector2.zero, 0f), 8, 5);
             low.ResetFrame();
             high.ResetFrame();
-            if (ctx.Full) TowerName(ctx, n, foot, bandY + (style < 0.6f ? 2.1f : 0f), radius, yaw);
+            // The classic's letters fit its band; the others' may stand taller.
+            if (ctx.Full) TowerName(ctx, n, foot, bandY + (style < 0.6f ? 2.1f : 0f), radius, yaw, style < 0.6f ? 3.0f : 3.5f);
             if (inside) ctx.Site.Take(n.At, 7.5f);
         }
 
         // The town's name painted round the tank in big letters, on two sides: the tower's own name when it's mapped with
         // one, else the nearest town's.
-        private static void TowerName(Ctx ctx, Node n, Vector3 foot, float y, float radius, float yaw)
+        private static void TowerName(Ctx ctx, Node n, Vector3 foot, float y, float radius, float yaw, float tallest)
         {
             string name = TowerText(n.Data.name);
             if (string.IsNullOrEmpty(name)) name = TownNear(ctx, n.At);
             if (string.IsNullOrEmpty(name)) return;
             if (!ctx.Names.Lettering(name, SignBlack, out Rect uv, out float aspect)) return;
-            float w = Mathf.Min(radius * 1.75f, 2.0f * aspect), h = w / aspect;
+            // Round about a third of the tank, the letters as tall as that allows.
+            float w = Mathf.Min(radius * 2.4f, tallest * aspect), h = w / aspect;
             RaidMesh m = ctx.High(new Vector2(foot.x, foot.z));
             // In flat panels following the tank's curve (a metre or so each), on two sides.
             int panels = Mathf.Max(3, Mathf.CeilToInt(w / 1.1f));
@@ -253,7 +255,7 @@ namespace CloneZ
             string name = n.Data.name ?? "";
             long id = n.Data.id;
             bool cell = Has(name, "verizon", "at&t", "cingular", "sprint", "t-mobile", "cellular", "wireless", "alltel", "cell");
-            bool broadcast = !cell && (Has(name, "radio", "broadcast", " tv", "-tv", "-fm", "-am", " fm", " am") || name.StartsWith("W"));
+            bool broadcast = !cell && (Has(name, "radio", "broadcast", " tv", "-tv", "-fm", "-am", " fm", " am") || name.StartsWith("W", System.StringComparison.Ordinal));
             float h = cell ? 42f + 12f * MapStyle.Unit(id, SaltMast) : broadcast ? 95f + 60f * MapStyle.Unit(id, SaltMast) : 48f + 30f * MapStyle.Unit(id, SaltMast);
             Vector3 foot = To3(n.At, 0f);
             RaidMesh low = ctx.Low(n.At), high = ctx.High(n.At);
@@ -350,7 +352,7 @@ namespace CloneZ
                 bool near = false;
                 foreach (Vector2 f in flags) if ((f - p.At).sqrMagnitude < 60f * 60f) near = true;
                 if (near) continue;
-                Street s = NearestRoad(ctx.Site, p.At, 70f, out Vector2 on, out _, 2);
+                Street s = NearestRoad(ctx, p.At, 70f, out Vector2 on, out _, 2);
                 if (s == null) continue;
                 Footprint b = null;
                 foreach (Footprint f in ctx.Site.Area.Buildings)
@@ -416,7 +418,7 @@ namespace CloneZ
             bool marker = Has(name, "marker", "historic");
             float r = marker ? 0.4f : 1.4f;
             if (!ctx.Site.Free(n.At, r) && !ctx.Site.FreeBeside(n.At, r)) return;
-            Street s = NearestRoad(ctx.Site, n.At, 40f, out Vector2 on, out _);
+            Street s = NearestRoad(ctx, n.At, 40f, out Vector2 on, out _);
             Vector2 facing = s != null && (on - n.At).sqrMagnitude > 0.01f ? (on - n.At).normalized : Vector2.up;
             if (n.Data.dir >= 0)
             {
