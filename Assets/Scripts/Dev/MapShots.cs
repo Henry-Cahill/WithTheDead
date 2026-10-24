@@ -2931,9 +2931,9 @@ namespace CloneZ
                     var info = new RaidMapInfo { HalfSize = half, PlayerSpawn = new Vector3(0f, 0.6f, 0f) };
                     CeilingVisibility.Clear();
                     var town = new RaidTown(world, zone.LayoutSeed, info);
-                    var site = new KentuckyMap.Site(town, area);
+                    var site = new KentuckyMap.Site(build, town, area);
                     total += Lap(steps, "(set up the site)", sw);
-                    using (IEnumerator<string> e = KentuckyMap.Passes(site, build).GetEnumerator())
+                    using (IEnumerator<string> e = KentuckyMap.Passes(site).GetEnumerator())
                     {
                         while (true)
                         {
@@ -2947,6 +2947,7 @@ namespace CloneZ
                         }
                     }
                     site.Overhead.Emit("Overhead", town.Overhead, true);
+                    site.Roofs.Emit("Roofs", town.Overhead, false);
                     total += Lap(steps, "(emit the overhead meshes)", sw);
                     town.EmitOutdoor();
                     DecorPalette.Apply();
