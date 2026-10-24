@@ -40,8 +40,9 @@ namespace CloneZ
 
         /// <summary>The signs: mapped stops and yields, then the crossings' own (stops, blades), shields, limits, one-way
         /// signs, deer crossings.</summary>
-        internal static void Signs(Ctx ctx)
+        internal static IEnumerable<string> Signs(Ctx ctx)
         {
+            Site site = ctx.Site;
             MappedStops(ctx);
             foreach (Crossing c in ctx.Crossings)
             {
@@ -49,9 +50,14 @@ namespace CloneZ
                 if (!c.Controlled) Stops(ctx, c);
                 if (!c.Named) Blades(ctx, c, null);
                 OneWays(ctx, c);
+                if (site.StepDue) yield return "signs";
             }
             foreach (Crossing c in ctx.Crossings)
-                if (ctx.Inside(c.At)) RouteSigns(ctx, c);
+            {
+                if (!ctx.Inside(c.At)) continue;
+                RouteSigns(ctx, c);
+                if (site.StepDue) yield return "signs";
+            }
             Deer(ctx);
         }
 
@@ -167,9 +173,15 @@ namespace CloneZ
             if (wood)
             {
                 low.Cylinder(foot, 0.16f, h, 7, Matte(PoleWoods[MapStyle.Pick(ctx.KeyOf(at), 0x3D21, PoleWoods.Length)]), Quaternion.identity, 0.72f);
-                Vector3 top = To3(at, h - 0.6f), ground = To3(at + away * (h * 0.4f), 0.02f);
-                ctx.Wires.Add(top, ground, 0.02f, 0.01f, new Color(0.5f, 0.5f, 0.5f), false);
-                ctx.Low(at + away * (h * 0.4f)).Box(ground + new Vector3(0f, 0.03f, 0f), new Vector3(0.18f, 0.06f, 0.18f), Concrete);
+                // Its guy, pulling against the span, where there's room for the anchor (else the pole stands unguyed).
+                Vector2 anchor = at + away * (h * 0.4f);
+                if (ctx.Roadside(anchor, 0.3f) && !ctx.Blocks.Crosses(at, anchor, 0.2f))
+                {
+                    Vector3 top = To3(at, h - 0.6f), ground = To3(anchor, 0.02f);
+                    ctx.Wires.Add(top, ground, 0.02f, 0.01f, new Color(0.5f, 0.5f, 0.5f), false);
+                    ctx.Low(anchor).Box(ground + new Vector3(0f, 0.03f, 0f), new Vector3(0.18f, 0.06f, 0.18f), Concrete);
+                    ctx.Site.Take(anchor, 0.3f);
+                }
             }
             else
             {

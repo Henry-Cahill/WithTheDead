@@ -177,9 +177,9 @@ namespace CloneZ
             }
 
             /// <summary>Hands out what's built per site and can't be batched: the wires and the sign atlas.</summary>
-            public void Finish()
+            public IEnumerable<string> Finish()
             {
-                Wires.Emit(Site);
+                foreach (string step in Wires.Emit(Site)) yield return step;
                 _names?.Finish();
             }
         }
@@ -768,10 +768,11 @@ namespace CloneZ
                 return b;
             }
 
-            public void Emit(Site site)
+            public IEnumerable<string> Emit(Site site)
             {
                 foreach (Bucket b in _order)
                 {
+                    if (site.StepDue) yield return "wires";
                     if (b.V.Count == 0) continue;
                     var mesh = new Mesh { name = "Wires" };
                     RaidMesh.CreatedMeshes?.Add(mesh);

@@ -165,19 +165,21 @@ namespace CloneZ
             high.Ellipsoid(new Vector3(0f, top + 1.3f, 0f), new Vector3(0.45f, 0.45f, 0.45f), new Surf(Blinkers.Beacon, Vector2.zero, 0f), 8, 5);
             low.ResetFrame();
             high.ResetFrame();
-            if (ctx.Full) TowerName(ctx, n, foot, bandY + (style < 0.6f ? 2.1f : 0f), radius, yaw);
+            // The classic's letters fit its band; the others' may stand taller.
+            if (ctx.Full) TowerName(ctx, n, foot, bandY + (style < 0.6f ? 2.1f : 0f), radius, yaw, style < 0.6f ? 3.0f : 3.5f);
             if (inside) ctx.Site.Take(n.At, 7.5f);
         }
 
         // The town's name painted round the tank in big letters, on two sides: the tower's own name when it's mapped with
         // one, else the nearest town's.
-        private static void TowerName(Ctx ctx, Node n, Vector3 foot, float y, float radius, float yaw)
+        private static void TowerName(Ctx ctx, Node n, Vector3 foot, float y, float radius, float yaw, float tallest)
         {
             string name = TowerText(n.Data.name);
             if (string.IsNullOrEmpty(name)) name = TownNear(ctx, n.At);
             if (string.IsNullOrEmpty(name)) return;
             if (!ctx.Names.Lettering(name, SignBlack, out Rect uv, out float aspect)) return;
-            float w = Mathf.Min(radius * 1.75f, 2.0f * aspect), h = w / aspect;
+            // Round about a third of the tank, the letters as tall as that allows.
+            float w = Mathf.Min(radius * 2.4f, tallest * aspect), h = w / aspect;
             RaidMesh m = ctx.High(new Vector2(foot.x, foot.z));
             // In flat panels following the tank's curve (a metre or so each), on two sides.
             int panels = Mathf.Max(3, Mathf.CeilToInt(w / 1.1f));
