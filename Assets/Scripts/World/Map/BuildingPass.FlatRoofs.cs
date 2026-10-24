@@ -32,13 +32,12 @@ namespace CloneZ
             {
                 if (p.Penthouse) Penthouse(j, deck, surface, snowy);
                 else if ((p.RoofUnits && f.Size > 400f) || f.Size > 900f) LiteUnits(j, deck);
-                if (f.Size > 600f && MapStyle.Unit(j.Id, SaltMelt + 2) < (p.Heated ? 0.8f : 0.35f))
+                if (snowy && f.Size > 600f && MapStyle.Unit(j.Id, SaltMelt + 2) < (p.Heated ? 0.6f : 0.25f))
                 {
-                    // Where the snow has gone, which shows from afar.
+                    // Where the snow has thinned, which shows from afar.
                     System.Random lrng = MapStyle.Rng(j.Id, SaltMelt + 3);
-                    float r = Mathf.Clamp(Mathf.Sqrt(f.Size) * 0.06f, 1.2f, 3.2f);
-                    Surf bareLite = p.Covering == RoofCover.Membrane ? RoofSurf(RoofCover.Membrane, 1) : cover;
-                    Patches(j, m, surface + 0.006f, lrng, snowy ? bareLite : RoofSnow, 1 + Mathf.Min(2, (int)(f.Size / 1500f)), r, r * 1.5f);
+                    float r = Mathf.Clamp(Mathf.Sqrt(f.Size) * 0.05f, 1.0f, 2.6f);
+                    Patches(j, m, surface + 0.006f, lrng, Ballast, 1 + Mathf.Min(2, (int)(f.Size / 1500f)), r, r * 1.4f);
                 }
                 return;
             }
@@ -46,16 +45,19 @@ namespace CloneZ
             Copings(j, coping);
             if (p.FrontParapet > 0 && p.Front >= 0 && !j.Party(p.Front)) FrontParapet(j, p.Front, coping);
             System.Random rng = MapStyle.Rng(j.Id, SaltUnits);
-            // Where the snow has gone: a tar roof's gravel ballast, grey.
-            Surf bare = p.Covering == RoofCover.Membrane ? RoofSurf(RoofCover.Membrane, 1) : cover;
             if (snowy) Drifts(j, m, surface, rng);
             if (snowy && p.Heated && f.Size > 700f && MapStyle.Unit(j.Id, SaltMelt) < 0.7f) MeltLines(j, m, surface + 0.004f);
             Rect keep = default;
             if (p.Penthouse) keep = Penthouse(j, deck, surface, snowy);
-            if (p.RoofUnits || f.Size > 220f) Furniture(j, deck, surface, snowy, bare, keep, rng);
-            if (p.Snow == SnowCover.Partial) Patches(j, m, surface + 0.006f, rng, bare, Mathf.Clamp(2 + Mathf.RoundToInt(f.Size / 250f), 2, 10), 0.7f, 2.2f);
+            if (p.RoofUnits || f.Size > 220f) Furniture(j, deck, surface, snowy, Ballast, keep, rng);
+            if (p.Snow == SnowCover.Partial) Patches(j, m, surface + 0.006f, rng, Ballast, Mathf.Clamp(1 + Mathf.RoundToInt(f.Size / 400f), 1, 6), 0.6f, 1.7f);
             else if (!snowy) Patches(j, m, surface + 0.006f, rng, RoofSnow, Mathf.Clamp(2 + Mathf.RoundToInt(f.Size / 200f), 2, 10), 0.5f, 1.6f);
         }
+
+        // Where the snow has thinned on a flat roof (melted round the plant, over the warm spots): the wet gravel ballast
+        // showing through, a cool pale grey a step darker than the snow (a darker or warmer tone read as dirt or holes).
+        private static Surf s_Ballast;
+        private static Surf Ballast => s_Ballast.Valid ? s_Ballast : (s_Ballast = DecorPalette.Matte(new Color(0.60f, 0.62f, 0.65f)));
 
         private static readonly List<float> s_Span = new List<float>(16);
 

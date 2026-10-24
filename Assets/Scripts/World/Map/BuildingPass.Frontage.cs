@@ -461,6 +461,14 @@ namespace CloneZ
                 Slab(m, Scratch4(a, b, c, d), n, Front + (Top - Front) * 0.35f, Top, 0.06f);
         }
 
+        // True when wall e has windows above the ground storey (a painted sign wants a blank wall).
+        private static bool HasUpperWindows(Job j, int e)
+        {
+            for (int k = 0; k < j.Holes.Count; k++)
+                if (j.Holes[k].Edge == e && j.Holes[k].Storey >= 1) return true;
+            return false;
+        }
+
         // A painted advertisement, faded, high on a downtown building's exposed side wall.
         private static void GhostSign(Job j)
         {
@@ -468,7 +476,7 @@ namespace CloneZ
             int best = -1;
             for (int i = 0; i < j.N; i++)
             {
-                if (j.Party(i) || i == p.Front || j.Len[i] < 7f) continue;
+                if (j.Party(i) || i == p.Front || j.Len[i] < 7f || HasUpperWindows(j, i)) continue;
                 if (best < 0 || j.Len[i] > j.Len[best]) best = i;
             }
             if (best < 0) return;

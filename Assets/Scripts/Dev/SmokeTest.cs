@@ -90,6 +90,13 @@ namespace CloneZ
                 if (++found >= 20) break;
             }
             if (found == 0) Debug.Log("[Smoke] suspect mesh " + when + ": none among the scene's mesh filters");
+            foreach (TextMesh tm in FindObjectsByType<TextMesh>(FindObjectsSortMode.None))
+            {
+                if (tm.GetComponentInParent<UnityEngine.AI.NavMeshAgent>() != null) continue;
+                var mod = tm.GetComponentInParent<Unity.AI.Navigation.NavMeshModifier>();
+                if (mod != null && mod.ignoreFromBuild) continue;
+                Debug.Log("[Smoke] text mesh in reach of a NavMesh bake " + when + ": " + PathOf(tm.transform) + " (text '" + tm.text + "')");
+            }
         }
 
         private static bool Finite(Mesh m)
