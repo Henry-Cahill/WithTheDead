@@ -55,8 +55,13 @@ namespace CloneZ
                 || stack.Contains("UnityEditor.EditorApplicationLayout"))) return;
             s_Errors++;
             if (s_FirstErrors.Count < 30) s_FirstErrors.Add(type + ": " + message + (string.IsNullOrEmpty(stack) ? "" : " @ " + FirstLine(stack)));
-            // The NavMesh bake names no mesh it rejects; look for the culprit on the next frame.
-            if (message.Contains("invalid vertex data")) s_FindBadMeshes = true;
+            // The NavMesh bake names no mesh it rejects; look for the culprit now (the bake is synchronous, so the scene is as
+            // the bake saw it) and again on the next frame.
+            if (message.Contains("invalid vertex data"))
+            {
+                ScanMeshes("during the bake");
+                s_FindBadMeshes = true;
+            }
         }
 
         private static bool s_FindBadMeshes;
@@ -65,18 +70,26 @@ namespace CloneZ
         {
             if (!s_FindBadMeshes) return;
             s_FindBadMeshes = false;
+            ScanMeshes("a frame later");
+        }
+
+        private static void ScanMeshes(string when)
+        {
             int found = 0;
             foreach (MeshFilter mf in FindObjectsByType<MeshFilter>(FindObjectsSortMode.None))
             {
                 Mesh m = mf.sharedMesh;
                 if (m == null) continue;
-                string why = !m.isReadable ? "not readable" : m.vertexCount == 0 ? "no vertices" : !Finite(m) ? "non-finite" : null;
+                Vector3 s = mf.transform.lossyScale;
+                string why = !m.isReadable ? "not readable" : m.vertexCount == 0 ? "no vertices" : !Finite(m) ? "non-finite"
+                    : !IsFinite(mf.transform.position) || !IsFinite(s) ? "non-finite transform"
+                    : s.x == 0f || s.y == 0f || s.z == 0f ? "zero scale" : null;
                 if (why == null) continue;
-                Debug.Log("[Smoke] suspect mesh (" + why + "): " + PathOf(mf.transform) + " (mesh '" + m.name + "', "
+                Debug.Log("[Smoke] suspect mesh " + when + " (" + why + "): " + PathOf(mf.transform) + " (mesh '" + m.name + "', "
                     + m.vertexCount + " vertices, " + m.subMeshCount + " submeshes)");
                 if (++found >= 20) break;
             }
-            if (found == 0) Debug.Log("[Smoke] suspect mesh: none among the scene's mesh filters");
+            if (found == 0) Debug.Log("[Smoke] suspect mesh " + when + ": none among the scene's mesh filters");
         }
 
         private static bool Finite(Mesh m)
