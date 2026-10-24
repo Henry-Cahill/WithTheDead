@@ -4,29 +4,31 @@ using static CloneZ.KentuckyMap;
 
 namespace CloneZ
 {
-    // The cars along the kerbs, in the parking lots and out on the highways, the school buses, the cruisers and the cars
-    // at the pumps.
+    // The cars along the kerbs, in the parking lots and out on the highways, the school buses, the cruisers, the cars on
+    // the forecourts and the odd pair left where one ran into the other.
     internal static partial class VehiclePass
     {
-        private const float StallWidth = 2.7f, StallDepth = 5.4f, RowPeriod = 18f;   // parking rows: two back to back, a 7.2 m aisle
         private const int SaltKerb = 0xCA10, SaltLane = 0xCA11, SaltLot = 0xCA12, SaltWreck = 0xCA13, SaltCrash = 0xCA14, SaltBus = 0xCA15,
             SaltForecourt = 0xCA16;
 
         #region Kerbs
         /// <summary>
-        /// Cars parallel-parked along the kerbs, on stations 6.6 m apart: nose to tail downtown and along the shopping
-        /// streets (both sides where the street is wide enough), now and then along the residential streets, hardly ever out
-        /// of town; never near a junction, a crossing, a hydrant or a bus stop, a bend, a driveway or on a bridge. Now and
-        /// then a car was left slewed across a lane in town, its door open, and at the odd junction two never cleared up
-        /// after a fender-bender.
+        /// Cars parallel-parked along the kerbs as the roads drew them (<see cref="RoadPass.EdgeOffset"/>), on stations 6.6 m
+        /// apart: nose to tail downtown and along the shopping streets (both sides where the street is wide enough), now and
+        /// then along the residential streets, hardly ever out of town; never round a junction (past its paving and
+        /// crosswalks), at a crossing, a hydrant or a bus stop, on a bend, across a driveway's apron or on a bridge. Now
+        /// and then a car was left slewed across a lane in town, its door open. Found first, then parked, thinned evenly if
+        /// there are more than the site has room for.
         /// </summary>
         private static IEnumerable<string> KerbCars(Parking c)
         {
             NaturePlan plan = c.Plan;
             var bends = new List<Vector2>(16);
+            List<Candidate> found = c.Found;
+            found.Clear();
             foreach (Street st in c.Site.Area.Streets)
             {
-                if (st.Data.tunnel || st.Data.bridge || st.Rank >= 6 || NaturePlan.FootKind(st.Data.kind)) continue;
+                if (st.Data.tunnel || st.Data.bridge || st.Rank >= 6 || NaturePlan.FootKind(st.Data.kind) || !RoadPass.IsCarriageway(st)) continue;
                 if (st.Rank == 0 && st.Data.kind != "living_street") continue;
                 if (st.Width < 5.6f || (st.Data.kind != null && st.Data.kind.EndsWith("_link"))) continue;
                 // Real bends only: the vertices where the street turns by more than 12 degrees.
@@ -40,8 +42,7 @@ namespace CloneZ
                 plan.Stations(st.Pts, 6.6f, c.Stations);
                 foreach (NaturePlan.Station s in c.Stations)
                 {
-                    if (!plan.InSquare(s.At, 0f) || Near(bends, s.At, 4f) || Near(c.Corners, s.At, 10f) || Near(c.Mouths, s.At, 5f)
-                        || Near(c.NoParking, s.At, 4.5f)) continue;
+                    if (!plan.InSquare(s.At, 0f) || Near(bends, s.At, 4f) || c.NoParkingAt(s.At)) continue;
                     Vector2 right = new Vector2(s.Dir.y, -s.Dir.x);
                     float bizL = plan.Business(s.At - right * (st.Width * 0.5f + 9f)), bizR = plan.Business(s.At + right * (st.Width * 0.5f + 9f));
                     bool both = st.Width >= 8.4f || (Mathf.Max(bizL, bizR) > 0.06f && st.Width >= 7f);
@@ -52,19 +53,23 @@ namespace CloneZ
                         Vector2 n = right * side;
                         Vector2 front = s.At + n * (st.Width * 0.5f + 9f);
                         if (MapStyle.Unit(key, SaltKerb) >= KerbChance(st, side > 0 ? bizR : bizL, plan.Urban(front))) continue;
-                        Vector2 at = s.At + n * (st.Width * 0.5f - 1.15f + (MapStyle.Unit(key, SaltJitter) - 0.5f) * 0.25f)
+                        // The kerb as the roads drew it (their sides count from the street's left).
+                        float edge = RoadPass.EdgeOffset(st, -side);
+                        Vector2 at = s.At + n * (edge - 1.15f + (MapStyle.Unit(key, SaltJitter) - 0.5f) * 0.25f)
                             + s.Dir * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 0.8f);
-                        if (plan.IsKept(at, s.Dir, 2.5f, 1.0f)) continue;
+                        if (edge < 2.6f || plan.IsKept(at, s.Dir, 2.5f, 1.0f)) continue;
                         Vector2 heading = st.Data.oneway || side > 0 ? s.Dir : -s.Dir;
-                        float yaw = Yaw(heading) + (MapStyle.Unit(key, SaltJitter + 2) - 0.5f) * 4f;
-                        CarBody body = BodyFor(Where.Street, MapStyle.Unit(key, SaltBody));
-                        Park(c, at, yaw, LookFor(key, body, side > 0 ? 0.5f : 0.55f), key, Quaternion.identity);
+                        found.Add(new Candidate
+                        {
+                            At = at, Yaw = Yaw(heading) + (MapStyle.Unit(key, SaltJitter + 2) - 0.5f) * 4f, Key = key,
+                            Body = BodyFor(Where.Street, MapStyle.Unit(key, SaltBody)), Snow = side > 0 ? 0.5f : 0.55f,
+                        });
                     }
                     Abandoned(c, st, s);
-                    if (c.Due()) yield return "kerbside cars";
                 }
+                if (c.Site.StepDue) yield return "kerbside cars";
             }
-            Fenderbenders(c);
+            foreach (string step in ParkFound(c, c.Max - c.Count - 8, "kerbside cars")) yield return step;
             yield return "kerbside cars";
         }
 
@@ -72,9 +77,9 @@ namespace CloneZ
         // and then, the open road hardly ever; main roads only park in front of the shops, alleys a little behind them.
         private static float KerbChance(Street st, float business, float urban)
         {
-            if (business > 0.06f) return st.Rank == 1 ? 0.18f : 0.66f;
-            if (st.Rank >= 4) return business > 0.03f ? 0.25f : 0f;
-            if (urban > 0.035f) return st.Rank == 1 ? 0.04f : st.Width >= 7f ? 0.2f : 0.12f;
+            if (business > 0.06f) return st.Rank == 1 ? 0.12f : 0.5f;
+            if (st.Rank >= 4) return business > 0.03f ? 0.22f : 0f;
+            if (urban > 0.035f) return st.Rank == 1 ? 0.04f : st.Width >= 7f ? 0.18f : 0.11f;
             return st.Rank == 1 ? 0f : 0.015f;
         }
 
@@ -90,12 +95,12 @@ namespace CloneZ
             Vector2 at = s.At + right * ((u - 0.5f) * Mathf.Min(2.4f, st.Width * 0.3f));
             float yaw = Yaw(u < 0.5f ? -s.Dir : s.Dir) + (MapStyle.Unit(key, SaltLane + 2) < 0.5f ? 1f : -1f) * (15f + MapStyle.Unit(key, SaltLane + 3) * 30f);
             CarWear wear = MapStyle.Unit(key, SaltWear) < 0.65f ? CarWear.DoorOpen : CarWear.Crashed | CarWear.DoorOpen;
-            Park(c, at, yaw, LookFor(key, BodyFor(Where.Street, MapStyle.Unit(key, SaltBody)), 0.5f, wear), key, Quaternion.identity);
+            c.Found.Add(new Candidate { At = at, Yaw = yaw, Key = key, Body = BodyFor(Where.Street, MapStyle.Unit(key, SaltBody)), Snow = 0.5f, Wear = wear });
         }
 
-        // At one town crossroads in a dozen two cars never moved after a fender-bender: one slewed across the box, the other
-        // nosed into its side.
-        private static void Fenderbenders(Parking c)
+        // At one town crossroads in a dozen, a pair never cleared up after one ran into the back of the other at the stop
+        // line: the first stopped in its lane short of the crosswalk, door open, the second nosed into its tail, slewed.
+        private static void Crashes(Parking c)
         {
             NaturePlan plan = c.Plan;
             foreach (Junction j in c.Crossroads)
@@ -106,18 +111,20 @@ namespace CloneZ
                 if (rank < 3 || rank >= 6) continue;
                 long key = NaturePlan.Combine((long)System.Math.Round(plan.AbsX(j.At.x)), (long)System.Math.Round(plan.AbsZ(j.At.y)));
                 if (MapStyle.Unit(key, SaltCrash) >= 0.08f) continue;
-                JunctionArm arm = j.Arms[MapStyle.Pick(key, SaltCrash + 1, j.Arms.Count)];
-                if (NaturePlan.FootKind(arm.Street.Data.kind)) continue;
-                Vector2 right = new Vector2(arm.Dir.y, -arm.Dir.x);
-                Vector2 a0 = j.At + arm.Dir * 2.2f + right * 1.3f;
-                float yawA = Yaw(-arm.Dir) + 20f + MapStyle.Unit(key, SaltCrash + 2) * 25f;
+                int arm = MapStyle.Pick(key, SaltCrash + 1, j.Arms.Count);
+                JunctionArm into = j.Arms[arm];
+                if (NaturePlan.FootKind(into.Street.Data.kind) || into.Street.Rank < 2) continue;
+                if (!RoadPass.StopLine(j, arm, out Vector2 stop, out float _)) continue;
                 long keyA = NaturePlan.Combine(key, 1), keyB = NaturePlan.Combine(key, 2);
-                if (!Park(c, a0, yawA, LookFor(keyA, BodyFor(Where.Street, MapStyle.Unit(keyA, SaltBody)), 0.45f, CarWear.DoorOpen), keyA, Quaternion.identity))
-                    continue;
-                Vector2 side = Axis(yawA + 90f);
-                Vector2 b0 = a0 + side * 3.3f + Axis(yawA) * 0.6f;
-                Park(c, b0, Yaw(-side) + (MapStyle.Unit(key, SaltCrash + 3) - 0.5f) * 20f,
-                    LookFor(keyB, BodyFor(Where.Street, MapStyle.Unit(keyB, SaltBody)), 0.45f, CarWear.Crashed), keyB, Quaternion.identity);
+                CarBody a0 = BodyFor(Where.Street, MapStyle.Unit(keyA, SaltBody)), b0 = BodyFor(Where.Street, MapStyle.Unit(keyB, SaltBody));
+                float lenA = CarKit.Size(a0).z, lenB = CarKit.Size(b0).z;
+                Vector2 atA = stop + into.Dir * (0.8f + lenA * 0.5f);
+                float yawA = Yaw(-into.Dir) + (MapStyle.Unit(key, SaltCrash + 2) - 0.5f) * 8f;
+                if (!Park(c, atA, yawA, LookFor(keyA, a0, 0.45f, CarWear.DoorOpen), keyA, Quaternion.identity)) continue;
+                Vector2 side = new Vector2(-into.Dir.y, into.Dir.x) * ((MapStyle.Unit(key, SaltCrash + 3) - 0.5f) * 0.8f);
+                Vector2 atB = atA + into.Dir * ((lenA + lenB) * 0.5f + 0.15f) + side;
+                Park(c, atB, Yaw(-into.Dir) + (MapStyle.Unit(key, SaltCrash + 4) < 0.5f ? 1f : -1f) * (8f + MapStyle.Unit(key, SaltCrash + 5) * 14f),
+                    LookFor(keyB, b0, 0.45f, CarWear.Crashed | (MapStyle.Unit(keyB, SaltWear) < 0.5f ? CarWear.DoorOpen : CarWear.None)), keyB, Quaternion.identity);
             }
         }
 
@@ -132,107 +139,108 @@ namespace CloneZ
 
         #region Parking lots
         /// <summary>
-        /// The parking lots' cars, nosed into stalls in rows two deep between aisles: the rows run along the lot's longest
-        /// side (a lot cut by a seam picks its way by its id, so both pieces agree) on the absolute lattice; the lot fills a
-        /// quarter to three fifths full, fuller by the stores. The plough piles in the corners (planned first, see
-        /// <see cref="SnowPass"/>) and the walls are kept clear.
+        /// The parking lots' cars, nosed into the stalls the ground pass painted (<see cref="GroundPass.Stalls"/>), a quarter
+        /// to three fifths of them taken, more by the stores, one in eight backed in; none where the plough heaped its snow
+        /// (planned first, see <see cref="SnowPass"/>). The small and odd-shaped lots the ground leaves unmarked get a few
+        /// cars nosed up to their longest edges, when the whole lot is the site's. Thinned evenly to the site's room.
         /// </summary>
         private static IEnumerable<string> LotCars(Parking c)
         {
             NaturePlan plan = c.Plan;
             SnowPass.PlanPiles(c.Site, plan);
-            float half = plan.Half;
-            var square = Rect.MinMaxRect(-half, -half, half, half);
-            foreach (Patch pa in c.Site.Area.Areas)
+            List<Candidate> found = c.Found;
+            found.Clear();
+            IReadOnlyList<GroundPass.ParkingStall> stalls = GroundPass.Stalls(c.Site);
+            var marked = new HashSet<long>();
+            for (int i = 0; i < stalls.Count; i++)
             {
-                if (pa.Data.kind != "parking") continue;
-                List<Vector2> poly = MapGeometry.ClipPolygon(pa.Pts, square);
-                if (poly.Count < 3 || Mathf.Abs(MapGeometry.SignedArea(poly)) < 60f) continue;
-                Vector2 u = LotAxis(plan, pa, poly), v = new Vector2(-u.y, u.x);
-                double uMin = double.MaxValue, uMax = double.MinValue, vMin = double.MaxValue, vMax = double.MinValue;
-                foreach (Vector2 q in poly)
+                GroundPass.ParkingStall s = stalls[i];
+                marked.Add(s.Lot);
+                long key = NaturePlan.Combine((long)System.Math.Round(plan.AbsX(s.At.x) * 10.0), (long)System.Math.Round(plan.AbsZ(s.At.y) * 10.0));
+                if (MapStyle.Unit(key, SaltLot + 1) >= LotFill(plan, s.Lot, s.At)) continue;
+                CarBody body = BodyFor(Where.Street, MapStyle.Unit(key, SaltBody));
+                float len = CarKit.Size(body).z;
+                Vector2 nose = Axis(s.Yaw), across = new Vector2(-nose.y, nose.x);
+                // Pulled up to the wheel stop at the stall's head.
+                Vector2 at = s.At + nose * (s.Depth * 0.5f - 0.35f - len * 0.5f) + across * ((MapStyle.Unit(key, SaltJitter) - 0.5f) * 0.3f);
+                if (plan.IsKept(at, nose, len * 0.5f, 1.0f)) continue;
+                bool backed = MapStyle.Unit(key, SaltLot + 2) < 0.12f;
+                found.Add(new Candidate
                 {
-                    double ax = plan.AbsX(q.x), az = plan.AbsZ(q.y);
-                    double qu = ax * u.x + az * u.y, qv = ax * v.x + az * v.y;
-                    uMin = System.Math.Min(uMin, qu);
-                    uMax = System.Math.Max(uMax, qu);
-                    vMin = System.Math.Min(vMin, qv);
-                    vMax = System.Math.Max(vMax, qv);
-                }
-                long id = pa.Data.id;
-                float fill = 0.25f + 0.35f * MapStyle.Unit(id, SaltLot);
-                long r0 = (long)System.Math.Floor(vMin / RowPeriod) - 1, r1 = (long)System.Math.Ceiling(vMax / RowPeriod) + 1;
-                long j0 = (long)System.Math.Floor(uMin / StallWidth) - 1, j1 = (long)System.Math.Ceiling(uMax / StallWidth) + 1;
-                for (long r = r0; r <= r1; r++)
-                    for (int which = 0; which < 2; which++)
-                    {
-                        double rowV = r * RowPeriod + (which == 0 ? StallDepth * 0.5f : RowPeriod - StallDepth * 0.5f);
-                        Vector2 nose = which == 0 ? -v : v;   // away from the aisle between the rows
-                        for (long j = j0; j <= j1; j++)
-                        {
-                            double rowU = j * StallWidth + StallWidth * 0.5;
-                            Vector2 at = plan.Local(rowU * u.x + rowV * v.x, rowU * u.y + rowV * v.y);
-                            if (!plan.InSquare(at, 1f) || !Stall(poly, at, u, v)) continue;
-                            long key = NaturePlan.Combine(NaturePlan.Combine(id, j), r * 2 + which);
-                            float busy = fill + (plan.Business(at) > 0.04f ? 0.15f : 0f);
-                            if (MapStyle.Unit(key, SaltLot + 1) >= busy) continue;
-                            if (plan.WallDistance(at, 3f) < 2.6f || plan.IsKept(at, 1.6f)) continue;
-                            Vector2 heading = MapStyle.Unit(key, SaltLot + 2) < 0.12f ? -nose : nose;
-                            at += u * ((MapStyle.Unit(key, SaltJitter) - 0.5f) * 0.3f) + v * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 0.4f);
-                            float yaw = Yaw(heading) + (MapStyle.Unit(key, SaltJitter + 2) - 0.5f) * 8f;
-                            Park(c, at, yaw, LookFor(key, BodyFor(Where.Street, MapStyle.Unit(key, SaltBody)), 0.55f), key, Quaternion.identity);
-                            if (c.Due()) yield return "parking lot cars";
-                        }
-                    }
+                    At = at, Yaw = s.Yaw + (backed ? 180f : 0f) + (MapStyle.Unit(key, SaltJitter + 2) - 0.5f) * 5f, Key = key, Body = body, Snow = 0.55f,
+                });
             }
+            foreach (Patch pa in c.Site.Area.Areas)
+                if (pa.Data.kind == "parking" && !marked.Contains(pa.Data.id)) PlainLot(c, pa);
+            foreach (string step in ParkFound(c, Mathf.Min(c.Max / 2, c.Max - c.Count - 8), "parking lot cars")) yield return step;
             yield return "parking lot cars";
         }
 
-        // A stall whose four corners are inside the lot.
-        private static bool Stall(List<Vector2> poly, Vector2 at, Vector2 u, Vector2 v)
-        {
-            Vector2 a = u * (StallWidth * 0.45f), b = v * (StallDepth * 0.45f);
-            return MapGeometry.Contains(poly, at + a + b) && MapGeometry.Contains(poly, at + a - b)
-                && MapGeometry.Contains(poly, at - a + b) && MapGeometry.Contains(poly, at - a - b);
-        }
+        // How full a lot is: its own share, more by the stores.
+        private static float LotFill(NaturePlan plan, long lot, Vector2 at)
+            => 0.25f + 0.35f * MapStyle.Unit(lot, SaltLot) + (plan.Business(at) > 0.04f ? 0.15f : 0f);
 
-        /// <summary>The way a lot's rows run: along its longest side of its own; for a lot cut by the square's or a
-        /// region's edge, that side's direction folded to a quarter turn and then turned or not by the lot's id, so the
-        /// pieces either side of the cut agree.</summary>
-        private static Vector2 LotAxis(NaturePlan plan, Patch pa, List<Vector2> poly)
+        // A lot without stalls (a church's, a store's, a garage's), whole on this site: its cars along its longest edges,
+        // nosed up to them clear of the plough's snow at the edge.
+        private static void PlainLot(Parking c, Patch pa)
         {
-            float best = 0f;
-            Vector2 dir = Vector2.right;
-            bool cut = false;
+            NaturePlan plan = c.Plan;
+            List<Vector2> poly = pa.Pts;
+            if (poly.Count < 3) return;
+            foreach (Vector2 q in poly)
+                if (!plan.InSquare(q, 1f) || plan.CutVertex(q)) return;
+            float signed = MapGeometry.SignedArea(poly), area = Mathf.Abs(signed);
+            if (area < 50f) return;
+            long id = pa.Data.id;
+            int want = Mathf.Clamp(Mathf.RoundToInt(area / 30f * LotFill(plan, id, MapGeometry.Middle(poly))), 0, 8), placed = 0;
+            // Its two longest edges, the longest first.
+            int first = -1, second = -1;
+            float l1 = 0f, l2 = 0f;
             for (int i = 0; i < poly.Count; i++)
             {
-                Vector2 a = poly[i], b = poly[(i + 1) % poly.Count];
-                float len = Vector2.Distance(a, b);
-                if (len < 0.5f) continue;
-                if (plan.CutVertex(a) && plan.CutVertex(b) && (Mathf.Abs(a.x - b.x) < 0.05f || Mathf.Abs(a.y - b.y) < 0.05f))
+                float len = Vector2.Distance(poly[i], poly[(i + 1) % poly.Count]);
+                if (len > l1)
                 {
-                    cut = true;
-                    continue;
+                    l2 = l1;
+                    second = first;
+                    l1 = len;
+                    first = i;
                 }
-                if (len <= best) continue;
-                best = len;
-                dir = (b - a) / len;
+                else if (len > l2)
+                {
+                    l2 = len;
+                    second = i;
+                }
             }
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            if (cut)
+            for (int pass = 0; pass < 2 && placed < want; pass++)
             {
-                angle = Mathf.Repeat(angle, 90f);
-                if (MapStyle.Unit(pa.Data.id, SaltLot + 3) < 0.5f) angle += 90f;
+                int e = pass == 0 ? first : second;
+                if (e < 0) break;
+                Vector2 a = poly[e], b = poly[(e + 1) % poly.Count];
+                float l = Vector2.Distance(a, b);
+                if (l < 3.5f) continue;
+                Vector2 along = (b - a) / l, inward = signed > 0f ? new Vector2(-along.y, along.x) : new Vector2(along.y, -along.x);
+                for (int k = 0; 1.7f + k * 2.9f <= l - 1.7f && placed < want; k++)
+                {
+                    long key = NaturePlan.Combine(id, e * 64 + k);
+                    if (MapStyle.Unit(key, SaltLot + 3) < 0.25f) continue;
+                    CarBody body = BodyFor(Where.Street, MapStyle.Unit(key, SaltBody));
+                    float len = CarKit.Size(body).z;
+                    Vector2 at = a + along * (1.7f + k * 2.9f) + inward * (1.6f + len * 0.5f);
+                    if (!MapGeometry.Contains(poly, at + inward * (len * 0.5f)) || !MapGeometry.Contains(poly, at - inward * (len * 0.5f))) continue;
+                    if (plan.IsKept(at, inward, len * 0.5f, 1.0f)) continue;
+                    if (Park(c, at, Yaw(-inward) + (MapStyle.Unit(key, SaltJitter) - 0.5f) * 6f, LookFor(key, body, 0.55f), key, Quaternion.identity)) placed++;
+                }
             }
-            return new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
         }
         #endregion
 
         #region The highways
         /// <summary>
         /// Out of town, along the highways and main roads, what's left of the people who tried to leave: a car on the
-        /// shoulder with its door hanging open or a tyre flat, one run off into the ditch, a short jam in the lane, a burnt-out
-        /// shell; one every few hundred metres, on stations 30 m apart.
+        /// shoulder with its door hanging open or a tyre flat, one run off into the ditch (clear of the fences, poles and
+        /// signs), a short jam in the lane, a burnt-out shell; one every few hundred metres, on stations 30 m apart, none
+        /// round a junction.
         /// </summary>
         private static void RoadWrecks(Parking c)
         {
@@ -244,7 +252,7 @@ namespace CloneZ
                 plan.Stations(st.Pts, 30f, c.Stations);
                 foreach (NaturePlan.Station s in c.Stations)
                 {
-                    if (!plan.InSquare(s.At, 2f) || plan.Urban(s.At) > 0.04f) continue;
+                    if (!plan.InSquare(s.At, 2f) || plan.Urban(s.At) > 0.04f || c.NoParkingAt(s.At)) continue;
                     long key = NaturePlan.Combine(NaturePlan.Combine(st.Data.id, s.K), 21);
                     if (MapStyle.Unit(key, SaltWreck) >= rate) continue;
                     Wreck(c, st, s, key);
@@ -258,18 +266,23 @@ namespace CloneZ
             Vector2 right = new Vector2(s.Dir.y, -s.Dir.x);
             int side = st.Data.oneway || MapStyle.Unit(key, SaltWreck + 2) < 0.5f ? 1 : -1;
             Vector2 n = right * side, heading = st.Data.oneway || side > 0 ? s.Dir : -s.Dir;
+            float edge = RoadPass.EdgeOffset(st, -side);   // the roads count their sides from the street's left
             float u(int k) => MapStyle.Unit(key, SaltWreck + 3 + k);
             CarBody body = BodyFor(Where.Highway, MapStyle.Unit(key, SaltBody));
             if (what < 0.45f)
             {
-                Vector2 at = s.At + n * (st.Width * 0.5f - 0.5f);
+                Vector2 at = s.At + n * (edge - 0.5f);
                 CarWear wear = (u(0) < 0.5f ? CarWear.DoorOpen : CarWear.None) | (u(1) < 0.25f ? CarWear.Flat : CarWear.None);
                 Park(c, at, Yaw(heading) + (u(2) - 0.5f) * 14f, LookFor(key, body, 0.6f, wear), key, Quaternion.identity);
             }
             else if (what < 0.72f)
             {
-                Vector2 at = s.At + n * (st.Width * 0.5f + 2.2f + u(0) * 1.5f);
+                Vector2 at = s.At + n * (edge + 2.2f + u(0) * 1.5f);
                 float slew = side * (20f + u(1) * 45f);
+                // Off the road the ditch must be clear: no fence, pole, sign or tree in the way.
+                Vector2 axis = Axis(Yaw(heading) + slew);
+                for (int k = -1; k <= 1; k++)
+                    if (!c.Site.FreeBeside(at + axis * (k * 1.6f), 0.9f)) return;
                 Quaternion tilt = Quaternion.Euler((u(2) - 0.5f) * 12f, 0f, (u(3) < 0.5f ? 1f : -1f) * (5f + u(4) * 6f));
                 CarWear wear = CarWear.Crashed | (u(5) < 0.4f ? CarWear.DoorOpen : CarWear.None);
                 Park(c, at, Yaw(heading) + slew, LookFor(key, body, 0.65f, wear), key, tilt);
@@ -284,15 +297,16 @@ namespace CloneZ
                     CarBody b = k == 1 && u(6) < 0.25f ? CarBody.BoxTruck : BodyFor(Where.Highway, MapStyle.Unit(ck, SaltBody));
                     float len = CarKit.Size(b).z;
                     back += len * 0.5f;
-                    Vector2 at = s.At - heading * back + n * (st.Width * 0.25f + (MapStyle.Unit(ck, SaltJitter) - 0.5f) * 0.6f);
+                    Vector2 at = s.At - heading * back + n * (edge * 0.5f + (MapStyle.Unit(ck, SaltJitter) - 0.5f) * 0.6f);
                     back += len * 0.5f + 1.2f + MapStyle.Unit(ck, SaltJitter + 1) * 1.8f;
+                    if (c.NoParkingAt(at)) break;
                     CarWear wear = MapStyle.Unit(ck, SaltWear) < 0.4f ? CarWear.DoorOpen : CarWear.None;
                     Park(c, at, Yaw(heading) + (MapStyle.Unit(ck, SaltJitter + 2) - 0.5f) * 12f, LookFor(ck, b, 0.6f, wear), ck, Quaternion.identity);
                 }
             }
             else
             {
-                Vector2 at = s.At + n * (st.Width * 0.5f - 0.3f);
+                Vector2 at = s.At + n * (edge - 0.3f);
                 Park(c, at, Yaw(heading) + (u(0) - 0.5f) * 50f, LookFor(key, body, 0.5f, CarWear.Burnt), key, Quaternion.identity);
             }
         }
@@ -355,7 +369,7 @@ namespace CloneZ
             for (int k = -2; k <= 2; k++)
             {
                 Vector2 q = at + axis * (k * hl * 0.45f);
-                if (plan.WallDistance(q, 2f) < 1.4f || plan.RoadClearance(q, 2f) < 0.4f) return false;
+                if (plan.WallDistance(q, 2f) < 1.4f || plan.RoadClearance(q, 2f) < 0.4f || plan.NearDoor(q, 3f)) return false;
                 Land land = plan.LandAt(q);
                 if (land == Land.Water || land == Land.Pitch) return false;
                 bool byBox = q.x > box.xMin - 1.5f && q.x < box.xMax + 1.5f && q.y > box.yMin - 1.5f && q.y < box.yMax + 1.5f;
@@ -364,7 +378,7 @@ namespace CloneZ
             return true;
         }
 
-        // A cruiser at the kerb in front of the police station.
+        // A cruiser at the kerb in front of the police station, clear of the corners and the driveways.
         private static void Cruiser(Parking c, Spot s)
         {
             if (!c.Plan.NearestRoad(s.At, 45f, 2, out NaturePlan.RoadSeg seg, out float dist, out Vector2 foot) || dist < 0.5f) return;
@@ -372,12 +386,13 @@ namespace CloneZ
             Vector2 right = new Vector2(dir.y, -dir.x);
             float side = Vector2.Dot(right, toward) >= 0f ? 1f : -1f;
             Vector2 heading = side > 0f ? dir : -dir;
+            float edge = RoadPass.EdgeOffset(c.Plan.StreetOf(seg), side > 0f ? -1 : 1);
             long key = NaturePlan.Combine(s.Data.id, 77);
             for (int k = 0; k < 5; k++)
             {
                 float along = (k % 2 == 0 ? 1f : -1f) * ((k + 1) / 2) * 6.6f;
-                Vector2 at = foot + dir * along + right * side * (seg.Half - 1.15f);
-                if (Near(c.Corners, at, 9f)) continue;
+                Vector2 at = foot + dir * along + right * side * (edge - 1.15f);
+                if (c.NoParkingAt(at) || c.Plan.IsKept(at, dir, 2.7f, 1.0f)) continue;
                 if (Park(c, at, Yaw(heading), LookFor(key, CarBody.Cruiser, 0.35f), key, Quaternion.identity)) return;
             }
         }
