@@ -71,19 +71,25 @@ namespace CloneZ
 
         /// <summary>Gets the building's footprint from its record.</summary>
         public Footprint Footprint => Record.Footprint;
+        /// <summary>Data about the building from its footprint.</summary>
         public MapBuilding Data => Record.Footprint.Data;
+        /// <summary>Unique identifier of the building.</summary>
         public long Id => Record.Footprint.Data.id;
 
+        /// <summary>Converts a site‑space position to local frame coordinates.</summary>
         public Vector2 ToLocal(Vector2 site)
         {
             Vector2 d = site - Origin;
             return new Vector2(Vector2.Dot(d, Ex), Vector2.Dot(d, Ez));
         }
 
+        /// <summary>Converts a local frame coordinate back to site‑space position.</summary>
         public Vector2 ToSite(Vector2 local) => Origin + Ex * local.x + Ez * local.y;
 
+        /// <summary>Direction vector from a local point towards site space.</summary>
         public Vector2 DirToSite(Vector2 local) => Ex * local.x + Ez * local.y;
 
+        /// <summary>Direction vector from a site point back to local frame axes.</summary>
         public Vector2 DirToLocal(Vector2 site) => new Vector2(Vector2.Dot(site, Ex), Vector2.Dot(site, Ez));
 
         /// <summary>The rectangle round every room.</summary>
@@ -132,6 +138,7 @@ namespace CloneZ
         public RoomRole Role;
         /// <summary>The <see cref="RoomKinds"/> kind the loot tables are asked about.</summary>
         public string Kind;
+        /// <summary>Name of the room used for debugging or UI.</summary>
         public string Name;
         /// <summary>On wall centre lines, in the frame.</summary>
         public Rect R;
