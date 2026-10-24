@@ -40,6 +40,9 @@ namespace CloneZ
             var drives = new Drives();
             foreach (RoadPass.DrivewaySpot d in RoadPass.Driveways(site))
                 if (d.Dir.sqrMagnitude > 0.5f) drives.Add(d.At, d.At + d.Dir * (d.Length + 1.5f));
+            var runs = new Runs();
+            s_Runs.Remove(site);
+            s_Runs.Add(site, runs);
             foreach (Line l in site.Area.Barriers)
             {
                 if (l.Data.kind == "tree_row" || l.Pts.Count < 2) continue;
@@ -47,7 +50,7 @@ namespace CloneZ
                 // A texture made for the first time (once a session) gets a slice of its own.
                 if (Warm(style, false) && site.StepDue) yield return "fences and walls";
                 foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, square))
-                    foreach (string step in Draw(ctx, l.Data, style, piece, gates, drives)) yield return step;
+                    foreach (string step in Draw(ctx, l.Data, style, piece, gates, drives, runs)) yield return step;
                 if (!site.Chunked)
                 {
                     if (Warm(style, true) && site.StepDue) yield return "fences and walls";
@@ -194,7 +197,7 @@ namespace CloneZ
         // One piece of a barrier inside the square: its runs between the gates, the carriageways and the buildings, each
         // straight stretch drawn and given a collider, posts on the lattice and at the corners. Yields part way along a
         // long piece when the step has had its time (a farm's fence may run for kilometres).
-        private static IEnumerable<string> Draw(Ctx ctx, MapLine data, Style style, List<Vector2> pts, List<Vector2> gates, Drives drives)
+        private static IEnumerable<string> Draw(Ctx ctx, MapLine data, Style style, List<Vector2> pts, List<Vector2> gates, Drives drives, Runs runs)
         {
             Site site = ctx.Site;
             float h = Height(style), thick = Thickness(style);
@@ -238,7 +241,7 @@ namespace CloneZ
                         if (c0 > s && c0 < e) e = c0;
                     }
                     if (e - s > 0.05f)
-                        foreach (string step in Spans(ctx, data, style, a, d, s, e, h, thick, i > 0 && s < 0.01f, drives))
+                        foreach (string step in Spans(ctx, data, style, a, d, s, e, h, thick, i > 0 && s < 0.01f, drives, runs))
                             yield return step;
                     s = e;
                 }
@@ -285,7 +288,7 @@ namespace CloneZ
         // roads drew it or a driveway (a metre at a time); guard rails and retaining walls belong at the road's edge and
         // may touch it. Yields every 16 m or so once the step has had its time.
         private static IEnumerable<string> Spans(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 d, float s, float e, float h, float thick,
-            bool corner, Drives drives)
+            bool corner, Drives drives, Runs runs)
         {
             float clear = style == Style.GuardRail || style == Style.Retaining ? -0.3f : 0.25f;
             float start = -1f;
@@ -303,12 +306,84 @@ namespace CloneZ
                 if (open && start < 0f) start = t;
                 else if (!open && start >= 0f)
                 {
-                    if (t - start > 0.3f) Run(ctx, data, style, a + d * start, a + d * t, d, h, thick, corner && start <= s + 0.01f);
+                    if (t - start > 0.3f)
+                    {
+                        Run(ctx, data, style, a + d * start, a + d * t, d, h, thick, corner && start <= s + 0.01f);
+                        runs.Add(a + d * start, a + d * t, Mathf.Max(thick, 0.15f) * 0.5f);
+                    }
                     start = -1f;
                 }
                 if ((k & 15) == 15 && ctx.Site.StepDue) yield return "fences and walls";
             }
         }
+
+        #region For the passes after this one
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Site, Runs> s_Runs =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<Site, Runs>();
+
+        /// <summary>True when a barrier this pass drew in full on <paramref name="site"/> (a fence, wall, hedge, guard rail
+        /// or retaining wall run, less the gaps it left at gates, carriageways, buildings and the roads' driveways) crosses
+        /// the segment from <paramref name="a"/> to <paramref name="b"/> or comes within <paramref name="pad"/> of it. For
+        /// the passes after this one that lay something along the ground (a driveway's strip, a path) and shouldn't run it
+        /// through a fence. False before this pass ran, and on Lite pieces (whose barriers are plain shapes with no
+        /// colliders).</summary>
+        internal static bool Crosses(Site site, Vector2 a, Vector2 b, float pad = 0.3f)
+            => s_Runs.TryGetValue(site, out Runs runs) && runs.Crosses(a, b, pad);
+
+        // The runs drawn in full on a site, by 16 m cell.
+        private sealed class Runs
+        {
+            private const float Cell = 16f;
+            private readonly List<(Vector2 a, Vector2 b, float half)> _runs = new List<(Vector2 a, Vector2 b, float half)>();
+            private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
+
+            public void Add(Vector2 a, Vector2 b, float half)
+            {
+                int i = _runs.Count;
+                _runs.Add((a, b, half));
+                int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - half) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + half) / Cell);
+                int z0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - half) / Cell), z1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + half) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        long key = Key(x, z);
+                        if (!_cells.TryGetValue(key, out List<int> list)) _cells[key] = list = new List<int>(4);
+                        list.Add(i);
+                    }
+            }
+
+            public bool Crosses(Vector2 a, Vector2 b, float pad)
+            {
+                pad = Mathf.Max(0f, pad);
+                int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - pad) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + pad) / Cell);
+                int z0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - pad) / Cell), z1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + pad) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        if (!_cells.TryGetValue(Key(x, z), out List<int> list)) continue;
+                        foreach (int i in list)
+                        {
+                            (Vector2 c, Vector2 d, float half) = _runs[i];
+                            if (Gap(a, b, c, d) < pad + half) return true;
+                        }
+                    }
+                return false;
+            }
+
+            private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
+
+            // How far apart two segments come (0 where they cross).
+            private static float Gap(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
+            {
+                float d1 = Cross(b - a, c - a), d2 = Cross(b - a, d - a), d3 = Cross(d - c, a - c), d4 = Cross(d - c, b - c);
+                if (((d1 > 0f && d2 < 0f) || (d1 < 0f && d2 > 0f)) && ((d3 > 0f && d4 < 0f) || (d3 < 0f && d4 > 0f))) return 0f;
+                return Mathf.Min(Mathf.Min(MapGeometry.DistanceToSegment(a, c, d), MapGeometry.DistanceToSegment(b, c, d)),
+                    Mathf.Min(MapGeometry.DistanceToSegment(c, a, b), MapGeometry.DistanceToSegment(d, a, b)));
+            }
+
+            private static float Cross(Vector2 u, Vector2 v) => u.x * v.y - u.y * v.x;
+        }
+        #endregion
 
         private static float ArcOf(List<Vector2> pts, Vector2 p)
         {
