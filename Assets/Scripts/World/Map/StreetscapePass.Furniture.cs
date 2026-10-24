@@ -55,7 +55,8 @@ namespace CloneZ
                 Vector2 off = at - on;
                 float dist = off.magnitude;
                 Vector2 side = dist > 0.05f ? off / dist : Left(d);
-                if (dist < HalfWidth(s) + 0.4f) spot = on + side * (HalfWidth(s) + 0.6f);
+                int sd = Vector2.Dot(side, Left(d)) >= 0f ? 1 : -1;
+                if (dist < EdgeOf(s, sd) + 0.4f) spot = on + side * Roadside(s, sd);
                 facing = -side;
             }
             if (!ctx.Inside(spot)) return false;
@@ -156,7 +157,7 @@ namespace CloneZ
                 if (!ctx.Inside(c.At) || c.TopRank < 2 || c.TopRank > 5 || !ctx.Density.Town(c.At)) continue;
                 long key = ctx.KeyOf(c.At);
                 if (MapStyle.Unit(key, SaltHydrant) > 0.62f || Near(c.At, 45f)) continue;
-                if (!Corner(ctx, c, MapStyle.Pick(key, SaltCorner, 8), 0.9f, 0.35f, out Vector2 at, out Vector2 facing)) continue;
+                if (!Corner(ctx, c, MapStyle.Pick(key, SaltCorner, 8), 0f, 0.35f, out Vector2 at, out Vector2 facing)) continue;
                 Hydrant(ctx, at, facing, HydrantColour(ctx, at));
                 mapped.Add(at);
             }
@@ -168,8 +169,8 @@ namespace CloneZ
                 {
                     if (!ctx.Inside(p) || !ctx.Density.Town(p) || Near(p, 50f)) continue;
                     if (MapStyle.Unit(k ^ s.Data.id, SaltHydrant) > 0.6f) continue;
-                    float side = (k & 1) == 0 ? 1f : -1f;
-                    Vector2 at = p + Left(d) * ((HalfWidth(s) + 0.7f) * side);
+                    int side = (k & 1) == 0 ? 1 : -1;
+                    Vector2 at = p + Left(d) * (side * Roadside(s, side));
                     if (!ctx.Site.FreeBeside(at, 0.35f) || ctx.NearestCrossing(at, 12f) != null) continue;
                     Hydrant(ctx, at, -Left(d) * side, HydrantColour(ctx, at));
                     mapped.Add(at);
@@ -214,8 +215,11 @@ namespace CloneZ
                 Vector2 toHouse = f.Middle - on;
                 if (toHouse.sqrMagnitude < 1f) continue;
                 Vector2 side = Vector2.Dot(toHouse, Left(d)) >= 0f ? Left(d) : -Left(d);
+                int sd = Vector2.Dot(side, Left(d)) >= 0f ? 1 : -1;
                 float shift = (MapStyle.Unit(f.Data.id, SaltMail + 1) < 0.5f ? -1f : 1f) * 2.4f;
-                Vector2 at = on + d * shift + side * (HalfWidth(s) + (town ? 0.5f : 0.8f));
+                // At the kerb, or at the road's very edge out of town (where the carrier reaches it from the car).
+                float off = Mathf.Max(RoadPass.KerbOffset(s, sd), EdgeOf(s, sd)) + (town ? 0.4f : 0.75f);
+                Vector2 at = on + d * shift + side * off;
                 bool crowded = false;
                 foreach (Vector2 q in placed) if ((q - at).sqrMagnitude < 2.2f) crowded = true;
                 if (crowded || !ctx.Inside(at) || !ctx.Site.FreeBeside(at, 0.3f)) continue;
@@ -261,16 +265,16 @@ namespace CloneZ
                 if (!ctx.Inside(c.At) || !ctx.Density.Downtown(c.At)) continue;
                 long key = ctx.KeyOf(c.At);
                 int corner = MapStyle.Pick(key, SaltCorner, 8);
-                if (MapStyle.Unit(key, SaltCorner + 1) < 0.65f && Corner(ctx, c, corner, 1.6f, 0.4f, out Vector2 t, out _))
+                if (MapStyle.Unit(key, SaltCorner + 1) < 0.65f && Corner(ctx, c, corner, 0.6f, 0.4f, out Vector2 t, out _))
                     TrashCan(ctx, t, key);
-                if (MapStyle.Unit(key, SaltCorner + 2) < 0.55f && Corner(ctx, c, corner + 1, 1.0f, 1.2f, out Vector2 n, out Vector2 nf))
+                if (MapStyle.Unit(key, SaltCorner + 2) < 0.55f && Corner(ctx, c, corner + 1, 0.5f, 1.2f, out Vector2 n, out Vector2 nf))
                     NewsBoxes(ctx, n, nf, key);
-                if ((!box || MapStyle.Unit(key, SaltCorner + 3) < 0.25f) && Corner(ctx, c, corner + 2, 1.0f, 0.45f, out Vector2 u, out Vector2 uf))
+                if ((!box || MapStyle.Unit(key, SaltCorner + 3) < 0.25f) && Corner(ctx, c, corner + 2, 0.5f, 0.45f, out Vector2 u, out Vector2 uf))
                 {
                     CollectionBox(ctx, u, uf);
                     box = true;
                 }
-                if (MapStyle.Unit(key, SaltCorner + 4) < 0.2f && Corner(ctx, c, corner + 3, 1.2f, 0.5f, out Vector2 p, out Vector2 pf))
+                if (MapStyle.Unit(key, SaltCorner + 4) < 0.2f && Corner(ctx, c, corner + 3, 0.7f, 0.5f, out Vector2 p, out Vector2 pf))
                     Payphone(ctx, p, pf);
             }
             foreach (Street s in ctx.Site.Area.Streets)
@@ -280,8 +284,8 @@ namespace CloneZ
                 foreach ((Vector2 p, Vector2 d, long k) in StreetLights.Lattice(ctx, s.Pts, 38f))
                 {
                     if (!ctx.Inside(p) || !ctx.Density.Downtown(p) || MapStyle.Unit(k ^ s.Data.id, SaltBench) > 0.45f) continue;
-                    float side = (k & 1) == 0 ? 1f : -1f;
-                    Vector2 at = p + Left(d) * ((HalfWidth(s) + 1.1f) * side);
+                    int side = (k & 1) == 0 ? 1 : -1;
+                    Vector2 at = p + Left(d) * (side * (Roadside(s, side) + 0.5f));
                     if (!ctx.Site.FreeBeside(at, 0.9f) || ctx.NearestCrossing(at, 10f) != null) continue;
                     Bench(ctx, at, -Left(d) * side);
                 }
@@ -289,8 +293,9 @@ namespace CloneZ
         }
 
         // A spot on the sidewalk by one of a crossing's corners (corner index taken round its arms), a little way along
-        // one of its streets; facing that street.
-        private static bool Corner(Ctx ctx, Crossing c, int index, float verge, float radius, out Vector2 at, out Vector2 facing)
+        // one of its streets past the junction's kerb return, <paramref name="back"/> behind the roadside line; facing
+        // that street.
+        private static bool Corner(Ctx ctx, Crossing c, int index, float back, float radius, out Vector2 at, out Vector2 facing)
         {
             at = c.At;
             facing = Vector2.up;
@@ -298,14 +303,15 @@ namespace CloneZ
             if (n == 0) return false;
             for (int tries = 0; tries < n * 2; tries++)
             {
-                JunctionArm a = c.Arms[(index + tries) % n];
-                float cross = 0f;
-                foreach (JunctionArm b in c.Arms) if (NameKey(b.Street) != NameKey(a.Street)) cross = Mathf.Max(cross, b.HalfWidth);
-                float side = ((index + tries) / n) % 2 == 0 ? 1f : -1f;
-                Vector2 q = c.At + a.Dir * (cross + 3.5f) + Left(a.Dir) * ((a.HalfWidth + verge) * side);
+                int k = (index + tries) % n;
+                JunctionArm a = c.Arms[k];
+                int sign = ((index + tries) / n) % 2 == 0 ? 1 : -1;
+                // Left of the arm's way is the street's side ApproachRight(k).
+                int side = sign > 0 ? c.ApproachRight(k) : -c.ApproachRight(k);
+                Vector2 q = c.At + a.Dir * (c.Setback(k) + 2f) + Left(a.Dir) * (sign * (Roadside(a.Street, side) + back));
                 if (!ctx.Inside(q) || !ctx.Site.FreeBeside(q, radius)) continue;
                 at = q;
-                facing = -Left(a.Dir) * side;
+                facing = -Left(a.Dir) * sign;
                 return true;
             }
             return false;
