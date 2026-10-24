@@ -4,20 +4,21 @@ using static CloneZ.KentuckyMap;
 
 namespace CloneZ
 {
-    // The real map's landmarks: the places a local would give directions by. Each site publishes its own (the
-    // courthouse, the police and fire stations, the hospital, the schools, the named churches, the post office, the
-    // water tower, the big stores, the named cemeteries and parks...) as the game's landmarks ("landmark:ky.<id>" in
-    // WorldMarkers): the Zone map pins them, HumanUtil describes places by them ("120 m north-west of the Bardstown
-    // courthouse"), the A-Life squads head for them. The most important are there to be discovered: the first time a
-    // survivor reaches one it's learnt for good (MapGameplayRuntime). Names are the real ones, else made from the place
-    // and the street ("Bardstown fire station", "gas station on North 3rd Street").
+    // The real map's landmarks: the places a local would give directions by, and a survivor would make for. Each site
+    // publishes its own (the courthouse, the police and fire stations, the hospital, the schools, the named churches, the
+    // post office, the water tower, the pharmacies, the gas stations, the stores worth the trip, the named cemeteries...)
+    // as the game's landmarks ("landmark:ky.<id>" in WorldMarkers): the Zone map pins them, HumanUtil describes places by
+    // them ("120 m north-west of the Bardstown courthouse"), the A-Life squads head for them. Rank 5 and up are published
+    // (a salon or a café downtown isn't one, however well known); the most important are there to be discovered: the first
+    // time a survivor reaches one it's learnt for good (MapGameplayRuntime). Names are the real ones, else made from the
+    // place and the street ("Bardstown fire station", "gas station on North 3rd Street").
     internal static partial class MapGameplay
     {
         /// <summary>The prefix of a real landmark's id (published as "landmark:ky.p123": p a point of interest, b a
         /// building, n a mapped point feature, a an area, then its OpenStreetMap id).</summary>
         internal const string LandmarkPrefix = "ky.";
 
-        private const int PublishFrom = 4, DiscoverFrom = 6, RewardFrom = 8;
+        private const int PublishFrom = 5, DiscoverFrom = 6, RewardFrom = 8;
 
         /// <summary>One real landmark.</summary>
         private sealed class RealLandmark
@@ -159,14 +160,14 @@ namespace CloneZ
                 case "shop:department_store": case "shop:mall": noun = "department store"; return 5;
                 case "shop:doityourself": case "shop:hardware": noun = "hardware store"; return 5;
                 case "shop:agrarian": case "shop:farm": case "shop:country_store": noun = "feed store"; return named ? 5 : 4;
+                case "shop:variety_store": noun = "dollar store"; return 5;
+                case "shop:convenience": noun = "convenience store"; return 5;
+                case "shop:alcohol": noun = "liquor store"; return 5;
+                case "shop:pawnbroker": noun = "pawn shop"; return 5;
+                case "doctors": case "dentist": noun = "doctor's office"; return 5;
+                case "veterinary": noun = "vet"; return 5;
                 case "community_centre": noun = "community center"; return 4;
-                case "shop:variety_store": noun = "dollar store"; return 4;
-                case "shop:convenience": noun = "convenience store"; return 4;
-                case "shop:alcohol": noun = "liquor store"; return 4;
-                case "shop:pawnbroker": noun = "pawn shop"; return 4;
                 case "bank": noun = "bank"; return 4;
-                case "doctors": case "dentist": noun = "doctor's office"; return 4;
-                case "veterinary": noun = "vet"; return 4;
                 default:
                     if (kind == null || !named) return 0;
                     return kind.StartsWith("shop:", System.StringComparison.Ordinal) || kind == "restaurant" || kind == "fast_food"
@@ -199,6 +200,10 @@ namespace CloneZ
                 case Purposes.DepartmentStore: noun = "department store"; return 5;
                 case Purposes.Hardware: noun = "hardware store"; return 5;
                 case Purposes.FarmSupply: noun = "feed store"; return 5;
+                case Purposes.Convenience: noun = "convenience store"; return 5;
+                case Purposes.Liquor: noun = "liquor store"; return 5;
+                case Purposes.Auto: noun = "garage"; return 5;
+                case Purposes.Vet: noun = "vet"; return 5;
                 case Purposes.Hotel: noun = "hotel"; return 4;
                 case Purposes.Bank: noun = "bank"; return 4;
                 case Purposes.Community: noun = "hall"; return 4;
@@ -276,7 +281,7 @@ namespace CloneZ
                     case "airfield": noun = "airfield"; rank = 7; break;
                     case "military": noun = "military post"; rank = 7; break;
                     case "plaza": noun = "square"; rank = named ? 5 : 0; break;
-                    case "park": case "golf": case "pitch": noun = "park"; rank = named ? 4 : 0; break;
+                    case "park": case "golf": case "pitch": noun = "park"; rank = named ? 5 : 0; break;
                     default: continue;
                 }
                 if (rank < PublishFrom) continue;
@@ -292,7 +297,7 @@ namespace CloneZ
             foreach (RealLandmark l in found)
             {
                 if (published >= cap) break;
-                if (s_Landmarks.ContainsKey(l.Id)) continue;
+                if (l.Rank < PublishFrom || s_Landmarks.ContainsKey(l.Id)) continue;
                 if (SameNearby(l)) continue;
                 s_Landmarks[l.Id] = l;
                 WorldMarkers.Add(WorldMarkers.Landmark(l.Id), l.At);
