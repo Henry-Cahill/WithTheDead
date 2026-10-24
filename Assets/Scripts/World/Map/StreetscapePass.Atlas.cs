@@ -380,8 +380,11 @@ namespace CloneZ
         /// </summary>
         internal sealed class NameAtlas
         {
+            // Pixel buffers by side, reused from one site to the next (several sites may be built at once, a step at a time).
+            private static readonly Dictionary<int, Stack<Color32[]>> s_Buffers = new Dictionary<int, Stack<Color32[]>>();
+
             private readonly int _w, _h;
-            private readonly Color32[] _px;
+            private Color32[] _px;
             private readonly Painter _p;
             private readonly Texture2D _tex;
             private readonly Material _mat;
@@ -392,7 +395,7 @@ namespace CloneZ
             public NameAtlas(Site site)
             {
                 _w = _h = site.Chunked ? 256 : 512;
-                _px = new Color32[_w * _h];
+                _px = TakeBuffer(_w);
                 _p = new Painter(_px, _w, _h);
                 _tex = new Texture2D(_w, _h, TextureFormat.RGBA32, true)
                 {
@@ -452,6 +455,7 @@ namespace CloneZ
             private bool Cell(string key, int w, int h, System.Action<int, int> paint, out Rect uv)
             {
                 if (_done.TryGetValue(key, out uv)) return true;
+                if (_px == null) return false;   // finished: nothing more is painted
                 if (_x + w > _w)
                 {
                     _x = 0;
@@ -531,13 +535,30 @@ namespace CloneZ
                 if (net == "I") _p.TextCentred("I", x0 + s / 2, y0 + s - 6, 1, SignWhite);
             }
 
-            /// <summary>Uploads what was painted.</summary>
+            /// <summary>Uploads what was painted (the texture keeps no copy of its own) and lets go of the pixels.</summary>
             public void Finish()
             {
-                if (!_dirty) return;
-                _tex.SetPixels32(_px);
-                _tex.Apply(true, false);
-                _dirty = false;
+                if (_px == null) return;
+                if (_dirty)
+                {
+                    _tex.SetPixels32(_px);
+                    _tex.Apply(true, true);
+                    _dirty = false;
+                }
+                if (!s_Buffers.TryGetValue(_w, out Stack<Color32[]> free)) s_Buffers[_w] = free = new Stack<Color32[]>(2);
+                if (free.Count < 4) free.Push(_px);
+                _px = null;
+            }
+
+            private static Color32[] TakeBuffer(int side)
+            {
+                if (s_Buffers.TryGetValue(side, out Stack<Color32[]> free) && free.Count > 0)
+                {
+                    Color32[] px = free.Pop();
+                    System.Array.Clear(px, 0, px.Length);
+                    return px;
+                }
+                return new Color32[side * side];
             }
         }
 
