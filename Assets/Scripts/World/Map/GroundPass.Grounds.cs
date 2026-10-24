@@ -47,7 +47,7 @@ namespace CloneZ
             yield return "grounds";
             Yards(g);
             Snowmen(g);
-            yield return "yards";
+            yield return "work yards";
         }
 
         #region Front yards
