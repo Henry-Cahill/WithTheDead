@@ -8,21 +8,26 @@ namespace CloneZ
     // The snow's tone: one see-through sheet over the ground (a grid of 2.56 m cells on a chunk, about 2.9 m over a fixed
     // map and its scenery ring), each corner looking up how drifted, scoured, grimy or shaded the snow is there in a
     // small table (ToneMaterial). Drifts and scoured crust come from noise fixed to the world and drawn out along the wind
-    // (from the north-west), so neighbouring chunks agree; grime and shade from the land use (industry, lots, farmyards,
-    // town centres, woods). Plazas and forecourts get trodden snow in broad patches; water and parking lots show through
-    // untouched, the lots' stall rows getting their packed snow as extra geometry in the same mesh (GroundPass.Parking).
+    // (from the north-west), so neighbouring chunks agree; grime from the land use (industry, lots, farmyards, town
+    // centres); shade, calm and leaf litter under woods, mapped or the nature passes' own over open country. Plazas and
+    // forecourts get trodden snow in broad patches; water and parking lots show through untouched, the lots' stall rows
+    // getting their packed snow as extra geometry in the same mesh (GroundPass.Parking).
     internal static partial class GroundPass
     {
         private static readonly Vector2 Downwind = new Vector2(0.7071f, -0.7071f);   // the wind blows to the south-east
 
-        // The table: 64 columns by two bands of 16 rows. In the first, the snow's tone: across, scoured crust (0) through
-        // untouched (0.5) to fresh drift (1); down, clean to grimy or shaded. In the second, packed snow lying on paving:
-        // across, how much of it (0 none).
-        private const int ToneW = 64, ToneBand = 16, ToneH = ToneBand * 2;
+        // The table: 64 columns by three bands of 16 rows. Across the first two, the snow's tone: across, scoured crust
+        // (0) through untouched (0.5) to fresh drift (1); down the middle band, clean to grimy; up the first, clean to
+        // shaded under trees, with leaf litter showing through (so a point between woods and grime passes through
+        // clean snow). In the third, packed snow lying on paving: across, how much of it (0 none).
+        private const int ToneW = 64, ToneBand = 16, ToneH = ToneBand * 3;
 
-        private static Vector2 ToneUv(float drift, float grime) => new Vector2(drift, (0.5f + Mathf.Clamp01(grime) * (ToneBand - 1)) / ToneH);
+        // A point's tone: x how drifted, y how grimy (or, below 0, how shaded under trees).
+        private static Vector2 ToneUv(Vector2 t)
+            => new Vector2(t.x, t.y >= 0f ? (ToneBand + 0.5f + Mathf.Clamp01(t.y) * (ToneBand - 1)) / ToneH
+                : (ToneBand - 0.5f - Mathf.Clamp01(-t.y) * (ToneBand - 1)) / ToneH);
 
-        private static Vector2 PackedUv(float amount) => new Vector2(Mathf.Clamp01(amount), ToneBand * 1.5f / ToneH);
+        private static Vector2 PackedUv(float amount) => new Vector2(Mathf.Clamp01(amount), ToneBand * 2.5f / ToneH);
 
         private static void Tone(Ground g)
         {
@@ -34,13 +39,14 @@ namespace CloneZ
             var owners = new Owner[row * row];
             Raster(g.Owners, owners, half, cell, row);
             foreach (List<Owner> band in g.Ring) Raster(band, owners, half, cell, row);
+            NaturePlan woods = NaturePlan.For(g.Site);
             var tone = new Vector2[row * row];
             for (int j = 0; j <= cells; j++)
                 for (int i = 0; i <= cells; i++)
                 {
                     var p = new Vector2(-half + i * cell, -half + j * cell);
                     float fade = chunk ? 1f : Mathf.Clamp01((half - Mathf.Max(Mathf.Abs(p.x), Mathf.Abs(p.y))) / 20f);
-                    tone[j * row + i] = ToneAt(g, p, owners[j * row + i], fade);
+                    tone[j * row + i] = ToneAt(g, p, owners[j * row + i], woods, fade);
                 }
             int extra = g.ToneVerts.Count;
             var verts = new List<Vector3>(row * row / 2 + extra);
@@ -85,12 +91,12 @@ namespace CloneZ
                 if (index[k] >= 0) return index[k];
                 index[k] = verts.Count;
                 verts.Add(new Vector3(-half + (k % row) * cell, ToneY, -half + (k / row) * cell));
-                uvs.Add(ToneUv(tone[k].x, tone[k].y));
+                uvs.Add(ToneUv(tone[k]));
                 return index[k];
             }
         }
 
-        private static bool Clean(Vector2 t) => Mathf.Abs(t.x - 0.5f) < 0.04f && t.y < 0.02f;
+        private static bool Clean(Vector2 t) => Mathf.Abs(t.x - 0.5f) < 0.04f && Mathf.Abs(t.y) < 0.02f;
 
         // Which owner's ground shows at each point of the tone's grid, from the partition's trapezoids (they don't
         // overlap, so each point gets the one it's in).
@@ -111,14 +117,15 @@ namespace CloneZ
                 }
         }
 
-        // How drifted (x: scoured 0, untouched 0.5, drifted 1) and how grimy or shaded (y) the snow is at a point whose
-        // ground is <paramref name="o"/>'s, both eased to nothing (0.5, 0) by <paramref name="fade"/>; water and parking
-        // lots untouched.
-        private static Vector2 ToneAt(Ground g, Vector2 p, Owner o, float fade)
+        // How drifted (x: scoured 0, untouched 0.5, drifted 1) and how grimy (y), or below 0 how shaded under trees, the
+        // snow is at a point whose ground is <paramref name="o"/>'s (the woods over unmapped country are the nature
+        // passes', <see cref="NaturePlan.Wooded"/>), both eased to nothing (0.5, 0) by <paramref name="fade"/>; water and
+        // parking lots untouched.
+        private static Vector2 ToneAt(Ground g, Vector2 p, Owner o, NaturePlan woods, float fade)
         {
             Vector2 w = g.World(p);
             float along = Vector2.Dot(w, Downwind), across = Vector2.Dot(w, new Vector2(-Downwind.y, Downwind.x));
-            float grime = 0f, calm = 1f;
+            float grime = 0f, shade = 0f, calm = 1f;
             if (o != null)
                 switch (o.Kind)
                 {
@@ -131,14 +138,21 @@ namespace CloneZ
                     case "farmyard": grime = 0.35f; break;
                     case "lot": case "quarry": grime = 0.3f; break;
                     case "commercial": case "retail": grime = 0.18f; break;
-                    case "forest": calm = 0.4f; grime = 0.32f; break;   // the trees break the wind and shade the snow
-                    case "scrub": case "orchard": calm = 0.75f; break;
+                    case "forest": calm = 0.4f; shade = 0.75f; break;   // the trees break the wind and shade the snow
+                    case "scrub": case "orchard": calm = 0.75f; shade = 0.2f; break;
                 }
+            else if (woods != null && woods.Wooded(p, out float depth))
+            {
+                float k = Smooth(0f, 0.08f, depth);
+                calm = Mathf.Lerp(1f, 0.4f, k);
+                shade = 0.75f * k;
+            }
             float large = WorldNoise(new Vector2(along / 60f, across / 15f), 1f, SaltTone);
             float streak = WorldNoise(new Vector2(along / 18f, across / 6f), 1f, SaltTone + 1);
             float drift = 0.5f + calm * (1.1f * (large - 0.5f) + 0.75f * (streak - 0.5f));
-            grime *= 0.5f + WorldNoise(w, 17f, SaltTone + 2);
-            return new Vector2(Mathf.Lerp(0.5f, Mathf.Clamp01(drift), fade), Mathf.Clamp01(grime) * fade);
+            float vary = 0.5f + WorldNoise(w, 17f, SaltTone + 2);
+            float y = shade > 0f ? -Mathf.Clamp01(shade * (0.7f + 0.3f * vary)) : Mathf.Clamp01(grime * vary);
+            return new Vector2(Mathf.Lerp(0.5f, Mathf.Clamp01(drift), fade), y * fade);
         }
     }
 }

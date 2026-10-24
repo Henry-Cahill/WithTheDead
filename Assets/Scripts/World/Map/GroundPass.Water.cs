@@ -48,9 +48,9 @@ namespace CloneZ
                 if (o.Kind != "water" || o.Visible < 1f) continue;
                 WaterLook look = LookOf(o);
                 Shore(g, o, owners, domain, into, look, inside);
-                if (g.Lite || !inside) continue;
-                if (look.Open) Floes(g, o, look);
-                else IcePatches(g, o);
+                if (g.Lite) continue;
+                if (look.Open) Floes(g, o, look, owners, domain, into);
+                else if (inside) IcePatches(g, o);
             }
         }
 
@@ -208,7 +208,8 @@ namespace CloneZ
         }
 
         // Shelf ice along a stretch of an open river's bank: out from the shore by the river's shelf, now back in bays
-        // where the current took it, now out in points, its edge jagged; snow drifted on it along the shore.
+        // where the current took it, now out in points, its edge jagged; snow lying over most of it, the bare grey ice
+        // showing only along its outer edge.
         private static void ShelfChain(Ground g, List<Vector2> chain, in WaterLook look, float rim, Rect domain, bool closed, OutdoorBatches into)
         {
             int n = chain.Count;
@@ -219,9 +220,10 @@ namespace CloneZ
             for (int i = 0; i < n; i++)
             {
                 Vector2 w = g.World(chain[i]);
-                float k = 0.35f + 1.1f * WorldNoise(w, 26f, SaltShelf) + 0.3f * (WorldNoise(w, 3.5f, SaltShelf + 1) - 0.5f);
+                float k = 0.35f + 1.1f * WorldNoise(w, 26f, SaltShelf) + 0.25f * (WorldNoise(w, 4.5f, SaltShelf + 1) - 0.5f);
                 shelf[i] = look.Shelf * Mathf.Clamp(k, 0.12f, 1.6f) * Taper(chain, i, domain, closed);
-                snow[i] = Mathf.Min(shelf[i] * 0.85f, rim * (0.55f + 0.9f * WorldNoise(w, 7f, SaltRim)));
+                float cover = 0.55f + 0.4f * WorldNoise(w, 11f, SaltShelf + 2);
+                snow[i] = Mathf.Max(Mathf.Min(shelf[i], rim), shelf[i] * cover - 0.6f);
             }
             Strip(into, chain, normals, shelf, null, ShelfY, IceSurf);
             Strip(into, chain, normals, snow, null, FloeY, SnowSurf);
@@ -278,32 +280,33 @@ namespace CloneZ
         }
 
         // Plates of drift ice coming down an open river, on a 9 m lattice fixed to the world, in loose rafts where a slow
-        // noise says so, with brash between them; kept off the shelves.
-        private static void Floes(Ground g, Owner o, in WaterLook look)
+        // noise says so, with brash between them; kept off the shelves (as wide as they can reach).
+        private static void Floes(Ground g, Owner o, in WaterLook look, List<Owner> owners, Rect domain, OutdoorBatches into)
         {
             const float cell = 9f;
             Rect b = o.Bounds;
             Vector2 w0 = g.World(b.min), w1 = g.World(b.max);
             int i0 = Mathf.FloorToInt(w0.x / cell), i1 = Mathf.FloorToInt(w1.x / cell);
             int j0 = Mathf.FloorToInt(w0.y / cell), j1 = Mathf.FloorToInt(w1.y / cell);
+            float clear = look.Shelf * 1.6f + 1.5f;
             Surf floe = FloeSurf;
             for (int j = j0; j <= j1; j++)
                 for (int i = i0; i <= i1; i++)
                 {
                     long key = ((long)i << 32) ^ (uint)j;
-                    float raft = WorldNoise(new Vector2((i + 0.5f) * cell, (j + 0.5f) * cell), 60f, SaltFloe);
+                    float raft = WorldNoise(new Vector2((i + 0.5f) * cell, (j + 0.5f) * cell), 70f, SaltFloe);
                     for (int piece = 0; piece < 3; piece++)
                     {
-                        float chance = piece == 0 ? 0.08f + 0.5f * Smooth(0.35f, 0.75f, raft) : 0.15f + 0.35f * raft;
+                        float chance = piece == 0 ? 0.12f + 0.6f * Smooth(0.3f, 0.75f, raft) : 0.2f + 0.45f * raft;
                         if (MapStyle.Unit(key, SaltFloe + 1 + piece) >= chance) continue;
                         System.Random rng = MapStyle.Rng(key, SaltFloe + 8 + piece);
                         var w = new Vector2((i + MapStyle.Range(rng, 0.1f, 0.9f)) * cell, (j + MapStyle.Range(rng, 0.1f, 0.9f)) * cell);
                         Vector2 at = w - g.Offset;
-                        if (Mathf.Abs(at.x) > g.Half || Mathf.Abs(at.y) > g.Half || !g.Shows(o, at)) continue;
-                        float r = piece == 0 ? MapStyle.Range(rng, 1.2f, 3.8f) : MapStyle.Range(rng, 0.3f, 0.9f);
-                        if (ShoreDistance(g, o, at, look.Shelf * 1.7f + r) < look.Shelf * 1.7f + r) continue;
+                        if (!domain.Contains(at) || !o.Bounds.Contains(at) || TopAt(owners, at) != o) continue;
+                        float r = piece == 0 ? MapStyle.Range(rng, 1.4f, 4.2f) : MapStyle.Range(rng, 0.3f, 1.0f);
+                        if (ShoreDistance(g, o, at, domain, clear + r) < clear + r) continue;
                         Vector3 c = To3(at, FloeY);
-                        g.Site.Town.Out.Flat(c).FlatBlob(c, r * MapStyle.Range(rng, 1f, 1.6f), r, MapStyle.Range(rng, 0f, 180f), 0.45f, rng, floe);
+                        into.Flat(c).FlatBlob(c, r * MapStyle.Range(rng, 1f, 1.6f), r, MapStyle.Range(rng, 0f, 180f), 0.45f, rng, floe);
                     }
                 }
         }
@@ -318,13 +321,13 @@ namespace CloneZ
             return best;
         }
 
-        // How far a point of the water inside the square is from its real shore, exactly up to <paramref name="need"/>:
-        // the square's own edges first; only near the square's edge, where the shore might lie just over the seam, the
-        // area's whole outline (so every piece decides alike).
-        private static float ShoreDistance(Ground g, Owner o, Vector2 p, float need)
+        // How far a point of the water is from its real shore, exactly up to <paramref name="need"/>: the domain's own
+        // edges first; only on a streamed piece near its edge, where the shore might lie just over the seam, the area's
+        // whole outline (so every piece decides alike).
+        private static float ShoreDistance(Ground g, Owner o, Vector2 p, Rect domain, float need)
         {
-            float d = RealEdgeDistance(o.Pts, p, g.Square);
-            if (d < need || Mathf.Min(g.Half - Mathf.Abs(p.x), g.Half - Mathf.Abs(p.y)) >= need) return d;
+            float d = RealEdgeDistance(o.Pts, p, domain);
+            if (d < need || !g.Site.Chunked || Mathf.Min(g.Half - Mathf.Abs(p.x), g.Half - Mathf.Abs(p.y)) >= need) return d;
             List<Vector2> whole = g.Whole(o);
             if (whole == null) return d;
             for (int i = 0, j = whole.Count - 1; i < whole.Count; j = i++)

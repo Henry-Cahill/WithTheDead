@@ -490,8 +490,8 @@ namespace CloneZ
                 {
                     float u = (x + 0.5f) / s, v = (y + 0.5f) / s;
                     Color c = Color.Lerp(clear, grey, Smooth(0.25f, 0.75f, tone.At(u, v)));
-                    float streak = streaks.At(u + v, u - v) * 0.55f + streaks2.At(u, v) * 0.45f;
-                    c = Color.Lerp(c, frost, Smooth(0.5f, 0.72f, streak) * 0.9f);
+                    float streak = streaks.At(u + v, u - v) * 0.4f + streaks2.At(u, v) * 0.6f;
+                    c = Color.Lerp(c, frost, Smooth(0.45f, 0.75f, streak) * 0.5f);
                     // Pressure cracks: where the two nearest cell seeds are nearly as near (the Voronoi edges).
                     float gx = u * cells, gy = v * cells;
                     int ix = (int)System.Math.Floor(gx), iy = (int)System.Math.Floor(gy);
@@ -524,16 +524,16 @@ namespace CloneZ
         private static Color[] PaintWater(int s)
         {
             var px = new Color[s * s];
-            var deep = new Color(0.06f, 0.10f, 0.13f);
-            var ripple = new Color(0.14f, 0.19f, 0.23f);
-            var waves = new Lattice(3, 14, 321);
-            var chop = new Fractal(4, 3, 322);
+            var deep = new Color(0.07f, 0.10f, 0.13f);
+            var ripple = new Color(0.12f, 0.16f, 0.19f);
+            var waves = new Fractal(6, 3, 321);
+            var chop = new Fractal(12, 2, 322);
             for (int y = 0; y < s; y++)
                 for (int x = 0; x < s; x++)
                 {
                     float u = (x + 0.5f) / s, v = (y + 0.5f) / s;
-                    float n = waves.At(u + v, u - v) * 0.6f + chop.At(u, v) * 0.4f;
-                    px[y * s + x] = Color.Lerp(deep, ripple, Smooth(0.45f, 0.8f, n));
+                    float n = waves.At(u, v) * 0.55f + chop.At(u, v) * 0.45f;
+                    px[y * s + x] = Color.Lerp(deep, ripple, Smooth(0.42f, 0.78f, n));
                 }
             return px;
         }
@@ -792,6 +792,7 @@ namespace CloneZ
             var scour = new Color(0.60f, 0.69f, 0.84f);
             var drift = new Color(1.00f, 1.00f, 1.00f);
             var grime = new Color(0.45f, 0.46f, 0.49f);
+            var litter = new Color(0.47f, 0.44f, 0.42f);
             var packed = new Color(0.79f, 0.83f, 0.90f);
             for (int y = 0; y < ToneBand; y++)
                 for (int x = 0; x < ToneW; x++)
@@ -799,12 +800,15 @@ namespace CloneZ
                     float t = x / (ToneW - 1f), d = y / (ToneBand - 1f);
                     Color c = t < 0.5f ? scour : drift;
                     float a = 0.32f * Smooth(0.47f, 0.08f, t) + 0.42f * Smooth(0.53f, 0.92f, t);
-                    c = Color.Lerp(c, grime, d);
-                    c.a = Mathf.Lerp(a, Mathf.Max(a, 0.5f), d);
-                    px[y * ToneW + x] = c;
+                    Color dirty = Color.Lerp(c, grime, d);
+                    dirty.a = Mathf.Lerp(a, Mathf.Max(a, 0.5f), d);
+                    px[(ToneBand + y) * ToneW + x] = dirty;
+                    Color shaded = Color.Lerp(c, litter, d);
+                    shaded.a = Mathf.Lerp(a, Mathf.Max(a * 0.6f, 0.5f), d);
+                    px[(ToneBand - 1 - y) * ToneW + x] = shaded;
                     Color p = packed;
                     p.a = 0.85f * t;
-                    px[(y + ToneBand) * ToneW + x] = p;
+                    px[(ToneBand * 2 + y) * ToneW + x] = p;
                 }
             s_ToneTex = new Texture2D(ToneW, ToneH, TextureFormat.RGBA32, false)
             {
