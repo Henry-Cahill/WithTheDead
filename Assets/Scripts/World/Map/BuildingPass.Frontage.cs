@@ -1,310 +1,395 @@
+using System.Collections.Generic;
 using UnityEngine;
 using static CloneZ.KentuckyMap;
 
 namespace CloneZ
 {
-    // What stands in front of the buildings: a shop's wooden awning, footboard and sign by the door; a home's porch
-    // (with, now and then, a swing), the path to its door, the lamp over it, the low rail along its walls and its
-    // mailbox; and the fence posts at the corners of a building in four.
+    // What stands in front of the buildings: a house's porch (a deck a step up, posts, a railing of balusters or a brick
+    // knee wall, a shed roof under the snow, now and then a swing; a lamp by the door), or a concrete stoop; a mailbox on
+    // the wall by a town house's door. A shop front's brick piers, cornice and sign band (the name painted on it, or the
+    // trade), a striped canvas awning; a fading painted advertisement high on a downtown side wall. Porch decks and
+    // steps are walked on (under the world, with colliders a step high); posts and railings hide with the walls facing
+    // their way; porch roofs, awnings and signs go up with the roof, out of the NavMesh bake.
     internal static partial class BuildingPass
     {
-        private const int SaltAwning = 0xA417, SaltPorchLamp = 0x9071, SaltMailbox = 0xC0FF, SaltMailboxLook = 0xC100,
-            SaltTint = 0x7101;
+        private const int SaltPorch = 0x9071, SaltSign = 0x5167, SaltGhost = 0x6057;
 
-        // Brown stains for the awnings, picked by building: each new colour bakes a wood texture that's kept for the
-        // session, so a colour of its own per shop front would grow without end on a streamed map.
-        private static readonly Color[] AwningStains =
+        private static readonly string[] Trades =
         {
-            Color.HSVToRGB(0.075f, 0.62f, 0.47f), Color.HSVToRGB(0.09f, 0.58f, 0.52f),
-            Color.HSVToRGB(0.105f, 0.60f, 0.49f), Color.HSVToRGB(0.115f, 0.56f, 0.54f),
+            "HARDWARE", "DRUGS", "DRY GOODS", "FURNITURE", "JEWELRY", "SHOES", "BARBER SHOP", "CAFE", "BAKERY", "APPLIANCES",
+            "FLORIST", "BOOKS", "ANTIQUES", "VARIETY", "GROCERY", "INSURANCE", "LAW OFFICE", "PHOTO STUDIO", "RADIO & TV",
+            "FABRICS", "SPORTING GOODS", "GIFTS", "PAWN SHOP", "BEAUTY SHOP", "LOANS", "TAILOR",
         };
 
-        private static readonly Color[] FlagColours = { Color.red, new Color(0.9f, 0.6f, 0.2f), Color.white };
-
-        private static bool Retail(MapBuilding b) => b.kind == "retail" || (b.use != null && b.use.StartsWith("shop:"));
-
-        #region Shop fronts
-        // A shop front: a wooden awning over the door (with slats, iron corner brackets and a canvas banner), a footboard
-        // with a welcome mat before it, and a small painted sign on a post with a lantern, to the right of the door.
-        private static void Awning(Site site, Vector2 doorPt, Vector2 outward, float yaw, MapBuilding b, System.Random rng)
+        private static readonly string[] Ghosts =
         {
-            const float width = 2.0f, depth = 0.6f, aboveDoor = 1.2f, thickness = 0.08f;
-            const float bracket = 0.05f, lantern = 0.12f;
-            const float footboardHeight = 0.07f, footboardDepth = 0.25f;
-            const float matThickness = 0.015f, matLift = 0.002f;
+            "FEED & SEED", "GENERAL MDSE", "DRY GOODS", "HARDWARE", "FURNITURE", "TOBACCO", "HOTEL", "LIVERY STABLE",
+            "BUGGIES & WAGONS", "DRUGS", "LUMBER", "SHOES", "GROCERIES", "MERCANTILE CO",
+        };
 
-            Vector3 awning = To3(doorPt + outward * (depth * 0.5f), DoorHeight + aboveDoor);
-            Surf wood = DecorMaterials.WoodFloor(AwningColour(b));
-            // Up in the visible roof batch: shown from outside, and kept out of the NavMesh bake.
-            site.Roofs.At(awning).Box(awning, new Vector3(width, thickness, depth), yaw, wood);
+        // Sign colours: the board and the lettering.
+        private static readonly Color[] SignBoards =
+        {
+            new Color(0.12f, 0.26f, 0.18f), new Color(0.08f, 0.08f, 0.09f), new Color(0.40f, 0.11f, 0.11f), new Color(0.88f, 0.84f, 0.72f),
+            new Color(0.14f, 0.19f, 0.34f), new Color(0.92f, 0.92f, 0.90f),
+        };
+        private static readonly Color[] SignLetters =
+        {
+            new Color(0.93f, 0.88f, 0.70f), new Color(0.88f, 0.70f, 0.28f), new Color(0.95f, 0.93f, 0.88f), new Color(0.10f, 0.10f, 0.10f),
+            new Color(0.95f, 0.93f, 0.88f), new Color(0.62f, 0.10f, 0.09f),
+        };
 
-            Vector3 footboard = To3(doorPt + outward * (depth + footboardDepth * 0.5f), footboardHeight * 0.5f);
-            var footboardSize = new Vector3(width, footboardHeight, footboardDepth);
-            site.Town.Out.Solid(footboard).Box(footboard, footboardSize, 0f, wood);
-            site.Town.PropCollider(footboard, footboardSize, 0f);
-
-            Surf mat = DecorPalette.Matte(MatColour(rng));
-            Vector3 matCentre = footboard + new Vector3(0f, footboardHeight * 0.5f + matLift + matThickness * 0.5f, 0f);
-            site.Town.Out.Solid(matCentre).Box(matCentre, new Vector3(width * 0.78f, matThickness, footboardDepth - 0.02f), 0f, mat);
-
-            // The supports either side, each with a jute rope tied up it.
-            const float supportWidth = 0.07f;
-            const float supportHeight = aboveDoor + 0.5f;
-            var supportSize = new Vector3(supportWidth, supportHeight, supportWidth);
-            var ropeSize = new Vector3(0.02f, supportHeight, 0.02f);
-            Surf rope = DecorPalette.Matte(new Color(0.545f, 0.435f, 0.255f));
-            for (int side = -1; side <= 1; side += 2)
-            {
-                Vector3 support = awning + Vector3.right * ((width * 0.5f - supportWidth * 0.5f) * side);
-                site.Town.Out.Solid(support).Box(support, supportSize, 0f, wood);
-                site.Town.PropCollider(support, supportSize, 0f);
-                site.Town.Out.Solid(support).Box(support, ropeSize, 0f, rope);
-                site.Town.PropCollider(support, ropeSize, 0f);
-            }
-
-            const int slats = 4;
-            const float slatThickness = 0.02f;
-            float slatY = awning.y - thickness * 0.5f + slatThickness * 0.5f;
-            for (int i = 0; i < slats; i++)
-            {
-                var slat = new Vector3(awning.x, slatY + i * (aboveDoor / (slats + 1)), awning.z);
-                site.Roofs.At(slat).Box(slat, new Vector3(width * 0.95f, slatThickness, depth * 0.9f), yaw, wood);
-            }
-
-            Surf iron = DecorPalette.Metal(new Color(0.45f, 0.45f, 0.48f));
-            var bracketSize = new Vector3(bracket, bracket, bracket);
-            for (int k = 0; k < 4; k++)
-            {
-                Vector3 corner = awning + new Vector3((k % 2 == 0 ? -0.5f : 0.5f) * width, aboveDoor, (k < 2 ? -0.5f : 0.5f) * depth);
-                site.Roofs.At(corner).Box(corner, bracketSize, 0f, iron);
-                site.Town.PropCollider(corner, bracketSize, 0f);
-            }
-
-            // The sign: a post to the right of the door, a board on it facing the street, a painted panel and a lantern.
-            const float postHeight = 1.0f, postSize = 0.05f;
-            const float boardWidth = 0.6f, boardHeight = 0.15f, boardDepth = 0.02f;
-            Vector3 right = Vector3.Cross(Vector3.up, new Vector3(outward.x, 0f, outward.y));
-            Vector3 foot = To3(doorPt + outward * 0.2f + new Vector2(right.x, right.z) * 0.6f, 0f);
-            Vector3 post = foot + new Vector3(0f, postHeight * 0.5f, 0f);
-            var postBox = new Vector3(postSize, postHeight, postSize);
-            site.Town.Out.Solid(post).Box(post, postBox, 0f, DecorMaterials.WoodFloor(new Color(0.48f, 0.38f, 0.28f)));
-            site.Town.PropCollider(post, postBox, 0f);
-            Vector3 board = foot + new Vector3(0f, postHeight + boardHeight * 0.5f, 0f);
-            var boardBox = new Vector3(boardWidth, boardHeight, boardDepth);
-            site.Town.Out.Solid(board).Box(board, boardBox, yaw, DecorPalette.Matte(new Color(0.90f, 0.84f, 0.70f)));
-            site.Town.PropCollider(board, boardBox, yaw);
-            Vector3 paint = board + new Vector3(0f, 0f, boardDepth * 0.51f);
-            var paintBox = new Vector3(boardWidth * 0.9f, boardHeight * 0.8f, 0.01f);
-            site.Town.Out.Solid(paint).Box(paint, paintBox, yaw, DecorPalette.Matte(new Color(0.75f, 0.20f, 0.20f)));
-            site.Town.PropCollider(paint, paintBox, yaw);
-            Vector3 lamp = post + new Vector3(0f, postHeight * 0.5f + lantern * 0.5f + 0.05f, 0f);
-            var lampBox = new Vector3(lantern, lantern, lantern);
-            site.Town.Out.Solid(lamp).Box(lamp, lampBox, 0f, DecorPalette.Glow(new Color(1.00f, 0.85f, 0.60f)));
-            site.Town.PropCollider(lamp, lampBox, 0f);
-
-            const float bannerHeight = 0.38f, bannerDepth = 0.02f;
-            var banner = new Vector3(awning.x, awning.y - thickness * 0.5f + bannerHeight * 0.5f, awning.z + depth * 0.5f - bannerDepth * 0.5f);
-            var bannerBox = new Vector3(width * 0.78f, bannerHeight, bannerDepth);
-            site.Town.Out.Solid(banner).Box(banner, bannerBox, yaw, DecorPalette.Matte(BannerColour(b, rng)));
-            site.Town.PropCollider(banner, bannerBox, yaw);
-
-            site.Take(doorPt + outward * (depth + footboardDepth + 0.7f), width * 0.5f + 0.7f);
+        private static void Frontage(Job j)
+        {
+            Plan p = j.P;
+            if (p.Storefront && p.Front >= 0 && !j.Party(p.Front)) ShopFront(j, p.Front);
+            if (p.GhostSign) GhostSign(j);
+            if (j.DoorEdge < 0) return;
+            bool porch = p.Porch && j.Len[j.DoorEdge] >= 2.6f;
+            if (porch) Porch(j);
+            else if (p.Stoop || p.Arch == Arch.House) Stoop(j);
+            if (p.Mailbox) WallMailbox(j);
+            if (p.PorchLight || porch) DoorLamp(j);
         }
 
-        private static Color AwningColour(MapBuilding b) => AwningStains[MapStyle.Pick(b.id, SaltAwning, AwningStains.Length)];
-
-        // The banner: the awning's stain a little brighter, as canvas, its hue nudged.
-        private static Color BannerColour(MapBuilding b, System.Random rng)
+        #region Houses
+        // A front porch along the door's wall: the whole wall, or a bay round the door.
+        private static void Porch(Job j)
         {
-            Color.RGBToHSV(AwningColour(b), out float h, out float s, out float v);
-            h += (float)rng.NextDouble() * 0.02f - 0.01f;
-            v = Mathf.Clamp01(v + 0.12f);
-            return Color.HSVToRGB(h, s * 0.9f, v);
-        }
-
-        // A muted beige, nudged a little from shop to shop.
-        private static Color MatColour(System.Random rng)
-        {
-            float h = 0.12f + (float)rng.NextDouble() * 0.02f - 0.01f;
-            float s = 0.25f + (float)rng.NextDouble() * 0.05f - 0.025f;
-            float v = 0.85f + (float)rng.NextDouble() * 0.04f - 0.02f;
-            return Color.HSVToRGB(Mathf.Clamp01(h), Mathf.Clamp01(s), Mathf.Clamp01(v));
-        }
-        #endregion
-
-        #region Homes
-        // A wooden porch at the door of a house or trailer: a deck, two steps, two posts with a rail and balusters, and,
-        // at three in ten, a swing hung between the posts.
-        private static void Porch(Site site, Vector2 doorPoint, Vector2 doorOutward, float doorYaw, System.Random rng)
-        {
-            Surf wood = DecorMaterials.WoodFloor(Stain);
-            Vector3 deck = To3(doorPoint + doorOutward * 0.4f, 0.1f);
-            var deckSize = new Vector3(1.5f, 0.2f, 0.8f);   // across the door, up, out from it
-            site.Town.Out.Solid(deck).Box(deck, deckSize, doorYaw, wood);
-
-            const float stepDepth = 0.2f, stepHeight = 0.05f;
-            Vector3 outward = new Vector3(doorOutward.x, 0f, doorOutward.y);
-            var stepSize = new Vector3(deckSize.x, stepHeight, stepDepth);
-            Vector3 step = deck + outward * (-(deckSize.z * 0.5f + stepDepth * 0.5f));
-            step.y = stepHeight * 0.5f;
-            site.Town.Out.Solid(step).Box(step, stepSize, doorYaw, wood);
-            step = deck + outward * (-(deckSize.z * 0.5f + 1.5f * stepDepth));
-            step.y = stepHeight * 1.5f;
-            site.Town.Out.Solid(step).Box(step, stepSize, doorYaw, wood);
-
-            const float postWidth = 0.05f, postHeight = 0.40f;
-            var postSize = new Vector3(postWidth, postHeight, postWidth);
-            Vector3 right = Vector3.Cross(Vector3.up, outward);
-            Vector3 front = outward * (deckSize.z * 0.5f);
-            Vector3 left = deck + front - right * (deckSize.x * 0.5f - postWidth * 0.5f);
-            left.y = deckSize.y * 0.5f + postHeight * 0.5f;
-            Vector3 rightPost = deck + front + right * (deckSize.x * 0.5f - postWidth * 0.5f);
-            rightPost.y = left.y;
-            site.Town.Out.Solid(left).Box(left, postSize, doorYaw, wood);
-            site.Town.Out.Solid(rightPost).Box(rightPost, postSize, doorYaw, wood);
-
-            const float railHeight = 0.04f, railDepth = 0.04f;
-            Vector3 rail = (left + rightPost) * 0.5f;
-            rail.y = left.y + postHeight * 0.5f - railHeight * 0.5f;
-            site.Town.Out.Solid(rail).Box(rail, new Vector3(deckSize.x - 2f * postWidth, railHeight, railDepth), doorYaw, wood);
-            int balusters = Mathf.Max(2, Mathf.FloorToInt(deckSize.x / 0.20f));
-            float spacing = deckSize.x / (balusters + 1);
-            var balusterSize = new Vector3(0.02f, postHeight * 0.8f, 0.02f);
-            for (int i = 1; i <= balusters; i++)
+            Plan p = j.P;
+            int e = j.DoorEdge;
+            float len = j.Len[e];
+            System.Random rng = MapStyle.Rng(j.F.Data.id, SaltPorch);
+            float s0, s1;
+            if (p.FullPorch)
             {
-                Vector3 baluster = left + right * (spacing * i);
-                baluster.y = left.y - postHeight * 0.5f + balusterSize.y * 0.5f;
-                site.Town.Out.Solid(baluster).Box(baluster, balusterSize, doorYaw, wood);
-                site.Town.PropCollider(baluster, balusterSize, doorYaw);
+                s0 = 0.15f;
+                s1 = len - 0.15f;
+                if (s1 - s0 > 14f)
+                {
+                    s0 = Mathf.Max(0.15f, j.DoorAt - 7f);
+                    s1 = Mathf.Min(len - 0.15f, s0 + 14f);
+                }
             }
-            Swing(site, left, rightPost, doorYaw, rng);
+            else
+            {
+                float w = Mathf.Clamp(len * 0.42f, 3.0f, 5.5f);
+                s0 = Mathf.Clamp(j.DoorAt - w * 0.5f, 0.15f, len - 0.15f - w);
+                s1 = s0 + w;
+            }
+            if (s1 - s0 < 2.2f) { Stoop(j); return; }
+            float depth = p.PorchDepth;
+            Vector2 o = j.Out[e], d = j.Dir[e];
+            float yaw = j.Yaw(e);
+            const float Deck = 0.18f;
+            RaidMesh walls = j.Facing(e);
+            Surf wood = DecorMaterials.WoodFloor(new Color(0.52f, 0.42f, 0.32f));
+            Surf post = j.TrimS;
+
+            // The deck and a step up to it before the door.
+            Vector2 mid = j.At(e, (s0 + s1) * 0.5f) + o * (depth * 0.5f);
+            var deckSize = new Vector3(s1 - s0, Deck, depth);
+            Vector3 deck = To3(mid, Deck * 0.5f);
+            j.Site.Town.Out.Solid(deck).Box(deck, deckSize, yaw, wood);
+            if (j.Solid) Collider(j, deck, deckSize, yaw);
+            Vector2 stepAt = j.At(e, j.DoorAt) + o * (depth + 0.18f);
+            var stepSize = new Vector3(1.5f, Deck * 0.5f, 0.36f);
+            Vector3 step = To3(stepAt, Deck * 0.25f);
+            j.Site.Town.Out.Solid(step).Box(step, stepSize, yaw, wood);
+            if (j.Solid) Collider(j, step, stepSize, yaw);
+
+            // The roof: a shed roof from under the eave down to the posts.
+            float wallTop = Mathf.Min(j.TopAt(e, j.DoorAt), GroundStorey);
+            float high = p.Storeys > 1 ? GroundStorey - 0.05f : wallTop - p.Overhang * Mathf.Tan(p.Pitch * Mathf.Deg2Rad) - 0.14f;
+            if (j.Parts == null) high = Mathf.Min(high, wallTop - 0.12f);
+            high = Mathf.Max(high, 2.55f);
+            float reach = depth + 0.2f;
+            float low = Mathf.Max(2.3f, high - Mathf.Tan(12f * Mathf.Deg2Rad) * reach);
+            float postTop = low + (high - low) * 0.2f / reach;
+            int bays = Mathf.Max(1, Mathf.CeilToInt((s1 - s0) / 2.6f));
+            float postSize = p.Style == HouseStyle.Bungalow || p.Style == HouseStyle.Foursquare ? 0.3f : 0.14f;
+            for (int k = 0; k <= bays; k++)
+            {
+                float s = Mathf.Lerp(s0 + postSize * 0.5f, s1 - postSize * 0.5f, k / (float)bays);
+                Vector2 at = j.At(e, s) + o * (depth - postSize * 0.5f - 0.02f);
+                var size = new Vector3(postSize, postTop - Deck, postSize);
+                Vector3 c = To3(at, Deck + size.y * 0.5f);
+                walls.Box(c, size, yaw, post);
+                if (j.Solid) Collider(j, c, size, yaw);
+            }
+            Railing(j, e, s0, s1, depth, Deck, postSize, rng);
+            PorchRoof(j, e, s0 - 0.1f, s1 + 0.1f, high, low, reach);
+            if (p.Swing && s1 - s0 >= 3.4f) Swing(j, e, s0, depth, Deck, postTop, rng);
+            j.Site.Take(mid, Mathf.Max(s1 - s0, depth) * 0.5f + 0.4f);
         }
 
-        // A wooden swing on ropes between the porch's posts, with metal brackets, a seat and a back, and the fixture to
-        // sit on it.
-        private static void Swing(Site site, Vector3 leftPost, Vector3 rightPost, float yaw, System.Random rng)
+        // Rails between the posts (and back to the wall at the ends), balusters or a knee wall, open at the steps.
+        private static void Railing(Job j, int e, float s0, float s1, float depth, float deck, float postSize, System.Random rng)
         {
-            if (rng.NextDouble() >= 0.30) return;
-            Vector3 mid = (leftPost + rightPost) * 0.5f;
-            float ropeLength = 0.85f + (float)(rng.NextDouble() * 0.2 - 0.1);
-            const float ropeThickness = 0.02f, knotRadius = 0.03f;
-            Surf wood = DecorMaterials.WoodFloor(Stain);
-            Surf metal = DecorMaterials.Metal(Color.gray);
+            Plan p = j.P;
+            RaidMesh m = j.Facing(e);
+            Vector2 o = j.Out[e];
+            float yaw = j.Yaw(e);
+            bool knee = p.KneeWall;
+            Surf rail = j.TrimS;
+            Surf kneeSurf = j.WallS;
+            float gapA = j.DoorAt - 0.8f, gapB = j.DoorAt + 0.8f;
+            // Along the front.
+            RailRun(j, m, j.At(e, s0) + o * (depth - postSize * 0.5f - 0.02f), j.Dir[e], s1 - s0, gapA - s0, gapB - s0, deck, yaw, knee, rail, kneeSurf);
+            // The two ends, from the wall to the front corners.
+            Vector2 inward = -o;
+            float endYaw = -Mathf.Atan2(inward.y, inward.x) * Mathf.Rad2Deg;
+            RailRun(j, m, j.At(e, s0) + o * (depth - postSize * 0.5f - 0.02f), inward, depth - 0.1f, -1f, -1f, deck, endYaw, knee, rail, kneeSurf);
+            RailRun(j, m, j.At(e, s1) + o * (depth - postSize * 0.5f - 0.02f), inward, depth - 0.1f, -1f, -1f, deck, endYaw, knee, rail, kneeSurf);
+        }
 
-            Vector3 rope = mid - new Vector3(0f, ropeLength * 0.5f, 0f);
-            site.Town.Out.Solid(rope).Box(rope, new Vector3(ropeThickness, ropeLength, ropeThickness), yaw,
-                DecorMaterials.Rope(Color.Lerp(Stain, Color.black, 0.5f)));
-            Vector3 knot = mid - new Vector3(0f, ropeLength, 0f) + new Vector3(0f, knotRadius, 0f);
-            site.Town.Out.Solid(knot).Box(knot, new Vector3(knotRadius * 2f, knotRadius * 2f, knotRadius * 2f), yaw, metal);
+        private static void RailRun(Job j, RaidMesh m, Vector2 start, Vector2 dir, float len, float gapA, float gapB, float deck, float yaw, bool knee,
+            in Surf rail, in Surf kneeSurf)
+        {
+            float a = 0f;
+            while (a < len)
+            {
+                float b = gapA > a && gapA < len ? gapA : len;
+                if (b - a > 0.2f)
+                {
+                    Vector2 mid = start + dir * ((a + b) * 0.5f);
+                    if (knee)
+                    {
+                        var size = new Vector3(b - a, 0.85f, 0.26f);
+                        Vector3 c = To3(mid, deck + 0.425f);
+                        m.Box(c, size, yaw, kneeSurf);
+                        m.Box(c + Vector3.up * 0.45f, new Vector3(b - a, 0.06f, 0.32f), yaw, rail);
+                        if (j.Solid) Collider(j, c, size, yaw);
+                    }
+                    else
+                    {
+                        m.Box(To3(mid, deck + 0.86f), new Vector3(b - a, 0.06f, 0.08f), yaw, rail);
+                        m.Box(To3(mid, deck + 0.1f), new Vector3(b - a, 0.05f, 0.07f), yaw, rail);
+                        int count = Mathf.FloorToInt((b - a) / 0.22f);
+                        Vector3 n = To3(new Vector2(-dir.y, dir.x), 0f);
+                        for (int k = 1; k < count; k++)
+                        {
+                            Vector2 at = start + dir * (a + (b - a) * k / count);
+                            Vector3 c = To3(at, deck + 0.48f);
+                            m.Upright(c + n * 0.02f, n, 0.04f, 0.72f, rail);
+                            m.Upright(c - n * 0.02f, -n, 0.04f, 0.72f, rail);
+                        }
+                        if (j.Solid) Collider(j, To3(mid, deck + 0.45f), new Vector3(b - a, 0.9f, 0.1f), yaw);
+                    }
+                }
+                if (b >= len) break;
+                a = gapB;
+                gapA = -1f;
+            }
+        }
 
-            const float bracketThickness = 0.04f;
-            var bracketSize = new Vector3(bracketThickness, bracketThickness, 0.02f);
-            Vector3 along = Quaternion.Euler(0f, yaw, 0f) * Vector3.right * 0.06f;
-            Vector3 bracket = leftPost + along - new Vector3(0f, bracketThickness * 0.5f, 0f);
-            site.Town.Out.Solid(bracket).Box(bracket, bracketSize, yaw, metal);
-            bracket = rightPost - along - new Vector3(0f, bracketThickness * 0.5f, 0f);
-            site.Town.Out.Solid(bracket).Box(bracket, bracketSize, yaw, metal);
+        private static void PorchRoof(Job j, int e, float s0, float s1, float high, float low, float reach)
+        {
+            Plan p = j.P;
+            RaidMesh m = j.Upper;
+            Vector2 o = j.Out[e];
+            Vector3 a = To3(j.At(e, s0) + o * reach, low), b = To3(j.At(e, s1) + o * reach, low);
+            Vector3 c = To3(j.At(e, s1), high), d = To3(j.At(e, s0), high);
+            float pitch = Mathf.Atan2(high - low, reach) * Mathf.Rad2Deg;
+            Vector3 n = SlopeNormal(To3(o, 0f), pitch);
+            RoofFace4(j, m, a, b, c, d, n, low, high);
+            Vector3 outward = To3(o, 0f);
+            Eave(j, m, a, b, outward, To3(j.At(e, s0), low), To3(j.At(e, s1), low), n, low, high);
+            // The ends: boards under the roof's edge.
+            Vector3 along = To3(j.Dir[e], 0f);
+            Beam(m, a - along * 0.02f, d - along * 0.02f, 0.18f, 0.05f, -along, j.TrimS);
+            Beam(m, b + along * 0.02f, c + along * 0.02f, 0.18f, 0.05f, along, j.TrimS);
+            j.Top = Mathf.Max(j.Top, high);
+        }
 
-            var seatSize = new Vector3(0.60f, 0.08f, 0.30f);
-            Vector3 seat = mid - new Vector3(0f, ropeLength, 0f);
-            site.Town.Out.Solid(seat).Box(seat, seatSize, yaw, wood);
-            site.Town.PropCollider(seat, seatSize, yaw);
-            var backSize = new Vector3(0.60f, 0.40f, 0.08f);
-            Vector3 back = seat + new Vector3(0f, (seatSize.y + backSize.y) * 0.5f, -(seatSize.z * 0.5f + backSize.z * 0.5f));
-            site.Town.Out.Solid(back).Box(back, backSize, yaw, wood);
-            site.Town.PropCollider(back, backSize, yaw);
-
-            // Under the site's world root, so it stands where the swing does on a streamed map's piece and goes with it.
+        // A porch swing on chains near one end, and the fixture to sit on it.
+        private static void Swing(Job j, int e, float s0, float depth, float deck, float top, System.Random rng)
+        {
+            Vector2 o = j.Out[e];
+            float yaw = j.Yaw(e);
+            RaidMesh m = j.Facing(e);
+            Vector2 at = j.At(e, s0 + 1.1f) + o * (depth * 0.45f);
+            float seatY = deck + 0.46f;
+            Surf wood = DecorMaterials.WoodFloor(new Color(0.50f, 0.36f, 0.24f));
+            Surf chain = DecorPalette.Metal(new Color(0.3f, 0.3f, 0.32f));
+            Vector3 seat = To3(at, seatY);
+            m.Box(seat, new Vector3(1.25f, 0.06f, 0.48f), yaw, wood);
+            Vector3 back = seat + To3(-o, 0f) * 0.22f + Vector3.up * 0.24f;
+            m.Box(back, new Vector3(1.25f, 0.42f, 0.05f), yaw, wood);
+            Vector3 along = To3(j.Dir[e], 0f);
+            for (int s = -1; s <= 1; s += 2)
+                m.Rod(seat + along * (0.58f * s), seat + along * (0.58f * s) + Vector3.up * (top - seatY - 0.05f), 0.02f, chain);
+            if (j.Scenery) return;
             var fixture = new GameObject("SwingInteractable");
-            fixture.transform.SetParent(site.Town.World, false);
+            fixture.transform.SetParent(j.Site.Town.World, false);
             fixture.transform.position = seat;
             fixture.AddComponent<SwingInteractable>();
-            site.Take(new Vector2(seat.x, seat.z), Mathf.Max(seatSize.x, seatSize.z, backSize.x, backSize.z) * 0.5f);
         }
 
-        // A short concrete path out from a home's front door.
-        private static void Path(Site site, Vector2 doorPoint, Vector2 doorOutward, float doorYaw)
+        // A concrete step before the door.
+        private static void Stoop(Job j)
         {
-            const float length = 1.0f;
-            Vector3 centre = To3(doorPoint + doorOutward * (0.4f + length * 0.5f), 0.01f);
-            var size = new Vector3(0.3f, 0.02f, length);
-            site.Town.Out.Solid(centre).Box(centre, size, doorYaw, DecorMaterials.Concrete);
-            site.Town.PropCollider(centre, size, doorYaw);
-        }
-
-        // A lamp over the front door of two homes in five, lit after dark (PorchLamp).
-        private static void PorchLight(Site site, MapBuilding b, Vector2 doorPoint, Vector2 doorOutward)
-        {
-            if (MapStyle.Unit(b.id, SaltPorchLamp) >= 0.4f) return;
-            PorchLamp.Spawn(site.Town.World, To3(doorPoint + doorOutward * 0.3f, DoorHeight + 0.3f),
-                MapStyle.Unit(b.id, SaltPorchLamp + 1) * 1000f);
-        }
-
-        // A low wooden rail along a home's wall, just outside it.
-        private static void WallRail(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float yaw)
-        {
-            const float height = 0.08f, thickness = 0.04f;
-            Vector3 centre = To3(a + d * (len * 0.5f), height * 0.5f)
-                + new Vector3(outward.x, 0f, outward.y) * (Thick * 0.5f + thickness * 0.5f);
-            var size = new Vector3(len, height, thickness);
-            site.Town.Out.Solid(centre).Box(centre, size, yaw, DecorMaterials.WoodFloor(Stain));
-            site.Town.PropCollider(centre, size, yaw);
-        }
-
-        // A mailbox on a post for three homes in ten, in the house's trim colour with a red, orange or white flag. It
-        // stands a metre from the footprint's middle, turned to face away from its first wall, and is drawn with the
-        // overhead batches.
-        private static void Mailbox(Site site, Footprint f)
-        {
-            if (MapStyle.Unit(f.Data.id, SaltMailbox) >= 0.3f) return;
-            const float bodyWidth = 0.25f, bodyHeight = 0.40f, bodyDepth = 0.15f;
-            const float poleRadius = 0.025f, poleHeight = 0.60f;
-            Vector2 edge = f.Pts[1] - f.Pts[0];
-            Vector3 forward = new Vector3(-edge.y, 0f, edge.x).normalized;
-            Vector3 at = new Vector3(f.Middle.x, 0f, f.Middle.y) + forward;
-            System.Random rng = MapStyle.Rng(f.Data.id, SaltMailboxLook);
-            float yaw = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg + (float)(rng.NextDouble() * 20.0 - 10.0);
-            Color flag = FlagColours[rng.Next(FlagColours.Length)];
-            Color trim = TrimColour(f.Data);
-
-            RaidMesh m = site.Overhead.At(at);
-            m.SetFrame(at, yaw);
-            m.Box(Vector3.zero, new Vector3(bodyWidth, bodyHeight, bodyDepth), DecorPalette.Matte(trim));
-            Color flap = trim * 0.85f;
-            flap.a = 1f;
-            m.Box(new Vector3(0f, bodyHeight * 0.5f, bodyDepth * 0.5f + 0.01f), new Vector3(bodyWidth * 0.6f, bodyHeight * 0.7f, 0.02f),
-                DecorPalette.Matte(flap));
-            var pole = new Vector3(0f, poleHeight * 0.5f, -bodyDepth * 0.5f - poleRadius);
-            m.Box(pole, new Vector3(poleRadius * 2f, poleHeight, poleRadius * 2f), DecorPalette.Matte(new Color(0.45f, 0.33f, 0.22f)));
-            m.Box(pole + new Vector3(0f, poleHeight * 0.9f, 0f), new Vector3(0.02f, 0.12f, 0.02f), DecorPalette.Matte(flag));
-            m.ResetFrame();
-            site.Town.PropCollider(at + Quaternion.Euler(0f, yaw, 0f) * new Vector3(0f, bodyHeight * 0.5f, -bodyDepth * 0.5f),
-                new Vector3(bodyWidth, bodyHeight, bodyDepth + poleRadius * 2f), yaw);
-        }
-
-        // A building's trim: its tint (a warm hue, by building) a little desaturated.
-        private static Color TrimColour(MapBuilding b)
-        {
-            float hue = MapStyle.Unit(b.id, SaltTint) * 0.1f;
-            float sat = 0.6f + MapStyle.Unit(b.id, SaltTint + 1) * 0.2f;
-            float val = 0.7f + MapStyle.Unit(b.id, SaltTint + 2) * 0.2f;
-            Color trim = Color.HSVToRGB(hue, sat * 0.75f, val);
-            trim.a = 1f;
-            return trim;
-        }
-
-        // Fence posts at the corners of a footprint: with the walls inside the square, as scenery past its edge.
-        private static void CornerPosts(Site site, Footprint f, bool inside)
-        {
-            Surf wood = DecorMaterials.WoodFloor(Stain);
-            var size = new Vector3(0.1f, 1f, 0.1f);
-            foreach (Vector2 corner in f.Pts)
+            Plan p = j.P;
+            int e = j.DoorEdge;
+            bool wide = p.Arch == Arch.Church || p.Arch == Arch.Courthouse || p.Arch == Arch.Civic || p.Arch == Arch.School;
+            float w = wide ? DoubleDoorWidth + 1.4f : 1.6f, depth = wide ? 1.6f : 1.0f, h = p.Arch == Arch.Trailer ? 0.2f : 0.13f;
+            Surf surf = p.Arch == Arch.Trailer ? DecorMaterials.WoodFloor(new Color(0.52f, 0.42f, 0.32f)) : DecorMaterials.Concrete;
+            Vector2 at = j.At(e, j.DoorAt) + j.Out[e] * (depth * 0.5f);
+            var size = new Vector3(w, h, depth);
+            Vector3 c = To3(at, h * 0.5f);
+            float yaw = j.Yaw(e);
+            j.Site.Town.Out.Solid(c).Box(c, size, yaw, surf);
+            if (j.Solid) Collider(j, c, size, yaw);
+            if (p.Arch == Arch.Trailer)
             {
-                var centre = new Vector3(corner.x, 0.5f, corner.y);
-                RaidMesh m = inside ? site.Town.Out.Solid(centre) : site.Town.Far.Solid(centre);
-                m.Box(centre, size, wood);
+                // A trailer's wooden steps and their rail.
+                for (int s = -1; s <= 1; s += 2)
+                {
+                    Vector2 r = at + j.Dir[e] * (w * 0.5f - 0.05f) * s;
+                    j.Facing(e).Box(To3(r, 0.5f), new Vector3(0.06f, 0.8f, 0.06f), yaw, surf);
+                }
             }
+            j.Site.Take(at, depth * 0.5f + 0.5f);
+        }
+
+        private static void WallMailbox(Job j)
+        {
+            int e = j.DoorEdge;
+            float s = j.DoorAt + (j.DoorAt < j.Len[e] * 0.5f ? 1.0f : -1.0f);
+            if (s < 0.3f || s > j.Len[e] - 0.3f) return;
+            Color c = new[] { new Color(0.08f, 0.08f, 0.09f), new Color(0.13f, 0.22f, 0.16f), new Color(0.55f, 0.55f, 0.53f) }[MapStyle.Pick(j.F.Data.id, SaltPorch + 2, 3)];
+            OnWallBox(j, j.Facing(e), e, s, 1.35f, 0.32f, 0.36f, 0.12f, DecorPalette.Metal(c));
+            OnWallBox(j, j.Facing(e), e, s, 1.55f, 0.34f, 0.04f, 0.15f, DecorPalette.Metal(c * 0.8f));
+        }
+
+        // A lamp by the door: its glowing globe and, when the building's lamp is on, its light (PorchLamp).
+        private static void DoorLamp(Job j)
+        {
+            int e = j.DoorEdge;
+            float side = j.DoorAt < j.Len[e] * 0.5f ? 1f : -1f;
+            float s = j.DoorAt + side * 0.85f;
+            if (s < 0.3f || s > j.Len[e] - 0.3f) s = j.DoorAt;
+            float y = j.P.Arch == Arch.Row || j.P.Arch == Arch.Store ? 2.55f : 2.05f;
+            RaidMesh m = j.Facing(e);
+            OnWallBox(j, m, e, s, y, 0.12f, 0.2f, 0.06f, DecorPalette.Metal(new Color(0.12f, 0.12f, 0.12f)));
+            OnWallBox(j, m, e, s, y, 0.13f, 0.17f, 0.13f, DecorPalette.Glow(new Color(1f, 0.86f, 0.58f)), 0.06f);
+            if (!j.P.PorchLight || j.Scenery) return;
+            Vector2 at = j.At(e, s) + j.Out[e] * 0.3f;
+            PorchLamp.Spawn(j.Site.Town.World, To3(at, y), MapStyle.Unit(j.F.Data.id, SaltPorch + 1) * 1000f);
         }
         #endregion
+
+        #region Shops
+        // Brick piers at the ends of the shop front, the cornice over it and the sign band above, an awning over the
+        // glass.
+        private static void ShopFront(Job j, int e)
+        {
+            Plan p = j.P;
+            float len = j.Len[e];
+            if (len < 3f) return;
+            RaidMesh walls = j.Facing(e);
+            RaidMesh up = j.Upper;
+            Surf pier = p.Wall == WallKind.Brick || p.Wall == WallKind.Stone ? j.WallS : j.AccentS;
+            OnWallBox(j, walls, e, 0.2f, GroundStorey * 0.5f, 0.4f, GroundStorey, 0.1f, pier);
+            OnWallBox(j, walls, e, len - 0.2f, GroundStorey * 0.5f, 0.4f, GroundStorey, 0.1f, pier);
+            if (p.Arch == Arch.Row)
+            {
+                // The storefront cornice and, above it, the sign band.
+                OnWallBox(j, up, e, len * 0.5f, GroundStorey + 0.1f, len + 0.04f, 0.2f, 0.22f, j.AccentS);
+                Sign(j, e, GroundStorey + 0.55f, 0.55f, len);
+            }
+            else
+            {
+                float band = p.WallHeight - 0.15f;
+                Sign(j, e, Mathf.Max(GroundStorey + 0.4f, band - 0.45f), Mathf.Min(0.7f, band - GroundStorey - 0.1f), len);
+            }
+            if (p.Awning) Awning(j, e, 0.45f, len - 0.45f);
+        }
+
+        // The building's name (or its trade) on a board over the shop front.
+        private static void Sign(Job j, int e, float y, float height, float len)
+        {
+            Plan p = j.P;
+            if (height < 0.25f) return;
+            string text = p.Sign;
+            long id = j.F.Data.id;
+            if (string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(p.Name)) text = p.Name.ToUpperInvariant();
+            if (string.IsNullOrEmpty(text))
+            {
+                float u = MapStyle.Unit(id, SaltSign);
+                if (u < 0.18f) return;
+                text = u < 0.24f ? "FOR RENT" : Trades[MapStyle.Pick(id, SaltSign + 1, Trades.Length)];
+            }
+            if (text.Length > 22) text = text.Substring(0, 22).TrimEnd();
+            int tone = Mathf.Clamp(p.SignTone, 0, SignBoards.Length - 1);
+            Surf board = DecorMaterials.Sign(text, SignBoards[tone], SignLetters[tone], out float aspect);
+            float w = Mathf.Min(len - 1.2f, height * aspect);
+            float h = w / aspect;
+            if (w < 0.8f) return;
+            RaidMesh m = j.Upper;
+            OnWallBox(j, m, e, len * 0.5f, y, w + 0.16f, h + 0.12f, 0.05f, DecorPalette.Matte(SignBoards[tone] * 0.8f));
+            Vector2 c = j.At(e, len * 0.5f) + j.Out[e] * 0.055f;
+            m.Upright(new Vector3(c.x, y, c.y), To3(j.Out[e], 0f), w, h, board, new Rect(0f, 0f, 1f, 1f));
+            j.Top = Mathf.Max(j.Top, y + h * 0.5f);
+        }
+
+        // A striped canvas awning on its iron frame, sloping out over the sidewalk, a valance along its front and the snow
+        // lying on its upper half.
+        private static void Awning(Job j, int e, float s0, float s1)
+        {
+            Plan p = j.P;
+            const float Top = 2.95f, Front = 2.35f, Reach = 1.15f;
+            Vector2 o = j.Out[e];
+            RaidMesh m = j.Upper;
+            Surf canvas = AwningSurf(p.AwningTone);
+            Vector3 a = To3(j.At(e, s0) + o * Reach, Front), b = To3(j.At(e, s1) + o * Reach, Front);
+            Vector3 c = To3(j.At(e, s1), Top), d = To3(j.At(e, s0), Top);
+            float pitch = Mathf.Atan2(Top - Front, Reach) * Mathf.Rad2Deg;
+            Vector3 n = SlopeNormal(To3(o, 0f), pitch);
+            Vector3 centre = (a + b + c + d) * 0.25f, upHalf = (d - a) * 0.5f;
+            float width = s1 - s0;
+            m.QuadUV(centre, Vector3.Cross(n, upHalf).normalized * (width * 0.5f), upHalf, canvas, new Rect(0f, 0f, width / AwningPeriod, 1f));
+            Vector3 down = Vector3.down * 0.28f;
+            Vector3 outward = To3(o, 0f);
+            m.QuadUV((a + b) * 0.5f + down * 0.5f + outward * 0.005f, (b - a) * 0.5f, -down * 0.5f, canvas, new Rect(0f, 0f, width / AwningPeriod, 0.2f));
+            Vector3 along = To3(j.Dir[e], 0f);
+            Tri3(m, a, d, a + down, -along, canvas);
+            Tri3(m, b, c, b + down, along, canvas);
+            Surf iron = DecorPalette.Metal(new Color(0.2f, 0.2f, 0.21f));
+            Beam(m, a + down, b + down, 0.04f, 0.04f, Vector3.up, iron);
+            if (p.Snow != SnowCover.Bare)
+                Slab(m, Face4(a, b, c, d), n, Front + (Top - Front) * 0.35f, Top, 0.06f);
+        }
+
+        // A painted advertisement, faded, high on a downtown building's exposed side wall.
+        private static void GhostSign(Job j)
+        {
+            Plan p = j.P;
+            int best = -1;
+            for (int i = 0; i < j.N; i++)
+            {
+                if (j.Party(i) || i == p.Front || j.Len[i] < 7f) continue;
+                if (best < 0 || j.Len[i] > j.Len[best]) best = i;
+            }
+            if (best < 0) return;
+            float top = j.TopAt(best, j.Len[best] * 0.5f);
+            if (top < j.FloorY(1) + 2.6f) return;
+            long id = j.F.Data.id;
+            string text = Ghosts[MapStyle.Pick(id, SaltGhost, Ghosts.Length)];
+            Color bg = new[] { new Color(0.42f, 0.16f, 0.14f), new Color(0.16f, 0.20f, 0.30f), new Color(0.14f, 0.13f, 0.12f) }[MapStyle.Pick(id, SaltGhost + 1, 3)];
+            Surf paint = DecorMaterials.Sign(text, bg, new Color(0.82f, 0.80f, 0.72f), out float aspect);
+            float w = Mathf.Min(j.Len[best] - 2f, 2.2f * aspect), h = w / aspect;
+            if (h > 2.4f) { h = 2.4f; w = h * aspect; }
+            float y = Mathf.Min(top - 0.8f - h * 0.5f, j.FloorY(1) + 1.2f + h * 0.5f);
+            Vector2 c = j.At(best, j.Len[best] * 0.5f) + j.Out[best] * 0.006f;
+            j.Upper.Upright(new Vector3(c.x, y, c.y), To3(j.Out[best], 0f), w, h, paint, new Rect(0f, 0f, 1f, 1f));
+        }
+        #endregion
+
+        private static List<Vector3> Face4(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+        {
+            var face = new List<Vector3>(4) { a, b, c, d };
+            return face;
+        }
     }
 }
