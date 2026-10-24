@@ -346,14 +346,40 @@ namespace CloneZ
                 _n = Mathf.CeilToInt(Half * 2f / Cell) + 1;
                 _taken = new bool[_n * _n];
                 _road = new bool[_n * _n];
+                // The map's prop colliders are made one MeshCollider when the site is emitted (see RaidTown).
+                town.MergedColliders = true;
                 Loot = new GameObject("Loot").transform;
                 Loot.SetParent(town.World, false);
                 foreach (Footprint f in area.Foreign) Take(f.Bounds);
+                BeginStep();
             }
+
+            #region Time slices
+            /// <summary>How long a step of a streamed piece's build should run before its pass yields (see
+            /// <see cref="StepDue"/>): a frame's building budget is a few milliseconds.</summary>
+            public const double StepSliceMs = 2.0;
+
+            private long _stepStart;
+
+            /// <summary>True when the current step has run for <see cref="StepSliceMs"/> or more. A pass working through
+            /// many things (buildings, trees, lamps) should yield after any of them once this is true, rather than after a
+            /// fixed number: <c>if (site.StepDue) yield return "buildings";</c>. Yields never change what a pass builds,
+            /// only when; the fixed square runs straight through them.</summary>
+            public bool StepDue => System.Diagnostics.Stopwatch.GetTimestamp() - _stepStart >= (long)(StepSliceMs * System.Diagnostics.Stopwatch.Frequency / 1000.0);
+
+            /// <summary>Starts a step's time slice (the streamer calls it each time a piece's build resumes).</summary>
+            internal void BeginStep() => _stepStart = System.Diagnostics.Stopwatch.GetTimestamp();
+            #endregion
 
             /// <summary>Where the site's streets meet (see <see cref="MapJunctions"/>), found the first time they're asked
             /// for.</summary>
             public List<Junction> Junctions => _junctions ??= MapJunctions.Find(this);
+
+            /// <summary>Meshes a pass makes of its own (a building's shell, say) can be queued here with
+            /// <see cref="RaidMesh.EmitLater"/> instead of baked at once (<see cref="RaidMesh.Emit"/>): a streamed piece
+            /// bakes them all together off the main thread, the fixed square at the end. The GameObject is made at once,
+            /// its mesh is empty until then (its bounds too), and the RaidMesh mustn't be drawn into again.</summary>
+            internal MeshBake Bake => Town.Bake;
 
             /// <summary>The meshes a building's walls and roof go into (see <see cref="BuildingShell"/>); call once per
             /// building. <paramref name="scenery"/>: a building past the playable edge, drawn with the scenery.</summary>
@@ -477,6 +503,19 @@ namespace CloneZ
                     GameObject go = kv.Value.Emit(name, parent, c, ShadowCastingMode.On);
                     if (go != null && ceilings) CeilingVisibility.Register(go.GetComponent<Renderer>());
                 }
+            }
+
+            /// <summary>As <see cref="Emit"/>, but the meshes are left for <paramref name="bake"/> to fill (a streamed
+            /// piece's all at once, off the main thread), and the batches are forgotten.</summary>
+            internal void EmitLater(string name, Transform parent, bool ceilings, MeshBake bake)
+            {
+                foreach (KeyValuePair<long, RaidMesh> kv in _meshes)
+                {
+                    var c = new Vector3(((int)(kv.Key >> 32) + 0.5f) * _chunk, 0f, ((int)(kv.Key & 0xffffffff) + 0.5f) * _chunk);
+                    GameObject go = kv.Value.EmitLater(name, parent, c, ShadowCastingMode.On, bake);
+                    if (go != null && ceilings) CeilingVisibility.Register(go.GetComponent<Renderer>());
+                }
+                _meshes.Clear();
             }
         }
         #endregion
