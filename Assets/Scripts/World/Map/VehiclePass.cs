@@ -478,6 +478,8 @@ namespace CloneZ
             if (centre - len * 0.5f < walk) return;
             Vector2 at = d.At + d.Dir * centre;
             if (!plan.InSquare(at, 2.8f)) return;
+            // A fence or a gate across the track short of the house, or one along it too close for the doors.
+            if (BarrierPass.Crosses(site, at - d.Dir * (len * 0.5f), at + d.Dir * (len * 0.5f), CarKit.Size(body).x * 0.5f + 0.2f)) return;
             for (int k = -1; k <= 1; k++)
             {
                 Vector2 q = at + d.Dir * (k * (len * 0.5f - 0.9f));
@@ -538,25 +540,29 @@ namespace CloneZ
             foreach (float n in spots)
             {
                 if (n - half < sidewalk + 0.5f) continue;
-                Vector2 at = hf.At(t, n);
-                if (!CarFits(site, plan, f, at, hf.N)) continue;
+                Vector2 at = hf.At(t, n), mouth = hf.Street ? hf.At(t, sidewalk) : at;
+                if (!CarFits(site, plan, f, at, hf.N) || !StripClear(site, mouth, at, hf.N)) continue;
                 int count = 0;
-                Plan(site, plan, f, at, hf.N, nose, NaturePlan.Combine(id, 900), hf.Street ? hf.At(t, sidewalk) : at, ref count);
+                Plan(site, plan, f, at, hf.N, nose, NaturePlan.Combine(id, 900), mouth, ref count);
                 for (int k = 1; k < want; k++)
                 {
                     Vector2 behind = hf.At(t, n - 5.4f * k);
-                    Vector2 beside = hf.At(t + side * lane * k, n);
+                    Vector2 beside = hf.At(t + side * lane * k, n), besideMouth = hf.Street ? hf.At(t + side * lane * k, sidewalk) : beside;
                     long key = NaturePlan.Combine(id, 900 + k);
                     if (f.Data.kind != "apartments" && n - 5.4f * k - half >= sidewalk + 0.5f && CarFits(site, plan, f, behind, hf.N))
                         Plan(site, plan, f, behind, hf.N, nose, key, Vector2.zero, ref count);
-                    else if (CarFits(site, plan, f, beside, hf.N))
-                        Plan(site, plan, f, beside, hf.N, MapStyle.Unit(key, SaltFace) < 0.72f, key,
-                            hf.Street ? hf.At(t + side * lane * k, sidewalk) : beside, ref count);
+                    else if (CarFits(site, plan, f, beside, hf.N) && StripClear(site, besideMouth, beside, hf.N))
+                        Plan(site, plan, f, beside, hf.N, MapStyle.Unit(key, SaltFace) < 0.72f, key, besideMouth, ref count);
                 }
                 return count;
             }
             return 0;
         }
+
+        // A driveway strip from the street out to a car (and on to its far end) mustn't run through a fence, wall or hedge
+        // the streetscape drew: it left gaps for the roads' driveways only.
+        private static bool StripClear(Site site, Vector2 mouth, Vector2 at, Vector2 n)
+            => mouth == at || !BarrierPass.Crosses(site, mouth, at + n * 2.6f, 1.4f);
 
         private static void Plan(Site site, NaturePlan plan, Footprint home, Vector2 at, Vector2 n, bool nose, long key, Vector2 mouth, ref int count)
         {
@@ -574,12 +580,13 @@ namespace CloneZ
         }
 
         // Room for a driveway car beside its house: inside the square, off every wall, road and path, out of the water and
-        // the pitches, off the other driveways and the doorsteps, its middle free in the grid (a porch, its steps, a
-        // mailbox...), and away from the house's own outline (which the buildings take in the grid, with a margin) free
-        // all along.
+        // the pitches, off the other driveways and the doorsteps, clear of the fences, walls and hedges the streetscape
+        // drew, its middle free in the grid (a porch, its steps, a mailbox...), and away from the house's own outline
+        // (which the buildings take in the grid, with a margin) free all along.
         private static bool CarFits(Site site, NaturePlan plan, Footprint home, Vector2 at, Vector2 axis)
         {
             if (!plan.InSquare(at, 2.8f) || plan.IsKept(at, axis, 2.75f, 1.15f) || !site.FreeBeside(at, 0f)) return false;
+            if (BarrierPass.Crosses(site, at - axis * 2.75f, at + axis * 2.75f, 1.2f)) return false;
             Rect box = home.Bounds;
             for (int k = -1; k <= 1; k++)
             {
