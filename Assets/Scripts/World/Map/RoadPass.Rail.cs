@@ -107,6 +107,66 @@ namespace CloneZ
             return p + Left(d) * o;
         }
 
+        // A fixed map's railways past the edge, into the scenery batches: the bed with its snowy shoulders, the ties and
+        // the two rails' heads, flat (no colliders, no crossings), so a line doesn't stop dead at the playable edge.
+        private static void SceneryRail(Net net)
+        {
+            Look look = net.Look;
+            foreach (Line l in net.Site.Area.Lines)
+            {
+                if (!l.IsRailway || l.Data.tunnel || l.Pts.Count < 2) continue;
+                bool abandoned = l.Data.kind == "abandoned", disused = l.Data.kind == "disused";
+                foreach (List<Vector2> piece in OutsidePieces(l.Pts, net.Half))
+                {
+                    Chain line = ChainOf(piece);
+                    if (line.Length < 0.5f) continue;
+                    SamplesOf(line, 0f, line.Length, 0f, net.Samples);
+                    List<Sample> s = net.Samples;
+                    int n = s.Count;
+                    if (n < 2) continue;
+                    Fit(n);
+                    if (!l.Data.bridge)
+                        for (int side = -1; side <= 1; side += 2)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                s_A[i] = side * 1.45f;
+                                s_B[i] = side * 2.2f;
+                                s_YA[i] = BedTop;
+                                s_YB[i] = 0.004f;
+                            }
+                            FarBand(net, s, look.Snow);
+                        }
+                    for (int i = 0; i < n; i++)
+                    {
+                        s_A[i] = l.Data.bridge ? -1.75f : -1.45f;
+                        s_B[i] = -s_A[i];
+                        s_YA[i] = s_YB[i] = BedTop;
+                    }
+                    FarBand(net, s, l.Data.bridge ? look.Girder : abandoned ? look.Snow : look.Ballast);
+                    if (abandoned) continue;
+                    for (float t = 0.3f; t < line.Length; t += 0.6f)
+                    {
+                        PointOn(line, t, out Vector2 p, out Vector2 d);
+                        Vector2 across = Left(d);
+                        Vector3 a = To3(p - d * 0.12f - across * 1.3f, TieTop), b = To3(p + d * 0.12f - across * 1.3f, TieTop);
+                        Vector3 c = To3(p + d * 0.12f + across * 1.3f, TieTop), e = To3(p - d * 0.12f + across * 1.3f, TieTop);
+                        Face(net.Site.Town.Far.Flat(To3(p, 0f)), a, b, c, e, Vector3.up, look.Tie);
+                    }
+                    for (int side = -1; side <= 1; side += 2)
+                    {
+                        for (int i = 0; i < n; i++)
+                        {
+                            s_A[i] = side * Gauge * 0.5f - 0.036f;
+                            s_B[i] = side * Gauge * 0.5f + 0.036f;
+                            s_YA[i] = s_YB[i] = TieTop + 0.01f;
+                        }
+                        FarBand(net, s, disused ? look.RailRust : look.RailHead);
+                    }
+                }
+            }
+        }
+
         // Ties every 0.6 m on the open stretches, about one in three under snow (most, on a disused line).
         private static void Ties(Net net, Chain line, int seed, bool disused)
         {

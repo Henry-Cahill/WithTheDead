@@ -93,6 +93,11 @@ namespace CloneZ
             public float Radius, Tangent;   // the fillet's radius, and how far from Meet it leaves each kerb
             public Vector2 DirA, DirB;      // the kerb lines' directions where they meet
             public readonly List<Vector2> Arc = new List<Vector2>();    // the fillet alone, tangent to tangent
+            // Sidewalks set back past wide verges (see PlanSetBacks): where their inner and outer edges meet, and how far
+            // out along each arm its own sidewalk starts.
+            public bool SetBack;
+            public Vector2 InMeet, OutMeet;
+            public float WalkA, WalkB;
         }
 
         private sealed class Joint

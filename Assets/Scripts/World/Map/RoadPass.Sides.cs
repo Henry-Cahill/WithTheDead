@@ -10,7 +10,7 @@ namespace CloneZ
     // roads meet in the middle and never spill onto either.
     internal static partial class RoadPass
     {
-        private enum CutKind { Ramp, Driveway, Mouth }
+        private enum CutKind { Ramp, Driveway, Mouth, Walk }
 
         private struct Cut
         {
@@ -53,6 +53,11 @@ namespace CloneZ
         // Where the walk starts at sample i in a pass: 1.3 m out on a ramp's segments.
         private static float WalkFrom(int i, int pass) => pass == 1 ? Mathf.Max(s_WalkIn[i], s_Edge[i] + 1.3f) : s_WalkIn[i];
 
+        /// <summary>A verge wider than this is drawn as the snowy ground between two banks, not a kerb-high strip.</summary>
+        private const float WideVergeWidth = 1.6f, VergeBank = 0.45f;
+
+        private static bool WideVerge(int i) => s_Verge[i] - (s_Edge[i] + KerbWidth) > WideVergeWidth;
+
         private static void AddCut(Chain c, float s0, float s1, CutKind kind, int side = 0)
         {
             s0 = Mathf.Max(s0, c.From);
@@ -63,13 +68,23 @@ namespace CloneZ
             if (side <= 0) (c.CutsR ??= new List<Cut>()).Add(cut);
         }
 
-        /// <summary>The cut a point along a chain's side falls in: -1 none, else its kind.</summary>
+        /// <summary>The cut a point along a chain's side falls in: -1 none, else its kind (cuts of the walk alone aside: see
+        /// <see cref="InWalkCut"/>).</summary>
         private static int CutAt(List<Cut> cuts, float s)
         {
             if (cuts == null) return -1;
             for (int i = 0; i < cuts.Count; i++)
-                if (s > cuts[i].S0 && s < cuts[i].S1) return (int)cuts[i].Kind;
+                if (cuts[i].Kind != CutKind.Walk && s > cuts[i].S0 && s < cuts[i].S1) return (int)cuts[i].Kind;
             return -1;
+        }
+
+        /// <summary>True where a cut of the sidewalk alone (a set-back sidewalk's corner, see PlanSetBacks) opens it.</summary>
+        private static bool InWalkCut(List<Cut> cuts, float s)
+        {
+            if (cuts == null) return false;
+            for (int i = 0; i < cuts.Count; i++)
+                if (cuts[i].Kind == CutKind.Walk && s > cuts[i].S0 && s < cuts[i].S1) return true;
+            return false;
         }
 
         /// <summary>The chain whose carriageway <paramref name="q"/> lies on, nearest its middle, and how far along it.</summary>
@@ -162,7 +177,59 @@ namespace CloneZ
                 if (c.A0 != null && c.A0.Crosswalk) AddCut(c, c.From + 0.3f, c.From + 3.3f, CutKind.Ramp);
                 if (c.A1 != null && c.A1.Crosswalk) AddCut(c, c.To - 3.3f, c.To - 0.3f, CutKind.Ramp);
             }
+            PlanSetBacks(net);
             if (net.Full) PlanDriveways(net);
+        }
+
+        // Sidewalks set back past wide verges meet at a junction's corner where their edges cross, not at the kerb
+        // return: each arm's sidewalk starts where the other arm's inner edge crosses it (a cut of the walk alone, from
+        // the kerb return out to there), and the corner between them is paved from where their outer edges meet
+        // (SetBackCorner).
+        private static void PlanSetBacks(Net net)
+        {
+            foreach (Joint j in net.Joints)
+            {
+                if (!j.HasPatch) continue;
+                foreach (Corner corner in j.Corners)
+                {
+                    Arm a = j.Arms[corner.A], b = j.Arms[corner.B];
+                    Side sa = a.SL, sb = b.SR;
+                    if (!corner.Convex || !sa.Kerb || !sb.Kerb || !sa.Walk || !sb.Walk) continue;
+                    if (sa.WalkIn - (sa.Edge + KerbWidth) <= WideVergeWidth && sb.WalkIn - (sb.Edge + KerbWidth) <= WideVergeWidth) continue;
+                    ArmKerb(j, a, 1, sa.WalkIn, a.Cap + 3f, s_KerbA);
+                    ArmKerb(j, b, -1, sb.WalkIn, b.Cap + 3f, s_KerbB);
+                    if (!KerbsMeet(s_KerbA, s_KerbB, out Vector2 inMeet, out float sIn, out float uIn, out _, out _)) continue;
+                    ArmKerb(j, a, 1, sa.WalkOut, a.Cap + 3f, s_KerbA);
+                    ArmKerb(j, b, -1, sb.WalkOut, b.Cap + 3f, s_KerbB);
+                    if (!KerbsMeet(s_KerbA, s_KerbB, out Vector2 outMeet, out float sOut, out float uOut, out _, out _)) continue;
+                    if (sOut < -1f || uOut < -1f || sIn < 0f || uIn < 0f || sIn > a.Cap || uIn > b.Cap
+                        || (outMeet - inMeet).sqrMagnitude > 20f * 20f) continue;
+                    float tA = a.Through ? a.TanL : a.Trim, tB = b.Through ? b.TanR : b.Trim;
+                    corner.SetBack = true;
+                    corner.InMeet = inMeet;
+                    corner.OutMeet = outMeet;
+                    corner.WalkA = Mathf.Max(tA, sIn);
+                    corner.WalkB = Mathf.Max(tB, uIn);
+                    if (sIn > tA + 0.05f) WalkCut(j, a, 1, tA, sIn);
+                    if (uIn > tB + 0.05f) WalkCut(j, b, -1, tB, uIn);
+                }
+            }
+        }
+
+        // A cut of the sidewalk alone on one side (+1 left, as seen along the arm away from the junction) of arm
+        // <paramref name="arm"/>, from <paramref name="t0"/> to <paramref name="t1"/> metres out along it.
+        private static void WalkCut(Joint j, Arm arm, int armSide, float t0, float t1)
+        {
+            Chain c = arm.Through ? j.OnChain : arm.Chain;
+            if (c == null) return;
+            if (arm.Through)
+            {
+                bool fwd = arm == j.Fwd;
+                if (fwd) AddCut(c, j.AlongS + t0, j.AlongS + t1, CutKind.Walk, armSide);
+                else AddCut(c, j.AlongS - t1, j.AlongS - t0, CutKind.Walk, -armSide);
+            }
+            else if (arm.AtStart) AddCut(c, t0, t1, CutKind.Walk, armSide);
+            else AddCut(c, c.Length - t1, c.Length - t0, CutKind.Walk, -armSide);
         }
 
         private static IEnumerable<string> SidesAndCorners(Net net)
@@ -272,22 +339,43 @@ namespace CloneZ
                     Vector3 a0 = To3(a, roadY + l0), b0 = To3(b, roadY + l1), b1 = To3(b, KerbTop + l1), a1 = To3(a, KerbTop + l0);
                     Face(net.Out.Flat((a0 + b1) * 0.5f), a0, b0, b1, a1, toward, look.KerbFace);
                 }
-                // The verge between the kerb and a set-back sidewalk (or, with no sidewalk, a strip of it).
-                bool verge = false;
+                // The verge between the kerb and a set-back sidewalk (or, with no sidewalk, a strip of it): a narrow one
+                // is a strip of snow at the kerb's height; a wide one is the snowy ground itself, a bank of snow sloping
+                // down to it from the kerb's back and up again to the sidewalk (a flat sheet of kerb-high snow metres
+                // wide read as a slab).
+                bool verge = false, wide = false;
                 for (int i = 0; i + 1 < n; i++)
                 {
                     bool ok = s_Keep[i] && s_Verge[i] > s_Edge[i] + KerbWidth + 0.05f && s_Verge[i + 1] > s_Edge[i + 1] + KerbWidth + 0.05f;
                     s_Keep[i] = ok;
                     verge |= ok;
+                    wide |= ok && (WideVerge(i) || WideVerge(i + 1));
                 }
                 if (verge)
                 {
                     for (int i = 0; i < n; i++)
                     {
-                        s_A[i] = side * (s_Edge[i] + KerbWidth);
-                        s_B[i] = side * Mathf.Max(s_Verge[i], s_Edge[i] + KerbWidth);
+                        float back = s_Edge[i] + KerbWidth;
+                        bool w = WideVerge(i) || (i > 0 && WideVerge(i - 1)) || (i + 1 < n && WideVerge(i + 1));
+                        s_A[i] = side * back;
+                        s_B[i] = side * (w ? back + Mathf.Clamp(s_Verge[i] - back, 0.05f, VergeBank) : Mathf.Max(s_Verge[i], back));
                         s_YA[i] = KerbTop - 0.004f;
-                        s_YB[i] = s_WalkOk[i] ? KerbTop - 0.004f : 0.004f;
+                        s_YB[i] = s_WalkOk[i] && !w ? KerbTop - 0.004f : 0.004f;
+                    }
+                    BandY(net, s, s_A, s_B, s_YA, s_YB, look.Snow, c.Lift, s_Keep, false);
+                }
+                if (wide)
+                {
+                    // The far bank, up to a set-back sidewalk's inner edge.
+                    for (int i = 0; i + 1 < n; i++)
+                        s_Keep[i] = s_Keep[i] && s_WalkOk[i] && s_WalkOk[i + 1] && (WideVerge(i) || WideVerge(i + 1))
+                            && !InWalkCut(cuts, (s[i].S + s[i + 1].S) * 0.5f);
+                    for (int i = 0; i < n; i++)
+                    {
+                        s_A[i] = side * (s_Verge[i] - VergeBank);
+                        s_B[i] = side * s_Verge[i];
+                        s_YA[i] = 0.004f;
+                        s_YB[i] = KerbTop - 0.004f;
                     }
                     BandY(net, s, s_A, s_B, s_YA, s_YB, look.Snow, c.Lift, s_Keep, false);
                 }
@@ -296,7 +384,7 @@ namespace CloneZ
             for (int i = 0; i + 1 < n; i++)
             {
                 int cut = CutAt(cuts, (s[i].S + s[i + 1].S) * 0.5f);
-                s_Keep[i] = s_WalkOk[i] && s_WalkOk[i + 1] && cut != (int)CutKind.Mouth;
+                s_Keep[i] = s_WalkOk[i] && s_WalkOk[i + 1] && cut != (int)CutKind.Mouth && !InWalkCut(cuts, (s[i].S + s[i + 1].S) * 0.5f);
             }
             // Lite draws no kerb: a sidewalk at the kerb starts at the carriageway's edge.
             if (!net.Full)
@@ -447,12 +535,59 @@ namespace CloneZ
                 }
                 bool snowy = (sa.WalkIn > sa.Edge + KerbWidth + 0.05f || !a.W.Downtown) && !j.Downtown;
                 Surf surf = snowy ? look.Snow : look.Sidewalk;
+                // Sidewalks set back past a wide verge: the corner is the snowy ground behind a bank of snow, and the
+                // sidewalk turns the corner where the two arms' sidewalks meet (one paved fan from the kerb would spread
+                // a kerb-high sheet over the whole verge).
+                if (sa.WalkIn - (sa.Edge + KerbWidth) > WideVergeWidth || sb.WalkIn - (sb.Edge + KerbWidth) > WideVergeWidth)
+                {
+                    if (net.Full)
+                    {
+                        for (int i = 0; i < n; i++)
+                        {
+                            s_B[i] = -Mathf.Min(KerbWidth + VergeBank, Mathf.Max(KerbWidth + 0.05f, s_WalkOut[i]));
+                            s_YA[i] = KerbTop - 0.004f;
+                            s_YB[i] = 0.004f;
+                        }
+                        BandY(net, s, s_A, s_B, s_YA, s_YB, look.Snow, null, s_Keep, false);
+                    }
+                    SetBackCorner(net, j, corner, a, b, sa, sb, j.Downtown || a.W.Downtown || b.W.Downtown ? look.Sidewalk : look.Snow);
+                    continue;
+                }
                 if (!(corner.Convex && corner.Rounded && FanCorner(net, j, corner, a, b, sa, sb, s, surf)))
                 {
                     for (int i = 0; i < n; i++) s_B[i] = -s_WalkOut[i];
                     Band(net, s, s_A, s_B, KerbTop, KerbTop, surf, null, s_Keep);
                 }
             }
+        }
+
+        // A set-back sidewalk's corner (PlanSetBacks): from where each arm's own sidewalk starts in to where their inner
+        // edges meet, fanned from where their outer edges meet; left out where it would reach another road or a building.
+        private static void SetBackCorner(Net net, Joint j, Corner corner, Arm a, Arm b, Side sa, Side sb, in Surf surf)
+        {
+            if (!corner.SetBack) return;
+            ArmKerb(j, a, 1, sa.WalkIn, corner.WalkA + 1f, s_KerbA);
+            Vector2 aIn = s_KerbA.At(corner.WalkA);
+            ArmKerb(j, a, 1, sa.WalkOut, corner.WalkA + 1f, s_KerbA);
+            Vector2 aOut = s_KerbA.At(corner.WalkA);
+            ArmKerb(j, b, -1, sb.WalkIn, corner.WalkB + 1f, s_KerbB);
+            Vector2 bIn = s_KerbB.At(corner.WalkB);
+            ArmKerb(j, b, -1, sb.WalkOut, corner.WalkB + 1f, s_KerbB);
+            Vector2 bOut = s_KerbB.At(corner.WalkB);
+            Vector2 q = corner.OutMeet;
+            s_Ring.Clear();
+            s_Ring.Add(aOut);
+            s_Ring.Add(aIn);
+            s_Ring.Add(corner.InMeet);
+            s_Ring.Add(bIn);
+            s_Ring.Add(bOut);
+            if (!Finite(q) || OnPavement(net, q, null, 0.2f) || InBuilding(net, q, 0f)) return;
+            foreach (Vector2 p in s_Ring)
+            {
+                Vector2 m = Vector2.Lerp(q, p, 0.5f);
+                if (!Finite(p) || (OnPavement(net, m, null, 0f) && !InJunction(j, m)) || InBuilding(net, m, 0f)) return;
+            }
+            FanOpen(net, q, s_Ring, KerbTop, surf);
         }
 
         // A rounded corner's sidewalk as a fan from the block's corner (where the two sidewalks' outer edges meet), when

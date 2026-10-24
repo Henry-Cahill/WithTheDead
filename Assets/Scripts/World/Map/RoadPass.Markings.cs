@@ -203,7 +203,7 @@ namespace CloneZ
             float lo = Mathf.Min(s0, s0 + lean, s1, s1 + lean), hi = Mathf.Max(s0, s0 + lean, s1, s1 + lean);
             if (cuts != null)
                 foreach (Cut k in cuts)
-                    if (k.S1 > lo && k.S0 < hi) return;
+                    if (k.Kind != CutKind.Walk && k.S1 > lo && k.S0 < hi) return;
             float sm = (s0 + s1 + lean) * 0.5f;
             if (InMouth(c, side, sm)) return;
             PointOn(c, sm, out Vector2 p, out Vector2 d);
