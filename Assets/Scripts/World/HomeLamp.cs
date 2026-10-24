@@ -39,7 +39,6 @@ namespace CloneZ
         private bool _switchedOn;
         private bool _deadBulb;
         private bool _overhead, _ceilingsShown, _isFlickering;
-        private System.Func<bool> _ceilingsVisible;
         private bool _lit;
         private float _next;
 
@@ -125,7 +124,7 @@ internal set
         internal void HangFromCeiling()
         {
             _overhead = true;
-            _ceilingsShown = _ceilingsVisible();
+            _ceilingsShown = ViewState.CeilingsVisible;
             if (_light != null) _light.ShowBulb = !_ceilingsShown;
             SyncGlow();
         }
@@ -173,11 +172,6 @@ internal set
             }
         }
 
-        private void Awake()
-        {
-            _ceilingsVisible = () => ViewState.CeilingsVisible;
-        }
-
         private void OnEnable()
         {
             if (!s_All.Contains(this)) s_All.Add(this);
@@ -193,7 +187,7 @@ internal set
             // Update view‑state dependent glow for ceiling fittings
             if (_overhead)
             {
-                if (_ceilingsVisible() != _ceilingsShown) SyncGlow();
+                if (ViewState.CeilingsVisible != _ceilingsShown) SyncGlow();
             }
             // Update flicker‑dependent glow if flicker state changed; a flickering lamp's shade follows its light's
             // level every frame, dropping out through the dips.
@@ -231,7 +225,7 @@ internal set
         {
             if (_overhead)
             {
-                bool ceilings = _ceilingsVisible();
+                bool ceilings = ViewState.CeilingsVisible;
                 if (ceilings != _ceilingsShown)
                 {
                     _ceilingsShown = ceilings;

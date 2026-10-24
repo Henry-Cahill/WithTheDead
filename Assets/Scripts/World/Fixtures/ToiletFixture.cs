@@ -78,6 +78,7 @@ namespace CloneZ
         private Vector3 _sheetFull;
         private bool _seatUp, _lidUp, _cisternOff, _wantsFlush, _flushed, _satToUse;
         private bool _seatClean = true; // true = seat is clean, false = dirty after use
+        private MaterialPropertyBlock _seatBlock;
         private float _level = 1f;           // the cistern: 0 empty .. 1 full
         private float _leverBackAt = -1f;
 
@@ -175,10 +176,7 @@ namespace CloneZ
         {
             if (_seat != null) _seat.SetOpen(_seatUp, instant);
             if (_seat != null && _seat.Renderer != null)
-            {
-                var mat = _seat.Renderer.material;
-                mat.color = _seatClean ? Color.white : new Color(0.8f, 0.8f, 0.8f);
-            }
+                FixtureColour.Set(_seat.Renderer, ref _seatBlock, _seatClean ? Color.white : new Color(0.8f, 0.8f, 0.8f));
             if (_lid != null) _lid.SetOpen(_lidUp, instant);
             if (_cisternLid != null) _cisternLid.SetOpen(_cisternOff, instant);
         }

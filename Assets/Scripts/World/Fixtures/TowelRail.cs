@@ -25,9 +25,9 @@ namespace CloneZ
         private float _dryAt = -1f;               // the in-game hour (TimeOfDay.Now) it's dry again; below 0 it is
         private float _roll, _shownRoll;
         private float _nextCheck;
-        private Material _dryMat; // cached material for dry renderer
-        private Material _dampMat; // cached material for damp renderer
-        private bool _materialsCached = false; // flag indicating material cache is set
+        // The towels' colours go through property blocks: Renderer.material would copy each towel's shared material.
+        private MaterialPropertyBlock _block;
+        private bool _materialsCached = false; // the fade needs both towels' colours
         private float _nextAvailCheck;
         private bool _cachedAvailable = true;
 
@@ -65,17 +65,9 @@ internal void SetTowel(Transform towel, Renderer dry, Renderer damp)
             _towel = towel;
             _dry = dry;
             _damp = damp;
-            if (dry != null)
-            {
-                _dryColor = dry.material.GetColor("_Color");
-                _dryMat = dry.material;
-            }
-            if (damp != null)
-            {
-                _dampBaseColor = damp.material.GetColor("_Color");
-                _dampMat = damp.material;
-            }
-            _materialsCached = _dryMat != null && _dampMat != null; // the fade needs both towels' colours
+            if (dry != null) _dryColor = FixtureColour.Get(dry);
+            if (damp != null) _dampBaseColor = FixtureColour.Get(damp);
+            _materialsCached = dry != null && damp != null; // the fade needs both towels' colours
             ShowLook();
             ApplyRoll();
         }
@@ -96,7 +88,7 @@ internal void SetTowel(Transform towel, Renderer dry, Renderer damp)
                     float total = CloneZConfig.TowelDampHours;
                     float remaining = Mathf.Max(0f, _dryAt - TimeOfDay.Now);
                     float t = Mathf.Clamp01(1f - remaining / total); // 0 = just wet, 1 = fully dry
-                    _dampMat.SetColor("_Color", Color.Lerp(_dampBaseColor, _dryColor, t));
+                    FixtureColour.Set(_damp, ref _block, Color.Lerp(_dampBaseColor, _dryColor, t));
                 }
                 // When towel is dry, we no longer need to set colour; the material already holds the dry colour.
             }
@@ -131,7 +123,7 @@ internal void SetTowel(Transform towel, Renderer dry, Renderer damp)
             if (!IsDamp && _damp != null)
             {
                 // Instant‑dry actions (LetDry, DryOff) should snap the colour to dry immediately
-                _damp.material.SetColor("_Color", _dryColor);
+                FixtureColour.Set(_damp, ref _block, _dryColor);
             }
             if (_dry != null && _dry.enabled == damp) _dry.enabled = !damp;
             if (_damp != null && _damp.enabled != damp) _damp.enabled = damp;
