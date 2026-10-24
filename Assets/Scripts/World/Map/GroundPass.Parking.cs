@@ -18,7 +18,7 @@ namespace CloneZ
         private const float MarkY = DecalY + 0.0005f;   // paint on a lot, over its plowed edge
         private const int MaxStalls = 1500;
 
-        private static void Lots(Ground g)
+        private static IEnumerable<string> Lots(Ground g)
         {
             bool any = false;
             foreach (Owner o in g.Owners)
@@ -30,9 +30,10 @@ namespace CloneZ
             for (int b = 0; b < g.Ring.Count; b++)
                 foreach (Owner o in g.Ring[b])
                     if (o.Kind == "parking" && o.Visible > 20f) PlowedEdge(g, o, RingBand(g, b), g.Site.Town.Far);
-            if (!any || g.Lite) return;
+            if (!any || g.Lite) yield break;
             foreach (Owner o in g.Owners)
-                if (o.Kind == "parking" && o.Visible > 20f) StallRows(g, o);
+                if (o.Kind == "parking" && o.Visible > 20f)
+                    foreach (string step in StallRows(g, o)) yield return step;
         }
 
         // The snow the plow pushed off the lot: a ragged band along its mapped edges (the road pass draws over it where
@@ -72,11 +73,12 @@ namespace CloneZ
         // The lot's stall rows on its whole outline (on a streamed piece, the outline as mapped in its region, so pieces
         // agree): each stall that fits inside it and, inside the square, clear of the streets, buildings and fences on
         // it, drawn by the piece holding its middle; each line between two stalls by the piece holding the line's middle.
-        private static void StallRows(Ground g, Owner o)
+        // Yields between rows when the step has had its time.
+        private static IEnumerable<string> StallRows(Ground g, Owner o)
         {
-            if (g.Stalls.Count >= MaxStalls) return;
+            if (g.Stalls.Count >= MaxStalls) yield break;
             List<Vector2> outline = g.Whole(o) ?? o.Pts;
-            if (outline.Count < 3 || Mathf.Abs(MapGeometry.SignedArea(outline)) < 90f) return;
+            if (outline.Count < 3 || Mathf.Abs(MapGeometry.SignedArea(outline)) < 90f) yield break;
             Vector2 u = o.Axis, v = new Vector2(-u.y, u.x);   // rows along the lot's long axis (from its data: alike everywhere)
             float u0 = float.MaxValue, u1 = float.MinValue, v0 = float.MaxValue, v1 = float.MinValue;
             foreach (Vector2 p in outline)
@@ -93,7 +95,7 @@ namespace CloneZ
             bool single = spare >= StallDepth + AisleMin;
             if (single) spare -= StallDepth + AisleMin;
             int aisles = modules + (single ? 1 : 0);
-            if (aisles == 0) return;
+            if (aisles == 0) yield break;
             float aisle = Mathf.Min(AisleMax, AisleMin + spare / aisles), module = StallDepth * 2f + aisle;
             float used = modules * module + (single ? StallDepth + aisle : 0f);
             float y = (v0 + v1) * 0.5f - used * 0.5f;
@@ -107,7 +109,7 @@ namespace CloneZ
             if (single) rows.Add((y + StallDepth * 0.5f, -1f));
             // Along the lot: stalls centred between the margins.
             int across = Mathf.FloorToInt((u1 - u0 - LotMargin * 2f) / StallWidth);
-            if (across < 1) return;
+            if (across < 1) yield break;
             float x0 = (u0 + u1) * 0.5f - across * StallWidth * 0.5f;
 
             System.Random lotRng = MapStyle.Rng(o.Id, SaltStall);
@@ -119,7 +121,8 @@ namespace CloneZ
             var fits = new bool[across];
             for (int r = 0; r < rows.Count; r++)
             {
-                (float rowAt, float face) = rows[r];
+                if (r > 0 && g.Site.StepDue) yield return "lots";
+                float rowAt = rows[r].at, face = rows[r].face;
                 Vector2 nose = v * face;   // cars nose in from the aisle towards the row's back
                 float noseYaw = Mathf.Atan2(nose.x, nose.y) * Mathf.Rad2Deg;
                 bool anyHere = false;
@@ -152,7 +155,7 @@ namespace CloneZ
                         mesh.Box(s, new Vector3(1.8f, 0.12f, 0.16f), yaw + 90f, stop);
                         mesh.Box(To3(at, 0.125f), new Vector3(1.78f, 0.015f, 0.17f), yaw + 90f, cap);
                     }
-                    if (g.Stalls.Count >= MaxStalls) return;
+                    if (g.Stalls.Count >= MaxStalls) yield break;
                 }
             }
         }

@@ -45,10 +45,12 @@ namespace CloneZ
                         break;
                     case "playground": Playground(g, o); break;
                     case "pitch": Pitch(g, o); break;
+                    default: continue;
                 }
+                if (g.Site.StepDue) yield return "grounds";
             }
             yield return "grounds";
-            Yards(g);
+            foreach (string step in Yards(g)) yield return step;
             Snowmen(g);
             yield return "work yards";
         }
@@ -174,7 +176,7 @@ namespace CloneZ
                     if (RealEdgeDistance(o.Pts, at, g.Square) < 1.1f) continue;
                     Headstone(g, at, faceYaw, key, o.Id, old);
                     placed++;
-                    if (++since < StonesPerStep) continue;
+                    if (++since < StonesPerStep && !g.Site.StepDue) continue;
                     yield return since;
                     since = 0;
                 }
@@ -703,7 +705,7 @@ namespace CloneZ
         #region Yards
         // Against the walls of warehouses and factories (and of anything in an industrial area): stacks of pallets,
         // groups of drums, crates and the odd dumpster, under snow, each group with one collider.
-        private static void Yards(Ground g)
+        private static IEnumerable<string> Yards(Ground g)
         {
             foreach (Footprint f in g.Site.Area.Buildings)
             {
@@ -718,6 +720,7 @@ namespace CloneZ
                 System.Random rng = MapStyle.Rng(f.Data.id, SaltYard);
                 int groups = 1 + (f.Size > 1500f ? 1 : 0) + rng.Next(0, 2);
                 for (int k = 0; k < groups; k++) YardGroup(g, f, rng);
+                if (g.Site.StepDue) yield return "work yards";
             }
         }
 

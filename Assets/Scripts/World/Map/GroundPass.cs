@@ -80,11 +80,16 @@ namespace CloneZ
             BaseSnow(site);
             Partition(g);
             yield return "ground";
-            Water(g);
+            foreach (string step in Water(g)) yield return step;
             yield return "water";
-            Fields(g);
+            foreach (string step in Fields(g)) yield return step;
             yield return "fields";
-            Lots(g);
+            if (!g.Lite)
+            {
+                g.Mask();
+                yield return "ground mask";
+            }
+            foreach (string step in Lots(g)) yield return step;
             yield return "lots";
             if (!g.Lite)
                 foreach (string step in Grounds(g)) yield return step;
@@ -279,6 +284,12 @@ namespace CloneZ
                 if (_blocked == null) BuildMask();
                 int x = Cell(p.x), z = Cell(p.y);
                 return x < 0 || z < 0 || x >= _n || z >= _n || _blocked[z * _n + x];
+            }
+
+            /// <summary>Works out where the later passes will build (see <see cref="Clear"/>), if it isn't known yet.</summary>
+            public void Mask()
+            {
+                if (_blocked == null) BuildMask();
             }
 
             private int Cell(float v) => Mathf.FloorToInt(v + Half);

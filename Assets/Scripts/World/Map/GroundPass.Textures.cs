@@ -74,6 +74,7 @@ namespace CloneZ
             OnSnow("trodden", PaintTrodden);
             OnSnow("farmyard", PaintFarmyard);
             OnSnow("forest", PaintForestFloor);
+            OnSnow("yard", PaintYard);
             Paint("ice", 512, Task.Run(() => To32(PaintIce(512))));
             Paint("water", 128, Task.Run(() => To32(PaintWater(128))));
             Paint("floe", 256, Task.Run(() => To32(PaintFloe(256))));
@@ -83,7 +84,6 @@ namespace CloneZ
             Paint("forecourt", 256, Task.Run(() => To32(PaintForecourt(256))));
             Paint("mud", 256, Task.Run(() => To32(PaintMud(256))));
             Paint("sand", 256, Task.Run(() => To32(PaintSand(256))));
-            Paint("yard", 256, Task.Run(() => To32(PaintYard(256))));
             Paint("rock", 256, Task.Run(() => To32(PaintRock(256))));
             Paint("bank", 256, Task.Run(() => To32(PaintBank(256))));
         }
@@ -328,15 +328,16 @@ namespace CloneZ
             return px;
         }
 
-        // Clumps of dead grass, more of them where a low noise says so (grass grows in patches).
+        // Clumps of dead grass, a few more of them where a fine noise says so (no broader clustering: at a 9 m repeat that
+        // would show as a lattice; the broad variation is the snow's tone).
         private static void Tufts(Color[] px, int s, System.Random rng, int count, float size, Color a, Color b, int seed)
         {
             var shadow = new Color(0.58f, 0.65f, 0.79f);
-            var patches = new Fractal(4, 2, seed);
+            var patches = new Fractal(16, 2, seed);
             for (int placed = 0, tries = 0; placed < count && tries < count * 4; tries++)
             {
                 float x = R(rng, 0, s), y = R(rng, 0, s);
-                if (rng.NextDouble() > Smooth(0.3f, 0.7f, patches.At(x / s, y / s))) continue;
+                if (rng.NextDouble() > 0.35f + 0.65f * Smooth(0.25f, 0.75f, patches.At(x / s, y / s))) continue;
                 placed++;
                 int blades = rng.Next(4, 9);
                 Ellipse(px, s, x + 1.5f, y - 1.5f, size * 0.9f, size * 0.6f, 0.6f, shadow, 0.3f, 0.8f);
@@ -349,7 +350,7 @@ namespace CloneZ
         /// <summary>Pasture and hay ground: tufts of dead grass poking through.</summary>
         private static Color[] PaintMeadow(Color[] px, int s)
         {
-            Tufts(px, s, new System.Random(221), s * s / 220, 5f, new Color(0.74f, 0.65f, 0.44f), new Color(0.56f, 0.48f, 0.33f), 222);
+            Tufts(px, s, new System.Random(221), s * s / 300, 4.5f, new Color(0.74f, 0.65f, 0.44f), new Color(0.56f, 0.48f, 0.33f), 222);
             return px;
         }
 
@@ -374,7 +375,7 @@ namespace CloneZ
         private static Color[] PaintReeds(Color[] px, int s)
         {
             var rng = new System.Random(241);
-            var beds = new Fractal(5, 2, 242);
+            var beds = new Fractal(12, 2, 242);
             for (int i = 0; i < s * s / 9000; i++)
             {
                 float x = R(rng, 0, s), y = R(rng, 0, s), rx = R(rng, 10f, 30f), ry = R(rng, 6f, 18f), a = R(rng, 0f, 3.2f);
@@ -422,14 +423,14 @@ namespace CloneZ
         {
             PaintTrodden(px, s);
             var rng = new System.Random(261);
-            for (int i = 0; i < 45; i++)
+            for (int i = 0; i < 22; i++)
             {
-                float x = R(rng, 0, s), y = R(rng, 0, s), rx = R(rng, 10f, 32f), ry = R(rng, 6f, 20f), a = R(rng, 0f, 3.2f);
-                Ellipse(px, s, x, y, rx, ry, a, new Color(0.40f, 0.33f, 0.27f), 0.8f, 0.6f);
-                Ellipse(px, s, x, y, rx * 0.5f, ry * 0.4f, a, new Color(0.30f, 0.25f, 0.21f), 0.6f, 0.8f);
+                float x = R(rng, 0, s), y = R(rng, 0, s), rx = R(rng, 8f, 24f), ry = R(rng, 5f, 14f), a = R(rng, 0f, 3.2f);
+                Ellipse(px, s, x, y, rx, ry, a, new Color(0.42f, 0.36f, 0.30f), 0.5f, 0.75f);
+                Ellipse(px, s, x, y, rx * 0.5f, ry * 0.4f, a, new Color(0.33f, 0.28f, 0.24f), 0.35f, 0.85f);
             }
-            for (int i = 0; i < s * s / 600; i++)
-                Stroke(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 0f, 6.3f), R(rng, 3f, 7f), 1.1f, new Color(0.76f, 0.66f, 0.42f), 0.85f);
+            for (int i = 0; i < s * s / 700; i++)
+                Stroke(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 0f, 6.3f), R(rng, 3f, 7f), 1.1f, new Color(0.76f, 0.66f, 0.42f), 0.8f);
             return px;
         }
 
@@ -569,7 +570,7 @@ namespace CloneZ
             var mud = new Color(0.35f, 0.29f, 0.24f);
             var snow = new Color(0.80f, 0.86f, 0.96f);
             var mottle = new Fractal(8, 3, 331);
-            var cover = new Fractal(4, 4, 332);
+            var cover = new Fractal(9, 3, 332);
             for (int y = 0; y < s; y++)
                 for (int x = 0; x < s; x++)
                 {
@@ -713,13 +714,14 @@ namespace CloneZ
             return px;
         }
 
-        // Ground of some colour, mottled, with snow lying where a low noise is high.
+        // Ground of some colour, mottled, with snow lying where a fine noise is high (fine, so the 9 m repeat doesn't show;
+        // the broad variation is the snow's tone).
         private static Color[] Earthy(int s, Color baseColour, float mottle, float snowFrom, int seed)
         {
             var px = new Color[s * s];
             var snow = new Color(0.80f, 0.86f, 0.96f);
             var spots = new Fractal(6, 3, seed);
-            var cover = new Fractal(3, 4, seed + 2);
+            var cover = new Fractal(9, 3, seed + 2);
             for (int y = 0; y < s; y++)
                 for (int x = 0; x < s; x++)
                 {
@@ -746,17 +748,38 @@ namespace CloneZ
         /// <summary>A river beach or sand pit: pale frozen sand, crusted with snow in patches.</summary>
         private static Color[] PaintSand(int s) => Earthy(s, new Color(0.62f, 0.56f, 0.46f), 0.1f, 0.5f, 451);
 
-        /// <summary>An industrial yard: grey gravel under dirty, rutted snow, oil and rust stains.</summary>
-        private static Color[] PaintYard(int s)
+        /// <summary>An industrial district's ground: the snow grey and trodden, rutted by trucks, cinders and gravel showing
+        /// in fine spots, the odd small oil stain (painted over the base snow, so it meets the plain snow without a seam;
+        /// the grime in broad patches is the snow's tone).</summary>
+        private static Color[] PaintYard(Color[] px, int s)
         {
-            Color[] px = Earthy(s, new Color(0.45f, 0.44f, 0.43f), 0.15f, 0.5f, 461);
-            var rng = new System.Random(464);
-            for (int i = 0; i < s * s / 25; i++)
-                Dab(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 0.4f, 1f), Pick(rng, new Color(0.58f, 0.57f, 0.55f), new Color(0.30f, 0.30f, 0.30f)), 0.8f);
-            for (int i = 0; i < 7; i++)
-                Ellipse(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 5f, 15f), R(rng, 4f, 10f), R(rng, 0f, 3.2f),
-                    rng.NextDouble() < 0.5 ? new Color(0.14f, 0.13f, 0.13f) : new Color(0.42f, 0.27f, 0.18f), 0.45f, 0.8f);
-            for (int i = 0; i < px.Length; i++) px[i] = Color.Lerp(px[i], new Color(0.50f, 0.50f, 0.50f), 0.12f);
+            for (int i = 0; i < px.Length; i++)
+            {
+                Color c = px[i];
+                px[i] = new Color(c.r * 0.86f, c.g * 0.86f, c.b * 0.86f);
+            }
+            var rng = new System.Random(461);
+            var packed = new Color(0.62f, 0.66f, 0.72f);
+            for (int i = 0; i < 40; i++)
+                Ellipse(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 14f, 40f), R(rng, 8f, 22f), R(rng, 0f, 3.2f), packed, 0.35f, 0.9f);
+            // Truck ruts: pairs of long grey tracks.
+            for (int k = 0; k < 7; k++)
+            {
+                float x = R(rng, 0, s), y = R(rng, 0, s), a = R(rng, 0f, 6.3f), gauge = s / 9f * 1.8f;
+                float nx = -Mathf.Sin(a) * gauge * 0.5f, ny = Mathf.Cos(a) * gauge * 0.5f;
+                for (int side = -1; side <= 1; side += 2)
+                    Stroke(px, s, x + nx * side, y + ny * side, a, R(rng, 120f, 260f), R(rng, 6f, 9f), new Color(0.50f, 0.52f, 0.55f), 0.5f);
+            }
+            var grit = new Fractal(14, 2, 462);
+            for (int i = 0; i < s * s / 30; i++)
+            {
+                float x = R(rng, 0, s), y = R(rng, 0, s);
+                if (rng.NextDouble() > Smooth(0.45f, 0.75f, grit.At(x / s, y / s))) continue;
+                Dab(px, s, x, y, R(rng, 0.4f, 1.0f), Pick(rng, new Color(0.40f, 0.39f, 0.38f), new Color(0.25f, 0.24f, 0.24f)), 0.8f);
+            }
+            for (int i = 0; i < 5; i++)
+                Ellipse(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 4f, 10f), R(rng, 3f, 7f), R(rng, 0f, 3.2f),
+                    rng.NextDouble() < 0.6 ? new Color(0.16f, 0.16f, 0.17f) : new Color(0.42f, 0.30f, 0.22f), 0.35f, 0.8f);
             return px;
         }
 
@@ -768,7 +791,7 @@ namespace CloneZ
             var snow = new Color(0.82f, 0.88f, 0.97f);
             var bend = new Fractal(4, 2, 471);
             var spots = new Fractal(8, 3, 472);
-            var cover = new Fractal(4, 4, 473);
+            var cover = new Fractal(9, 3, 473);
             for (int y = 0; y < s; y++)
                 for (int x = 0; x < s; x++)
                 {
