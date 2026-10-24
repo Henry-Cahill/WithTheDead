@@ -90,61 +90,121 @@ namespace CloneZ
         internal static long Colliders, ColliderObjects, ColliderTicks, Lights, LightTicks;
 
         /// <summary>
-        /// Keep the prop colliders as boxes until <see cref="MergeColliders"/>/<see cref="EmitOutdoor"/> makes them one
-        /// <see cref="MeshCollider"/> (the Kentucky map: hundreds of turned walls a piece cost an object each, and most of a
-        /// build's main-thread time for colliders; one mesh baked on a worker costs a thirtieth, and rays hit it alike).
-        /// Off for the procedural town, whose colliders stay boxes.
+        /// Keep the prop colliders as plain boxes until <see cref="MakeColliders"/> (or <see cref="EmitOutdoor"/>) makes
+        /// them, so a streamed piece makes them in a step of their own (the Kentucky map). Off for the procedural town,
+        /// whose colliders are made as they're asked for.
         /// </summary>
-        public bool MergedColliders;
+        internal bool DeferColliders;
 
         private readonly List<ColliderBox> _boxes = new List<ColliderBox>();
+        private int _boxesMade;
 
-        /// <summary>A prop collider kept for merging: a box turned <see cref="Yaw"/> degrees about Y.</summary>
+        /// <summary>A prop collider kept for later: a box turned <see cref="Yaw"/> degrees about Y.</summary>
         internal struct ColliderBox
         {
             public Vector3 Center, Size;
             public float Yaw;
         }
 
-        /// <summary>The prop colliders kept for merging and not yet made.</summary>
-        internal int PendingColliders => _boxes.Count;
+        /// <summary>The prop colliders kept for later and not yet made.</summary>
+        internal int PendingColliders => _boxes.Count - _boxesMade;
 
         /// <summary>A solid outdoor collider (cars, trees, dumpsters, barricades) under <c>world</c>.</summary>
         public void PropCollider(Vector3 center, Vector3 size, float yaw)
         {
-            if (MergedColliders)
+            ColliderCount++;
+            Colliders++;
+            if (DeferColliders)
             {
                 _boxes.Add(new ColliderBox { Center = center, Size = size, Yaw = yaw });
-                ColliderCount++;
-                Colliders++;
                 return;
             }
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            MakeCollider(center, size, yaw, false);
+            ColliderTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+        }
+
+        /// <summary>Makes the prop colliders kept so far (see <see cref="DeferColliders"/>) until about
+        /// <paramref name="ms"/> milliseconds have gone (0: all of them). True once none are left.</summary>
+        internal bool MakeColliders(double ms = 0)
+        {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            long until = ms > 0 ? t0 + (long)(ms * System.Diagnostics.Stopwatch.Frequency / 1000.0) : long.MaxValue;
+            while (_boxesMade < _boxes.Count)
+            {
+                ColliderBox b = _boxes[_boxesMade++];
+                MakeCollider(b.Center, b.Size, b.Yaw, true);
+                if ((_boxesMade & 7) == 0 && System.Diagnostics.Stopwatch.GetTimestamp() >= until) break;
+            }
+            if (_boxesMade == _boxes.Count)
+            {
+                _boxes.Clear();
+                _boxesMade = 0;
+            }
+            ColliderTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+            return _boxes.Count == 0;
+        }
+
+        // Boxes square to the grid go on the shared PropColliders object; the others each on an object of their own, or
+        // (<paramref name="grouped"/>, the Kentucky map) on an object turned their way shared by every box turned the same
+        // (a row of parked cars, a fence's posts). A holder takes at most this many (adding components to one object gets
+        // dearer the more it has).
+        private const int BoxesPerHolder = 32;
+        private GameObject _squareHolder;
+        private int _squareCount;
+        private readonly Dictionary<float, GameObject> _turnedHolders = new Dictionary<float, GameObject>();
+        private readonly Dictionary<GameObject, int> _holderCounts = new Dictionary<GameObject, int>();
+
+        private void MakeCollider(Vector3 center, Vector3 size, float yaw, bool grouped)
+        {
             if (_propColliders == null)
             {
                 _propColliders = new GameObject("PropColliders");
                 _propColliders.transform.SetParent(World, false);
+                _squareHolder = _propColliders;
                 ColliderObjects++;
             }
             float k = Mathf.Repeat(yaw, 90f);
             if (k < 1f || k > 89f)
             {
+                if (grouped && _squareCount == BoxesPerHolder)
+                {
+                    _squareHolder = new GameObject("PropColliders");
+                    _squareHolder.transform.SetParent(_propColliders.transform, false);
+                    _squareCount = 0;
+                    ColliderObjects++;
+                }
                 bool swap = Mathf.Abs(Mathf.Repeat(yaw, 180f) - 90f) < 45f;
-                var bc = _propColliders.AddComponent<BoxCollider>();
+                var bc = (grouped ? _squareHolder : _propColliders).AddComponent<BoxCollider>();
                 bc.center = center;
                 bc.size = swap ? new Vector3(size.z, size.y, size.x) : size;
+                _squareCount++;
+                return;
             }
-            else
+            if (!grouped)
             {
                 var go = new GameObject("PropCollider");
                 go.transform.SetParent(_propColliders.transform, false);
                 go.transform.SetPositionAndRotation(center, Quaternion.Euler(0f, yaw, 0f));
                 go.AddComponent<BoxCollider>().size = size;
                 ColliderObjects++;
+                return;
             }
-            ColliderCount++;
-            Colliders++;
-            ColliderTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+            float turn = Mathf.Repeat(yaw, 360f);
+            if (!_turnedHolders.TryGetValue(turn, out GameObject holder) || _holderCounts[holder] == BoxesPerHolder)
+            {
+                // The holder stands on its first box, so that one is exactly where it was asked for.
+                holder = new GameObject("PropCollider");
+                holder.transform.SetParent(_propColliders.transform, false);
+                holder.transform.SetPositionAndRotation(center, Quaternion.Euler(0f, yaw, 0f));
+                _turnedHolders[turn] = holder;
+                _holderCounts[holder] = 0;
+                ColliderObjects++;
+            }
+            var box = holder.AddComponent<BoxCollider>();
+            if (_holderCounts[holder] > 0) box.center = holder.transform.InverseTransformPoint(center);
+            box.size = size;
+            _holderCounts[holder]++;
         }
 
         /// <summary>A thin overhead collider (ceiling, canopy, tent roof) under the overhead root, so the
@@ -178,10 +238,10 @@ namespace CloneZ
         }
 
         /// <summary>Emits every outdoor chunk mesh (call once everything is drawn), bakes what was queued on
-        /// <see cref="Bake"/>, and makes the prop colliders kept for merging.</summary>
+        /// <see cref="Bake"/>, and makes the prop colliders still kept (see <see cref="DeferColliders"/>).</summary>
         public void EmitOutdoor()
         {
-            ColliderMerge merge = _boxes.Count > 0 ? StartColliders() : null;
+            MakeColliders();
             Out.Emit("Outdoor");
             Far.Emit("Scenery");
             if (_bake != null && _bake.Count > 0)
@@ -191,7 +251,6 @@ namespace CloneZ
                 _bake.Apply();
                 _bake = null;
             }
-            if (merge != null) FinishColliders(merge);
         }
 
         private MeshBake _bake;
@@ -206,27 +265,6 @@ namespace CloneZ
             MeshBake b = _bake;
             _bake = null;
             return b != null && b.Count > 0 ? b : null;
-        }
-
-        /// <summary>Starts making the prop colliders kept so far into one collision mesh: the mesh now, its PhysX cooking
-        /// on a worker thread (see <see cref="FinishColliders"/>).</summary>
-        internal ColliderMerge StartColliders()
-        {
-            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-            var merge = ColliderMerge.Start(_boxes);
-            _boxes.Clear();
-            ColliderTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
-            return merge;
-        }
-
-        /// <summary>Puts the merged colliders under <c>world</c>, waiting for their cooking if it isn't done.</summary>
-        internal void FinishColliders(ColliderMerge merge)
-        {
-            if (merge == null || merge.Mesh == null) return;
-            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-            merge.Finish(World);
-            ColliderObjects++;
-            ColliderTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
         }
 
         /// <summary>Everything instantiated by the build (for the report).</summary>
@@ -308,91 +346,6 @@ namespace CloneZ
                 _solid[i] = null;
                 _flat[i] = null;
             }
-        }
-    }
-
-    /// <summary>
-    /// Prop colliders made one <see cref="MeshCollider"/>: every box's eight corners and twelve outward triangles in one
-    /// mesh (made on the main thread), cooked by PhysX on a worker thread (<see cref="Physics.BakeMesh(EntityId, bool,
-    /// MeshColliderCookingOptions)"/>), then given to a collider with the same cooking options, which takes the cooked
-    /// data as it is. Boxes keep their exact turn (the per-box colliders squared anything within a degree of the grid).
-    /// </summary>
-    internal sealed class ColliderMerge
-    {
-        internal const MeshColliderCookingOptions Cooking = MeshColliderCookingOptions.CookForFasterSimulation
-            | MeshColliderCookingOptions.EnableMeshCleaning | MeshColliderCookingOptions.WeldColocatedVertices
-            | MeshColliderCookingOptions.UseFastMidphase;
-
-        public Mesh Mesh;
-        public int Boxes;
-        private System.Threading.Tasks.Task _bake;
-
-        // A box's twelve triangles over its corners (bit 1 = +x, 2 = +y, 4 = +z), wound to face out (a turn about Y and
-        // positive sizes keep them so).
-        private static readonly int[] s_Triangles = MakeTriangles();
-
-        private static int[] MakeTriangles()
-        {
-            int[] faces = { 1, 3, 7, 5, 0, 4, 6, 2, 2, 6, 7, 3, 0, 1, 5, 4, 4, 5, 7, 6, 0, 2, 3, 1 };
-            var corner = new Vector3[8];
-            for (int k = 0; k < 8; k++) corner[k] = new Vector3((k & 1) != 0 ? 1f : -1f, (k & 2) != 0 ? 1f : -1f, (k & 4) != 0 ? 1f : -1f);
-            var tris = new int[36];
-            for (int f = 0; f < 6; f++)
-            {
-                int a = faces[f * 4], b = faces[f * 4 + 1], c = faces[f * 4 + 2], d = faces[f * 4 + 3];
-                Vector3 outward = corner[a] + corner[b] + corner[c] + corner[d];
-                if (Vector3.Dot(Vector3.Cross(corner[b] - corner[a], corner[c] - corner[a]), outward) < 0f)
-                {
-                    int t = b;
-                    b = d;
-                    d = t;
-                }
-                tris[f * 6] = a; tris[f * 6 + 1] = b; tris[f * 6 + 2] = c;
-                tris[f * 6 + 3] = a; tris[f * 6 + 4] = c; tris[f * 6 + 5] = d;
-            }
-            return tris;
-        }
-
-        public static ColliderMerge Start(List<RaidTown.ColliderBox> boxes)
-        {
-            var merge = new ColliderMerge { Boxes = boxes.Count };
-            if (boxes.Count == 0) return merge;
-            var v = new Vector3[boxes.Count * 8];
-            var t = new int[boxes.Count * 36];
-            for (int i = 0; i < boxes.Count; i++)
-            {
-                RaidTown.ColliderBox b = boxes[i];
-                Quaternion q = Quaternion.Euler(0f, b.Yaw, 0f);
-                Vector3 ax = q * new Vector3(b.Size.x * 0.5f, 0f, 0f), ay = new Vector3(0f, b.Size.y * 0.5f, 0f), az = q * new Vector3(0f, 0f, b.Size.z * 0.5f);
-                int v0 = i * 8;
-                for (int k = 0; k < 8; k++)
-                    v[v0 + k] = b.Center + ((k & 1) != 0 ? ax : -ax) + ((k & 2) != 0 ? ay : -ay) + ((k & 4) != 0 ? az : -az);
-                int t0 = i * 36;
-                for (int k = 0; k < 36; k++) t[t0 + k] = v0 + s_Triangles[k];
-            }
-            var mesh = new Mesh { name = "PropColliders", indexFormat = v.Length > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16 };
-            RaidMesh.CreatedMeshes?.Add(mesh);
-            mesh.SetVertices(v);
-            mesh.SetIndices(t, MeshTopology.Triangles, 0, true);
-            merge.Mesh = mesh;
-            EntityId id = mesh.GetEntityId();
-            merge._bake = System.Threading.Tasks.Task.Run(() => Physics.BakeMesh(id, false, Cooking));
-            return merge;
-        }
-
-        /// <summary>True once the cooking is done (or failed: the collider then cooks the mesh itself).</summary>
-        public bool Ready => _bake == null || _bake.IsCompleted;
-
-        public void Finish(Transform parent)
-        {
-            if (Mesh == null) return;
-            try { _bake?.Wait(); }
-            catch (System.AggregateException) { }   // cooked on the main thread below instead
-            var go = new GameObject("PropColliders");
-            go.transform.SetParent(parent, false);
-            var collider = go.AddComponent<MeshCollider>();
-            collider.cookingOptions = Cooking;
-            collider.sharedMesh = Mesh;
         }
     }
 }

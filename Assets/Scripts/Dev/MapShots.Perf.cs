@@ -90,11 +90,24 @@ namespace CloneZ
             public float ownBuiltAfter = -1f, ringAfter = -1f;
             /// <summary>Frames the survivor stood where nothing was built; frames the nine around them weren't all Full.</summary>
             public int holeFrames, ringFrames;
-            public int pieces, meshes, regions;
+            public int pieces, litePieces, meshes, regions;
             public long vertices;
-            public double managedMB, totalMB;
+            public double managedMB, totalMB, pooledMB;
             /// <summary>The steps that made the slow frames (over 8 ms) slow: how often, and the worst.</summary>
             public List<StepTiming> slowest = new List<StepTiming>();
+        }
+
+        [Serializable]
+        public sealed class NonFiniteReport
+        {
+            /// <summary>Meshes checked (each once a scan) in the square, the test chunks and the streamed walks.</summary>
+            public int meshes;
+            /// <summary>Meshes found in the scene with a position, normal or bounds that isn't a finite number: where they hang
+            /// and what's wrong (the NavMesh bake skips such a mesh, leaving a hole).</summary>
+            public List<string> offenders = new List<string>();
+            /// <summary>Meshes RaidMesh found such vertices in while baking them (it baked them harmless, so they don't show in
+            /// the scene): the stage, then where they hang.</summary>
+            public List<string> baked = new List<string>();
         }
         #endregion
 
@@ -111,8 +124,19 @@ namespace CloneZ
                     {
                         int cx = ChunkOf(t.X), cz = ChunkOf(t.Z);
                         var pair = new DetailPair { label = t.Label, cx = cx, cz = cz };
-                        ChunkReport full = BuildCounted(t, cx, cz, KentuckyMap.Detail.Full, out Fingerprint pf);
-                        ChunkReport lite = BuildCounted(t, cx, cz, KentuckyMap.Detail.Lite, out Fingerprint pl);
+                        // Each built three times, Full and Lite in turn: the middle run of each is the one reported (a single build
+                        // can catch a garbage collection).
+                        var fulls = new List<ChunkReport>(3);
+                        var lites = new List<ChunkReport>(3);
+                        Fingerprint pf = default, pl = default;
+                        for (int run = 0; run < 3; run++)
+                        {
+                            fulls.Add(BuildCounted(t, cx, cz, KentuckyMap.Detail.Full, out pf));
+                            lites.Add(BuildCounted(t, cx, cz, KentuckyMap.Detail.Lite, out pl));
+                        }
+                        fulls.Sort((a, b) => a.totalMs.CompareTo(b.totalMs));
+                        lites.Sort((a, b) => a.totalMs.CompareTo(b.totalMs));
+                        ChunkReport full = fulls[1], lite = lites[1];
                         pair.fullMs = full.totalMs;
                         pair.liteMs = lite.totalMs;
                         pair.ratio = full.totalMs > 0 ? Math.Round(lite.totalMs / full.totalMs, 3) : 0;
@@ -184,6 +208,7 @@ namespace CloneZ
                             rep.slowestStep = s.name;
                         }
                     rep.counts = Count(t.Label, new[] { c.Root.transform, c.Overhead.transform });
+                    ScanNonFinite("chunk " + t.Label + " (" + detail + ")", new[] { c.Root.transform, c.Overhead.transform });
                     print = Print(c.Root.transform, c.Overhead.transform);
                     return rep;
                 }
@@ -494,7 +519,7 @@ namespace CloneZ
                     | MeshColliderCookingOptions.WeldColocatedVertices | MeshColliderCookingOptions.UseFastMidphase;
                 for (int strategy = 0; strategy < 4; strategy++)
                 {
-                    string name = strategy == 0 ? "today: an object per turned box" : strategy == 1 ? "grouped: an object per angle"
+                    string name = strategy == 0 ? "an object per turned box (the procedural town's way)" : strategy == 1 ? "grouped: an object per angle (the Kentucky map's way)"
                         : strategy == 2 ? "one MeshCollider, cooked on the main thread" : "one MeshCollider, baked on a worker";
                     var root = new GameObject("colliders " + strategy);
                     root.SetActive(false);
@@ -1198,6 +1223,10 @@ namespace CloneZ
                 finally
                 {
                     End();
+                    var built = new List<Transform> { world };
+                    foreach (GameObject go in SceneRoots())
+                        if (!before.Contains(go) && go.transform != world) built.Add(go.transform);
+                    ScanNonFinite("the streamed walks (what stood at the end)", built);
                     if (s != null) s.Teardown();
                     foreach (GameObject go in SceneRoots())
                         if (!before.Contains(go)) Object.DestroyImmediate(go);
@@ -1280,9 +1309,10 @@ namespace CloneZ
                 var worst = new List<StepTiming>(slow.Values);
                 worst.Sort((a, b) => b.maxMs.CompareTo(a.maxMs));
                 for (int i = 0; i < worst.Count && i < 6; i++) r.slowest.Add(worst[i]);
-                s.Census(out r.pieces, out r.meshes, out r.vertices, out r.regions);
-                r.managedMB = Math.Round(GC.GetTotalMemory(false) / 1048576.0, 1);
+                s.Census(out r.pieces, out r.litePieces, out r.meshes, out r.vertices, out r.regions);
+                r.managedMB = Math.Round(GC.GetTotalMemory(true) / 1048576.0, 1);
                 r.totalMB = Math.Round(Profiler.GetTotalAllocatedMemoryLong() / 1048576.0, 1);
+                r.pooledMB = Math.Round(RaidMesh.PooledBytes / 1048576.0, 1);
                 Note("route " + name + ": " + frames + " frames, mean " + F2(r.meanMs) + " ms, p99 " + F2(r.p99Ms) + " ms, max " + F2(r.maxMs)
                     + " ms (" + r.longestStep + "), " + r.finished + " pieces built, " + r.unloaded + " let go, " + r.holeFrames + " frames on unbuilt ground");
                 return r;
@@ -1340,7 +1370,7 @@ namespace CloneZ
                 md.Append("## Streaming performance\n\n");
                 if (p.detail.Count > 0)
                 {
-                    md.Append("### Lite against Full\n\nEach test piece built in both details, warm, back to back (Lite should cost at most a quarter of Full).\n\n")
+                    md.Append("### Lite against Full\n\nEach test piece built in both details, warm, three times each in turn; the middle run of each is shown (Lite should cost at most a quarter of Full).\n\n")
                         .Append("| piece | Full ms | Lite ms | Lite/Full | slowest step Full | slowest step Lite | vertices Full / Lite | objects Full / Lite ")
                         .Append("| renderers Full / Lite | colliders Full / Lite | lights Full / Lite |\n|---|--:|--:|--:|---|---|---|---|---|---|---|\n");
                     foreach (DetailPair d in p.detail)
@@ -1386,8 +1416,10 @@ namespace CloneZ
                             .Append(Esc(r.longestStep)).Append(' ').Append(F1(r.longestStepMs)).Append(" | ").Append(r.finished).Append(" (").Append(r.finishedFull)
                             .Append(" / ").Append(r.finishedLite).Append(") | ").Append(r.upgraded).Append(" | ").Append(r.unloaded).Append(" | ")
                             .Append(r.ownBuiltAfter < 0 ? "never" : F1(r.ownBuiltAfter)).Append(" | ").Append(r.ringAfter < 0 ? "never" : F1(r.ringAfter)).Append(" | ")
-                            .Append(r.holeFrames).Append(" / ").Append(r.ringFrames).Append(" | ").Append(r.pieces).Append(" / ").Append(F0(r.meshes)).Append(" / ")
-                            .Append(F0(r.vertices)).Append(" | ").Append(r.regions).Append(" | ").Append(F0(r.managedMB)).Append(" / ").Append(F0(r.totalMB)).Append(" |\n");
+                            .Append(r.holeFrames).Append(" / ").Append(r.ringFrames).Append(" | ").Append(r.pieces).Append(r.litePieces > 0 ? " (" + r.litePieces + " Lite)" : "")
+                            .Append(" / ").Append(F0(r.meshes)).Append(" / ")
+                            .Append(F0(r.vertices)).Append(" | ").Append(r.regions).Append(" | ").Append(F0(r.managedMB)).Append(" / ").Append(F0(r.totalMB))
+                            .Append(r.pooledMB > 0 ? " (pool " + F0(r.pooledMB) + ")" : "").Append(" |\n");
                     md.Append('\n');
                     foreach (RouteReport r in p.routes)
                     {
@@ -1404,6 +1436,155 @@ namespace CloneZ
                     md.Append('\n');
                     LogSection(md, "Logged while walking and driving", p.routesLog);
                 }
+            }
+
+            // The meshes that aren't finite numbers, right under the start square's counts: they're errors.
+            private void NonFiniteMarkdown(StringBuilder md)
+            {
+                NonFiniteReport n = _r.nonFinite;
+                if (n.meshes == 0 && n.baked.Count == 0) return;
+                md.Append("### Meshes that aren't finite numbers\n\n");
+                if (n.offenders.Count == 0 && n.baked.Count == 0)
+                {
+                    md.Append("None: every one of the ").Append(F0(n.meshes)).Append(" meshes checked (the square, the test chunks, what stood at the end ")
+                        .Append("of the streamed walks) has finite positions, normals and bounds, and RaidMesh baked no NaN or infinite vertex.\n\n");
+                    return;
+                }
+                md.Append("**").Append(n.offenders.Count + n.baked.Count).Append(" error(s).** A mesh with a NaN or infinite vertex is skipped whole by ")
+                    .Append("the NavMesh bake (`RuntimeNavMeshBuilder: Source mesh has invalid vertex data`), leaving a hole. ")
+                    .Append(F0(n.meshes)).Append(" meshes checked.\n\n");
+                if (n.offenders.Count > 0)
+                {
+                    md.Append("In the scene (where it hangs, the mesh, what's wrong):\n\n");
+                    foreach (string s in n.offenders) md.Append("- ").Append(Esc(s)).Append('\n');
+                    md.Append('\n');
+                }
+                if (n.baked.Count > 0)
+                {
+                    md.Append("Baked by RaidMesh with such vertices (it folded them away, so the meshes are sound; the geometry asked for wasn't):\n\n");
+                    foreach (string s in n.baked) md.Append("- ").Append(Esc(s)).Append('\n');
+                    md.Append('\n');
+                }
+            }
+            #endregion
+
+            #region Non-finite geometry
+            // The roots' children grouped by their names with the digits folded ("Walls 1234" and "Walls 98" are "Walls #"),
+            // counted, the ones with the most material slots first (at most <paramref name="max"/>).
+            private static List<SceneCounts> Groups(List<Transform> roots, int max)
+            {
+                var byName = new Dictionary<string, List<Transform>>();
+                var order = new List<string>();
+                foreach (Transform root in roots)
+                {
+                    if (root == null) continue;
+                    foreach (Transform child in root)
+                    {
+                        string key = root.name + "/" + Fold(child.name);
+                        if (!byName.TryGetValue(key, out List<Transform> list))
+                        {
+                            byName[key] = list = new List<Transform>();
+                            order.Add(key);
+                        }
+                        list.Add(child);
+                    }
+                }
+                var all = new List<SceneCounts>(order.Count);
+                foreach (string key in order) all.Add(Count(key, byName[key]));
+                all.Sort((a, b) => b.materialSlots.CompareTo(a.materialSlots));
+                if (all.Count > max) all.RemoveRange(max, all.Count - max);
+                return all;
+            }
+
+            private static string Fold(string name)
+            {
+                var sb = new StringBuilder(name.Length);
+                bool digits = false;
+                foreach (char ch in name)
+                {
+                    if (char.IsDigit(ch))
+                    {
+                        if (!digits) sb.Append('#');
+                        digits = true;
+                    }
+                    else
+                    {
+                        sb.Append(ch);
+                        digits = false;
+                    }
+                }
+                return sb.ToString();
+            }
+            private readonly List<Vector3> _scanV = new List<Vector3>(1 << 14), _scanN = new List<Vector3>(1 << 14);
+            private int _bakedSeen;
+
+            // Every mesh under <paramref name="roots"/> (once each) checked for positions, normals and bounds that aren't finite
+            // numbers: each offender listed with its place in the hierarchy, and counted as a map error.
+            private void ScanNonFinite(string where, IEnumerable<Transform> roots)
+            {
+                NonFiniteReport r = _r.nonFinite;
+                var seen = new HashSet<Mesh>();
+                foreach (Transform root in roots)
+                {
+                    if (root == null) continue;
+                    foreach (MeshFilter mf in root.GetComponentsInChildren<MeshFilter>(true))
+                    {
+                        Mesh m = mf.sharedMesh;
+                        // An object standing at a NaN or infinite place makes its mesh as bad for the NavMesh bake.
+                        if (!Finite(mf.transform.localToWorldMatrix))
+                        {
+                            _mapErrors++;
+                            string at = where + ": " + RaidMesh.PathOf(mf.transform) + " (mesh '" + (m != null ? m.name : "none") + "'): its place isn't finite ("
+                                + mf.transform.position.ToString("F2") + ")";
+                            if (r.offenders.Count < 100) r.offenders.Add(at);
+                            Note("NON-FINITE " + at);
+                        }
+                        if (m == null || !seen.Add(m)) continue;
+                        r.meshes++;
+                        Bounds b = m.bounds;
+                        bool bounds = !Finite(b.center) || !Finite(b.extents);
+                        int positions = 0, normals = 0, n = 0;
+                        if (m.isReadable)
+                        {
+                            m.GetVertices(_scanV);
+                            n = _scanV.Count;
+                            for (int i = 0; i < n; i++) if (!Finite(_scanV[i])) positions++;
+                            m.GetNormals(_scanN);
+                            for (int i = 0; i < _scanN.Count; i++) if (!Finite(_scanN[i])) normals++;
+                        }
+                        if (!bounds && positions == 0 && normals == 0) continue;
+                        _mapErrors++;
+                        string line = where + ": " + RaidMesh.PathOf(mf.transform) + " (mesh '" + m.name + "'): " + positions + " of " + n
+                            + " positions, " + normals + " normals" + (bounds ? ", the bounds" : "") + " not finite";
+                        if (r.offenders.Count < 100) r.offenders.Add(line);
+                        Note("NON-FINITE " + line);
+                    }
+                }
+                _scanV.Clear();
+                _scanN.Clear();
+            }
+
+            // The meshes RaidMesh baked NaN or infinite vertices into (harmless) since the last look, put down to <paramref name="stage"/>.
+            private void TakeBaked(string stage)
+            {
+                lock (RaidMesh.NonFinite)
+                {
+                    for (; _bakedSeen < RaidMesh.NonFinite.Count; _bakedSeen++)
+                    {
+                        _mapErrors++;
+                        if (_r.nonFinite.baked.Count < 100) _r.nonFinite.baked.Add(stage + ": " + RaidMesh.NonFinite[_bakedSeen]);
+                    }
+                }
+            }
+
+            private static bool Finite(Vector3 v) => !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z)
+                || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z));
+
+            private static bool Finite(Matrix4x4 m)
+            {
+                for (int i = 0; i < 16; i++)
+                    if (float.IsNaN(m[i]) || float.IsInfinity(m[i])) return false;
+                return true;
             }
             #endregion
         }
