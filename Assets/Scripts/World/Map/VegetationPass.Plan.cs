@@ -701,6 +701,9 @@ namespace CloneZ
         private int _wireTick;
         private static readonly List<Vector3> s_WireVerts = new List<Vector3>(4096);
 
+        /// <summary>How many pieces of overhead wire the plan read back (see <see cref="IndexWires"/>).</summary>
+        public int WirePieces => _wires.Count;
+
         /// <summary>
         /// Reads the overhead wires back from the meshes the streetscape pass hung under the site's overhead root (one
         /// "Wires" object per cell, every strand a run of rings of three vertices round it): each stretch between one
@@ -1070,6 +1073,9 @@ namespace CloneZ
             public bool Road;
             /// <summary>Along the driveway, from the street towards the house.</summary>
             public Vector2 Dir;
+            /// <summary>The vehicle it was planned for (when <see cref="Bodied"/>: its length set where it stands).</summary>
+            public CarBody Body;
+            public bool Bodied;
         }
 
         /// <summary>The driveways' cars (<see cref="VehiclePass.PlanDriveways"/>).</summary>

@@ -315,7 +315,10 @@ namespace CloneZ
             if (c.Overlaps(at, axis, hl + 0.2f, hw + 0.15f)) return false;
             float reach = Mathf.Max(0f, hl - hw);
             for (int k = -1; k <= 1; k++)
-                if (c.Plan.WallDistance(at + axis * (k * reach), hw + 1f) < hw + 0.15f) return false;
+            {
+                Vector2 q = at + axis * (k * reach);
+                if (c.Plan.WallDistance(q, hw + 1f) < hw + 0.15f || c.Plan.NearDoor(q, hw + 0.9f)) return false;
+            }
             Vector3 at3 = To3(at, 0f);
             RaidMesh m = c.Site.Town.Out.Solid(at3);
             m.SetFrame(at3, Quaternion.Euler(0f, yaw, 0f) * tilt);
@@ -467,7 +470,8 @@ namespace CloneZ
             long key = home != null ? NaturePlan.Combine(home.Data.id, 960)
                 : NaturePlan.Combine((long)System.Math.Round(plan.AbsX(d.At.x) * 2.0), (long)System.Math.Round(plan.AbsZ(d.At.y) * 2.0));
             if (MapStyle.Unit(key, SaltHasCar) < 0.2f) return;
-            float len = CarKit.Size(BodyOf(plan, d.At, home, key)).z;
+            CarBody body = BodyOf(plan, d.At, home, key);
+            float len = CarKit.Size(body).z;
             if (!plan.Roadside(d.At, d.Dir, out float edge, out float back)) back = edge + 0.5f;
             float walk = back - edge + 0.3f;
             float centre = d.Length - len * 0.5f - 0.4f;
@@ -481,7 +485,10 @@ namespace CloneZ
             }
             bool nose = MapStyle.Unit(key, SaltFace) < 0.7f;
             float yaw = Yaw(nose ? d.Dir : -d.Dir) + (MapStyle.Unit(key, SaltJitter) - 0.5f) * 5f;
-            plan.Driveways.Add(new NaturePlan.CarSpot { At = at, Yaw = yaw, Key = key, Home = home, Mouth = d.At + d.Dir * walk, Road = true, Dir = d.Dir });
+            plan.Driveways.Add(new NaturePlan.CarSpot
+            {
+                At = at, Yaw = yaw, Key = key, Home = home, Mouth = d.At + d.Dir * walk, Road = true, Dir = d.Dir, Body = body, Bodied = true,
+            });
             plan.KeepRect(at, d.Dir, len * 0.5f + 0.2f, 1.2f, NaturePlan.KeepKind.Car);
             for (int k = -1; k <= 1; k++) site.Take(at + d.Dir * (k * 1.7f), 1.1f);
         }
@@ -592,7 +599,7 @@ namespace CloneZ
         {
             foreach (NaturePlan.CarSpot s in c.Plan.Driveways)
             {
-                CarLook look = LookFor(s.Key, BodyOf(c.Plan, s.At, s.Home, s.Key), 0.62f);
+                CarLook look = LookFor(s.Key, s.Bodied ? s.Body : BodyOf(c.Plan, s.At, s.Home, s.Key), 0.62f);
                 if (!Park(c, s.At, s.Yaw, look, s.Key, Quaternion.identity)) continue;
                 if (!s.Road && s.StripWidth > 0f) Strip(c, s.Mouth, s.At + (s.At - s.Mouth).normalized * 2.6f, s.StripWidth);
                 if (c.Site.StepDue) yield return "driveway cars";

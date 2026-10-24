@@ -91,7 +91,7 @@ namespace CloneZ
             public readonly NaturePlan Plan;
             public readonly bool Lite;
             public readonly int Max, MaxRing;
-            public int Count, Ring;
+            public int Count, Ring, Fitted, Wired;
             public string Diag = "";
             public readonly List<NaturePlan.CellPoint> Cells = new List<NaturePlan.CellPoint>(512);
             public readonly List<NaturePlan.Station> Stations = new List<NaturePlan.Station>(128);
@@ -174,10 +174,12 @@ namespace CloneZ
             yield return "fence rows";
             foreach (string step in Sweep(p)) yield return step;
             Diag(p, "sweep", ref before);
-            if (!site.Chunked) Debug.Log("[NatureDiag] trees " + p.Count + " (ring " + p.Ring + "): " + p.Diag);
+            if (!site.Chunked)
+                Debug.Log("[NatureDiag] trees " + p.Count + " (ring " + p.Ring + "): " + p.Diag + "fitted to walls or wires " + p.Fitted
+                    + " (wires " + p.Wired + ", of " + plan.WirePieces + " wire pieces read)");
         }
 
-        // Temporary: what each source planted, for tuning.
+        // What each source planted, for the fixed map's one-line summary in the log (the map harness reads it).
         private static void Diag(Planting p, string what, ref int before)
         {
             p.Diag += what + " " + (p.Count - before) + ", ";
@@ -202,7 +204,13 @@ namespace CloneZ
                 if (checkGrid && !site.Free(at, room)) return false;
                 var fit = default(TreeRoom);
                 if (p.Lite) tier = TreeTier.Blob;
-                else if (!Fit(p.Plan, at, kind, yaw, ref height, ref fit)) return false;
+                else
+                {
+                    float wanted = height;
+                    if (!Fit(p.Plan, at, kind, yaw, ref height, ref fit, out bool wired)) return false;
+                    if (fit.Count > 0 || height < wanted) p.Fitted++;
+                    if (wired) p.Wired++;
+                }
                 Vector3 at3 = To3(at, 0f);
                 RaidMesh m = site.Town.Out.Solid(at3);
                 m.SetFrame(at3, yaw);
@@ -225,7 +233,7 @@ namespace CloneZ
             Land land = p.Plan.LandAt(at);
             if (land == Land.Water || land == Land.Lot || land == Land.Pitch) return false;
             var ringFit = default(TreeRoom);
-            if (!Fit(p.Plan, at, kind, yaw, ref height, ref ringFit)) return false;
+            if (!Fit(p.Plan, at, kind, yaw, ref height, ref ringFit, out bool _)) return false;
             Vector3 far = To3(at, 0f);
             RaidMesh fm = site.Town.Far.Solid(far);
             fm.SetFrame(far, yaw);
@@ -244,8 +252,9 @@ namespace CloneZ
         /// (<paramref name="room"/>, in the tree's own frame, turned <paramref name="yaw"/>). False when what's left isn't
         /// worth planting.
         /// </summary>
-        private static bool Fit(NaturePlan plan, Vector2 at, TreeKind kind, float yaw, ref float height, ref TreeRoom room)
+        private static bool Fit(NaturePlan plan, Vector2 at, TreeKind kind, float yaw, ref float height, ref TreeRoom room, out bool wired)
         {
+            wired = false;
             bool conifer = TreeKit.Conifer(kind);
             float reach = TreeKit.Reach(kind, height) + 0.5f;
             plan.NearestWalls(at, reach, out Vector2 dir0, out float wall0, out Vector2 dir1, out float wall1);
@@ -260,6 +269,7 @@ namespace CloneZ
             }
             if (plan.WireNear(at, reach, height + 0.5f, out Vector2 wireDir, out float wire, out float wireY))
             {
+                wired = true;
                 if (conifer) height = Mathf.Min(height, wireY - 0.6f + wire / TreeKit.Skirt(kind));
                 else if (wire < 1.8f) height = Mathf.Min(height, wireY - 0.8f);
                 else room.Add(Azimuth(wireDir) - yaw, wire);
