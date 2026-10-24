@@ -660,11 +660,17 @@ namespace CloneZ
                     Root = root.transform, Overhead = over.transform, Offset = middle, Detail = KentuckyMap.Detail.Full,
                 };
                 List<Mesh> outerMeshes = RaidMesh.CreatedMeshes;
+                List<string> outerSigns = DecorTextures.SignsUsed;
                 Vector3 outerUv = RaidMesh.PlanarOrigin;
                 object owner = Shelter.Owner;
+                Func<string, bool> gate = ItemDatabase.LootGate;
+                Action<string, int> rolled = ItemDatabase.LootRolled;
                 RaidMesh.CreatedMeshes = meshes;
+                DecorTextures.SignsUsed = new List<string>();
                 RaidMesh.PlanarOrigin = new Vector3((float)Wrap((cx + 0.5) * size), 0f, (float)Wrap((cz + 0.5) * size));
                 Shelter.Owner = root;
+                ItemDatabase.LootGate = null;
+                ItemDatabase.LootRolled = null;
                 try
                 {
                     foreach (string _ in KentuckyMap.ChunkSteps(job)) { }
@@ -672,8 +678,11 @@ namespace CloneZ
                 finally
                 {
                     RaidMesh.CreatedMeshes = outerMeshes;
+                    DecorTextures.SignsUsed = outerSigns;
                     RaidMesh.PlanarOrigin = outerUv;
                     Shelter.Owner = owner;
+                    ItemDatabase.LootGate = gate;
+                    ItemDatabase.LootRolled = rolled;
                 }
                 root.transform.position = middle;
                 over.transform.position = middle;
