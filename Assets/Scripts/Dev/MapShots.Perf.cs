@@ -1530,6 +1530,15 @@ namespace CloneZ
                     foreach (MeshFilter mf in root.GetComponentsInChildren<MeshFilter>(true))
                     {
                         Mesh m = mf.sharedMesh;
+                        // An object standing at a NaN or infinite place makes its mesh as bad for the NavMesh bake.
+                        if (!Finite(mf.transform.localToWorldMatrix))
+                        {
+                            _mapErrors++;
+                            string at = where + ": " + RaidMesh.PathOf(mf.transform) + " (mesh '" + (m != null ? m.name : "none") + "'): its place isn't finite ("
+                                + mf.transform.position.ToString("F2") + ")";
+                            if (r.offenders.Count < 100) r.offenders.Add(at);
+                            Note("NON-FINITE " + at);
+                        }
                         if (m == null || !seen.Add(m)) continue;
                         r.meshes++;
                         Bounds b = m.bounds;
@@ -1570,6 +1579,13 @@ namespace CloneZ
 
             private static bool Finite(Vector3 v) => !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z)
                 || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z));
+
+            private static bool Finite(Matrix4x4 m)
+            {
+                for (int i = 0; i < 16; i++)
+                    if (float.IsNaN(m[i]) || float.IsInfinity(m[i])) return false;
+                return true;
+            }
             #endregion
         }
     }
