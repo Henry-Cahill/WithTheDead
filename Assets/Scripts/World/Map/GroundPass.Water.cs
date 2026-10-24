@@ -333,8 +333,7 @@ namespace CloneZ
             for (int i = 0, j = whole.Count - 1; i < whole.Count; j = i++)
             {
                 Vector2 a = whole[j], c = whole[i];
-                if (CutVertex(g, a, g.GridX, g.GridZ) && CutVertex(g, c, g.GridX, g.GridZ)
-                    && (Mathf.Abs(a.x - c.x) < 0.05f || Mathf.Abs(a.y - c.y) < 0.05f)) continue;
+                if (OnBorder(a, c, o.Region)) continue;   // cut along the region's edge: the water carries on beyond
                 d = Mathf.Min(d, MapGeometry.DistanceToSegment(p, a, c));
             }
             return d;

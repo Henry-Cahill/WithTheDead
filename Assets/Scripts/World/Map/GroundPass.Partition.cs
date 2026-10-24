@@ -31,6 +31,9 @@ namespace CloneZ
             /// <summary>See <see cref="Ground.Whole"/>.</summary>
             public List<Vector2> Whole;
             public bool WholeDone;
+            /// <summary>On a streamed piece, the area's region in site-local metres, once <see cref="Whole"/> is known:
+            /// the whole outline's edges along it are cuts, not shores.</summary>
+            public Rect Region;
             /// <summary>For water, what it looks like in January (see <see cref="LookOf"/>).</summary>
             public WaterLook Look;
             public bool LookDone;
