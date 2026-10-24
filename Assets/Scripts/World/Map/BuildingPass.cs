@@ -84,6 +84,11 @@ namespace CloneZ
             }
             List<Vector2> p = f.Pts;
             int door = DoorEdge(site, f);
+            float groundTop = Mathf.Min(height, GroundStorey);
+            // Where its walls and roof are drawn, so the isometric cutaway can lift them off around the survivor.
+            BuildingShell shell = site.Shell(f);
+            shell.WallTop = groundTop;
+            shell.Top = height;
             // What the interiors get to furnish: a building with a door, its one floor so far the ground's.
             EnterableBuilding record = door < 0 ? null : new EnterableBuilding
             {
@@ -93,7 +98,6 @@ namespace CloneZ
             Vector2 doorPoint = new Vector2(float.MaxValue, float.MaxValue);
             float doorYaw = 0f;
             Vector2 doorOutward = Vector2.zero;
-            float groundTop = Mathf.Min(height, GroundStorey);
             bool home = Residential(b.kind);
             for (int i = 0; i < p.Count; i++)
             {
@@ -103,12 +107,13 @@ namespace CloneZ
                 Vector2 d = (c - a) / len, outward = new Vector2(d.y, -d.x);   // anticlockwise ring: outside is right
                 float yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
                 Vector2 inset = -outward * (Thick * 0.5f);   // the wall stands just inside the mapped outline
+                RaidMesh walls = shell.WallsFacing(outward);
                 if (i == door)
                 {
                     float d0 = len * 0.5f - DoorWidth * 0.5f, d1 = len * 0.5f + DoorWidth * 0.5f;
-                    Wall(site, a, d, inset, -Thick * 0.5f, d0, 0f, groundTop, yaw, outside, true);
-                    Wall(site, a, d, inset, d1, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
-                    Wall(site, a, d, inset, d0, d1, DoorHeight, groundTop, yaw, outside, true);
+                    Wall(site, walls, a, d, inset, -Thick * 0.5f, d0, 0f, groundTop, yaw, outside, true);
+                    Wall(site, walls, a, d, inset, d1, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
+                    Wall(site, walls, a, d, inset, d0, d1, DoorHeight, groundTop, yaw, outside, true);
                     doorPoint = a + d * (len * 0.5f);
                     doorYaw = yaw;
                     doorOutward = outward;
@@ -117,11 +122,11 @@ namespace CloneZ
                     DoorFrame(site, a, d, len * 0.5f, yaw, outward, outside);
                     if (Retail(b)) Awning(site, doorPoint, doorOutward, doorYaw, b, rng);
                 }
-                else Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
+                else Wall(site, walls, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                 if (height > groundTop)
-                    Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
+                    Wall(site, shell.Upper, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
                 if (b.kind != "ruin" && b.kind != "silo")
-                    Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside, i, record);
+                    Windows(site, shell, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside, i, record);
                 if (home && i != door) WallRail(site, a, d, outward, len, yaw);
             }
             if (door >= 0)
@@ -138,7 +143,7 @@ namespace CloneZ
             List<int> tris = MapGeometry.Triangulate(p);
             Vector3 middle = To3(f.Middle, 0f);
             RaidMesh floor = site.Town.Out.Flat(middle);
-            RaidMesh over = site.Overhead.At(middle);
+            RaidMesh ceilings = site.Overhead.At(middle);
             Surf floorSurf = FloorOf(b, rng);
             Surf roof = RoofSurf(b);
             float ceiling = Mathf.Min(CeilingY, height - 0.05f);
@@ -148,8 +153,8 @@ namespace CloneZ
                 Vector2 A = p[tris[t]], B = p[tris[t + 1]], C = p[tris[t + 2]];
                 floor.Tri(To3(A, 0.02f), To3(B, 0.02f), To3(C, 0.02f), floorSurf);   // face up; the navmesh covers it
                 if (!roofed) continue;
-                over.Tri(To3(A, height), To3(B, height), To3(C, height), roof);   // the snowy roof
-                over.Tri(To3(A, ceiling), To3(C, ceiling), To3(B, ceiling), DecorMaterials.Ceiling);   // face down
+                shell.Upper.Tri(To3(A, height), To3(B, height), To3(C, height), roof);   // the snowy roof
+                ceilings.Tri(To3(A, ceiling), To3(C, ceiling), To3(B, ceiling), DecorMaterials.Ceiling);   // face down
             }
             if (roofed)
                 Shelter.Register(site.ToWorld(new Bounds(new Vector3(f.Bounds.center.x, GroundStorey * 0.5f, f.Bounds.center.y),
@@ -160,7 +165,9 @@ namespace CloneZ
             MapGameplay.Loot(site, f, rng, doorPoint);
         }
 
-        private static void Wall(Site site, Vector2 a, Vector2 d, Vector2 inset, float s0, float s1, float y0, float y1,
+        // One run of wall into <paramref name="into"/> (the shell's walls for the ground storey, its upper part above),
+        // with a collider when it's <paramref name="solid"/>.
+        private static void Wall(Site site, RaidMesh into, Vector2 a, Vector2 d, Vector2 inset, float s0, float s1, float y0, float y1,
             float yaw, in Surf surf, bool solid)
         {
             float len = s1 - s0, h = y1 - y0;
@@ -168,18 +175,17 @@ namespace CloneZ
             Vector2 c = a + d * ((s0 + s1) * 0.5f) + inset;
             var center = new Vector3(c.x, (y0 + y1) * 0.5f, c.y);
             var size = new Vector3(len, h, Thick);
-            if (solid)
-            {
-                site.Town.Out.Solid(center).Box(center, size, yaw, surf);
-                site.Town.PropCollider(center, size, yaw);
-            }
-            else site.Overhead.At(center).Box(center, size, yaw, surf);
+            into.Box(center, size, yaw, surf);
+            if (solid) site.Town.PropCollider(center, size, yaw);
         }
 
-        // A gas-station or drive-through canopy: posts with colliders, and the roof overhead.
+        // A gas-station or drive-through canopy: posts with colliders, and the roof overhead (shown from outside).
         private static void Canopy(Site site, Footprint f, in Surf posts)
         {
             const float top = 4.2f;
+            BuildingShell shell = site.Shell(f);
+            shell.WallTop = 0f;
+            shell.Top = top;
             int step = Mathf.Max(1, f.Pts.Count / 4);
             for (int i = 0; i < f.Pts.Count; i += step)
             {
@@ -190,7 +196,7 @@ namespace CloneZ
                 site.Town.PropCollider(center, size, 0f);
             }
             List<int> tris = MapGeometry.Triangulate(f.Pts);
-            RaidMesh over = site.Overhead.At(To3(f.Middle, 0f));
+            RaidMesh over = shell.Upper;
             Surf underside = DecorPalette.Matte(new Color(0.82f, 0.82f, 0.80f));
             for (int t = 0; t + 2 < tris.Count; t += 3)
             {

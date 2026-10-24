@@ -5,7 +5,8 @@ using static CloneZ.KentuckyMap;
 namespace CloneZ
 {
     // On the roofs: eave trim with a thin drift of snow along it and a brick chimney on every home raised whole, and a
-    // skin of snow on three roofs in ten. All of it overhead (shown only from inside views), or as scenery past the edge.
+    // skin of snow on three roofs in ten. All of it goes with the building's roof (shown from outside, cut away around
+    // the survivor; see BuildingShell), or as scenery past the edge.
     internal static partial class BuildingPass
     {
         private const float EaveHeight = 0.12f;
@@ -36,6 +37,7 @@ namespace CloneZ
         {
             float y = roofY + EaveHeight * 0.5f;
             Surf roof = RoofSurf(f.Data);
+            RaidMesh m = UpperOf(site, f);
             List<Vector2> pts = f.Pts;
             for (int i = 0; i < pts.Count; i++)
             {
@@ -45,9 +47,9 @@ namespace CloneZ
                 if (len < 0.05f) continue;
                 Vector3 at = To3((a + b) * 0.5f, y);
                 Quaternion along = Quaternion.LookRotation(new Vector3(d.x, 0f, d.y));
-                site.Overhead.At(at).Box(at, new Vector3(EaveDepth, EaveHeight, len), along, roof);
+                m.Box(at, new Vector3(EaveDepth, EaveHeight, len), along, roof);
                 Vector3 snow = at + new Vector3(0f, EaveHeight * 0.5f + 0.01f, 0f);
-                site.Overhead.At(snow).Box(snow, new Vector3(EaveDepth, 0.02f, len), along, DecorMaterials.Snow);
+                m.Box(snow, new Vector3(EaveDepth, 0.02f, len), along, DecorMaterials.Snow);
             }
         }
 
@@ -56,15 +58,16 @@ namespace CloneZ
         {
             Vector3 at = To3(f.Middle, roofY + ChimneyHeight * 0.5f);
             Surf brick = DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[MapStyle.Pick(f.Data.id, SaltChimneyBrick, BrickColors.Length)]);
+            RaidMesh m = UpperOf(site, f);
             float shaft = ChimneyHeight * 0.9f;
-            site.Overhead.At(at).Cylinder(at, ChimneyBase * 0.5f, shaft, 6, brick);
+            m.Cylinder(at, ChimneyBase * 0.5f, shaft, 6, brick);
             Vector3 cap = at + new Vector3(0f, shaft + ChimneyHeight * 0.05f, 0f);
-            site.Overhead.At(cap).Box(cap, new Vector3(ChimneyBase, ChimneyHeight * 0.1f, ChimneyBase), Quaternion.identity, brick);
+            m.Box(cap, new Vector3(ChimneyBase, ChimneyHeight * 0.1f, ChimneyBase), Quaternion.identity, brick);
             Vector3 vent = at + new Vector3(ChimneyBase * 0.55f, shaft * 0.5f, 0f);
-            site.Overhead.At(vent).Cylinder(vent, ChimneyBase * 0.15f, ChimneyHeight * 0.2f, 6, brick);
+            m.Cylinder(vent, ChimneyBase * 0.15f, ChimneyHeight * 0.2f, 6, brick);
             if (MapStyle.Unit(f.Data.id, SaltChimneyIce) >= 0.15f) return;
             Vector3 ice = cap + new Vector3(0f, ChimneyHeight * 0.06f, 0f);
-            site.Overhead.At(ice).Box(ice, new Vector3(ChimneyBase * 1.1f, 0.02f, ChimneyBase * 1.1f), Quaternion.identity, DecorMaterials.Snow);
+            m.Box(ice, new Vector3(ChimneyBase * 1.1f, 0.02f, ChimneyBase * 1.1f), Quaternion.identity, DecorMaterials.Snow);
         }
 
         // A skin of snow just over the roof (a canopy's roof inside the square is at its own height).
@@ -73,10 +76,19 @@ namespace CloneZ
             float roofY = inside && f.Data.kind == "canopy" ? 4.2f : HeightOf(f.Data);
             float y = roofY + 0.011f;
             var at = new Vector3(f.Middle.x, roofY, f.Middle.y);
-            RaidMesh roof = inside ? site.Overhead.At(at) : site.Town.Far.Solid(at);
+            RaidMesh roof = inside ? UpperOf(site, f) : site.Town.Far.Solid(at);
             List<int> tris = MapGeometry.Triangulate(f.Pts);
             for (int i = 0; i + 2 < tris.Count; i += 3)
                 roof.Tri(To3(f.Pts[tris[i]], y), To3(f.Pts[tris[i + 1]], y), To3(f.Pts[tris[i + 2]], y), DecorMaterials.Snow);
+        }
+
+        // The mesh a building's roof furniture goes into: its shell's upper part, or the shared roof batch for a building
+        // without a shell.
+        private static RaidMesh UpperOf(Site site, Footprint f)
+        {
+            for (int i = site.Shells.Count - 1; i >= 0; i--)
+                if (site.Shells[i].Footprint == f) return site.Shells[i].Upper;
+            return site.Roofs.At(To3(f.Middle, 0f));
         }
     }
 }

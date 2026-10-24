@@ -35,7 +35,8 @@ namespace CloneZ
 
             Vector3 awning = To3(doorPt + outward * (depth * 0.5f), DoorHeight + aboveDoor);
             Surf wood = DecorMaterials.WoodFloor(AwningColour(b));
-            site.Overhead.At(awning).Box(awning, new Vector3(width, thickness, depth), yaw, wood);
+            // Up in the visible roof batch: shown from outside, and kept out of the NavMesh bake.
+            site.Roofs.At(awning).Box(awning, new Vector3(width, thickness, depth), yaw, wood);
 
             Vector3 footboard = To3(doorPt + outward * (depth + footboardDepth * 0.5f), footboardHeight * 0.5f);
             var footboardSize = new Vector3(width, footboardHeight, footboardDepth);
@@ -67,7 +68,7 @@ namespace CloneZ
             for (int i = 0; i < slats; i++)
             {
                 var slat = new Vector3(awning.x, slatY + i * (aboveDoor / (slats + 1)), awning.z);
-                site.Overhead.At(slat).Box(slat, new Vector3(width * 0.95f, slatThickness, depth * 0.9f), yaw, wood);
+                site.Roofs.At(slat).Box(slat, new Vector3(width * 0.95f, slatThickness, depth * 0.9f), yaw, wood);
             }
 
             Surf iron = DecorPalette.Metal(new Color(0.45f, 0.45f, 0.48f));
@@ -75,7 +76,7 @@ namespace CloneZ
             for (int k = 0; k < 4; k++)
             {
                 Vector3 corner = awning + new Vector3((k % 2 == 0 ? -0.5f : 0.5f) * width, aboveDoor, (k < 2 ? -0.5f : 0.5f) * depth);
-                site.Overhead.At(corner).Box(corner, bracketSize, 0f, iron);
+                site.Roofs.At(corner).Box(corner, bracketSize, 0f, iron);
                 site.Town.PropCollider(corner, bracketSize, 0f);
             }
 

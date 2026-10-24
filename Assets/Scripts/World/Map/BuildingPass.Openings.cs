@@ -44,8 +44,8 @@ namespace CloneZ
         // the wall, or negative for none), each with a wooden frame, a sill and a shutter either side. The ground
         // floor's go with the walls, the upper storeys' overhead; the ground floor's are listed in <paramref name="record"/>
         // (when there is one) as the openings of wall <paramref name="edge"/>.
-        private static void Windows(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float height, float doorAt,
-            System.Random rng, in Surf outside, int edge, EnterableBuilding record)
+        private static void Windows(Site site, BuildingShell shell, Vector2 a, Vector2 d, Vector2 outward, float len, float height,
+            float doorAt, System.Random rng, in Surf outside, int edge, EnterableBuilding record)
         {
             if (len < 2.4f) return;
             int count = Mathf.Max(1, Mathf.FloorToInt(len / 3.2f));
@@ -70,7 +70,7 @@ namespace CloneZ
                 {
                     Vector3 c = To3(at, y);
                     bool ground = y < GroundStorey;
-                    RaidMesh m = ground ? site.Town.Out.Solid(c) : site.Overhead.At(c);
+                    RaidMesh m = ground ? shell.WallsFacing(outward) : shell.Upper;
                     if (ground && record != null)
                         record.Windows.Add(new WindowSpan
                         {
