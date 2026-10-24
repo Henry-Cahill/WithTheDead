@@ -49,7 +49,9 @@ namespace CloneZ
         public Transform WallObjectAt(Vector3 p)
         {
             WallPiece w = PieceAt(p);
-            return w != null ? ObjectOf(w) : Root;
+            if (w != null) return ObjectOf(w);
+            Transform foreign = ForeignWallObject?.Invoke(p);
+            return foreign != null ? foreign : Root;
         }
 
         // The segment at a world point (the same test as WallMeshAt).

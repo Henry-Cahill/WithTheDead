@@ -254,7 +254,8 @@ namespace CloneZ
                 float along = r.AlongX ? p.x : p.z;
                 if (Mathf.Abs(across - r.Coord) < 0.2f && along >= w.S - 0.01f && along <= w.E + 0.01f) return w.Mesh;
             }
-            return Static;
+            RaidMesh foreign = ForeignWallMesh?.Invoke(p);
+            return foreign ?? Static;
         }
 
         /// <summary>A framed poster on a room wall (local coordinate along the wall), a fixture as the home's pictures are —
@@ -512,7 +513,8 @@ namespace CloneZ
             if (ceil != null) CeilingVisibility.Register(ceil.GetComponent<MeshRenderer>());
 
             Rect f = Footprint;
-            Shelter.Register(new Bounds(new Vector3(f.center.x, WallH * 0.5f, f.center.y), new Vector3(f.width - 0.4f, WallH, f.height - 0.4f)));
+            if (RegisterShelter)
+                Shelter.Register(new Bounds(new Vector3(f.center.x, WallH * 0.5f, f.center.y), new Vector3(f.width - 0.4f, WallH, f.height - 0.4f)));
 
             RunLater();
         }
