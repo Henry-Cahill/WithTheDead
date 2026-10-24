@@ -22,6 +22,8 @@ namespace CloneZ
         private const int SaltLitter = 0x1177;
         private const int MaxParkProps = 200;
 
+        // Every step below may also yield part way through (when the streamed piece's step has used its time slice: see
+        // Site.StepDue); what's built never depends on where it yields.
         internal static IEnumerable<string> Build(Site site)
         {
             var ctx = new Ctx(site);
@@ -29,39 +31,44 @@ namespace CloneZ
             {
                 PowerPass.MappedLines(ctx);
                 Landmarks.Lite(ctx);
-                BarrierPass.Lite(ctx);
-                ctx.Finish();
+                foreach (string step in BarrierPass.Lite(ctx)) yield return step;
+                foreach (string step in ctx.Finish()) yield return step;
                 yield return "landmarks";
                 yield break;
             }
-            PowerPass.PlanStreetLines(ctx);
+            foreach (string step in PowerPass.PlanStreetLines(ctx)) yield return step;
             yield return "utility lines";
             PowerPass.MappedLines(ctx);
             yield return "power lines";
             SignPass.Signals(ctx);
             StreetLights.Plan(ctx);
-            PowerPass.DrawPoles(ctx);
+            foreach (string step in PowerPass.DrawPoles(ctx)) yield return step;
             yield return "utility poles";
-            PowerPass.ServiceDrops(ctx);
-            StreetLights.Draw(ctx);
+            foreach (string step in PowerPass.ServiceDrops(ctx)) yield return step;
+            foreach (string step in StreetLights.Draw(ctx)) yield return step;
             yield return "street lights";
-            SignPass.Signs(ctx);
+            foreach (string step in SignPass.Signs(ctx)) yield return step;
             yield return "signs";
-            StreetFurniture.Build(ctx);
+            foreach (string step in StreetFurniture.Build(ctx)) yield return step;
             yield return "street furniture";
             Landmarks.Build(ctx);
             yield return "landmarks";
             foreach (string step in BarrierPass.Build(ctx)) yield return step;
             yield return "fences and walls";
-            ParkLitter(site);
+            foreach (string step in Litter(site)) yield return step;
             yield return "park litter";
-            ctx.Finish();
+            foreach (string step in ctx.Finish()) yield return step;
             yield return "wires";
         }
 
         /// <summary>Up to five trash bags or bits of litter in every park, anywhere still free, each with a small
         /// collider.</summary>
         internal static void ParkLitter(Site site)
+        {
+            foreach (string _ in Litter(site)) { }
+        }
+
+        private static IEnumerable<string> Litter(Site site)
         {
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
@@ -92,6 +99,7 @@ namespace CloneZ
                     i++;
                 }
                 if (placed >= MaxParkProps) break;
+                if (site.StepDue) yield return "park litter";
             }
         }
     }

@@ -230,11 +230,15 @@ namespace CloneZ
 
         /// <summary>Draws the lamps standing on their own, then makes every burning lamp (on the poles too) a
         /// <see cref="StreetLamp"/>.</summary>
-        internal static void Draw(Ctx ctx)
+        internal static IEnumerable<string> Draw(Ctx ctx)
         {
-            foreach (LampPlan lamp in ctx.Lamps) Draw(ctx, lamp, lamp.Height);
+            foreach (LampPlan lamp in ctx.Lamps)
+            {
+                Draw(ctx, lamp, lamp.Height);
+                if (ctx.Site.StepDue) yield return "street lights";
+            }
             ctx.Lamps.Clear();
-            AttachAll(ctx);
+            foreach (string step in AttachAll(ctx)) yield return step;
         }
 
         private static void Draw(Ctx ctx, LampPlan lamp, float h)
@@ -311,7 +315,7 @@ namespace CloneZ
 
         // Every burning lamp made a StreetLamp. In an editor build the first few get lights of their own, spread over the
         // site: the lamp nearest each 64 m cell's middle first, then each cell's next, nearest the site's middle first.
-        private static void AttachAll(Ctx ctx)
+        private static IEnumerable<string> AttachAll(Ctx ctx)
         {
             List<Burning> burning = ctx.Burning;
             var order = new List<(int rank, float d, long key, int i)>(burning.Count);
@@ -337,7 +341,11 @@ namespace CloneZ
             }
             order.Sort((a, b) => a.rank != b.rank ? a.rank.CompareTo(b.rank) : a.d != b.d ? a.d.CompareTo(b.d) : a.key.CompareTo(b.key));
             int lights = EditorLights(ctx);
-            for (int k = 0; k < order.Count; k++) Attach(ctx, burning[order[k].i], k < lights);
+            for (int k = 0; k < order.Count; k++)
+            {
+                Attach(ctx, burning[order[k].i], k < lights);
+                if (ctx.Site.StepDue) yield return "street lights";
+            }
             burning.Clear();
         }
 

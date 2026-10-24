@@ -40,8 +40,9 @@ namespace CloneZ
 
         /// <summary>The signs: mapped stops and yields, then the crossings' own (stops, blades), shields, limits, one-way
         /// signs, deer crossings.</summary>
-        internal static void Signs(Ctx ctx)
+        internal static IEnumerable<string> Signs(Ctx ctx)
         {
+            Site site = ctx.Site;
             MappedStops(ctx);
             foreach (Crossing c in ctx.Crossings)
             {
@@ -49,9 +50,14 @@ namespace CloneZ
                 if (!c.Controlled) Stops(ctx, c);
                 if (!c.Named) Blades(ctx, c, null);
                 OneWays(ctx, c);
+                if (site.StepDue) yield return "signs";
             }
             foreach (Crossing c in ctx.Crossings)
-                if (ctx.Inside(c.At)) RouteSigns(ctx, c);
+            {
+                if (!ctx.Inside(c.At)) continue;
+                RouteSigns(ctx, c);
+                if (site.StepDue) yield return "signs";
+            }
             Deer(ctx);
         }
 

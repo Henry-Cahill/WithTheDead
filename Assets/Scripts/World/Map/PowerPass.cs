@@ -52,12 +52,13 @@ namespace CloneZ
 
         /// <summary>Works out the lines along the roads: where each pole stands and what it carries, and hangs their
         /// wires. The poles are drawn later (<see cref="DrawPoles"/>), once the street lights have picked theirs.</summary>
-        internal static void PlanStreetLines(Ctx ctx)
+        internal static IEnumerable<string> PlanStreetLines(Ctx ctx)
         {
             Site site = ctx.Site;
             var pieces = new List<Street>();
             foreach (Street s in site.Area.Streets)
                 if (Carries(s) && !NearMappedLine(ctx, s)) pieces.Add(s);
+            if (site.StepDue) yield return "utility lines";
             var crossings = new Dictionary<long, Crossing>(ctx.Crossings.Count);
             foreach (Crossing c in ctx.Crossings) crossings[SnapKey(c.At)] = c;
             int line = ctx.Poles.Count > 0 ? ctx.Poles[ctx.Poles.Count - 1].Line + 1 : 0;
@@ -66,6 +67,7 @@ namespace CloneZ
             {
                 if (ctx.Density.CityCore(chain.C[chain.C.Count / 2])) continue;
                 PlaceLine(ctx, chain, crossings, line++);
+                if (site.StepDue) yield return "utility lines";
             }
             Taps(ctx, firstPole);
         }
@@ -205,10 +207,10 @@ namespace CloneZ
             {
                 List<Vector2> moved = MapGeometry.OffsetLine(s.Pts, c.Side * Roadside(s, (int)c.Side));
                 // Where the piece meets the edge, a streamed piece's neighbour carries the line on from a pole they share:
-                // its spot comes from the data alone, so both put it in the same place (a metre further out, clear of a
-                // carriageway the roads widened).
+                // its spot comes from the data (so both put it in the same place), a metre clear of a carriageway the roads
+                // widened, or behind the kerb where the roads drew it wider still (a parking lane).
                 int last = s.Pts.Count - 1;
-                float edgeOff = MappedHalf(s) + Verge(s) + 1f;
+                float edgeOff = Mathf.Max(MappedHalf(s) + Verge(s) + 1f, Roadside(s, (int)c.Side));
                 if (OnEdge(ctx, s.Pts[0])) moved[0] = s.Pts[0] + Left(StartDir(s)) * (c.Side * edgeOff);
                 if (OnEdge(ctx, s.Pts[last])) moved[last] = s.Pts[last] + Left(EndDir(s)) * (c.Side * edgeOff);
                 for (int i = 0; i < s.Pts.Count; i++)
@@ -506,13 +508,14 @@ namespace CloneZ
         /// reach, unless a building stands in the way; at most three from a pole. Downtown's shops are fed from the
         /// alleys behind them, out of sight. A drop comes down to a weatherhead on a short mast up the wall (through the
         /// eaves of a single storey; on a taller building, the upper storey's wall), clear of the roof.</summary>
-        internal static void ServiceDrops(Ctx ctx)
+        internal static IEnumerable<string> ServiceDrops(Ctx ctx)
         {
-            if (ctx.Poles.Count == 0) return;
+            if (ctx.Poles.Count == 0) yield break;
             Site site = ctx.Site;
             var drops = new Dictionary<Pole, int>();
             foreach (BuildingShell shell in site.Shells)
             {
+                if (site.StepDue) yield return "service drops";
                 Footprint f = shell.Footprint;
                 if (f == null || !ctx.Inside(f.Middle) || f.Size < 25f || shell.WallTop < 2f || !Powered(f.Data.kind)) continue;
                 bool home = f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments";
@@ -586,10 +589,14 @@ namespace CloneZ
         #region Drawing the poles
         /// <summary>Draws the poles of the lines along the roads (and the mapped distribution lines'), with their
         /// fittings, transformers, guys and street lights.</summary>
-        internal static void DrawPoles(Ctx ctx)
+        internal static IEnumerable<string> DrawPoles(Ctx ctx)
         {
             foreach (Pole p in ctx.Poles)
-                if (p.Height < 15f) DrawPole(ctx, p);
+            {
+                if (p.Height >= 15f) continue;
+                DrawPole(ctx, p);
+                if (ctx.Site.StepDue) yield return "utility poles";
+            }
         }
 
         private static void DrawPole(Ctx ctx, Pole p)
