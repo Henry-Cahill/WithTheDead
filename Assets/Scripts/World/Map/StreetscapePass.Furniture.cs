@@ -49,7 +49,7 @@ namespace CloneZ
         {
             spot = at;
             facing = Vector2.up;
-            Street s = NearestRoad(ctx.Site, at, 25f, out Vector2 on, out Vector2 d);
+            Street s = NearestRoad(ctx, at, 25f, out Vector2 on, out Vector2 d);
             if (s != null)
             {
                 Vector2 off = at - on;
@@ -210,7 +210,7 @@ namespace CloneZ
                 if (ctx.Density.Downtown(f.Middle)) continue;
                 bool town = ctx.Density.Town(f.Middle);
                 if (MapStyle.Unit(f.Data.id, SaltMail) > (town ? 0.75f : 0.95f)) continue;
-                Street s = NearestRoad(ctx.Site, f.Middle, 40f, out Vector2 on, out Vector2 d, 1);
+                Street s = NearestRoad(ctx, f.Middle, 40f, out Vector2 on, out Vector2 d, 1);
                 if (s == null || RoadRank(s) > 5) continue;
                 Vector2 toHouse = f.Middle - on;
                 if (toHouse.sqrMagnitude < 1f) continue;
@@ -564,7 +564,7 @@ namespace CloneZ
         {
             if (!ctx.Inside(f.Middle)) return;
             // The wall facing the nearest road.
-            Street s = NearestRoad(ctx.Site, f.Middle, 60f, out Vector2 on, out _);
+            Street s = NearestRoad(ctx, f.Middle, 60f, out Vector2 on, out _);
             if (s == null) return;
             int edge = -1;
             float best = -2f;

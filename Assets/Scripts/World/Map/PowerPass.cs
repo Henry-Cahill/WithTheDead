@@ -106,7 +106,7 @@ namespace CloneZ
         {
             if (s.Data.tunnel || s.Data.bridge || s.Pts.Count < 2) return false;
             int rank = RoadRank(s);
-            if (rank < 2 || s.Data.kind == "motorway" || s.Data.kind.EndsWith("_link")) return false;
+            if (rank < 2 || s.Data.kind == "motorway" || s.Data.kind.EndsWith("_link", System.StringComparison.Ordinal)) return false;
             if (s.Data.oneway && rank >= 4 && (s.Data.lanes >= 2 || s.Data.kind == "trunk")) return false;
             if ((s.Data.kind == "residential" || s.Data.kind == "living_street") && MapStyle.Unit(NameId(s), SaltRear) < 0.17f) return false;
             return true;
@@ -136,6 +136,17 @@ namespace CloneZ
         {
             var chains = new List<Chain>();
             var used = new bool[pieces.Count];
+            var keys = new string[pieces.Count];
+            // The pieces by where they start and where they end.
+            var starts = new Dictionary<long, List<int>>(pieces.Count);
+            var ends = new Dictionary<long, List<int>>(pieces.Count);
+            for (int i = 0; i < pieces.Count; i++)
+            {
+                List<Vector2> pts = pieces[i].Pts;
+                keys[i] = NameKey(pieces[i]);
+                FileUnder(starts, SnapKey(pts[0]), i);
+                FileUnder(ends, SnapKey(pts[pts.Count - 1]), i);
+            }
             var run = new List<Street>();
             for (int i = 0; i < pieces.Count; i++)
             {
@@ -143,7 +154,7 @@ namespace CloneZ
                 used[i] = true;
                 run.Clear();
                 run.Add(pieces[i]);
-                string name = NameKey(pieces[i]);
+                string name = keys[i];
                 // Forwards from the run's end, then backwards from its start.
                 for (int dirn = 0; dirn < 2; dirn++)
                 {
@@ -153,16 +164,18 @@ namespace CloneZ
                         Vector2 tip = dirn == 0 ? end.Pts[end.Pts.Count - 1] : end.Pts[0];
                         Vector2 inDir = dirn == 0 ? EndDir(end) : StartDir(end);
                         int found = -1;
-                        for (int j = 0; j < pieces.Count && found < 0; j++)
-                        {
-                            if (used[j] || NameKey(pieces[j]) != name) continue;
-                            Street s = pieces[j];
-                            Vector2 joint = dirn == 0 ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
-                            if ((joint - tip).sqrMagnitude > 0.0025f) continue;
-                            Vector2 outDir = dirn == 0 ? StartDir(s) : EndDir(s);
-                            if (Vector2.Angle(inDir, outDir) > 80f) continue;
-                            found = j;
-                        }
+                        if ((dirn == 0 ? starts : ends).TryGetValue(SnapKey(tip), out List<int> near))
+                            foreach (int j in near)
+                            {
+                                if (used[j] || keys[j] != name) continue;
+                                Street s = pieces[j];
+                                Vector2 joint = dirn == 0 ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
+                                if ((joint - tip).sqrMagnitude > 0.0025f) continue;
+                                Vector2 outDir = dirn == 0 ? StartDir(s) : EndDir(s);
+                                if (Vector2.Angle(inDir, outDir) > 80f) continue;
+                                found = j;
+                                break;
+                            }
                         if (found < 0) break;
                         used[found] = true;
                         if (dirn == 0) run.Add(pieces[found]);
@@ -172,6 +185,12 @@ namespace CloneZ
                 chains.Add(MakeChain(ctx, run, name));
             }
             return chains;
+        }
+
+        private static void FileUnder(Dictionary<long, List<int>> map, long key, int i)
+        {
+            if (!map.TryGetValue(key, out List<int> list)) map[key] = list = new List<int>(2);
+            list.Add(i);
         }
 
         private static Vector2 StartDir(Street s) => (s.Pts[1] - s.Pts[0]).normalized;

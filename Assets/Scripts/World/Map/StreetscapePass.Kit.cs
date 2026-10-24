@@ -264,15 +264,12 @@ namespace CloneZ
         /// or trunk ... 2 residential or unclassified, 1 service road or track; -1 for anything that isn't a road.</summary>
         internal static int RoadRank(Street s)
         {
-            string k = s.Data.kind;
-            if (string.IsNullOrEmpty(k)) return -1;
-            if (k.EndsWith("_link")) k = k.Substring(0, k.Length - 5);
-            switch (k)
+            switch (s.Data.kind)
             {
-                case "motorway": case "trunk": return 6;
-                case "primary": return 5;
-                case "secondary": return 4;
-                case "tertiary": return 3;
+                case "motorway": case "trunk": case "motorway_link": case "trunk_link": return 6;
+                case "primary": case "primary_link": return 5;
+                case "secondary": case "secondary_link": return 4;
+                case "tertiary": case "tertiary_link": return 3;
                 case "unclassified": case "residential": case "living_street": return 2;
                 case "service": case "track": return 1;
                 default: return -1;
@@ -295,13 +292,16 @@ namespace CloneZ
         /// (6 m when the width isn't mapped; shoulders on the highways). The same in every streamed piece.</summary>
         internal static float MappedHalf(Street s)
         {
-            string k = s.Data.kind ?? "";
+            string k = s.Data.kind;
             float w = s.Data.width > 0.5f ? s.Data.width : 6f;
             float half = Mathf.Clamp(w, k == "track" ? 2.6f : 3.2f, 30f) * 0.5f;
-            bool link = k.EndsWith("_link");
-            if (k.StartsWith("motorway")) half += link ? 1.0f : 2.4f;
-            else if (k.StartsWith("trunk")) half += link ? 1.0f : 1.5f;
-            return half;
+            switch (k)
+            {
+                case "motorway": return half + 2.4f;
+                case "trunk": return half + 1.5f;
+                case "motorway_link": case "trunk_link": return half + 1.0f;
+                default: return half;
+            }
         }
 
         /// <summary>How far past the carriageway's edge the roadside things stand when only the data says where it is
@@ -348,25 +348,10 @@ namespace CloneZ
             return Mathf.Sqrt(best);
         }
 
-        /// <summary>The road (rank 1 and up, no tunnels) nearest <paramref name="p"/> within <paramref name="within"/>.</summary>
-        internal static Street NearestRoad(Site site, Vector2 p, float within, out Vector2 on, out Vector2 dir, int minRank = 1)
-        {
-            Street best = null;
-            on = p;
-            dir = Vector2.right;
-            float bestD = within;
-            foreach (Street s in site.Area.Streets)
-            {
-                if (s.Data.tunnel || RoadRank(s) < minRank) continue;
-                float d = Nearest(s.Pts, p, out Vector2 q, out Vector2 sd) - HalfWidth(s);
-                if (d >= bestD) continue;
-                bestD = d;
-                best = s;
-                on = q;
-                dir = sd;
-            }
-            return best;
-        }
+        /// <summary>The road (rank 1 and up, no tunnels) whose surface is nearest <paramref name="p"/> within
+        /// <paramref name="within"/>.</summary>
+        internal static Street NearestRoad(Ctx ctx, Vector2 p, float within, out Vector2 on, out Vector2 dir, int minRank = 1)
+            => ctx.Roads.Nearest(p, within, Mathf.Max(1, minRank), out on, out dir);
 
         /// <summary>Degrees of yaw for a thing whose front (+Z) faces <paramref name="facing"/> (x east, z north).</summary>
         internal static float Yaw(Vector2 facing) => Mathf.Atan2(facing.x, facing.y) * Mathf.Rad2Deg;
@@ -491,26 +476,31 @@ namespace CloneZ
             private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
             private readonly List<Vector2> _a = new List<Vector2>(), _b = new List<Vector2>();
             private readonly List<float> _half = new List<float>();
+            private readonly List<Street> _street = new List<Street>();
+            private readonly List<int> _rank = new List<int>();
 
             public RoadGrid(Area area)
             {
                 foreach (Street s in area.Streets)
                 {
-                    if (s.Data.tunnel || s.Pts.Count < 2 || RoadRank(s) < 1 || !RoadPass.IsCarriageway(s)) continue;
+                    int rank = RoadRank(s);
+                    if (s.Data.tunnel || s.Pts.Count < 2 || rank < 1) continue;
                     float half = HalfWidth(s);
-                    for (int i = 0; i + 1 < s.Pts.Count; i++) Add(s.Pts[i], s.Pts[i + 1], half);
+                    for (int i = 0; i + 1 < s.Pts.Count; i++) Add(s, rank, s.Pts[i], s.Pts[i + 1], half);
                 }
             }
 
             private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
 
-            private void Add(Vector2 a, Vector2 b, float half)
+            private void Add(Street s, int rank, Vector2 a, Vector2 b, float half)
             {
                 if ((b - a).sqrMagnitude < 1e-6f) return;
                 int index = _a.Count;
                 _a.Add(a);
                 _b.Add(b);
                 _half.Add(half);
+                _street.Add(s);
+                _rank.Add(rank);
                 int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - half) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + half) / Cell);
                 int z0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - half) / Cell), z1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + half) / Cell);
                 for (int z = z0; z <= z1; z++)
@@ -537,6 +527,40 @@ namespace CloneZ
                         {
                             float d = MapGeometry.DistanceToSegment(p, _a[i], _b[i]) - _half[i];
                             if (d < best) best = d;
+                        }
+                    }
+                return best;
+            }
+
+            /// <summary>The road of rank <paramref name="minRank"/> and up whose surface is nearest <paramref name="p"/>
+            /// within <paramref name="within"/> metres (or null): the nearest point on its line and its segment's way.</summary>
+            public Street Nearest(Vector2 p, float within, int minRank, out Vector2 on, out Vector2 dir)
+            {
+                Street best = null;
+                on = p;
+                dir = Vector2.right;
+                float bestD = within;
+                int bestIndex = int.MaxValue;
+                int x0 = Mathf.FloorToInt((p.x - within) / Cell), x1 = Mathf.FloorToInt((p.x + within) / Cell);
+                int z0 = Mathf.FloorToInt((p.y - within) / Cell), z1 = Mathf.FloorToInt((p.y + within) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        if (!_cells.TryGetValue(Key(x, z), out List<int> list)) continue;
+                        foreach (int i in list)
+                        {
+                            if (_rank[i] < minRank) continue;
+                            Vector2 a = _a[i], ab = _b[i] - a;
+                            float t = Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude);
+                            Vector2 q = a + ab * t;
+                            float d = (q - p).magnitude - _half[i];
+                            // Ties go to the street listed first, as a plain scan of the streets would find it.
+                            if (d > bestD || (d == bestD && i >= bestIndex)) continue;
+                            bestD = d;
+                            bestIndex = i;
+                            best = _street[i];
+                            on = q;
+                            dir = ab.normalized;
                         }
                     }
                 return best;

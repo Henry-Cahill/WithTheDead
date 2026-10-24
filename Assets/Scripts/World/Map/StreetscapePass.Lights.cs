@@ -50,7 +50,7 @@ namespace CloneZ
             foreach (Node n in ctx.Site.Area.Nodes)
             {
                 if (n.Data.kind != "street_lamp" || !ctx.Inside(n.At)) continue;
-                Street s = NearestRoad(ctx.Site, n.At, 14f, out Vector2 on, out _);
+                Street s = NearestRoad(ctx, n.At, 14f, out Vector2 on, out _);
                 Vector2 reach = s != null && (on - n.At).sqrMagnitude > 0.01f ? (on - n.At).normalized : Vector2.up;
                 if (s != null) count[s] = count.TryGetValue(s, out int k) ? k + 1 : 1;
                 if (!ctx.Site.FreeBeside(n.At, 0.35f) || Near(ctx, n.At, 3f)) continue;
