@@ -51,6 +51,7 @@ namespace CloneZ.EditorTools
         {
             string scene = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).FirstOrDefault() ?? "Assets/Scenes/SampleScene.unity";
             UnityEditor.SceneManagement.EditorSceneManager.OpenScene(scene);
+            SmokeGuard.Arm();
             Debug.Log("[CloneZBatch] Entering play mode in " + scene);
             EditorApplication.EnterPlaymode();
         }
@@ -115,6 +116,36 @@ namespace CloneZ.EditorTools
             foreach (string dep in AssetDatabase.GetDependencies(scene, false))
                 if (AssetDatabase.GetMainAssetTypeAtPath(dep) == typeof(VolumeProfile)) return AssetDatabase.LoadAssetAtPath<VolumeProfile>(dep);
             return AssetDatabase.LoadAssetAtPath<VolumeProfile>("Assets/Settings/SampleSceneProfile.asset");
+        }
+    }
+
+    /// <summary>
+    /// Keeps a batch smoke run's play mode going. An error logged by the editor itself (its search indexer throws on
+    /// startup in this Unity) pauses play mode when the Console's Error Pause is on, which freezes the game while the
+    /// editor idles, so the run never ends. While the command line has <c>-clonez-smoke</c>, play mode is unpaused
+    /// whenever anything pauses it.
+    /// </summary>
+    [InitializeOnLoad]
+    internal static class SmokeGuard
+    {
+        private static bool s_Armed;
+
+        static SmokeGuard()
+        {
+            if (Application.isBatchMode && Array.IndexOf(Environment.GetCommandLineArgs(), "-clonez-smoke") >= 0) Arm();
+        }
+
+        internal static void Arm()
+        {
+            if (s_Armed) return;
+            s_Armed = true;
+            EditorApplication.pauseStateChanged += state =>
+            {
+                if (state != PauseState.Paused) return;
+                Debug.Log("[CloneZBatch] play mode was paused (Error Pause?); carrying on");
+                EditorApplication.isPaused = false;
+            };
+            EditorApplication.update += () => { if (EditorApplication.isPlaying && EditorApplication.isPaused) EditorApplication.isPaused = false; };
         }
     }
 }

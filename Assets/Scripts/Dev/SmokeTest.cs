@@ -49,8 +49,9 @@ namespace CloneZ
         {
             if (type != LogType.Exception && type != LogType.Error && type != LogType.Assert) return;
             if (message.StartsWith("[Smoke]")) return;
-            // The editor's own AI Assistant relay complains in batch mode; it's no part of the game.
-            if (stack != null && stack.Contains("com.unity.ai.assistant")) return;
+            // The editor's own AI Assistant relay complains in batch mode, and its search indexer throws on startup in this
+            // Unity; neither is any part of the game.
+            if (stack != null && (stack.Contains("com.unity.ai.assistant") || stack.Contains("UnityEditor.Search."))) return;
             s_Errors++;
             if (s_FirstErrors.Count < 30) s_FirstErrors.Add(type + ": " + message + (string.IsNullOrEmpty(stack) ? "" : " @ " + FirstLine(stack)));
         }
