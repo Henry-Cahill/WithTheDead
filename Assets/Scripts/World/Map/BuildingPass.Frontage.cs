@@ -364,7 +364,9 @@ namespace CloneZ
         {
             if (height < 0.25f || string.IsNullOrEmpty(text)) return;
             tone = Mathf.Clamp(tone, 0, SignBoards.Length - 1);
+            Mark("    before the sign");
             Surf board = DecorMaterials.Sign(text, SignBoards[tone], SignLetters[tone], out float aspect);
+            Mark("    sign texture", text);
             float len = s1 - s0;
             float w = Mathf.Min(len - 1.2f, height * aspect);
             float h = w / Mathf.Max(0.1f, aspect);

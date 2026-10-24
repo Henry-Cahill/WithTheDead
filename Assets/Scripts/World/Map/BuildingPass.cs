@@ -349,14 +349,14 @@ namespace CloneZ
 
         // Within a stage: logs the time since the last mark (or the stage's start) when it's over a millisecond.
         [System.Diagnostics.Conditional("UNITY_EDITOR")]
-        private static void Mark(string what)
+        private static void Mark(string what, string detail = null)
         {
 #if UNITY_EDITOR
             if (!s_Profiling) return;
             long now = System.Diagnostics.Stopwatch.GetTimestamp();
             double ms = (now - s_MarkAt) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
             s_MarkAt = now;
-            if (ms >= 1.0) Debug.Log($"[Buildings]   {ms:F1} ms to {what}");
+            if (ms >= 1.0) Debug.Log($"[Buildings]   {ms:F1} ms to {what}{(detail != null ? " \"" + detail + "\"" : "")}");
 #endif
         }
 
@@ -579,7 +579,7 @@ namespace CloneZ
         }
 
         // The shared floor and ceiling finishes, kept (DecorMaterials makes a key string on every ask).
-        private static Surf s_Concrete, s_Asphalt, s_Ceiling, s_HomeFloor, s_HallFloor, s_ShopFloor, s_OfficeFloor, s_PorchWood, s_SwingWood;
+        private static Surf s_Concrete, s_Ceiling, s_HomeFloor, s_HallFloor, s_ShopFloor, s_OfficeFloor, s_PorchWood, s_SwingWood;
 
         private static Surf Cached(ref Surf slot, System.Func<Surf> make)
         {
@@ -588,7 +588,6 @@ namespace CloneZ
         }
 
         private static Surf ConcreteSurf => Cached(ref s_Concrete, () => DecorMaterials.Concrete);
-        private static Surf AsphaltSurf => Cached(ref s_Asphalt, () => DecorMaterials.Asphalt);
         private static Surf CeilingSurf => Cached(ref s_Ceiling, () => DecorMaterials.Ceiling);
         private static Surf PorchWood => Cached(ref s_PorchWood, () => DecorMaterials.WoodFloor(new Color(0.52f, 0.42f, 0.32f)));
         private static Surf SwingWood => Cached(ref s_SwingWood, () => DecorMaterials.WoodFloor(new Color(0.50f, 0.36f, 0.24f)));

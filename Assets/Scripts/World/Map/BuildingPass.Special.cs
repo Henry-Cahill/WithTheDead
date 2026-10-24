@@ -385,7 +385,7 @@ namespace CloneZ
             {
                 float y = k * h;
                 bool top = k == decks - 1;
-                Deck(up, j, y, top ? (snowy ? RoofSnow : AsphaltSurf) : inner);
+                Deck(up, j, y, top ? (snowy ? RoofSnow : WallSurf(WallKind.Concrete, 1)) : inner);
                 for (int i = 0; i < j.N; i++)
                 {
                     float len = j.Len[i];
@@ -444,9 +444,10 @@ namespace CloneZ
                     up.Box(To3(at, roof + 5.5f), new Vector3(0.9f, 0.18f, 0.35f), sh.Yaw, pole);
                     up.Box(To3(at, roof + 5.4f), new Vector3(0.7f, 0.04f, 0.25f), sh.Yaw, LampGlobe(0));
                 }
-                // The ground floor's slab, under its deck.
+                // The ground floor's slab, under its deck (the finishes painted ahead in the background, not the
+                // shared asphalt a first deck would otherwise paint inside its time slice).
                 Vector3 middle = To3(f.Middle, 0f);
-                Deck(j.Site.Town.Out.Flat(middle), j, 0.02f, AsphaltSurf);
+                Deck(j.Site.Town.Out.Flat(middle), j, 0.02f, WallSurf(WallKind.Concrete, 1));
             }
             Mark("lamps and ground slab");
             if (!j.Scenery) Rows(j, true);
