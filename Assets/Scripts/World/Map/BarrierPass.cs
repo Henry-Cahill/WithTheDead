@@ -37,16 +37,17 @@ namespace CloneZ
             var square = Rect.MinMaxRect(-half, -half, half, half);
             var gates = new List<Vector2>();
             foreach (Node n in site.Area.Nodes) if (n.Data.kind == "gate") gates.Add(n.At);
-            var drives = new List<(Vector2 a, Vector2 b)>();
+            var drives = new Drives();
             foreach (RoadPass.DrivewaySpot d in RoadPass.Driveways(site))
-                if (d.Dir.sqrMagnitude > 0.5f) drives.Add((d.At, d.At + d.Dir * (d.Length + 1.5f)));
+                if (d.Dir.sqrMagnitude > 0.5f) drives.Add(d.At, d.At + d.Dir * (d.Length + 1.5f));
             foreach (Line l in site.Area.Barriers)
             {
                 if (l.Data.kind == "tree_row" || l.Pts.Count < 2) continue;
                 Style style = StyleOf(l.Data);
                 // A texture made for the first time (once a session) gets a slice of its own.
                 if (Warm(style, false) && site.StepDue) yield return "fences and walls";
-                foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, square)) Draw(ctx, l.Data, style, piece, gates, drives);
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, square))
+                    foreach (string step in Draw(ctx, l.Data, style, piece, gates, drives)) yield return step;
                 if (!site.Chunked)
                 {
                     if (Warm(style, true) && site.StepDue) yield return "fences and walls";
@@ -191,16 +192,19 @@ namespace CloneZ
 
         #region In full
         // One piece of a barrier inside the square: its runs between the gates, the carriageways and the buildings, each
-        // straight stretch drawn and given a collider, posts on the lattice and at the corners.
-        private static void Draw(Ctx ctx, MapLine data, Style style, List<Vector2> pts, List<Vector2> gates, List<(Vector2 a, Vector2 b)> drives)
+        // straight stretch drawn and given a collider, posts on the lattice and at the corners. Yields part way along a
+        // long piece when the step has had its time (a farm's fence may run for kilometres).
+        private static IEnumerable<string> Draw(Ctx ctx, MapLine data, Style style, List<Vector2> pts, List<Vector2> gates, Drives drives)
         {
             Site site = ctx.Site;
             float h = Height(style), thick = Thickness(style);
             bool fence = data.kind == "fence";
             var cuts = new List<Vector2>();   // (from, to) along the piece, cut out for gates
+            MapGeometry.Extent(pts, out float x0, out float z0, out float x1, out float z1);
             if (fence)
                 foreach (Vector2 g in gates)
                 {
+                    if (g.x < x0 - 0.8f || g.x > x1 + 0.8f || g.y < z0 - 0.8f || g.y > z1 + 0.8f) continue;
                     float d = Nearest(pts, g, out Vector2 on, out _);
                     if (d > 0.8f) continue;
                     float t = ArcOf(pts, on);
@@ -233,7 +237,9 @@ namespace CloneZ
                         float c0 = c.x - arc;
                         if (c0 > s && c0 < e) e = c0;
                     }
-                    if (e - s > 0.05f) Spans(ctx, data, style, a, d, s, e, h, thick, i > 0 && s < 0.01f, drives);
+                    if (e - s > 0.05f)
+                        foreach (string step in Spans(ctx, data, style, a, d, s, e, h, thick, i > 0 && s < 0.01f, drives))
+                            yield return step;
                     s = e;
                 }
                 arc += len;
@@ -241,19 +247,45 @@ namespace CloneZ
             site.TakeLine(pts, thick * 0.5f + 0.35f);
         }
 
-        // On one of the roads' driveways (from the kerb to the house): a fence leaves them open.
-        private static bool OnDrive(List<(Vector2 a, Vector2 b)> drives, Vector2 p)
+        // The roads' driveways (from the kerb to the house), by 8 m cell: a fence leaves them open.
+        private sealed class Drives
         {
-            foreach ((Vector2 a, Vector2 b) in drives)
-                if (MapGeometry.DistanceToSegment(p, a, b) < 1.9f) return true;
-            return false;
+            private const float Cell = 8f, Reach = 1.9f;
+            private readonly List<(Vector2 a, Vector2 b)> _segs = new List<(Vector2 a, Vector2 b)>();
+            private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
+
+            public void Add(Vector2 a, Vector2 b)
+            {
+                int i = _segs.Count;
+                _segs.Add((a, b));
+                int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - Reach) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + Reach) / Cell);
+                int z0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - Reach) / Cell), z1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + Reach) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        long key = Key(x, z);
+                        if (!_cells.TryGetValue(key, out List<int> list)) _cells[key] = list = new List<int>(2);
+                        list.Add(i);
+                    }
+            }
+
+            // Within reach of a driveway's line.
+            public bool On(Vector2 p)
+            {
+                if (!_cells.TryGetValue(Key(Mathf.FloorToInt(p.x / Cell), Mathf.FloorToInt(p.y / Cell)), out List<int> list)) return false;
+                foreach (int i in list)
+                    if (MapGeometry.DistanceToSegment(p, _segs[i].a, _segs[i].b) < Reach) return true;
+                return false;
+            }
+
+            private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
         }
 
         // The stretch from s to e along a + d * t, less where it would stand in a building, cross a carriageway as the
         // roads drew it or a driveway (a metre at a time); guard rails and retaining walls belong at the road's edge and
-        // may touch it.
-        private static void Spans(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 d, float s, float e, float h, float thick, bool corner,
-            List<(Vector2 a, Vector2 b)> drives)
+        // may touch it. Yields every 16 m or so once the step has had its time.
+        private static IEnumerable<string> Spans(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 d, float s, float e, float h, float thick,
+            bool corner, Drives drives)
         {
             float clear = style == Style.GuardRail || style == Style.Retaining ? -0.3f : 0.25f;
             float start = -1f;
@@ -265,7 +297,7 @@ namespace CloneZ
                 if (k < steps)
                 {
                     Vector2 mid = a + d * (s + (k + 0.5f) * step);
-                    open = ctx.Roads.Clearance(mid, 1.5f) >= clear && !ctx.Blocks.Contains(mid, 0f) && !OnDrive(drives, mid);
+                    open = ctx.Roads.Clearance(mid, 1.5f) >= clear && !ctx.Blocks.Contains(mid, 0f) && !drives.On(mid);
                 }
                 float t = s + k * step;
                 if (open && start < 0f) start = t;
@@ -274,6 +306,7 @@ namespace CloneZ
                     if (t - start > 0.3f) Run(ctx, data, style, a + d * start, a + d * t, d, h, thick, corner && start <= s + 0.01f);
                     start = -1f;
                 }
+                if ((k & 15) == 15 && ctx.Site.StepDue) yield return "fences and walls";
             }
         }
 
