@@ -149,7 +149,7 @@ namespace CloneZ
             }
             float large = WorldNoise(new Vector2(along / 60f, across / 15f), 1f, SaltTone);
             float streak = WorldNoise(new Vector2(along / 18f, across / 6f), 1f, SaltTone + 1);
-            float drift = 0.5f + calm * (1.1f * (large - 0.5f) + 0.75f * (streak - 0.5f));
+            float drift = 0.5f + calm * (1.15f * (large - 0.5f) + 0.5f * (streak - 0.5f));
             float vary = 0.5f + WorldNoise(w, 17f, SaltTone + 2);
             float y = shade > 0f ? -Mathf.Clamp01(shade * (0.7f + 0.3f * vary)) : Mathf.Clamp01(grime * vary);
             return new Vector2(Mathf.Lerp(0.5f, Mathf.Clamp01(drift), fade), y * fade);
