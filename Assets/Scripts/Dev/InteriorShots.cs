@@ -44,6 +44,8 @@ namespace CloneZ
             public int Verts, RoomCount, Containers, Allotted, Stripped, Lights, Lit, CeilingLamps, Objects, Bodies, Steps;
             public double TotalMs, MaxStepMs;
             public string MaxStep;
+            /// <summary>Each room's role and how long it took to furnish (ms).</summary>
+            public readonly List<KeyValuePair<string, double>> RoomTimes = new List<KeyValuePair<string, double>>();
         }
 
         private sealed class Harness
@@ -355,6 +357,9 @@ namespace CloneZ
                     if (kv.Value > 1) sb.Append('×').Append(kv.Value);
                 }
                 r.Rooms = sb.ToString();
+                if (b.RoomMs != null)
+                    for (int k = 0; k < b.RoomMs.Length && k < p.Rooms.Count; k++)
+                        r.RoomTimes.Add(new KeyValuePair<string, double>(p.Rooms[k].Role.ToString(), b.RoomMs[k]));
                 float a = Mathf.Repeat(Mathf.Atan2(p.Ex.y, p.Ex.x) * Mathf.Rad2Deg, 90f);
                 r.Angle = Mathf.Min(a, 90f - a);
                 if (p.Local != null && p.Local.Count > 2)
@@ -575,6 +580,7 @@ namespace CloneZ
                         .Append(" / ").Append(F1(msMax)).Append(" | ").Append(F1(step)).Append(" |\n");
                 }
                 _md.Append("\n").Append(total).Append(" buildings furnished, ").Append(totalContainers).Append(" loot containers in them.\n\n");
+                RoomTimes();
                 _md.Append("## Pictures\n\nLeft: from straight above in the building's own axes (its front door's wall at the bottom), roofs, upper storeys ")
                     .Append("and ceilings off, plain overcast daylight without shadows. Right: the game's isometric camera (widened to fit the building), the red ")
                     .Append("capsule standing in for the survivor in its biggest room, the cutaway run (its roof and the walls turned to the camera lifted), ")
@@ -582,6 +588,30 @@ namespace CloneZ
                     .Append("| file | place | building | footprint | rooms | containers (allotted) | lights | objects |\n|---|---|---|---|---|--:|--:|--:|\n");
                 foreach (string p in _pictures) _md.Append(p).Append('\n');
                 _md.Append('\n');
+            }
+
+            // How long rooms of each role take to furnish: the streamer can't split a room, so the slowest is a frame's hitch.
+            private void RoomTimes()
+            {
+                var roles = new SortedDictionary<string, List<double>>(StringComparer.Ordinal);
+                foreach (Rec r in _all)
+                    foreach (KeyValuePair<string, double> kv in r.RoomTimes)
+                    {
+                        if (!roles.TryGetValue(kv.Key, out List<double> list)) roles[kv.Key] = list = new List<double>();
+                        list.Add(kv.Value);
+                    }
+                if (roles.Count == 0) return;
+                _md.Append("<details><summary>Room furnishing time by role (ms)</summary>\n\n| role | rooms | mean | median | p95 | max |\n|---|--:|--:|--:|--:|--:|\n");
+                foreach (KeyValuePair<string, List<double>> kv in roles)
+                {
+                    List<double> v = kv.Value;
+                    v.Sort();
+                    double sum = 0;
+                    foreach (double x in v) sum += x;
+                    _md.Append("| ").Append(kv.Key).Append(" | ").Append(v.Count).Append(" | ").Append(F1(sum / v.Count)).Append(" | ").Append(F1(v[v.Count / 2]))
+                        .Append(" | ").Append(F1(v[Math.Min(v.Count - 1, (int)(v.Count * 0.95))])).Append(" | ").Append(F1(v[v.Count - 1])).Append(" |\n");
+                }
+                _md.Append("\n</details>\n\n");
             }
             #endregion
 

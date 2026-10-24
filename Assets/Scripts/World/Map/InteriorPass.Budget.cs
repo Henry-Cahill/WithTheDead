@@ -12,10 +12,11 @@ namespace CloneZ
     {
         private const int SaltLamps = 0x1A74;
 
-        /// <summary>Lamps a home may have in all; and the ones its ceilings leave for desk, bedside and standard lamps.</summary>
+        /// <summary>Lamps a home may have in all; and the ones its ceilings leave for desk, bedside and standard lamps. (Its
+        /// fridge, stove and TV bring lights of their own, off until they're used.)</summary>
         private const int HomeLamps = 7, HomeSpareLamps = 2;
         /// <summary>The most lamps any building has (a school, a hospital), and those kept for desk lamps.</summary>
-        private const int MaxLamps = 14, WorkSpareLamps = 3;
+        private const int MaxLamps = 10, WorkSpareLamps = 2;
 
         private static readonly List<PlanRoom> s_ByNeed = new List<PlanRoom>(32);
 
@@ -44,7 +45,7 @@ namespace CloneZ
 
             // Lamps: a ceiling fitting or more for each room by its size, the rooms people use first, within the building's
             // budget; what's left of it goes to desk, bedside and standard lamps as the rooms are furnished.
-            plan.LampCap = home ? HomeLamps : Mathf.Clamp(6 + plan.Rooms.Count / 2, 8, MaxLamps);
+            plan.LampCap = home ? HomeLamps : Mathf.Clamp(4 + plan.Rooms.Count / 3, 6, MaxLamps);
             int ceilings = plan.LampCap - (home ? HomeSpareLamps : WorkSpareLamps);
             s_ByNeed.Clear();
             s_ByNeed.AddRange(plan.Rooms);
@@ -111,10 +112,10 @@ namespace CloneZ
                 floor += Mathf.Max(0f, areas[i]);
             }
             float richness = MapGameplay.RichnessOf(site, f);
-            float wanted = sum * richness;
+            float wanted = sum * StockOf(purpose) * richness;
             int whole = Mathf.FloorToInt(wanted);
             int dithered = wanted <= 0f ? 0 : whole + (MapStyle.Unit(f.Data.id, SaltBudget) < wanted - whole ? 1 : 0);
-            int total = Mathf.Min(BuildingCap(purpose, floor), dithered);
+            int total = Mathf.Min(Mathf.RoundToInt(BuildingCap(purpose, floor) * Mathf.Max(1f, richness)), dithered);
             if (total <= 0 || sum <= 0f) return 0;
             float scale = total / sum;
             int given = 0;
@@ -136,6 +137,21 @@ namespace CloneZ
                 rest[best] = -1f;
             }
             return given;
+        }
+
+        // How stocked a building of a purpose is next to an ordinary one (the gameplay layer's profiles; the few known here).
+        private static float StockOf(string purpose)
+        {
+            switch (purpose)
+            {
+                case MapGameplay.Purposes.Grocery: case MapGameplay.Purposes.Hardware: return 1.3f;
+                case MapGameplay.Purposes.Pharmacy: return 1.2f;
+                case MapGameplay.Purposes.Church: return 0.8f;
+                case MapGameplay.Purposes.Funeral: return 0.7f;
+                case MapGameplay.Purposes.Vacant: return 0.3f;
+                case MapGameplay.Purposes.Ruin: return 0.3f;
+                default: return 1f;
+            }
         }
 
         private static float RoomNeed(string room, float area)
@@ -213,14 +229,12 @@ namespace CloneZ
             }
         }
 
-        // A fitting for a small room, more for a big one (the corridor's along its length).
+        // A fitting for a room (its light reaches the walls of most), two or three for a big hall.
         private static int LampsWanted(PlanRoom r)
         {
             float a = InnerArea(r);
             if (a < 2.5f) return 0;
-            if (r.Role == RoomRole.Closet || r.Role == RoomRole.Bathroom || r.Role == RoomRole.Restroom) return 1;
-            if (r.Role == RoomRole.Hall) return Mathf.Max(r.R.width, r.R.height) > 9f ? 2 : 1;
-            return a < 40f ? 1 : a < 110f ? 2 : a < 260f ? 3 : 4;
+            return a < 150f ? 1 : a < 400f ? 2 : 3;
         }
 
         // Which room's light somebody left on.

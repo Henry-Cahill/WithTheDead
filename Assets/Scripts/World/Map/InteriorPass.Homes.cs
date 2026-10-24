@@ -78,8 +78,9 @@ namespace CloneZ
             WallDecor(c, 2);
         }
 
-        // A kitchenette along one wall of a cabin's or a flat's living room: the sink, the range and the fridge.
-        private static void Kitchenette(RoomCtx c)
+        // A kitchenette along one wall of a cabin's or a flat's living room: the sink, the range and the fridge. False when no
+        // wall had room for it.
+        private static bool Kitchenette(RoomCtx c)
         {
             RaidBuilding b = c.B;
             int[] order = c.Sides(true);
@@ -100,8 +101,9 @@ namespace CloneZ
                 }
                 if (c.WallAt(side, t + 0.36f, 0.72f, 0.70f, 1.72f, out RaidBuilding.Place fridge)) b.HomePiece(c.R, fridge, HomeFurnitureKind.Fridge);
                 if (c.Inside[side]) b.UpperCabinets(c.R, RoomCtx.Char(side), a + 0.05f + 0.61f, 1.2f, FurnitureBuilder.HomeCabinetPaint);
-                return;
+                return true;
             }
+            return false;
         }
         #endregion
 
@@ -241,8 +243,8 @@ namespace CloneZ
                 b.HomePiece(c.R, shower, HomeFurnitureKind.Shower);
             if (c.AnyWall(order, 0.42f, 0.70f, 0.8f, -1f, out RaidBuilding.Place toilet, out int ts))
             {
-                b.HomePiece(c.R, toilet, HomeFurnitureKind.Toilet);
-                if (c.Inside[ts]) b.HangTowelRail(c.R, RoomCtx.Char(ts), ts == 0 || ts == 2 ? toilet.X : toilet.Z, 1.42f);
+                Toilet(c, toilet);
+                if (c.Inside[ts]) TowelRail(c, ts, ts == 0 || ts == 2 ? toilet.X : toilet.Z);
             }
             if (c.AnyWall(order, 0.52f, 0.45f, 0.9f, -1f, out RaidBuilding.Place basin, out int bs))
             {
@@ -264,7 +266,7 @@ namespace CloneZ
             {
                 float t = a + 0.1f + 0.95f * (i + 0.5f);
                 if (!c.WallAt(side, t, 0.42f, 0.70f, 0.8f, out RaidBuilding.Place toilet)) continue;
-                b.HomePiece(c.R, toilet, HomeFurnitureKind.Toilet);
+                Toilet(c, toilet);
                 if (n > 1 && i < n - 1 && across >= 1.8f)
                 {
                     // The stall's side panel.
@@ -295,7 +297,8 @@ namespace CloneZ
             if (c.Area >= 8f && c.AnyWall(c.Sides(false), 1.04f, 0.5f, 0.9f, -1f, out RaidBuilding.Place dresser, out _))
             {
                 b.HomePiece(c.R, dresser, HomeFurnitureKind.Dresser);
-                if (rng.NextDouble() < (c.P.Role == RoomRole.Guest ? 0.9 : 0.3)) b.HomePiece(c.R, b.OffsetPlace(dresser, -0.18f, 0.05f, 30f), HomeFurnitureKind.Tv);
+                // A motel room's portable TV (a set has a light of its own: not in every bedroom).
+                if (c.P.Role == RoomRole.Guest && rng.NextDouble() < 0.8) b.HomePiece(c.R, b.OffsetPlace(dresser, -0.18f, 0.05f, 30f), HomeFurnitureKind.Tv);
             }
             if (c.P.Role == RoomRole.Guest && c.Area > 9f && c.Floor(0.45f, 0.45f, 0f, c.Inner.center, 0.3f, out RaidBuilding.Place seat))
                 b.WoodChairSeat(c.R, seat, Woods[rng.Next(Woods.Length)]);
@@ -490,6 +493,20 @@ namespace CloneZ
         #endregion
 
         #region Fittings the raid town's layouts keep to themselves
+        // A toilet: the home's working one in play; in edit mode (the harness) its fixture would copy its materials (Unity
+        // refuses renderer.material there), so it's drawn plain.
+        private static void Toilet(RoomCtx c, RaidBuilding.Place p)
+        {
+            if (Application.isPlaying) c.B.HomePiece(c.R, p, HomeFurnitureKind.Toilet);
+            else c.B.Furnish(c.R, p, new Vector3(0.42f, 0.8f, 0.70f), true, (m, r) => FurnitureBuilder.Toilet(m, r), "Toilet");
+        }
+
+        // A towel rail on a bathroom's partition (in play: its towel's fixture copies materials, which edit mode refuses).
+        private static void TowelRail(RoomCtx c, int side, float t)
+        {
+            if (Application.isPlaying) c.B.HangTowelRail(c.R, RoomCtx.Char(side), t, 1.42f);
+        }
+
         // The kitchen sink: the starter home's working one in play. In edit mode (the harness) nothing wakes, and the live
         // sink, its config unread, would set its water at NaN: there its unit is drawn plain.
         private static void Sink(RoomCtx c, RaidBuilding.Place p)
