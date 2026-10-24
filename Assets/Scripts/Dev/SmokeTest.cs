@@ -55,6 +55,42 @@ namespace CloneZ
                 || stack.Contains("UnityEditor.EditorApplicationLayout"))) return;
             s_Errors++;
             if (s_FirstErrors.Count < 30) s_FirstErrors.Add(type + ": " + message + (string.IsNullOrEmpty(stack) ? "" : " @ " + FirstLine(stack)));
+            // The NavMesh bake names no mesh it rejects; look for the culprit on the next frame.
+            if (message.Contains("invalid vertex data")) s_FindBadMeshes = true;
+        }
+
+        private static bool s_FindBadMeshes;
+
+        private void Update()
+        {
+            if (!s_FindBadMeshes) return;
+            s_FindBadMeshes = false;
+            int found = 0;
+            foreach (MeshFilter mf in FindObjectsByType<MeshFilter>(FindObjectsSortMode.None))
+            {
+                Mesh m = mf.sharedMesh;
+                if (m == null || !m.isReadable || Finite(m)) continue;
+                Debug.Log("[Smoke] non-finite mesh: " + PathOf(mf.transform) + " (mesh '" + m.name + "', " + m.vertexCount + " vertices)");
+                if (++found >= 10) break;
+            }
+            if (found == 0) Debug.Log("[Smoke] non-finite mesh: none found among the scene's readable meshes");
+        }
+
+        private static bool Finite(Mesh m)
+        {
+            Bounds b = m.bounds;
+            if (!IsFinite(b.center) || !IsFinite(b.extents)) return false;
+            foreach (Vector3 v in m.vertices) if (!IsFinite(v)) return false;
+            return true;
+        }
+
+        private static bool IsFinite(Vector3 v) => float.IsFinite(v.x) && float.IsFinite(v.y) && float.IsFinite(v.z);
+
+        private static string PathOf(Transform t)
+        {
+            string path = t.name;
+            for (Transform p = t.parent; p != null; p = p.parent) path = p.name + "/" + path;
+            return path;
         }
 
         private static string FirstLine(string s)

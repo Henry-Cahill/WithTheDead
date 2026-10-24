@@ -212,10 +212,11 @@ namespace CloneZ
             site.TakeLine(pts, thick * 0.5f + 0.35f);
         }
 
-        // The stretch from s to e along a + d * t, less where it would cross a carriageway as the roads drew it or stand
-        // in a building (a metre at a time).
+        // The stretch from s to e along a + d * t, less where it would stand in a building or cross a carriageway as the
+        // roads drew it (a metre at a time); guard rails and retaining walls belong at the road's edge and may touch it.
         private static void Spans(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 d, float s, float e, float h, float thick, bool corner)
         {
+            float clear = style == Style.GuardRail || style == Style.Retaining ? -0.3f : 0.25f;
             float start = -1f;
             int steps = Mathf.Max(1, Mathf.CeilToInt(e - s));
             float step = (e - s) / steps;
@@ -225,7 +226,7 @@ namespace CloneZ
                 if (k < steps)
                 {
                     Vector2 mid = a + d * (s + (k + 0.5f) * step);
-                    open = ctx.Roads.Clearance(mid, 1.5f) >= 0.25f && !ctx.Blocks.Contains(mid, 0f);
+                    open = ctx.Roads.Clearance(mid, 1.5f) >= clear && !ctx.Blocks.Contains(mid, 0f);
                 }
                 float t = s + k * step;
                 if (open && start < 0f) start = t;

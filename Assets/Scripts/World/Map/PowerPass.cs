@@ -493,7 +493,7 @@ namespace CloneZ
                 bool home = f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments";
                 if (!home && ctx.Density.Downtown(f.Middle)) continue;
                 Pole best = null;
-                float bestD = MaxDrop;
+                float bestD = MaxDrop, bestScore = float.MaxValue;
                 Vector2 attach = default;
                 foreach (Pole p in ctx.Poles)
                 {
@@ -501,7 +501,11 @@ namespace CloneZ
                     if (Mathf.Abs(p.At.x - f.Middle.x) > MaxDrop + 30f || Mathf.Abs(p.At.y - f.Middle.y) > MaxDrop + 30f) continue;
                     Vector2 q = NearestOnOutline(f.Pts, p.At);
                     float d = Vector2.Distance(q, p.At);
-                    if (d >= bestD) continue;
+                    if (d >= MaxDrop) continue;
+                    // A pole on the house's own side of the street wins over one across it.
+                    float score = d + (ctx.Roads.Clearance((q + p.At) * 0.5f, 1f) < 0f ? 14f : 0f);
+                    if (score >= bestScore) continue;
+                    bestScore = score;
                     bestD = d;
                     best = p;
                     attach = q;
@@ -817,7 +821,7 @@ namespace CloneZ
         {
             if (look == Tower.Wood)
             {
-                Span(ctx, a, b);
+                if (!ctx.Blocks.Crosses(a.At, b.At, 0.3f)) Span(ctx, a, b);
                 return;
             }
             if (!ctx.Full) return;
