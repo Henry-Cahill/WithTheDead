@@ -264,9 +264,10 @@ namespace CloneZ
             }
         }
 
-        // Banks along the fences, walls and hedges on their lee side, coming and going with the noise; none where they'd
-        // lie on a road, a lot or a parked car. The cross-sections stand on the state's lattice, so a fence cut by a
-        // seam drifts on unbroken.
+        // Banks along the fences, walls and hedges on their lee side, coming and going with the noise; only where the
+        // streetscape drew the run (none across its gaps at gates, driveways and carriageways, nor along a line it left
+        // out), and none where they'd lie on a road, a lot or a parked car. The cross-sections stand on the state's
+        // lattice, so a fence cut by a seam drifts on unbroken.
         private static IEnumerable<string> FenceDrifts(Site site, NaturePlan plan)
         {
             Surf snow = DecorPalette.Matte(Snow);
@@ -309,7 +310,8 @@ namespace CloneZ
                         if ((j == 0 && !cutA) || (j == c - 1 && !cutB)) h *= 0.3f;
                         Vector2 foot = at + outward * (d * 0.5f);
                         if (!plan.InSquare(foot, -0.5f) || plan.RoadClearance(foot, 1f) < 0.3f || plan.LandAt(foot) == Land.Lot
-                            || plan.LandAt(foot) == Land.Water || plan.IsKept(foot, 0.3f) || plan.WallDistance(foot, 0.6f) < 0.4f)
+                            || plan.LandAt(foot) == Land.Water || plan.IsKept(foot, 0.3f) || plan.WallDistance(foot, 0.6f) < 0.4f
+                            || (h > 0f && !BarrierPass.Crosses(site, at, at, 0.35f)))
                             h = 0f;
                         s_H[j] = h;
                         s_D[j] = d;

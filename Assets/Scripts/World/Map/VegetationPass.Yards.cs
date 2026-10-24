@@ -122,9 +122,10 @@ namespace CloneZ
 
         /// <summary>
         /// Room for a yard tree (or a windbreak's) inside the square: clear of every wall by <paramref name="wall"/>, off
-        /// the street and its sidewalk, off the driveways and the doorsteps, clear of the other trees, and its trunk's spot
-        /// free in the occupancy grid (which holds the porches and steps, the mailboxes, poles and hydrants; tested at the
-        /// trunk only, since a house's own cells reach a metre or two past its walls).
+        /// the street and its sidewalk, off the driveways and the doorsteps, clear of the other trees, its trunk off the
+        /// fences, walls and hedges the streetscape drew, and its trunk's spot free in the occupancy grid (which holds the
+        /// porches and steps, the mailboxes, poles and hydrants; tested at the trunk only, since a house's own cells reach a
+        /// metre or two past its walls).
         /// </summary>
         private static bool YardClear(Planting p, Vector2 at, float room, float wall)
         {
@@ -136,6 +137,7 @@ namespace CloneZ
             Land land = plan.LandAt(at);
             if (land == Land.Water || land == Land.Lot || land == Land.Pitch) return false;
             if (plan.NearDoor(at, 3.2f) || !p.TreeFree(at, room) || plan.OnSidewalk(at, room * 0.5f)) return false;
+            if (BarrierPass.Crosses(p.Site, at, at, 0.45f)) return false;
             return p.Site.FreeBeside(at, 0f);
         }
 
