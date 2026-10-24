@@ -29,6 +29,9 @@ namespace CloneZ
     /// </summary>
     public static class BuildingShots
     {
+        /// <summary>
+        /// Entry point for the BuildingShots harness; parses command-line arguments and runs the image capture process.
+        /// </summary>
         public static void Run()
         {
             string[] args = Environment.GetCommandLineArgs();
@@ -60,12 +63,18 @@ namespace CloneZ
             EditorApplication.Exit(code);
         }
 
+        /// <summary>
+        /// Retrieves the value for a named command-line argument if present.
+        /// </summary>
         private static string Arg(string[] args, string name)
         {
             int i = Array.IndexOf(args, name);
             return i >= 0 && i + 1 < args.Length && !args[i + 1].StartsWith("-", StringComparison.Ordinal) ? args[i + 1] : null;
         }
 
+        /// <summary>
+        /// Creates a VolumeProfile for the scene, preferring any found or falling back to the default.
+        /// </summary>
         private static VolumeProfile GameVolumeProfile()
         {
             string scene = "Assets/Scenes/SampleScene.unity";
@@ -76,6 +85,9 @@ namespace CloneZ
             return AssetDatabase.LoadAssetAtPath<VolumeProfile>("Assets/Settings/SampleSceneProfile.asset");
         }
 
+        /// <summary>
+        /// The main harness that controls the building shot generation process.
+        /// </summary>
         private sealed class Harness
         {
             private readonly string _out;
@@ -97,6 +109,9 @@ namespace CloneZ
             private readonly List<Light> _lights = new List<Light>();
             private bool _cameraRender, _pathConfirmed;
 
+            /// <summary>
+            /// Constructs the harness with output directory, places list and volume profile.
+            /// </summary>
             public Harness(string outDir, string places, VolumeProfile profile)
             {
                 _out = outDir;
@@ -104,6 +119,9 @@ namespace CloneZ
                 _profile = profile;
             }
 
+            /// <summary>
+            /// Executes the harness, processing each place and generating reports.
+            /// </summary>
             public int Execute()
             {
                 Application.logMessageReceived += OnLog;
@@ -149,6 +167,9 @@ namespace CloneZ
                 return code;
             }
 
+            /// <summary>
+            /// Handles log messages from Unity, counting errors and storing the first few.
+            /// </summary>
             private void OnLog(string message, string stack, LogType type)
             {
                 if (type != LogType.Error && type != LogType.Exception && type != LogType.Assert) return;
@@ -158,6 +179,9 @@ namespace CloneZ
             }
 
             #region A place
+            /// <summary>
+            /// Processes a single place: builds the zone, records stats, and renders pictures.
+            /// </summary>
             private void Place(string place)
             {
                 _zone = StartZone(place);
@@ -197,6 +221,9 @@ namespace CloneZ
                 Pictures(place, noted, info.HalfSize);
             }
 
+            /// <summary>
+            /// Starts the zone build process for a given place name, copying defaults if needed.
+            /// </summary>
             private static ZoneDef StartZone(string place)
             {
                 ZoneDef src = null;
@@ -219,6 +246,12 @@ namespace CloneZ
                 return copy;
             }
 
+            /// <summary>
+            /// Destroys all temporary objects and meshes created during the harness run.
+            /// </summary>
+            /// <summary>
+            /// Disposes of temporary objects, meshes, and lighting after a place is processed.
+            /// </summary>
             private void Discard()
             {
                 foreach (GameObject go in _roots)
@@ -235,6 +268,12 @@ namespace CloneZ
             }
 
             // What the pass made of the place's buildings: how many of each kind, inside the square and past it.
+            /// <summary>
+            /// Records building statistics for a given place and writes them to the markdown report.
+            /// </summary>
+            /// <summary>
+            /// Records building statistics for a place and writes them to the markdown report.
+            /// </summary>
             private void Census(List<BuildingPass.Inspected> noted, float half)
             {
                 var inside = new SortedDictionary<string, int>(StringComparer.Ordinal);
@@ -277,6 +316,12 @@ namespace CloneZ
                 "Canopy", "Barn", "TobaccoBarn", "Silo", "Shed", "Garage", "Greenhouse", "Ruin",
             };
 
+            /// <summary>
+            /// Generates picture filenames, ordering, and calls Shot for each building type.
+            /// </summary>
+            /// <summary>
+            /// Generates picture filenames, ordering, and calls Shot for each building type.
+            /// </summary>
             private void Pictures(string place, List<BuildingPass.Inspected> noted, float half)
             {
                 _md.Append("| file | building | what the pass made of it |\n|---|---|---|\n");
@@ -347,6 +392,9 @@ namespace CloneZ
                 }
             }
 
+            /// <summary>
+            /// Renders a single shot image using the configured camera and lighting.
+            /// </summary>
             private void Shot(string file, Vector3 at, float size, float yaw, bool night, string what)
             {
                 try
@@ -375,6 +423,9 @@ namespace CloneZ
             #endregion
 
             #region The rig (as the cutaway harness's)
+            /// <summary>
+            /// Reads the camera configuration from a temporary GameObject.
+            /// </summary>
             private void ReadCamera()
             {
                 var go = new GameObject("[BuildingShots] camera numbers");
@@ -394,6 +445,9 @@ namespace CloneZ
                 }
             }
 
+            /// <summary>
+            /// Constructs the rig GameObject hierarchy with camera and lighting for image capture.
+            /// </summary>
             private void BuildRig()
             {
                 _rig = new GameObject("[BuildingShots]");
@@ -428,6 +482,9 @@ namespace CloneZ
             }
 
             // The game's overcast day (10:00) or the raid's night (the zone's start hour), by the sums the map harness uses.
+            /// <summary>
+            /// Configures lighting based on time of day and weather for a shot.
+            /// </summary>
             private void Light(bool night, Vector3 near)
             {
                 float hour = night ? _zone.StartHour : 10f;
@@ -461,6 +518,9 @@ namespace CloneZ
                 }
             }
 
+            /// <summary>
+            /// Captures a RenderTexture into a Texture2D of given dimensions.
+            /// </summary>
             private Texture2D Capture(int w, int h)
             {
                 var rt = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB) { name = "[BuildingShots]", antiAliasing = 1 };
@@ -493,6 +553,9 @@ namespace CloneZ
                 }
             }
 
+            /// <summary>
+            /// Reads pixel data from a RenderTexture into a new Texture2D.
+            /// </summary>
             private static Texture2D Read(RenderTexture rt, int w, int h)
             {
                 RenderTexture.active = rt;
@@ -502,6 +565,9 @@ namespace CloneZ
                 return tex;
             }
 
+            /// <summary>
+            /// Determines if a texture is uniformly colored, used to detect rendering issues.
+            /// </summary>
             private static bool Uniform(Texture2D tex)
             {
                 Color32 first = tex.GetPixel(0, 0);
@@ -514,6 +580,9 @@ namespace CloneZ
                 return true;
             }
 
+            /// <summary>
+            /// Renders the current view into the provided RenderTexture, handling custom pipelines.
+            /// </summary>
             private void RenderInto(RenderTexture rt)
             {
                 _cam.enabled = true;
@@ -536,6 +605,9 @@ namespace CloneZ
             }
             #endregion
 
+            /// <summary>
+            /// Sanitizes a string for use in file names, converting non-alphanumerics to underscores.
+            /// </summary>
             private static string Safe(string s)
             {
                 var b = new StringBuilder(s.Length);
@@ -543,7 +615,13 @@ namespace CloneZ
                 return b.ToString();
             }
 
+            /// <summary>
+            /// Formats a double as an integer with thousands separators for markdown output.
+            /// </summary>
             private static string F0(double v) => v.ToString("N0", CultureInfo.InvariantCulture);
+            /// <summary>
+            /// Formats a double with one decimal place for markdown output.
+            /// </summary>
             private static string F1(double v) => v.ToString("0.0", CultureInfo.InvariantCulture);
         }
     }
