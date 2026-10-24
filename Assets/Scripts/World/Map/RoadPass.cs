@@ -68,16 +68,16 @@ namespace CloneZ
             Junctions(net);
             PlanCuts(net);
             yield return "junctions";
-            Carriageways(net);
+            foreach (string step in Carriageways(net)) yield return step;
             yield return "streets";
-            SidesAndCorners(net);
+            foreach (string step in SidesAndCorners(net)) yield return step;
             yield return "sidewalks";
             if (net.Full)
             {
-                Berms(net);
+                foreach (string step in Berms(net)) yield return step;
                 DrawDriveways(net);
                 yield return "berms and driveways";
-                Markings(net);
+                foreach (string step in Markings(net)) yield return step;
                 yield return "road markings";
             }
             Paths(net);
@@ -180,13 +180,13 @@ namespace CloneZ
         {
             public Surf Asphalt, Concrete, Packed, Sidewalk, Snow, Trodden, TroddenLine, Paved;
             public Surf Kerb, KerbFace, Gutter, Slush, SlushLight, Wet, Track, TrackGravel, Rut, BermGrime;
-            public Surf Yellow, White, Panel, Rubber, Apron;
+            public Surf Yellow, White, Panel, Rubber, Apron, Crack, Tar, Pothole;
             public Surf Ballast, Tie, TieSnow, Rail, RailHead, RailRust, Girder;
             public Surf Parapet, ParapetCap, GuardRail, GuardPost, CrossbuckWhite, CrossbuckBlack, PostGrey, LampRed, LampHood;
 
             public Look()
             {
-                Asphalt = DecorMaterials.Planar(RoadTextures.WetAsphalt(), 7f, 0.42f);
+                Asphalt = DecorMaterials.Planar(RoadTextures.WetAsphalt(), 14f, 0.42f);
                 Concrete = DecorMaterials.Planar(RoadTextures.RoadConcrete(), 7f, 0.25f);
                 Packed = DecorMaterials.Planar(RoadTextures.PackedSnow(), 9f, 0.22f);
                 Sidewalk = DecorMaterials.Planar(RoadTextures.Sidewalk(), 3f, 0.12f);
@@ -209,6 +209,9 @@ namespace CloneZ
                 Panel = DecorPalette.Matte(new Color(0.55f, 0.55f, 0.53f));
                 Rubber = DecorPalette.Matte(new Color(0.20f, 0.20f, 0.21f));
                 Apron = DecorMaterials.Planar(RoadTextures.Sidewalk(), 3f, 0.12f);
+                Crack = DecorPalette.Matte(new Color(0.075f, 0.075f, 0.08f));
+                Tar = DecorPalette.Gloss(new Color(0.035f, 0.035f, 0.04f));
+                Pothole = DecorPalette.Gloss(new Color(0.10f, 0.11f, 0.12f));
                 Ballast = DecorMaterials.Planar(RoadTextures.SnowyBallast(), 3f, 0.08f);
                 Tie = DecorPalette.Matte(new Color(0.25f, 0.20f, 0.16f));
                 TieSnow = DecorPalette.Matte(new Color(0.80f, 0.82f, 0.87f));
@@ -234,6 +237,7 @@ namespace CloneZ
         /// <paramref name="toward"/>: one quad when it's a parallelogram (4 vertices), else two triangles.</summary>
         private static void Face(RaidMesh m, Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 toward, in Surf s)
         {
+            if (!Finite(a) || !Finite(b) || !Finite(c) || !Finite(d)) return;
             if (Vector3.Dot(Vector3.Cross(b - a, c - a), toward) < 0f)
             {
                 Vector3 t = b;
@@ -251,9 +255,13 @@ namespace CloneZ
         /// <summary>A triangle turned to face <paramref name="toward"/>.</summary>
         private static void Tri(RaidMesh m, Vector3 a, Vector3 b, Vector3 c, Vector3 toward, in Surf s)
         {
+            if (!Finite(a) || !Finite(b) || !Finite(c)) return;
             if (Vector3.Dot(Vector3.Cross(b - a, c - a), toward) < 0f) m.Tri(a, c, b, s);
             else m.Tri(a, b, c, s);
         }
+
+        private static bool Finite(Vector3 v) => !float.IsNaN(v.x) && !float.IsNaN(v.y) && !float.IsNaN(v.z)
+            && !float.IsInfinity(v.x) && !float.IsInfinity(v.y) && !float.IsInfinity(v.z);
 
         /// <summary>A face-up polygon (any winding, star-shaped from <paramref name="hub"/>) fanned from its hub; slivers
         /// that turn over (a polygon folding on itself) are left out.</summary>
@@ -261,6 +269,7 @@ namespace CloneZ
         {
             if (ring.Count < 2) return;
             float area = MapGeometry.SignedArea(ring);
+            if (float.IsNaN(area) || !Finite(hub)) return;
             Vector3 h = To3(hub, y);
             RaidMesh m = into.Flat(h);
             for (int i = 0; i < ring.Count; i++)
@@ -334,7 +343,7 @@ namespace CloneZ
             foreach (Joint j in net.Joints) byPoint[SnapKey(j.At)] = j;
             foreach (Junction pub in net.Site.Junctions)
             {
-                if (!byPoint.TryGetValue(SnapKey(pub.At), out Joint j) || j.Patch == null) continue;
+                if (!byPoint.TryGetValue(SnapKey(pub.At), out Joint j) || !j.HasPatch) continue;
                 var t = new float[pub.Arms.Count];
                 for (int i = 0; i < pub.Arms.Count; i++)
                 {
@@ -342,7 +351,7 @@ namespace CloneZ
                     foreach (Arm a in j.Arms)
                         if (a.W.S == pa.Street && Vector2.Dot(a.Dir, pa.Dir) > 0.9f)
                         {
-                            t[i] = a.Trim;
+                            t[i] = a.Through ? Mathf.Max(a.TanL, a.TanR) : a.Trim;
                             break;
                         }
                 }

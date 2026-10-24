@@ -187,9 +187,11 @@ namespace CloneZ
         /// <summary>Runs a coroutine on a helper object that is destroyed with the scene.</summary>
         public static Coroutine Run(IEnumerator routine) => routine != null ? HumanRunner.Instance.StartCoroutine(routine) : null;
 
-/// <summary>Every landmark the current map published ("landmark:&lt;id&gt;"), as (id, position). On the streamed map
-        /// only those around the country built near the survivors (the state's far landmarks are no goal for anyone here).
-        /// The returned list is a new instance; callers may modify it without affecting future calls.</summary>
+        /// <summary>Every landmark the current map published ("landmark:&lt;id&gt;"), as (id, position). On the streamed map
+        /// only those around the country built near the survivors (the state's far landmarks are no goal for anyone here);
+        /// of the real map's landmarks only the most important of any within <see cref="RealLandmarkSpacing"/> of each
+        /// other (the courthouse, not the bank across the street), so the Zone map's pins stay readable downtown. The
+        /// returned list is a new instance; callers may modify it without affecting future calls.</summary>
         public static List<KeyValuePair<string, Vector3>> Landmarks()
         {
             var result = new List<KeyValuePair<string, Vector3>>(16);
@@ -197,19 +199,38 @@ namespace CloneZ
             KentuckyStreamer streamer = KentuckyStreamer.Active;
             float reach = streamer != null ? streamer.BuiltReach + 160f : float.MaxValue;
             Vector3 centre = CloneZConfig.ArenaCenter;
+            s_Real.Clear();
             foreach (string kind in WorldMarkers.Kinds)
             {
-                if (kind == null || !kind.StartsWith(prefix)) continue;
+                if (kind == null || !kind.StartsWith(prefix, System.StringComparison.Ordinal)) continue;
                 IReadOnlyList<Vector3> pts = WorldMarkers.Get(kind);
                 string id = kind.Substring(prefix.Length);
+                bool real = MapGameplay.TryLandmark(id, out _, out int rank);
                 for (int i = 0; i < pts.Count; i++)
                 {
                     if (streamer != null && (Mathf.Abs(pts[i].x - centre.x) > reach || Mathf.Abs(pts[i].z - centre.z) > reach)) continue;
-                    result.Add(new KeyValuePair<string, Vector3>(id, pts[i]));
+                    if (real) s_Real.Add((id, pts[i], rank));
+                    else result.Add(new KeyValuePair<string, Vector3>(id, pts[i]));
                 }
             }
+            if (s_Real.Count == 0) return result;
+            s_Real.Sort((a, b) => a.rank != b.rank ? b.rank.CompareTo(a.rank) : string.CompareOrdinal(a.id, b.id));
+            int first = result.Count;
+            const float spacing2 = RealLandmarkSpacing * RealLandmarkSpacing;
+            foreach (var l in s_Real)
+            {
+                bool crowded = false;
+                for (int k = first; k < result.Count && !crowded; k++) crowded = FlatSqr(result[k].Value, l.at) < spacing2;
+                if (!crowded) result.Add(new KeyValuePair<string, Vector3>(l.id, l.at));
+            }
+            s_Real.Clear();
             return result;
         }
+
+        /// <summary>The least distance between two real landmarks listed by <see cref="Landmarks"/>, in metres.</summary>
+        public const float RealLandmarkSpacing = 45f;
+
+        private static readonly List<(string id, Vector3 at, int rank)> s_Real = new List<(string, Vector3, int)>(64);
 
         /// <summary>Every published marker whose kind mentions <paramref name="word"/> (anomaly fields, camps...).</summary>
         public static void MarkersMatching(string word, List<Vector3> into)

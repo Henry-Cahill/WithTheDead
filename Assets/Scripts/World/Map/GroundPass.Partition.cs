@@ -31,6 +31,12 @@ namespace CloneZ
             /// <summary>See <see cref="Ground.Whole"/>.</summary>
             public List<Vector2> Whole;
             public bool WholeDone;
+            /// <summary>On a streamed piece, the area's region in site-local metres, once <see cref="Whole"/> is known:
+            /// the whole outline's edges along it are cuts, not shores.</summary>
+            public Rect Region;
+            /// <summary>For water, what it looks like in January (see <see cref="LookOf"/>).</summary>
+            public WaterLook Look;
+            public bool LookDone;
 
             private bool _axisDone;
             private Vector2 _axis;
@@ -75,7 +81,7 @@ namespace CloneZ
         {
             switch (o.Kind)
             {
-                case "water": surf = IceSurf; return true;
+                case "water": surf = LookOf(o).Open ? WaterSurf : IceSurf; return true;
                 case "forest": surf = ForestFloorSurf; return true;
                 case "meadow": case "orchard": surf = MeadowSurf; return true;
                 case "scrub": surf = ScrubSurf; return true;
@@ -421,14 +427,7 @@ namespace CloneZ
         /// (decimetres, so the same wherever it's cut) or, without them, from <paramref name="fallback"/>.</summary>
         private static Vector2 LongAxis(int[] dm, List<Vector2> fallback)
         {
-            List<Vector2> pts;
-            if (dm != null && dm.Length >= 6)
-            {
-                pts = new List<Vector2>(dm.Length / 2);
-                for (int i = 0; i + 1 < dm.Length; i += 2) pts.Add(new Vector2((dm[i] - dm[0]) * 0.1f, (dm[i + 1] - dm[1]) * 0.1f));
-            }
-            else pts = fallback;
-            Box(pts, out Vector2 axis, out _, out _);
+            Box(DataOutline(dm, fallback), out Vector2 axis, out _, out _);
             return axis;
         }
 

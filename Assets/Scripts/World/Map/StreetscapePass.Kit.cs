@@ -45,11 +45,17 @@ namespace CloneZ
             public readonly List<Pole> Poles = new List<Pole>();
             /// <summary>The street lights standing on their own, planned before they're drawn.</summary>
             public readonly List<LampPlan> Lamps = new List<LampPlan>();
-            /// <summary>Real lights handed out so far, and the site's cap.</summary>
-            public int Lights, MaxLights;
+            /// <summary>Every street light planned so far (on poles too), for keeping the next ones apart.</summary>
+            public readonly List<LampPlan> AllLamps = new List<LampPlan>();
+            /// <summary>The burning lamps drawn so far, made <see cref="StreetLamp"/>s together at the end (nearest the
+            /// site's middle first, for the edit-mode lights' cap).</summary>
+            public readonly List<Burning> Burning = new List<Burning>();
             /// <summary>Where two or more roads meet, with their road arms only.</summary>
             public readonly List<Crossing> Crossings = new List<Crossing>();
             private NameAtlas _names;
+            private RoadGrid _roads;
+            private BuildingGrid _blocks;
+            private Dictionary<Footprint, EnterableBuilding> _enterables;
 
             public Ctx(Site site)
             {
@@ -65,6 +71,35 @@ namespace CloneZ
             /// <summary>The site's sign atlas (street names, route shields, painted names), made the first time it's asked
             /// for.</summary>
             public NameAtlas Names => _names ??= new NameAtlas(Site);
+
+            /// <summary>The carriageways as the roads drew them, for testing spots the occupancy grid can't (the square's
+            /// edge, the scenery ring).</summary>
+            public RoadGrid Roads => _roads ??= new RoadGrid(Site.Area);
+
+            /// <summary>The buildings' outlines (a streamed piece's neighbours' too), for keeping wires off the roofs.</summary>
+            public BuildingGrid Blocks => _blocks ??= new BuildingGrid(Site.Area);
+
+            /// <summary>The enterable building on a footprint (its storeys), or null.</summary>
+            public EnterableBuilding EnterableOf(Footprint f)
+            {
+                if (_enterables == null)
+                {
+                    _enterables = new Dictionary<Footprint, EnterableBuilding>(Site.Enterables.Count);
+                    foreach (EnterableBuilding e in Site.Enterables)
+                        if (e.Footprint != null) _enterables[e.Footprint] = e;
+                }
+                return f != null && _enterables.TryGetValue(f, out EnterableBuilding b) ? b : null;
+            }
+
+            /// <summary>True where a roadside thing may stand: inside the square free of everything and of every road's
+            /// surface (<see cref="Site.FreeBeside"/>); at the edge or past it, off the carriageways as drawn and out of
+            /// the buildings.</summary>
+            public bool Roadside(Vector2 p, float radius)
+            {
+                if (Inside(p) && Mathf.Abs(p.x) < Half - radius - 0.05f && Mathf.Abs(p.y) < Half - radius - 0.05f)
+                    return Site.FreeBeside(p, radius);
+                return Roads.Clearance(p, radius + 1f) >= radius && !Blocks.Contains(p, radius);
+            }
 
             /// <summary>True inside the playable square, where things get colliders and claim their spot.</summary>
             public bool Inside(Vector2 p) => Mathf.Abs(p.x) < Half && Mathf.Abs(p.y) < Half;
@@ -86,19 +121,9 @@ namespace CloneZ
                 Site.Town.PropCollider(new Vector3(p.x, y0 + size.y * 0.5f, p.y), size, yaw);
             }
 
-            /// <summary>A small prop's collider: exact when it stands square to the axes, else an upright square box about its
-            /// size (a turned box would cost an object of its own, and a bench or a phone needn't be exact).</summary>
-            public void Block(Vector2 p, Vector3 size, float yaw)
-            {
-                float k = Mathf.Repeat(yaw, 90f);
-                if (k < 1f || k > 89f)
-                {
-                    Collider(p, 0f, size, yaw);
-                    return;
-                }
-                float s = Mathf.Lerp(Mathf.Min(size.x, size.z), Mathf.Max(size.x, size.z), 0.6f);
-                Collider(p, 0f, new Vector3(s, size.y, s), 0f);
-            }
+            /// <summary>A small prop's collider, turned with it (the map's prop colliders are merged into one mesh, so a turned
+            /// box costs no more than a square one).</summary>
+            public void Block(Vector2 p, Vector3 size, float yaw) => Collider(p, 0f, size, yaw);
 
             /// <summary>A world-anchored key for a spot (to half a metre), so a thing two streamed pieces both build comes
             /// out the same in each.</summary>
@@ -111,6 +136,8 @@ namespace CloneZ
             /// <summary>A world-anchored number in [0, 1) for a spot and a salt.</summary>
             public float Unit(Vector2 local, int salt) => MapStyle.Unit(KeyOf(local), salt);
 
+            // A crossing is where three or more road arms meet: two pieces meeting end to end (a road changing its name,
+            // or its mapped pieces simply joining) are no junction to sign or light.
             private void FindCrossings()
             {
                 var names = new List<string>(6);
@@ -118,16 +145,18 @@ namespace CloneZ
                 {
                     var c = new Crossing { At = j.At, Junction = j };
                     names.Clear();
-                    foreach (JunctionArm a in j.Arms)
+                    for (int i = 0; i < j.Arms.Count; i++)
                     {
+                        JunctionArm a = j.Arms[i];
                         int rank = RoadRank(a.Street);
                         if (rank < 0) continue;
                         c.Arms.Add(a);
+                        c.ArmIndex.Add(i);
                         string key = NameKey(a.Street);
                         if (!names.Contains(key)) names.Add(key);
                         if (rank > c.TopRank) c.TopRank = rank;
                     }
-                    if (c.Arms.Count < 2 || (names.Count < 2 && c.Arms.Count < 3)) continue;
+                    if (c.Arms.Count < 3 || names.Count < 2) continue;
                     Crossings.Add(c);
                 }
             }
@@ -161,11 +190,37 @@ namespace CloneZ
             public Vector2 At;
             public Junction Junction;
             public readonly List<JunctionArm> Arms = new List<JunctionArm>();
+            /// <summary>Each arm's index in <see cref="Junction"/>'s own arms (for <see cref="RoadPass.ArmSetback"/> and
+            /// <see cref="RoadPass.StopLine"/>).</summary>
+            public readonly List<int> ArmIndex = new List<int>();
             public int TopRank = -1;
             /// <summary>Set once something controls it (signals, stop signs), so nothing else does.</summary>
             public bool Controlled;
             /// <summary>Set once its street-name blades are up.</summary>
             public bool Named;
+
+            /// <summary>How far from the junction's point arm <paramref name="k"/> (in <see cref="Arms"/>) leaves the
+            /// junction's paved patch, as the roads shaped it.</summary>
+            public float Setback(int k) => RoadPass.ArmSetback(Junction, ArmIndex[k]);
+
+            /// <summary>The side (+1 left, -1 right of its street's own direction) of arm <paramref name="k"/>'s street
+            /// that is on the right of traffic coming into the junction along it.</summary>
+            public int ApproachRight(int k)
+            {
+                JunctionArm a = Arms[k];
+                List<Vector2> pts = a.Street.Pts;
+                bool forward = a.Vertex + 1 < pts.Count && Vector2.Dot(pts[a.Vertex + 1] - pts[a.Vertex], a.Dir) > 0f;
+                return forward ? 1 : -1;
+            }
+        }
+
+        /// <summary>A burning street light, drawn, waiting to be made a <see cref="StreetLamp"/>.</summary>
+        internal struct Burning
+        {
+            public LampPlan Lamp;
+            public Vector2 Foot;
+            public float PoleHeight;
+            public Vector3 Head;
         }
 
         /// <summary>A utility pole (or a tower) the steps hang things on.</summary>
@@ -224,15 +279,38 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Half the carriageway's width, as the roads are drawn.</summary>
-        internal static float HalfWidth(Street s) => Mathf.Max(1.5f, s.Width * 0.5f);
+        /// <summary>Half the carriageway's width as the roads drew it (the wider side, to the kerb face or the edge of the
+        /// shoulder); for a street the road pass didn't analyse, as it would have drawn it.</summary>
+        internal static float HalfWidth(Street s) => Mathf.Max(RoadPass.HalfWidth(s), MappedHalf(s));
 
-        /// <summary>How far past the carriageway's edge the roadside things stand (poles, signs, lamps).</summary>
+        /// <summary>How far the carriageway reaches on one side of a street (+1 left of its points' order, -1 right).</summary>
+        internal static float EdgeOf(Street s, int side) => Mathf.Max(RoadPass.EdgeOffset(s, side), MappedHalf(s));
+
+        /// <summary>Where the roadside things (poles, signs, lamps, hydrants) stand on one side of a street, from its line:
+        /// on the sidewalk behind the kerb, on the verge, or past an unkerbed edge (<see cref="RoadPass.RoadsideOffset"/>),
+        /// never on the carriageway.</summary>
+        internal static float Roadside(Street s, int side) => Mathf.Max(RoadPass.RoadsideOffset(s, side), EdgeOf(s, side) + 0.55f);
+
+        /// <summary>Half the carriageway from the street's data alone, as the roads draw a street they know nothing more of
+        /// (6 m when the width isn't mapped; shoulders on the highways). The same in every streamed piece.</summary>
+        internal static float MappedHalf(Street s)
+        {
+            string k = s.Data.kind ?? "";
+            float w = s.Data.width > 0.5f ? s.Data.width : 6f;
+            float half = Mathf.Clamp(w, k == "track" ? 2.6f : 3.2f, 30f) * 0.5f;
+            bool link = k.EndsWith("_link");
+            if (k.StartsWith("motorway")) half += link ? 1.0f : 2.4f;
+            else if (k.StartsWith("trunk")) half += link ? 1.0f : 1.5f;
+            return half;
+        }
+
+        /// <summary>How far past the carriageway's edge the roadside things stand when only the data says where it is
+        /// (where a streamed piece's line meets its neighbour's, both must agree).</summary>
         internal static float Verge(Street s)
         {
             switch (s.Data.kind)
             {
-                case "residential": case "living_street": return 0.65f;
+                case "residential": case "living_street": return 0.75f;
                 case "unclassified": return 1.5f;
                 case "tertiary": return 1.0f;
                 case "secondary": case "primary": return 1.2f;
@@ -404,9 +482,174 @@ namespace CloneZ
         }
 
         /// <summary>
+        /// The site's carriageways as the roads drew them (tunnels aside; bridges in), on a coarse grid, for testing the
+        /// spots the occupancy grid can't: the square's edge and the scenery ring past it.
+        /// </summary>
+        internal sealed class RoadGrid
+        {
+            private const float Cell = 16f;
+            private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
+            private readonly List<Vector2> _a = new List<Vector2>(), _b = new List<Vector2>();
+            private readonly List<float> _half = new List<float>();
+
+            public RoadGrid(Area area)
+            {
+                foreach (Street s in area.Streets)
+                {
+                    if (s.Data.tunnel || s.Pts.Count < 2 || RoadRank(s) < 1 || !RoadPass.IsCarriageway(s)) continue;
+                    float half = HalfWidth(s);
+                    for (int i = 0; i + 1 < s.Pts.Count; i++) Add(s.Pts[i], s.Pts[i + 1], half);
+                }
+            }
+
+            private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
+
+            private void Add(Vector2 a, Vector2 b, float half)
+            {
+                if ((b - a).sqrMagnitude < 1e-6f) return;
+                int index = _a.Count;
+                _a.Add(a);
+                _b.Add(b);
+                _half.Add(half);
+                int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - half) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + half) / Cell);
+                int z0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - half) / Cell), z1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + half) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        long k = Key(x, z);
+                        if (!_cells.TryGetValue(k, out List<int> list)) _cells[k] = list = new List<int>(4);
+                        list.Add(index);
+                    }
+            }
+
+            /// <summary>How far <paramref name="p"/> is from the nearest carriageway's surface (negative on it), up to
+            /// <paramref name="within"/>.</summary>
+            public float Clearance(Vector2 p, float within)
+            {
+                float best = within;
+                int x0 = Mathf.FloorToInt((p.x - within) / Cell), x1 = Mathf.FloorToInt((p.x + within) / Cell);
+                int z0 = Mathf.FloorToInt((p.y - within) / Cell), z1 = Mathf.FloorToInt((p.y + within) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        if (!_cells.TryGetValue(Key(x, z), out List<int> list)) continue;
+                        foreach (int i in list)
+                        {
+                            float d = MapGeometry.DistanceToSegment(p, _a[i], _b[i]) - _half[i];
+                            if (d < best) best = d;
+                        }
+                    }
+                return best;
+            }
+        }
+
+        /// <summary>
+        /// The site's buildings (and, on a streamed piece, its neighbours' that reach in) on a coarse grid: is a spot inside
+        /// one, does a wire's line pass over one.
+        /// </summary>
+        internal sealed class BuildingGrid
+        {
+            private const float Cell = 16f;
+            private readonly Dictionary<long, List<Footprint>> _cells = new Dictionary<long, List<Footprint>>();
+            private readonly HashSet<Footprint> _seen = new HashSet<Footprint>();
+
+            public BuildingGrid(Area area)
+            {
+                foreach (Footprint f in area.Buildings) Add(f);
+                foreach (Footprint f in area.Foreign) Add(f);
+            }
+
+            private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
+
+            private void Add(Footprint f)
+            {
+                if (f.Pts.Count < 3) return;
+                Rect b = f.Bounds;
+                for (int z = Mathf.FloorToInt(b.yMin / Cell); z <= Mathf.FloorToInt(b.yMax / Cell); z++)
+                    for (int x = Mathf.FloorToInt(b.xMin / Cell); x <= Mathf.FloorToInt(b.xMax / Cell); x++)
+                    {
+                        long k = Key(x, z);
+                        if (!_cells.TryGetValue(k, out List<Footprint> list)) _cells[k] = list = new List<Footprint>(4);
+                        list.Add(f);
+                    }
+            }
+
+            /// <summary>True when <paramref name="p"/> is inside a building, or within <paramref name="pad"/> of its walls.</summary>
+            public bool Contains(Vector2 p, float pad)
+            {
+                for (int z = Mathf.FloorToInt((p.y - pad) / Cell); z <= Mathf.FloorToInt((p.y + pad) / Cell); z++)
+                    for (int x = Mathf.FloorToInt((p.x - pad) / Cell); x <= Mathf.FloorToInt((p.x + pad) / Cell); x++)
+                    {
+                        if (!_cells.TryGetValue(Key(x, z), out List<Footprint> list)) continue;
+                        foreach (Footprint f in list)
+                        {
+                            Rect b = f.Bounds;
+                            if (p.x < b.xMin - pad || p.x > b.xMax + pad || p.y < b.yMin - pad || p.y > b.yMax + pad) continue;
+                            if (MapGeometry.Contains(f.Pts, p)) return true;
+                            if (pad > 0f && MapGeometry.DistanceToEdge(f.Pts, p) < pad) return true;
+                        }
+                    }
+                return false;
+            }
+
+            /// <summary>True when the straight line from <paramref name="a"/> to <paramref name="b"/> passes over a building
+            /// (or within <paramref name="pad"/> of its walls, where its eaves are), <paramref name="except"/> aside.</summary>
+            public bool Crosses(Vector2 a, Vector2 b, float pad, Footprint except = null)
+            {
+                _seen.Clear();
+                float x0 = Mathf.Min(a.x, b.x) - pad, x1 = Mathf.Max(a.x, b.x) + pad;
+                float z0 = Mathf.Min(a.y, b.y) - pad, z1 = Mathf.Max(a.y, b.y) + pad;
+                for (int z = Mathf.FloorToInt(z0 / Cell); z <= Mathf.FloorToInt(z1 / Cell); z++)
+                    for (int x = Mathf.FloorToInt(x0 / Cell); x <= Mathf.FloorToInt(x1 / Cell); x++)
+                    {
+                        if (!_cells.TryGetValue(Key(x, z), out List<Footprint> list)) continue;
+                        foreach (Footprint f in list)
+                        {
+                            if (f == except || !_seen.Add(f)) continue;
+                            Rect r = f.Bounds;
+                            if (r.xMax < x0 || r.xMin > x1 || r.yMax < z0 || r.yMin > z1) continue;
+                            if (SegmentMeets(f.Pts, a, b, pad)) return true;
+                        }
+                    }
+                return false;
+            }
+
+            /// <summary>True when the segment from <paramref name="a"/> to <paramref name="b"/> enters the polygon or comes
+            /// within <paramref name="pad"/> of its outline.</summary>
+            internal static bool Meets(List<Vector2> poly, Vector2 a, Vector2 b, float pad) => SegmentMeets(poly, a, b, pad);
+
+            // The segment a-b inside the polygon or within pad of its outline.
+            private static bool SegmentMeets(List<Vector2> poly, Vector2 a, Vector2 b, float pad)
+            {
+                if (MapGeometry.Contains(poly, a) || MapGeometry.Contains(poly, b)) return true;
+                if (pad > 0f && (MapGeometry.DistanceToEdge(poly, a) < pad || MapGeometry.DistanceToEdge(poly, b) < pad)) return true;
+                int n = poly.Count;
+                for (int i = 0; i < n; i++)
+                {
+                    Vector2 c = poly[i], d = poly[(i + 1) % n];
+                    if (SegmentsCross(a, b, c, d)) return true;
+                    if (pad > 0f && MapGeometry.DistanceToSegment(c, a, b) < pad) return true;
+                }
+                return false;
+            }
+
+            private static bool SegmentsCross(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
+            {
+                float d1 = Cross(b - a, c - a), d2 = Cross(b - a, d - a), d3 = Cross(d - c, a - c), d4 = Cross(d - c, b - c);
+                return ((d1 > 0f && d2 < 0f) || (d1 < 0f && d2 > 0f)) && ((d3 > 0f && d4 < 0f) || (d3 < 0f && d4 > 0f));
+            }
+
+            private static float Cross(Vector2 u, Vector2 v) => u.x * v.y - u.y * v.x;
+        }
+
+        /// <summary>
         /// The site's overhead wires: sagging three-sided strands, a few hundred vertices a span, gathered into one mesh per
         /// 64 m cell (inside the square under the overhead root, which moves with a streamed piece and is never baked;
         /// past it with the scenery). One palette material, so a whole town's wires are a handful of draws.
+        /// <para>The vegetation pass reads the wires back from these meshes to keep the trees' crowns off them, so their
+        /// layout is a contract: readable meshes on objects named "Wires" directly under the overhead root, emitted before
+        /// the vegetation pass runs; each strand a run of three-vertex rings in order, no two rings of one strand more than
+        /// 5 m apart.</para>
         /// </summary>
         internal sealed class WireBatch
         {
@@ -435,7 +678,7 @@ namespace CloneZ
                 Vector3 ab = b - a;
                 float len = ab.magnitude;
                 if (len < 0.05f) return;
-                int segs = Mathf.Clamp(Mathf.CeilToInt(len / 5f), 2, 20);
+                int segs = Mathf.Clamp(Mathf.CeilToInt(len / 5f), 2, 80);
                 Surf s = DecorPalette.Matte(colour);
                 _material = s.Mat;
                 Bucket bucket = BucketAt((a + b) * 0.5f, far);
@@ -476,7 +719,7 @@ namespace CloneZ
                 Vector3 ab = b - a;
                 float len = ab.magnitude;
                 if (len < 0.05f) return;
-                int segs = Mathf.Clamp(Mathf.CeilToInt(len / 5f), 2, 20);
+                int segs = Mathf.Clamp(Mathf.CeilToInt(len / 5f), 2, 80);
                 var pts = new Vector3[segs + 1];
                 for (int k = 0; k <= segs; k++)
                 {

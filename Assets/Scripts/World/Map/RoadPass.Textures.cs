@@ -12,8 +12,9 @@ namespace CloneZ
     {
         private static Texture2D s_Wet, s_Concrete, s_Packed, s_Sidewalk, s_Ballast;
 
-        /// <summary>Ploughed asphalt, wet in the wheel paths' shade, salt-white where it's dried (repeat 7 m).</summary>
-        public static Texture2D WetAsphalt() => s_Wet != null ? s_Wet : s_Wet = Paint("Raid_roads_wet_asphalt", 256, WetAsphaltAt, 3);
+        /// <summary>Ploughed asphalt: a fine aggregate under a faint, broad tone, nothing that would show the repeat (14 m);
+        /// its cracks, seams and potholes are drawn along each road (RoadPass.Wear) so they never repeat.</summary>
+        public static Texture2D WetAsphalt() => s_Wet != null ? s_Wet : s_Wet = Paint("Raid_roads_wet_asphalt_v2", 512, WetAsphaltAt, 0);
 
         /// <summary>Weathered road concrete (repeat 7 m).</summary>
         public static Texture2D RoadConcrete() => s_Concrete != null ? s_Concrete : s_Concrete = Paint("Raid_roads_concrete", 256, ConcreteAt, 0);
@@ -64,13 +65,13 @@ namespace CloneZ
 
         private static Color WetAsphaltAt(float u, float v, int x, int y)
         {
-            float wet = Fbm(u, v, 3, 4, 101);
-            float g = Mathf.Lerp(0.105f, 0.215f, Mathf.SmoothStep(0.3f, 0.78f, wet));
-            g += (R01(x, y, 102) - 0.5f) * 0.05f + (Fbm(u, v, 24, 2, 103) - 0.5f) * 0.04f;
+            float tone = Fbm(u, v, 2, 2, 101);
+            float g = 0.15f + 0.045f * (tone - 0.5f) + (R01(x, y, 102) - 0.5f) * 0.05f + (Value(u, v, 96, 103) - 0.5f) * 0.035f;
             var c = new Color(g * 0.97f, g, g * 1.06f);
-            if (wet > 0.58f && R01(x, y, 104) > 0.9f) c = Color.Lerp(c, new Color(0.46f, 0.46f, 0.47f), 0.6f);
-            float stain = Fbm(u, v, 6, 3, 105);
-            if (stain > 0.68f) c = Color.Lerp(c, new Color(0.36f, 0.35f, 0.34f), (stain - 0.68f) * 2.2f);
+            float r = R01(x, y, 104);
+            if (r > 0.992f) c = Color.Lerp(c, new Color(0.40f, 0.40f, 0.41f), 0.5f);   // a pale stone, a salt grain
+            else if (r < 0.004f) c *= 0.6f;
+            c.a = 1f;
             return c;
         }
 

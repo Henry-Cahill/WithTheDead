@@ -26,14 +26,13 @@ namespace CloneZ
 
         private static IEnumerable<string> Yards(Planting p)
         {
-            int done = 0;
             foreach (Footprint f in p.Site.Area.Buildings)
             {
                 if (!NaturePlan.IsHome(f.Data) || f.Pts.Count < 3 || f.Size < 20f) continue;
                 bool inside = p.Plan.InSquare(f.Middle, 0f);
                 if (!inside && !p.Plan.InRing(f.Middle) && !p.Site.Chunked) continue;
                 Yard(p, f, inside || p.Site.Chunked);
-                if (++done % 20 == 0) yield return "yards";
+                if (p.Site.StepDue) yield return "yard trees";
             }
             // A streamed piece also grows the trees its neighbours' houses have in it (each piece plants only inside its
             // own square, so no tree is grown twice).
@@ -41,9 +40,9 @@ namespace CloneZ
             {
                 if (!NaturePlan.IsHome(f.Data) || f.Pts.Count < 3 || f.Size < 20f) continue;
                 Yard(p, f, true);
-                if (++done % 20 == 0) yield return "yards";
+                if (p.Site.StepDue) yield return "yard trees";
             }
-            yield return "yards";
+            yield return "yard trees";
         }
 
         // A home's trees: fewer the closer the houses stand, more out in the country, where a farmhouse also gets a
@@ -115,7 +114,7 @@ namespace CloneZ
                     break;
             }
             Vector2 at = hf.At(t, n);
-            if (inside && !YardClear(p, f, at, room, wall)) return false;
+            if (inside && !YardClear(p, at, room, wall)) return false;
             TreeKind kind = mix.Pick(MapStyle.Unit(key, SaltKind));
             float scale = slot == Slot.FrontShade || slot == Slot.BackFar ? 1.05f : 1f;
             return Plant(p, at, kind, HeightOf(kind, key, scale), key, room, TreeTier.Full, false);
@@ -123,10 +122,11 @@ namespace CloneZ
 
         /// <summary>
         /// Room for a yard tree (or a windbreak's) inside the square: clear of every wall by <paramref name="wall"/>, off
-        /// the street and its sidewalk, off the driveways, clear of the front porch and of the other yard trees; and, away
-        /// from the house's own bounding box (which the buildings take whole in the occupancy grid), free in the grid.
+        /// the street and its sidewalk, off the driveways and the doorsteps, clear of the other trees, and its trunk's spot
+        /// free in the occupancy grid (which holds the porches and steps, the mailboxes, poles and hydrants; tested at the
+        /// trunk only, since a house's own cells reach a metre or two past its walls).
         /// </summary>
-        private static bool YardClear(Planting p, Footprint home, Vector2 at, float room, float wall)
+        private static bool YardClear(Planting p, Vector2 at, float room, float wall)
         {
             NaturePlan plan = p.Plan;
             if (!plan.InSquare(at, room)) return false;
@@ -135,19 +135,8 @@ namespace CloneZ
             if (plan.IsKept(at, room)) return false;
             Land land = plan.LandAt(at);
             if (land == Land.Water || land == Land.Lot || land == Land.Pitch) return false;
-            if (NearDoor(p, home, at, 3.2f) || !p.TreeFree(at, room)) return false;
-            Rect box = home.Bounds;
-            float m = room + 1.2f;
-            bool byHouse = at.x > box.xMin - m && at.x < box.xMax + m && at.y > box.yMin - m && at.y < box.yMax + m;
-            return byHouse || p.Site.FreeBeside(at, room);
-        }
-
-        private static bool NearDoor(Planting p, Footprint f, Vector2 at, float within)
-        {
-            if (!p.Doors.TryGetValue(f, out EnterableBuilding e)) return false;
-            foreach (Doorway d in e.Doors)
-                if (Vector2.Distance(d.At + d.Outward * 1.2f, at) < within) return true;
-            return false;
+            if (plan.NearDoor(at, 3.2f) || !p.TreeFree(at, room) || plan.OnSidewalk(at, room * 0.5f)) return false;
+            return p.Site.FreeBeside(at, 0f);
         }
 
         // Evergreen bushes along the wall that faces the street, a metre or two apart, the porch and the door left clear (on
@@ -183,7 +172,10 @@ namespace CloneZ
             for (float s = 0.9f; s <= edge - 0.9f; s += spacing, k++)
             {
                 Vector2 at = s0 + dir * s + outside * 0.75f;
-                if (NearDoor(p, f, at, 2.6f) || p.Plan.IsKept(at, 0.6f)) continue;
+                if (p.Plan.NearDoor(at, 2.2f) || p.Plan.IsKept(at, 0.6f)) continue;
+                // Whatever stands out in front of the wall here (a porch, its steps) has the spot: a single cell tested well out,
+                // past where the house's own cells reach.
+                if (!p.Site.FreeBeside(s0 + dir * s + outside * 2.8f, 0f)) continue;
                 if (p.Plan.RoadClearance(at, 2f) < 1.2f || p.Plan.WallDistance(at, 1f) < 0.45f) continue;
                 long key = NaturePlan.Combine(id, 200 + k);
                 Bush(p, at, kind, 0.7f + MapStyle.Unit(key, SaltFoundation + 3) * 0.5f, key, false);
@@ -202,15 +194,15 @@ namespace CloneZ
                 long key = NaturePlan.Combine(id, 300 + k);
                 Vector2 at = hf.At(t, n + (MapStyle.Unit(key, SaltJitter) - 0.5f) * 1.2f);
                 bool inside = p.Plan.InSquare(at, 0f);
-                if (inside && !YardClear(p, f, at, 1.2f, 3f)) continue;
+                if (inside && !YardClear(p, at, 1.2f, 3f)) continue;
                 TreeKind kind = MapStyle.Unit(key, SaltKind) < 0.55f ? TreeKind.Cedar : MapStyle.Unit(key, SaltKind + 1) < 0.6f ? TreeKind.WhitePine : TreeKind.Spruce;
                 Plant(p, at, kind, HeightOf(kind, key), key, 1.2f, TreeTier.Full, false);
             }
         }
 
-        // The big old trees along the town's residential streets, a dozen metres apart behind the sidewalk, wherever
-        // homes front the street (shopping streets and downtown keep bare kerbs).
-        private static void StreetTrees(Planting p)
+        // The big old trees along the town's residential streets, a dozen metres apart just behind the sidewalk (or a couple
+        // of metres off a kerb without one), wherever homes front the street (shopping streets and downtown keep bare kerbs).
+        private static IEnumerable<string> StreetTrees(Planting p)
         {
             NaturePlan plan = p.Plan;
             foreach (Street st in p.Site.Area.Streets)
@@ -225,11 +217,14 @@ namespace CloneZ
                     {
                         long key = NaturePlan.Combine(NaturePlan.Combine(st.Data.id, s.K), side + 7);
                         if (MapStyle.Unit(key, SaltStreet) > 0.55f) continue;
-                        Vector2 normal = new Vector2(-s.Dir.y, s.Dir.x) * side;
-                        Vector2 at = s.At + normal * (st.Width * 0.5f + 2.7f + MapStyle.Unit(key, SaltJitter) * 0.8f)
-                            + s.Dir * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 2f);
+                        Vector2 normal = new Vector2(-s.Dir.y, s.Dir.x) * side;   // left of the street for side +1, as the roads count
+                        float walk = RoadPass.SidewalkOuter(st, side);
+                        float off = walk > 0f ? walk + 1.1f + MapStyle.Unit(key, SaltJitter) * 0.7f
+                            : RoadPass.KerbOffset(st, side) + 2.4f + MapStyle.Unit(key, SaltJitter) * 0.8f;
+                        Vector2 at = s.At + normal * off + s.Dir * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 2f);
                         if (!HomesNear(p, at, 24f)) continue;
-                        if (plan.WallDistance(at, 4f) < 3.4f || plan.IsKept(at, 1.6f) || plan.RoadClearance(at, 3f) < 2.3f) continue;
+                        if (plan.WallDistance(at, 4f) < 3.4f || plan.IsKept(at, 1.6f) || plan.RoadClearance(at, 3f) < 1.5f) continue;
+                        if (plan.NearDoor(at, 3f) || plan.OnSidewalk(at, 0.6f)) continue;
                         Land land = plan.LandAt(at);
                         if (land == Land.Lot || land == Land.Water || land == Land.Business) continue;
                         bool inside = plan.InSquare(at, 0f);
@@ -237,6 +232,7 @@ namespace CloneZ
                         TreeKind kind = StreetMix.Pick(MapStyle.Unit(key, SaltKind));
                         Plant(p, at, kind, HeightOf(kind, key, 1.05f), key, 1.2f, TreeTier.Full, false);
                     }
+                    if (p.Site.StepDue) yield return "street trees";
                 }
             }
         }
@@ -256,7 +252,7 @@ namespace CloneZ
 
         // The lawns round the churches, schools, the courthouse, the town hall, the library and the like: big shade trees
         // and evergreens in front, beside and behind, where there's room off the street, and yews along the front.
-        private static void Grounds(Planting p)
+        private static IEnumerable<string> Grounds(Planting p)
         {
             var list = new List<Footprint>();
             var seen = new HashSet<Footprint>();
@@ -287,11 +283,30 @@ namespace CloneZ
                         case 3: at = hf.At(hf.T1 + 4f + u * 4f, Mathf.Lerp(hf.N0, hf.N1, v)); break;
                         default: at = hf.At(Mathf.Lerp(hf.T0, hf.T1, u), hf.N1 + 4f + v * 6f); break;
                     }
-                    if (!YardClear(p, f, at, 1.8f, 3.6f)) continue;
+                    if (!YardClear(p, at, 1.8f, 3.6f)) continue;
                     TreeKind kind = GroundsMix.Pick(MapStyle.Unit(key, SaltKind));
                     if (Plant(p, at, kind, HeightOf(kind, key, 1.1f), key, 1.8f, TreeTier.Full, false)) planted++;
                 }
                 if (!p.Lite && MapStyle.Unit(id, SaltGrounds + 3) < 0.7f) Foundation(p, f, hf, true);
+                if (p.Site.StepDue) yield return "grounds trees";
+            }
+        }
+
+        // The cemeteries' trees, in the bare plots the ground pass leaves among the headstones (GroundPass.Clearings, Full
+        // detail inside the square; elsewhere the sweep sows them): cedars mostly, an old oak or maple, now and then a
+        // spruce, two plots in three.
+        private static void CemeteryTrees(Planting p)
+        {
+            IReadOnlyList<Vector2> plots = GroundPass.Clearings(p.Site);
+            for (int i = 0; i < plots.Count; i++)
+            {
+                Vector2 c = plots[i];
+                long key = NaturePlan.Combine((long)System.Math.Round(p.Plan.AbsX(c.x) * 2.0), (long)System.Math.Round(p.Plan.AbsZ(c.y) * 2.0));
+                if (MapStyle.Unit(key, SaltCemetery) > 0.66f) continue;
+                Vector2 at = c + new Vector2(MapStyle.Unit(key, SaltJitter) - 0.5f, MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 3f;
+                if (!p.Plan.InSquare(at, 0.5f) || !p.Site.FreeBeside(at, 0.8f) || !p.TreeFree(at, 1f)) continue;
+                TreeKind kind = CemeteryMix.Pick(MapStyle.Unit(key, SaltKind));
+                Plant(p, at, kind, HeightOf(kind, key), key, 1f, TreeTier.Full, false);
             }
         }
 

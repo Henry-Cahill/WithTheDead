@@ -12,21 +12,25 @@ namespace CloneZ
     /// doesn't, from what a place is like: every home's yard trees and foundation bushes and a farmstead's windbreak
     /// (VegetationPass.Yards), the big trees along the town's residential streets, cedar fence rows along the country
     /// roads and the fields' edges, trees along the creeks, and the region's own woods over open country (thin in the
-    /// Bluegrass, closing in towards the eastern mountains; see <see cref="NaturePlan.Wooded"/>).
+    /// Bluegrass, closing in towards the eastern mountains; see <see cref="NaturePlan.Wooded"/>), cut by the cleared
+    /// strips under the power lines.
     /// Woods, rows and street trees stand on an absolute lattice (<see cref="NaturePlan"/>), so every piece of a
     /// streamed map grows the same trees and woods run on unbroken across the seams. Inside the playable square each tree
-    /// gets a trunk collider and takes its spot; past a fixed map's edge they're cheap scenery; a Lite site draws them all
-    /// cheaply and without colliders. Before the trees, the driveways' cars are planned (<see cref="VehiclePass"/>) so the
-    /// yard trees leave them room.
+    /// gets a trunk collider, takes its spot (so it keeps off porches, doorsteps, driveways, poles and everything else
+    /// standing) and is fitted to its room: its limbs cut back short of the nearest wall and overhead wire, a conifer
+    /// sized so its skirt keeps off the walls, nothing growing up into a wire; a conifer leaves a well in the snow under it
+    /// (<see cref="GroundPass.TreeWell"/>). Past a fixed map's edge they're cheap scenery; a Lite site draws each as a
+    /// trunk under one mass of crown, without colliders. Before the trees, the driveways' cars are planned
+    /// (<see cref="VehiclePass"/>) so the yard trees leave them room.
     /// </summary>
     internal static partial class VegetationPass
     {
-        private const float WoodsCell = 6f, WoodsCellLite = 8.5f;   // the lattice the woods and grounds are sown on
+        private const float WoodsCell = 6f, WoodsCellLite = 9f;   // the lattice the woods and grounds are sown on
 
         // Salts for the trees' random choices (MapStyle).
         private const int SaltKind = 0x7EE0, SaltShape = 0x7EE1, SaltYaw = 0x7EE2, SaltHeight = 0x7EE3, SaltSow = 0x7EE4,
             SaltUnder = 0x7EE5, SaltJitter = 0x7EE7, SaltGap = 0x7EE8, SaltField = 0x7EE9, SaltCreek = 0x7EEA,
-            SaltRoadRow = 0x7EEB, SaltOldField = 0x7EEC;
+            SaltRoadRow = 0x7EEB, SaltOldField = 0x7EEC, SaltCemetery = 0x7EED;
 
         /// <summary>A share of kinds of tree, drawn from by a number in [0, 1).</summary>
         private sealed class Mix
@@ -91,8 +95,6 @@ namespace CloneZ
             public string Diag = "";
             public readonly List<NaturePlan.CellPoint> Cells = new List<NaturePlan.CellPoint>(512);
             public readonly List<NaturePlan.Station> Stations = new List<NaturePlan.Station>(128);
-            /// <summary>The enterable buildings, by footprint (for their doors).</summary>
-            public readonly Dictionary<Footprint, EnterableBuilding> Doors = new Dictionary<Footprint, EnterableBuilding>();
             // The scenery ring's trees, by 2.5 m cell (the ring has no occupancy grid).
             private readonly HashSet<long> _ring = new HashSet<long>();
 
@@ -103,8 +105,6 @@ namespace CloneZ
                 Lite = plan.Lite;
                 Max = Mathf.Max(520, Mathf.RoundToInt(2600f * site.AreaShare));
                 MaxRing = site.Chunked ? 0 : 1600;
-                foreach (EnterableBuilding e in site.Enterables)
-                    if (e.Footprint != null) Doors[e.Footprint] = e;
             }
 
             public bool RingFree(Vector2 p)
@@ -147,24 +147,26 @@ namespace CloneZ
             if (!plan.Lite)
             {
                 VehiclePass.PlanDriveways(site, plan);
-                yield return "driveways";
+                yield return "driveway plan";
             }
             var p = new Planting(site, plan);
             int before = p.Count;
-            MappedTrees(p);
-            TreeRows(p);
+            foreach (string step in MappedTrees(p)) yield return step;
+            foreach (string step in TreeRows(p)) yield return step;
             Diag(p, "mapped", ref before);
             yield return "mapped trees";
             foreach (string step in Yards(p)) yield return step;
             Diag(p, "yards", ref before);
-            Grounds(p);
+            foreach (string step in Grounds(p)) yield return step;
+            CemeteryTrees(p);
             Diag(p, "grounds", ref before);
-            StreetTrees(p);
+            yield return "grounds trees";
+            foreach (string step in StreetTrees(p)) yield return step;
             Diag(p, "street", ref before);
             yield return "street trees";
-            Creeks(p);
-            RoadRows(p);
-            FieldEdges(p);
+            foreach (string step in Creeks(p)) yield return step;
+            foreach (string step in RoadRows(p)) yield return step;
+            foreach (string step in FieldEdges(p)) yield return step;
             Diag(p, "rows", ref before);
             yield return "fence rows";
             foreach (string step in Sweep(p)) yield return step;
@@ -182,26 +184,32 @@ namespace CloneZ
         #region Planting
         /// <summary>
         /// Plants a tree at <paramref name="at"/> when there's room: inside the playable square with a trunk collider (on a
-        /// Full site) and its spot taken; in a fixed map's scenery ring as cheap scenery. <paramref name="room"/> is the
-        /// clear radius it wants; <paramref name="checkGrid"/> false when the caller has checked the spot itself.
+        /// Full site), its spot taken and the tree fitted to its room (see <see cref="Fit"/>); in a fixed map's scenery ring
+        /// as cheap scenery. <paramref name="room"/> is the clear radius it wants; <paramref name="checkGrid"/> false when
+        /// the caller has checked the spot itself. Never under a mapped power line.
         /// </summary>
         private static bool Plant(Planting p, Vector2 at, TreeKind kind, float height, long key, float room, TreeTier tier, bool checkGrid = true)
         {
             Site site = p.Site;
+            if (p.Plan.UnderPowerLine(at)) return false;
+            float yaw = MapStyle.Unit(key, SaltYaw) * 360f;
             if (p.Plan.InSquare(at, 0f))
             {
                 if (p.Count >= p.Max) return false;
                 if (checkGrid && !site.Free(at, room)) return false;
-                if (p.Lite) tier = TreeTier.Lite;
+                var fit = default(TreeRoom);
+                if (p.Lite) tier = TreeTier.Blob;
+                else if (!Fit(p.Plan, at, kind, yaw, ref height, ref fit)) return false;
                 Vector3 at3 = To3(at, 0f);
                 RaidMesh m = site.Town.Out.Solid(at3);
-                m.SetFrame(at3, MapStyle.Unit(key, SaltYaw) * 360f);
-                TreeKit.Tree(m, kind, height, MapStyle.Rng(key, SaltShape), tier);
+                m.SetFrame(at3, yaw);
+                TreeKit.Tree(m, kind, height, MapStyle.Rng(key, SaltShape), tier, fit);
                 m.ResetFrame();
                 if (!p.Lite)
                 {
                     float solid = TreeKit.SolidRadius(kind, height) * 2f;
                     site.Town.PropCollider(at3 + Vector3.up * 1.5f, new Vector3(solid, 3f, solid), 0f);
+                    if (tier == TreeTier.Full && TreeKit.Conifer(kind)) GroundPass.TreeWell(site, at, TreeKit.Reach(kind, height) * 0.8f);
                 }
                 site.Take(at, room);
                 p.TreeTake(at, room);
@@ -215,7 +223,7 @@ namespace CloneZ
             if (land == Land.Water || land == Land.Lot || land == Land.Pitch) return false;
             Vector3 far = To3(at, 0f);
             RaidMesh fm = site.Town.Far.Solid(far);
-            fm.SetFrame(far, MapStyle.Unit(key, SaltYaw) * 360f);
+            fm.SetFrame(far, yaw);
             TreeKit.Tree(fm, kind, height, MapStyle.Rng(key, SaltShape), TreeTier.Lite);
             fm.ResetFrame();
             p.RingTake(at);
@@ -223,6 +231,39 @@ namespace CloneZ
             site.Trees++;
             return true;
         }
+
+        /// <summary>
+        /// Fits a tree inside the square to its room: a conifer cut down until its skirt keeps off the nearest walls and
+        /// it tops out short of the wires hanging near it; a hardwood topped below a wire hanging straight over its trunk,
+        /// and its limbs cut back short of the two nearest buildings' walls and of the nearest wire otherwise
+        /// (<paramref name="room"/>, in the tree's own frame, turned <paramref name="yaw"/>). False when what's left isn't
+        /// worth planting.
+        /// </summary>
+        private static bool Fit(NaturePlan plan, Vector2 at, TreeKind kind, float yaw, ref float height, ref TreeRoom room)
+        {
+            bool conifer = TreeKit.Conifer(kind);
+            float reach = TreeKit.Reach(kind, height) + 0.5f;
+            plan.NearestWalls(at, reach, out Vector2 dir0, out float wall0, out Vector2 dir1, out float wall1);
+            if (wall0 < reach)
+            {
+                if (conifer) height = Mathf.Min(height, (wall0 - 0.35f) / TreeKit.Skirt(kind));
+                else
+                {
+                    room.Add(Azimuth(dir0) - yaw, wall0);
+                    if (wall1 < reach) room.Add(Azimuth(dir1) - yaw, wall1);
+                }
+            }
+            if (plan.WireNear(at, reach, height + 0.5f, out Vector2 wireDir, out float wire, out float wireY))
+            {
+                if (conifer) height = Mathf.Min(height, wireY - 0.6f + wire / TreeKit.Skirt(kind));
+                else if (wire < 1.8f) height = Mathf.Min(height, wireY - 0.8f);
+                else room.Add(Azimuth(wireDir) - yaw, wire);
+            }
+            return height >= TreeKit.Shortest(kind);
+        }
+
+        /// <summary>A plan direction's bearing: degrees clockwise from +z.</summary>
+        private static float Azimuth(Vector2 dir) => Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
 
         /// <summary>A bush at <paramref name="at"/> (inside the square, on a Full site only): no collider, a small spot taken.</summary>
         private static bool Bush(Planting p, Vector2 at, ShrubKind kind, float size, long key, bool checkGrid = true)
@@ -244,7 +285,7 @@ namespace CloneZ
 
         #region Mapped trees and tree rows
         // Every tree mapped as a point, where it stands (unless it stands on a road, in a building or in the water).
-        private static void MappedTrees(Planting p)
+        private static IEnumerable<string> MappedTrees(Planting p)
         {
             foreach (Node n in p.Site.Area.Nodes)
             {
@@ -255,8 +296,9 @@ namespace CloneZ
                 if (land == Land.Water || land == Land.Lot) continue;
                 TreeKind kind = Named(n.Data.name, out TreeKind named) ? named
                     : p.Plan.Urban(n.At) > 0.05f ? StreetMix.Pick(MapStyle.Unit(key, SaltKind)) : GroundsMix.Pick(MapStyle.Unit(key, SaltKind));
-                if (p.Plan.InSquare(n.At, 0f) && !p.Site.FreeBeside(n.At, 0.4f)) continue;
+                if (p.Plan.InSquare(n.At, 0f) && (!p.Site.FreeBeside(n.At, 0.4f) || p.Plan.NearDoor(n.At, 1.6f))) continue;
                 Plant(p, n.At, kind, HeightOf(kind, key), key, 0.8f, TreeTier.Full, false);
+                if (p.Site.StepDue) yield return "mapped trees";
             }
         }
 
@@ -278,7 +320,7 @@ namespace CloneZ
         }
 
         // The mapped tree rows: a tree every five or six metres, a little off the line, mostly cedars.
-        private static void TreeRows(Planting p)
+        private static IEnumerable<string> TreeRows(Planting p)
         {
             foreach (Line l in p.Site.Area.Barriers)
             {
@@ -292,13 +334,14 @@ namespace CloneZ
                     TreeKind kind = RowMix.Pick(MapStyle.Unit(key, SaltKind));
                     Plant(p, at, kind, HeightOf(kind, key, 0.9f), key, 0.9f, TreeTier.Full);
                 }
+                if (p.Site.StepDue) yield return "tree rows";
             }
         }
         #endregion
 
         #region The country: creeks, roadside and field fence rows
         // Sycamores, maples and hackberries along both banks of the creeks and rivers, every eight metres or so.
-        private static void Creeks(Planting p)
+        private static IEnumerable<string> Creeks(Planting p)
         {
             foreach (Line l in p.Site.Area.Lines)
             {
@@ -322,12 +365,13 @@ namespace CloneZ
                         TreeKind kind = WetMix.Pick(MapStyle.Unit(key, SaltKind));
                         Plant(p, at, kind, HeightOf(kind, key), key, 1.0f, TreeTier.Full);
                     }
+                if (p.Site.StepDue) yield return "creek trees";
             }
         }
 
         // Out of town the country roads run between fence rows: cedars, hackberries and the odd oak a few metres past the
         // ditch, in runs with gaps between them, now on one side, now on both.
-        private static void RoadRows(Planting p)
+        private static IEnumerable<string> RoadRows(Planting p)
         {
             foreach (Street st in p.Site.Area.Streets)
             {
@@ -340,7 +384,7 @@ namespace CloneZ
                     {
                         long key = NaturePlan.Combine(NaturePlan.Combine(st.Data.id, s.K), side);
                         Vector2 normal = new Vector2(-s.Dir.y, s.Dir.x) * side;
-                        Vector2 at = s.At + normal * (st.Width * 0.5f + 4.5f + MapStyle.Unit(key, SaltJitter) * 3f)
+                        Vector2 at = s.At + normal * (RoadPass.EdgeOffset(st, side) + 4.5f + MapStyle.Unit(key, SaltJitter) * 3f)
                             + s.Dir * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 2f);
                         // Runs: where the noise along the road says so, and not everywhere even there.
                         if (p.Plan.NoiseAt(at, 140.0, SaltRoadRow + side) < 0.5f || MapStyle.Unit(key, SaltGap) < 0.18f) continue;
@@ -355,6 +399,7 @@ namespace CloneZ
                         TreeKind kind = RowMix.Pick(MapStyle.Unit(key, SaltKind));
                         Plant(p, at, kind, HeightOf(kind, key, 0.85f), key, 0.9f, TreeTier.Full);
                     }
+                    if (p.Site.StepDue) yield return "fence rows";
                 }
             }
         }
@@ -362,7 +407,7 @@ namespace CloneZ
         // The fields' edges grow fence rows: every edge of a field, pasture or farmyard that isn't a cut made by the map's
         // regions or the square, in runs with gaps. Fields that share an edge sow the same trees on it (the spot is the
         // key), so it gets one row.
-        private static void FieldEdges(Planting p)
+        private static IEnumerable<string> FieldEdges(Planting p)
         {
             var edge = new List<Vector2>(2) { Vector2.zero, Vector2.zero };
             foreach (Patch pa in p.Site.Area.Areas)
@@ -388,6 +433,7 @@ namespace CloneZ
                         TreeKind kind = RowMix.Pick(MapStyle.Unit(key, SaltKind));
                         Plant(p, at, kind, HeightOf(kind, key, 0.85f), key, 0.9f, TreeTier.Full);
                     }
+                    if (p.Site.StepDue) yield return "fence rows";
                 }
             }
         }
@@ -420,9 +466,10 @@ namespace CloneZ
                 foreach (NaturePlan.CellPoint c in p.Cells)
                 {
                     if (c.At.y >= z1 && z1 < reach) continue;   // the next band's
-                        Sow(p, c, forest, thin);
-                    }
-                    yield return "trees";
+                    Sow(p, c, forest, thin);
+                    if (p.Site.StepDue) yield return "woods";
+                }
+                yield return "woods";
             }
         }
 
@@ -453,7 +500,8 @@ namespace CloneZ
                     if (u < 0.13f * thin) Grow(p, at, key, GroundsMix, 1f, 2.0f);
                     return;
                 case Land.Cemetery:
-                    if (u < 0.17f * thin) Grow(p, at, key, CemeteryMix, 1f, 1.6f);
+                    // Inside a Full site's square the cemetery's own plots get its trees (CemeteryTrees).
+                    if (u < 0.17f * thin && (p.Lite || !plan.InSquare(at, 0f))) Grow(p, at, key, CemeteryMix, 1f, 1.6f);
                     return;
                 case Land.School:
                 case Land.Grass:

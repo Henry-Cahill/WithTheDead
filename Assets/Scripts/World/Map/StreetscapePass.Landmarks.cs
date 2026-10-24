@@ -68,6 +68,10 @@ namespace CloneZ
         }
 
         #region Water towers
+        // Only what stands below this goes into the walkable world (and its colliders); the rest is drawn overhead, so the
+        // NavMesh never finds a floor on a tank's roof.
+        private const float LowPart = 3f;
+
         private static void WaterTower(Ctx ctx, Node n)
         {
             if (!ctx.Within(n.At)) return;
@@ -89,14 +93,18 @@ namespace CloneZ
                 const int legs = 6;
                 bandY = 31f;
                 radius = 5.6f;
+                float legTop = bandY - 1.5f;
                 for (int i = 0; i < legs; i++)
                 {
                     float a = i * Mathf.PI * 2f / legs;
                     var dir = new Vector3(Mathf.Sin(a), 0f, Mathf.Cos(a));
-                    low.Rod(dir * 6.8f, dir * 4.9f + new Vector3(0f, bandY - 1.5f, 0f), 0.42f, dark, 6);
-                    low.Box(dir * 6.8f + new Vector3(0f, 0.2f, 0f), new Vector3(0.9f, 0.4f, 0.9f), Concrete);
+                    Vector3 f0 = dir * 6.8f, f1 = dir * 4.9f + new Vector3(0f, legTop, 0f);
+                    Vector3 knee = Vector3.Lerp(f0, f1, LowPart / legTop);
+                    low.Rod(f0, knee, 0.42f, dark, 6);
+                    high.Rod(knee, f1, 0.42f, dark, 6);
+                    low.Box(f0 + new Vector3(0f, 0.2f, 0f), new Vector3(0.9f, 0.4f, 0.9f), Concrete);
                     if (inside)
-                        ctx.Site.Town.PropCollider(foot + Quaternion.Euler(0f, yaw, 0f) * (dir * 6.8f) + new Vector3(0f, 1.5f, 0f),
+                        ctx.Site.Town.PropCollider(foot + Quaternion.Euler(0f, yaw, 0f) * f0 + new Vector3(0f, 1.5f, 0f),
                             new Vector3(0.6f, 3f, 0.6f), 0f);
                     if (!ctx.Full) continue;
                     float b = (i + 1) * Mathf.PI * 2f / legs;
@@ -104,16 +112,17 @@ namespace CloneZ
                     for (int k = 0; k < 2; k++)
                     {
                         float y0 = 4f + k * 11f, y1 = y0 + 11f;
-                        Vector3 p0 = Vector3.Lerp(dir * 6.8f, dir * 4.9f, y0 / (bandY - 1.5f)) + new Vector3(0f, y0, 0f);
-                        Vector3 p1 = Vector3.Lerp(dir * 6.8f, dir * 4.9f, y1 / (bandY - 1.5f)) + new Vector3(0f, y1, 0f);
-                        Vector3 q0 = Vector3.Lerp(next * 6.8f, next * 4.9f, y0 / (bandY - 1.5f)) + new Vector3(0f, y0, 0f);
-                        Vector3 q1 = Vector3.Lerp(next * 6.8f, next * 4.9f, y1 / (bandY - 1.5f)) + new Vector3(0f, y1, 0f);
+                        Vector3 p0 = Vector3.Lerp(dir * 6.8f, dir * 4.9f, y0 / legTop) + new Vector3(0f, y0, 0f);
+                        Vector3 p1 = Vector3.Lerp(dir * 6.8f, dir * 4.9f, y1 / legTop) + new Vector3(0f, y1, 0f);
+                        Vector3 q0 = Vector3.Lerp(next * 6.8f, next * 4.9f, y0 / legTop) + new Vector3(0f, y0, 0f);
+                        Vector3 q1 = Vector3.Lerp(next * 6.8f, next * 4.9f, y1 / legTop) + new Vector3(0f, y1, 0f);
                         high.Rod(p0, q1, 0.08f, dark);
                         high.Rod(q0, p1, 0.08f, dark);
                         high.Rod(p1, q1, 0.18f, dark);
                     }
                 }
-                low.Cylinder(Vector3.zero, 0.9f, bandY - 3f, 10, dark);
+                low.Cylinder(Vector3.zero, 0.9f, LowPart, 10, dark);
+                high.Cylinder(new Vector3(0f, LowPart, 0f), 0.9f, bandY - 3f - LowPart, 10, dark);
                 if (inside) ctx.Site.Town.PropCollider(foot + new Vector3(0f, 1.5f, 0f), new Vector3(1.8f, 3f, 1.8f), 0f);
                 high.Ellipsoid(new Vector3(0f, bandY, 0f), new Vector3(radius * 2f, 7f, radius * 2f), tank, 16, 8);
                 high.Cylinder(new Vector3(0f, bandY, 0f), radius, 4.2f, 16, tank);
@@ -134,7 +143,8 @@ namespace CloneZ
                 // A standpipe: one tall drum with a shallow roof.
                 bandY = 22f;
                 radius = 5.2f;
-                low.Cylinder(Vector3.zero, radius, 30f, 18, tank);
+                low.Cylinder(Vector3.zero, radius, LowPart, 18, tank);
+                high.Cylinder(new Vector3(0f, LowPart, 0f), radius, 30f - LowPart, 18, tank);
                 if (inside) ctx.Site.Town.PropCollider(foot + new Vector3(0f, 1.5f, 0f), new Vector3(radius * 1.6f, 3f, radius * 1.6f), 0f);
                 high.Cylinder(new Vector3(0f, 30f, 0f), radius + 0.05f, 1.6f, 18, SnowSurf, Quaternion.identity, 0.1f);
                 top = 31.6f;
@@ -144,8 +154,8 @@ namespace CloneZ
                 // A newer pedestal sphere: one fluted column flaring at its foot, a round tank on top.
                 bandY = 33f;
                 radius = 6.4f;
-                low.Cylinder(Vector3.zero, 3.2f, 3f, 12, dark, Quaternion.identity, 0.6f);
-                low.Cylinder(new Vector3(0f, 3f, 0f), 1.9f, 26f, 12, tank, Quaternion.identity, 0.9f);
+                low.Cylinder(Vector3.zero, 3.2f, LowPart, 12, dark, Quaternion.identity, 0.6f);
+                high.Cylinder(new Vector3(0f, LowPart, 0f), 1.9f, 26f, 12, tank, Quaternion.identity, 0.9f);
                 if (inside) ctx.Site.Town.PropCollider(foot + new Vector3(0f, 1.5f, 0f), new Vector3(5f, 3f, 5f), 0f);
                 high.Ellipsoid(new Vector3(0f, bandY, 0f), new Vector3(radius * 2f, 10f, radius * 2f), tank, 16, 9);
                 high.Ellipsoid(new Vector3(0f, bandY + 4.3f, 0f), new Vector3(radius * 1.2f, 1.6f, radius * 1.2f), SnowSurf, 12, 4);
@@ -159,27 +169,65 @@ namespace CloneZ
             if (inside) ctx.Site.Take(n.At, 7.5f);
         }
 
-        // The town's name painted round the tank, on two sides.
+        // The town's name painted round the tank in big letters, on two sides: the tower's own name when it's mapped with
+        // one, else the nearest town's.
         private static void TowerName(Ctx ctx, Node n, Vector3 foot, float y, float radius, float yaw)
         {
             string name = TowerText(n.Data.name);
-            if (string.IsNullOrEmpty(name) && !ctx.Site.Chunked) name = ctx.Site.Area.Place;
+            if (string.IsNullOrEmpty(name)) name = TownNear(ctx, n.At);
             if (string.IsNullOrEmpty(name)) return;
             if (!ctx.Names.Lettering(name, SignBlack, out Rect uv, out float aspect)) return;
-            float w = Mathf.Min(radius * 1.5f, 1.1f * aspect), h = w / aspect;
+            float w = Mathf.Min(radius * 1.75f, 2.0f * aspect), h = w / aspect;
             RaidMesh m = ctx.High(new Vector2(foot.x, foot.z));
-            // In three panels following the tank's curve, on two sides.
-            const int panels = 3;
+            // In flat panels following the tank's curve (a metre or so each), on two sides.
+            int panels = Mathf.Max(3, Mathf.CeilToInt(w / 1.1f));
             float step = w / panels / radius * Mathf.Rad2Deg;
             for (int side = 0; side < 2; side++)
                 for (int k = 0; k < panels; k++)
                 {
-                    Quaternion q = Quaternion.Euler(0f, yaw + side * 180f + (1 - k) * step, 0f);
+                    Quaternion q = Quaternion.Euler(0f, yaw + side * 180f + ((panels - 1) * 0.5f - k) * step, 0f);
                     Vector3 nrm = q * Vector3.forward;
-                    // Panel k (left to right as seen from outside) shows its third of the name.
+                    // Panel k (left to right as seen from outside) shows its share of the name.
                     var part = new Rect(uv.xMin + uv.width * k / panels, uv.yMin, uv.width / panels, uv.height);
-                    m.Upright(foot + nrm * (radius + 0.08f) + new Vector3(0f, y, 0f), nrm, w / panels * 1.02f, h, ctx.Names.Surf, part);
+                    m.Upright(foot + nrm * (radius + 0.06f) + new Vector3(0f, y, 0f), nrm, w / panels * 1.02f, h, ctx.Names.Surf, part);
                 }
+        }
+
+        private static string s_PlacesFolder;
+        private static MapPlace[] s_Places;
+
+        // The nearest town (300 people or more) within 4 km of a spot, from the build's places: the start square knows its
+        // own; a streamed piece looks it up, the same whenever it's built.
+        private static string TownNear(Ctx ctx, Vector2 local)
+        {
+            Site site = ctx.Site;
+            if (!site.Chunked) return site.Area.Place;
+            try
+            {
+                MapPlace start = site.Build.FindPlace(site.Area.Place);
+                if (start == null) return null;
+                if (s_PlacesFolder != site.Build.Folder)
+                {
+                    string path = System.IO.Path.Combine(site.Build.Folder, "places.json");
+                    MapPlaces file = System.IO.File.Exists(path) ? JsonUtility.FromJson<MapPlaces>(System.IO.File.ReadAllText(path)) : null;
+                    s_Places = file != null && file.places != null ? file.places : new MapPlace[0];
+                    s_PlacesFolder = site.Build.Folder;
+                }
+                double gx = start.x + site.WorldOffset.x + local.x, gz = start.z + site.WorldOffset.z + local.y;
+                MapPlace best = null;
+                double bestD = 4000.0 * 4000.0;
+                foreach (MapPlace p in s_Places)
+                {
+                    if (MapGameplay.Population(p) < 300) continue;
+                    double dx = p.x - gx, dz = p.z - gz, d = dx * dx + dz * dz;
+                    if (d < bestD) { bestD = d; best = p; }
+                }
+                return best != null ? best.name : null;
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
         }
 
         private static string TowerText(string name)
@@ -213,7 +261,10 @@ namespace CloneZ
             Surf beacon = new Surf(Blinkers.Beacon, Vector2.zero, 0f);
             if (cell)
             {
-                low.Cylinder(foot, 0.75f, h, 10, Galvanised, Quaternion.identity, 0.5f);
+                // A monopole, tapering; only its foot in the walkable world.
+                float r3 = 0.75f * (1f - 0.5f * LowPart / h);
+                low.Cylinder(foot, 0.75f, LowPart, 10, Galvanised, Quaternion.identity, r3 / 0.75f);
+                high.Cylinder(foot + new Vector3(0f, LowPart, 0f), r3, h - LowPart, 10, Galvanised, Quaternion.identity, 0.375f / r3);
                 for (int i = 0; i < 3; i++)
                 {
                     Quaternion q = Quaternion.Euler(0f, i * 120f, 0f);
@@ -242,7 +293,11 @@ namespace CloneZ
             {
                 float y0 = h * b / bands, y1 = h * (b + 1) / bands;
                 Surf s = b % 2 == 0 ? orange : white;
-                for (int i = 0; i < 3; i++) (b == 0 ? low : high).Rod(foot + legs[i] + new Vector3(0f, y0, 0f), foot + legs[i] + new Vector3(0f, y1, 0f), 0.07f, s);
+                for (int i = 0; i < 3; i++)
+                {
+                    if (b == 0) low.Rod(foot + legs[i], foot + legs[i] + new Vector3(0f, LowPart, 0f), 0.07f, s);
+                    high.Rod(foot + legs[i] + new Vector3(0f, Mathf.Max(y0, LowPart), 0f), foot + legs[i] + new Vector3(0f, y1, 0f), 0.07f, s);
+                }
             }
             if (ctx.Full)
             {

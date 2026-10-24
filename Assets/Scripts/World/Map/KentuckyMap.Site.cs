@@ -346,8 +346,8 @@ namespace CloneZ
                 _n = Mathf.CeilToInt(Half * 2f / Cell) + 1;
                 _taken = new bool[_n * _n];
                 _road = new bool[_n * _n];
-                // The map's prop colliders are made one MeshCollider when the site is emitted (see RaidTown).
-                town.MergedColliders = true;
+                // The prop colliders are made when the site is emitted (a streamed piece's in a step of their own).
+                town.DeferColliders = true;
                 Loot = new GameObject("Loot").transform;
                 Loot.SetParent(town.World, false);
                 foreach (Footprint f in area.Foreign) Take(f.Bounds);
@@ -400,13 +400,18 @@ namespace CloneZ
             /// <summary>Marks a disc as taken.</summary>
             public void Take(Vector2 p, float radius) => Mark(_taken, p, radius);
 
-            private void Mark(bool[] grid, Vector2 p, float radius)
+            // The square of cells within <paramref name="radius"/> (rounded up to whole cells) of the cell holding p.
+            private void Mark(bool[] grid, Vector2 p, float radius) => Stamp(grid, Index(p.x), Index(p.y), Mathf.CeilToInt(radius / Cell));
+
+            private void Stamp(bool[] grid, int cx, int cz, int r)
             {
-                int r = Mathf.CeilToInt(radius / Cell);
-                int cx = Index(p.x), cz = Index(p.y);
-                for (int z = cz - r; z <= cz + r; z++)
-                    for (int x = cx - r; x <= cx + r; x++)
-                        if (x >= 0 && z >= 0 && x < _n && z < _n) grid[z * _n + x] = true;
+                int x0 = Mathf.Max(0, cx - r), x1 = Mathf.Min(_n - 1, cx + r);
+                int z0 = Mathf.Max(0, cz - r), z1 = Mathf.Min(_n - 1, cz + r);
+                for (int z = z0; z <= z1; z++)
+                {
+                    int row = z * _n;
+                    for (int x = x0; x <= x1; x++) grid[row + x] = true;
+                }
             }
 
             /// <summary>Marks a rectangle (world XZ) as taken.</summary>
@@ -431,13 +436,25 @@ namespace CloneZ
                 _roads.Add((pts, half, Rect.MinMaxRect(x0 - half, z0 - half, x1 + half, z1 + half)));
             }
 
+            // Stamps along each segment every half cell (a stamp no different from the one before, at the same cell, is skipped:
+            // it would mark nothing new).
             private void MarkLine(bool[] grid, List<Vector2> pts, float radius)
             {
+                int r = Mathf.CeilToInt(radius / Cell);
+                int lastX = int.MinValue, lastZ = int.MinValue;
                 for (int i = 0; i + 1 < pts.Count; i++)
                 {
                     float len = Vector2.Distance(pts[i], pts[i + 1]);
                     int steps = Mathf.Max(1, Mathf.CeilToInt(len / (Cell * 0.5f)));
-                    for (int k = 0; k <= steps; k++) Mark(grid, Vector2.Lerp(pts[i], pts[i + 1], k / (float)steps), radius);
+                    for (int k = 0; k <= steps; k++)
+                    {
+                        Vector2 p = Vector2.Lerp(pts[i], pts[i + 1], k / (float)steps);
+                        int cx = Index(p.x), cz = Index(p.y);
+                        if (cx == lastX && cz == lastZ) continue;
+                        lastX = cx;
+                        lastZ = cz;
+                        Stamp(grid, cx, cz, r);
+                    }
                 }
             }
 
@@ -471,9 +488,14 @@ namespace CloneZ
                 if (Mathf.Abs(p.x) > Half - radius || Mathf.Abs(p.y) > Half - radius) return false;
                 int r = Mathf.CeilToInt(radius / Cell);
                 int cx = Index(p.x), cz = Index(p.y);
-                for (int z = cz - r; z <= cz + r; z++)
-                    for (int x = cx - r; x <= cx + r; x++)
-                        if (x >= 0 && z >= 0 && x < _n && z < _n && (_taken[z * _n + x] || (roads && _road[z * _n + x]))) return false;
+                int x0 = Mathf.Max(0, cx - r), x1 = Mathf.Min(_n - 1, cx + r);
+                int z0 = Mathf.Max(0, cz - r), z1 = Mathf.Min(_n - 1, cz + r);
+                for (int z = z0; z <= z1; z++)
+                {
+                    int row = z * _n;
+                    for (int x = x0; x <= x1; x++)
+                        if (_taken[row + x] || (roads && _road[row + x])) return false;
+                }
                 return true;
             }
         }

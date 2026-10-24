@@ -6,24 +6,34 @@ namespace CloneZ
 {
     /// <summary>
     /// Furnishes the statewide map's buildings near the survivors and takes them down again behind them. Each streamed piece
-    /// leaves its buildings' plans here as it's built (<see cref="InteriorPass.Build"/>); once the piece is in place the
-    /// nearest building within <see cref="BuildReach"/> of any survivor is raised (<see cref="InteriorBuild"/>, hidden until
-    /// it's whole), a few milliseconds a frame; one everybody has left <see cref="DropReach"/> behind is taken down. What
-    /// was in its containers is kept by the building's id (the same building builds the same containers in the same order):
-    /// built again, it gets back what was left in it, and what was carried off stays gone. A building built for the first
-    /// time rolls this raid's loot, from the raid's seed and the building's id (the same on every machine of a co-op raid,
-    /// whatever order they build in). The NavMesh is asked to take in the new walls and furniture now and then.
+    /// leaves its buildings' plans here as it's built (<see cref="InteriorPass.Build"/>); while the piece is in place the
+    /// buildings within <see cref="BuildReach"/> of any survivor are raised nearest first (<see cref="InteriorBuild"/>), a few
+    /// milliseconds a frame, at most <see cref="MaxStanding"/> at once; one everybody has left <see cref="DropReach"/> behind
+    /// is taken down. A building is raised in its live piece (its fixtures wake as they're made, as the raid town's do; a
+    /// piece that's been switched off waits). What was in its containers is kept by the building's id (the same building
+    /// builds the same containers in the same order): built again, it gets back what was left in it, and what was carried
+    /// off stays gone. A building built for the first time rolls this raid's loot, from the raid's seed and the building's
+    /// id (the same on every machine of a co-op raid, whatever order they build in). The NavMesh is asked to take in the
+    /// new walls and furniture now and then. One MonoBehaviour for the whole map; nothing per building runs every frame.
     /// </summary>
     internal sealed class InteriorStreamer : MonoBehaviour
     {
-        private const float BuildReach = 45f, DropReach = 70f;
+        internal const float BuildReach = 45f, DropReach = 70f;
+        private const int MaxStanding = 48;
         private const float StepBudget = 0.003f;   // seconds a frame spent furnishing
-        private const float PickInterval = 0.2f;
+        private const float ScanInterval = 0.25f;  // how often far buildings and let-go pieces are looked for
         private const float NavInterval = 1.5f;
         private const float PruneInterval = 5f;
         private const int MemoryKept = 4096;       // buildings whose containers are remembered
 
         internal static InteriorStreamer Active { get; private set; }
+
+        /// <summary>For tools (the interiors harness): streamed pieces register their plans in edit mode too, and the tool
+        /// drives the streamer itself (<see cref="Pump"/>).</summary>
+        internal static bool ToolMode;
+
+        /// <summary>True when a streamed piece's plans should be left here: in play, or for a tool.</summary>
+        internal static bool Wanted => Application.isPlaying || ToolMode;
 
         private sealed class Job
         {
@@ -33,7 +43,6 @@ namespace CloneZ
             public Vector2 Centre;
             public float Radius;
             public InteriorBuild Build;
-            public IEnumerator<string> Steps;
             public bool Failed;
         }
 
@@ -50,13 +59,22 @@ namespace CloneZ
         private readonly Queue<(long id, int stamp)> _memoryOrder = new Queue<(long, int)>();
         private readonly List<Vector3> _focus = new List<Vector3>(4);
         private Job _active;
-        private int _stamp, _built, _live;
+        private int _stamp, _built, _live, _failed, _takenDown;
         private bool _navDirty, _prune, _haveNavBounds;
         private Bounds _navBounds;
-        private float _nextPick, _nextNav, _nextPrune;
+        private float _nextScan, _nextNav, _nextPrune;
 
-        /// <summary>Buildings furnished so far, and how many stand furnished now.</summary>
-        internal string Summary => _built + " interiors furnished, " + _live + " standing, " + _jobs.Count + " known";
+        /// <summary>The longest a frame's furnishing has run (ms), for the harness.</summary>
+        internal double SlowestFrameMs;
+
+        /// <summary>Buildings furnished so far, how many stand furnished now, how many are known.</summary>
+        internal string Summary => _built + " interiors furnished (" + _failed + " failed, " + _takenDown + " taken down), " + _live + " standing, "
+            + _jobs.Count + " known";
+
+        internal int Standing => _live;
+        internal int Known => _jobs.Count;
+        internal int Furnished => _built;
+        internal int FailedCount => _failed;
 
         /// <summary>Leaves a streamed piece's building plans to be furnished when a survivor comes near (made on first use,
         /// under the state's streamer).</summary>
@@ -88,24 +106,29 @@ namespace CloneZ
         #region Every frame
         private void Update()
         {
-            float now = Time.unscaledTime;
-            DropOrphans();
+            if (ToolMode) return;
             GatherFocus();
-            if (_focus.Count > 0)
+            Tick(Time.unscaledTime);
+        }
+
+        /// <summary>One frame of the streamer with the survivors at <paramref name="focus"/> (world), at time
+        /// <paramref name="now"/> (seconds): what the game's Update does, for a tool.</summary>
+        internal void Pump(IList<Vector3> focus, float now)
+        {
+            _focus.Clear();
+            for (int i = 0; i < focus.Count; i++) _focus.Add(focus[i]);
+            Tick(now);
+        }
+
+        private void Tick(float now)
+        {
+            if (now >= _nextScan)
             {
-                TakeDownBehind();
-                if (_active == null && now >= _nextPick)
-                {
-                    _nextPick = now + PickInterval;
-                    _active = Pick();
-                    if (_active != null)
-                    {
-                        _active.Build = new InteriorBuild(_active.Plan, _active.Parent, _active.Overhead, true);
-                        _active.Steps = _active.Build.Steps().GetEnumerator();
-                    }
-                }
-                if (_active != null) Advance(_active);
+                _nextScan = now + ScanInterval;
+                DropOrphans();
+                if (_focus.Count > 0) TakeDownBehind();
             }
+            if (_focus.Count > 0) Furnish();
             if (_navDirty && now >= _nextNav)
             {
                 _navDirty = false;
@@ -120,6 +143,29 @@ namespace CloneZ
                 _nextPrune = now + PruneInterval;
                 CeilingVisibility.Prune();
             }
+        }
+
+        // A few milliseconds of furnishing: the building under way, then the next nearest, until the frame's budget is spent.
+        private void Furnish()
+        {
+            float started = Time.realtimeSinceStartup, until = started + StepBudget;
+            for (int guard = 0; guard < 64; guard++)
+            {
+                if (_active == null)
+                {
+                    if (_live >= MaxStanding) break;
+                    _active = Pick();
+                    if (_active == null) break;
+                    _active.Build = new InteriorBuild(_active.Plan, _active.Parent, _active.Overhead, false);
+                    _live++;
+                }
+                // A piece switched off (or gone) holds its building where it is: its fixtures must wake as they're made.
+                if (_active.Parent == null || !_active.Parent.gameObject.activeInHierarchy) break;
+                if (!Advance(_active, until)) break;
+                if (Time.realtimeSinceStartup >= until) break;
+            }
+            double ms = (Time.realtimeSinceStartup - started) * 1000.0;
+            if (ms > SlowestFrameMs) SlowestFrameMs = ms;
         }
 
         private void GatherFocus()
@@ -154,8 +200,8 @@ namespace CloneZ
             {
                 Job j = _jobs[i];
                 if (j.Parent != null) continue;
-                if (j.Build != null) TakeDown(j);
                 if (_active == j) _active = null;
+                if (j.Build != null) TakeDown(j);
                 _registered.Remove(j.Plan.Id);
                 _jobs[i] = _jobs[_jobs.Count - 1];
                 _jobs.RemoveAt(_jobs.Count - 1);
@@ -181,15 +227,16 @@ namespace CloneZ
             for (int i = 0; i < _jobs.Count; i++)
             {
                 Job j = _jobs[i];
-                if (j.Build != null || j.Failed || !j.Parent.gameObject.activeInHierarchy) continue;
+                if (j.Build != null || j.Failed || j.Parent == null || !j.Parent.gameObject.activeInHierarchy) continue;
                 float d = Distance(j);
                 if (d < bestD) { bestD = d; best = j; }
             }
             return best;
         }
 
-        // A few milliseconds of a building's furnishing, its meshes credited to it and its loot outside the Central Economy.
-        private void Advance(Job j)
+        // Steps of a building's furnishing until it's done or the frame's time is up, its meshes credited to it and its loot
+        // outside the Central Economy. True when it finished (or failed) and the next may start.
+        private bool Advance(Job j, float until)
         {
             List<Mesh> meshes = RaidMesh.CreatedMeshes;
             Vector3 uv = RaidMesh.PlanarOrigin;
@@ -201,12 +248,11 @@ namespace CloneZ
             ItemDatabase.LootGate = null;
             ItemDatabase.LootRolled = null;
             bool done = false;
-            float until = Time.realtimeSinceStartup + StepBudget;
             try
             {
                 do
                 {
-                    if (!j.Steps.MoveNext()) { done = true; break; }
+                    if (!j.Build.Advance()) { done = true; break; }
                 } while (Time.realtimeSinceStartup < until);
                 if (done) Restore(j);
             }
@@ -224,18 +270,30 @@ namespace CloneZ
             }
             if (j.Failed)
             {
+                // Taken down, and loose loot left in its place (once: a failed building isn't tried again).
                 j.Build.Discard();
                 j.Build = null;
-                j.Steps = null;
                 _active = null;
-                return;
+                _live--;
+                _failed++;
+                System.Func<string, bool> g = ItemDatabase.LootGate;
+                System.Action<string, int> r = ItemDatabase.LootRolled;
+                ItemDatabase.LootGate = null;
+                ItemDatabase.LootRolled = null;
+                try { InteriorPass.LooseLoot(j.Plan, j.Parent, j.Parent.position); }
+                catch (System.Exception e) { Debug.LogWarning("[CloneZ] Interiors: loose loot for building " + j.Plan.Id + " failed: " + e.Message); }
+                finally
+                {
+                    ItemDatabase.LootGate = g;
+                    ItemDatabase.LootRolled = r;
+                }
+                return true;
             }
-            if (!done) return;
-            j.Steps = null;
+            if (!done) return false;
             _active = null;
             _built++;
-            _live++;
             Touch(j.Build.WorldBounds);
+            return true;
         }
 
         private static float Wrap(float v)
@@ -273,7 +331,7 @@ namespace CloneZ
                 {
                     if (kept.Gone[i])
                     {
-                        Destroy(box.gameObject);
+                        InteriorPass.Kill(box.gameObject);
                         continue;
                     }
                     if (kept.Contents[i] != null)
@@ -283,19 +341,24 @@ namespace CloneZ
                         continue;
                     }
                 }
-                int seed = unchecked(raid ^ (int)(id * 0x9E3779B1L) ^ (int)(id >> 29) ^ (i * 83492791) ^ 0x51ED);
-                RaidWorldRules.RollLoot(box, new System.Random(seed));
+                RaidWorldRules.RollLoot(box, new System.Random(LootSeed(raid, id, i)));
             }
             if (kept != null) _memory.Remove(id);
         }
+
+        /// <summary>The seed a building's <paramref name="index"/>th container rolls its loot from in raid
+        /// <paramref name="raid"/>.</summary>
+        internal static int LootSeed(int raid, long id, int index)
+            => unchecked(raid ^ (int)(id * 0x9E3779B1L) ^ (int)(id >> 29) ^ (index * 83492791) ^ 0x51ED);
 
         // Takes a building's interior down, remembering what its containers hold (and which were carried off or broken up).
         private void TakeDown(Job j)
         {
             InteriorBuild b = j.Build;
             j.Build = null;
-            j.Steps = null;
             if (b == null) return;
+            _live--;
+            _takenDown++;
             if (b.Done)
             {
                 bool standing = b.Root != null;
@@ -317,13 +380,45 @@ namespace CloneZ
                     (long id, int stamp) = _memoryOrder.Dequeue();
                     if (_memory.TryGetValue(id, out Memory old) && old.Stamp == stamp) _memory.Remove(id);
                 }
-                _live--;
                 if (standing) Touch(b.WorldBounds);
             }
             b.Discard();
             _prune = true;
         }
+
+        /// <summary>For tools: the building with id <paramref name="id"/>, as it stands now (null when it isn't furnished).</summary>
+        internal InteriorBuild BuildOf(long id)
+        {
+            foreach (Job j in _jobs)
+                if (j.Plan.Id == id) return j.Build != null && j.Build.Done ? j.Build : null;
+            return null;
+        }
+
+        /// <summary>For tools: the plans known, in the order they were registered.</summary>
+        internal void Plans(List<InteriorPlan> into)
+        {
+            foreach (Job j in _jobs) into.Add(j.Plan);
+        }
         #endregion
+
+        /// <summary>Takes every interior down and forgets everything (a tool's teardown; the game's is OnDestroy).</summary>
+        internal void Teardown()
+        {
+            foreach (Job j in _jobs)
+            {
+                if (j.Build == null) continue;
+                j.Build.Discard();
+                j.Build = null;
+            }
+            _jobs.Clear();
+            _registered.Clear();
+            _memory.Clear();
+            _memoryOrder.Clear();
+            _active = null;
+            _live = 0;
+            if (Active == this) Active = null;
+            InteriorPass.Kill(gameObject);
+        }
 
         private void OnDestroy()
         {

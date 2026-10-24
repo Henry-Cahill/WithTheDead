@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Debug = UnityEngine.Debug;
 
 namespace CloneZ
 {
@@ -18,17 +20,18 @@ namespace CloneZ
     /// <para>
     /// Running (<see cref="MapCutawayDriver"/>, one per scene, after the camera): in the isometric view only, a few times
     /// a second (at once when the camera turns or the survivor jumps), the local survivor's sight line toward the camera
-    /// is tested in plan against the buildings near it, found through a spatial hash: the building they stand in loses
-    /// its upper part and its walls turned to the camera; a building whose roof the line passes under (within a body's
-    /// width, or a wider berth in front of them) loses its upper part; one whose walls it passes under loses those walls'
-    /// facings and its upper part (a roof never floats over cut walls); standing under a porch roof lifts that roof. A
-    /// part comes back <see cref="RestoreDelay"/> seconds after it was last needed out of the way, a building already cut
-    /// is tested with a little slack (no flicker at the edges), and everything comes back at once in any other view.
-    /// Cut parts switch to <see cref="ShadowCastingMode.ShadowsOnly"/> (as <see cref="CeilingVisibility"/> and
-    /// <see cref="IsoCutaway"/> do: unseen, but still keeping the sun and the moon out of the rooms); cut walls are
+    /// is followed in plan through the buildings near it, found through a spatial hash: the building they stand in loses
+    /// its upper part and its walls turned to the camera; a building whose upper part rises above the sight line (by its
+    /// real heights, read from its mesh the first time: MapCutaway.Heights.cs) within a body's width of it, or a wider
+    /// berth in front of the survivor, loses its upper part (standing under a porch roof or an awning that hides them
+    /// lifts it too); one whose walls rise above it loses those walls' facings and its upper part (a roof never floats
+    /// over cut walls). A part comes back <see cref="RestoreDelay"/> seconds after it was last needed out of the way, a
+    /// building already cut is tested with a little slack (no flicker at the edges), and everything comes back at once in
+    /// any other view. Cut parts switch to <see cref="ShadowCastingMode.ShadowsOnly"/> (as <see cref="CeilingVisibility"/>
+    /// and <see cref="IsoCutaway"/> do: unseen, but still keeping the sun and the moon out of the rooms); cut walls are
     /// shown by a stand-in that keeps the other facings and a capped stub of the cut ones (MapCutaway.Overlay.cs).
-    /// Nothing here has colliders, so <see cref="IsoCutaway"/>'s rays never meet these renderers. Allocation-free per
-    /// frame.
+    /// Nothing here has colliders, so <see cref="IsoCutaway"/>'s rays never meet these renderers (it keeps cutting the
+    /// interiors' partitions and the props in the way). Allocation-free per frame.
     /// </para>
     /// </summary>
     internal static partial class MapCutaway
@@ -83,6 +86,13 @@ namespace CloneZ
         /// <summary>Buildings registered (with a shell of their own, on an active site).</summary>
         internal static int Registered => s_Count;
 
+        /// <summary>Sites registered, and spatial hash cells in use (for the harness's leak checks).</summary>
+        internal static int SiteCount => s_Sites.Count;
+        internal static int CellCount => s_Cells.Count;
+
+        /// <summary>The highest point of anything registered, in the world (bounds the scan's reach).</summary>
+        internal static float MaxTop => s_MaxTop;
+
         /// <summary>Buildings with anything cut away right now.</summary>
         internal static int CutBuildings => s_Active.Count;
 
@@ -95,6 +105,7 @@ namespace CloneZ
             s_Cells.Clear();
             s_Sites.Clear();
             s_Active.Clear();
+            s_Rehash.Clear();
             s_Count = 0;
             s_MaxTop = 0f;
             s_Driver = null;
@@ -106,10 +117,11 @@ namespace CloneZ
         /// <summary>Adds a site's buildings (its <see cref="MapCutawaySite"/> calls this when it's switched on).</summary>
         internal static void Register(MapCutawaySite site)
         {
-            if (site == null || site.Buildings == null || s_Sites.Contains(site)) return;
+            if (site == null || site.Buildings == null || IndexOf(site) >= 0) return;
             s_Sites.Add(site);
             Vector3 offset = site.transform.position;
             List<Building> list = site.Buildings;
+            site.MaxTop = offset.y;
             for (int i = 0; i < list.Count; i++)
             {
                 Building b = list[i];
@@ -118,25 +130,13 @@ namespace CloneZ
                 b.Base = offset.y;
                 b.Pts = Moved(b.Local, offset);
                 b.Bounds = BoundsOf(b.Pts);
-                b.Roof = b.LocalRoof != null ? Moved(b.LocalRoof, offset) : null;
-                b.RoofBounds = b.Roof != null ? BoundsOf(b.Roof) : b.Bounds;
-                Rect all = b.Roof != null ? Rect.MinMaxRect(Mathf.Min(b.Bounds.xMin, b.RoofBounds.xMin), Mathf.Min(b.Bounds.yMin, b.RoofBounds.yMin),
-                    Mathf.Max(b.Bounds.xMax, b.RoofBounds.xMax), Mathf.Max(b.Bounds.yMax, b.RoofBounds.yMax)) : b.Bounds;
-                b.X0 = Cell(all.xMin);
-                b.X1 = Cell(all.xMax);
-                b.Z0 = Cell(all.yMin);
-                b.Z1 = Cell(all.yMax);
-                for (int z = b.Z0; z <= b.Z1; z++)
-                    for (int x = b.X0; x <= b.X1; x++)
-                    {
-                        long key = Key(x, z);
-                        if (!s_Cells.TryGetValue(key, out List<Building> cell))
-                            s_Cells[key] = cell = s_FreeCells.Count > 0 ? s_FreeCells.Pop() : new List<Building>(8);
-                        cell.Add(b);
-                    }
-                s_MaxTop = Mathf.Max(s_MaxTop, b.Base + b.Top);
+                b.Cover = new Rect(b.Bounds.xMin - CoverMargin, b.Bounds.yMin - CoverMargin,
+                    b.Bounds.width + 2f * CoverMargin, b.Bounds.height + 2f * CoverMargin);
+                Hash(b);
+                site.MaxTop = Mathf.Max(site.MaxTop, b.Base + b.Top);
                 s_Count++;
             }
+            s_MaxTop = Mathf.Max(s_MaxTop, site.MaxTop);
             if (Application.isPlaying && s_Driver == null) s_Driver = new GameObject("MapCutaway").AddComponent<MapCutawayDriver>();
         }
 
@@ -144,10 +144,26 @@ namespace CloneZ
         /// calls this when it's switched off or destroyed: a streamed piece let go of, the map torn down).</summary>
         internal static void Unregister(MapCutawaySite site)
         {
-            int at = s_Sites.IndexOf(site);
+            int at = IndexOf(site);
             if (at < 0) return;
             s_Sites.RemoveAt(at);
             Forget(site);
+            MaxTopAgain();
+        }
+
+        // By reference: Unity's equality would take any two destroyed sites for one another.
+        private static int IndexOf(MapCutawaySite site)
+        {
+            for (int i = 0; i < s_Sites.Count; i++)
+                if (ReferenceEquals(s_Sites[i], site)) return i;
+            return -1;
+        }
+
+        private static void MaxTopAgain()
+        {
+            s_MaxTop = 0f;
+            for (int i = 0; i < s_Sites.Count; i++)
+                if (!ReferenceEquals(s_Sites[i], null)) s_MaxTop = Mathf.Max(s_MaxTop, s_Sites[i].MaxTop);
         }
 
         // Unregisters a site's buildings (the site may already be destroyed: only its list is read).
@@ -166,19 +182,14 @@ namespace CloneZ
                     s_Active.Remove(b);
                     b.Active = false;
                 }
-                for (int z = b.Z0; z <= b.Z1; z++)
-                    for (int x = b.X0; x <= b.X1; x++)
-                    {
-                        long key = Key(x, z);
-                        if (!s_Cells.TryGetValue(key, out List<Building> cell)) continue;
-                        cell.Remove(b);
-                        if (cell.Count > 0) continue;
-                        s_Cells.Remove(key);
-                        s_FreeCells.Push(cell);
-                    }
+                Unhash(b);
                 Reset(b, AllBits);
                 b.Occupied = false;
                 b.Site = null;
+                // The heights are in the world's plan: read afresh should the site ever come back elsewhere.
+                if (b.Height != null) HeightBytes -= b.Height.Length;
+                b.Height = null;
+                b.Resolved = false;
                 s_Count--;
             }
         }
@@ -190,6 +201,7 @@ namespace CloneZ
             s_Sites.Clear();
             s_Active.Clear();
             s_Cells.Clear();
+            s_Rehash.Clear();
             s_Count = 0;
             s_MaxTop = 0f;
             s_Iso = false;
@@ -208,6 +220,7 @@ namespace CloneZ
                 MapCutawaySite gone = s_Sites[i];
                 s_Sites.RemoveAt(i);
                 Forget(gone);
+                MaxTopAgain();
             }
         }
         #endregion
@@ -234,8 +247,9 @@ namespace CloneZ
         /// <paramref name="yaw"/> (compass heading it looks along) and <paramref name="pitch"/> (degrees down), whose
         /// sight line toward the camera is followed <paramref name="reach"/> metres along the ground (to the camera: past
         /// it nothing is drawn). <paramref name="walls"/>: cut walls as well as roofs. Scans when it's time (at once when
-        /// the camera has turned or the survivor jumped); with <paramref name="immediate"/> it scans now and lets go of
-        /// whatever isn't in the way any more at once (the harness's pictures).
+        /// the camera has turned or the survivor jumped); with <paramref name="immediate"/> it scans now, reads every
+        /// building it meets whatever the time, and lets go of whatever isn't in the way any more at once (the harness's
+        /// pictures).
         /// </summary>
         internal static void Run(Vector3 feet, float yaw, float pitch, float reach, bool walls, float now, bool immediate)
         {
@@ -248,7 +262,7 @@ namespace CloneZ
             s_Iso = true;
             s_Yaw = yaw;
             s_Feet = feet;
-            Scan(feet, yaw, pitch, reach, walls, now);
+            Scan(feet, yaw, pitch, reach, walls, now, immediate);
             Settle(now);
         }
 
@@ -279,7 +293,7 @@ namespace CloneZ
         }
 
         // Finds what's in the way now and marks it seen.
-        private static void Scan(Vector3 feet, float yawDeg, float pitchDeg, float camReach, bool walls, float now)
+        private static void Scan(Vector3 feet, float yawDeg, float pitchDeg, float camReach, bool walls, float now, bool unbudgeted)
         {
             float yaw = yawDeg * Mathf.Deg2Rad;
             var look = new Vector2(Mathf.Sin(yaw), Mathf.Cos(yaw));   // the camera's heading on the ground
@@ -297,6 +311,8 @@ namespace CloneZ
             int x0 = Cell(Mathf.Min(a.x, c.x) - width), x1 = Cell(Mathf.Max(a.x, c.x) + width);
             int z0 = Cell(Mathf.Min(a.y, c.y) - width), z1 = Cell(Mathf.Max(a.y, c.y) + width);
             int stamp = ++s_Stamp;
+            long deadline = Stopwatch.GetTimestamp() + (long)(ResolveBudgetMs * Stopwatch.Frequency / 1000.0);
+            bool read = false;
             for (int z = z0; z <= z1; z++)
                 for (int x = x0; x <= x1; x++)
                 {
@@ -306,6 +322,7 @@ namespace CloneZ
                         Building b = cell[i];
                         if (b.Stamp == stamp) continue;
                         b.Stamp = stamp;
+                        if (!b.Resolved && (unbudgeted || !read || Stopwatch.GetTimestamp() < deadline) && Resolve(b)) read = true;
                         int want = Want(b, at, y0, back, side, tan, reach, walls ? facing : 0, walls);
                         if (want == 0) continue;
                         for (int p = 0; p < 5; p++)
@@ -315,6 +332,7 @@ namespace CloneZ
                         s_Active.Add(b);
                     }
                 }
+            if (s_Rehash.Count > 0) Rehash();
         }
 
         // What of building b is in the way of a survivor standing at s (plan) with their feet at y0.
@@ -327,16 +345,7 @@ namespace CloneZ
             if (!inside && b.Occupied) inside = Near(b.Bounds, s, DoorwaySlack) && DistanceToEdges(b.Pts, s) <= DoorwaySlack;
             b.Occupied = inside;
             if (inside) want |= UpperBit | (facing & b.Groups);
-            else if (b.Roof != null && b.RoofBounds.Contains(s) && Contains(b.Roof, s)) want |= UpperBit;   // under its porch roof
-
-            if ((want & UpperBit) == 0)
-            {
-                Vector2[] roof = b.Roof ?? b.Pts;
-                float top = Mathf.Min((b.Base + b.Top - y0) / tan + far, reach);
-                if (top > -Behind && (Crosses(roof, s, back, side, -Behind, top, BodyHalfWidth + wide)
-                    || (top > ViewStart && Crosses(roof, s, back, side, ViewStart, top, ViewHalfWidth + far))))
-                    want |= UpperBit;
-            }
+            else if (b.Upper != null && RoofHides(b, s, y0, back, side, tan, reach, far, wide)) want |= UpperBit;
             if (walls && b.Groups != 0)
             {
                 // The building they're in keeps its far walls unless one of them (a wing of it) stands in front of them.
@@ -389,6 +398,7 @@ namespace CloneZ
                 b.Upper.shadowCastingMode = (mask & UpperBit) != 0 ? ShadowCastingMode.ShadowsOnly : ShadowCastingMode.On;
             int walls = mask & WallBits;
             if (((was ^ mask) & WallBits) == 0 || b.Walls == null) return;
+            Doors(b, walls);
             if (walls == 0)
             {
                 b.Walls.shadowCastingMode = ShadowCastingMode.On;

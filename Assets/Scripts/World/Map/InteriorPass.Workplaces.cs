@@ -16,6 +16,8 @@ namespace CloneZ
             public Rect R;
             public int Side;
             public float Order;
+            /// <summary>The run of bays it was cut from, and its place along it (bays next along a run can be one room).</summary>
+            public int Run, Pos;
         }
 
         private const float CorridorWidth = 1.8f, MinBay = 2.8f;
@@ -103,14 +105,23 @@ namespace CloneZ
             float len = alongX ? run.width : run.height;
             int n = Mathf.Max(1, Mathf.RoundToInt(len / bay));
             while (n > 1 && len / n < MinBay) n--;
+            int runIndex = into.Count > 0 ? into[into.Count - 1].Run + 1 : 0;
             for (int k = 0; k < n; k++)
             {
                 float a = k / (float)n, c = (k + 1) / (float)n;
                 Rect r = alongX
                     ? Rect.MinMaxRect(Mathf.Lerp(run.xMin, run.xMax, a), run.yMin, Mathf.Lerp(run.xMin, run.xMax, c), run.yMax)
                     : Rect.MinMaxRect(run.xMin, Mathf.Lerp(run.yMin, run.yMax, a), run.xMax, Mathf.Lerp(run.yMin, run.yMax, c));
-                into.Add(new Bay { R = r, Side = side });
+                into.Add(new Bay { R = r, Side = side, Run = runIndex, Pos = k });
             }
+        }
+
+        // The bays along the same run next to bay `i` (`step` places on), or -1.
+        private static int Neighbour(List<Bay> bays, bool[] taken, int i, int step)
+        {
+            for (int j = 0; j < bays.Count; j++)
+                if (!taken[j] && bays[j].Run == bays[i].Run && bays[j].Pos == bays[i].Pos + step) return j;
+            return -1;
         }
         #endregion
 
@@ -221,25 +232,104 @@ namespace CloneZ
         #endregion
 
         #region Churches, schools, firehouses, works, barns
-        // A church: the vestibule inside the doors, the sanctuary with its pews facing the altar on the far wall, and behind
-        // the altar wall a pastor's study and a fellowship room when the church is big enough.
+        // A church: the sanctuary along the building's length with its pews facing the altar at the far end. Deep (the door in
+        // a gable end): the vestibule inside the doors, the sanctuary, and behind the altar wall a pastor's study and a
+        // fellowship room when it's long enough. Wide (the door in a long side, as a country church often has it): the door
+        // opens into the sanctuary's side, the study and the fellowship room across the end farther from the door.
         private static void Church(InteriorPlan plan, Rect m, bool east, System.Random rng)
         {
             float w = m.width, d = m.height;
-            if (w * d < 60f || d < 7f)
+            bool funeral = plan.Use == InteriorUse.Funeral;
+            if (w * d < 60f || Mathf.Min(w, d) < 5f)
             {
-                Add(plan, RoomRole.Nave, m);
+                Add(plan, funeral ? RoomRole.Chapel : RoomRole.Nave, m);
                 return;
             }
-            float narthex = Mathf.Clamp(d * 0.15f, 2.4f, 4f);
-            bool behind = w >= 9f && d >= 15f;
-            Rect[] z = behind ? SplitZ(m, false, 2.6f, narthex, 0f, Mathf.Clamp(d * 0.16f, 3f, 4.5f)) : SplitZ(m, false, 2.6f, narthex, 0f);
+            if (d >= w)
+            {
+                float narthex = Mathf.Clamp(d * 0.15f, 2.4f, 4f);
+                bool behind = w >= 9f && d >= 15f;
+                Rect[] z = behind ? SplitZ(m, false, 2.6f, narthex, 0f, Mathf.Clamp(d * 0.16f, 3f, 4.5f)) : SplitZ(m, false, 2.6f, narthex, 0f);
+                Add(plan, RoomRole.Narthex, z[0]);
+                Add(plan, funeral ? RoomRole.Chapel : RoomRole.Nave, z[1]);
+                if (!behind) return;
+                Rect[] b = SplitX(z[2], east, 2.8f, -0.45f, 0f);
+                Add(plan, RoomRole.Sacristy, b[0]);
+                Add(plan, funeral ? RoomRole.Office : RoomRole.Meeting, b[1]);
+                return;
+            }
+            if (w < 14f)
+            {
+                Add(plan, funeral ? RoomRole.Chapel : RoomRole.Nave, m);
+                return;
+            }
+            Rect[] x = SplitX(m, !east, 3f, Mathf.Clamp(w * 0.2f, 3f, 6.5f), 0f);
+            Rect[] e = SplitZ(x[0], false, 2.6f, -0.45f, 0f);
+            Add(plan, RoomRole.Sacristy, e[0]);
+            Add(plan, funeral ? RoomRole.Office : RoomRole.Meeting, e[1]);
+            Add(plan, funeral ? RoomRole.Chapel : RoomRole.Nave, x[1]);
+        }
+
+        // A hall from the front door back (a library's reading room, a bank's banking hall, a community centre's hall), and
+        // across the back a strip of the smaller rooms it needs, as many as fit.
+        private static void FrontHall(InteriorPlan plan, Rect m, bool east, RoomRole hall, float backShare, params RoomRole[] back)
+        {
+            float w = m.width, d = m.height;
+            if (w * d < 45f || d < 6.2f || w < 5f)
+            {
+                Add(plan, hall, m);
+                return;
+            }
+            Rect[] z = SplitZ(m, false, 3.4f, 0f, Mathf.Clamp(d * backShare, 2.8f, 6f));
+            Add(plan, hall, z[0]);
+            BackStrip(plan, z[1], east, back);
+        }
+
+        // Rooms side by side along a strip, about 3.4 m each (a restroom 2.4), from the end away from the door; as many of
+        // `roles` as fit, the last taking what's left.
+        private static void BackStrip(InteriorPlan plan, Rect strip, bool east, RoomRole[] roles)
+        {
+            int n = Mathf.Clamp(Mathf.FloorToInt(strip.width / 3.4f), 1, roles.Length);
+            var sizes = new float[n];
+            for (int i = 0; i < n - 1; i++) sizes[i] = roles[i] == RoomRole.Restroom ? 2.4f : -1f / n;
+            Rect[] parts = SplitX(strip, !east, 2.2f, sizes);
+            for (int i = 0; i < n; i++) Add(plan, roles[i], parts[i]);
+        }
+
+        // A post office: the lobby inside the doors (the counter, the boxes), the sorting room behind it, and across the back
+        // the postmaster's office, a restroom, the store and the break room.
+        private static void PostOffice(InteriorPlan plan, Rect m, bool east, System.Random rng)
+        {
+            float w = m.width, d = m.height;
+            if (w * d < 60f || d < 7.5f)
+            {
+                FrontHall(plan, m, east, RoomRole.Lobby, 0.45f, RoomRole.Sorting, RoomRole.Restroom);
+                return;
+            }
+            bool strip = d >= 13f;
+            float lobby = Mathf.Clamp(d * 0.32f, 3.2f, 7f);
+            Rect[] z = strip ? SplitZ(m, false, 3f, lobby, 0f, Mathf.Clamp(d * 0.2f, 2.8f, 4.5f)) : SplitZ(m, false, 3f, lobby, 0f);
+            Add(plan, RoomRole.Lobby, z[0]);
+            Add(plan, RoomRole.Sorting, z[1]);
+            if (strip) BackStrip(plan, z[2], east, new[] { RoomRole.Office, RoomRole.Restroom, RoomRole.Stock, RoomRole.BreakRoom });
+        }
+
+        // A funeral home: the foyer inside the doors, the chapel behind it (rows of chairs facing the casket), and across the
+        // back the arrangement room, the office, a restroom and the preparation room.
+        private static void Funeral(InteriorPlan plan, Rect m, bool east, System.Random rng)
+        {
+            float w = m.width, d = m.height;
+            if (w * d < 60f || d < 8f)
+            {
+                FrontHall(plan, m, east, RoomRole.Chapel, 0.3f, RoomRole.Office, RoomRole.Restroom);
+                return;
+            }
+            bool strip = d >= 13f;
+            float foyer = Mathf.Clamp(d * 0.2f, 2.8f, 4.5f);
+            Rect[] z = strip ? SplitZ(m, false, 3f, foyer, 0f, Mathf.Clamp(d * 0.26f, 3f, 5f)) : SplitZ(m, false, 3f, foyer, 0f);
             Add(plan, RoomRole.Narthex, z[0]);
-            Add(plan, plan.Use == InteriorUse.Funeral ? RoomRole.Chapel : RoomRole.Nave, z[1]);
-            if (!behind) return;
-            Rect[] b = SplitX(z[2], east, 2.8f, -0.45f, 0f);
-            Add(plan, RoomRole.Sacristy, b[0]);
-            Add(plan, plan.Use == InteriorUse.Funeral ? RoomRole.Office : RoomRole.Meeting, b[1]);
+            Add(plan, RoomRole.Chapel, z[1]);
+            if (strip) BackStrip(plan, z[2], east, new[] { RoomRole.Sacristy, RoomRole.Office, RoomRole.Restroom, RoomRole.Stock });
         }
 
         // A school: a corridor from the entrance hall with classrooms either side, the office by the entrance, restrooms, and
@@ -412,19 +502,49 @@ namespace CloneZ
                 return;
             }
             bool restroom = false, cells = false, vault = false;
+            var taken = new bool[bays.Count];
+            int next = 0;
             for (int i = 0; i < bays.Count; i++)
             {
-                RoomRole role = order[Mathf.Min(i, order.Length - 1)];
+                if (taken[i]) continue;
+                RoomRole role = RoleAt(order, Tail(plan.Use), next++);
                 float a = bays[i].R.width * bays[i].R.height;
                 if (role == RoomRole.Restroom && (restroom || a > 30f)) role = RoomRole.Office;
-                if (role == RoomRole.Cells && (cells || a < 9f)) role = RoomRole.Office;
+                if (role == RoomRole.Cells && cells) role = RoomRole.Office;
                 if (role == RoomRole.Vault && (vault || a > 25f)) role = RoomRole.Records;
                 restroom |= role == RoomRole.Restroom;
                 cells |= role == RoomRole.Cells;
                 vault |= role == RoomRole.Vault;
-                Add(plan, role, bays[i].R);
+                // A room that wants more floor takes the bays next to it along the corridor too.
+                taken[i] = true;
+                Rect r = bays[i].R;
+                for (int k = 1, want = BaysFor(role, a); k < want; k++)
+                {
+                    int j = Neighbour(bays, taken, i, k);
+                    if (j < 0) break;
+                    taken[j] = true;
+                    r = Rect.MinMaxRect(Mathf.Min(r.xMin, bays[j].R.xMin), Mathf.Min(r.yMin, bays[j].R.yMin),
+                        Mathf.Max(r.xMax, bays[j].R.xMax), Mathf.Max(r.yMax, bays[j].R.yMax));
+                }
+                Add(plan, role, r);
             }
         }
+
+        // How many bays of about `bay` m² a room of a role takes.
+        private static int BaysFor(RoomRole role, float bay)
+        {
+            switch (role)
+            {
+                case RoomRole.Squad: case RoomRole.OpenOffice: case RoomRole.Ward: case RoomRole.Meeting: case RoomRole.Cells:
+                    return bay < 25f ? 3 : 2;
+                case RoomRole.BreakRoom: case RoomRole.Records: case RoomRole.Stacks: case RoomRole.Exam:
+                    return bay < 14f ? 2 : 1;
+                default:
+                    return 1;
+            }
+        }
+
+        private static RoomRole RoleAt(RoomRole[] head, RoomRole[] tail, int i) => i < head.Length ? head[i] : tail[(i - head.Length) % tail.Length];
 
         private static RoomRole FrontRole(InteriorUse use)
         {
@@ -439,21 +559,35 @@ namespace CloneZ
             }
         }
 
-        // The rooms off a corridor, nearest the lobby first (the last repeats).
+        // The rooms off a corridor, nearest the lobby first; after these, Tail's in turn.
         private static RoomRole[] BayRoles(InteriorUse use)
         {
             switch (use)
             {
-                case InteriorUse.Bank: return new[] { RoomRole.Office, RoomRole.Vault, RoomRole.Restroom, RoomRole.Office, RoomRole.Records, RoomRole.BreakRoom, RoomRole.Office };
-                case InteriorUse.PostOffice: return new[] { RoomRole.Sorting, RoomRole.Office, RoomRole.Restroom, RoomRole.Stock, RoomRole.Sorting };
-                case InteriorUse.Library: return new[] { RoomRole.Office, RoomRole.Restroom, RoomRole.Stacks, RoomRole.Records, RoomRole.Stacks };
-                case InteriorUse.Clinic: return new[] { RoomRole.Exam, RoomRole.Exam, RoomRole.Office, RoomRole.Restroom, RoomRole.Dispensary, RoomRole.Exam };
-                case InteriorUse.Hospital: return new[] { RoomRole.Exam, RoomRole.Ward, RoomRole.Restroom, RoomRole.Office, RoomRole.Dispensary, RoomRole.Ward };
-                case InteriorUse.Police: return new[] { RoomRole.Squad, RoomRole.Office, RoomRole.Cells, RoomRole.Armory, RoomRole.Restroom, RoomRole.Records, RoomRole.Office };
-                case InteriorUse.Funeral: return new[] { RoomRole.Chapel, RoomRole.Office, RoomRole.Restroom, RoomRole.Stock, RoomRole.Office };
-                case InteriorUse.Civic: return new[] { RoomRole.Meeting, RoomRole.Office, RoomRole.Restroom, RoomRole.Office, RoomRole.Records, RoomRole.BreakRoom, RoomRole.Office };
+                case InteriorUse.Bank: return new[] { RoomRole.Office, RoomRole.Vault, RoomRole.Restroom, RoomRole.Office, RoomRole.Records, RoomRole.BreakRoom };
+                case InteriorUse.PostOffice: return new[] { RoomRole.Sorting, RoomRole.Office, RoomRole.Restroom, RoomRole.Stock };
+                case InteriorUse.Library: return new[] { RoomRole.Stacks, RoomRole.Office, RoomRole.Restroom, RoomRole.Records };
+                case InteriorUse.Clinic: return new[] { RoomRole.Exam, RoomRole.Exam, RoomRole.Office, RoomRole.Restroom, RoomRole.Dispensary };
+                case InteriorUse.Hospital: return new[] { RoomRole.Exam, RoomRole.Ward, RoomRole.Restroom, RoomRole.Office, RoomRole.Dispensary };
+                case InteriorUse.Police: return new[] { RoomRole.Squad, RoomRole.Office, RoomRole.Cells, RoomRole.Armory, RoomRole.Restroom, RoomRole.Records, RoomRole.BreakRoom };
+                case InteriorUse.Funeral: return new[] { RoomRole.Chapel, RoomRole.Office, RoomRole.Restroom, RoomRole.Stock };
+                case InteriorUse.Civic: return new[] { RoomRole.Meeting, RoomRole.Office, RoomRole.Restroom, RoomRole.Office, RoomRole.Records, RoomRole.BreakRoom };
                 case InteriorUse.Motel: return new[] { RoomRole.Office, RoomRole.Guest };
-                default: return new[] { RoomRole.Office, RoomRole.Office, RoomRole.Restroom, RoomRole.Records, RoomRole.BreakRoom, RoomRole.OpenOffice, RoomRole.Office };
+                default: return new[] { RoomRole.Office, RoomRole.Office, RoomRole.Restroom, RoomRole.OpenOffice, RoomRole.Records, RoomRole.BreakRoom };
+            }
+        }
+
+        // What the rest of a corridor's rooms are, in turn.
+        private static RoomRole[] Tail(InteriorUse use)
+        {
+            switch (use)
+            {
+                case InteriorUse.Clinic: return new[] { RoomRole.Exam, RoomRole.Exam, RoomRole.Office, RoomRole.Records };
+                case InteriorUse.Hospital: return new[] { RoomRole.Ward, RoomRole.Exam, RoomRole.Office, RoomRole.Stock };
+                case InteriorUse.Police: return new[] { RoomRole.Office, RoomRole.Records, RoomRole.Office, RoomRole.Stock };
+                case InteriorUse.Motel: return new[] { RoomRole.Guest };
+                case InteriorUse.Civic: return new[] { RoomRole.Office, RoomRole.Meeting, RoomRole.Office, RoomRole.Records, RoomRole.Stock };
+                default: return new[] { RoomRole.Office, RoomRole.OpenOffice, RoomRole.Office, RoomRole.Records, RoomRole.Stock };
             }
         }
         #endregion
@@ -729,7 +863,7 @@ namespace CloneZ
                 case RoomRole.Office: return use == InteriorUse.Police ? "Chief's Office" : "Office";
                 case RoomRole.OpenOffice: return "Office Floor";
                 case RoomRole.Records: return "Records";
-                case RoomRole.BreakRoom: return "Break Room";
+                case RoomRole.BreakRoom: return use == InteriorUse.Apartments || use == InteriorUse.Motel ? "Common Room" : "Break Room";
                 case RoomRole.Vault: return "Vault";
                 case RoomRole.Sorting: return "Sorting Room";
                 case RoomRole.Stacks: return "Library";
