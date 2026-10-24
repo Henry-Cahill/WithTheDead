@@ -106,7 +106,7 @@ namespace CloneZ
             foreach (Street s in area.Streets)
             {
                 if (s.Data.tunnel) continue;
-                float reach = s.Width * 0.5f + r, reach2 = reach * reach;
+                float reach = Mathf.Max(RoadPass.HalfWidth(s), s.Width * 0.5f) + r, reach2 = reach * reach;
                 for (int i = 0; i + 1 < s.Pts.Count; i++)
                 {
                     Vector2 a = s.Pts[i], ab = s.Pts[i + 1] - a;
@@ -162,7 +162,7 @@ namespace CloneZ
                         found.Add(new ExitPlan
                         {
                             At = p, Out = dir, Side = side, Score = score, Street = s, Route = route,
-                            RoadHalf = Mathf.Max(1.5f, s.Width * 0.5f),
+                            RoadHalf = Mathf.Max(1.5f, Mathf.Max(RoadPass.HalfWidth(s), s.Width * 0.5f)),
                         });
                     }
                 }
@@ -458,7 +458,10 @@ namespace CloneZ
             foreach (Street s in area.Streets)
             {
                 if (s.Rank < 2 || s.Rank > 5 || s.Data.tunnel || s.Data.bridge) continue;
-                float off = s.Width * 0.5f + 1.6f;
+                // On the sidewalk, past the kerb as the roads drew it (a parking lane puts it further out), never nearer
+                // the line than the mapped width says.
+                float offLeft = Mathf.Max(RoadPass.KerbOffset(s, 1) + 1.2f, s.Width * 0.5f + 1.6f);
+                float offRight = Mathf.Max(RoadPass.KerbOffset(s, -1) + 1.2f, s.Width * 0.5f + 1.6f);
                 for (int i = 0; i + 1 < s.Pts.Count; i++)
                 {
                     Vector2 a = s.Pts[i], ab = s.Pts[i + 1] - a;
@@ -470,7 +473,7 @@ namespace CloneZ
                         Vector2 on = a + d * t;
                         for (int k = -1; k <= 1; k += 2)
                         {
-                            Vector2 p = on + left * (k * off);
+                            Vector2 p = on + left * (k * (k > 0 ? offLeft : offRight));
                             float dist = p.magnitude;
                             if (Mathf.Abs(p.x) > half - 15f || Mathf.Abs(p.y) > half - 15f) continue;
                             float toJunction = NearestDistance(junctions, p);

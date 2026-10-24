@@ -135,7 +135,7 @@ namespace CloneZ
             new[] { Purposes.Electronics, "electronics", "radio shack", "computer", "video", "music", "=records" },
             new[] { Purposes.Warehouse, "warehouse", "distribution", "freight", "logistics" },
             new[] { Purposes.Industrial, "industries", "manufactur", "=plant", "factory", "=mill", "=works", "foundry", "quarry", "lumber yard" },
-            new[] { Purposes.Office, "offices", "=office", "insurance", "realty", "real estate", "attorney", "=law", "newspaper", "accounting", "=radio", "agency" },
+            new[] { Purposes.Office, "offices", "=office", "insurance", "state farm", "farm bureau", "realty", "real estate", "attorney", "=law", "newspaper", "accounting", "=radio", "agency" },
             new[] { Purposes.Barn, "=barn", "=farm", "farms", "stable", "=dairy", "orchard" },
             new[] { Purposes.Shop, "gallery", "gifts", "antique", "jewel", "florist", "flowers", "books", "=shop", "store", "outlet", "=sales" },
         };
@@ -343,12 +343,48 @@ namespace CloneZ
                 if ((purpose == Purposes.Commercial || purpose == Purposes.Warehouse) && string.IsNullOrEmpty(b.name)
                     && Neighbours(grid, f.Middle) < 6 && SettlementAt(site, f.Middle) < 0.12f)
                     purpose = Purposes.Barn;
+                // So is an untagged "house" out there that's long and wide (a tobacco barn, a machine shed): country homes
+                // are compact, and trailers far narrower.
+                else if (purpose == Purposes.Home && string.IsNullOrEmpty(b.name) && string.IsNullOrEmpty(b.use) && b.levels <= 1
+                    && Neighbours(grid, f.Middle) < 6 && SettlementAt(site, f.Middle) < 0.12f && BarnShaped(f.Pts))
+                    purpose = Purposes.Barn;
                 info.Purpose[f] = purpose;
                 string name = !string.IsNullOrEmpty(b.name) ? b.name : poi.TryGetValue(f, out var named) ? named.name : null;
                 if (name != null) info.Name[f] = name;
             }
             s_Sites.Add(site, info);
             return info;
+        }
+
+        // A footprint shaped like a farm building: its tightest enclosing rectangle (along one of its own edges) at least 9 m
+        // wide (wider than a double-wide), 2.2 times as long, 150 m² or more.
+        private static bool BarnShaped(List<Vector2> pts)
+        {
+            int n = pts.Count;
+            if (n < 3) return false;
+            float bestArea = float.MaxValue, shortSide = 0f, longSide = 0f;
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 e = pts[(i + 1) % n] - pts[i];
+                float len = e.magnitude;
+                if (len < 0.5f) continue;
+                Vector2 u = e / len, v = new Vector2(-u.y, u.x);
+                float u0 = float.MaxValue, u1 = float.MinValue, v0 = float.MaxValue, v1 = float.MinValue;
+                for (int k = 0; k < n; k++)
+                {
+                    float a = Vector2.Dot(pts[k], u), b = Vector2.Dot(pts[k], v);
+                    if (a < u0) u0 = a;
+                    if (a > u1) u1 = a;
+                    if (b < v0) v0 = b;
+                    if (b > v1) v1 = b;
+                }
+                float w = u1 - u0, h = v1 - v0;
+                if (w * h >= bestArea) continue;
+                bestArea = w * h;
+                shortSide = Mathf.Min(w, h);
+                longSide = Mathf.Max(w, h);
+            }
+            return bestArea >= 150f && bestArea < float.MaxValue && shortSide >= 9f && longSide >= shortSide * 2.2f;
         }
 
         // The building a point of interest stands in, else the nearest within 8 m of it (points are often mapped at the

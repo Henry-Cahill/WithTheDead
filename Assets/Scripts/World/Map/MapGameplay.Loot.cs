@@ -545,7 +545,7 @@ namespace CloneZ
                 case Purposes.Garage: case Purposes.Outbuilding: return 3;
                 case Purposes.Barn: return 4;
                 case Purposes.Trailer: return 5;
-                case Purposes.Home: return Mathf.Clamp(Mathf.RoundToInt(3f + area / 40f), 4, 9);
+                case Purposes.Home: return Mathf.Clamp(Mathf.RoundToInt(2.5f + area / 80f), 4, 6);
                 case Purposes.Church: case Purposes.Funeral: case Purposes.Childcare: return 6;
                 case Purposes.Apartments: case Purposes.Hotel: case Purposes.Care:
                     return Mathf.Clamp(Mathf.RoundToInt(4f + area / 50f), 6, 24);
