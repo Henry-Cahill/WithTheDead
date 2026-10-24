@@ -68,7 +68,7 @@ namespace CloneZ
             Junctions(net);
             PlanCuts(net);
             yield return "junctions";
-            Carriageways(net);
+            foreach (string step in Carriageways(net)) yield return step;
             yield return "streets";
             foreach (string step in SidesAndCorners(net)) yield return step;
             yield return "sidewalks";
@@ -180,13 +180,13 @@ namespace CloneZ
         {
             public Surf Asphalt, Concrete, Packed, Sidewalk, Snow, Trodden, TroddenLine, Paved;
             public Surf Kerb, KerbFace, Gutter, Slush, SlushLight, Wet, Track, TrackGravel, Rut, BermGrime;
-            public Surf Yellow, White, Panel, Rubber, Apron;
+            public Surf Yellow, White, Panel, Rubber, Apron, Crack, Tar, Pothole;
             public Surf Ballast, Tie, TieSnow, Rail, RailHead, RailRust, Girder;
             public Surf Parapet, ParapetCap, GuardRail, GuardPost, CrossbuckWhite, CrossbuckBlack, PostGrey, LampRed, LampHood;
 
             public Look()
             {
-                Asphalt = DecorMaterials.Planar(RoadTextures.WetAsphalt(), 7f, 0.42f);
+                Asphalt = DecorMaterials.Planar(RoadTextures.WetAsphalt(), 14f, 0.42f);
                 Concrete = DecorMaterials.Planar(RoadTextures.RoadConcrete(), 7f, 0.25f);
                 Packed = DecorMaterials.Planar(RoadTextures.PackedSnow(), 9f, 0.22f);
                 Sidewalk = DecorMaterials.Planar(RoadTextures.Sidewalk(), 3f, 0.12f);
@@ -209,6 +209,9 @@ namespace CloneZ
                 Panel = DecorPalette.Matte(new Color(0.55f, 0.55f, 0.53f));
                 Rubber = DecorPalette.Matte(new Color(0.20f, 0.20f, 0.21f));
                 Apron = DecorMaterials.Planar(RoadTextures.Sidewalk(), 3f, 0.12f);
+                Crack = DecorPalette.Matte(new Color(0.075f, 0.075f, 0.08f));
+                Tar = DecorPalette.Gloss(new Color(0.035f, 0.035f, 0.04f));
+                Pothole = DecorPalette.Gloss(new Color(0.10f, 0.11f, 0.12f));
                 Ballast = DecorMaterials.Planar(RoadTextures.SnowyBallast(), 3f, 0.08f);
                 Tie = DecorPalette.Matte(new Color(0.25f, 0.20f, 0.16f));
                 TieSnow = DecorPalette.Matte(new Color(0.80f, 0.82f, 0.87f));

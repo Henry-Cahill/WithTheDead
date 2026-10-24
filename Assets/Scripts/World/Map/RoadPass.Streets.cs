@@ -112,7 +112,7 @@ namespace CloneZ
             for (int k = 0; k < right; k++) into.Add(0.5f - 0.5f * (k + 0.5f) / right);
         }
 
-        private static void Carriageways(Net net)
+        private static IEnumerable<string> Carriageways(Net net)
         {
             Look look = net.Look;
             foreach (Chain c in net.Chains)
@@ -129,8 +129,13 @@ namespace CloneZ
                     s_B[i] = EdgeAt(c, 1, s[i].S);
                 }
                 Band(net, s, s_A, s_B, y, y, BaseSurf(look, w), c.Lift);
-                if (net.Full) WinterDetail(net, c);
+                if (net.Full)
+                {
+                    Wear(net, c);
+                    WinterDetail(net, c);
+                }
                 TakeChain(net, c);
+                if (net.Site.StepDue) yield return "streets";
             }
             foreach (Joint j in net.Joints)
             {
