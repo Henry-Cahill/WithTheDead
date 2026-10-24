@@ -129,7 +129,10 @@ namespace CloneZ
         }
 
         /// <summary>A thin flat line along <paramref name="pts"/>, <paramref name="width"/> wide, on the asphalt.</summary>
-        private static void Stroke(Net net, List<Vector2> pts, float width, in Surf surf)
+        private static void Stroke(Net net, List<Vector2> pts, float width, in Surf surf) => StrokeAt(net, pts, width, surf, WearY);
+
+        /// <summary>A thin flat line along <paramref name="pts"/> at height <paramref name="y"/>.</summary>
+        private static void StrokeAt(Net net, List<Vector2> pts, float width, in Surf surf, float y)
         {
             for (int i = 0; i + 1 < pts.Count; i++)
             {
@@ -137,7 +140,7 @@ namespace CloneZ
                 float len = e.magnitude;
                 if (len < 1e-3f) continue;
                 Vector2 n = Left(e / len) * (width * 0.5f);
-                Vector3 p0 = To3(a - n, WearY), p1 = To3(pts[i + 1] - n, WearY), q1 = To3(pts[i + 1] + n, WearY), q0 = To3(a + n, WearY);
+                Vector3 p0 = To3(a - n, y), p1 = To3(pts[i + 1] - n, y), q1 = To3(pts[i + 1] + n, y), q0 = To3(a + n, y);
                 Face(net.Out.Flat((p0 + q1) * 0.5f), p0, p1, q1, q0, Vector3.up, surf);
             }
         }

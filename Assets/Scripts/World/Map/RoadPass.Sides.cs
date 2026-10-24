@@ -86,8 +86,9 @@ namespace CloneZ
             return best != null;
         }
 
-        // Where the kerbs open: side roads' mouths, ramps where crosswalks reach them (at junction arms marked for one,
-        // and at the crossings mapped mid-block), and driveways.
+        // Where the kerbs open: side roads' mouths, ramps where crosswalks reach them, and driveways. Crosswalks go where
+        // crossings are mapped (at the crossing, wherever it is along the street); a junction with none mapped within
+        // 40 m keeps the crosswalks its shape suggested (signals, downtown).
         private static void PlanCuts(Net net)
         {
             foreach (Chain c in net.Chains)
@@ -106,21 +107,36 @@ namespace CloneZ
                     }
                     else AddCut(c, m.Lo, m.Hi, CutKind.Mouth, m.Side);
                 }
+            bool anyMapped = false;
+            foreach (Node n in net.Site.Area.Nodes)
+                if (n.Data.kind == "crossing")
+                {
+                    anyMapped = true;
+                    break;
+                }
+            if (anyMapped)
+                foreach (Joint j in net.Joints)
+                {
+                    if (j.Link) continue;
+                    bool near = false;
+                    foreach (Node n in net.Site.Area.Nodes)
+                        if (n.Data.kind == "crossing" && (n.At - j.At).sqrMagnitude < 40f * 40f)
+                        {
+                            near = true;
+                            break;
+                        }
+                    if (near) foreach (Arm a in j.Arms) a.Crosswalk = false;
+                }
             foreach (Node n in net.Site.Area.Nodes)
             {
                 if (n.Data.kind != "crossing" || !net.Square.Contains(n.At)) continue;
                 if (!NearestChain(net, n.At, out Chain c, out float s)) continue;
-                if (c.A0 != null && s - c.From < 7f)
-                {
-                    if (c.A0.W.Cls <= Cls.Minor) c.A0.Crosswalk = true;
-                    continue;
-                }
-                if (c.A1 != null && c.To - s < 7f)
-                {
-                    if (c.A1.W.Cls <= Cls.Minor) c.A1.Crosswalk = true;
-                    continue;
-                }
-                if (s - c.From < 2f || c.To - s < 2f || InMouth(c, 1, s) || InMouth(c, -1, s)) continue;
+                if (c.W.Winter != Winter.Ploughed && c.W.Winter != Winter.Packed) continue;
+                if (s - c.From < 1.6f || c.To - s < 1.6f || InMouth(c, 1, s) || InMouth(c, -1, s)) continue;
+                bool taken = false;
+                if (c.Crossings != null)
+                    foreach (float o in c.Crossings) taken |= Mathf.Abs(o - s) < 4f;
+                if (taken) continue;
                 (c.Crossings ??= new List<float>()).Add(s);
                 AddCut(c, s - 1.5f, s + 1.5f, CutKind.Ramp);
             }
@@ -174,6 +190,7 @@ namespace CloneZ
                 }
             }
             SamplesOf(c, at, c.To, step, s, true);
+            AddKnots(c, c.From, c.To, s);
             int n = s.Count;
             if (n < 2) return;
             FitSides(n);
@@ -188,7 +205,8 @@ namespace CloneZ
                 // Room before the next carriageway: half of it is this side's.
                 float room = RayToRoad(net, s[i].P + nrm * d.Edge, unit, (reach - d.Edge) * k * 2f + 1f);
                 float lim = d.Edge + room * 0.5f / k;
-                bool blocked = room < (KerbWidth + 0.25f) * k || InBuilding(net, s[i].P + nrm * (d.Edge + KerbWidth + 0.1f), 0f);
+                Vector2 behind = s[i].P + nrm * (d.Edge + KerbWidth + 0.1f);
+                bool blocked = room < (KerbWidth + 0.25f) * k || InBuilding(net, behind, 0f) || OnPavement(net, behind, c, -0.05f);
                 s_Edge[i] = d.Edge;
                 s_KerbOk[i] = d.Kerb && !blocked;
                 float wi = d.WalkIn, wo = d.WalkOut;
@@ -215,10 +233,10 @@ namespace CloneZ
             {
                 int cut = CutAt(cuts, (s[i].S + s[i + 1].S) * 0.5f);
                 s_Keep[i] = s_KerbOk[i] && s_KerbOk[i + 1] && cut < 0;
-                if (cut == (int)CutKind.Ramp && s_KerbOk[i] && s_KerbOk[i + 1] && s_WalkOk[i] && s_WalkOk[i + 1])
+                if (net.Full && cut == (int)CutKind.Ramp && s_KerbOk[i] && s_KerbOk[i + 1] && s_WalkOk[i] && s_WalkOk[i + 1])
                     Ramp(net, c, s[i], s[i + 1], side, s_Edge[i], s_Edge[i + 1], roadY);
             }
-            if (anyKerb)
+            if (anyKerb && net.Full)
             {
                 for (int i = 0; i < n; i++)
                 {
@@ -260,12 +278,16 @@ namespace CloneZ
             {
                 int cut = CutAt(cuts, (s[i].S + s[i + 1].S) * 0.5f);
                 s_Keep[i] = s_WalkOk[i] && s_WalkOk[i + 1] && cut != (int)CutKind.Mouth;
-                if (cut == (int)CutKind.Ramp)
+                if (cut == (int)CutKind.Ramp && net.Full)
                 {
                     s_WalkIn[i] = Mathf.Max(s_WalkIn[i], s_Edge[i] + 1.3f);
                     s_WalkIn[i + 1] = Mathf.Max(s_WalkIn[i + 1], s_Edge[i + 1] + 1.3f);
                 }
             }
+            // Lite draws no kerb: a sidewalk at the kerb starts at the carriageway's edge.
+            if (!net.Full)
+                for (int i = 0; i < n; i++)
+                    if (s_WalkIn[i] <= s_Edge[i] + KerbWidth + 0.05f) s_WalkIn[i] = s_Edge[i];
             for (int i = 0; i < n; i++)
             {
                 s_A[i] = side * s_WalkIn[i];
@@ -355,7 +377,8 @@ namespace CloneZ
                     Vector2 unit = nrm / k;
                     float want = Mathf.Lerp(wa, wb, line.Length > 0f ? s[i].S / line.Length : 0f);
                     float room = RayToRoad(net, s[i].P, unit, want * k * 2f + 1f, j);
-                    s_KerbOk[i] = room > (KerbWidth + 0.25f) * k && !InBuilding(net, s[i].P + nrm * (KerbWidth + 0.1f), 0f);
+                    Vector2 behind = s[i].P + nrm * (KerbWidth + 0.1f);
+                    s_KerbOk[i] = room > (KerbWidth + 0.25f) * k && !InBuilding(net, behind, 0f) && !OnPavement(net, behind, null, -0.05f);
                     float lim = room * 0.5f / k;
                     if (corner.Rounded && Mathf.Abs(Vector2.Distance(s[i].P, corner.Centre) - corner.Radius) < 0.6f)
                         lim = Mathf.Min(lim, corner.Radius - 0.05f);
@@ -363,22 +386,27 @@ namespace CloneZ
                     s_WalkOut[i] = Mathf.Max(KerbWidth + 0.05f, Mathf.Min(want, Mathf.Min(lim, (rb - 0.05f) / k)));
                 }
                 for (int i = 0; i + 1 < n; i++) s_Keep[i] = s_KerbOk[i] && s_KerbOk[i + 1];
-                for (int i = 0; i < n; i++)
+                if (net.Full)
                 {
-                    s_A[i] = 0f;
-                    s_B[i] = -KerbWidth;
+                    for (int i = 0; i < n; i++)
+                    {
+                        s_A[i] = 0f;
+                        s_B[i] = -KerbWidth;
+                    }
+                    Band(net, s, s_A, s_B, KerbTop, KerbTop, look.Kerb, null, s_Keep);
+                    float roadY = RoadY + j.Top.Order * 0.0003f;
+                    for (int i = 0; i + 1 < n; i++)
+                    {
+                        if (!s_Keep[i]) continue;
+                        Vector3 a0 = To3(s[i].P, roadY), b0 = To3(s[i + 1].P, roadY), b1 = To3(s[i + 1].P, KerbTop), a1 = To3(s[i].P, KerbTop);
+                        Face(net.Out.Flat((a0 + b1) * 0.5f), a0, b0, b1, a1, To3(s[i].N, 0f), look.KerbFace);
+                    }
                 }
-                Band(net, s, s_A, s_B, KerbTop, KerbTop, look.Kerb, null, s_Keep);
-                float roadY = RoadY + j.Top.Order * 0.0003f;
-                for (int i = 0; i + 1 < n; i++)
-                {
-                    if (!s_Keep[i]) continue;
-                    Vector3 a0 = To3(s[i].P, roadY), b0 = To3(s[i + 1].P, roadY), b1 = To3(s[i + 1].P, KerbTop), a1 = To3(s[i].P, KerbTop);
-                    Face(net.Out.Flat((a0 + b1) * 0.5f), a0, b0, b1, a1, To3(s[i].N, 0f), look.KerbFace);
-                }
-                for (int i = 0; i < n; i++) s_A[i] = -KerbWidth;
+                // Lite draws no kerbs: whatever lies behind one starts at the kerb line.
+                for (int i = 0; i < n; i++) s_A[i] = net.Full ? -KerbWidth : 0f;
                 if (!walk)
                 {
+                    if (!net.Full) continue;
                     for (int i = 0; i < n; i++)
                     {
                         s_B[i] = -Mathf.Max(KerbWidth, s_WalkOut[i]);

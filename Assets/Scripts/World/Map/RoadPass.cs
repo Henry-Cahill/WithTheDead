@@ -80,9 +80,9 @@ namespace CloneZ
                 foreach (string step in Markings(net)) yield return step;
                 yield return "road markings";
             }
-            Paths(net);
+            foreach (string step in Paths(net)) yield return step;
             yield return "paths";
-            Railways(net);
+            foreach (string step in Railways(net)) yield return step;
             yield return "railways";
             Bridges(net);
             yield return "bridges";
@@ -121,6 +121,25 @@ namespace CloneZ
         /// <summary>From the street's line to the outer edge of its sidewalk on one side, or 0 when it has none.</summary>
         internal static float SidewalkOuter(Street s, int side)
             => s_Ways.TryGetValue(s, out Way w) && (side >= 0 ? w.L : w.R).Walk ? (side >= 0 ? w.L : w.R).WalkOut : 0f;
+
+        /// <summary>The parking lane on one side of a street, if the roads gave it one (downtown, where a mapped
+        /// sidewalk stands back from the traffic): from <paramref name="inner"/> (the travel lane's edge) to
+        /// <paramref name="outer"/> (the kerb face), offsets from the street's line; <paramref name="angled"/> for
+        /// nose-in stalls at 60 degrees (3.2 m apart along the kerb, leaning the way that side's traffic runs: the way's
+        /// direction on a one-way street, else against it on the left and with it on the right), else parallel stalls
+        /// 6.5 m long. False where there's none.</summary>
+        internal static bool ParkingLane(Street s, int side, out float inner, out float outer, out bool angled)
+        {
+            inner = outer = 0f;
+            angled = false;
+            if (!s_Ways.TryGetValue(s, out Way w) || w.Cls <= Cls.Trunk) return false;
+            Side d = side >= 0 ? w.L : w.R;
+            if (d.Edge - d.Lane < 1.5f) return false;
+            inner = d.Lane;
+            outer = d.Edge;
+            angled = d.Edge - d.Lane > 4f;
+            return true;
+        }
 
         /// <summary>Where roadside things (poles, signs, hydrants, mailboxes) stand on one side, from the street's line: on
         /// the sidewalk 0.6 m behind the kerb, or on the verge where the sidewalk is set back, or 1.2 m past an unkerbed

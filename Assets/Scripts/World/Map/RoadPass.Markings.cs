@@ -70,6 +70,7 @@ namespace CloneZ
                     }
                 if (c.Crossings != null)
                     foreach (float s in c.Crossings) Crosswalk(net, c, s - 1.45f, s + 1.45f, seed + 50);
+                StallLines(net, c, seed + 60);
                 if (net.Site.StepDue) yield return "road markings";
             }
             foreach (Joint j in net.Joints)
@@ -86,30 +87,99 @@ namespace CloneZ
                         if (a.AtStart) Crosswalk(net, c, near, far, seed);
                         else Crosswalk(net, c, c.Length - far, c.Length - near, seed);
                     }
-                    if (a.StopBar)
+                    if (!a.StopBar) continue;
+                    // Behind a crosswalk at the junction's mouth (a mapped one up to 9 m out), else a metre short of the patch.
+                    float at = a.Trim + (a.Crosswalk ? 4.2f : 1.0f);
+                    if (c.Crossings != null)
+                        foreach (float x in c.Crossings)
+                        {
+                            float from = a.AtStart ? x : c.Length - x;
+                            if (from > a.Trim && from < a.Trim + 9f) at = Mathf.Max(at, from + 1.75f);
+                        }
+                    float sm = a.AtStart ? at + 0.22f : c.Length - at - 0.22f;
+                    if (sm < c.From + 0.3f || sm > c.To - 0.3f || InMouth(c, 1, sm) || InMouth(c, -1, sm)) continue;
+                    PointOn(c, sm, out Vector2 mid, out Vector2 _);
+                    if (InOtherJunction(net, mid, j)) continue;
+                    float left = EdgeLaneAt(c, 1, sm), right = EdgeLaneAt(c, -1, sm);
+                    float centre = (left - right) * 0.5f;
+                    float lo, hi;
+                    if (c.W.OneWay)
                     {
-                        float at = a.Trim + (a.Crosswalk ? 4.2f : 1.0f);
-                        float s0 = a.AtStart ? at : c.Length - at - 0.45f;
-                        if (s0 < c.From - 0.01f || s0 + 0.45f > c.To + 0.01f) continue;
-                        float sm = s0 + 0.22f, left = EdgeLaneAt(c, 1, sm), right = EdgeLaneAt(c, -1, sm);
-                        float centre = (left - right) * 0.5f;
-                        float lo, hi;
-                        if (c.W.OneWay)
-                        {
-                            lo = -right;
-                            hi = left;
-                        }
-                        else if (a.AtStart)
-                        {
-                            lo = centre + 0.2f;
-                            hi = left;
-                        }
-                        else
-                        {
-                            lo = -right;
-                            hi = centre - 0.2f;
-                        }
-                        Across(net, c, s0, s0 + 0.45f, lo, hi, net.Look.White, seed + 1);
+                        lo = -right;
+                        hi = left;
+                    }
+                    else if (a.AtStart)
+                    {
+                        lo = centre + 0.2f;
+                        hi = left;
+                    }
+                    else
+                    {
+                        lo = -right;
+                        hi = centre - 0.2f;
+                    }
+                    Bar(net, c, sm, 0.225f, lo, hi, net.Look.White, seed + 1);
+                }
+            }
+        }
+
+        /// <summary>True when <paramref name="q"/> lies on the patch or a mouth of a junction other than
+        /// <paramref name="j"/>.</summary>
+        private static bool InOtherJunction(Net net, Vector2 q, Joint j)
+        {
+            int stamp = net.NewStamp(net.PaveItems.Count + net.PatchItems.Count);
+            net.PaveGrid.Query(q.x, q.y, q.x, q.y, net.Query, net.Stamp, stamp);
+            foreach (int it in net.Query)
+            {
+                if (it < net.PaveItems.Count) continue;
+                (Joint o, int poly) = net.PatchItems[it - net.PaveItems.Count];
+                if (o != j && InPatch(o, poly, q)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Metres along the kerb between two stalls' lines: angled stalls (60 degrees to the kerb) or parallel.</summary>
+        private const float AngledStall = 3.2f, ParallelStall = 6.5f;
+
+        // The parking lanes' stall lines, half lost under the slush: lines at 60 degrees from the lane's edge to the kerb,
+        // leaning the way the traffic on that side runs, or ticks between parallel stalls; spaced on the street's whole
+        // mapped length so neighbouring chunks agree, none near the chain's ends, mouths, crosswalks or driveways.
+        private static void StallLines(Net net, Chain c, int seed)
+        {
+            foreach (Part p in c.Parts)
+            {
+                Way pw = p.Run.W;
+                if (pw.Cls <= Cls.Trunk) continue;
+                for (int side = -1; side <= 1; side += 2)
+                {
+                    Side sd = SideOf(p, side);
+                    float depth = sd.Edge - sd.Lane;
+                    if (depth < 1.5f) continue;
+                    bool angled = depth > 4f;
+                    float step = angled ? AngledStall : ParallelStall;
+                    // Traffic along +s on the right, or on both sides of a one-way street run the chain's way.
+                    bool forward = pw.OneWay ? !p.Rev : side < 0;
+                    float lean = angled ? (forward ? 1f : -1f) * depth / Mathf.Tan(60f * Mathf.Deg2Rad) : 0f;
+                    float a = Mathf.Max(c.From + 5f, p.S0), b = Mathf.Min(c.To - 5f, p.S1);
+                    if (b - a < step) continue;
+                    float wa = ArcOf(p, a), wb = ArcOf(p, b);
+                    float lo = Mathf.Min(wa, wb), hi = Mathf.Max(wa, wb);
+                    List<Cut> cuts = side > 0 ? c.CutsL : c.CutsR;
+                    for (float x = Mathf.Ceil(lo / step) * step; x <= hi; x += step)
+                    {
+                        float s = p.Rev ? a + (wa - x) : a + (x - wa);
+                        float s1 = s + lean;
+                        if (s1 < a || s1 > b || CutAt(cuts, s) >= 0 || CutAt(cuts, s1) >= 0) continue;
+                        if (InMouth(c, side, s - 4f) || InMouth(c, side, s + 4f) || InMouth(c, side, s1)) continue;
+                        PointOn(c, s, out Vector2 p0, out Vector2 d0);
+                        if (Noise(p0, 2.25f, seed + side) < 0.3f) continue;
+                        PointOn(c, s1, out Vector2 p1, out Vector2 d1);
+                        Vector2 from = p0 + Left(d0) * (side * (EdgeLaneAt(c, side, s) + 0.15f));
+                        Vector2 to = p1 + Left(d1) * (side * (EdgeAt(c, side, s1) - 0.3f));
+                        s_Crack.Clear();
+                        s_Crack.Add(from);
+                        s_Crack.Add(Vector2.Lerp(from, to, 0.55f + 0.3f * Noise(p1, 1.75f, seed + 5)));
+                        StrokeAt(net, s_Crack, LineWidth, net.Look.White, MarkY);
                     }
                 }
             }
@@ -179,36 +249,31 @@ namespace CloneZ
             return p.Rev ? w.ArcOffset + w.Cum[p.Run.V1] - (s - p.S0) : w.ArcOffset + w.Cum[p.Run.V0] + (s - p.S0);
         }
 
-        // A crosswalk: two white bars across the whole carriageway, with the walkers' lane between them.
+        // A crosswalk: two white bars across the whole carriageway, kerb to kerb, with the walkers' lane between them.
         private static void Crosswalk(Net net, Chain c, float s0, float s1, int seed)
         {
             if (s1 - s0 < 1f) return;
             float m = (s0 + s1) * 0.5f, l = EdgeAt(c, 1, m), r = EdgeAt(c, -1, m);
-            Across(net, c, s0, s0 + 0.3f, -r + 0.25f, l - 0.25f, net.Look.White, seed);
-            Across(net, c, s1 - 0.3f, s1, -r + 0.25f, l - 0.25f, net.Look.White, seed + 1);
+            Bar(net, c, s0 + 0.15f, 0.15f, -r + 0.25f, l - 0.25f, net.Look.White, seed);
+            Bar(net, c, s1 - 0.15f, 0.15f, -r + 0.25f, l - 0.25f, net.Look.White, seed + 1);
         }
 
-        // A painted bar across a chain between <paramref name="s0"/> and <paramref name="s1"/>, from <paramref name="lo"/>
-        // to <paramref name="hi"/> across it, in pieces of which the slush has buried some.
-        private static void Across(Net net, Chain c, float s0, float s1, float lo, float hi, in Surf surf, int seed)
+        // A straight painted bar square across a chain at <paramref name="s"/> (its direction there), <paramref name="half"/>
+        // either way along it, from <paramref name="lo"/> to <paramref name="hi"/> across it, in pieces of which the slush
+        // has buried some.
+        private static void Bar(Net net, Chain c, float s, float half, float lo, float hi, in Surf surf, int seed)
         {
-            if (hi - lo < 0.2f) return;
-            SamplesOf(c, Mathf.Max(0f, s0), Mathf.Min(c.Length, s1), 0f, net.Samples2);
-            int n = net.Samples2.Count;
-            if (n < 2) return;
-            Fit(n);
+            if (hi - lo < 0.2f || s < 0f || s > c.Length) return;
+            PointOn(c, s, out Vector2 p, out Vector2 _);
+            Vector2 d = ChainDir(c, s), n = Left(d);
             int pieces = Mathf.Max(1, Mathf.RoundToInt((hi - lo) / 0.7f));
             for (int k = 0; k < pieces; k++)
             {
                 float a = lo + (hi - lo) * k / pieces, b = lo + (hi - lo) * (k + 1) / pieces;
-                Vector2 mid = net.Samples2[0].P + net.Samples2[0].N * ((a + b) * 0.5f);
-                if (Noise(mid, 1.75f, seed) < 0.22f) continue;
-                for (int i = 0; i < n; i++)
-                {
-                    s_A[i] = a;
-                    s_B[i] = b;
-                }
-                Band(net, net.Samples2, s_A, s_B, JunctionMarkY, JunctionMarkY, surf, c.Lift);
+                if (Noise(p + n * ((a + b) * 0.5f), 1.75f, seed) < 0.22f) continue;
+                Vector3 p0 = To3(p + n * a - d * half, JunctionMarkY), p1 = To3(p + n * a + d * half, JunctionMarkY);
+                Vector3 q1 = To3(p + n * b + d * half, JunctionMarkY), q0 = To3(p + n * b - d * half, JunctionMarkY);
+                Face(net.Out.Flat((p0 + q1) * 0.5f), p0, p1, q1, q0, Vector3.up, surf);
             }
         }
     }
