@@ -17,7 +17,7 @@ namespace CloneZ
         /// building, n a mapped point feature, a an area, then its OpenStreetMap id).</summary>
         internal const string LandmarkPrefix = "ky.";
 
-        private const int PublishFrom = 4, DiscoverFrom = 6;
+        private const int PublishFrom = 4, DiscoverFrom = 6, RewardFrom = 8;
 
         /// <summary>One real landmark.</summary>
         private sealed class RealLandmark
@@ -93,28 +93,42 @@ namespace CloneZ
 
         /// <summary>The name of a real landmark by its id (as published, without "landmark:"), for the HUD, the map and
         /// the descriptions of places; false for any other id.</summary>
-        internal static bool TryLandmarkName(string id, out string name)
+        internal static bool TryLandmarkName(string id, out string name) => TryLandmark(id, out name, out _);
+
+        /// <summary>A real landmark's name and rank (how much it matters to someone finding their way: 10 the
+        /// courthouse, 4 a named store) by its id; false for any other id.</summary>
+        internal static bool TryLandmark(string id, out string name, out int rank)
         {
             name = null;
+            rank = 0;
             if (id == null || !id.StartsWith(LandmarkPrefix, System.StringComparison.Ordinal)) return false;
             if (!s_Landmarks.TryGetValue(id, out RealLandmark l)) return false;
             name = l.Name;
+            rank = l.Rank;
             return true;
         }
 
         /// <summary>How many real landmarks the current map has published.</summary>
         internal static int LandmarkCount => s_Landmarks.Count;
 
-        /// <summary>"27 landmarks (Court Square courthouse, ...)": the most important first, at most
-        /// <paramref name="names"/> of them named.</summary>
-        internal static string LandmarkSummary(int names)
+        /// <summary>"27 landmarks, 19 pinned on the Zone map (Court Square courthouse, ...)": the most important first, at
+        /// most <paramref name="names"/> of them named (with their ranks when <paramref name="ranks"/>).</summary>
+        internal static string LandmarkSummary(int names, bool ranks = false)
         {
             var all = new List<RealLandmark>(s_Landmarks.Values);
             all.Sort((x, y) => x.Rank != y.Rank ? y.Rank.CompareTo(x.Rank) : string.CompareOrdinal(x.Id, y.Id));
+            int pinned = 0;
+            foreach (KeyValuePair<string, Vector3> kv in HumanUtil.Landmarks())
+                if (kv.Key.StartsWith(LandmarkPrefix, System.StringComparison.Ordinal)) pinned++;
             var sb = new System.Text.StringBuilder();
-            sb.Append(all.Count).Append(" landmarks");
-            for (int i = 0; i < all.Count && i < names; i++) sb.Append(i == 0 ? " (" : ", ").Append(all[i].Name);
-            if (all.Count > 0) sb.Append(all.Count > names ? ", ...)" : ")");
+            sb.Append(all.Count).Append(" landmarks, ").Append(pinned).Append(" pinned on the Zone map");
+            for (int i = 0; i < all.Count && i < names; i++)
+            {
+                sb.Append(i == 0 ? " (" : ", ");
+                if (ranks) sb.Append(all[i].Rank).Append(' ');
+                sb.Append(all[i].Name);
+            }
+            if (all.Count > 0 && names > 0) sb.Append(all.Count > names ? ", ...)" : ")");
             return sb.ToString();
         }
 
@@ -282,7 +296,8 @@ namespace CloneZ
                 if (SameNearby(l)) continue;
                 s_Landmarks[l.Id] = l;
                 WorldMarkers.Add(WorldMarkers.Landmark(l.Id), l.At);
-                if (l.Rank >= DiscoverFrom) MapGameplayRuntime.Track(l.Id, l.Proper ? l.Name : "the " + l.Name, l.At, l.Radius, host);
+                if (l.Rank >= DiscoverFrom)
+                    MapGameplayRuntime.Track(l.Id, l.Proper ? l.Name : "the " + l.Name, l.At, l.Radius, l.Rank >= RewardFrom, host);
                 published++;
             }
         }

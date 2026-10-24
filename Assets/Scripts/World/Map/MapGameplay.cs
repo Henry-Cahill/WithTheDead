@@ -56,7 +56,13 @@ namespace CloneZ
             List<ExitPlan> plans = PlanExits(site.Area, site.Half);
             Publish(plans, site.Area, site.Town.Info);
             foreach (ExitPlan e in plans)
-                if (e.Street != null && site.Detail == Detail.Full) GuideSign(site.Town.Out.Solid(To3(e.At, 0f)), e, p => site.FreeBeside(p, 0.7f), site);
+            {
+                if (e.Street == null || site.Detail != Detail.Full) continue;
+                if (!GuideSign(site.Town.Out.Solid(To3(e.At, 0f)), e, p => site.FreeBeside(p, 0.7f), out Vector2 spot, out float yaw, out float boardW))
+                    continue;
+                site.Town.PropCollider(To3(spot, 1.6f), new Vector3(boardW * 0.7f, 3.2f, 0.25f), yaw);
+                site.Take(spot, 0.8f);
+            }
         }
 
         /// <summary>
@@ -65,7 +71,8 @@ namespace CloneZ
         /// most squarely out), named by its route and direction ("US 31E north") and hinting where it goes (the biggest
         /// place ahead: "North 3rd Street out of Bardstown, towards Louisville, 34 miles"); a second on a side that has
         /// another main road well apart; a side no road leaves gets one across the snow. Read from the data alone, so
-        /// the streamed map places them before the ground they stand on is built (it gets its guide signs then too).
+        /// the streamed map places them before the ground they stand on is built (it gets its guide signs then too,
+        /// beside the road, clear of the start's props as their colliders have them).
         /// </summary>
         internal static void DefineExits(Area area, float half, RaidMapInfo info)
         {
@@ -73,11 +80,41 @@ namespace CloneZ
             Publish(plans, area, info);
             KentuckyStreamer streamer = KentuckyStreamer.Active;
             if (streamer == null || streamer.World == null) return;
+            Physics.SyncTransforms();
+            int mask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
+            System.Func<Vector2, bool> free = p => OffRoads(area, p, 0.7f)
+                && !Physics.CheckBox(To3(p, 1.6f), new Vector3(1.6f, 1.4f, 1.6f), Quaternion.identity, mask, QueryTriggerInteraction.Ignore);
             var signs = new RaidMesh();
+            var posts = new List<(Vector2 at, float yaw, float width)>();
             foreach (ExitPlan e in plans)
-                if (e.Street != null) GuideSign(signs, e, null, null);
+                if (e.Street != null && GuideSign(signs, e, free, out Vector2 spot, out float yaw, out float boardW)) posts.Add((spot, yaw, boardW));
             GameObject go = signs.Emit("ExitSigns", streamer.World, Vector3.zero);
-            if (go != null) DecorPalette.Apply();
+            if (go == null) return;
+            DecorPalette.Apply();
+            foreach ((Vector2 at, float yaw, float width) in posts)
+            {
+                var c = new GameObject("ExitSignCollider");
+                c.transform.SetParent(go.transform, false);
+                c.transform.SetPositionAndRotation(To3(at, 1.6f), Quaternion.Euler(0f, yaw, 0f));
+                c.AddComponent<BoxCollider>().size = new Vector3(width * 0.7f, 3.2f, 0.25f);
+            }
+        }
+
+        // True when a disc of radius r at p is clear of every street's carriageway (the start's data, site-local).
+        private static bool OffRoads(Area area, Vector2 p, float r)
+        {
+            foreach (Street s in area.Streets)
+            {
+                if (s.Data.tunnel) continue;
+                float reach = s.Width * 0.5f + r, reach2 = reach * reach;
+                for (int i = 0; i + 1 < s.Pts.Count; i++)
+                {
+                    Vector2 a = s.Pts[i], ab = s.Pts[i + 1] - a;
+                    float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
+                    if ((a + ab * t - p).sqrMagnitude < reach2) return false;
+                }
+            }
+            return true;
         }
 
         private static void Publish(List<ExitPlan> plans, Area area, RaidMapInfo info)
@@ -93,6 +130,8 @@ namespace CloneZ
                 .Append(DensityAt(Vector3.zero).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))
                 .Append(", loot richness ").Append(LootRichnessAt(Vector3.zero).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append('.');
             Debug.Log(line.ToString());
+            // The harness's builds list every landmark with its rank, to check what the map publishes.
+            if (!Application.isPlaying) Debug.Log("[CloneZ] Map landmarks at " + area.Place + ": " + LandmarkSummary(int.MaxValue, true));
         }
 
         private static List<ExitPlan> PlanExits(Area area, float half)
@@ -176,7 +215,9 @@ namespace CloneZ
                 }
                 string route = e.Route;
                 string street = StreetName(e.Street);
-                e.Name = route != null ? route + " " + dir : street + " (" + dir + ")";
+                // "South 3rd Street" leaving south needs no "(south)".
+                bool says = street != null && street.StartsWith(dir + " ", System.StringComparison.OrdinalIgnoreCase);
+                e.Name = route != null ? route + " " + dir : says ? street : street + " (" + dir + ")";
                 Destination(e, around);
                 string way = street == route || street == null ? (route ?? "The road") : street;
                 e.Hint = way + " out of " + area.Place
@@ -294,11 +335,14 @@ namespace CloneZ
 
         // A green guide sign beside the road out, facing the traffic leaving town: the route and its way above, where it
         // goes and how far below (miles, as Kentucky's were). Drawn into <paramref name="m"/> in the site's (or the
-        // world's) metres; <paramref name="free"/> (when given) finds it a clear spot.
-        private static void GuideSign(RaidMesh m, ExitPlan e, System.Func<Vector2, bool> free, Site site)
+        // world's) metres at the first spot <paramref name="free"/> allows (beside the road, a little back from the
+        // edge); false when there's none. Where it stands, its turn and its board's width come back for its collider.
+        private static bool GuideSign(RaidMesh m, ExitPlan e, System.Func<Vector2, bool> free, out Vector2 spot, out float yaw, out float boardW)
         {
             var right = new Vector2(e.Out.y, -e.Out.x);
-            Vector2 spot = Vector2.zero;
+            spot = Vector2.zero;
+            yaw = 0f;
+            boardW = 0f;
             bool ok = false;
             for (int tryAt = 0; tryAt < 8 && !ok; tryAt++)
             {
@@ -307,7 +351,7 @@ namespace CloneZ
                 spot = e.At - e.Out * back + right * sideways * (e.RoadHalf + 2.2f);
                 ok = free == null || free(spot);
             }
-            if (!ok) return;
+            if (!ok) return false;
             var rng = MapStyle.Rng(MapStyle.Key(e.At), SaltExitSign);
             string top = e.Route != null ? (e.Name ?? e.Route).ToUpperInvariant() : SideName(e.Side).ToUpperInvariant();
             string bottom = e.Destination != null
@@ -318,13 +362,13 @@ namespace CloneZ
             var white = new Color(0.93f, 0.94f, 0.92f);
             Vector3 at = To3(spot, 0f);
             // The board faces back into town, a little askew.
-            float yaw = Mathf.Atan2(-e.Out.x, -e.Out.y) * Mathf.Rad2Deg + MapStyle.Range(rng, -4f, 4f);
+            yaw = Mathf.Atan2(-e.Out.x, -e.Out.y) * Mathf.Rad2Deg + MapStyle.Range(rng, -4f, 4f);
             m.SetFrame(at, yaw);
             Surf low = DecorMaterials.Sign(bottom.Length > 0 ? bottom : top, green, white, out float lowAspect);
             Surf high = DecorMaterials.Sign(top, green, white, out float highAspect);
             float lowH = 0.62f, highH = 0.5f;
             float lowW = Mathf.Min(4.2f, lowH * lowAspect), highW = Mathf.Min(3.6f, highH * highAspect);
-            float boardW = Mathf.Max(lowW, highW) + 0.3f;
+            boardW = Mathf.Max(lowW, highW) + 0.3f;
             var post = DecorPalette.Matte(new Color(0.42f, 0.43f, 0.44f));
             for (int k = -1; k <= 1; k += 2)
                 m.Box(new Vector3(k * boardW * 0.32f, 1.6f, -0.06f), new Vector3(0.09f, 3.2f, 0.09f), post);
@@ -334,11 +378,7 @@ namespace CloneZ
             m.Upright(new Vector3(0f, 2.28f, 0.027f), Vector3.forward, lowW, lowH, low, new Rect(0f, 0f, 1f, 1f));
             m.Box(new Vector3(0f, 3.31f, 0f), new Vector3(boardW, 0.06f, 0.1f), DecorPalette.Matte(new Color(0.94f, 0.95f, 0.97f)));
             m.ResetFrame();
-            if (site != null)
-            {
-                site.Town.PropCollider(at + Vector3.up * 1.6f, new Vector3(boardW * 0.7f, 3.2f, 0.25f), yaw);
-                site.Take(spot, 0.8f);
-            }
+            return true;
         }
         #endregion
 
