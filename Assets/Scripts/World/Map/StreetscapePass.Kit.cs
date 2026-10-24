@@ -475,7 +475,7 @@ namespace CloneZ
             private const float Cell = 16f;
             private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
             private readonly List<Vector2> _a = new List<Vector2>(), _b = new List<Vector2>();
-            private readonly List<float> _half = new List<float>();
+            private readonly List<float> _half = new List<float>(), _mapped = new List<float>();
             private readonly List<Street> _street = new List<Street>();
             private readonly List<int> _rank = new List<int>();
 
@@ -485,20 +485,21 @@ namespace CloneZ
                 {
                     int rank = RoadRank(s);
                     if (s.Data.tunnel || s.Pts.Count < 2 || rank < 1) continue;
-                    float half = HalfWidth(s);
-                    for (int i = 0; i + 1 < s.Pts.Count; i++) Add(s, rank, s.Pts[i], s.Pts[i + 1], half);
+                    float half = HalfWidth(s), mapped = MappedHalf(s);
+                    for (int i = 0; i + 1 < s.Pts.Count; i++) Add(s, rank, s.Pts[i], s.Pts[i + 1], half, mapped);
                 }
             }
 
             private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
 
-            private void Add(Street s, int rank, Vector2 a, Vector2 b, float half)
+            private void Add(Street s, int rank, Vector2 a, Vector2 b, float half, float mapped)
             {
                 if ((b - a).sqrMagnitude < 1e-6f) return;
                 int index = _a.Count;
                 _a.Add(a);
                 _b.Add(b);
                 _half.Add(half);
+                _mapped.Add(mapped);
                 _street.Add(s);
                 _rank.Add(rank);
                 int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - half) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + half) / Cell);
@@ -513,8 +514,9 @@ namespace CloneZ
             }
 
             /// <summary>How far <paramref name="p"/> is from the nearest carriageway's surface (negative on it), up to
-            /// <paramref name="within"/>.</summary>
-            public float Clearance(Vector2 p, float within)
+            /// <paramref name="within"/>; with <paramref name="mapped"/>, from the carriageways as the data alone has them
+            /// (the same in every streamed piece, whatever its roads made of them).</summary>
+            public float Clearance(Vector2 p, float within, bool mapped = false)
             {
                 float best = within;
                 int x0 = Mathf.FloorToInt((p.x - within) / Cell), x1 = Mathf.FloorToInt((p.x + within) / Cell);
@@ -525,7 +527,7 @@ namespace CloneZ
                         if (!_cells.TryGetValue(Key(x, z), out List<int> list)) continue;
                         foreach (int i in list)
                         {
-                            float d = MapGeometry.DistanceToSegment(p, _a[i], _b[i]) - _half[i];
+                            float d = MapGeometry.DistanceToSegment(p, _a[i], _b[i]) - (mapped ? _mapped[i] : _half[i]);
                             if (d < best) best = d;
                         }
                     }

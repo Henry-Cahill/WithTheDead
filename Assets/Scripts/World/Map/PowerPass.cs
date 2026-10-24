@@ -205,10 +205,12 @@ namespace CloneZ
             {
                 List<Vector2> moved = MapGeometry.OffsetLine(s.Pts, c.Side * Roadside(s, (int)c.Side));
                 // Where the piece meets the edge, a streamed piece's neighbour carries the line on from a pole they share:
-                // its spot comes from the data alone, so both put it in the same place.
+                // its spot comes from the data alone, so both put it in the same place (a metre further out, clear of a
+                // carriageway the roads widened).
                 int last = s.Pts.Count - 1;
-                if (OnEdge(ctx, s.Pts[0])) moved[0] = s.Pts[0] + Left(StartDir(s)) * (c.Side * (MappedHalf(s) + Verge(s)));
-                if (OnEdge(ctx, s.Pts[last])) moved[last] = s.Pts[last] + Left(EndDir(s)) * (c.Side * (MappedHalf(s) + Verge(s)));
+                float edgeOff = MappedHalf(s) + Verge(s) + 1f;
+                if (OnEdge(ctx, s.Pts[0])) moved[0] = s.Pts[0] + Left(StartDir(s)) * (c.Side * edgeOff);
+                if (OnEdge(ctx, s.Pts[last])) moved[last] = s.Pts[last] + Left(EndDir(s)) * (c.Side * edgeOff);
                 for (int i = 0; i < s.Pts.Count; i++)
                 {
                     Vector2 p = s.Pts[i], q = moved[i];
@@ -355,10 +357,12 @@ namespace CloneZ
                 }
                 Street street = c.Seg[Mathf.Clamp(seg, 0, c.Seg.Count - 1)];
                 long key = ctx.KeyOf(at);
+                // A pole shared with a neighbouring piece is fitted from its own street's data, so both draw it alike.
                 var pole = new Pole
                 {
-                    At = at, Across = across, Height = 9.3f + 1.3f * MapStyle.Unit(key, SaltPole), ThreePhase = three,
-                    Edge = a.Edge, Terminal = a.Terminal, Line = line, Street = street, Key = key, Secondary = secondary,
+                    At = at, Across = across, Height = 9.3f + 1.3f * MapStyle.Unit(key, SaltPole),
+                    ThreePhase = a.Edge ? RoadRank(street) >= 3 : three, Edge = a.Edge, Terminal = a.Terminal, Line = line,
+                    Street = street, Key = key, Secondary = a.Edge ? street.Data.kind != "unclassified" : secondary,
                     Telephone = phone, ToRoad = (-c.Side * Left(dir)).normalized,
                 };
                 if (!a.Edge && secondary && ctx.Density.Homes(at, 35f) > 0 && MapStyle.Unit(key, SaltTransformer) < 0.4f
@@ -396,8 +400,10 @@ namespace CloneZ
 
         private static bool OnEdge(Ctx ctx, Vector2 p) => Mathf.Abs(p.x) >= ctx.Reach - 0.02f || Mathf.Abs(p.y) >= ctx.Reach - 0.02f;
 
-        // A pole on the site's edge: off the carriageways as the roads drew them and out of the buildings.
-        private static bool EdgeClear(Ctx ctx, Vector2 p) => ctx.Roads.Clearance(p, 2f) >= 0.4f && !ctx.Blocks.Contains(p, 0.3f);
+        // A pole on the site's edge: off the carriageways and out of the buildings. A streamed piece judges the carriageways
+        // by the data alone, as its neighbour does, so the pole they share stands or falls in both.
+        private static bool EdgeClear(Ctx ctx, Vector2 p)
+            => ctx.Roads.Clearance(p, 2f, ctx.Site.Chunked) >= 0.4f && !ctx.Blocks.Contains(p, 0.3f);
 
         // How far the line strays from the straight wire between t0 (at a) and t1 (at b).
         private static float Deviation(Chain c, float t0, float t1, Vector2 a, Vector2 b)
