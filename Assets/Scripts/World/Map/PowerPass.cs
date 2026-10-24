@@ -438,55 +438,6 @@ namespace CloneZ
         #endregion
 
         #region Wires
-        /// <summary>The overhead wires of a site's lines along the roads and its service drops, for the passes after this
-        /// one (see <see cref="WireHeightNear"/>).</summary>
-        private sealed class WireIndex
-        {
-            public readonly Dictionary<long, List<int>> Cells = new Dictionary<long, List<int>>();
-            public readonly List<Vector2> A = new List<Vector2>(), B = new List<Vector2>();
-            public readonly List<float> Low = new List<float>();
-        }
-
-        private const float WireCell = 16f;
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Site, WireIndex> s_Wires
-            = new System.Runtime.CompilerServices.ConditionalWeakTable<Site, WireIndex>();
-
-        private static long WireKey(int x, int z) => ((long)x << 32) ^ (uint)z;
-
-        // Notes a run of wire from a to b whose lowest point hangs low metres up.
-        private static void NoteWire(Ctx ctx, Vector2 a, Vector2 b, float low)
-        {
-            WireIndex w = s_Wires.GetValue(ctx.Site, _ => new WireIndex());
-            int index = w.A.Count;
-            w.A.Add(a);
-            w.B.Add(b);
-            w.Low.Add(low);
-            for (int z = Mathf.FloorToInt(Mathf.Min(a.y, b.y) / WireCell); z <= Mathf.FloorToInt(Mathf.Max(a.y, b.y) / WireCell); z++)
-                for (int x = Mathf.FloorToInt(Mathf.Min(a.x, b.x) / WireCell); x <= Mathf.FloorToInt(Mathf.Max(a.x, b.x) / WireCell); x++)
-                {
-                    long k = WireKey(x, z);
-                    if (!w.Cells.TryGetValue(k, out List<int> list)) w.Cells[k] = list = new List<int>(4);
-                    list.Add(index);
-                }
-        }
-
-        /// <summary>How high the lowest overhead wire within <paramref name="radius"/> of <paramref name="p"/> (site metres)
-        /// hangs above the ground, or <see cref="float.MaxValue"/> when none passes that near: for the passes after the
-        /// streetscape (the trees) to keep their crowns off the utility lines and the service drops. Nothing is known
-        /// before the streetscape ran on the site.</summary>
-        internal static float WireHeightNear(Site site, Vector2 p, float radius)
-        {
-            if (!s_Wires.TryGetValue(site, out WireIndex w)) return float.MaxValue;
-            float best = float.MaxValue;
-            for (int z = Mathf.FloorToInt((p.y - radius) / WireCell); z <= Mathf.FloorToInt((p.y + radius) / WireCell); z++)
-                for (int x = Mathf.FloorToInt((p.x - radius) / WireCell); x <= Mathf.FloorToInt((p.x + radius) / WireCell); x++)
-                {
-                    if (!w.Cells.TryGetValue(WireKey(x, z), out List<int> list)) continue;
-                    foreach (int i in list)
-                        if (w.Low[i] < best && MapGeometry.DistanceToSegment(p, w.A[i], w.B[i]) <= radius) best = w.Low[i];
-                }
-            return best;
-        }
         /// <summary>Where wire <paramref name="slot"/> leaves a pole: 0-2 the primaries (crossarm ends and pole top, or the
         /// pole top alone), 3 the neutral, 4 the low-voltage run, 5 the telephone cable.</summary>
         private static Vector3 Slot(Pole p, int slot, Vector2 across)
@@ -519,18 +470,11 @@ namespace CloneZ
                     ctx.Wires.Add(Slot(a, k, a.Across), Slot(b, k, acrossB), sagHigh, 0.017f, Conductor, far);
             else ctx.Wires.Add(Slot(a, a.ThreePhase ? 2 : 0, a.Across), Slot(b, b.ThreePhase ? 2 : 0, acrossB), sagHigh, 0.017f, Conductor, far);
             ctx.Wires.Add(Slot(a, 3, a.Across), Slot(b, 3, acrossB), sagHigh + 0.1f, 0.015f, Conductor, far);
-            float h = Mathf.Min(a.Height, b.Height);
-            if (ring)
-            {
-                NoteWire(ctx, a.At, b.At, h - 1.35f - sagHigh - 0.1f);
-                return;
-            }
+            if (ring) return;
             if (a.Secondary && b.Secondary)
                 ctx.Wires.Add(Slot(a, 4, a.Across), Slot(b, 4, acrossB), sagLow, 0.022f, WireBlack, far);
             if (a.Telephone && b.Telephone)
                 ctx.Wires.Add(Slot(a, 5, a.Across), Slot(b, 5, acrossB), sagLow + 0.15f, 0.03f, WireBlack, far);
-            NoteWire(ctx, a.At, b.At, a.Telephone && b.Telephone ? h - 3.3f - sagLow - 0.15f
-                : a.Secondary && b.Secondary ? h - 2.25f - sagLow : h - 1.35f - sagHigh - 0.1f);
         }
 
         /// <summary>Strings the drops from the poles to the buildings they feed: one each, from the nearest pole within
@@ -549,7 +493,7 @@ namespace CloneZ
                 bool home = f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments";
                 if (!home && ctx.Density.Downtown(f.Middle)) continue;
                 Pole best = null;
-                float bestD = MaxDrop;
+                float bestD = MaxDrop, bestScore = float.MaxValue;
                 Vector2 attach = default;
                 foreach (Pole p in ctx.Poles)
                 {
@@ -557,7 +501,11 @@ namespace CloneZ
                     if (Mathf.Abs(p.At.x - f.Middle.x) > MaxDrop + 30f || Mathf.Abs(p.At.y - f.Middle.y) > MaxDrop + 30f) continue;
                     Vector2 q = NearestOnOutline(f.Pts, p.At);
                     float d = Vector2.Distance(q, p.At);
-                    if (d >= bestD) continue;
+                    if (d >= MaxDrop) continue;
+                    // A pole on the house's own side of the street wins over one across it.
+                    float score = d + (ctx.Roads.Clearance((q + p.At) * 0.5f, 1f) < 0f ? 14f : 0f);
+                    if (score >= bestScore) continue;
+                    bestScore = score;
                     bestD = d;
                     best = p;
                     attach = q;
@@ -572,7 +520,6 @@ namespace CloneZ
                 Vector2 side = Vector2.Dot(best.Across, outward) >= 0f ? best.Across : -best.Across;
                 Vector3 pole = To3(best.At + side * 0.14f, best.Height - 2.3f);
                 ctx.Wires.Add(pole, To3(end + outward * 0.05f, top - 0.08f), 0.3f + bestD * 0.01f, 0.02f, WireBlack, false);
-                NoteWire(ctx, best.At, end, top - 0.4f);
                 // The mast up the wall and its weatherhead, bent towards the pole.
                 RaidMesh m = ctx.High(attach);
                 Vector3 mast = To3(end, top - 0.55f);
