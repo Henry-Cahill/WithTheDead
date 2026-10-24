@@ -27,30 +27,36 @@ namespace CloneZ
             public float Width, Shelf;
         }
 
-        private static void Water(Ground g)
+        private static IEnumerable<string> Water(Ground g)
         {
-            WaterIn(g, g.Owners, g.Square, g.Site.Town.Out, true);
-            for (int b = 0; b < g.Ring.Count; b++) WaterIn(g, g.Ring[b], RingBand(g, b), g.Site.Town.Far, false);
-            foreach (Line l in g.Site.Area.Lines)
+            Site site = g.Site;
+            foreach (string step in WaterIn(g, g.Owners, g.Square, site.Town.Out, true)) yield return step;
+            for (int b = 0; b < g.Ring.Count; b++)
+                foreach (string step in WaterIn(g, g.Ring[b], RingBand(g, b), site.Town.Far, false)) yield return step;
+            foreach (Line l in site.Area.Lines)
             {
                 if (l.IsRailway || l.Data.tunnel) continue;
-                foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, g.Square)) Waterway(g, l, piece, g.Owners, g.Site.Town.Out, true);
-                if (g.Site.Chunked) continue;
-                for (int b = 0; b < g.Ring.Count; b++)
-                    foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, RingBand(g, b))) Waterway(g, l, piece, g.Ring[b], g.Site.Town.Far, false);
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, g.Square)) Waterway(g, l, piece, g.Owners, site.Town.Out, true);
+                if (!site.Chunked)
+                    for (int b = 0; b < g.Ring.Count; b++)
+                        foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, RingBand(g, b))) Waterway(g, l, piece, g.Ring[b], site.Town.Far, false);
+                if (site.StepDue) yield return "water";
             }
         }
 
-        private static void WaterIn(Ground g, List<Owner> owners, Rect domain, OutdoorBatches into, bool inside)
+        private static IEnumerable<string> WaterIn(Ground g, List<Owner> owners, Rect domain, OutdoorBatches into, bool inside)
         {
             foreach (Owner o in owners)
             {
                 if (o.Kind != "water" || o.Visible < 1f) continue;
                 WaterLook look = LookOf(o);
                 Shore(g, o, owners, domain, into, look, inside);
-                if (g.Lite) continue;
-                if (look.Open) Floes(g, o, look, owners, domain, into);
-                else if (inside) IcePatches(g, o);
+                if (!g.Lite)
+                {
+                    if (look.Open) Floes(g, o, look, owners, domain, into);
+                    else if (inside) IcePatches(g, o);
+                }
+                if (g.Site.StepDue) yield return "water";
             }
         }
 
@@ -379,7 +385,7 @@ namespace CloneZ
                 bed[i] = water[i] != null ? 0f : halfW + (ditch ? 0.5f : 0.8f) * (0.7f + 0.6f * WorldNoise(w, 4f, SaltStream + 1));
                 shelf[i] = halfW;
                 float thread = WorldNoise(w, ditch ? 9f : 14f, SaltStream + 2);
-                core[i] = halfW * open * Smooth(ditch ? 0.42f : 0.2f, ditch ? 0.62f : 0.45f, thread) * (0.75f + 0.5f * WorldNoise(w, 3f, SaltStream + 3));
+                core[i] = halfW * open * Smooth(ditch ? 0.48f : 0.32f, ditch ? 0.66f : 0.55f, thread) * (0.75f + 0.5f * WorldNoise(w, 3f, SaltStream + 3));
             }
             Strip(into, pts, normals, bed, bed, BedY, BankSurf);
             Strip(into, pts, normals, shelf, shelf, StreamIceY, IceSurf);
