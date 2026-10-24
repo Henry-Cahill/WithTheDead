@@ -126,7 +126,7 @@ namespace CloneZ
         #endregion
 
         #region Drifts
-        private const float DriftStep = 1.1f;   // metres between a drift's cross-sections
+        private const float DriftStep = 1.3f;   // metres between a drift's cross-sections
         private static float[] s_T = new float[64], s_H = new float[64], s_D = new float[64];
 
         // Grows the scratch arrays to hold n stations.
@@ -228,6 +228,10 @@ namespace CloneZ
                     float spread = len * 0.5f + depth * 1.3f + 0.5f;
                     float clear = plan.RoadClearance(mid, spread + 8f);
                     bool roads = clear < spread + 0.3f, walks = clear < spread + 7f;
+                    // A storefront's wall along the sidewalk: shovelled from end to end.
+                    if (walks && plan.OnSidewalk(a + dir * 0.6f + outward * (depth * 0.5f), 0.2f) && plan.OnSidewalk(b - dir * 0.6f + outward * (depth * 0.5f), 0.2f)
+                        && plan.OnSidewalk((a + b) * 0.5f + outward * (depth * 0.5f), 0.2f))
+                        continue;
                     plan.BuildingsNear(mid, spread + 1f, near);
                     // A neighbour's walls, or the building's own round a corner of anything but a box.
                     bool squeezed = near.Count > 1 || (near.Count == 1 && near[0] != f) || p.Count > 4;
@@ -255,8 +259,8 @@ namespace CloneZ
                         s_D[k] = d;
                     }
                     Bank(m, a, dir, outward, n, snow);
+                    if (site.StepDue) yield return "wall drifts";
                 }
-                if (site.StepDue) yield return "wall drifts";
             }
         }
 

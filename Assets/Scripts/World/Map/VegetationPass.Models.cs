@@ -250,11 +250,12 @@ namespace CloneZ
             }
             Form f = FormOf(kind);
             float crownBase = h * R(rng, f.BaseMin, f.BaseMax);
-            float crownR = h * f.Spread * R(rng, 0.75f, 0.95f);
+            float crownR = h * f.Spread * R(rng, 0.7f, 0.9f);
             Color bark = V(f.Bark, rng, 0.05f);
-            Color haze = Color.Lerp(bark, f.Pale ? PaleBark : new Color(0.50f, 0.47f, 0.43f), f.Pale ? 0.45f : 0.3f);
+            // Bare twigs seen from afar: a grey-brown haze, lighter than the bark (a sycamore's paler still).
+            Color haze = Color.Lerp(bark, f.Pale ? PaleBark : new Color(0.60f, 0.57f, 0.54f), f.Pale ? 0.6f : 0.55f);
             m.Cylinder(Vector3.zero, Mathf.Max(0.12f, h * f.Girth), crownBase + (h - crownBase) * 0.3f, 4, M(bark), Quaternion.identity, 0.6f, false);
-            m.Ellipsoid(new Vector3(0f, (crownBase + h) * 0.5f, 0f), new Vector3(crownR * 2f, (h - crownBase) * 0.95f, crownR * 2f),
+            m.Ellipsoid(new Vector3(0f, (crownBase + h) * 0.5f, 0f), new Vector3(crownR * 2f, (h - crownBase) * 0.9f, crownR * 2f),
                 Quaternion.Euler(0f, R(rng, 0f, 90f), 0f), M(haze), 6, 3);
         }
 

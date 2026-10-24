@@ -429,16 +429,39 @@ namespace CloneZ
             return true;
         }
 
-        /// <summary>True when <paramref name="p"/> is on the nearest street's sidewalk (from the back of its kerb to the
-        /// sidewalk's outer edge, as the roads drew them), or within <paramref name="margin"/> of it.</summary>
+        /// <summary>True when <paramref name="p"/> is on a sidewalk as the roads drew it (from the back of a street's kerb to
+        /// its sidewalk's outer edge, on either side of any street within reach), or within <paramref name="margin"/> of
+        /// one.</summary>
         public bool OnSidewalk(Vector2 p, float margin)
         {
-            if (!NearestRoad(p, 15f, 1, out RoadSeg seg, out float dist, out Vector2 foot)) return false;
-            Street st = StreetOf(seg);
-            Vector2 d = seg.B - seg.A;
-            int side = d.x * (p.y - foot.y) - d.y * (p.x - foot.x) >= 0f ? 1 : -1;
-            float outer = RoadPass.SidewalkOuter(st, side);
-            return outer > 0f && dist > RoadPass.KerbOffset(st, side) - margin && dist < outer + margin;
+            const float within = 16f;
+            _roadTick++;
+            _roadCells.Range(p, within, out int x0, out int z0, out int x1, out int z1);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    List<int> cell = _roadCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int k = 0; k < cell.Count; k++)
+                    {
+                        int i = cell[k];
+                        if (_roadSeen[i] == _roadTick) continue;
+                        _roadSeen[i] = _roadTick;
+                        RoadSeg r = _roads[i];
+                        if (r.Foot) continue;
+                        Vector2 ab = r.B - r.A;
+                        float t = Vector2.Dot(p - r.A, ab) / ab.sqrMagnitude;
+                        if (t < -0.02f || t > 1.02f) continue;   // past the piece's end: its neighbour's, or the junction's
+                        Vector2 q = r.A + ab * Mathf.Clamp01(t);
+                        float dist = Vector2.Distance(p, q);
+                        if (dist > within) continue;
+                        Street st = Site.Area.Streets[r.Street];
+                        int side = ab.x * (p.y - q.y) - ab.y * (p.x - q.x) >= 0f ? 1 : -1;
+                        float outer = RoadPass.SidewalkOuter(st, side);
+                        if (outer > 0f && dist > RoadPass.KerbOffset(st, side) - margin && dist < outer + margin) return true;
+                    }
+                }
+            return false;
         }
         #endregion
 
