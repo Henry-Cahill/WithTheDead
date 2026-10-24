@@ -54,6 +54,22 @@ namespace CloneZ
             Far = new OutdoorBatches(Scenery, 60f, info.HalfSize + 60f);
         }
 
+        /// <summary>One piece of a streamed map: its overhead and scenery roots go under
+        /// <paramref name="overheadParent"/> (the map's one overhead root, which carries the
+        /// <see cref="CeilingVisibility"/>), so they unload with the piece.</summary>
+        public RaidTown(Transform world, int seed, RaidMapInfo info, Transform overheadParent)
+        {
+            Rng = new System.Random(seed);
+            World = world;
+            Info = info;
+            Overhead = new GameObject("Overhead").transform;
+            Overhead.SetParent(overheadParent, false);
+            Scenery = new GameObject("Scenery").transform;
+            Scenery.SetParent(overheadParent, false);
+            Out = new OutdoorBatches(world, 35f, info.HalfSize + 2f);
+            Far = new OutdoorBatches(Scenery, 60f, info.HalfSize + 60f);
+        }
+
         /// <summary>Records a warning message to be reported later.</summary>
     public void Warn(string message) => _warnings.Add(message);
         /// <summary>Read‑only list of warning messages recorded during town build.</summary>

@@ -170,6 +170,7 @@ namespace CloneZ
             into.Add(new InteractAction("Change channel", Retune).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", _turnUpDelegate).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Turn it down", _turnDownDelegate).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
             into.Add(new InteractAction(_highGain ? "Lower antenna" : "Boost antenna", _toggleAntennaDelegate).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Next transmission", NextTransmission).DisabledIf(!near, TooFar));

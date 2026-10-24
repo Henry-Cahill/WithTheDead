@@ -72,14 +72,35 @@ areas.
 
 A zone with a `RealPlace` (in [ZoneCatalog.cs](../../Assets/Scripts/Zone/ZoneCatalog.cs)) is built by
 [KentuckyMap](../../Assets/Scripts/World/Map/KentuckyMap.cs) from the current build instead of the procedural town:
-the 400 m square around the place's centre, with the streets and buildings where they really are. The first is
-**Bardstown, Kentucky**. Buildings get a door on the side facing the street, windows, floors and loot to suit their use;
-past the edge, the town carries on as scenery. If the store can't be read, the raid falls back to the procedural town
-and the log says why.
+the 400 m square around the place's centre, with the streets and buildings where they really are. Buildings get a door
+on the side facing the street, windows, floors and loot to suit their use; past the edge, the town carries on as
+scenery. If the store can't be read, the raid falls back to the procedural town and the log says why.
+
+The game's one non-tutorial zone, **Kentucky**, is the whole state (`RealStatewide`). The raid starts in Bardstown: its
+400 m square is built at once and holds the raid's exits, landing zones and the zone's landmarks, and from there
+[KentuckyStreamer](../../Assets/Scripts/World/Map/KentuckyStreamer.cs) builds the rest of Kentucky around the survivor
+as they walk or drive, in 128 m pieces (64 to a region), with the same builders:
+
+* Regions are read and sorted by piece off the main thread
+  ([MapRegionIndex](../../Assets/Scripts/World/Map/MapRegionIndex.cs)), a few regions ahead of the survivor; each
+  piece is built a few passes a frame, nearest first, and the pieces more than three away are let go of. A building
+  belongs to the piece that holds the middle of its outline and is built whole there.
+* The NavMesh is baked around the survivors in the background as they move; the arena square that zombie spawns, the
+  A-Life and the map's clamps work in (`CloneZConfig.ArenaCenter`) follows them, and the build's regions are the edge of
+  the world. The dead left far behind go quietly and come back around the survivors. In co-op, pieces are built around
+  every survivor, and the NavMesh (so the dead and the Zone's people) covers them while they're within about 1.6 km of
+  each other; past that it stays with the host's survivor.
+* A piece's containers roll their own loot from the raid's seed and their place (outside the Central Economy's caps,
+  which are tuned for one map), so every machine rolls the same; a piece that's let go of and built again keeps what was
+  taken from them (for the last thousand or so pieces left behind).
+* World coordinates stay metres from Bardstown's centre, so camps, cars and map marks saved in the zone keep their
+  places. Floats keep a few millimetres' precision out to about 100 km from Bardstown, which a raid's night of driving
+  doesn't reach; the far ends of the state (Paducah, Pikeville) are 250–360 km away, where movement and rendering get
+  coarse — re-centring the world as the survivor travels (with the saves converted) would be the next step.
 
 The game reads the store at `\\192.168.1.170\CLONE-Z` on Windows and `/mnt/clonez` elsewhere. Set the `CLONEZ_WORLD`
 environment variable to use a copy somewhere else (for a build to share outside the LAN, copy `world/current.json`,
-the current build's `manifest.json` and `places.json`, and the regions it needs).
+the current build's `manifest.json` and `places.json`, and the regions it needs — for the whole state, all of them).
 
 Places are only as complete as OpenStreetMap: a town where few buildings are mapped looks sparse. The night shift's
 `map` focus works on the builder's code (`Assets/Scripts/World/Map/`), not on the data.

@@ -138,11 +138,12 @@ namespace CloneZ
         private bool TryFindSpawnPoint(out Vector3 pos)
         {
             float half = CloneZConfig.ArenaHalfSize;
+            Vector3 centre = CloneZConfig.ArenaCenter;
             float minSqr = CloneZConfig.SpawnMinPlayerDistance * CloneZConfig.SpawnMinPlayerDistance;
             for (int i = 0; i < 24; i++)
             {
                 // A random point anywhere in the box, not a ring around the player.
-                var candidate = new Vector3(Random.Range(-half, half), 0f, Random.Range(-half, half));
+                var candidate = new Vector3(centre.x + Random.Range(-half, half), 0f, centre.z + Random.Range(-half, half));
                 // Never pop a zombie right on top of the survivor.
                 if (Player != null && (candidate - Player.position).sqrMagnitude < minSqr) continue;
                 if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 4f, NavMesh.AllAreas) && hit.position.y < MaxSpawnHeight)
@@ -177,6 +178,7 @@ namespace CloneZ
                 if (ExtractionManager.Instance != null && ExtractionManager.Instance.RaidOver) continue;
 
                 _alive.RemoveWhere(s_Gone);
+                if (KentuckyStreamer.Active != null) LetGoOfStragglers();
                 int missing = Mathf.Max(0, AmbientPopulation) - _alive.Count - _respawnDue.Count;
                 for (int i = 0; i < missing; i++)
                     _respawnDue.Add(Time.time + Random.Range(AmbientRespawnMinDelay, AmbientRespawnMaxDelay));
@@ -198,17 +200,72 @@ namespace CloneZ
             return true;
         }
 
+        // On the streamed Kentucky map the arena square follows the survivors across the state; the dead left well behind
+        // every one of them (where the map is let go of, out of sight) go quietly, and the top-up books their replacements
+        // around the survivors again.
+        private const float StragglerMargin = 48f;
+        private readonly List<ZombieHealth> _stragglers = new List<ZombieHealth>();
+        private readonly List<Vector3> _survivors = new List<Vector3>(4);
+
+        // Where the survivors are: the arena's own centre (the local one's) first, then every other player's.
+        private void GatherSurvivors()
+        {
+            _survivors.Clear();
+            _survivors.Add(CloneZConfig.ArenaCenter);
+            for (int i = 0; i < Actor.All.Count; i++)
+            {
+                Actor a = Actor.All[i];
+                if (a != null && a.IsPlayerControlled && a != Actor.LocalPlayer) _survivors.Add(a.transform.position);
+            }
+        }
+
+        private void LetGoOfStragglers()
+        {
+            GatherSurvivors();
+            float reach = CloneZConfig.ArenaHalfSize + StragglerMargin;
+            _stragglers.Clear();
+            foreach (ZombieHealth z in _alive)
+            {
+                if (z == null) continue;
+                Vector3 p = z.transform.position;
+                bool near = false;
+                for (int i = 0; i < _survivors.Count && !near; i++)
+                    near = Mathf.Abs(p.x - _survivors[i].x) <= reach && Mathf.Abs(p.z - _survivors[i].z) <= reach;
+                if (!near) _stragglers.Add(z);
+            }
+            for (int i = 0; i < _stragglers.Count; i++)
+            {
+                ZombieHealth z = _stragglers[i];
+                _alive.Remove(z);
+                z.OnDeath -= HandleZombieDeath;
+                Destroy(z.gameObject);
+            }
+        }
+
         // A random ground-level navmesh point anywhere on the map, at least minDistance (flat) from the
-        // survivor and, when asked, with something solid between it and their eyes.
+        // survivor and, when asked, with something solid between it and their eyes. On the streamed map the
+        // point is around a survivor picked at random, kept off (and out of sight of) the nearest one.
         private bool TryFindAmbientPoint(float minDistance, bool hiddenFromPlayer, out Vector3 pos)
         {
             float half = Mathf.Max(1f, CloneZConfig.ArenaHalfSize - 1f);
+            bool streamed = KentuckyStreamer.Active != null;
+            Vector3 centre = CloneZConfig.ArenaCenter;
+            if (streamed)
+            {
+                GatherSurvivors();
+                centre = _survivors[Random.Range(0, _survivors.Count)];
+            }
             float minSqr = minDistance * minDistance;
             bool hasPlayer = Player != null;
             Vector3 player = hasPlayer ? Player.position : Vector3.zero;
             for (int i = 0; i < 30; i++)
             {
-                var candidate = new Vector3(Random.Range(-half, half), 0f, Random.Range(-half, half));
+                var candidate = new Vector3(centre.x + Random.Range(-half, half), 0f, centre.z + Random.Range(-half, half));
+                if (streamed && hasPlayer)
+                {
+                    Actor nearest = HumanUtil.NearestPlayer(candidate, out float _);
+                    if (nearest != null) player = nearest.transform.position;
+                }
                 if (hasPlayer && FlatSqr(candidate - player) < minSqr) continue;
                 if (!NavMesh.SamplePosition(candidate, out NavMeshHit hit, 4f, NavMesh.AllAreas)) continue;
                 if (hit.position.y >= MaxSpawnHeight) continue;

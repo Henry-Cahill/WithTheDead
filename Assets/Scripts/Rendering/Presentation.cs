@@ -27,7 +27,6 @@ namespace CloneZ
         private UniversalAdditionalCameraData _cachedData;
         // Cached singleton lookups
         private GameSettings _settingsCache;
-        private Actor _playerCache;
         // Caching previous frame values to reduce redundant post-processing updates
         private float _lastBrightness;
         private bool _lastMotionBlur;
@@ -83,7 +82,7 @@ namespace CloneZ
                 }
             }
             if (_cachedData != null && !_cachedData.renderPostProcessing) _cachedData.renderPostProcessing = true;
-            Actor me = _playerCache ??= Actor.LocalPlayer;
+            Actor me = Actor.LocalPlayer;
             if (me != _for)
             {
                 _for = me;
@@ -399,7 +398,6 @@ namespace CloneZ
         // Cached singleton lookups
         private GameSettings _settingsCache;
         private Actor _playerCache;
-        private TimeOfDay _todCache;
 
         public static DiegeticWatch Create(PlayerStats p)
         {
@@ -435,10 +433,10 @@ UIKit.Place(buckle.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5
         private void Update()
         {
             if (Time.time > _check) { _check = Time.time + 1f; _wearing = _inv != null && _inv.Has("watch_wrist"); }
-            bool show = _wearing && _settingsCache?.Hud == HudMode.Diegetic && UIScreen.Current == null;
+            bool show = _wearing && (_settingsCache ??= GameSettings.Current).Hud == HudMode.Diegetic && UIScreen.Current == null;
             _canvas.enabled = show;
             if (!show) return;
-            TimeOfDay t = _todCache ??= TimeOfDay.Instance;
+            TimeOfDay t = TimeOfDay.Instance;
             if (t != null)
             {
                 int h = Mathf.FloorToInt(t.Hour), m = Mathf.FloorToInt((t.Hour - h) * 60f);

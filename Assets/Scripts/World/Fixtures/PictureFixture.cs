@@ -112,6 +112,7 @@ namespace CloneZ
             into.Add(new InteractAction(_lookLabel, Look));
             into.Add(new InteractAction("Tilt the picture", Tilt));
             into.Add(new InteractAction("Inspect the picture", Inspect));
+            if (IsCrooked) into.Add(new InteractAction(_straightenLabel, Straighten));
             if (!_secured) into.Add(new InteractAction("Secure the picture", Secure));
         }
 
@@ -140,6 +141,17 @@ namespace CloneZ
             }
         }
 
+        private void Straighten(InteractContext ctx)
+        {
+            _roll = 0f;
+            ctx.Notify("You nudge the frame level. Better.");
+            if (_calming && Time.time >= _calmAgainAt)
+            {
+                LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);
+                _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
+            }
+        }
+
         private void Secure(InteractContext ctx)
         {
             _secured = true;
@@ -154,6 +166,7 @@ namespace CloneZ
 public override void CaptureState(FixtureSave save)
         {
             save.State = 1;
+            save.A = _roll;
             if (_secured) save.State |= 2; // reserve bit 1 for secured flag
             save.B = _secured ? 1 : 0; // store as int (0/1)
         }
@@ -161,6 +174,7 @@ public override void CaptureState(FixtureSave save)
         public override void RestoreState(FixtureSave save)
         {
             if ((save.State & 1) == 0) return;
+            _roll = _shownRoll = Mathf.Clamp(save.A, -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
             if ((save.State & 2) != 0) _secured = save.B != 0;
             Apply();
         }

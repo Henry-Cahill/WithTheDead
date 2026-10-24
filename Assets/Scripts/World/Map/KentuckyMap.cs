@@ -28,9 +28,11 @@ namespace CloneZ
         public static string LastStats { get; private set; } = "";
 
         /// <summary>Builds the map for <paramref name="zone"/> under <paramref name="world"/>, or returns null with the
-        /// reason in <paramref name="why"/>, having built nothing.</summary>
+        /// reason in <paramref name="why"/>, having built nothing. A statewide zone (<see cref="ZoneDef.RealStatewide"/>)
+        /// gets the whole state, streamed around the survivor (see <see cref="BuildStatewide"/>).</summary>
         public static RaidMapInfo Build(Transform world, ZoneDef zone, out string why)
         {
+            if (zone.RealStatewide) return BuildStatewide(world, zone, out why);
             MapBuild build = WorldStore.OpenCurrent(out why);
             if (build == null) return null;
             float half = Mathf.Clamp(zone.RealHalfSize, 60f, 400f);
@@ -57,20 +59,7 @@ namespace CloneZ
             var site = new Site(town, area);
             try
             {
-                BuildGround(site);
-                BuildWaterAndLots(site);
-                BuildStreets(site, build);
-                BuildSidewalks(site);
-                BuildLines(site);
-                BuildBuildings(site, build);
-                BuildingFacadeBuilder.BuildAll(site, build);
-
-
-
-                BuildStreetLights(site);
-                BuildParkedCars(site);
-                BuildTrees(site);
-                BuildPoints(site);
+                foreach (string _ in Passes(site, build)) { }
                 DefineExits(site);
                 PickSpawn(site);
                 site.Overhead.Emit("Overhead", town.Overhead, true);
@@ -91,6 +80,43 @@ namespace CloneZ
             return info;
         }
 
+        /// <summary>Everything the map draws on a site, in order, one pass at a time (a streamed piece is built a few
+        /// passes a frame; the fixed square runs them all at once).</summary>
+        internal static IEnumerable<string> Passes(Site site, MapBuild build)
+        {
+            BuildGround(site);
+            yield return "ground";
+            BuildWaterAndLots(site);
+            yield return "water and lots";
+            BuildStreets(site, build);
+            yield return "streets";
+            BuildSidewalks(site);
+            yield return "sidewalks";
+            BuildLines(site);
+            yield return "lines";
+            foreach (string step in BuildBuildings(site, build)) yield return step;
+            BuildingFacadeBuilder.BuildAll(site, build);
+            yield return "facades";
+            BuildStreetLights(site);
+            yield return "street lights";
+            BuildStreetLamps(site);
+            yield return "street lamps";
+            BuildSignposts(site);
+            yield return "signposts";
+            BuildMarkedStreetLamps(site, build);
+            yield return "marked street lamps";
+            BuildHydrants(site);
+            yield return "hydrants";
+            BuildSnowPiles(site);
+            yield return "snow piles";
+            BuildParkedCars(site);
+            yield return "parked cars";
+            BuildTrees(site);
+            yield return "trees";
+            BuildPoints(site);
+            yield return "points";
+        }
+
         // A failed build mustn't leave half a town for the NavMesh bake or the procedural map to land on.
         private static void Discard(Transform world, RaidTown town)
         {
@@ -102,34 +128,42 @@ namespace CloneZ
 
         internal static Vector3 To3(Vector2 p, float y) => new Vector3(p.x, y, p.y);
 
-        // Added thin snow layer for roofs and streets
+        // Concrete sidewalks under a thin layer of snow along both sides of every street, drawn like the roads: inside
+        // the playable square with the outdoor ground, past the edge as scenery where the road carries on.
         private static void BuildSidewalks(Site site)
         {
+            float half = site.Half;
+            var square = Rect.MinMaxRect(-half, -half, half, half);
             foreach (Street s in site.Area.Streets)
             {
-                for (int i = 0; i + 1 < s.Pts.Count; i++)
+                if (s.Data.tunnel) continue;
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square)) Sidewalks(site.Town.Out, s, piece);
+                if (!site.Chunked && Rank(s.Data.kind) >= 2)
+                    foreach (List<Vector2> piece in OutsidePieces(s.Pts, half)) Sidewalks(site.Town.Far, s, piece);
+            }
+        }
+
+        private static void Sidewalks(OutdoorBatches into, Street s, List<Vector2> pts)
+        {
+            float halfRoad = Mathf.Clamp(s.Data.width, 1.2f, 30f) * 0.5f;
+            for (int i = 0; i + 1 < pts.Count; i++)
+            {
+                Vector2 a = pts[i];
+                Vector2 b = pts[i + 1];
+                Vector2 dir = (b - a).normalized;
+                Vector2 normal = new Vector2(-dir.y, dir.x);
+                float length = Vector2.Distance(a, b);
+                Vector2 mid = (a + b) * 0.5f;
+                float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;   // the boxes' length runs along the street
+                Vector3 size = new Vector3(length, 0.04f, SidewalkWidth);
+                Vector3 snowSize = new Vector3(length, SnowDepth, SidewalkWidth);
+                for (int side = -1; side <= 1; side += 2)
                 {
-                    Vector2 a = s.Pts[i];
-                    Vector2 b = s.Pts[i + 1];
-                    Vector2 dir = (b - a).normalized;
-                    Vector2 normal = new Vector2(-dir.y, dir.x);
-                    float halfRoad = s.Data.width * 0.5f;
-                    float length = Vector2.Distance(a, b);
-                    Vector2 mid = (a + b) * 0.5f;
-                    float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;   // the boxes' length runs along the street
-                    // left sidewalk box
-                    Vector2 leftMid = mid + normal * (halfRoad + SidewalkWidth * 0.5f);
-                    Vector3 leftCenter = new Vector3(leftMid.x, StreetY + 0.01f, leftMid.y);
-                    Vector3 size = new Vector3(length, 0.04f, SidewalkWidth);
-                    site.Overhead.At(leftMid).Box(leftCenter, size, yaw, DecorMaterials.Concrete);
-                    // thin snow overlay on left sidewalk
-                    site.Overhead.At(leftMid).Box(new Vector3(leftMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, leftMid.y), new Vector3(length, SnowDepth, SidewalkWidth), yaw, DecorMaterials.Snow);
-                    // right sidewalk box
-                    Vector2 rightMid = mid - normal * (halfRoad + SidewalkWidth * 0.5f);
-                    Vector3 rightCenter = new Vector3(rightMid.x, StreetY + 0.01f, rightMid.y);
-                    site.Overhead.At(rightMid).Box(rightCenter, size, yaw, DecorMaterials.Concrete);
-                    // thin snow overlay on right sidewalk
-                    site.Overhead.At(rightMid).Box(new Vector3(rightMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, rightMid.y), new Vector3(length, SnowDepth, SidewalkWidth), yaw, DecorMaterials.Snow);
+                    Vector2 at = mid + normal * ((halfRoad + SidewalkWidth * 0.5f) * side);
+                    RaidMesh m = into.Flat(To3(at, 0f));
+                    m.Box(To3(at, StreetY + 0.01f), size, yaw, DecorMaterials.Concrete);
+                    // thin snow overlay on the sidewalk
+                    m.Box(To3(at, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f), snowSize, yaw, DecorMaterials.Snow);
                 }
             }
         }
@@ -161,15 +195,20 @@ private static void BuildSnow(Site site)
         #region Exits and spawn
         // Where streets leave the playable square: the best-ranked street on each side becomes an exit (two at least;
         // a side without a street gets one through the snow).
-        private static void DefineExits(Site site)
+        private static void DefineExits(Site site) => DefineExits(site.Area, site.Half, site.Town.Info);
+
+        /// <summary>The exits where <paramref name="area"/>'s streets cross the square of half-side
+        /// <paramref name="half"/> around its middle (read from the data alone, so a streamed map can place them before
+        /// the ground they stand on is built).</summary>
+        internal static void DefineExits(Area area, float half, RaidMapInfo info)
         {
-            float edge = site.Half - 3f;
+            float edge = half - 3f;
             var square = Rect.MinMaxRect(-edge, -edge, edge, edge);
             var best = new float[4];
             var at = new Vector2[4];
             var names = new string[4];
             for (int i = 0; i < 4; i++) best[i] = float.MinValue;
-            foreach (Street s in site.Area.Streets)
+            foreach (Street s in area.Streets)
             {
                 int rank = Rank(s.Data.kind);
                 if (rank <= 0 || s.Data.tunnel) continue;
@@ -199,12 +238,12 @@ private static void BuildSnow(Site site)
                     at[side] = SideMiddle(side, edge);
                     names[side] = null;
                 }
-                site.Town.Info.Exits.Add(new RaidExit
+                info.Exits.Add(new RaidExit
                 {
                     Name = names[side] != null ? names[side] + " (" + SideName(side) + ")" : "Snowfield (" + SideName(side) + ")",
                     Position = To3(at[side], 0f), Radius = 4.5f, ExtractSeconds = 8f, Side = side,
-                    Hint = names[side] != null ? "Where " + names[side] + " leaves " + site.Area.Place
-                        : "Across the snow, " + SideName(side) + " edge of " + site.Area.Place,
+                    Hint = names[side] != null ? "Where " + names[side] + " leaves " + area.Place
+                        : "Across the snow, " + SideName(side) + " edge of " + area.Place,
                 });
             }
         }
@@ -260,11 +299,16 @@ private static void BuildSnow(Site site)
 
         // The survivor starts on the sidewalk of the street nearest the place's centre, facing along it.
         private static void PickSpawn(RaidTown town, Site site, out Vector2 spot, out float yaw)
+            => PickSpawn(site.Area, site.Half, p => site.FreeBeside(p, 0.6f), out spot, out yaw);
+
+        /// <summary>The sidewalk spot nearest the middle of <paramref name="area"/> (at least 5 m inside the square of
+        /// half-side <paramref name="half"/>) that <paramref name="free"/> finds clear, facing along its street.</summary>
+        internal static void PickSpawn(Area area, float half, System.Func<Vector2, bool> free, out Vector2 spot, out float yaw)
         {
             spot = Vector2.zero;
             yaw = 0f;
             float bestDist = float.MaxValue;
-            foreach (Street s in site.Area.Streets)
+            foreach (Street s in area.Streets)
             {
                 if (Rank(s.Data.kind) < 2 || s.Data.tunnel) continue;
                 for (int i = 0; i + 1 < s.Pts.Count; i++)
@@ -276,8 +320,8 @@ private static void BuildSnow(Site site)
                     Vector2 d = ab.normalized;
                     Vector2 p = a + ab * t + new Vector2(-d.y, d.x) * (s.Data.width * 0.5f + 1.2f);
                     float dist = p.magnitude;
-                    if (dist >= bestDist || Mathf.Abs(p.x) > site.Half - 5f || Mathf.Abs(p.y) > site.Half - 5f
-                        || !site.Free(p, 0.6f)) continue;
+                    if (dist >= bestDist || Mathf.Abs(p.x) > half - 5f || Mathf.Abs(p.y) > half - 5f
+                        || !free(p)) continue;
                     bestDist = dist;
                     spot = p;
                     yaw = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;
@@ -318,6 +362,9 @@ private static void BuildSnow(Site site)
             public readonly Vector2 Middle;
             public readonly Rect Bounds;
             public readonly float Size;
+            /// <summary>A streamed map piece builds this building whole and playable even where its outline reaches past
+            /// the piece's edge (each building has exactly one owning piece).</summary>
+            public bool Owned;
 
             public Footprint(MapBuilding data, List<Vector2> pts)
             {
@@ -335,9 +382,10 @@ private static void BuildSnow(Site site)
                 Bounds = Rect.MinMaxRect(x0, z0, x1, z1);
             }
 
-            /// <summary>True when the whole footprint is inside the playable square (less a margin).</summary>
-            public bool Inside(float half, float margin) => Bounds.xMin > -half + margin && Bounds.xMax < half - margin
-                && Bounds.yMin > -half + margin && Bounds.yMax < half - margin;
+            /// <summary>True when the whole footprint is inside the playable square (less a margin), or the building is
+            /// <see cref="Owned"/> by a streamed piece.</summary>
+            public bool Inside(float half, float margin) => Owned || (Bounds.xMin > -half + margin && Bounds.xMax < half - margin
+                && Bounds.yMin > -half + margin && Bounds.yMax < half - margin);
         }
 
         /// <summary>A land-use area (water, parking, forest...).</summary>
@@ -358,7 +406,8 @@ private static void BuildSnow(Site site)
 
         /// <summary>Everything within reach of the place's centre, read from the build's regions and moved to raid-map
         /// coordinates. Streets, lines and areas are cut to their own region (the builder overlaps neighbours a little)
-        /// and to the reach, so nothing is drawn twice.</summary>
+        /// and to the reach, so nothing is drawn twice. A streamed map piece's area holds exactly its own square
+        /// (see the chunk constructor).</summary>
         internal sealed class Area
         {
             public readonly string Place, BuildId, Attribution;
@@ -366,19 +415,27 @@ private static void BuildSnow(Site site)
             internal readonly List<Street> Streets = new List<Street>();
             internal readonly List<Line> Lines = new List<Line>();
             internal readonly List<Footprint> Buildings = new List<Footprint>();
+            /// <summary>A streamed piece's neighbours' buildings that reach into it: kept clear, never built here.</summary>
+            internal readonly List<Footprint> Foreign = new List<Footprint>();
             internal readonly List<Patch> Areas = new List<Patch>();
             internal readonly List<Spot> Points = new List<Spot>();
 
             public Area(MapBuild build, MapPlace place, float half)
+                : this(build, place, half, half + SceneryReach, build.RegionsAround) { }
+
+            /// <summary>The square of half-side <paramref name="half"/> around <paramref name="place"/>, with everything
+            /// out to <paramref name="reach"/>, from the regions <paramref name="regionsAround"/> returns for a grid point
+            /// and a half-side.</summary>
+            public Area(MapBuild build, MapPlace place, float half, float reach,
+                System.Func<double, double, double, List<MapRegion>> regionsAround)
             {
                 Place = place.name;
                 BuildId = build.Id;
                 Attribution = build.Attribution;
                 Half = half;
-                float reach = half + SceneryReach;
                 var near = Rect.MinMaxRect(-reach, -reach, reach, reach);
                 int size = build.RegionSize;
-                foreach (MapRegion r in build.RegionsAround(place.x, place.z, reach))
+                foreach (MapRegion r in regionsAround(place.x, place.z, reach))
                 {
                     double ox = (double)r.rx * size - place.x, oz = (double)r.rz * size - place.z;
                     var own = Rect.MinMaxRect((float)ox, (float)oz, (float)(ox + size), (float)(oz + size));
@@ -415,6 +472,55 @@ private static void BuildSnow(Site site)
                 }
             }
 
+            /// <summary>One piece (chunk) of a streamed map: the square of chunk (<paramref name="cx"/>,
+            /// <paramref name="cz"/>) in <paramref name="region"/>, in metres from the square's middle. Its streets, lines
+            /// and areas are cut to the square, so neighbouring pieces meet without overlapping; it holds the buildings it
+            /// owns whole (see <see cref="MapRegionIndex"/>) and, as <see cref="Foreign"/>, the outlines of its
+            /// neighbours' buildings that reach into it. Safe off the main thread.</summary>
+            public Area(string place, string buildId, string attribution, MapRegionIndex region, int cx, int cz)
+            {
+                Place = place;
+                BuildId = buildId;
+                Attribution = attribution;
+                float chunk = region.ChunkSize;
+                Half = chunk * 0.5f;
+                if (region.Data == null) return;
+                var near = Rect.MinMaxRect(-Half, -Half, Half, Half);
+                double ox = (double)region.Rx * region.Size - (cx + 0.5) * chunk;
+                double oz = (double)region.Rz * region.Size - (cz + 0.5) * chunk;
+                var own = Rect.MinMaxRect((float)ox, (float)oz, (float)(ox + region.Size), (float)(oz + region.Size));
+                MapRegion r = region.Data;
+                MapRegionIndex.Bucket bucket = region.Get(cx, cz);
+                foreach (int i in bucket.Streets)
+                    foreach (List<Vector2> mine in MapGeometry.ClipLine(ToLocal(r.streets[i].pts, ox, oz), own))
+                        foreach (List<Vector2> piece in MapGeometry.ClipLine(mine, near))
+                            Streets.Add(new Street(r.streets[i], piece));
+                foreach (int i in bucket.Lines)
+                    foreach (List<Vector2> mine in MapGeometry.ClipLine(ToLocal(r.lines[i].pts, ox, oz), own))
+                        foreach (List<Vector2> piece in MapGeometry.ClipLine(mine, near))
+                            Lines.Add(new Line(r.lines[i], piece));
+                foreach (int i in bucket.Owned)
+                {
+                    List<Vector2> pts = ToLocal(r.buildings[i].pts, ox, oz);
+                    if (pts.Count >= 3) Buildings.Add(new Footprint(r.buildings[i], pts) { Owned = true });
+                }
+                foreach (int i in bucket.Foreign)
+                {
+                    List<Vector2> pts = ToLocal(r.buildings[i].pts, ox, oz);
+                    if (pts.Count >= 3) Foreign.Add(new Footprint(r.buildings[i], pts));
+                }
+                foreach (int i in bucket.Areas)
+                {
+                    List<Vector2> pts = MapGeometry.ClipPolygon(MapGeometry.ClipPolygon(ToLocal(r.areas[i].pts, ox, oz), own), near);
+                    if (pts.Count >= 3) Areas.Add(new Patch(r.areas[i], pts));
+                }
+                foreach (int i in bucket.Pois)
+                {
+                    MapPoi p = r.pois[i];
+                    Points.Add(new Spot(p, new Vector2((float)(ox + p.x * 0.1), (float)(oz + p.z * 0.1))));
+                }
+            }
+
             private static List<Vector2> ToLocal(int[] pts, double ox, double oz)
             {
                 var list = new List<Vector2>(pts != null ? pts.Length / 2 : 0);
@@ -431,6 +537,12 @@ private static void BuildSnow(Site site)
             public readonly RaidTown Town;
             internal readonly Area Area;
             public readonly float Half;
+            /// <summary>A piece (chunk) of a streamed map: no scenery past its edge, its owned buildings built whole.</summary>
+            public readonly bool Chunked;
+            /// <summary>Where the site's middle ends up in the world. The site is built at the origin (so the builders'
+            /// local and world positions agree) and its roots are moved here afterwards; anything registered in world
+            /// space while it's built (the shelters) is moved by this.</summary>
+            public readonly Vector3 WorldOffset;
             internal readonly ChunkedMesh Overhead = new ChunkedMesh(40f);
             public readonly Transform Loot;
             public int Buildings, SceneryBuildings, Containers, Trees;
@@ -438,28 +550,49 @@ private static void BuildSnow(Site site)
             private const float Cell = 1f;
             private readonly int _n;
             private readonly bool[] _taken;
+            // The roads' bands, kept apart from _taken so roadside props can test the roads exactly (FreeBeside).
+            private readonly bool[] _road;
+            private readonly List<(List<Vector2> pts, float half, Rect bounds)> _roads = new List<(List<Vector2>, float, Rect)>();
 
-            public Site(RaidTown town, Area area)
+            public Site(RaidTown town, Area area) : this(town, area, false, Vector3.zero) { }
+
+            public Site(RaidTown town, Area area, bool chunked, Vector3 worldOffset)
             {
                 Town = town;
                 Area = area;
                 Half = area.Half;
+                Chunked = chunked;
+                WorldOffset = worldOffset;
                 _n = Mathf.CeilToInt(Half * 2f / Cell) + 1;
                 _taken = new bool[_n * _n];
+                _road = new bool[_n * _n];
                 Loot = new GameObject("Loot").transform;
                 Loot.SetParent(town.World, false);
+                foreach (Footprint f in area.Foreign) Take(f.Bounds);
+            }
+
+            /// <summary>This site's share of the fixed 400 m square the map's per-map limits were tuned for.</summary>
+            public float AreaShare => Half * Half / (200f * 200f);
+
+            /// <summary>A box in site coordinates, in the world.</summary>
+            public Bounds ToWorld(Bounds b)
+            {
+                b.center += WorldOffset;
+                return b;
             }
 
             private int Index(float v) => Mathf.FloorToInt((v + Half) / Cell);
 
             /// <summary>Marks a disc as taken.</summary>
-            public void Take(Vector2 p, float radius)
+            public void Take(Vector2 p, float radius) => Mark(_taken, p, radius);
+
+            private void Mark(bool[] grid, Vector2 p, float radius)
             {
                 int r = Mathf.CeilToInt(radius / Cell);
                 int cx = Index(p.x), cz = Index(p.y);
                 for (int z = cz - r; z <= cz + r; z++)
                     for (int x = cx - r; x <= cx + r; x++)
-                        if (x >= 0 && z >= 0 && x < _n && z < _n) _taken[z * _n + x] = true;
+                        if (x >= 0 && z >= 0 && x < _n && z < _n) grid[z * _n + x] = true;
             }
 
             /// <summary>Marks a rectangle (world XZ) as taken.</summary>
@@ -471,25 +604,67 @@ private static void BuildSnow(Site site)
             }
 
             /// <summary>Marks a band along a line as taken.</summary>
-            public void TakeLine(List<Vector2> pts, float radius)
+            public void TakeLine(List<Vector2> pts, float radius) => MarkLine(_taken, pts, radius);
+
+            /// <summary>Marks a road whose surface reaches <paramref name="half"/> either side of its line: for
+            /// <see cref="Free"/> as a band <paramref name="margin"/> wider (which the coarse grid rounds out to a metre
+            /// or two past the kerb), for <see cref="FreeBeside"/> exactly.</summary>
+            public void TakeRoad(List<Vector2> pts, float half, float margin)
+            {
+                MarkLine(_road, pts, half + margin);
+                if (pts.Count < 2) return;
+                float x0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, z1 = float.MinValue;
+                foreach (Vector2 p in pts)
+                {
+                    x0 = Mathf.Min(x0, p.x); z0 = Mathf.Min(z0, p.y);
+                    x1 = Mathf.Max(x1, p.x); z1 = Mathf.Max(z1, p.y);
+                }
+                _roads.Add((pts, half, Rect.MinMaxRect(x0 - half, z0 - half, x1 + half, z1 + half)));
+            }
+
+            private void MarkLine(bool[] grid, List<Vector2> pts, float radius)
             {
                 for (int i = 0; i + 1 < pts.Count; i++)
                 {
                     float len = Vector2.Distance(pts[i], pts[i + 1]);
                     int steps = Mathf.Max(1, Mathf.CeilToInt(len / (Cell * 0.5f)));
-                    for (int k = 0; k <= steps; k++) Take(Vector2.Lerp(pts[i], pts[i + 1], k / (float)steps), radius);
+                    for (int k = 0; k <= steps; k++) Mark(grid, Vector2.Lerp(pts[i], pts[i + 1], k / (float)steps), radius);
                 }
             }
 
             /// <summary>True when the disc is inside the playable square and nothing stands there yet.</summary>
-            public bool Free(Vector2 p, float radius)
+            public bool Free(Vector2 p, float radius) => Clear(p, radius, true);
+
+            /// <summary>For things that stand at the roadside (street lights, lamps, hydrants, snow piles): true when the
+            /// disc is inside the playable square, clear of everything else standing and clear of every road's surface,
+            /// tested exactly. (<see cref="Free"/> tests the roads by their coarse bands, which reach a metre or two past
+            /// the kerb, so it never finds a spot at the roadside.)</summary>
+            public bool FreeBeside(Vector2 p, float radius)
+            {
+                if (!Clear(p, radius, false)) return false;
+                foreach ((List<Vector2> pts, float half, Rect bounds) in _roads)
+                {
+                    if (p.x < bounds.xMin - radius || p.x > bounds.xMax + radius || p.y < bounds.yMin - radius
+                        || p.y > bounds.yMax + radius) continue;
+                    float reach = half + radius;
+                    for (int i = 0; i + 1 < pts.Count; i++)
+                    {
+                        Vector2 a = pts[i], ab = pts[i + 1] - a;
+                        float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
+                        if ((a + ab * t - p).sqrMagnitude < reach * reach) return false;
+                    }
+                }
+                return true;
+            }
+
+            private bool Clear(Vector2 p, float radius, bool roads)
             {
                 if (Mathf.Abs(p.x) > Half - radius || Mathf.Abs(p.y) > Half - radius) return false;
                 int r = Mathf.CeilToInt(radius / Cell);
                 int cx = Index(p.x), cz = Index(p.y);
                 for (int z = cz - r; z <= cz + r; z++)
                     for (int x = cx - r; x <= cx + r; x++)
-                        if (x >= 0 && z >= 0 && x < _n && z < _n && _taken[z * _n + x]) return false;
+                        if (x >= 0 && z >= 0 && x < _n && z < _n && (_taken[z * _n + x] || (roads && _road[z * _n + x]))) return false;
                 return true;
             }
         }

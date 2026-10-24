@@ -71,7 +71,10 @@ namespace CloneZ
             if (onEdge) into.Add(new InteractAction("Get up off the cot", c => c.Seat.Stand()));
             else into.Add(new InteractAction("Sit on the cot", SitOnEdge).DisabledIf(seat == null, "You can't sit down now"));
             into.Add(new InteractAction("Look under the cot", LookUnder).Timed(1.6f, "Looking under the cot", HumanoidActivity.Search));
-            into.Add(new InteractAction("Lean against the cot", LeanAgainst).DisabledIf(seat != null, "You are already seated"));
+            into.Add(new InteractAction("Lean against the cot", LeanAgainst).DisabledIf(seat != null && seat.IsSeated, "You are already seated"));
+            if (!_secured)
+                into.Add(new InteractAction("Secure the cot", SecureCot)
+                    .DisabledIf(seat != null && seat.IsSeated, "You can't secure it while seated"));
         }
 
         private InteractAction RestAction()
@@ -104,7 +107,8 @@ namespace CloneZ
             float side = me.z < 0f ? -1f : 1f;
             var local = new Vector3(Mathf.Clamp(me.x, -0.6f, 0.7f), CloneZConfig.RaidCotSeatHeight, side * 0.26f);
             float yaw = _yaw + (side < 0f ? 180f : 0f);
-            if (!ctx.Seat.TrySit(this, _body.position + q * local, yaw, CloneZConfig.RaidCotComfort, out string reason))
+            float comfort = CloneZConfig.RaidCotComfort + (_secured ? SecuredComfortBonus : 0f);
+            if (!ctx.Seat.TrySit(this, _body.position + q * local, yaw, comfort, out string reason))
                 ctx.Notify(reason);
         }
 
@@ -117,6 +121,13 @@ namespace CloneZ
         {
             ctx.Notify(Underneath[_looked % Underneath.Length]);
             _looked++;
+        }
+
+        private void SecureCot(InteractContext ctx)
+        {
+            _secured = true;
+            ctx.Notify("You tie the cot down with a piece of rope. It feels steadier now.");
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
         }
 
     }

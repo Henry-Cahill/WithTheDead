@@ -10,13 +10,15 @@ SHAPES (all centred on "pos"):
 rot = Euler degrees [x, y, z] about the part's own centre (applied Z, then X, then Y).
 color = RGB 0..1. smooth = 0..1 gloss (cloth 0.05, wood 0.15, plastic 0.4, polished metal 0.6). metal = 0..1 (1 for bare metal).
 
-POSE: the item lies dropped on the floor, resting on y = 0, centred on x/z.
-- Long things (tools, weapons, guns, planks, pipes) lie on their side with the longest axis along X; heads, guards and stocks stick out along Z or Y as they would in reality.
+POSE: the item lies dropped on the floor, resting on y = 0, centred on x/z. The same model is also put in a character's hand, so long things keep one orientation:
+- Tools, melee weapons and other long things (planks, pipes) lie on their side with the longest axis along X: handle or grip at -X, business end (head, blade, spike, tines) at +X. Heads, guards and claws stick out along Z or Y as they would in reality.
+- Guns lie flat on their left side, so Y is only their thickness: muzzle at +X, stock or grip end at -X, the top of the gun (sights, slide, rib, scope) towards +Z, grip, trigger guard and magazine hanging towards -Z, right side facing up.
 - Garments are laid out flat and spread like a product photo, 2-5 cm thick, with a recognisable outline: bodice and skirt flare for dresses, two legs for trousers, sleeves and collar for shirts and jackets, brim and crown for hats, sole and upper for shoes.
+- Pairs (shoes, boots, gloves, socks) are both pieces lying side by side.
 - Containers, bottles, cans, jars and boxes stand upright.
 - Small loose things (ammo, pills, screws, seeds) are shown as their box, packet or a small pile.
 
-STYLE: chunky, readable silhouette first; then 2-3 layers of detail (seams, trims, handles, labels, rivets, buttons, folds, straps). Use the item's tint as the main colour unless the name clearly implies other materials (wood, steel, leather, glass). Materials named in the id or name (tarp, hide, denim, leather, garbage bags) decide the colour and texture. Parts must touch or overlap - never leave anything floating. Use 10-40 parts.
+STYLE: chunky, readable silhouette first; then 2-3 layers of detail (seams, trims, handles, labels, rivets, buttons, folds, straps). Use the item's tint as the main colour unless the name clearly implies other materials (wood, steel, leather, glass). Materials named in the id or name (tarp, hide, denim, leather, garbage bags) decide the colour and texture. The parts of one object must touch or overlap - never leave anything floating; separate pieces (the two shoes of a pair, a small pile) each rest on the floor. Use 10-40 parts.
 
 Write "notes" first: one or two sentences naming the components and the overall dimensions you will build. Then "parts". Give every part a short name.
 
@@ -54,3 +56,21 @@ EXAMPLE 3 - "T-Shirt" (tint 0.2,0.35,0.7), laid flat, neck towards +X:
 {"name":"NeckHole","shape":"cylinder","pos":[0.255,0.022,0],"rot":[0,0,0],"size":[0.13,0.036,0.13],"color":[0.12,0.2,0.42],"smooth":0.05,"metal":0},
 {"name":"Hem","shape":"cube","pos":[-0.27,0.016,0],"rot":[0,0,0],"size":[0.03,0.032,0.46],"color":[0.16,0.28,0.56],"smooth":0.05,"metal":0},
 {"name":"Fold","shape":"cube","pos":[-0.02,0.031,0],"rot":[0,0,0],"size":[0.4,0.004,0.012],"color":[0.17,0.3,0.6],"smooth":0.05,"metal":0}]}
+
+EXAMPLE 4 - "Pistol" (tint 0.2,0.2,0.22), lying on its left side, muzzle at +X, top of the gun towards +Z:
+{"notes":"Semi-automatic pistol 0.21 m long x 0.15 m tall and 3 cm thick, lying on its left side: slide on top (+Z) with sights, barrel and bore at the +X muzzle, frame, raked grip and magazine base hanging towards -Z, trigger guard, and the ejection port and serrations on the upward-facing right side.","parts":[
+{"name":"Slide","shape":"cube","pos":[0,0.016,0.046],"rot":[0,0,0],"size":[0.2,0.03,0.032],"color":[0.2,0.2,0.22],"smooth":0.45,"metal":0.8},
+{"name":"Frame","shape":"cube","pos":[0.012,0.016,0.019],"rot":[0,0,0],"size":[0.17,0.026,0.022],"color":[0.14,0.14,0.15],"smooth":0.35,"metal":0.6},
+{"name":"Barrel","shape":"cylinder","pos":[0.104,0.016,0.052],"rot":[0,0,90],"size":[0.014,0.012,0.014],"color":[0.42,0.44,0.48],"smooth":0.6,"metal":0.9},
+{"name":"Bore","shape":"cylinder","pos":[0.111,0.016,0.052],"rot":[0,0,90],"size":[0.007,0.004,0.007],"color":[0.05,0.05,0.05],"smooth":0.3,"metal":0.4},
+{"name":"Grip","shape":"cube","pos":[-0.07,0.016,-0.03],"rot":[0,15,0],"size":[0.034,0.028,0.09],"color":[0.12,0.12,0.13],"smooth":0.35,"metal":0},
+{"name":"GripPanel","shape":"cube","pos":[-0.07,0.03,-0.03],"rot":[0,15,0],"size":[0.026,0.004,0.07],"color":[0.2,0.19,0.18],"smooth":0.25,"metal":0},
+{"name":"MagBase","shape":"cube","pos":[-0.082,0.016,-0.077],"rot":[0,15,0],"size":[0.038,0.03,0.008],"color":[0.1,0.1,0.11],"smooth":0.4,"metal":0.6},
+{"name":"GuardBottom","shape":"cube","pos":[-0.016,0.016,-0.012],"rot":[0,0,0],"size":[0.046,0.01,0.006],"color":[0.14,0.14,0.15],"smooth":0.35,"metal":0.6},
+{"name":"GuardFront","shape":"cube","pos":[0.005,0.016,-0.001],"rot":[0,0,0],"size":[0.006,0.01,0.022],"color":[0.14,0.14,0.15],"smooth":0.35,"metal":0.6},
+{"name":"Trigger","shape":"cube","pos":[-0.014,0.016,-0.001],"rot":[0,-12,0],"size":[0.006,0.008,0.018],"color":[0.1,0.1,0.11],"smooth":0.4,"metal":0.7},
+{"name":"FrontSight","shape":"cube","pos":[0.09,0.016,0.065],"rot":[0,0,0],"size":[0.006,0.008,0.008],"color":[0.2,0.2,0.22],"smooth":0.45,"metal":0.8},
+{"name":"RearSight","shape":"cube","pos":[-0.09,0.016,0.066],"rot":[0,0,0],"size":[0.012,0.016,0.01],"color":[0.2,0.2,0.22],"smooth":0.45,"metal":0.8},
+{"name":"EjectionPort","shape":"cube","pos":[0.025,0.031,0.047],"rot":[0,0,0],"size":[0.04,0.002,0.016],"color":[0.06,0.06,0.07],"smooth":0.3,"metal":0.4},
+{"name":"Serrations","shape":"cube","pos":[-0.072,0.031,0.046],"rot":[0,0,0],"size":[0.032,0.002,0.026],"color":[0.13,0.13,0.14],"smooth":0.3,"metal":0.6},
+{"name":"Hammer","shape":"cube","pos":[-0.104,0.016,0.04],"rot":[0,-20,0],"size":[0.01,0.012,0.018],"color":[0.42,0.44,0.48],"smooth":0.6,"metal":0.9}]}

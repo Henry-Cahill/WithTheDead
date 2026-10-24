@@ -17,6 +17,7 @@ SHAPES = ("cube", "sphere", "cylinder")
 HOVER = 0.06          # clearance under the model; matches the renderer's 0.06 m bob amplitude
 MIN_SIZE = 0.002
 MAX_SIZE = 3.0
+MIN_PIECE = 0.4       # a separate piece on the floor this big (vs the main body) is an object of its own
 
 
 # ── Sanitising ────────────────────────────────────────────────────────────────────────────────
@@ -50,7 +51,7 @@ def sanitize(raw_parts):
             shape = "cylinder" if "cyl" in shape else "sphere" if "sph" in shape or "ball" in shape else "cube"
         size = [min(MAX_SIZE, max(MIN_SIZE, abs(s))) for s in _vec(p.get("size"), (0.05, 0.05, 0.05))]
         color = _vec(p.get("color"), (0.5, 0.5, 0.5))
-        if max(color) > 1.0:  # someone wrote 0..255
+        if max(color) > 1.5:  # written as 0..255; a slight overshoot of 1.0 is just clamped below
             color = [c / 255.0 for c in color]
         parts.append({
             "name": str(p.get("name", ""))[:40],
@@ -106,8 +107,9 @@ def check(parts, min_parts=4, max_extent=2.5):
     if ext.max() < 0.015:
         issues.append(f"Model is only {ext.max() * 100:.1f} cm across; check units are metres.")
 
-    # Connectivity: parts whose boxes (slightly inflated) touch belong together. Anything outside the
-    # main cluster is floating in mid-air and will look broken in game.
+    # Connectivity: parts whose boxes (slightly inflated) touch belong together. A piece outside the main
+    # cluster is fine if it is an object of its own lying on the floor beside it (the other shoe of a pair,
+    # loose rounds by their box, the next book of a set); anything else is floating and looks broken.
     tol = 0.005 + 0.03 * float(ext.max())
     boxes = [part_aabb(p) for p in parts]
     parent = list(range(len(parts)))
@@ -129,7 +131,22 @@ def check(parts, min_parts=4, max_extent=2.5):
     for i in range(len(parts)):
         groups.setdefault(find(i), []).append(i)
     main = max(groups.values(), key=len)
-    floating = [parts[i]["name"] or f"part {i}" for g in groups.values() if g is not main for i in g]
+
+    def span(group):
+        g_lo = np.min([boxes[i][0] for i in group], axis=0)
+        g_hi = np.max([boxes[i][1] for i in group], axis=0)
+        return g_lo, g_hi
+
+    m_lo, m_hi = span(main)
+    main_size = float((m_hi - m_lo).max())
+    floating = []
+    for g in groups.values():
+        if g is main:
+            continue
+        g_lo, g_hi = span(g)
+        if g_lo[1] - lo[1] <= tol and float((g_hi - g_lo).max()) >= MIN_PIECE * main_size:
+            continue
+        floating += [parts[i]["name"] or f"part {i}" for i in g]
     if floating and len(floating) > max(1, 0.1 * len(parts)):
         issues.append("These parts float apart from the main body and must touch it: " + ", ".join(floating[:12]))
     return issues
@@ -246,6 +263,10 @@ def render(parts, size=320, yaw=35.0, pitch=35.0, bg=(46, 48, 54)):
     nc = n @ cam
 
     flat = c.reshape(-1, 3)
+    # Centre the projected silhouette; the projected centre of the world box is not its middle, and
+    # framing on it cut long diagonal models off at the image edge.
+    c = c - (flat.min(axis=0) + flat.max(axis=0)) / 2
+    flat = c.reshape(-1, 3)
     span = max(np.ptp(flat[:, 0]), np.ptp(flat[:, 1]), 1e-3)
     scale = w * 0.84 / span
     order = np.argsort(-c[:, :, 2].mean(axis=1))  # far to near
@@ -255,7 +276,9 @@ def render(parts, size=320, yaw=35.0, pitch=35.0, bg=(46, 48, 54)):
         if nc[i, 2] > 0.0:  # facing away from the camera
             continue
         pts = [(w / 2 + x * scale, w / 2 - y * scale) for x, y, _ in c[i]]
-        rgb = np.clip(cols[i] ** (1 / 2.2) * shade[i] * 255, 0, 255).astype(int)
+        # Part colours are display (sRGB) values, as the game's materials take them in its linear
+        # colour space, so they are shaded directly rather than gamma-brightened.
+        rgb = np.clip(cols[i] * shade[i] * 255, 0, 255).astype(int)
         draw.polygon(pts, fill=tuple(int(k) for k in rgb))
     return img.resize((size, size), Image.LANCZOS)
 

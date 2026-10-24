@@ -299,6 +299,7 @@ namespace CloneZ
 // When mains are off and water is standing, allow emptying the sink.
         if (!WaterMains.MainsOn && _level > 0.05f)
             into.Add(new InteractAction("Empty the sink", EmptySink));
+            into.Add(new InteractAction("Check water level", ShowWaterLevel));
             // New action to read kitchen notes
             into.Add(new InteractAction("Read kitchen notes", ctx => {
                 var note = KitchenNotes[UnityEngine.Random.Range(0, KitchenNotes.Length)];

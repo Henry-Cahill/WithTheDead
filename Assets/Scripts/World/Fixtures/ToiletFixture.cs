@@ -212,6 +212,7 @@ namespace CloneZ
             into.Add(new InteractAction(_cisternOff ? "Put the cistern lid back" : "Lift the cistern lid", c => SetCisternLid(c, !_cisternOff)));
             if (!_cisternOff) return;
             WaterUse.AddDrinkAndFill(ctx, this, into);
+            into.Add(new InteractAction("Look into the cistern", LookIn));
             // Allow the survivor to toggle the house water mains from the toilet.
             if (WaterMains.Instance != null)
             {

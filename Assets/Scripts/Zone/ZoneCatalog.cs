@@ -33,8 +33,13 @@ namespace CloneZ
         /// <summary>A real place in Kentucky to build the map from instead of the procedural town (a name from the world
         /// store's places, e.g. "Bardstown"; see <see cref="KentuckyMap"/>), or null for the procedural town.</summary>
         public string RealPlace;
-        /// <summary>Half the side of the playable square around <see cref="RealPlace"/>, in metres.</summary>
+        /// <summary>Half the side of the playable square around <see cref="RealPlace"/>, in metres. On a statewide map,
+        /// the start square (its exits and the zone's overlays) and the size of the arena square that follows the
+        /// survivor.</summary>
         public float RealHalfSize = 200f;
+        /// <summary>The map is the whole state: the raid starts at <see cref="RealPlace"/> and the rest of Kentucky is
+        /// built around the survivor as they travel (see <see cref="KentuckyStreamer"/>).</summary>
+        public bool RealStatewide;
     }
 
     /// <summary>
@@ -68,13 +73,15 @@ namespace CloneZ
             },
             new ZoneDef
             {
-                Id = "bardstown", Name = "Bardstown, Kentucky", Depth = 1, MinLevel = 1, LayoutSeed = 1780,
-                RealPlace = "Bardstown", RealHalfSize = 200f,
-                Blurb = "The real streets of Bardstown, Kentucky, snowed in and emptied. The town is still being built. "
-                    + "Map data © OpenStreetMap contributors.",
-                Rule = "Every street is where it really is; learn the town like a local.",
+                // The id predates the statewide map; it stays so the camps, cars and map marks saved here keep their zone.
+                Id = "bardstown", Name = "Kentucky", Depth = 1, MinLevel = 1, LayoutSeed = 1780,
+                RealPlace = "Bardstown", RealHalfSize = 200f, RealStatewide = true,
+                Blurb = "All of Kentucky, snowed in and emptied: every real street, road and building in the state, from "
+                    + "Paducah to Pikeville. The raid sets down in Bardstown and its exits are there; the rest of the state is "
+                    + "yours to cross. Map data © OpenStreetMap contributors.",
+                Rule = "Every street is where it really is; learn the state like a local.",
                 LootMultiplier = 1f, AnomalyDensity = 0.7f, ArtifactRichness = 0.7f, ZombieDensity = 1f, MutantShare = 0.12f,
-                HumanSquads = 2f, Radiation = 0f, FogDensity = 0.25f, HasCordon = true, StartHour = 22f,
+                HumanSquads = 2f, Radiation = 0f, FogDensity = 0.25f, HasCordon = false, StartHour = 22f,
                 Anomalies = new[] { "sinkhole", "embermoss", "staticbloom", "greysyrup" },
                 Artifacts = new[] { "art_hollowstone", "art_coldspark", "art_mosscalm", "art_greywax", "art_saltlung" },
                 Mutants = new[] { "hound" }, Wildlife = new[] { "deer", "wolf" },

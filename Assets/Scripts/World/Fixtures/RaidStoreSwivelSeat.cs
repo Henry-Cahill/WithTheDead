@@ -167,16 +167,18 @@ namespace CloneZ
                 // sinusoidal swing
                 _rockOffset = Mathf.Sin(_rockTimer * RockSpeed * Mathf.PI * 2f) * RockAmplitude;
                 Turn(); // apply new offset this frame
-                // small calm boost while rocking
-                LivingFixtures.Calm(c, CloneZConfig.RaidSwivelSpinCalm * 0.5f);
+                // a little calm while rocking: a spin's worth over the whole rock, whatever the frame rate
+                LivingFixtures.Calm(c, CloneZConfig.RaidSwivelSpinCalm * dt / RockDuration);
             };
             a.Stopped = c =>
             {
+                if (!_rocking) return;
                 _rocking = false;
                 _rockOffset = 0f;
                 Turn(); // reset rotation
                 c.Notify("You stop rocking the chair, feeling a little steadier.");
             };
+            a.Run = a.Stopped; // the bar filled: Stopped only comes when the rocking is cut short
             return a;
         }
 

@@ -269,6 +269,12 @@ else if (kb.qKey.wasPressedThisFrame)
                 if (_ui.IsOpen) _ui.Close();
                 else _ui.OpenInventoryOnly();
             }
+            else if (kb.rKey.wasPressedThisFrame)
+            {
+                // "R" = rummage nearest container when not busy and not already focused on a container.
+                if (!IsBusy && _focus != FocusKind.Container)
+                    AutoSearchNearestContainer();
+            }
             else if (kb.fKey.wasPressedThisFrame)
             {
                 // F inspects the focused ground item without picking it up.

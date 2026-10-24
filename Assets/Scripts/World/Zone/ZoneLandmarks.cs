@@ -85,6 +85,7 @@ namespace CloneZ
         private static void CrashedHelicopter(SiteBuilder sb)
         {
             System.Random r = sb.Rng;
+            sb.Flat.FlatBlob(new Vector3(0f, 0.02f, 0f), 6f, 4.5f, 0f, 0.4f, r, ZoneKit.M(Scorch));
             // Rust‑tinted metal colour for wreck details
             Color rustMetal = new Color(0.5f, 0.3f, 0.1f);
 
@@ -102,20 +103,18 @@ namespace CloneZ
                     float y = ZoneKit.R(r, 0.2f, 2.0f);
                     float z = ZoneKit.R(r, -3.5f, 3.5f);
                     m.Box(new Vector3(0.35f, y, z), new Vector3(0.02f, 0.04f, 0.02f), ZoneKit.Mt(new Color(0.5f, 0.3f, 0.1f)));
-                    // Rotor hub – 0.2 m tall, 0.07 m radius, centred on the existing support
-                    m.Cylinder(new Vector3(0.6f, 1.5f, -5.6f), 0.2f, 0.07f, 8, ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
-                    // Broken prop‑blade – thin rectangular plate, slightly twisted
-                    m.Box(new Vector3(0.6f, 1.6f, -5.6f), new Vector3(4.0f, 0.04f, 0.2f), Quaternion.Euler(0f, 0f, 12f), ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
-
-                    // Fuel nozzle – small cylinder protruding from the side
-                    Vector3 nozzlePos = new Vector3(0.7f, 1.2f, -5.0f) + new Vector3(ZoneKit.R(r, -0.02f, 0.02f), ZoneKit.R(r, -0.01f, 0.01f), 0f);
-                    m.CylinderX(nozzlePos, 0.02f, 0.12f, 8, ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
-                    // Torn canvas tarp – 1.8 m × 0.02 m × 1.2 m, semi‑transparent grey
-                    Vector3 tarpPos = new Vector3(-0.4f, 2.0f, -2.5f) + new Vector3(ZoneKit.R(r, -0.05f, 0.05f), 0f, ZoneKit.R(r, -0.05f, 0.05f));
-                    // Torn canvas tarp – 1.8 m × 0.02 m × 1.2 m, semi‑transparent grey
-                    m.Box(tarpPos, new Vector3(1.8f, 0.02f, 1.2f), Quaternion.Euler(0f, ZoneKit.R(r, -10f, 10f), 0f), ZoneKit.M(new Color(0.45f, 0.44f, 0.43f, 0.6f)));
-
                 }
+                // Rotor hub – 0.2 m tall, 0.07 m radius, centred on the existing support
+                m.Cylinder(new Vector3(0.6f, 1.5f, -5.6f), 0.2f, 0.07f, 8, ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
+                // Broken prop‑blade – thin rectangular plate, slightly twisted
+                m.Box(new Vector3(0.6f, 1.6f, -5.6f), new Vector3(4.0f, 0.04f, 0.2f), Quaternion.Euler(0f, 0f, 12f), ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
+
+                // Fuel nozzle – small cylinder protruding from the side
+                Vector3 nozzlePos = new Vector3(0.7f, 1.2f, -5.0f) + new Vector3(ZoneKit.R(r, -0.02f, 0.02f), ZoneKit.R(r, -0.01f, 0.01f), 0f);
+                m.CylinderX(nozzlePos, 0.02f, 0.12f, 8, ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
+                // Torn canvas tarp – 1.8 m × 0.02 m × 1.2 m, semi‑transparent grey
+                Vector3 tarpPos = new Vector3(-0.4f, 2.0f, -2.5f) + new Vector3(ZoneKit.R(r, -0.05f, 0.05f), 0f, ZoneKit.R(r, -0.05f, 0.05f));
+                m.Box(tarpPos, new Vector3(1.8f, 0.02f, 1.2f), Quaternion.Euler(0f, ZoneKit.R(r, -10f, 10f), 0f), ZoneKit.M(new Color(0.45f, 0.44f, 0.43f, 0.6f)));
                 // --- Cockpit glass pane with thin metal frame (visible from the front)
                 Vector3 glassCenter = new Vector3(0.35f, 2.2f, -4.8f) + new Vector3(ZoneKit.R(r, -0.05f, 0.05f), 0f, ZoneKit.R(r, -0.05f, 0.05f));
                 float glassWidth = 1.0f, glassHeight = 0.6f, glassDepth = 0.02f;
@@ -173,6 +172,7 @@ namespace CloneZ
             // Add faint engine fire and its subtle flame light
             ZoneKit.Fire(sb.Root, sb.W(0f, 1.3f, -5.2f), 0.4f);
             ZoneFlameLight.Spawn(sb.Root, sb.W(0f, 1.5f, -5.2f), new Color(1f, 0.5f, 0.2f), 2f, 0.5f, 0.2f);
+            ZoneKit.Fire(sb.Root, sb.W(-1.2f, 0.2f, -2.5f), 0.8f);
             ZoneFlameLight.Spawn(sb.Root, sb.W(-1.2f, 0.9f, -2.5f), new Color(1f, 0.5f, 0.2f), 11f, 2.2f, 0.6f);
             sb.Storage("Crash crate", "lm_crash_crate", new Vector3(3f, 0.5f, 1.5f), ContainerType.GunLocker, 5);
             sb.Storage("Medical case", "lm_crash_med", new Vector3(-3f, 0.5f, 2f), ContainerType.MedCabinet, 4);

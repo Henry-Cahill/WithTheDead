@@ -73,6 +73,7 @@ private bool _open;
             s._spout = spout;
             s._face = face;
             s._normal = normal;
+            s._key = KeyFor("outsidetap", point);
             s._notesRead = 0;
             return s;
         }
@@ -150,6 +151,7 @@ private bool _open;
                     c.Notify("You remember to shut the tap.");
                 }
             };
+            into.Add(coil);
             var readNote = new InteractAction("Read tap note", c =>
             {
                 int idx = _notesRead % _tapNotes.Length;

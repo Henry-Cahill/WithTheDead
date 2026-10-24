@@ -26,13 +26,19 @@ namespace CloneZ
                 if (c == null || c.Type == ContainerType.Corpse || c.IsSack) continue;
                 Vector3 p = c.transform.position;
                 int seed = raidSeed ^ (Mathf.RoundToInt(p.x * 37f) * 73856093) ^ (Mathf.RoundToInt(p.z * 37f) * 19349663) ^ (i * 83492791);
-                var rng = new System.Random(seed);
-                c.Contents = new Inventory(999f);
-                if (c.IsFixture && rng.NextDouble() < 0.25) { c.Searched = c.SearchTime <= 0f; continue; }
-                ItemDatabase.RollLoot(c.Type, rng, c.Contents);
-                if (c.IsFixture && c.Contents.Stacks.Count > 5) c.Contents.Stacks.RemoveRange(5, c.Contents.Stacks.Count - 5);
-                c.Searched = c.SearchTime <= 0f;
+                RollLoot(c, new System.Random(seed));
             }
+        }
+
+        /// <summary>Fills one map container afresh for this raid (a quarter of the fixtures come up bare).</summary>
+        public static void RollLoot(LootContainer c, System.Random rng)
+        {
+            if (c == null || c.Type == ContainerType.Corpse || c.IsSack) return;
+            c.Contents = new Inventory(999f);
+            if (c.IsFixture && rng.NextDouble() < 0.25) { c.Searched = c.SearchTime <= 0f; return; }
+            ItemDatabase.RollLoot(c.Type, rng, c.Contents);
+            if (c.IsFixture && c.Contents.Stacks.Count > 5) c.Contents.Stacks.RemoveRange(5, c.Contents.Stacks.Count - 5);
+            c.Searched = c.SearchTime <= 0f;
         }
 
         /// <summary>Opens two to four exits for this raid and gives some of them conditions.</summary>

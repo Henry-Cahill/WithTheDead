@@ -38,6 +38,22 @@ namespace CloneZ
             return m;
         }
 
+        private static readonly List<string> s_Gone = new List<string>();
+
+        /// <summary>Destroys the cached materials made from <paramref name="tex"/> (a texture being let go of).</summary>
+        internal static void Forget(Texture2D tex)
+        {
+            s_Gone.Clear();
+            foreach (KeyValuePair<string, Material> kv in s_Cache)
+                if (kv.Value == null || kv.Value.mainTexture == tex) s_Gone.Add(kv.Key);
+            foreach (string key in s_Gone)
+            {
+                Material m = s_Cache[key];
+                s_Cache.Remove(key);
+                if (m != null) Object.Destroy(m);
+            }
+        }
+
         /// <summary>A texture tiled in world metres (one repeat every <paramref name="metersPerRepeat"/>).</summary>
         public static Surf Planar(Texture2D tex, float metersPerRepeat, float smoothness = 0.15f, float metallic = 0f)
             => new Surf(Lit(tex, smoothness, metallic), Vector2.zero, 1f / Mathf.Max(0.01f, metersPerRepeat));

@@ -430,7 +430,7 @@ public void Drive(float throttle, float steer, bool brake, float dt)
                 Speed = 0f;
                 step = Vector3.zero;
             }
-            Vector3 next = transform.position + step;
+            Vector3 next = CloneZConfig.ClampToWorld(transform.position + step, 2f);
             next.y = GroundAt(next);
             _rb.MovePosition(next);
             _rb.MoveRotation(rot);

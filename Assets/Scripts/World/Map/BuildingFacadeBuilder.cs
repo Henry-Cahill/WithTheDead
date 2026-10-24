@@ -19,18 +19,28 @@ namespace CloneZ
         // Add thin snow on roofs, porch steps and fence posts where appropriate.
         private static void BuildFacade(KentuckyMap.Site site, KentuckyMap.Footprint fp, MapBuild build)
         {
+            if (fp.Pts.Count < 3 || fp.Size < 6f) return;
+            var square = Rect.MinMaxRect(-site.Half, -site.Half, site.Half, site.Half);
+            bool inside = fp.Inside(site.Half, 1f);
+            if (!inside && fp.Bounds.Overlaps(square)) return;
+
             long id = fp.Data.id;
-            // Use deterministic colour helper – currently the colour is applied elsewhere, but we call it to ensure the API is exercised.
-            var colour = build.GetBuildingColour(id);
-            // Roof snow – thin layer if the helper says so.
-            if (build.RoofHasSnow(id))
+            if (build.RoofHasSnow(id) && (!inside || fp.Data.kind != "ruin"))
             {
-                // Approximate roof height: use building height if present, otherwise 0.
-                float roofY = fp.Data.height > 0f ? fp.Data.height : 0f;
-                roofY += 0.02f * 0.5f; // Snow depth half‑height offset
-                var center = new Vector3(fp.Middle.x, roofY, fp.Middle.y);
-var size = new Vector3(fp.Bounds.width, 0.02f, fp.Bounds.height);
-                site.Overhead.At(fp.Middle).Box(center, size, DecorMaterials.Snow);
+                float roofY = inside && fp.Data.kind == "canopy" ? 4.2f : KentuckyMap.HeightOf(fp.Data);
+                float snowY = roofY + 0.011f;
+                RaidMesh roof = inside
+                    ? site.Overhead.At(new Vector3(fp.Middle.x, roofY, fp.Middle.y))
+                    : site.Town.Far.Solid(new Vector3(fp.Middle.x, roofY, fp.Middle.y));
+                var triangles = MapGeometry.Triangulate(fp.Pts);
+                for (int i = 0; i + 2 < triangles.Count; i += 3)
+                {
+                    Vector2 a = fp.Pts[triangles[i]];
+                    Vector2 b = fp.Pts[triangles[i + 1]];
+                    Vector2 c = fp.Pts[triangles[i + 2]];
+                    roof.Tri(new Vector3(a.x, snowY, a.y), new Vector3(b.x, snowY, b.y),
+                        new Vector3(c.x, snowY, c.y), DecorMaterials.Snow);
+                }
             }
 
             // Optional porch steps for residential buildings.
@@ -50,7 +60,8 @@ var doorPoint = (a + b) * 0.5f;
                     var porchSize = new Vector3(1.5f, 0.2f, 0.8f);
                     // Half a porch-depth out from the wall's midpoint, sitting on the ground.
                     var porchCenter = new Vector3(doorPoint.x + outward.x * 0.4f, 0.1f, doorPoint.y + outward.y * 0.4f);
-                    site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, 0f, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
+                    RaidMesh details = inside ? site.Town.Out.Solid(porchCenter) : site.Town.Far.Solid(porchCenter);
+                    details.Box(porchCenter, porchSize, 0f, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
                 }
             }
 
@@ -62,7 +73,8 @@ var doorPoint = (a + b) * 0.5f;
                 {
                     var postCenter = new Vector3(pt.x, 0.5f, pt.y);
                     var postSize = new Vector3(0.1f, 1f, 0.1f);
-                    site.Town.Out.Solid(postCenter).Box(postCenter, postSize, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
+                    RaidMesh details = inside ? site.Town.Out.Solid(postCenter) : site.Town.Far.Solid(postCenter);
+                    details.Box(postCenter, postSize, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
                 }
             }
         }

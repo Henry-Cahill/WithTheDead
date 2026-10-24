@@ -119,9 +119,10 @@ namespace CloneZ
                 Vector2 b = sampled[(i + 1) % sampled.Count];
                 float span = Vector2.Distance(a, b);
                 // If the gap is wide enough, place a gate instead of a simple top bar.
-                    // Wide driveway gap – build a gate panel and hang a period‑correct metal latch across it.
+                if (span >= GateMinSpan)
                 {
-                 Vector2 mid2D = (a + b) * 0.5f;
+                    // Wide driveway gap – build a gate panel and hang a period‑correct metal latch across it.
+                    Vector2 mid2D = (a + b) * 0.5f;
                     float yaw = -Mathf.Atan2(b.y - a.y, b.x - a.x) * Mathf.Rad2Deg;
                     Vector3 gateSize = new Vector3(span, PostSize.y, BarThickness.z);
                     Vector3 gateCentre = KentuckyMap.To3(mid2D, y + PostSize.y * 0.5f);
@@ -138,6 +139,8 @@ namespace CloneZ
                 Vector3 barSize = new Vector3(length, BarThickness.y, BarThickness.z);
                 float barYaw = -Mathf.Atan2(b.y - a.y, b.x - a.x) * Mathf.Rad2Deg;
                  Vector3 barCentre = KentuckyMap.To3(barMid2D, y + PostSize.y + BarThickness.y * 0.5f);
+                var barMesh = into.Solid(barCentre);
+                barMesh.Box(barCentre, barSize, barYaw, MetalSurf);
                 // add lower and upper horizontal rails for short‑span segments
                 AddRail(into, a, b, y, LowerRailHeight);
                 AddRail(into, a, b, y, UpperRailHeight);

@@ -275,6 +275,26 @@ namespace CloneZ
 
         private static long Key(int rx, int rz) => ((long)rx << 32) | (uint)rz;
 
+        /// <summary>True when the build has a region file at (<paramref name="rx"/>, <paramref name="rz"/>).</summary>
+        public bool HasRegion(int rx, int rz) => _regions.Contains(Key(rx, rz));
+
+        /// <summary>The grid rectangle (metres) the build's regions cover; false when it has none.</summary>
+        public bool TryGetExtent(out double x0, out double z0, out double x1, out double z1)
+        {
+            x0 = z0 = x1 = z1 = 0;
+            if (Manifest.regions == null || Manifest.regions.Length == 0) return false;
+            int rx0 = int.MaxValue, rz0 = int.MaxValue, rx1 = int.MinValue, rz1 = int.MinValue;
+            foreach (MapRegionEntry r in Manifest.regions)
+            {
+                rx0 = Math.Min(rx0, r.rx); rz0 = Math.Min(rz0, r.rz);
+                rx1 = Math.Max(rx1, r.rx); rz1 = Math.Max(rz1, r.rz);
+            }
+            int size = RegionSize;
+            x0 = (double)rx0 * size; z0 = (double)rz0 * size;
+            x1 = (double)(rx1 + 1) * size; z1 = (double)(rz1 + 1) * size;
+            return true;
+        }
+
         /// <summary>The most populous place called <paramref name="name"/> (any case), or null.</summary>
         public MapPlace FindPlace(string name)
         {

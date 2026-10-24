@@ -294,7 +294,7 @@ namespace CloneZ
         /// <summary>Turn all tower searchlights on or off.</summary>
         internal static void SetSearchlights(bool enabled)
         {
-            foreach (var sweep in UnityEngine.Object.FindObjectsOfType<SearchlightSweep>())
+            foreach (var sweep in UnityEngine.Object.FindObjectsByType<SearchlightSweep>())
             {
                 sweep.enabled = enabled;
                 var light = sweep.GetComponent<Light>();
@@ -365,7 +365,7 @@ namespace CloneZ
                 bool hasCrowbar = ctx.Inventory != null && ctx.Inventory.Has("crowbar");
                 into.Add(new InteractAction("Disable searchlights (requires crowbar)", c =>
                 {
-                    foreach (var sweep in UnityEngine.Object.FindObjectsOfType<SearchlightSweep>())
+                    foreach (var sweep in UnityEngine.Object.FindObjectsByType<SearchlightSweep>())
                     {
                         sweep.enabled = false;
                         var light = sweep.GetComponent<Light>();

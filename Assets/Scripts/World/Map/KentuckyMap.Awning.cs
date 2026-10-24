@@ -10,16 +10,16 @@ namespace CloneZ
 // Partial class to isolate awning and sign logic for retail‑type buildings.
     public static partial class KentuckyMap
     {
-        private static Color GetAwningColor(MapBuilding b)
+        // Brown stains for the awnings, picked by building: each new colour bakes a wood texture that's kept for the
+        // session, so a colour of its own per shop front grew without end on a streamed map (and seeding Unity's shared
+        // random here reseeded it mid-raid as the pieces are built).
+        private static readonly Color[] AwningStains =
         {
-            // deterministic hue shift based on building id hash
-            int seed = (int)b.id; // use id field
-            UnityEngine.Random.InitState(seed);
-            float hue = UnityEngine.Random.Range(0.07f, 0.12f); // brown range
-            float sat = UnityEngine.Random.Range(0.55f, 0.65f);
-            float val = UnityEngine.Random.Range(0.45f, 0.55f);
-            return UnityEngine.Color.HSVToRGB(hue, sat, val);
-        }
+            Color.HSVToRGB(0.075f, 0.62f, 0.47f), Color.HSVToRGB(0.09f, 0.58f, 0.52f),
+            Color.HSVToRGB(0.105f, 0.60f, 0.49f), Color.HSVToRGB(0.115f, 0.56f, 0.54f),
+        };
+
+        private static Color GetAwningColor(MapBuilding b) => AwningStains[(int)(Math.Abs(b.id) % AwningStains.Length)];
 
         private static Color GetBannerColor(MapBuilding b, System.Random rng)
         {
@@ -125,6 +125,14 @@ site.Town.Out.Solid(leftPos).Box(leftPos,
             float slatThickness = 0.02f;
             float slatDepth = awningDepth * 0.9f;
             float slatStartY = awningCenter.y - awningThickness * 0.5f + slatThickness * 0.5f;
+            for (int i = 0; i < slatCount; i++)
+            {
+                float y = slatStartY + i * (awningHeightAboveDoor / (slatCount + 1));
+                Vector3 slatCenter = new Vector3(awningCenter.x, y, awningCenter.z);
+                site.Overhead.At(slatCenter).Box(slatCenter,
+                    new Vector3(awningWidth * 0.95f, slatThickness, slatDepth),
+                    yaw, awningMat);
+            }
             // ----- metal corner brackets (period‑correct iron brackets) -----
             Surf metalMat = DecorPalette.Metal(new Color(0.45f, 0.45f, 0.48f));
             float halfW = awningWidth * 0.5f;
@@ -156,6 +164,21 @@ site.Town.Out.Solid(leftPos).Box(leftPos,
                 DecorMaterials.WoodFloor(new Color(0.48f, 0.38f, 0.28f)));
             site.Town.PropCollider(poleCenter,
                 new Vector3(poleSize, poleHeight, poleSize), 0f);
+            // Board sits on top of the pole, faces the street (same yaw as door)
+            Vector3 boardCenter = poleBase + new Vector3(0f, poleHeight + boardHeight * 0.5f, 0f);
+            site.Town.Out.Solid(boardCenter).Box(boardCenter,
+                new Vector3(boardWidth, boardHeight, boardDepth), yaw,
+                DecorPalette.Matte(new Color(0.90f, 0.84f, 0.70f)));
+            site.Town.PropCollider(boardCenter,
+                new Vector3(boardWidth, boardHeight, boardDepth), yaw);
+            // ----- painted sign area -----
+            Color paintCol = new Color(0.75f, 0.20f, 0.20f); // faded red
+            Vector3 paintCenter = boardCenter + new Vector3(0f, 0f, boardDepth * 0.51f);
+            site.Town.Out.Solid(paintCenter).Box(paintCenter,
+                new Vector3(boardWidth * 0.9f, boardHeight * 0.8f, 0.01f),
+                yaw, DecorPalette.Matte(paintCol));
+            site.Town.PropCollider(paintCenter,
+                new Vector3(boardWidth * 0.9f, boardHeight * 0.8f, 0.01f), yaw);
             // ----- tiny lantern hanging from the top of the pole -----
             Vector3 lanternPos = poleCenter + new Vector3(0f, poleHeight * 0.5f + LanternSize * 0.5f + 0.05f, 0f);
             Surf lanternMat = DecorPalette.Glow(new Color(1.00f, 0.85f, 0.60f)); // warm amber glow

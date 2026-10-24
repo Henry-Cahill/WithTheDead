@@ -1,16 +1,16 @@
-{"version": 1, "id": "MSR7T_Rifle", "baseHeight": 0.1464, "name": "MSR7 T Rifle", "model": "gpt-oss:120b", "notes": "MSR7‑T rifle ~0.92 m long, lying on its side (barrel +X). Main silhouette: tapered receiver with angular stock, short pistol‑grip, clear magazine well below the receiver, ejection port on the right, hand‑guard around the barrel, muzzle brake, front post sight and rear flip‑up sight. Proportions match a typical 4.5 kg tactical rifle – barrel ≈0.55 m, receiver ≈0.25 m, stock ≈0.22 m.", "score": 6, "parts": [
-  {"name":"Barrel","shape":"cylinder","pos":[0.2346,-0.0304,0.01],"rot":[0.0,0.0,90.0],"size":[0.04,0.55,0.04],"color":[0.12,0.13,0.14],"smooth":0.6,"metal":1.0},
-  {"name":"MuzzleBrake","shape":"cylinder","pos":[0.5146,-0.0304,0.01],"rot":[0.0,0.0,90.0],"size":[0.05,0.04,0.05],"color":[0.1,0.11,0.12],"smooth":0.6,"metal":1.0},
-  {"name":"Receiver","shape":"cube","pos":[-0.1654,-0.0104,0.01],"rot":[0.0,0.0,0.0],"size":[0.25,0.08,0.12],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
-  {"name":"HandGuard","shape":"cube","pos":[0.0846,0.0096,0.01],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.1],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
-  {"name":"Stock","shape":"cube","pos":[-0.4154,0.0096,0.01],"rot":[0.0,0.0,-15.0],"size":[0.22,0.1,0.12],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
-  {"name":"PistolGrip","shape":"cube","pos":[-0.2654,-0.0354,0.01],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.02],"color":[0.04,0.04,0.05],"smooth":0.3,"metal":0.0},
-  {"name":"MagazineWell","shape":"cube","pos":[-0.1654,-0.0684,-0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.02],"color":[0.08,0.09,0.1],"smooth":0.4,"metal":1.0},
-  {"name":"Magazine","shape":"cube","pos":[-0.1654,-0.0684,-0.06],"rot":[0.0,0.0,0.0],"size":[0.11,0.032,0.02],"color":[0.06,0.07,0.08],"smooth":0.4,"metal":1.0},
-  {"name":"EjectionPort","shape":"cube","pos":[-0.0654,0.0046,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.005],"color":[0.08,0.09,0.1],"smooth":0.55,"metal":1.0},
-  {"name":"FrontSightPost","shape":"cube","pos":[0.5146,-0.0054,0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.02],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
-  {"name":"RearSightFlip","shape":"cube","pos":[-0.3454,0.0396,0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.025],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
-  {"name":"TriggerGuard","shape":"cube","pos":[-0.0854,-0.0054,0.01],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.03],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
-  {"name":"Trigger","shape":"cube","pos":[-0.0804,0.0046,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.015],"color":[0.12,0.13,0.14],"smooth":0.6,"metal":1.0},
-  {"name":"GasBlock","shape":"cube","pos":[0.3346,-0.0054,0.01],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.04],"color":[0.1,0.11,0.12],"smooth":0.55,"metal":1.0}
+{"version": 1, "id": "MSR7T_Rifle", "baseHeight": 0.13, "name": "MSR7 T Rifle", "model": "gpt-oss:120b", "notes": "MSR7‑T rifle ~0.92 m long, lying on its side (barrel +X). Main silhouette: tapered receiver with angular stock, short pistol‑grip, clear magazine well below the receiver, ejection port on the right, hand‑guard around the barrel, muzzle brake, front post sight and rear flip‑up sight. Proportions match a typical 4.5 kg tactical rifle – barrel ≈0.55 m, receiver ≈0.25 m, stock ≈0.22 m.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.2346,-0.01,-0.0304],"rot":[90.0,-90.0,0.0],"size":[0.04,0.55,0.04],"color":[0.12,0.13,0.14],"smooth":0.6,"metal":1.0},
+  {"name":"MuzzleBrake","shape":"cylinder","pos":[0.5146,-0.01,-0.0304],"rot":[90.0,-90.0,0.0],"size":[0.05,0.04,0.05],"color":[0.1,0.11,0.12],"smooth":0.6,"metal":1.0},
+  {"name":"Receiver","shape":"cube","pos":[-0.1654,-0.01,-0.0104],"rot":[90.0,0.0,0.0],"size":[0.25,0.08,0.12],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
+  {"name":"HandGuard","shape":"cube","pos":[0.0846,-0.01,0.0096],"rot":[90.0,0.0,0.0],"size":[0.3,0.04,0.1],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
+  {"name":"Stock","shape":"cube","pos":[-0.4154,-0.01,0.0096],"rot":[90.0,15.0,0.0],"size":[0.22,0.1,0.12],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
+  {"name":"PistolGrip","shape":"cube","pos":[-0.2654,-0.01,-0.0354],"rot":[90.0,0.0,0.0],"size":[0.1,0.03,0.02],"color":[0.04,0.04,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"MagazineWell","shape":"cube","pos":[-0.1654,0.03,-0.0684],"rot":[90.0,0.0,0.0],"size":[0.12,0.036,0.02],"color":[0.08,0.09,0.1],"smooth":0.4,"metal":1.0},
+  {"name":"Magazine","shape":"cube","pos":[-0.1654,0.06,-0.0684],"rot":[90.0,0.0,0.0],"size":[0.11,0.032,0.02],"color":[0.06,0.07,0.08],"smooth":0.4,"metal":1.0},
+  {"name":"EjectionPort","shape":"cube","pos":[-0.0654,-0.06,0.0046],"rot":[90.0,0.0,0.0],"size":[0.04,0.02,0.005],"color":[0.08,0.09,0.1],"smooth":0.55,"metal":1.0},
+  {"name":"FrontSightPost","shape":"cube","pos":[0.5146,-0.01,-0.0054],"rot":[90.0,0.0,0.0],"size":[0.01,0.025,0.02],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
+  {"name":"RearSightFlip","shape":"cube","pos":[-0.3454,-0.01,0.0396],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.025],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[-0.0854,-0.01,-0.0054],"rot":[90.0,0.0,0.0],"size":[0.06,0.04,0.03],"color":[0.12,0.13,0.14],"smooth":0.55,"metal":1.0},
+  {"name":"Trigger","shape":"cube","pos":[-0.0804,-0.01,0.0046],"rot":[90.0,0.0,0.0],"size":[0.02,0.008,0.015],"color":[0.12,0.13,0.14],"smooth":0.6,"metal":1.0},
+  {"name":"GasBlock","shape":"cube","pos":[0.3346,-0.01,-0.0054],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.04],"color":[0.1,0.11,0.12],"smooth":0.55,"metal":1.0}
 ]}

@@ -91,6 +91,13 @@ namespace CloneZ
             Build();
         }
 
+        private void Update()
+        {
+            if (Mathf.Abs(_builtRadius - Radius) > 0.01f) Build();   // resized after spawning
+            UpdateSharedTint();
+            if (_glow != null) _glow.intensity = GlowIntensity * GetGlowFactor(_phase);
+        }
+
         private void OnDestroy()
         {
             // Guarantee removal from the global list even if OnDisable wasn’t called.

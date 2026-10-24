@@ -72,13 +72,7 @@ namespace CloneZ
         }
 
         /// <summary>Clamps a point to stay within the map bounds, leaving a margin from the edge.</summary>
-        public static Vector3 ClampToMap(Vector3 p, float margin)
-        {
-            float h = Mathf.Max(1f, MapHalf - margin);
-            p.x = Mathf.Clamp(p.x, -h, h);
-            p.z = Mathf.Clamp(p.z, -h, h);
-            return p;
-        }
+        public static Vector3 ClampToMap(Vector3 p, float margin) => CloneZConfig.ClampToArena(p, Mathf.Min(margin, MapHalf - 1f));
 
 
         /// <summary>Generates a random point on the map's edge band, inset from the fence by a given distance.</summary>
@@ -86,12 +80,13 @@ namespace CloneZ
         {
             float h = Mathf.Max(1f, MapHalf - inset);
             float t = (float)(rng.NextDouble() * 2.0 - 1.0) * h;
+            Vector3 c = CloneZConfig.ArenaCenter;
             switch (rng.Next(4))
             {
-                case 0: return new Vector3(t, 0f, h);
-                case 1: return new Vector3(t, 0f, -h);
-                case 2: return new Vector3(h, 0f, t);
-                default: return new Vector3(-h, 0f, t);
+                case 0: return new Vector3(c.x + t, 0f, c.z + h);
+                case 1: return new Vector3(c.x + t, 0f, c.z - h);
+                case 2: return new Vector3(c.x + h, 0f, c.z + t);
+                default: return new Vector3(c.x - h, 0f, c.z + t);
             }
         }
 
@@ -100,20 +95,18 @@ namespace CloneZ
         public static Vector3 NearestEdge(Vector3 p, float inset)
         {
             float h = Mathf.Max(1f, MapHalf - inset);
+            Vector3 c = CloneZConfig.ArenaCenter;
             p = ClampToMap(p, inset);
-            float dx = h - Mathf.Abs(p.x), dz = h - Mathf.Abs(p.z);
-            if (dx < dz) p.x = (p.x < 0f ? -1f : 1f) * h;
-            else p.z = (p.z < 0f ? -1f : 1f) * h;
+            float rx = p.x - c.x, rz = p.z - c.z;
+            float dx = h - Mathf.Abs(rx), dz = h - Mathf.Abs(rz);
+            if (dx < dz) p.x = c.x + (rx < 0f ? -1f : 1f) * h;
+            else p.z = c.z + (rz < 0f ? -1f : 1f) * h;
             p.y = 0f;
             return p;
         }
 
         /// <summary>Creates a random point anywhere on the map, keeping a margin off the fence.</summary>
-        public static Vector3 RandomMapPoint(System.Random rng, float margin)
-        {
-            float h = Mathf.Max(1f, MapHalf - margin);
-            return new Vector3((float)(rng.NextDouble() * 2.0 - 1.0) * h, 0f, (float)(rng.NextDouble() * 2.0 - 1.0) * h);
-        }
+        public static Vector3 RandomMapPoint(System.Random rng, float margin) => CloneZConfig.RandomArenaPoint(rng, margin);
 
         /// <summary>A random ground-level navmesh point anywhere on the map (kept <paramref name="margin"/> off the fence).</summary>
         /// <summary>Generates a random ground-level NavMesh point on the map, respecting a margin from the fence.</summary>
@@ -241,11 +234,22 @@ namespace CloneZ
         /// <summary>"the north-west part of Kestrel Flats, by the fence", from the position alone.</summary>
         public static string DescribeRegion(Vector3 p, string zoneName)
         {
+            string of = " of " + (string.IsNullOrEmpty(zoneName) ? "the map" : zoneName);
+            ZoneDef zone = ZoneCatalog.Current;
+            if (KentuckyStreamer.Active != null && zone != null && !string.IsNullOrEmpty(zone.RealPlace))
+            {
+                // The whole state: the start town's square has its parts, the rest is so far and which way from it.
+                float d = Mathf.Sqrt(p.x * p.x + p.z * p.z), start = zone.RealHalfSize;
+                if (Mathf.Max(Mathf.Abs(p.x), Mathf.Abs(p.z)) < start)
+                    return (d < start * 0.3f ? "the middle" : "the " + Compass(p) + " part") + " of " + zone.RealPlace;
+                string far = d >= 2000f ? Mathf.RoundToInt(d / 1000f) + " km" : Mathf.RoundToInt(d / 100f) * 100 + " m";
+                return far + " " + Compass(p) + " of " + zone.RealPlace + (string.IsNullOrEmpty(zoneName) ? "" : ", " + zoneName);
+            }
             float h = MapHalf;
             float edge = Mathf.Max(Mathf.Abs(p.x), Mathf.Abs(p.z));
             string where = edge < h * 0.3f ? "the middle" : "the " + Compass(p) + " part";
             string near = edge > h - 14f ? ", by the fence" : "";
-            return where + " of " + (string.IsNullOrEmpty(zoneName) ? "the map" : zoneName) + near;
+            return where + of + near;
         }
     }
 
@@ -261,7 +265,7 @@ namespace CloneZ
             {
                 if (s_Instance == null)
                 {
-                    s_Instance = UnityEngine.Object.FindObjectOfType<HumanRunner>();
+                    s_Instance = UnityEngine.Object.FindAnyObjectByType<HumanRunner>();
                     if (s_Instance == null)
                         s_Instance = new GameObject("[ZonePeople]").AddComponent<HumanRunner>();
                 }

@@ -8,10 +8,21 @@ import sqlite3
 from dataclasses import dataclass
 from pathlib import Path
 
-# Mirrors ItemCategory, ClothingSlot and PlayerSkills.Skill (enum order matters).
+# Mirrors ItemCategory, ClothingSlot, GearKind and PlayerSkills.Skill (enum order matters), phrased
+# for the prompt.
 CATEGORIES = ["Food", "Drink", "Medical", "Weapon", "Firearm", "Ammo", "Material", "Clothing", "Misc"]
-CLOTHING_SLOTS = ["Head", "Torso", "Legs", "Feet", "Hands"]
+CLOTHING_SLOTS = [
+    "Clothing worn on the head", "Clothing worn on the torso", "Clothing worn on the legs",
+    "Clothing worn on the feet", "Clothing worn on the hands", "Backpack worn on the back",
+    "Chest rig (load-bearing vest with pouches)", "Thigh bag strapped to the leg",
+    "Head-mounted eyewear or optics", "Mask worn over the face", "Body armour (vest or plate carrier)",
+    "Small secure pouch",
+]
+GEAR_KINDS = ["", "Wearable container", "Night-vision device", "Flashlight", "Gas mask", "Battery",
+              "Gas-mask filter canister"]
 SKILLS = ["Blade", "Blunt"]
+
+_ITEM_INSERT = re.compile(r"INSERT (?:OR \w+ )?INTO item \(([^)]*)\)")
 
 
 @dataclass
@@ -34,29 +45,41 @@ class Item:
         return ". ".join(bits) + "."
 
 
-def _load_sql(db: sqlite3.Connection, path: Path, created: bool) -> bool:
-    sql = path.read_text(encoding="utf-8")
-    if not created:
-        m = re.search(r"INSERT (?:OR IGNORE )?INTO item \(([^)]*)\)", sql)
-        if not m:
-            raise ValueError(f"No item INSERT found in {path}")
-        db.execute(f"CREATE TABLE item ({m.group(1)}, PRIMARY KEY(id))")
-    # Curated rows go in first and win any id clash, mirroring ItemDatabase.EnsureInit.
-    db.executescript(sql.replace("INSERT INTO item", "INSERT OR IGNORE INTO item"))
-    return True
+def _create_table(db: sqlite3.Connection, scripts: list):
+    """Creates the item table with every column any script inserts into. The scripts do not share one
+    column list (the curated gear rows carry extra columns), so the first INSERT alone is not enough."""
+    cols = []
+    for sql in scripts:
+        for m in _ITEM_INSERT.finditer(sql):
+            for c in (c.strip() for c in m.group(1).split(",")):
+                if c and c not in cols:
+                    cols.append(c)
+    if "id" not in cols:
+        raise ValueError("No item INSERT found in the item scripts")
+    db.execute(f"CREATE TABLE item ({', '.join(cols)}, PRIMARY KEY(id))")
+
+
+def _num(v, default=0):
+    """Column value with NULL read as the game's SQLite wrapper reads it (0)."""
+    return default if v is None else v
 
 
 def _traits(row: sqlite3.Row) -> list:
     t = []
     if row["isClothing"]:
-        slot = row["clothingSlot"] or 0
-        t.append(f"Clothing worn on the {CLOTHING_SLOTS[slot].lower() if slot < len(CLOTHING_SLOTS) else 'body'}")
+        slot = _num(row["clothingSlot"])
+        t.append(CLOTHING_SLOTS[slot] if 0 <= slot < len(CLOTHING_SLOTS) else "Clothing")
+    gear = _num(row["gearKind"]) if "gearKind" in row.keys() else 0
+    if 0 < gear < len(GEAR_KINDS):
+        t.append(GEAR_KINDS[gear])
     if row["isWeapon"]:
-        skill = row["weaponSkill"] or 0
-        kind = SKILLS[skill].lower() if skill < len(SKILLS) else "melee"
-        t.append(f"Melee weapon ({kind}{', two-handed' if row['twoHanded'] else ''}, reach {row['weaponRange']:g} m)")
+        skill = _num(row["weaponSkill"])
+        kind = SKILLS[skill].lower() if 0 <= skill < len(SKILLS) else "melee"
+        t.append(f"Melee weapon ({kind}{', two-handed' if row['twoHanded'] else ''}, "
+                 f"reach {_num(row['weaponRange']):g} m)")
     if row["isFirearm"]:
-        t.append(f"Firearm (magazine {row['magazineSize']}{', shotgun' if row['pelletsPerShot'] > 1 else ''})")
+        t.append(f"Firearm (magazine {_num(row['magazineSize'])}"
+                 f"{', shotgun' if _num(row['pelletsPerShot']) > 1 else ''})")
     if row["isCanned"]:
         t.append("Sealed tin can")
     if row["isWaterContainer"]:
@@ -73,25 +96,27 @@ def _traits(row: sqlite3.Row) -> list:
 
 
 def load_items(resources: Path) -> list:
+    paths = [resources / name for name in ("curated_items.txt", "pz_items.txt")]
+    scripts = [p.read_text(encoding="utf-8") for p in paths if p.exists()]
+    if not scripts:
+        raise FileNotFoundError(f"No item scripts found under {resources}")
+
     db = sqlite3.connect(":memory:")
     db.row_factory = sqlite3.Row
-    created = False
-    for name in ("curated_items.txt", "pz_items.txt"):
-        p = resources / name
-        if p.exists():
-            created = _load_sql(db, p, created)
-    if not created:
-        raise FileNotFoundError(f"No item scripts found under {resources}")
+    _create_table(db, scripts)
+    # Curated rows go in first and win any id clash, mirroring ItemDatabase.EnsureInit.
+    for sql in scripts:
+        db.executescript(sql.replace("INSERT INTO item", "INSERT OR IGNORE INTO item"))
 
     items = []
     for row in db.execute("SELECT * FROM item ORDER BY rowid"):
-        cat = row["category"] or 0
+        cat = _num(row["category"])
         items.append(Item(
             id=row["id"],
             name=row["displayName"] or row["id"],
             category=CATEGORIES[cat] if 0 <= cat < len(CATEGORIES) else "Misc",
-            weight=float(row["weight"] or 0),
-            tint=(float(row["tintR"] or 0.5), float(row["tintG"] or 0.5), float(row["tintB"] or 0.5)),
+            weight=float(_num(row["weight"])),
+            tint=tuple(float(_num(row[c])) for c in ("tintR", "tintG", "tintB")),
             description=(row["description"] or "").strip(),
             traits=_traits(row),
         ))

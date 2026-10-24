@@ -175,6 +175,83 @@ namespace CloneZ
             Census();
             if (hunter) { yield return HunterPass(); yield break; }
             yield return RunnerPass();
+            if (KentuckyStreamer.Active != null) yield return StatewidePass();
+        }
+
+        // The statewide map: far across the state and back. The ground, the NavMesh and the dead follow the survivor; a
+        // stretch let go of and built again keeps what was taken from it; the start town stays built.
+        private IEnumerator StatewidePass()
+        {
+            KentuckyStreamer streamer = KentuckyStreamer.Active;
+            Actor me = Actor.LocalPlayer;
+            bool untargetable = me.Untargetable;
+            me.Untargetable = true;   // the dead may come; this pass isn't about them biting
+            Vector3 home = me.transform.position;
+            Check("statewide: start built", streamer.IsBuiltAt(home), streamer.Summary);
+            yield return Until(() => streamer.IsNavigableAt(home), 60f);
+            Check("statewide: start navigable", streamer.IsNavigableAt(home));
+
+            Vector3 near = home + new Vector3(1500f, 0f, 300f), far = home + new Vector3(9000f, 0f, -4500f);
+            yield return Travel(streamer, me, near, "1.5 km east");
+            LootContainer box = null;
+            foreach (LootContainer c in LootContainer.All)
+                if (c != null && c.transform.IsChildOf(streamer.World) && !c.IsEmpty && FlatDistance(c.transform.position, me.transform.position) < 150f)
+                {
+                    box = c;
+                    break;
+                }
+            Check("statewide: loot out there", box != null, LootContainer.All.Count + " containers");
+            Vector3 boxAt = box != null ? box.transform.position : Vector3.zero;
+            if (box != null)
+            {
+                box.Contents.Stacks.Clear();
+                box.Searched = true;
+            }
+            yield return Travel(streamer, me, far, "9 km east and 4.5 km south");
+            if (box != null || boxAt != Vector3.zero)
+                Check("statewide: the stretch behind was let go of", box == null && !streamer.IsBuiltAt(near), streamer.Summary);
+            yield return Travel(streamer, me, near, "back 1.5 km east");
+            if (boxAt != Vector3.zero)
+            {
+                LootContainer again = null;
+                foreach (LootContainer c in LootContainer.All)
+                    if (c != null && FlatDistance(c.transform.position, boxAt) < 0.2f) { again = c; break; }
+                Check("statewide: an emptied container stays empty", again != null && again.IsEmpty && again.Searched,
+                    again == null ? "not found again" : again.Contents.Stacks.Count + " stacks");
+            }
+            yield return Travel(streamer, me, home, "home");
+            Check("statewide: the start town stayed built", streamer.IsBuiltAt(home), streamer.Summary);
+            me.Untargetable = untargetable;
+        }
+
+        // A long drive in a frame: the survivor is set down at <paramref name="to"/> and the state must catch up.
+        private IEnumerator Travel(KentuckyStreamer streamer, Actor me, Vector3 to, string label)
+        {
+            to.y = 0.1f;
+            var cc = me.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            me.transform.position = to;
+            if (cc != null) cc.enabled = true;
+            Physics.SyncTransforms();
+            float t0 = Time.realtimeSinceStartup;
+            yield return Until(() => streamer.IsNavigableAt(to), 120f);
+            Check("statewide: " + label + " built and navigable", streamer.IsNavigableAt(to),
+                (Time.realtimeSinceStartup - t0).ToString("0.0") + " s; " + streamer.Summary);
+            yield return new WaitForSeconds(2f);
+            Vector3 p = me.transform.position;
+            Check("statewide: standing " + label, p.y > -0.5f && p.y < 2f && FlatDistance(p, to) < 30f, "at " + p);
+            yield return Until(() => ZombiesNear(p, 300f) > 0, 120f);
+            Check("statewide: the dead roam " + label, ZombiesNear(p, 300f) > 0, ZombiesNear(p, 300f) + " within 300 m");
+        }
+
+        private static float FlatDistance(Vector3 a, Vector3 b) => new Vector2(a.x - b.x, a.z - b.z).magnitude;
+
+        private static int ZombiesNear(Vector3 p, float radius)
+        {
+            int n = 0;
+            foreach (Actor a in Actor.All)
+                if (a != null && a.Kind == ActorKind.Zombie && FlatDistance(a.transform.position, p) < radius) n++;
+            return n;
         }
 
         private void Census()

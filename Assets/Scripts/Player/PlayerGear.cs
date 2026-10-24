@@ -166,7 +166,7 @@ protected virtual void Update()
                 if (_keyboard != null)
                 {
                     if (_keyboard.nKey.wasPressedThisFrame) ToggleNightVision();
-                    if (_keyboard.lKey.wasPressedThisFrame) ToggleFlashlight();
+                    if (_keyboard.lKey.wasPressedThisFrame && DronePilot.Local == null) ToggleFlashlight();   // piloting: L is the drone's light
                 }
             }
 

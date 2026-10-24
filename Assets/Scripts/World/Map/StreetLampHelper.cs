@@ -5,113 +5,84 @@ namespace CloneZ
 {
     internal static class StreetLampHelper
     {
-// Helper to convert 2‑D map coords to 3‑D world coords (y is up).
-    private static Vector3 To3(Vector2 v, float y) => new Vector3(v.x, y, v.y);
+        private const float PoleHeight = 4.0f;
+        private const float ArmRootY = 3.82f;   // where the arm leaves the pole
+        private const float ArmTipY = 4.02f;    // the arm rises ~20 degrees to its tip, level with the pole's top
+        private const float ArmReach = 0.56f;   // how far the tip reaches out from the pole, over the road
+        private const float ShadeRimY = 3.87f;  // the bottom of the shade hanging under the tip
 
-    // Emissive surface for the bulb – uses the colour already defined in KentuckyMap.
-    private static readonly Surf LampLightSurf = DecorPalette.Gloss(KentuckyMap.StreetLampLightColor);
-    // Snow mound – low‑poly white “snow” surface.
-    private static readonly Surf SnowMoundSurf = DecorPalette.Gloss(Color.white * 0.85f);
-    // Wooden street‑sign – fallback if wood palette missing.
-    private static readonly Surf SignSurf = DecorPalette.Gloss(new Color(0.45f, 0.30f, 0.15f));
+        // Helper to convert 2-D map coords to 3-D world coords (y is up).
+        private static Vector3 To3(Vector2 v, float y) => new Vector3(v.x, y, v.y);
 
-    /// <summary>
-    /// Builds a period‑correct 1993‑style street lamp at the given map position.
-    /// All parts are simple boxes (≤ 5 primitives) and reuse existing materials.
-    /// </summary>
-    public static void PlaceLamp(OutdoorBatches into, KentuckyMap.Site site, Vector2 pos, float yaw)
-    {
-        // Respect placement grid – avoid overlapping props.
-        if (!site.Free(pos, 0.2f)) return;
-        site.Take(pos, 0.2f);
+        // The yellow glass shade and its bulb glow (unlit), like the lit lenses of DecorProps.StreetLight.
+        private static Surf ShadeSurf => DecorPalette.Glow(new Color(1f, 0.82f, 0.45f));
+        private static Surf BulbSurf => DecorPalette.Glow(new Color(1f, 0.97f, 0.88f));
+        private static Surf SnowMoundSurf => DecorPalette.Matte(DecorProps.SnowWhite);
+        private static Surf IceSurf => DecorPalette.Gloss(new Color(0.80f, 0.87f, 0.94f));
+        // Wooden street-sign.
+        private static Surf SignSurf => DecorPalette.Matte(new Color(0.45f, 0.30f, 0.15f));
+        private static Surf RustSurf => DecorPalette.Matte(new Color(0.40f, 0.30f, 0.20f));
 
-        // 1️⃣ Base plate – a thin square slab on the ground.
-        // size 0.30 m × 0.02 m × 0.30 m, centred at (pos.x, 0.01 m, pos.y)
-        // material: existing StreetLampMetal matte metal.
-        var basePlateSurf = KentuckyMap.StreetLampMetal;
-        var baseCenter = To3(pos, 0.01f);
-        var baseMesh = into.Solid(baseCenter);
-        baseMesh.Box(baseCenter, new Vector3(0.30f, 0.02f, 0.30f), 0f, basePlateSurf);
-        // Ensure consistent orientation for added geometry.
-        // (Removed SetFrame call; geometry uses explicit yaw values.)
-        // 1️⃣ Snow mound – a small white sphere that sits on the ground beside the base plate.
-        var moundCenter = To3(pos, 0.08f); // slightly above ground
-        var moundMesh = into.Solid(moundCenter);
-        moundMesh.Sphere(moundCenter, 0.15f, SnowMoundSurf);
-        
-        // 2️⃣ Iron pole – a vertical cylinder.
-        // radius 0.04 m, height 4.00 m, base at (pos.x, 0.02 m, pos.y)
-        // material: StreetLampMetal.
-        var poleHeight = 4.0f;
-        var poleCenter = To3(pos, 0.02f + poleHeight * 0.5f);
-        var poleMesh = into.Solid(poleCenter);
-        poleMesh.Cylinder(poleCenter, 0.04f, poleHeight, 12, KentuckyMap.StreetLampMetal);
-        
-        // 3️⃣ Arm – a short rectangular bracket that angles upward.
-        // size 0.50 m × 0.02 m × 0.02 m, pivoted 30° up from the pole.
-        // positioned at middle‑height of pole (2 m), offset forward by 0.20 m.
-        // material: StreetLampMetal.
-        float armLength = 0.50f;
-        float armAngle = 30f * Mathf.Deg2Rad;
-        var armPivot = To3(pos, 0.02f + 2.0f);
-        var armOffset = new Vector3(Mathf.Sin(armAngle) * armLength * 0.5f,
-            Mathf.Cos(armAngle) * armLength * 0.5f,
-            0f);
-        var armCenter = armPivot + armOffset;
-        var armMesh = into.Solid(armCenter);
-        var armYaw = yaw + 90f; // arm sticks out to the side of the road.
-        armMesh.Box(armCenter, new Vector3(armLength, 0.02f, 0.02f), armYaw, KentuckyMap.StreetLampMetal);
-        
-        // 3️⃣ Wooden sign – a thin board that hangs from the arm tip, with a tiny deterministic yaw wobble.
-        float signWobble = ((pos.x + pos.y) * 0.123f) % 4f - 2f; // -2° … +2°
-        var signCenter = armCenter + new Vector3(0f, -0.05f, 0f); // hangs slightly below arm tip
-        var signMesh = into.Solid(signCenter);
-        signMesh.Box(signCenter, new Vector3(0.80f, 0.10f, 0.20f), yaw + signWobble, SignSurf);
-        
-        // 4️⃣ Icicle – a thin vertical box that dangles from the lower edge of the sign.
-        var icicleCenter = signCenter + new Vector3(0f, -0.12f, 0f);
-        var icicleMesh = into.Solid(icicleCenter);
-        icicleMesh.Box(icicleCenter, new Vector3(0.02f, 0.10f, 0.02f), yaw, SnowMoundSurf);
-        
+        /// <summary>
+        /// Builds a period-correct 1993-style street lamp at <paramref name="pos"/>, a spot the caller has already
+        /// checked and taken: a metal base plate, a 4 m iron pole flecked with rust, an arm from near its top with a
+        /// lit yellow glass shade and bright bulb at its tip, a wooden sign hanging from a bracket on the pole with an
+        /// icicle under it, snow banked against the base, and a warm point light. <paramref name="yaw"/> (degrees about
+        /// Y, as for the props' frames) is the way the arm reaches: local +Z points along (sin yaw, 0, cos yaw), so pass
+        /// Atan2(toRoad.x, toRoad.y) to have it reach out over the road.
+        /// </summary>
+        public static void PlaceLamp(OutdoorBatches into, KentuckyMap.Site site, Vector2 pos, float yaw)
+        {
+            Surf metal = KentuckyMap.StreetLampMetal;
+            var rng = new System.Random(Mathf.RoundToInt(pos.x * 10f) * 73856093 ^ Mathf.RoundToInt(pos.y * 10f) * 19349663);
+            Vector3 at = To3(pos, 0f);
+            RaidMesh m = into.Solid(at);
+            m.SetFrame(at, yaw);   // local +Z: out over the road; +X: along it
 
+            // Base plate, and snow banked against it on the side away from the road.
+            m.Box(new Vector3(0f, 0.01f, 0f), new Vector3(0.30f, 0.02f, 0.30f), metal);
+            m.Ellipsoid(new Vector3(0f, 0.02f, -0.20f), new Vector3(0.42f, 0.24f, 0.34f), SnowMoundSurf, 8, 4);
 
-        
-        // 4️⃣ Shade – a semi‑transparent glass sphere at the end of the arm.
-        // radius 0.25 m, centre at arm tip.
-        // material: a matte yellow (warm street‑lamp light colour) to suggest illumination.
-        var shadeCenter = armCenter + new Vector3(Mathf.Sin(armAngle) * armLength * 0.5f,
-            Mathf.Cos(armAngle) * armLength * 0.5f,
-            0f);
-        var shadeSurf = DecorPalette.Matte(KentuckyMap.StreetLampLightColor);
-        var shadeMesh = into.Solid(shadeCenter);
-        shadeMesh.Sphere(shadeCenter, 0.25f, shadeSurf);
-        
-        // 5️⃣ Inner bulb – a tiny emissive sphere inside the shade.
-        // radius 0.07 m, centred at same point as shade.
-        // material: same colour but with a tiny emissive boost (use same Matte surf – the game’s lighting will treat it as a bright spot).
-        var bulbSurf = DecorPalette.Matte(KentuckyMap.StreetLampLightColor);
-        var bulbMesh = into.Solid(shadeCenter);
-        bulbMesh.Sphere(shadeCenter, 0.07f, bulbSurf);
-        
+            // Iron pole, standing on the plate.
+            m.Cylinder(new Vector3(0f, 0.02f, 0f), 0.04f, PoleHeight, 12, metal);
 
-        var rustColor = new Color(0.40f, 0.30f, 0.20f);
-        var rustSurf = DecorPalette.Matte(rustColor);
-        int seed = ((int)(pos.x * 73856093)) ^ ((int)(pos.y * 19349663));
-        var rng = new System.Random(seed);
-        int speckCount = rng.Next(3, 6);
-        for (int i = 0; i < speckCount; i++)
-    {
+            // Arm, angled up from near the pole's top, ending in a socket.
+            m.Rod(new Vector3(0f, ArmRootY, 0.02f), new Vector3(0f, ArmTipY, ArmReach), 0.035f, metal);
+            m.Cylinder(new Vector3(0f, ShadeRimY + 0.12f, ArmReach), 0.05f, 0.05f, 10, metal);
 
-            float h = (float)rng.NextDouble() * (poleHeight - 0.2f) + 0.1f;
-            float angle = (float)rng.NextDouble() * 360f;
-            var speckCenter = To3(pos, 0.02f + h);
-            var speckMesh = into.Solid(speckCenter);
-            speckMesh.Box(speckCenter, new Vector3(0.02f, 0.02f, 0.02f), angle, rustSurf);
+            // Shade: a glowing yellow glass bell under the socket, the bright bulb showing through its mouth.
+            m.Cylinder(new Vector3(0f, ShadeRimY, ArmReach), 0.15f, 0.12f, 12, ShadeSurf, Quaternion.identity, 0.3f);
+            var bulb = new Vector3(0f, ShadeRimY, ArmReach);
+            m.Ellipsoid(bulb, new Vector3(0.08f, 0.08f, 0.08f), BulbSurf);
+
+            // Wooden sign hanging broadside to the road from a bracket on the pole (a tiny wobble), an icicle under it.
+            m.Box(new Vector3(0.29f, 2.80f, 0f), new Vector3(0.52f, 0.025f, 0.025f), metal);
+            m.Box(new Vector3(0.12f, 2.76f, 0f), new Vector3(0.01f, 0.08f, 0.01f), metal);
+            m.Box(new Vector3(0.46f, 2.76f, 0f), new Vector3(0.01f, 0.08f, 0.01f), metal);
+            m.Box(new Vector3(0.29f, 2.62f, 0f), new Vector3(0.46f, 0.20f, 0.025f), R(rng, -2f, 2f), SignSurf);
+            m.Cylinder(new Vector3(0.29f + R(rng, -0.15f, 0.15f), 2.52f, 0f), 0.012f, R(rng, 0.07f, 0.13f), 5, IceSurf,
+                Quaternion.Euler(180f, 0f, 0f), 0f);
+
+            // Rust speckles: 3-5 small patches on the pole's surface.
+            int speckCount = rng.Next(3, 6);
+            for (int i = 0; i < speckCount; i++)
+            {
+                float h = R(rng, 0.3f, PoleHeight - 0.4f);
+                float angle = R(rng, 0f, 360f);
+                var onSurface = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), 0f, Mathf.Cos(angle * Mathf.Deg2Rad)) * 0.04f;
+                m.Box(onSurface + Vector3.up * h, new Vector3(0.025f, 0.035f, 0.012f), angle, RustSurf);
+            }
+
+            Vector3 lightAt = m.ToMeshSpace(bulb);
+            m.ResetFrame();
+            // Collider so the player can't walk through the pole.
+            site.Town.PropCollider(To3(pos, 0.02f + PoleHeight * 0.5f), new Vector3(0.2f, PoleHeight, 0.2f), 0f);
+
+            // A warm point light at the bulb, under the world root like the street lights' (RoomLight switches it off
+            // past its cull distance). No shadows: there can be hundreds of these lamps.
+            site.Town.Light(site.Town.World, lightAt, KentuckyMap.StreetLampLightColor, 8f, 2.5f, flicker: true, shadows: false);
         }
-        
-        // 7️⃣ Light source – add a point light so the fixture actually glows.
-        // position at shade centre, colour warm yellow, range 8 m, intensity 2.5, slight flicker.
-        site.Town.Light(site.Town.Overhead, shadeCenter, KentuckyMap.StreetLampLightColor, 8f, 2.5f, flicker:true, shadows:true);
-    }
+
+        private static float R(System.Random rng, float a, float b) => a + (float)rng.NextDouble() * (b - a);
     }
 }

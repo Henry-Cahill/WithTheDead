@@ -10,7 +10,9 @@ namespace CloneZ
     /// notice, then a neighbour's note pushed in by hand — and after that nothing at all, because the mail stopped
     /// coming. The little red flag goes up and down, for all the good it does. A raid house's box holds its own post
     /// instead, all of it come already (see the overload of <see cref="Create(Transform, Vector3, string[][])"/>).
-    /// Remembers how much of the post has been read (<see cref="FixtureSave.A"/>), the door and the flag.
+    /// Notes the survivor leaves in it are read after the post. Remembers how much of the post has been read
+    /// (<see cref="FixtureSave.A"/>) and how many of the notes (<see cref="FixtureSave.B"/>), the notes themselves and
+    /// the letters marked important (<see cref="FixtureSave.Text"/>), the door and the flag.
     /// </summary>
     [DisallowMultipleComponent]
     public class MailboxFixture : Interactable
@@ -80,9 +82,10 @@ namespace CloneZ
         private Vector3 _point;
         private FixturePart _door, _flag;
         private bool _open, _flagUp;
-        private int _read;   // deliveries read so far
+        private int _read;   // post deliveries read so far (the survivor's notes are counted by _notesRead)
         private List<bool> _important; // one entry per delivery, true = player marked it important
         private List<string> _playerNotes; // personal notes left by the survivor
+        private int _notesRead;   // how many of _playerNotes have been read
         private string[][] _post;   // a raid house's own post, all of it come already (null: the starter home's days of post)
 
         private void Awake()
@@ -143,15 +146,32 @@ namespace CloneZ
 
         // How many deliveries this box holds by now (a raid house's post has all come).
         private int BaseDeliveries => _post != null ? _post.Length : Delivered;
-        private int TotalDeliveries => BaseDeliveries + _playerNotes.Count;
-        private int Come => TotalDeliveries;
+        // What's still to read: the post first, then the survivor's own notes.
+        private int UnreadPost => Mathf.Max(0, BaseDeliveries - _read);
+        private int UnreadNotes => Mathf.Max(0, _playerNotes.Count - _notesRead);
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            InteractAction check = _read < TotalDeliveries ? ReadNext() : new InteractAction("Check the mail", CheckEmpty);
+            int unread = UnreadPost + UnreadNotes;
+            InteractAction check = unread > 0 ? ReadNext() : new InteractAction("Check the mail", CheckEmpty);
             InteractAction close = _open ? new InteractAction("Close the mailbox", c => SetOpen(false, false)) : null;
-            if (close != null && _read >= TotalDeliveries) into.Add(close);
+            if (close != null && unread == 0) into.Add(close);
             into.Add(check);
+            // Offer to read all remaining mail at once when more than one unread delivery remains
+            if (unread > 1)
+                into.Add(new InteractAction("Read all mail", c =>
+                {
+                    SetOpen(true, false);
+                    int come = BaseDeliveries;
+                    for (int i = _read; i < come; i++)
+                        foreach (var line in Post[i])
+                            c.Notify(line);
+                    for (int i = _notesRead; i < _playerNotes.Count; i++)
+                        c.Notify(_playerNotes[i]);
+                    _read = Mathf.Max(_read, come);
+                    _notesRead = _playerNotes.Count;
+                    c.Notify("All mail has been read.");
+                }));
             if (ctx.Inventory != null && ctx.Inventory.Has("paper"))
                 {
                     into.Add(new InteractAction("Leave a note", c =>
@@ -173,12 +193,12 @@ namespace CloneZ
                         c.Notify("You slide a personal note into the mailbox. It will arrive with the next batch of mail.");
                     }));
                 }
-            if (close != null && _read < TotalDeliveries) into.Add(close);
+            if (close != null && unread > 0) into.Add(close);
             into.Add(_flagUp
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
                 : new InteractAction("Raise the flag", c => SetFlag(c, true)));
-            // Offer to toggle importance on the most-recently read delivery (once one has been read)
-            if (_read > 0)
+            // Offer to toggle importance on the last post delivery read (once one has been read; notes don't count)
+            if (_read > 0 && _read <= Post.Length)
             {
                 if (_important == null || _important.Count != Post.Length)
                     _important = new List<bool>(new bool[Post.Length]);
@@ -194,7 +214,9 @@ namespace CloneZ
             }
             into.Add(new InteractAction("Inspect the mailbox", c =>
             {
-                c.Notify(string.Format("Mailbox is {0}, flag is {1}, {2}", _open ? "open" : "closed", _flagUp ? "up" : "down", _read < TotalDeliveries ? $"{TotalDeliveries - _read} unread letters." : "no more mail."));
+                int left = UnreadPost + UnreadNotes;
+                c.Notify(string.Format("Mailbox is {0}, flag is {1}, {2}", _open ? "open" : "closed", _flagUp ? "up" : "down",
+                    left == 0 ? "no more mail." : left == 1 ? "1 unread letter." : $"{left} unread letters."));
             }));
             // If any letters have been marked, let the player review them
             if (_important != null && _important.Exists(b => b))
@@ -215,7 +237,7 @@ namespace CloneZ
                     c.Notify(sb.ToString());
                 }));
             }
-            if (_read >= TotalDeliveries)
+            if (unread == 0)
             {
                 into.Add(new InteractAction("Search the mailbox", c =>
                 {
@@ -224,14 +246,13 @@ namespace CloneZ
             }
         }
 
-        // Reading the oldest unread delivery: the door drops open and the letter's lines come up one by one.
+        // Reading the oldest unread delivery (the post first, then the survivor's notes): the door drops open and the
+        // letter's lines come up one by one.
         private InteractAction ReadNext()
         {
-            string[] lines;
-            if (_read < BaseDeliveries)
-                lines = Post[_read];
-            else
-                lines = new[] { _playerNotes[_read - BaseDeliveries] };
+            // Settled now, so a day's post arriving mid-read can't change which count this read advances.
+            bool note = UnreadPost == 0;
+            string[] lines = note ? new[] { _playerNotes[_notesRead] } : Post[_read];
             int shown = 0;
             var a = new InteractAction("Check the mail")
                 .Timed(lines.Length * CloneZConfig.MailLineSeconds, "Reading the mail", HumanoidActivity.Use);
@@ -247,8 +268,9 @@ namespace CloneZ
             };
             a.Run = c =>
             {
-                _read = Mathf.Min(_read + 1, TotalDeliveries);
-                if (_read < TotalDeliveries) {
+                if (note) _notesRead = Mathf.Min(_notesRead + 1, _playerNotes.Count);
+                else _read = Mathf.Min(_read + 1, Post.Length);
+                if (UnreadPost + UnreadNotes > 0) {
                     c.Notify("There's more post underneath.");
                 } else {
                     // Subtle hope after the final piece of mail
@@ -294,6 +316,7 @@ namespace CloneZ
         {
             save.State = (_open ? 1 : 0) | (_flagUp ? 2 : 0);
             save.A = _read;
+            save.B = _notesRead;
             // Serialize importance list as a comma‑separated "0/1" string
             var importance = string.Join(",", _important.ConvertAll(b => b ? "1" : "0"));
             // Serialize player notes as a semicolon‑separated list
@@ -303,7 +326,6 @@ namespace CloneZ
 
         public override void RestoreState(FixtureSave save)
         {
-            _read = Mathf.Clamp(Mathf.RoundToInt(save.A), 0, Post.Length);
             SetOpen((save.State & 1) != 0, true);
             _flagUp = (save.State & 2) != 0;
             if (_flag != null) _flag.SetOpen(_flagUp, true);
@@ -321,6 +343,9 @@ namespace CloneZ
                 if (split.Length > 1 && !string.IsNullOrEmpty(split[1]))
                     _playerNotes.AddRange(split[1].Split(';'));
             }
+            // The counts last, once the notes they're clamped to are back.
+            _read = Mathf.Clamp(Mathf.RoundToInt(save.A), 0, Post.Length);
+            _notesRead = Mathf.Clamp(Mathf.RoundToInt(save.B), 0, _playerNotes.Count);
         }
     }
 }

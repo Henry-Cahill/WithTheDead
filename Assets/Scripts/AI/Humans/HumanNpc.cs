@@ -91,6 +91,20 @@ namespace CloneZ
         // New constant for flashlight item id
         public const string FlashlightItemId = "flashlight";
         /// <summary>Feeds the NPC a small amount of food, restoring health and possibly ending surrender.</summary>
+        public void FeedFood(float healthFraction)
+        {
+            if (IsDead) return;
+            // healthFraction is a fraction of max health (e.g. 0.2 = 20% of max)
+            _hp = Mathf.Min(_maxHp, _hp + _maxHp * Mathf.Clamp01(healthFraction));
+            // If the NPC was surrendered and now feels safe, they may stand up.
+            if (State == Mode.Surrendered && Health01 > 0.5f)
+            {
+                State = Mode.Idle;
+                Actor.Surrendered = false;
+            }
+            Bark("Much appreciated, thanks!");
+        }
+
         /// <summary>Gives the NPC a handheld flashlight that shines for a short time.</summary>
         public void GiveFlashlight(float seconds = 30f)
         {
@@ -967,6 +981,14 @@ namespace CloneZ
                     if (c.Interactor != null) c.Interactor.SearchOrOpen(box);
                 }).Timed(1.5f, "Searching..."));
                 into.Add(new InteractAction("Let them go", c => _npc.Release()));
+            if (ctx.Inventory != null && ctx.Inventory.Has(HumanNpc.FoodItemId))
+            {
+                into.Add(new InteractAction("Give Food", c =>
+                {
+                    if (c.Inventory.Consume(HumanNpc.FoodItemId, 1) <= 0) return;
+                    _npc.FeedFood(0.2f); // restores ~20% of max health
+                }).Timed(1f, "Feeding...").DisabledIf(!_npc.Actor.Surrendered && !_npc.Actor.Restrained, "They don't need food"));
+            }
             // New “Give Flashlight” action for restrained or surrendered NPCs
             if (ctx.Inventory != null && ctx.Inventory.Has(HumanNpc.FlashlightItemId))
             {
@@ -979,6 +1001,7 @@ namespace CloneZ
             return;
             }
 
+            into.Add(new InteractAction("Talk", Talk));
             // New “Give Flashlight” action for any NPC (non‑dead)
             if (ctx.Inventory != null && ctx.Inventory.Has(HumanNpc.FlashlightItemId) && !_npc.IsDead)
             {

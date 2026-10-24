@@ -369,7 +369,7 @@ namespace CloneZ
             Vector2 c = UnityEngine.Random.insideUnitCircle * half * 0.4f;
             float ang = UnityEngine.Random.value * Mathf.PI * 2f;
             var dir = new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang));
-            Vector3 mid = new Vector3(c.x, 0f, c.y);
+            Vector3 mid = CloneZConfig.ArenaCenter + new Vector3(c.x, 0f, c.y);
             Vector3 from = mid - dir * (half + 160f), to = mid + dir * (half + 160f);
             Play(from, to);
             Started?.Invoke(from, to);

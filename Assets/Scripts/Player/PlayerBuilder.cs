@@ -590,9 +590,7 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
 
         private static Vector3 ClampToArena(Vector3 p)
         {
-            float lim = CloneZConfig.ArenaHalfSize - 0.4f;
-            p.x = Mathf.Clamp(p.x, -lim, lim);
-            p.z = Mathf.Clamp(p.z, -lim, lim);
+            p = CloneZConfig.ClampToArena(p, 0.4f);
             p.y = 0f;
             return p;
         }

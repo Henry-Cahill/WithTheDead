@@ -5,6 +5,14 @@ namespace CloneZ
 {
     internal static class PorchBuilder
     {
+        // Porch stains, picked by building. Every new colour bakes a wood texture that's kept for the session, so a colour
+        // of its own for each porch (and a fresh one whenever a streamed map's piece is built again) grew without end.
+        private static readonly Color[] Stains =
+        {
+            new Color(0.55f, 0.40f, 0.26f), new Color(0.47f, 0.34f, 0.22f), new Color(0.63f, 0.50f, 0.35f),
+            new Color(0.42f, 0.38f, 0.33f), new Color(0.72f, 0.69f, 0.62f), new Color(0.84f, 0.82f, 0.76f),
+        };
+
         /// <summary>
         /// Adds a modest front porch (low steps and a wooden railing) to a building footprint
         /// when MapBuild.HasPorch(buildingId) returns true.
@@ -32,10 +40,7 @@ namespace CloneZ
             float façadeLength = Vector2.Distance(fp.Pts[0], fp.Pts[1]);
             float porchWidth = façadeLength * 0.5f; // porch spans half the façade
             // Determine wood colour for this building
-            var colour = build.GetBuildingColour(fp.Data.id);
-            // Apply a modest random hue shift (±15 %)
-            float hueShift = 0.85f + 0.3f * (float)build.Random.NextDouble();
-            colour = new Color(colour.r * hueShift, colour.g * hueShift, colour.b * hueShift);
+            var colour = Stains[(int)(System.Math.Abs(fp.Data.id) % Stains.Length)];
             // Build steps
             for (int i = 0; i < stepCount; i++)
             {

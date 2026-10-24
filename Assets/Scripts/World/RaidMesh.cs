@@ -105,10 +105,20 @@ namespace CloneZ
             return list;
         }
 
+        /// <summary>Added to every position before planar UVs are worked out. A streamed map builds each piece around its
+        /// own middle; this puts the piece's middle back where it is on the world grid (wrapped every
+        /// <see cref="PlanarPeriod"/> metres), so textures run on unbroken across the pieces' seams. Zero otherwise.</summary>
+        internal static Vector3 PlanarOrigin;
+
+        /// <summary>A whole number of repeats of every planar surface (9, 6, 3, 2.8, 2.4, 2, 1.5, 1.2, 1, 0.8, 0.6 and
+        /// 0.4 m), so wrapping <see cref="PlanarOrigin"/> by it never shows.</summary>
+        internal const double PlanarPeriod = 252.0;
+
         private Vector2 UvAt(Vector3 p, Vector3 n, in Surf s)
         {
             if (!s.Planar) return s.Uv;
             float k = s.PerMeter;
+            p += PlanarOrigin;
             if (n.y > 0.7f || n.y < -0.7f) return new Vector2(p.x * k, p.z * k);
             Vector3 t = Vector3.Cross(n, Vector3.up);
             float len = t.magnitude;
@@ -444,12 +454,17 @@ namespace CloneZ
         #endregion
 
         #region Output
+        /// <summary>While set, every mesh baked here is added to it, so whoever builds a streamed map piece can
+        /// destroy the piece's meshes with it (runtime meshes outlive their GameObjects).</summary>
+        internal static List<Mesh> CreatedMeshes;
+
         /// <summary>Bakes the accumulated geometry into a mesh, with vertices made relative to
         /// <paramref name="origin"/> (mesh space). Returns null when empty.</summary>
         public Mesh ToMesh(string name, Vector3 origin)
         {
             if (_v.Count == 0) return null;
             var mesh = new Mesh { name = name };
+            CreatedMeshes?.Add(mesh);
             if (_v.Count > 65000) mesh.indexFormat = IndexFormat.UInt32;
 
             if (origin != Vector3.zero)

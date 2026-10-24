@@ -253,6 +253,7 @@ namespace CloneZ
             Color enamel = V(new Color(0.88f, 0.88f, 0.85f), rng, 0.03f);
             Surf e = G(enamel), dark = M(new Color(0.05f, 0.05f, 0.06f));
             Quaternion facing = Quaternion.Euler(90f, 0f, 0f);
+            m.Box(new Vector3(0f, 0.03f, 0f), new Vector3(0.56f, 0.06f, 0.54f), M(new Color(0.16f, 0.16f, 0.17f)));
             // water‑inlet pipe on cabinet side
             m.Cylinder(new Vector3(0.32f, 0.06f, 0.15f), 0.02f, 0.12f, 8, Mt(Brass));
             // rust stain on the pipe housing
@@ -270,6 +271,8 @@ namespace CloneZ
             m.Box(new Vector3(-0.16f, 0.775f, 0.299f), new Vector3(0.08f, 0.012f, 0.006f), M(enamel * 0.7f));
             m.Box(new Vector3(0f, 0.9f, -0.22f), new Vector3(0.6f, 0.06f, 0.15f), G(enamel * 0.92f));
             m.Box(new Vector3(-0.08f, 0.9f, WasherDial.z + 0.001f), new Vector3(0.22f, 0.03f, 0.004f), M(new Color(0.25f, 0.30f, 0.38f)));
+            for (int i = 0; i < 3; i++)
+                m.Box(new Vector3(-0.2f + i * 0.04f, 0.9f, WasherDial.z + 0.003f), new Vector3(0.025f, 0.018f, 0.008f), M(new Color(0.75f, 0.74f, 0.70f)));
             // faint green LED indicating power
             var ledPos = new Vector3(0.12f, 0.92f, WasherDial.z);
             m.Ellipsoid(ledPos, new Vector3(0.006f, 0.006f, 0.006f), Gl(new Color(0.2f, 0.8f, 0.2f)), 6, 3);
@@ -278,7 +281,9 @@ namespace CloneZ
 
             // The drum: its grey rubber seal, the dark inside, and the last load lying in the bottom of it.
             Vector3 p = WasherPorthole;
+            m.Cylinder(p, WasherMouth + 0.03f, 0.004f, 20, M(new Color(0.30f, 0.31f, 0.32f)), facing);
             m.Cylinder(WasherPorthole, WasherMouth + 0.032f, 0.002f, 20, M(new Color(0.15f, 0.15f, 0.16f)), facing);
+            m.Cylinder(p + new Vector3(0f, 0f, 0.004f), WasherMouth, 0.002f, 20, dark, facing);
             m.Cylinder(p + new Vector3(0f, 0f, 0.006f), WasherMouth * 0.55f, 0.001f, 16, Mt(new Color(0.30f, 0.31f, 0.32f)), facing);
             for (int i = 0, n = rng.Next(4); i < n; i++)
             {
@@ -301,6 +306,7 @@ namespace CloneZ
                 Quaternion q = Quaternion.Euler(0f, 0f, a);
                 m.Box(p + q * new Vector3(0f, WasherRing, 0f), new Vector3(piece, 0.045f, 0.03f), q, chrome);
             }
+            m.Cylinder(p + new Vector3(0f, 0f, -0.006f), WasherRing - 0.02f, 0.03f, 20, BathGlass, Quaternion.Euler(90f, 0f, 0f), 0.85f);
             // tiny chrome latch on the door
             var latchPos = WasherPorthole + new Vector3(0f, 0f, WasherRing + 0.025f);
             m.Cylinder(latchPos, 0.004f, 0.012f, 8, Mt(Chrome));

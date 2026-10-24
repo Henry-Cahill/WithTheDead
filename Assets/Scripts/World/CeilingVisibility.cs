@@ -43,6 +43,9 @@ private static CeilingVisibility s_Instance;
         /// <summary>Number of registered ceiling renderers.</summary>
         public static int Count => s_Renderers.Count;
 
+        /// <summary>Drops the renderers destroyed since they registered (a streamed map's unloaded pieces).</summary>
+        public static void Prune() => s_Renderers.RemoveAll(r => r == null);
+
         private static void Apply(Renderer r, bool shown)
             => r.shadowCastingMode = shown ? ShadowCastingMode.On : ShadowCastingMode.ShadowsOnly;
 

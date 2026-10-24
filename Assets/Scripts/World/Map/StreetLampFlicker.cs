@@ -113,7 +113,7 @@ namespace CloneZ
         private void UpdateCulling()
         {
             if (s_player == null)
-                s_player = UnityEngine.Object.FindObjectOfType<PlayerController>();
+                s_player = UnityEngine.Object.FindAnyObjectByType<PlayerController>();
             if (s_player == null) return;
             bool shouldEnable = Vector3.Distance(transform.position, s_player.transform.position) <= CullDistance;
             SetFlickerEnabled(shouldEnable);

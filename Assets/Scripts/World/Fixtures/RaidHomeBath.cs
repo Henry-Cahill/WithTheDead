@@ -205,6 +205,12 @@ namespace CloneZ
             wash.Begin = BorrowTaps;
             wash.Stopped = ReturnTaps;
             into.Add(wash);
+            if (_level > 0.05f)
+            {
+                into.Add(new InteractAction("Feel the water", FeelWater));
+                into.Add(new InteractAction("Check water temperature", CheckTemp));
+                into.Add(new InteractAction("Check water level", CheckLevel));
+            }
             if (_level > 0.02f) // only useful if there is any water
             {
                 if (_covered)
@@ -404,6 +410,7 @@ namespace CloneZ
             _borrowed = false;
             SetTaps((save.State & 1) != 0, true);
             SetPlugged((save.State & 2) != 0);
+            _bathedIn = (save.State & 4) != 0;
             _covered = (save.State & 0x10) != 0;
             _level = Mathf.Clamp01(save.A);
             _heat = Mathf.Clamp01(save.B);

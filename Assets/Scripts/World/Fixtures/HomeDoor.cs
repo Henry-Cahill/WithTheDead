@@ -194,12 +194,17 @@ namespace CloneZ
                 else if (!_locked) into.Add(new InteractAction("Lock the door").DisabledIf(true, fault ?? _lockElsewhere));
             }
 
+            if (_peephole && lockSide && !_open)
+                into.Add(new InteractAction("Look through the peephole", _peepAct)
+                    .Timed(CloneZConfig.DoorPeepSeconds, "Peering through the peephole", HumanoidActivity.Use));
+
             if (_locked && !_broken)
             {
                 into.Add(new InteractAction("Bash the door", SetBroken)
                     .Timed(2f, "Bashing the door", HumanoidActivity.Use));
             }
 
+            into.Add(new InteractAction("Knock on the door", _knockAct));
             into.Add(new InteractAction("Listen at the door", _listenAct));
         // Check lock state without trying to open
         if (!_open) into.Add(new InteractAction("Check the door", ctx => ctx.Notify(_locked ? "The door is locked." : "The door is unlocked.")));

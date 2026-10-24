@@ -257,9 +257,7 @@ public string WorkLabel { get; private set; } = "";
 
         private static Vector3 ClampToArena(Vector3 p)
         {
-            float lim = CloneZConfig.ArenaHalfSize - 0.6f;
-            p.x = Mathf.Clamp(p.x, -lim, lim);
-            p.z = Mathf.Clamp(p.z, -lim, lim);
+            p = CloneZConfig.ClampToArena(p, 0.6f);
             p.y = 0f;
             return p;
         }

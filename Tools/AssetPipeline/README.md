@@ -24,7 +24,7 @@ Double-click **`AssetPipeline.bat`** for a menu, or run `.\AssetPipeline.ps1 <ac
 | `start`   | Pushes the pipeline and catalogue to the Spark, then starts or resumes generation in tmux session `clonez`. Add `-Critic` for the vision critic, `-Workers N`, or `-Extra '--category','Clothing'`. |
 | `status`  | Shows whether it is running, the latest progress, and counts per category. |
 | `watch`   | Shows the live log. Ctrl+C stops watching only; the run keeps going. |
-| `pull`    | Copies finished models into `Assets/Resources/GeneratedItemModels` and previews into `out/`. |
+| `pull`    | Copies finished models into `Assets/Resources/GeneratedItemModels` and previews into `out/`. Local files that are newer than the Spark's copies (hand fixes) are kept. |
 | `gallery` | Opens `out/index.html`, a filterable contact sheet of every preview. |
 | `stop`    | Stops gracefully: it finishes the items in flight, then exits. Starting again resumes. |
 
@@ -67,14 +67,21 @@ Measured throughput: about 75 s per item with one worker, and about 35–45 s pe
 
 ## Tuning quality
 
-- `prompts/system.md` holds the modelling rules and three worked examples (an upright can, a tool
-  lying on its side, and a flat garment). Better examples are the biggest quality lever.
+- `prompts/system.md` holds the modelling rules and four worked examples (an upright can, a tool
+  lying on its side, a flat garment, and a gun lying on its left side). Better examples are the
+  biggest quality lever.
 - `CATEGORY_HINTS` in `pipeline.py` adds per-category pose guidance.
 - `geometry.check` rejects models that are wildly out of scale or have floating parts, and sends
-  the problems back to the LLM.
+  the problems back to the LLM. A separate piece resting on the floor that is at least 40% the size
+  of the main body counts as an object of its own (the other shoe of a pair, loose rounds beside
+  their box, the next book of a set), not as a floating part.
 - With `--critic`, the vision model scores each render from 1 to 10. Anything below `--min-score`
   (default 6) goes back to the LLM with the reviewer's notes. The score is saved in each JSON file,
-  so weak models are easy to find and redo with `--ids ... --force`.
+  so weak models are easy to find and redo with `--ids ... --force`. If the reviewer itself fails,
+  the model is kept unscored instead of being revised against an empty review.
+- An item that still has problems after `--max-attempts` is logged as `failed` in `out/log.jsonl`
+  together with its last problems, so failures can be diagnosed. Items cut short by `stop` are
+  logged as `stopped` and simply stay on the to-do list.
 
 ## File format
 
@@ -87,6 +94,17 @@ Measured throughput: about 75 s per item with one worker, and about 35–45 s pe
 - `size` is in real metres for every shape; a cylinder's size is `[diameter, length, diameter]`.
 - `rot` is Unity Euler degrees.
 - The model is centred on its origin, and `baseHeight` is the hover height of that centre.
+- Ids that differ only by case (curated `gasmaskfilter`, PZ `GasmaskFilter`) share one file, because
+  Windows cannot hold both and Unity's `Resources.Load` does not tell them apart.
+
+### Pose conventions
+
+`HumanoidRig.SetHeldItem` puts an item's ground model straight into a character's hand, so long
+items must keep one orientation:
+
+- Tools and melee weapons lie along X with the handle at -X and the business end at +X.
+- Guns lie on their left side: muzzle at +X, top of the gun (sights) towards +Z, grip and magazine
+  towards -Z, thickness along Y. This matches the hand-built pistol in `ItemModels.cs`.
 
 ## Next stage: real meshes
 

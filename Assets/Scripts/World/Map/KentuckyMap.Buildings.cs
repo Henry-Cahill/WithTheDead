@@ -130,106 +130,97 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
         }
         private static void BuildRoadMarkings(Site site)
         {
-            // Only draw centre‑line dashes on streets that have at least two travel lanes.
+            // A faded centre line, dashed, down the middle of the asphalt streets that have at least two travel lanes,
+            // drawn flat on the road inside the playable square. Not on tunnels (nothing of them is drawn), nor on the
+            // roads BuildStreets' DashedLine already marks (rank 2 or more, 7 m wide or more).
+            float half = site.Half;
+            var square = Rect.MinMaxRect(-half, -half, half, half);
+            float period = RoadMarkDash + RoadMarkGap;
             foreach (Street s in site.Area.Streets)
             {
                 if (s.Data.lanes < 2) continue; // single‑lane roads get no markings
-                var pts = s.Pts;
-                for (int i = 0; i + 1 < pts.Count; i++)
+                if (s.Data.tunnel || StreetSurface(s.Data.kind).Mat != DecorMaterials.Asphalt.Mat) continue;
+                if (Rank(s.Data.kind) >= 2 && Mathf.Clamp(s.Data.width, 1.2f, 30f) >= 7f) continue;
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
                 {
-                    Vector2 a = pts[i];
-                    Vector2 b = pts[i + 1];
-                    Vector2 d = (b - a);
-                    float segLen = d.magnitude;
-                    if (segLen < 0.1f) continue;
-                    d /= segLen; // unit direction
-                    // How many full dash‑gap pairs fit in this segment?
-                    int pairCount = Mathf.FloorToInt(segLen / (RoadMarkDash + RoadMarkGap));
-                    // Starting offset so the marks are centred along the segment.
-                    float offsetStart = (segLen - pairCount * (RoadMarkDash + RoadMarkGap) + RoadMarkGap) * 0.5f;
-                    for (int p = 0; p < pairCount; p++)
+                    float travelled = 0f;   // along the piece, to the current segment's start
+                    for (int i = 0; i + 1 < piece.Count; i++)
                     {
-                        float dashStart = offsetStart + p * (RoadMarkDash + RoadMarkGap);
-                        Vector2 dashMid2D = a + d * (dashStart + RoadMarkDash * 0.5f);
-                        Vector3 dashPos = To3(dashMid2D, 0.005f); // just above road surface
-                        Vector3 dashSize = new Vector3(RoadMarkDash, 0.02f, 0.05f); // length, height, thin width
-                        Quaternion rot = Quaternion.LookRotation(new Vector3(d.x, 0f, d.y));
-                        var whiteMat = DecorPalette.Matte(new Color(0.95f, 0.95f, 0.95f));
-                        site.Town.Out.Solid(dashPos).Box(dashPos, dashSize, rot, whiteMat);
-                        // No collider – player can walk over the thin marking.
+                        Vector2 a = piece[i], b = piece[i + 1];
+                        float segLen = Vector2.Distance(a, b);
+                        if (segLen < 0.05f)
+                        {
+                            travelled += segLen;
+                            continue;
+                        }
+                        Vector2 d = (b - a) / segLen;
+                        float yaw = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;   // the dash's length (local +Z) along the road
+                        // A dash every period from the piece's start, split where it runs over a bend.
+                        for (float start = Mathf.Floor(travelled / period) * period; start < travelled + segLen; start += period)
+                        {
+                            float from = Mathf.Max(start, travelled), to = Mathf.Min(start + RoadMarkDash, travelled + segLen);
+                            if (to - from < 0.05f) continue;
+                            Vector3 at = To3(a + d * ((from + to) * 0.5f - travelled), StreetY + 0.003f);
+                            site.Town.Out.Flat(at).Flat(at, 0.12f, to - from, yaw, CentreLine);
+                            // No collider – player can walk over the thin marking.
+                        }
+                        travelled += segLen;
                     }
                 }
             }
         }
         private static void BuildKerbsAndPoles(Site site)
         {
-            // iterate every street polyline
+            // Only the wooden utility poles: one every 30 m at the roadside of every street, on one side of it (as the
+            // lines run), clear of the roads and of whatever already stands. No kerbs or grass verges: BuildStreets
+            // already lays a raised kerb strip along each road edge, and the verge would lie under the snowy sidewalk
+            // BuildSidewalks paves along both sides of every street.
+            const float poleSpacing = 30f;
+            const float poleHeight = 3.0f;
+            const float poleRadius = 0.07f;
+            var woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
+            Vector3 poleSize = new Vector3(poleRadius * 2f, poleHeight, poleRadius * 2f);
             foreach (Street s in site.Area.Streets)
             {
-                // skip tunnels/bridges – they already have their own geometry
+                // skip tunnels – nothing of them is drawn
                 if (s.Data.tunnel) continue;
-                var pts = s.Pts;
-                for (int i = 0; i + 1 < pts.Count; i++)
+                float width = Mathf.Clamp(s.Data.width, 1.2f, 30f);
+                float side = (s.Data.id & 1) == 0 ? -1f : 1f;
+                float walked = poleSpacing * 0.5f;
+                for (int i = 0; i + 1 < s.Pts.Count; i++)
                 {
-                    Vector2 a = pts[i];
-                    Vector2 b = pts[i + 1];
-                    Vector2 d = (b - a).normalized;
+                    Vector2 a = s.Pts[i], b = s.Pts[i + 1];
                     float segLen = Vector2.Distance(a, b);
                     if (segLen < 0.05f) continue;
-                    // outward normal (right side of anticlockwise polygon)
-                    Vector2 outward = new Vector2(d.y, -d.x);
-                    // ---------- kerb ----------
-                    Vector3 kerbPos = To3((a + b) * 0.5f + outward * (BuildingKerbWidth * 0.5f), BuildingKerbHeight * 0.5f);
-                    Vector3 kerbSize = new Vector3(segLen, BuildingKerbHeight, BuildingKerbWidth);
-                    Quaternion kerbRot = Quaternion.LookRotation(new Vector3(d.x, 0f, d.y));
-                    float kerbYaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
-                    site.Town.Out.Solid(kerbPos).Box(kerbPos, kerbSize, kerbRot, DecorMaterials.Concrete);
-                    site.Town.PropCollider(kerbPos, kerbSize, kerbYaw);
-                    // ---------- grass verge ----------
-                    Vector3 vergePos = To3((a + b) * 0.5f + outward * (BuildingKerbWidth + BuildingVergeWidth * 0.5f), 0.01f);
-                    Vector3 vergeSize = new Vector3(segLen, 0.02f, BuildingVergeWidth);
-                    var grassMat = DecorPalette.Matte(new Color(0.30f, 0.45f, 0.30f));
-                    site.Town.Out.Solid(vergePos).Box(vergePos, vergeSize, kerbRot, grassMat);
-                    // no collider for grass (player can walk)
-                }
-                // ---------- utility poles ----------
-                const float poleSpacing = 30f;
-                float accumulated = 0f;
-                for (int i = 0; i + 1 < pts.Count; i++)
-                {
-                    Vector2 a = pts[i];
-                    Vector2 b = pts[i + 1];
-                    float segLen = Vector2.Distance(a, b);
-                    Vector2 dir = (b - a).normalized;
-                    while (accumulated + poleSpacing <= segLen)
+                    Vector2 d = (b - a) / segLen, n = new Vector2(-d.y, d.x);
+                    for (; walked <= segLen; walked += poleSpacing)
                     {
-                        accumulated += poleSpacing;
-                        Vector2 pole2D = a + dir * accumulated;
-                        const float poleHeight = 3.0f;
-                        const float poleRadius = 0.07f;
-                        Vector3 polePos = To3(pole2D, poleHeight * 0.5f);
-                        Vector3 poleSize = new Vector3(poleRadius * 2f, poleHeight, poleRadius * 2f);
-                        var woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
-                        site.Town.Out.Solid(polePos).Box(polePos, poleSize, 0f, woodMat);
-                        site.Town.PropCollider(polePos, poleSize, 0f);
-                        // optional small cross‑piece for visual interest
-                        const float crossHeight = 1.5f;
-                        const float crossDepth = 0.02f;
-                        const float crossWidth = 0.4f;
-                        Vector3 crossPos = To3(pole2D, poleHeight - crossHeight * 0.5f);
-                        Vector3 crossSize = new Vector3(crossWidth, crossDepth, crossDepth);
-                        site.Town.Out.Solid(crossPos).Box(crossPos, crossSize, 0f, woodMat);
-                        site.Town.PropCollider(crossPos, crossSize, 0f);
+                        Vector2 pole2D = a + d * walked + n * ((width * 0.5f + 1.2f) * side);
+                        if (!site.FreeBeside(pole2D, 0.5f)) continue;
+                        site.Take(pole2D, 0.5f);
+                        Vector2 toRoad = -n * side;
+                        Vector3 at3 = To3(pole2D, 0f);
+                        RaidMesh m = site.Town.Out.Solid(at3);
+                        m.SetFrame(at3, Mathf.Atan2(toRoad.x, toRoad.y) * Mathf.Rad2Deg);
+                        m.Box(new Vector3(0f, poleHeight * 0.5f, 0f), poleSize, woodMat);
+                        // small cross-piece, across the line of the wires
+                        m.Box(new Vector3(0f, poleHeight - 0.75f, 0f), new Vector3(0.02f, 0.02f, 0.4f), woodMat);
+                        m.ResetFrame();
+                        site.Town.PropCollider(at3 + Vector3.up * (poleHeight * 0.5f), poleSize, 0f);
                     }
-                    accumulated = Mathf.Max(0f, accumulated - segLen);
+                    walked -= segLen;
                 }
             }
         }
 
-        private static void BuildBuildings(Site site, MapBuild build)
+        // One step per few buildings, so a streamed map piece spreads its buildings over several frames.
+        private const int BuildingsPerStep = 6;
+
+        private static IEnumerable<string> BuildBuildings(Site site, MapBuild build)
         {
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
+            int done = 0;
             foreach (Footprint f in site.Area.Buildings)
             {
                 if (f.Pts.Count < 3 || f.Size < 6f) continue;
@@ -252,11 +243,15 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
                     // Add porch if applicable
                     PorchBuilder.Build(site, f, build);
                 }
-                }
+                if (++done % BuildingsPerStep == 0) yield return "buildings";
+            }
             // Once, after the loop: called per footprint it redrew every residential roof's trim for every building.
             BuildRoofEaves(site);
+            yield return "roof eaves";
             BuildKerbsAndPoles(site);
-                BuildRoadMarkings(site);
+            yield return "kerbs and poles";
+            BuildRoadMarkings(site);
+            yield return "road markings";
         }
 
         private static void BuildDoorFrame(Site site, Vector2 a, Vector2 d, float doorPos, float doorYaw, Vector2 outward, Surf exterior)
@@ -319,6 +314,7 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
                         doorOutward = outward;
                         site.Take(doorPoint + outward * 1.2f, 1.1f);   // keep the doorstep clear of props
                         // Build deterministic wooden door frame around the entrance
+                        BuildDoorFrame(site, a, d, len * 0.5f, yaw, outward, outside);
                         // Add awning and sign for retail‑type façades
                         bool isRetail = b.kind == "retail" || (b.use != null && b.use.StartsWith("shop:"));
                         if (isRetail && door >= 0)
@@ -447,8 +443,8 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
                 over.Tri(To3(A, ceiling), To3(C, ceiling), To3(B, ceiling), DecorMaterials.Ceiling);   // face down
             }
             if (roofed)
-                Shelter.Register(new Bounds(new Vector3(f.Bounds.center.x, GroundStorey * 0.5f, f.Bounds.center.y),
-                    new Vector3(Mathf.Max(0.5f, f.Bounds.width - 0.4f), GroundStorey, Mathf.Max(0.5f, f.Bounds.height - 0.4f))));
+                Shelter.Register(site.ToWorld(new Bounds(new Vector3(f.Bounds.center.x, GroundStorey * 0.5f, f.Bounds.center.y),
+                    new Vector3(Mathf.Max(0.5f, f.Bounds.width - 0.4f), GroundStorey, Mathf.Max(0.5f, f.Bounds.height - 0.4f)))));
             site.Take(f.Bounds);
             if (door >= 0) Loot(site, f, rng, doorPoint);
         }
@@ -476,6 +472,8 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
             if (len < 2.4f) return;
             int count = Mathf.Max(1, Mathf.FloorToInt(len / 3.2f));
             float step = len / count;
+            const float winWidth = 1.0f;
+            const float winHeight = 1.15f;
             Vector3 normal = To3(outward, 0f);
             var frameMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
             for (int k = 0; k < count; k++)
@@ -487,11 +485,9 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
             {
                 Vector3 c = To3(at, y);
                 RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
-                m.Upright(c, normal, 1.0f, 1.15f, Glass);
+                m.Upright(c, normal, winWidth, winHeight, Glass);
 
                 // ---- window frame (four thin wooden strips) ----
-                float winHeight = Storey - 0.2f; // approximate window height used earlier
-                float winWidth = 1.0f; // fixed window width in the existing code
                 float halfThick = WindowFrameThickness * 0.5f;
                 float yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
                 // top strip
@@ -522,7 +518,7 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
                 // Add simple wooden shutters on each side of the window (outside face)
                 const float shutterWidth = 0.26f;
                 const float shutterDepth = 0.03f;
-                float shutterHeight = Storey - 0.2f; // approximate window height
+                float shutterHeight = winHeight;
                 // offset from window centre to place shutters
                 float offset = 0.5f * 1.0f + 0.07f + shutterWidth * 0.5f;
                 // outward offset so shutters sit slightly in front of the wall
@@ -674,7 +670,7 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
         }
 
         /// <summary>The building's height in metres: as mapped, or from its storeys and kind.</summary>
-        private static float HeightOf(MapBuilding b)
+        internal static float HeightOf(MapBuilding b)
         {
             if (b.height > 0f) return Mathf.Clamp(b.height, 2.6f, 90f);
             float storeys = Mathf.Max(1, b.levels) * Storey;

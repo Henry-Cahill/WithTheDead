@@ -75,6 +75,10 @@ namespace CloneZ
                 .DisabledIf(_open && PowerGrid.Instance == null, "There's no supply to switch");
             into.Add(new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", c => SetOpen(!_open, false)).DisabledIf(_locked && !_open, "The panel is locked"));
             into.Add(breaker);
+            // Offer repair when the grid is down and the panel door is open.
+            var grid = PowerGrid.Instance;
+            if (grid != null && !grid.IsOn && _open)
+                into.Add(new InteractAction(RepairActionLabel, RepairPanel));
             // Lock / Unlock actions – only available when the door is closed.
             if (!_open && !_locked)
             {

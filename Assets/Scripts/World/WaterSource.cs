@@ -30,14 +30,18 @@ namespace CloneZ
         /// </summary>
         public float Water { get; private set; }   // rain-barrel level 0..WaterBarrelMax (taps ignore this)
 
+        /// <summary>How high the rain barrel's wooden stand lifts the drum off the ground.</summary>
+        internal const float BarrelStandHeight = 0.1f;
+
         private float _lastHours;                   // world hour the fill sim last advanced
         private Transform _waterFill;               // the barrel's water disc (scales with the level)
         private Transform _waterFloat;               // visual float that moves with the water level
+        private GameObject _lid;                    // the barrel's removable wooden lid (shown only while covered)
 
         private static readonly Color BarrelWater = new Color(0.34f, 0.5f, 0.52f);
-        // Cached material instances for water visual states to avoid per-frame material allocation.
-        private static readonly Material _waterNormalMaterial = _waterNormalMaterial;
-        private static readonly Material _waterFullMaterial = _waterFullMaterial;
+        // Water visual states; CloneZUtil.Mat caches by colour, so these don't allocate per frame.
+        private static Material WaterNormalMaterial => CloneZUtil.Mat(BarrelWater, smoothness: 0.7f);
+        private static Material WaterFullMaterial => CloneZUtil.Mat(new Color(0.55f, 0.75f, 0.65f), smoothness: 0.8f);
         private static WeatherSystem _weather;
 
         // Length of a full day in hours; used to correct rain‑fill timing when the clock wraps.
@@ -158,6 +162,13 @@ namespace CloneZ
             RefreshVisual();
         }
 
+        /// <summary>Puts the rain barrel's wooden lid on or takes it off (see <see cref="RainBarrelFixture"/>).
+        /// A barrel is built uncovered.</summary>
+        internal void ShowLid(bool on)
+        {
+            if (_lid != null) _lid.SetActive(on);
+        }
+
         #region Building
         /// <summary>Builds a tap or a rain barrel from code and returns it. A tap is the kitchen sink: a
         /// run of base cabinets with a steel bowl, drainer and mixer tap, its back toward -Z (turned by
@@ -265,8 +276,9 @@ namespace CloneZ
 
             const float r = 0.34f, h = 0.96f, wall = 0.025f;
             Color plastic = new Color(0.17f, 0.33f, 0.46f);
+            Vector3 drumBase = position + Vector3.up * BarrelStandHeight;   // the drum stands on its wooden stand
             var m = new RaidMesh();
-            m.SetFrame(position, 0f);
+            m.SetFrame(drumBase, 0f);
             m.Cylinder(Vector3.zero, r, h, 16, DecorPalette.Gloss(plastic), Quaternion.identity, 1f, false);
             m.Cylinder(Vector3.zero, r, 0.02f, 16, DecorPalette.Gloss(plastic * 0.8f));
             foreach (float y in new[] { 0.22f, 0.5f, 0.78f })
@@ -287,13 +299,6 @@ namespace CloneZ
             Vector3 labelPos = new Vector3(Mathf.Sin(labelAngle) * (r + 0.012f), 0.6f, Mathf.Cos(labelAngle) * (r + 0.012f));
             m.Box(labelPos, new Vector3(0.08f, 0.02f, 0.001f), DecorPalette.Matte(new Color(0.78f, 0.71f, 0.55f)));
             m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
-            // wooden barrel stand – two short legs and a cross‑beam
-            // left leg
-            m.Cylinder(new Vector3(-0.15f, -0.02f, -0.15f), 0.015f, 0.07f, 8, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
-            // right leg
-            m.Cylinder(new Vector3( 0.15f, -0.02f, -0.15f), 0.015f, 0.07f, 8, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
-            // cross‑beam connecting legs
-            m.Box(new Vector3(0f, 0.03f, -0.15f), new Vector3(0.34f, 0.012f, 0.024f), DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
 
             // spigot base (short cylinder protruding from barrel side)
             m.Cylinder(new Vector3(0f, 0.12f, r + 0.03f), 0.010f, 0.04f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
@@ -347,66 +352,78 @@ namespace CloneZ
             // rusted chain loop (torus approximated by thin box)
             m.Box(new Vector3(0f, h - 0.02f, 0f), new Vector3(r * 0.6f, 0.008f, 0.008f), DecorPalette.Matte(new Color(0.4f, 0.18f, 0.12f)));
 
-            // wooden barrel lid – thin cylinder slightly larger than the barrel opening
+            // wooden barrel lid – thin cylinder slightly larger than the barrel opening. It is a mesh of its own (same
+            // frame as the drum) on a "Lid" child, shown only while the barrel is covered (see ShowLid).
+            var lid = new RaidMesh();
+            lid.SetFrame(drumBase, 0f);
             float lidY = h + 0.012f; // sits just above the barrel lip
-            m.Cylinder(new Vector3(0f, lidY, 0f), r + 0.03f, 0.015f, 16, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+            lid.Cylinder(new Vector3(0f, lidY, 0f), r + 0.03f, 0.015f, 16, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
 
-            // left hinge – small cylinder on rear side of lid
-            m.Cylinder(new Vector3(-(r + 0.03f - 0.008f), lidY, -0.018f), 0.005f, 0.02f, 6, DecorPalette.Metal(FurnitureBuilder.Brass));
+            // left hinge – brass pin on the lid's back edge (the 16-sided disc's edge is ~2 cm in from r + 0.03 at x = ±0.12)
+            lid.Cylinder(new Vector3(-0.12f, lidY, -(r + 0.01f)), 0.005f, 0.02f, 6, DecorPalette.Metal(FurnitureBuilder.Brass));
             // right hinge – mirrored
-            m.Cylinder(new Vector3((r + 0.03f - 0.008f), lidY, -0.018f), 0.005f, 0.02f, 6, DecorPalette.Metal(FurnitureBuilder.Brass));
+            lid.Cylinder(new Vector3(0.12f, lidY, -(r + 0.01f)), 0.005f, 0.02f, 6, DecorPalette.Metal(FurnitureBuilder.Brass));
 
-            // latch strap across front of lid
-            m.Box(new Vector3(0f, lidY + 0.005f, r + 0.018f), new Vector3(0.07f, 0.015f, 0.006f), DecorPalette.Metal(FurnitureBuilder.Steel));
+            // latch strap just outside the lid's front edge, hanging from the edge down over the barrel's rim (h)
+            lid.Box(new Vector3(0f, lidY - 0.0055f, r + 0.033f), new Vector3(0.07f, 0.015f, 0.006f), DecorPalette.Metal(FurnitureBuilder.Steel));
 
-            // rust‑stained patches on lid
+            // rust‑stained patches on the lid's top face
             int lidPatchCount = strapRand.Next(2, 4);
             for (int i = 0; i < lidPatchCount; i++)
             {
                 float angle = (float)(strapRand.NextDouble() * Mathf.PI * 2.0);
-                float yOff = 0.003f + (float)(strapRand.NextDouble() * 0.004f);
+                float dist = 0.06f + (float)(strapRand.NextDouble() * 0.24f);   // out from the lid's centre
                 Vector3 pos = new Vector3(
-                    Mathf.Sin(angle) * (r + 0.025f),
-                    lidY + yOff,
-                    Mathf.Cos(angle) * (r + 0.025f));
-                m.Box(pos, new Vector3(0.015f, 0.002f, 0.015f), DecorPalette.Matte(new Color(0.4f, 0.2f, 0.1f)));
+                    Mathf.Sin(angle) * dist,
+                    lidY + 0.0155f,
+                    Mathf.Cos(angle) * dist);
+                lid.Box(pos, new Vector3(0.015f, 0.002f, 0.015f), DecorPalette.Matte(new Color(0.4f, 0.2f, 0.1f)));
             }
-            // Subtle rust‑stained metal cap on the barrel's lip for a makeshift handle feel.
+            // Subtle rust‑stained metal cap on the barrel's lip for a makeshift handle feel, a hair above the plastic
+            // rim so the two don't z-fight.
 
-            Rim(m, r - wall, r + wall + 0.01f, h, 16,
+            Rim(m, r - wall, r + wall + 0.01f, h + 0.002f, 16,
                 DecorPalette.Metal(new Color(0.5f, 0.25f, 0.1f)));
+
+            // wooden barrel stand on the ground under the drum: two runners whose ends show past the drum, and a
+            // cross-beam across each end at the runners' top
+            m.SetFrame(position, 0f);
+            Surf standWood = DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f));
+            foreach (float x in new[] { -0.2f, 0.2f })
+                m.Box(new Vector3(x, BarrelStandHeight * 0.5f, 0f), new Vector3(0.08f, BarrelStandHeight, 0.78f), standWood);
+            foreach (float z in new[] { -0.36f, 0.36f })
+                m.Box(new Vector3(0f, BarrelStandHeight - 0.02f, z), new Vector3(0.52f, 0.04f, 0.06f), standWood);
             m.ResetFrame();
             m.ApplyTo(gameObject, position);
-            Solid(new Vector3(0f, h * 0.5f, 0f), new Vector3(r * 2f, h, r * 2f));
-            // wooden barrel stand – two short legs and a cross‑beam
-            // left leg
-            m.Cylinder(new Vector3(-0.15f, -0.02f, -0.15f), 0.015f, 0.07f, 8, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
-            // right leg
-            m.Cylinder(new Vector3( 0.15f, -0.02f, -0.15f), 0.015f, 0.07f, 8, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
-            // cross‑beam connecting legs
-            m.Box(new Vector3(0f, 0.03f, -0.15f), new Vector3(0.34f, 0.012f, 0.024f), DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+            Solid(new Vector3(0f, (BarrelStandHeight + h) * 0.5f, 0f), new Vector3(r * 2f, BarrelStandHeight + h, r * 2f));
 
+            // The lid's vertices are relative to the barrel's pivot like the body's, so its child sits on the pivot.
+            _lid = new GameObject("Lid");
+            _lid.transform.SetParent(transform, false);
+            lid.ApplyTo(_lid, position);
+            ShowLid(false);   // the barrel starts uncovered
 
-var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                    water.name = "Water";
-                    water.transform.SetParent(transform, false);
-                    water.GetComponent<Renderer>().sharedMaterial = _waterNormalMaterial;
-                    Strip(water);
-                    _waterFill = water.transform;
+            var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            water.name = "Water";
+            water.transform.SetParent(transform, false);
+            water.GetComponent<Renderer>().sharedMaterial = WaterNormalMaterial;
+            Strip(water);
+            _waterFill = water.transform;
 
-                    // wooden float that rides the water surface – one primitive
-                    var floatObj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                    floatObj.name = "Float";
-                    floatObj.transform.SetParent(transform, false);
-                    // size: 2 cm diameter, 3 cm tall
-                    floatObj.transform.localScale = new Vector3(0.02f, 0.03f, 0.02f);
-                    // place it near the interior wall, a little below the expected water surface
-                    floatObj.transform.localPosition = new Vector3(r - 0.015f, 0.05f, 0f);
-                    // wood colour – slight random tint from the same strapRand used for other barrel details
-                    float woodShade = 0.6f + 0.1f * (float)strapRand.NextDouble();
-                    floatObj.GetComponent<Renderer>().sharedMaterial = DecorPalette.Matte(new Color(woodShade, woodShade * 0.9f, woodShade * 0.7f)).Mat;
-                    Strip(floatObj);
-                    _waterFloat = floatObj.transform;
+            // wooden float that rides the water surface – one primitive
+            var floatObj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            floatObj.name = "Float";
+            floatObj.transform.SetParent(transform, false);
+            // size: 2 cm diameter, 6 cm tall (a primitive cylinder is 2 units high)
+            floatObj.transform.localScale = new Vector3(0.02f, 0.03f, 0.02f);
+            // near the interior wall, inside the drum (RefreshVisual floats it on the water's surface)
+            floatObj.transform.localPosition = new Vector3(r - wall - 0.03f, BarrelStandHeight + 0.05f, 0f);
+            // wood colour – slight random tint from the same strapRand used for other barrel details. A plain
+            // material: the palette's materials only colour meshes whose UVs point at their palette texel.
+            float woodShade = 0.6f + 0.1f * (float)strapRand.NextDouble();
+            floatObj.GetComponent<Renderer>().sharedMaterial = CloneZUtil.Mat(new Color(woodShade, woodShade * 0.9f, woodShade * 0.7f));
+            Strip(floatObj);
+            _waterFloat = floatObj.transform;
         }
 
         // The inside of the barrel's wall, facing inward (seen past the open top).
@@ -474,36 +491,33 @@ var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             }
         }
 
-        // Raises/lowers the water inside the open barrel to match the level (its surface shows from above).
+        // Raises/lowers the water inside the open barrel to match the level (its surface shows from above), with the
+        // float riding on it. Both stand on the drum's floor, up on the barrel's stand.
         private void RefreshVisual()
         {
             if (_waterFill == null) return;
             float level = Fill01;
             _waterFill.gameObject.SetActive(level > 0.02f);
+            if (_waterFloat != null) _waterFloat.gameObject.SetActive(level > 0.02f);
             if (level <= 0.02f) return;
 
             float h = Mathf.Lerp(0.04f, 0.88f, level);           // depth of water standing in the barrel
-_waterFill.localScale = new Vector3(0.62f, h * 0.5f, 0.62f);
-                _waterFill.position = transform.position + new Vector3(0f, 0.025f + h * 0.5f, 0f);
+            float bottom = BarrelStandHeight + 0.025f;            // the water's underside, above the barrel's pivot
+            _waterFill.localScale = new Vector3(0.62f, h * 0.5f, 0.62f);
+            _waterFill.position = transform.position + new Vector3(0f, bottom + h * 0.5f, 0f);
 
-                // update float position and visibility
-                if (_waterFloat != null)
-                {
-                    bool showFloat = level > 0.02f;
-                    _waterFloat.gameObject.SetActive(showFloat);
-                    if (showFloat)
-                    {
-                        // water surface Y = base + half the scaled water height + small offset so the float sits half out of the water
-                        float surfaceY = transform.position.y + 0.025f + h * 0.5f + 0.015f;
-                        _waterFloat.position = new Vector3(_waterFloat.position.x, surfaceY, _waterFloat.position.z);
-                    }
-                }
+            // The float's centre sits on the water's top surface, so it rides half out of the water.
+            if (_waterFloat != null)
+            {
+                float surfaceY = transform.position.y + bottom + h;
+                _waterFloat.position = new Vector3(_waterFloat.position.x, surfaceY, _waterFloat.position.z);
+            }
             // Highlight the water while the barrel is essentially full; back to plain water once drawn from.
             var rend = _waterFill.GetComponent<Renderer>();
             if (rend != null)
                 rend.sharedMaterial = level >= 0.99f
-                    ? _waterFullMaterial
-                    : _waterNormalMaterial;
+                    ? WaterFullMaterial
+                    : WaterNormalMaterial;
         }
         #endregion
     }

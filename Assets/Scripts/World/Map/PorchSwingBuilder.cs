@@ -26,6 +26,7 @@ namespace CloneZ
             Vector3 ropePos = mid - new Vector3(0f, ropeLength * 0.5f, 0f);
             var woodMat = DecorMaterials.WoodFloor(woodColor);
             var ropeMat = DecorMaterials.Rope(Color.Lerp(woodColor, Color.black, 0.5f));
+            site.Town.Out.Solid(ropePos).Box(ropePos, ropeSize, railYaw, ropeMat);
             // Knot sits at the rope’s attachment point (mid) and is a tiny metal sphere‑like box.
             Vector3 knotPos = mid - new Vector3(0f, ropeLength, 0f) + new Vector3(0f, knotRadius, 0f);
             site.Town.Out.Solid(knotPos)
@@ -59,7 +60,9 @@ namespace CloneZ
             site.Town.PropCollider(backPos, backSize, railYaw);
             // Add a simple “Sit on swing” interactable so the player can notice the prop.
             // Add a simple "Sit on swing" interactable so the player can notice the prop.
+            // Under the site's world root, so it stands where the swing does on a streamed map's piece and goes with it.
             var swingGO = new GameObject("SwingInteractable");
+            swingGO.transform.SetParent(site.Town.World, false);
             swingGO.transform.position = seatPos;
             swingGO.AddComponent<SwingInteractable>();
             // Mark the swing’s footprint as taken so other props (mailbox, etc.) won’t intersect.

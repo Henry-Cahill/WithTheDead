@@ -35,8 +35,11 @@ FORMAT_VERSION = 1
 
 CATEGORY_HINTS = {
     "Clothing": "Lay the garment out flat and spread, as in a product photo, with its true outline.",
-    "Weapon": "It lies on its side with the longest axis along X; show the business end clearly.",
-    "Firearm": "It lies on its side, barrel along +X; show stock, grip, trigger guard, magazine, sights.",
+    "Weapon": "It lies on its side along X: handle or grip at -X, business end (head, blade, spike) at +X; "
+              "show the business end clearly.",
+    "Firearm": "It lies flat on its left side: muzzle at +X, stock or grip end at -X, top of the gun (sights) "
+               "towards +Z, grip and magazine towards -Z, right side facing up; show stock, grip, trigger guard, "
+               "magazine, sights.",
     "Food": "Show it as it would be found: its packaging, tin or container, or the food itself if loose.",
     "Drink": "Stand the bottle, can or carton upright.",
     "Ammo": "Show the box or a small pile of rounds / shells.",
@@ -46,6 +49,8 @@ CATEGORY_HINTS = {
 
 _stop = threading.Event()
 _log_lock = threading.Lock()
+_out_lock = threading.Lock()
+_out_files = None  # lower-cased id -> model file
 
 
 def load_system_prompt():
@@ -53,7 +58,14 @@ def load_system_prompt():
 
 
 def output_path(item_id):
-    return OUT_DIR / f"{item_id}.json"
+    """The model file for an item. Ids that differ only by case (curated "gasmaskfilter", PZ "GasmaskFilter")
+    share one file: the project lives on Windows, which cannot hold both, and Unity's Resources.Load
+    does not tell them apart either."""
+    global _out_files
+    with _out_lock:
+        if _out_files is None:
+            _out_files = {p.stem.lower(): p for p in OUT_DIR.glob("*.json")} if OUT_DIR.exists() else {}
+        return _out_files.setdefault(item_id.lower(), OUT_DIR / f"{item_id}.json")
 
 
 def write_model(item, parts, base_height, meta):
@@ -63,7 +75,9 @@ def write_model(item, parts, base_height, meta):
     head = json.dumps({k: v for k, v in body.items() if k != "parts"}, ensure_ascii=False)[:-1]
     lines = ",\n".join("  " + json.dumps(p, ensure_ascii=False, separators=(",", ":")) for p in parts)
     tmp = output_path(item.id).with_suffix(".tmp")
-    tmp.write_text(f"{head}, \"parts\": [\n{lines}\n]}}\n", encoding="utf-8")
+    # LF on every OS, so files written on Windows match the ones generated on the Spark.
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        f.write(f"{head}, \"parts\": [\n{lines}\n]}}\n")
     os.replace(tmp, output_path(item.id))
 
 
@@ -83,6 +97,7 @@ def generate_one(item, client, system_prompt, args):
     t0 = time.time()
     messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt(item)}]
     best = None  # (score, parts, notes)
+    last_issues = []
     tokens = 0
     attempts = 0
     critic_rounds = 0
@@ -91,7 +106,10 @@ def generate_one(item, client, system_prompt, args):
         attempts += 1
         try:
             out, raw, stats = client.chat_json(messages, llm.MODEL_SCHEMA, temperature=args.temperature)
+            if not isinstance(out, dict):
+                raise ValueError("the answer is not a JSON object")
         except Exception as e:  # malformed JSON or transport failure: just try again
+            last_issues = [f"{type(e).__name__}: {str(e)[:160]}"]
             retry = f"Your last answer could not be used ({type(e).__name__}). Answer again with valid JSON."
             messages = messages[:2] + [{"role": "user", "content": retry}]
             continue
@@ -101,13 +119,14 @@ def generate_one(item, client, system_prompt, args):
         messages = messages[:2] + [{"role": "assistant", "content": raw}]
 
         if issues:
+            last_issues = issues
             messages.append({"role": "user", "content": "Fix these problems and return the full corrected model:\n- "
                              + "\n- ".join(issues)})
             if best is None:
-                best = (-1, parts, out.get("notes", ""))
+                best = (-1, parts, str(out.get("notes", "")))
             continue
 
-        notes = out.get("notes", "")
+        notes = str(out.get("notes", ""))
         if not args.critic:
             best = (0, parts, notes)
             break
@@ -116,7 +135,11 @@ def generate_one(item, client, system_prompt, args):
         try:
             score, problems = llm.critique(client, args.critic_model, geometry.render_sheet(norm), item.prompt_line())
         except Exception:
-            score, problems = 0, ""
+            # No review to act on, so no "revision" against an empty one: keep this model unless an
+            # earlier one was actually scored.
+            if best is None or best[0] <= 0:
+                best = (0, parts, notes)
+            break
         if best is None or score > best[0]:
             best = (score, parts, notes)
         if score < args.min_score and critic_rounds < args.critic_rounds and attempts < args.max_attempts:
@@ -130,19 +153,24 @@ def generate_one(item, client, system_prompt, args):
     entry = {"id": item.id, "category": item.category, "attempts": attempts, "tokens": tokens,
              "secs": round(time.time() - t0, 1)}
     if best is None or best[0] < 0:
-        entry["status"] = "failed"
+        # Cut short by a stop request is not a failure: the item is simply still to do.
+        entry["status"] = "stopped" if _stop.is_set() and attempts < args.max_attempts else "failed"
+        if last_issues:
+            entry["issues"] = last_issues[:3]
         return entry
 
     score, parts, notes = best
     norm, base_height = geometry.normalize(parts)
     meta = {"name": item.name, "model": client.model, "notes": notes[:400]}
-    if args.critic:
+    if args.critic and score > 0:
         meta["score"] = score
     write_model(item, norm, base_height, meta)
     if not args.no_preview:
         PREVIEWS.mkdir(parents=True, exist_ok=True)
         geometry.render_sheet(norm, f"{item.name}  [{item.id}]").save(PREVIEWS / f"{item.id}.png")
-    entry.update(status="ok", parts=len(norm), score=score)
+    entry.update(status="ok", parts=len(norm))
+    if "score" in meta:
+        entry["score"] = score
     return entry
 
 
@@ -150,6 +178,7 @@ def select_items(args):
     items = catalog.load_items(RESOURCES)
     skip = catalog.handmade_ids(PROJECT / "Assets" / "Scripts" / "World" / "ItemModels.cs")
     chosen = []
+    seen = set()
     ids = set(args.ids or [])
     for it in items:
         if it.id in skip and not args.include_handmade:
@@ -162,6 +191,9 @@ def select_items(args):
             continue
         if not args.force and output_path(it.id).exists():
             continue
+        if it.id.lower() in seen:  # case-only twins share one file; generate it once
+            continue
+        seen.add(it.id.lower())
         chosen.append(it)
     if args.limit:
         chosen = chosen[: args.limit]
@@ -269,10 +301,13 @@ def cmd_status(args):
     if LOG.exists():
         failed = {}
         for line in LOG.read_text(encoding="utf-8").splitlines():
-            e = json.loads(line)
+            try:
+                e = json.loads(line)
+            except ValueError:
+                continue  # a line cut short by a crash
             if e.get("status") == "ok":
                 failed.pop(e["id"], None)
-            else:
+            elif e.get("status") != "stopped":
                 failed[e["id"]] = e.get("status")
         failed = {k: v for k, v in failed.items() if not output_path(k).exists()}
         if failed:

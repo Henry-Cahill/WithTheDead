@@ -91,6 +91,23 @@ namespace CloneZ
         #endregion
 
         #region Cache
+        /// <summary>While set (a streamed map's piece is being built), the key of every sign handed out is added to it,
+        /// so the piece can let go of the signs only it showed (see <see cref="Forget"/>).</summary>
+        internal static List<string> SignsUsed;
+        // The signs first painted for a streamed piece: the only ones Forget lets go of.
+        private static readonly HashSet<string> s_StreamedSigns = new HashSet<string>();
+
+        /// <summary>Destroys a sign texture first painted for a streamed map's piece, and the materials made from it, once
+        /// no piece shows it; any other texture stays.</summary>
+        internal static void Forget(string key)
+        {
+            if (!s_StreamedSigns.Remove(key) || !s_Cache.TryGetValue(key, out Texture2D tex)) return;
+            s_Cache.Remove(key);
+            if (tex == null) return;
+            DecorMaterials.Forget(tex);
+            Object.Destroy(tex);
+        }
+
         private static bool TryGet(string key, out Texture2D tex) => s_Cache.TryGetValue(key, out tex) && tex != null;
 
         private static Texture2D Finish(string key, int w, int h, Color32[] px, bool repeat = true, bool point = false)
@@ -841,7 +858,10 @@ if (y % Row == 0) c = Mul(color, 0.4f);
             int w = DecorFont.Width(text, Scale) + Pad * 2;
             int h = DecorFont.GlyphH * Scale + Pad * 2;
             aspect = (float)w / h;
+            SignsUsed?.Add(key);
+            if (SignsUsed == null) s_StreamedSigns.Remove(key);   // shown by something lasting too: it stays
             if (TryGet(key, out Texture2D t)) return t;
+            if (SignsUsed != null) s_StreamedSigns.Add(key);
             var px = new Color32[w * h];
             for (int y = 0; y < h; y++)
                 for (int x = 0; x < w; x++)

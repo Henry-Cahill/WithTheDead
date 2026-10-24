@@ -11,6 +11,8 @@ namespace CloneZ
     {
         private const int MaxPoles = 90;
         private const int LitPoles = 10;
+        private const float LampSpacing = 30f; // metres between the iron street lamps along a main road
+        private const float SignpostSpacing = 60f; // metres between the road signposts along a main road
         private const int MaxCars = 70;
         private const int MaxTrees = 1200;
         private const int MaxHydrants = 70; // upper bound of hydrants placed per map
@@ -106,8 +108,8 @@ namespace CloneZ
                         float dAlong = R(rng, 0f, segLen);
                         // random offset a bit off the curb (0.3‑0.8 m)
                         float offset = R(rng, 0.3f, 0.8f);
-                        Vector2 at2 = a + dir * dAlong + normal * offset;
-                        if (!site.Free(at2, 0.5f)) continue;
+                        Vector2 at2 = a + dir * dAlong + normal * (s.Data.width * 0.5f + offset);
+                        if (!site.FreeBeside(at2, 0.5f)) continue;
                         // snow‑pile size and yaw
                         float w = R(rng, 0.5f, 1.0f);
                         float d = R(rng, 0.5f, 1.0f);
@@ -116,7 +118,7 @@ namespace CloneZ
                         Vector3 at3 = To3(at2, 0f);
                         RaidMesh m = site.Town.Out.Solid(at3);
                         m.SetFrame(at3, yaw);
-                        DecorProps.SnowPile(m, rng, Vector3.zero, w, d, h, yaw);
+                        DecorProps.SnowPile(m, rng, Vector3.zero, w, d, h, 0f);
                         m.ResetFrame();
                         // a tiny collider so the player can bump the pile
                         site.Town.PropCollider(at3 + Vector3.up * (h * 0.5f),
@@ -130,6 +132,8 @@ namespace CloneZ
 
 
 
+        // Not called: BuildStreets already lays a raised kerb strip along both edges of every road, and these boxes
+        // (and their colliders) run across the road instead of along it.
         private static void BuildKerbs(Site site)
         {
             var rng = new System.Random(site.Town.Rng.Next());
@@ -190,16 +194,17 @@ namespace CloneZ
                     {
                         float offsetFromRoad = R(rng, 0.6f, 1.2f);
                         Vector2 at = a + dir * walked + normal * (s.Data.width * 0.5f + offsetFromRoad) * side;
-                        if (site.Free(at, 0.6f))
+                        if (site.FreeBeside(at, 0.6f))
                         {
-                            float yaw = side * 90f + R(rng, -10f, 10f); // hydrant faces the curb, jittered
+                            Vector2 toRoad = -normal * side;
+                            float yaw = Mathf.Atan2(toRoad.x, toRoad.y) * Mathf.Rad2Deg + R(rng, -10f, 10f); // hydrant faces the curb, jittered
                             Vector3 at3 = To3(at, 0f);
                             RaidMesh m = site.Town.Out.Solid(at3);
                             m.SetFrame(at3, yaw);
                             DecorProps.Hydrant(m, rng);
                             m.ResetFrame();
-                            site.Town.PropCollider(at3 + Vector3.up * 0.9f,
-                                new Vector3(0.4f, 1.8f, 0.4f), yaw);
+                            site.Town.PropCollider(at3 + Vector3.up * 0.38f,
+                                new Vector3(0.44f, 0.76f, 0.44f), yaw);
                             site.Take(at, 0.6f);
                             placed++;
                             side = -side; // alternate side for next hydrant on this segment
@@ -227,7 +232,7 @@ namespace CloneZ
                     for (; walked <= len; walked += 34f, side = -side)
                     {
                         Vector2 at = a + d * walked + n * ((s.Data.width * 0.5f + 1.1f) * side);
-                        if (!site.Free(at, 0.8f)) continue;
+                        if (!site.FreeBeside(at, 0.8f)) continue;
                         Vector2 toRoad = -n * side;
                         poles.Add((at, Mathf.Atan2(toRoad.x, toRoad.y) * Mathf.Rad2Deg));
                         site.Take(at, 0.8f);
@@ -238,10 +243,12 @@ namespace CloneZ
             poles.Sort((p, q) => p.at.sqrMagnitude.CompareTo(q.at.sqrMagnitude));
             var rng = new System.Random(site.Town.Rng.Next());
             int litCount = 0;
+            // A streamed map's pieces share the fixed square's handful of burning lights by area.
+            int litPoles = site.Chunked ? Mathf.Max(1, Mathf.RoundToInt(LitPoles * site.AreaShare)) : LitPoles;
             for (int i = 0; i < poles.Count && i < MaxPoles; i++)
             {
                 float lean = rng.NextDouble() < 0.05 ? R(rng, 8f, 14f) : 0f;
-                bool lit = litCount < LitPoles && lean == 0f && rng.NextDouble() < 0.8;
+                bool lit = litCount < litPoles && lean == 0f && rng.NextDouble() < 0.8;
                 Vector3 at = To3(poles[i].at, 0f);
                 RaidMesh m = site.Town.Out.Solid(at);
                 float poleYaw = poles[i].yaw + R(rng, -5f, 5f);
@@ -254,18 +261,81 @@ namespace CloneZ
             }
         }
 
-        // Build all map props after points (lights, cars, trees, etc.).
-        private static void BuildAllProps(Site site)
+        // The night shift's iron lamps (StreetLampHelper) along the main asphalt roads: one every 30 m on alternate
+        // sides, its arm reaching out over the road. Built after the street lights, so they only take the roadside
+        // spots those left free.
+        private static void BuildStreetLamps(Site site)
         {
-            BuildStreetLights(site);
-            BuildKerbs(site); // added kerb generation
-            BuildHydrants(site);
-            BuildSnowPiles(site);
-            BuildParkedCars(site);
-            BuildTrees(site);
-            BuildPoints(site);
-            // park props added by BuildParkProps inside BuildPoints
+            float half = site.Half;
+            var square = Rect.MinMaxRect(-half, -half, half, half);
+            foreach (Street s in site.Area.Streets)
+            {
+                if (s.Data.tunnel || Rank(s.Data.kind) < 2 || StreetSurface(s.Data.kind).Mat != DecorMaterials.Asphalt.Mat) continue;
+                float width = Mathf.Clamp(s.Data.width, 1.2f, 30f);
+                float side = (s.Data.id & 1) == 0 ? 1f : -1f;
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
+                {
+                    float walked = LampSpacing * 0.5f;
+                    for (int i = 0; i + 1 < piece.Count; i++)
+                    {
+                        Vector2 a = piece[i], b = piece[i + 1];
+                        float len = Vector2.Distance(a, b);
+                        if (len < 0.05f) continue;
+                        Vector2 d = (b - a) / len, n = new Vector2(-d.y, d.x);
+                        for (; walked <= len; walked += LampSpacing, side = -side)
+                        {
+                            Vector2 at = a + d * walked + n * ((width * 0.5f + 0.9f) * side);
+                            if (!site.FreeBeside(at, 0.6f)) continue;
+                            site.Take(at, 0.6f);
+                            Vector2 toRoad = -n * side;
+                            StreetLampHelper.PlaceLamp(site.Town.Out, site, at, Mathf.Atan2(toRoad.x, toRoad.y) * Mathf.Rad2Deg);
+                        }
+                        walked -= len;
+                    }
+                }
+            }
         }
+
+        // Wooden road signposts (SignpostHelper) every 60 m along the main asphalt roads, at the roadside on alternate
+        // sides, the board towards the road.
+        private static void BuildSignposts(Site site)
+        {
+            float half = site.Half;
+            var square = Rect.MinMaxRect(-half, -half, half, half);
+            foreach (Street s in site.Area.Streets)
+            {
+                if (s.Data.tunnel || Rank(s.Data.kind) < 2 || StreetSurface(s.Data.kind).Mat != DecorMaterials.Asphalt.Mat) continue;
+                float width = Mathf.Clamp(s.Data.width, 1.2f, 30f);
+                float side = (s.Data.id & 1) == 0 ? -1f : 1f;
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
+                    foreach (Vector2 p in SampleAlong(piece, SignpostSpacing))
+                    {
+                        Vector2 d = RoadDirectionAt(piece, p), n = new Vector2(-d.y, d.x);
+                        Vector2 at = p + n * ((width * 0.5f + 0.9f) * side);
+                        Vector2 toRoad = -n * side;
+                        side = -side;
+                        if (!site.FreeBeside(at, 0.6f)) continue;
+                        site.Take(at, 0.6f);
+                        SignpostHelper.PlaceSignpost(site.Town.Out, site, at, Mathf.Atan2(toRoad.x, toRoad.y) * Mathf.Rad2Deg);
+                    }
+            }
+        }
+
+        // The rows of lamp posts RoadMarkingsBuilder puts along the roads the build marks as lit, once the buildings and
+        // the other roadside props stand (their lane markings are painted with the roads, in BuildStreets).
+        private static void BuildMarkedStreetLamps(Site site, MapBuild build)
+        {
+            float half = site.Half;
+            var square = Rect.MinMaxRect(-half, -half, half, half);
+            foreach (Street s in site.Area.Streets)
+            {
+                if (s.Data.tunnel || Rank(s.Data.kind) < 2) continue;
+                float width = Mathf.Clamp(s.Data.width, 1.2f, 30f);
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
+                    RoadMarkingsBuilder.BuildStreetLamps(site, s, piece, width, build);
+            }
+        }
+
         private static void BuildParkedCars(Site site)
         {
             var rng = new System.Random(site.Town.Rng.Next());

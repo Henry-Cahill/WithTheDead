@@ -56,6 +56,7 @@ namespace CloneZ
             _start = transform.position;
             _health = _stats.Health;
             EnsureHud();
+            _text.text = _labelText;
             _slot.gameObject.SetActive(true);
             return true;
         }

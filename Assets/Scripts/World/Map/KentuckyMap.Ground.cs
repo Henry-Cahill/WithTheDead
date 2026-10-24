@@ -36,12 +36,12 @@ namespace CloneZ
         private static Surf RailSteel => DecorPalette.Matte(new Color(0.30f, 0.27f, 0.25f));
         private static Surf Sleeper => DecorPalette.Matte(new Color(0.26f, 0.20f, 0.15f));
 
-        // Walkable snow with one collider over the playable square (like the procedural town's), and a snowfield
-        // without a collider under the scenery beyond, so the horizon isn't empty.
+        /// <summary>Points every <paramref name="interval"/> metres along a line, measured along it across its bends, the
+        /// first one <paramref name="interval"/> in from its start.</summary>
         internal static IEnumerable<Vector2> SampleAlong(List<Vector2> pts, float interval)
         {
             if (pts.Count < 2) yield break;
-            float accumulated = 0f;
+            float accumulated = 0f;   // the last point, from the current segment's start (0 or less: on an earlier segment)
             for (int i = 0; i + 1 < pts.Count; i++)
             {
                 Vector2 a = pts[i], b = pts[i + 1];
@@ -52,9 +52,12 @@ namespace CloneZ
                     accumulated += interval;
                     yield return a + dir * accumulated;
                 }
-                accumulated = (accumulated + segLen) - Mathf.Floor((accumulated + segLen) / interval) * interval;
+                accumulated -= segLen;
             }
         }
+
+        // Walkable snow with one collider over the playable square (like the procedural town's), and a snowfield
+        // without a collider under the scenery beyond, so the horizon isn't empty.
         private static void BuildGround(Site site)
         {
             float half = site.Half + 0.8f;
@@ -66,6 +69,7 @@ namespace CloneZ
             var col = ground.AddComponent<BoxCollider>();
             col.center = new Vector3(0f, -0.5f, 0f);
             col.size = new Vector3(half * 2f, 1f, half * 2f);
+            if (site.Chunked) return;   // a streamed map's neighbouring pieces are the horizon
 
             float far = site.Half + SceneryReach + 40f;
             var field = new RaidMesh();
@@ -156,55 +160,14 @@ if (water) {
                         var rng = new System.Random(seed);
                         AddSnowDrifts(site.Town.Out, piece, width, side, rng);
                     }
-                    // Place street‑lamp poles along main roads (road rank >= 2) every 30 m.
-                    if (road && surf.Mat == DecorMaterials.Asphalt.Mat)
-                    {
-                        const float lampInterval = 30f;
-                        foreach (Vector2 lampPos in SampleAlong(piece, lampInterval))
-                        {
-                            // Determine lamp yaw: align with road direction at the sampled point.
-                            // Find the segment that contains the point.
-                            float yaw = 0f;
-                            for (int i = 0; i + 1 < piece.Count; i++)
-                            {
-                                Vector2 a = piece[i], b = piece[i + 1];
-                                if (Vector2.Distance(a, lampPos) + Vector2.Distance(lampPos, b) - Vector2.Distance(a, b) < 0.01f)
-                                {
-                                    Vector2 d = (b - a).normalized;
-                                    yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
-                                    break;
-                                }
-                            }
-                            StreetLampHelper.PlaceLamp(site.Town.Out, site, lampPos, yaw);
-                        }
-                    }
-                    RoadMarkingsBuilder.BuildForStreet(site, s, build);
-                    // Place period‑correct road signposts every 60 m on main roads.
-                    if (road && surf.Mat == DecorMaterials.Asphalt.Mat)
-                    {
-                        const float signInterval = 60f;
-                        foreach (Vector2 signPos in SampleAlong(piece, signInterval))
-                        {
-                            // Determine sign yaw: align with road direction at the sampled point.
-                            float signYaw = 0f;
-                            for (int i = 0; i + 1 < piece.Count; i++)
-                            {
-                                Vector2 a = piece[i], b = piece[i + 1];
-                                if (Vector2.Distance(a, signPos) + Vector2.Distance(signPos, b) - Vector2.Distance(a, b) < 0.01f)
-                                {
-                                    Vector2 d = (b - a).normalized;
-                                    signYaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
-                                    break;
-                                }
-                            }
-                            SignpostHelper.PlaceSignpost(site.Town.Out, site, signPos, signYaw);
-                        }
-                    }
-                site.TakeLine(piece, width * 0.5f + 0.3f);
+                    // Lane markings on the roads the build selects (their lamp rows and the signposts come later,
+                    // once the buildings stand: BuildMarkedStreetLamps, BuildSignposts).
+                    if (road) RoadMarkingsBuilder.BuildForStreet(site, s, piece, width, build);
+                site.TakeRoad(piece, width * 0.5f, 0.3f);
                     if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
                 }
-                // The road out of town carries on past the edge, as scenery.
-                if (road)
+                // The road out of town carries on past the edge, as scenery (a streamed map's next piece draws it whole).
+                if (road && !site.Chunked)
                 {
                     foreach (List<Vector2> piece in OutsidePieces(s.Pts, half))
                     {
@@ -352,7 +315,7 @@ if (water) {
                 float len = Vector2.Distance(a, b);
                 if (len < 0.05f) continue;
                 Vector2 d = (b - a) / len;
-                float yaw = Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                float yaw = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;   // Flat's depth (the dash's length) runs along local +Z
                 for (float s = carried; s + 3f <= len; s += 9f)
                 {
                     Vector3 at = To3(a + d * (s + 1.5f), y);

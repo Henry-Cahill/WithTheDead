@@ -33,11 +33,14 @@ namespace CloneZ
 
 
 
-            // set material – reuse porch material (plain wood) for the pole,
-            // and the building's trim colour for the box
-            Material bodyMat = new Material(WorldStore.GetPorchMaterial()); // clone to allow colour tint
-            bodyMat.color = fp.Data.GetTrimColour();
-            Material poleMat = WorldStore.GetPorchMaterial();
+            // Painted colours from the shared cache: the store's porch wood isn't among this project's Resources (cloning
+            // its null threw and took the whole map build down), and a material per mailbox would never be freed as a
+            // streamed map lets its pieces go.
+            Color trim = fp.Data.GetTrimColour();
+            trim.a = 1f;
+            Material bodyMat = CloneZUtil.Mat(trim);
+            Material wood = WorldStore.GetPorchMaterial();
+            Material poleMat = wood != null ? wood : CloneZUtil.Mat(new Color(0.45f, 0.33f, 0.22f));
 
             var mesh = site.Overhead.At(pos);
             // align the mesh frame with the mailbox position (no rotation needed)
@@ -65,8 +68,9 @@ namespace CloneZ
 
             // door flap (thin box)
             Vector3 flapPos = new Vector3(0f, BodyHeight * 0.5f, BodyDepth * 0.5f + 0.01f);
-            Material flapMat = new Material(bodyMat);
-            flapMat.color = bodyMat.color * 0.85f; // slightly darker tint
+            Color flap = trim * 0.85f; // slightly darker tint
+            flap.a = 1f;
+            Material flapMat = CloneZUtil.Mat(flap);
             var flapSurf = new Surf(flapMat, Vector2.zero, 0f);
             mesh.Box(flapPos,
                 new Vector3(BodyWidth * 0.6f, BodyHeight * 0.7f, 0.02f), flapSurf);
@@ -78,8 +82,7 @@ namespace CloneZ
 
             // flag on pole
             Vector3 flagPos = polePos + new Vector3(0f, PoleHeight * 0.9f, 0f);
-            Material flagMat = new Material(poleMat);
-            flagMat.color = flagCol;
+            Material flagMat = CloneZUtil.Mat(flagCol);
             var flagSurf = new Surf(flagMat, Vector2.zero, 0f);
             mesh.Box(flagPos,
                 new Vector3(0.02f, 0.12f, 0.02f), flagSurf);
