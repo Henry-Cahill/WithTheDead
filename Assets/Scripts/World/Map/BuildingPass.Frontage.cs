@@ -43,8 +43,11 @@ namespace CloneZ
         {
             Plan p = j.P;
             if (p.Storefront && p.Front >= 0 && !j.Party(p.Front)) ShopFront(j, p.Front);
+            Mark("shop front");
             if (p.GhostSign) GhostSign(j);
+            Mark("ghost sign");
             if (p.Dock && j.BigEdge >= 0) LoadingDock(j, j.BigEdge);
+            Mark("dock");
             if (p.Storeys >= 2 && (p.Arch == Arch.Apartments || p.Arch == Arch.Motel))
             {
                 int front = p.Front >= 0 ? p.Front : j.DoorEdge;
@@ -54,12 +57,15 @@ namespace CloneZ
                     if (p.OutsideStair || p.Arch == Arch.Motel) OutsideStair(j, front);
                 }
             }
+            Mark("balconies");
             if (j.DoorEdge < 0) return;
             bool porch = p.Porch && j.Len[j.DoorEdge] >= 2.6f;
             if (porch) Porch(j);
             else if (p.Stoop || p.Arch == Arch.House) Stoop(j);
+            Mark("porch");
             if (p.Mailbox) WallMailbox(j);
             if (p.PorchLight || porch) DoorLamp(j);
+            Mark("lamp");
         }
 
         #region Houses
@@ -314,7 +320,9 @@ namespace CloneZ
             {
                 // The storefront cornice and, above it, the sign band.
                 OnWallBox(j, up, e, len * 0.5f, GroundStorey + 0.1f, len + 0.04f, 0.2f, 0.22f, j.AccentS);
+                Mark("  piers and cornice");
                 Sign(j, e, 0f, len, GroundStorey + 0.55f, 0.55f, 0f, SignText(j, 0), p.SignTone);
+                Mark("  sign");
             }
             else
             {
@@ -334,6 +342,7 @@ namespace CloneZ
                     Sign(j, e, each * u, each * (u + 1), y, h, 0.28f, SignText(j, u), (p.SignTone + u * 3) % SignBoards.Length);
             }
             if (p.Awning) Awning(j, e, 0.45f, len - 0.45f);
+            Mark("  awning");
         }
 
         // What's written over shop <paramref name="unit"/> of a front: the building's name (the first shop's), the trade,

@@ -339,6 +339,24 @@ namespace CloneZ
             if (!s_Profiling) return;
             s_ProbeGCs = System.GC.CollectionCount(0);
             s_ProbeAt = System.Diagnostics.Stopwatch.GetTimestamp();
+            s_MarkAt = s_ProbeAt;
+#endif
+        }
+
+#if UNITY_EDITOR
+        private static long s_MarkAt;
+#endif
+
+        // Within a stage: logs the time since the last mark (or the stage's start) when it's over a millisecond.
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private static void Mark(string what)
+        {
+#if UNITY_EDITOR
+            if (!s_Profiling) return;
+            long now = System.Diagnostics.Stopwatch.GetTimestamp();
+            double ms = (now - s_MarkAt) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            s_MarkAt = now;
+            if (ms >= 1.0) Debug.Log($"[Buildings]   {ms:F1} ms to {what}");
 #endif
         }
 
