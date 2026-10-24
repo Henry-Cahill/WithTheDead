@@ -185,16 +185,15 @@ namespace CloneZ
                 case Winter.Ploughed:
                     for (int side = -1; side <= 1; side += 2)
                     {
-                        bool any = false;
+                        bool any = false, parked = false;
                         for (int i = 0; i < n; i++)
                         {
                             ProfAt(c, side, s[i].S, out Prof d);
-                            bool parking = d.Edge > d.Lane + 0.8f;
                             float wander = Noise(s[i].P, 3.5f, seed + side);
-                            float inner = parking ? d.Lane + 0.15f + 0.4f * wander : d.Edge - 0.35f - 0.45f * wander;
-                            s_A[i] = side * inner;
+                            s_A[i] = side * (d.Edge - 0.35f - 0.45f * wander);
                             s_B[i] = side * d.Edge;
-                            s_YA[i] = parking ? 1f : 0f;
+                            s_YA[i] = d.Edge > d.Lane + 0.8f ? d.Lane : -1f;
+                            parked |= s_YA[i] > 0f;
                         }
                         for (int i = 0; i + 1 < n; i++)
                         {
@@ -202,9 +201,19 @@ namespace CloneZ
                             any |= s_Keep[i];
                         }
                         if (!any) continue;
-                        // The parking lanes' looser slush, the plough's ridge along a kerb.
-                        bool parked = s_YA[0] > 0.5f || s_YA[n - 1] > 0.5f;
-                        Band(net, s, s_A, s_B, DetailY, DetailY, parked ? look.SlushLight : look.Slush, c.Lift, s_Keep);
+                        Band(net, s, s_A, s_B, DetailY, DetailY, look.Slush, c.Lift, s_Keep);
+                        if (!parked) continue;
+                        // The parking lane: slush lying in patches where cars stood and the plough couldn't reach.
+                        for (int i = 0; i < n; i++)
+                        {
+                            float lane = Mathf.Max(0f, s_YA[i]), edge = Mathf.Abs(s_A[i]);
+                            float inner = lane + 0.3f + 0.9f * Noise(s[i].P, 2.25f, seed + 11 + side);
+                            s_B[i] = side * Mathf.Max(inner + 0.2f, edge);
+                            s_A[i] = side * Mathf.Min(inner, edge - 0.2f);
+                        }
+                        for (int i = 0; i + 1 < n; i++)
+                            s_Keep[i] = s_Keep[i] && s_YA[i] > 0f && s_YA[i + 1] > 0f && Noise(s[i].P, 4.5f, seed + 13 + side) > 0.48f;
+                        Band(net, s, s_A, s_B, DetailY - 0.0004f, DetailY - 0.0004f, look.SlushPatch, c.Lift, s_Keep);
                     }
                     if (!w.OneWay && w.Centre != CentreLine.None)
                     {

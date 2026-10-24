@@ -122,6 +122,25 @@ namespace CloneZ
         internal static float SidewalkOuter(Street s, int side)
             => s_Ways.TryGetValue(s, out Way w) && (side >= 0 ? w.L : w.R).Walk ? (side >= 0 ? w.L : w.R).WalkOut : 0f;
 
+        /// <summary>The parking lane on one side of a street, if the roads gave it one (downtown, where a mapped
+        /// sidewalk stands back from the traffic): from <paramref name="inner"/> (the travel lane's edge) to
+        /// <paramref name="outer"/> (the kerb face), offsets from the street's line; <paramref name="angled"/> for
+        /// nose-in stalls at 60 degrees (3.2 m apart along the kerb, leaning the way that side's traffic runs: the way's
+        /// direction on a one-way street, else against it on the left and with it on the right), else parallel stalls
+        /// 6.5 m long. False where there's none.</summary>
+        internal static bool ParkingLane(Street s, int side, out float inner, out float outer, out bool angled)
+        {
+            inner = outer = 0f;
+            angled = false;
+            if (!s_Ways.TryGetValue(s, out Way w) || w.Cls <= Cls.Trunk) return false;
+            Side d = side >= 0 ? w.L : w.R;
+            if (d.Edge - d.Lane < 1.5f) return false;
+            inner = d.Lane;
+            outer = d.Edge;
+            angled = d.Edge - d.Lane > 4f;
+            return true;
+        }
+
         /// <summary>Where roadside things (poles, signs, hydrants, mailboxes) stand on one side, from the street's line: on
         /// the sidewalk 0.6 m behind the kerb, or on the verge where the sidewalk is set back, or 1.2 m past an unkerbed
         /// edge (beyond the plough's berm).</summary>
@@ -179,7 +198,7 @@ namespace CloneZ
         private sealed class Look
         {
             public Surf Asphalt, Concrete, Packed, Sidewalk, Snow, Trodden, TroddenLine, Paved;
-            public Surf Kerb, KerbFace, Gutter, Slush, SlushLight, Wet, Track, TrackGravel, Rut, BermGrime;
+            public Surf Kerb, KerbFace, Gutter, Slush, SlushLight, SlushPatch, Wet, Track, TrackGravel, Rut, BermGrime;
             public Surf Yellow, White, Panel, Rubber, Apron, Crack, Tar, Pothole;
             public Surf Ballast, Tie, TieSnow, Rail, RailHead, RailRust, Girder;
             public Surf Parapet, ParapetCap, GuardRail, GuardPost, CrossbuckWhite, CrossbuckBlack, PostGrey, LampRed, LampHood;
@@ -210,6 +229,7 @@ namespace CloneZ
                 Rubber = DecorPalette.Matte(new Color(0.20f, 0.20f, 0.21f));
                 Apron = DecorMaterials.Planar(RoadTextures.Sidewalk(), 3f, 0.12f);
                 Crack = DecorPalette.Matte(new Color(0.075f, 0.075f, 0.08f));
+                SlushPatch = DecorPalette.Matte(new Color(0.40f, 0.39f, 0.385f));
                 Tar = DecorPalette.Gloss(new Color(0.035f, 0.035f, 0.04f));
                 Pothole = DecorPalette.Gloss(new Color(0.10f, 0.11f, 0.12f));
                 Ballast = DecorMaterials.Planar(RoadTextures.SnowyBallast(), 3f, 0.08f);

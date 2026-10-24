@@ -86,8 +86,9 @@ namespace CloneZ
             return best != null;
         }
 
-        // Where the kerbs open: side roads' mouths, ramps where crosswalks reach them (at junction arms marked for one,
-        // and at the crossings mapped mid-block), and driveways.
+        // Where the kerbs open: side roads' mouths, ramps where crosswalks reach them, and driveways. Crosswalks go where
+        // crossings are mapped (at the crossing, wherever it is along the street); a junction with none mapped within
+        // 40 m keeps the crosswalks its shape suggested (signals, downtown).
         private static void PlanCuts(Net net)
         {
             foreach (Chain c in net.Chains)
@@ -106,21 +107,36 @@ namespace CloneZ
                     }
                     else AddCut(c, m.Lo, m.Hi, CutKind.Mouth, m.Side);
                 }
+            bool anyMapped = false;
+            foreach (Node n in net.Site.Area.Nodes)
+                if (n.Data.kind == "crossing")
+                {
+                    anyMapped = true;
+                    break;
+                }
+            if (anyMapped)
+                foreach (Joint j in net.Joints)
+                {
+                    if (j.Link) continue;
+                    bool near = false;
+                    foreach (Node n in net.Site.Area.Nodes)
+                        if (n.Data.kind == "crossing" && (n.At - j.At).sqrMagnitude < 40f * 40f)
+                        {
+                            near = true;
+                            break;
+                        }
+                    if (near) foreach (Arm a in j.Arms) a.Crosswalk = false;
+                }
             foreach (Node n in net.Site.Area.Nodes)
             {
                 if (n.Data.kind != "crossing" || !net.Square.Contains(n.At)) continue;
                 if (!NearestChain(net, n.At, out Chain c, out float s)) continue;
-                if (c.A0 != null && s - c.From < 7f)
-                {
-                    if (c.A0.W.Cls <= Cls.Minor) c.A0.Crosswalk = true;
-                    continue;
-                }
-                if (c.A1 != null && c.To - s < 7f)
-                {
-                    if (c.A1.W.Cls <= Cls.Minor) c.A1.Crosswalk = true;
-                    continue;
-                }
-                if (s - c.From < 2f || c.To - s < 2f || InMouth(c, 1, s) || InMouth(c, -1, s)) continue;
+                if (c.W.Winter != Winter.Ploughed && c.W.Winter != Winter.Packed) continue;
+                if (s - c.From < 1.6f || c.To - s < 1.6f || InMouth(c, 1, s) || InMouth(c, -1, s)) continue;
+                bool taken = false;
+                if (c.Crossings != null)
+                    foreach (float o in c.Crossings) taken |= Mathf.Abs(o - s) < 4f;
+                if (taken) continue;
                 (c.Crossings ??= new List<float>()).Add(s);
                 AddCut(c, s - 1.5f, s + 1.5f, CutKind.Ramp);
             }
@@ -188,7 +204,8 @@ namespace CloneZ
                 // Room before the next carriageway: half of it is this side's.
                 float room = RayToRoad(net, s[i].P + nrm * d.Edge, unit, (reach - d.Edge) * k * 2f + 1f);
                 float lim = d.Edge + room * 0.5f / k;
-                bool blocked = room < (KerbWidth + 0.25f) * k || InBuilding(net, s[i].P + nrm * (d.Edge + KerbWidth + 0.1f), 0f);
+                Vector2 behind = s[i].P + nrm * (d.Edge + KerbWidth + 0.1f);
+                bool blocked = room < (KerbWidth + 0.25f) * k || InBuilding(net, behind, 0f) || OnPavement(net, behind, c, -0.05f);
                 s_Edge[i] = d.Edge;
                 s_KerbOk[i] = d.Kerb && !blocked;
                 float wi = d.WalkIn, wo = d.WalkOut;
@@ -355,7 +372,8 @@ namespace CloneZ
                     Vector2 unit = nrm / k;
                     float want = Mathf.Lerp(wa, wb, line.Length > 0f ? s[i].S / line.Length : 0f);
                     float room = RayToRoad(net, s[i].P, unit, want * k * 2f + 1f, j);
-                    s_KerbOk[i] = room > (KerbWidth + 0.25f) * k && !InBuilding(net, s[i].P + nrm * (KerbWidth + 0.1f), 0f);
+                    Vector2 behind = s[i].P + nrm * (KerbWidth + 0.1f);
+                    s_KerbOk[i] = room > (KerbWidth + 0.25f) * k && !InBuilding(net, behind, 0f) && !OnPavement(net, behind, null, -0.05f);
                     float lim = room * 0.5f / k;
                     if (corner.Rounded && Mathf.Abs(Vector2.Distance(s[i].P, corner.Centre) - corner.Radius) < 0.6f)
                         lim = Mathf.Min(lim, corner.Radius - 0.05f);

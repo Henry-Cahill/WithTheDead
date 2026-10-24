@@ -216,15 +216,20 @@ namespace CloneZ
             }
         }
 
-        // How far each junction may reach along its arms: just under half way to the next junction on the arm's piece,
-        // nearly to the piece's end where there is none (and 40 m at most).
+        // How far each junction may reach along its arms: just under half way to the next junction on the arm's piece
+        // (most of the way when the piece only runs straight through it, past a side road's mouth), nearly to the
+        // piece's end where there is none (and 40 m at most).
         private static void ArmCaps(Net net)
         {
-            var stops = new HashSet<long>();
+            var stops = new Dictionary<long, bool>();
             foreach (Joint j in net.Joints)
             {
                 if (j.Link) continue;
-                foreach (Arm a in j.Arms) stops.Add(((long)a.W.Index << 22) | (long)a.Vertex);
+                foreach (Arm a in j.Arms)
+                {
+                    long key = ((long)a.W.Index << 22) | (long)a.Vertex;
+                    stops[key] = (!stops.TryGetValue(key, out bool through) || through) && a.Through;
+                }
             }
             foreach (Joint j in net.Joints)
             {
@@ -235,8 +240,8 @@ namespace CloneZ
                     float s0 = w.Cum[a.Vertex], d = -1f;
                     for (int k = a.Vertex + a.Step; k >= 0 && k < w.P.Count; k += a.Step)
                     {
-                        if (!stops.Contains(((long)w.Index << 22) | (long)k)) continue;
-                        d = Mathf.Abs(w.Cum[k] - s0) * 0.48f;
+                        if (!stops.TryGetValue(((long)w.Index << 22) | (long)k, out bool through)) continue;
+                        d = Mathf.Abs(w.Cum[k] - s0) * (through ? 0.8f : 0.48f);
                         break;
                     }
                     if (d < 0f) d = (a.Step > 0 ? w.Length - s0 : s0) - 0.3f;
@@ -563,12 +568,17 @@ namespace CloneZ
                 float a0 = Mathf.Atan2(fa.y - c.Centre.y, fa.x - c.Centre.x), a1 = Mathf.Atan2(fb.y - c.Centre.y, fb.x - c.Centre.x);
                 float sweep = Mathf.DeltaAngle(a0 * Mathf.Rad2Deg, a1 * Mathf.Rad2Deg) * Mathf.Deg2Rad;
                 int steps = Mathf.Clamp(Mathf.CeilToInt(Mathf.Abs(sweep) * c.Radius / 0.9f), 2, 12);
+                c.Arc.Clear();
+                c.Arc.Add(ta);
                 for (int k = 1; k < steps; k++)
                 {
                     float f = (float)k / steps, ang = a0 + sweep * f;
-                    AddPoint(path, c.Centre + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * c.Radius + Vector2.Lerp(offA, offB, f));
+                    Vector2 p = c.Centre + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * c.Radius + Vector2.Lerp(offA, offB, f);
+                    AddPoint(path, p);
+                    c.Arc.Add(p);
                 }
                 AddPoint(path, tb);
+                c.Arc.Add(tb);
                 KerbBetween(kb, tanB, endB, path);
             }
             else if (c.Convex && c.Sharp)
@@ -596,6 +606,48 @@ namespace CloneZ
                 }
             }
             AddPoint(path, eb);
+            Tidy(path);
+        }
+
+        /// <summary>Drops the points where a path doubles back on itself over a short step (where a tangent point all but
+        /// coincides with an arm's end), until none are left.</summary>
+        private static void Tidy(List<Vector2> path)
+        {
+            for (int guard = 0; guard < 64 && path.Count > 2; guard++)
+            {
+                int drop = -1;
+                for (int i = 1; i + 1 < path.Count; i++)
+                {
+                    Vector2 ab = path[i] - path[i - 1], bc = path[i + 1] - path[i];
+                    float la = ab.magnitude, lb = bc.magnitude;
+                    if (la < 1e-4f || lb < 1e-4f || (Vector2.Dot(ab, bc) < -0.2f * la * lb && Mathf.Min(la, lb) < 1.2f))
+                    {
+                        drop = i;
+                        break;
+                    }
+                }
+                if (drop < 0) return;
+                path.RemoveAt(drop);
+            }
+        }
+
+        /// <summary>True when no two edges of the closed polygon cross.</summary>
+        private static bool IsSimple(List<Vector2> poly)
+        {
+            int n = poly.Count;
+            if (n < 3) return false;
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 a = poly[i], b = poly[(i + 1) % n];
+                for (int k = i + 2; k < n; k++)
+                {
+                    if (i == 0 && k == n - 1) continue;
+                    Vector2 c = poly[k], d = poly[(k + 1) % n];
+                    float o1 = Cross(b - a, c - a), o2 = Cross(b - a, d - a), o3 = Cross(d - c, a - c), o4 = Cross(d - c, b - c);
+                    if (o1 * o2 < 0f && o3 * o4 < 0f) return false;
+                }
+            }
+            return true;
         }
 
         // Where an arm leaves the patch: its line's point and direction at the trim, and the carriageway's corners there.
@@ -1012,12 +1064,28 @@ namespace CloneZ
                 if (side < 0) s_EdgePts.Reverse();
                 for (int i = 1; i + 1 < s_EdgePts.Count; i++) AddPoint(poly, s_EdgePts[i]);
                 if (poly.Count > 2 && (poly[0] - poly[poly.Count - 1]).sqrMagnitude <= 1e-4f) poly.RemoveAt(poly.Count - 1);
-                if (poly.Count < 3) continue;
-                float area = MapGeometry.SignedArea(poly);
-                if (Mathf.Abs(area) < 0.05f || float.IsNaN(area)) continue;
-                if (area < 0f) poly.Reverse();
-                j.Caps.Add(poly);
-                j.CapBounds.Add(MapGeometry.Bounds(poly));
+                float area = poly.Count >= 3 ? MapGeometry.SignedArea(poly) : 0f;
+                if (Mathf.Abs(area) >= 0.05f && !float.IsNaN(area) && IsSimple(poly))
+                {
+                    if (area < 0f) poly.Reverse();
+                    j.Caps.Add(poly);
+                    j.CapBounds.Add(MapGeometry.Bounds(poly));
+                    continue;
+                }
+                // The side roads reach too little way out for one mouth (their next junction is close): each rounded
+                // corner's fillet between its kerb lines instead, the ribbons covering the rest.
+                for (int k = start; k != stop; k = (k + 1) % n)
+                {
+                    Corner corner = j.All[k];
+                    if (corner.Skip || !corner.Rounded || corner.Arc.Count < 2) continue;
+                    var fillet = new List<Vector2>(corner.Arc.Count + 1) { corner.Meet };
+                    foreach (Vector2 q in corner.Arc) AddPoint(fillet, q);
+                    float fa = fillet.Count >= 3 ? MapGeometry.SignedArea(fillet) : 0f;
+                    if (Mathf.Abs(fa) < 0.02f || float.IsNaN(fa) || !IsSimple(fillet)) continue;
+                    if (fa < 0f) fillet.Reverse();
+                    j.Caps.Add(fillet);
+                    j.CapBounds.Add(MapGeometry.Bounds(fillet));
+                }
             }
         }
         #endregion
