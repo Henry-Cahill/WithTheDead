@@ -57,6 +57,7 @@ namespace CloneZ
             _buildingCells = new Buckets(Reach, BucketCell);
             _doorCells = new Buckets(Reach, BucketCell);
             _powerCells = new Buckets(Reach, BucketCell);
+            _wireCells = new Buckets(Reach, BucketCell);
             IndexRoads();
             IndexBuildings();
             IndexDoors();
@@ -519,32 +520,49 @@ namespace CloneZ
             }
         }
 
-        /// <summary>The nearest wall within <paramref name="within"/> of <paramref name="p"/> (outside every building): the
-        /// unit plan direction towards it and how far it is. False when there's none so near (or p is inside one).</summary>
-        public bool NearestWall(Vector2 p, float within, out Vector2 dir, out float dist)
+        /// <summary>The two nearest buildings' walls within <paramref name="within"/> of <paramref name="p"/> (a point
+        /// outside them): the unit plan direction towards each one's nearest point and how far it is (<paramref name="d0"/>
+        /// the nearer; <paramref name="within"/> where there's none). Buildings <paramref name="p"/> stands in are passed
+        /// over.</summary>
+        public void NearestWalls(Vector2 p, float within, out Vector2 dir0, out float d0, out Vector2 dir1, out float d1)
         {
-            dir = Vector2.zero;
-            dist = WallDistance(p, within, out Footprint f);
-            if (f == null || dist <= 0.01f) return false;
-            List<Vector2> pts = f.Pts;
-            float best = float.MaxValue;
-            Vector2 on = p;
-            for (int i = 0, k = pts.Count - 1; i < pts.Count; k = i++)
+            dir0 = dir1 = Vector2.zero;
+            d0 = d1 = within;
+            BuildingsNear(p, within, s_Walls);
+            foreach (Footprint f in s_Walls)
             {
-                Vector2 a = pts[k], ab = pts[i] - a;
-                float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
-                Vector2 q = a + ab * t;
-                float d = (q - p).sqrMagnitude;
-                if (d >= best) continue;
-                best = d;
-                on = q;
+                List<Vector2> pts = f.Pts;
+                float best = float.MaxValue;
+                Vector2 on = p;
+                for (int i = 0, k = pts.Count - 1; i < pts.Count; k = i++)
+                {
+                    Vector2 a = pts[k], ab = pts[i] - a;
+                    float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
+                    Vector2 q = a + ab * t;
+                    float d = (q - p).sqrMagnitude;
+                    if (d >= best) continue;
+                    best = d;
+                    on = q;
+                }
+                float dist = Mathf.Sqrt(best);
+                if (dist < 1e-3f || dist >= d1 || MapGeometry.Contains(pts, p)) continue;
+                Vector2 dir = (on - p) / dist;
+                if (dist < d0)
+                {
+                    d1 = d0;
+                    dir1 = dir0;
+                    d0 = dist;
+                    dir0 = dir;
+                }
+                else
+                {
+                    d1 = dist;
+                    dir1 = dir;
+                }
             }
-            Vector2 to = on - p;
-            float len = to.magnitude;
-            if (len < 1e-3f) return false;
-            dir = to / len;
-            return true;
         }
+
+        private static readonly List<Footprint> s_Walls = new List<Footprint>(16);
         #endregion
 
         #region Doors
@@ -635,18 +653,20 @@ namespace CloneZ
             return false;
         }
 
-        private const float WireCell = 2f;
-        // The lowest overhead wire over each 2 m cell of a Full site's square, read back from the wires the streetscape
-        // strung (see IndexWires).
-        private readonly Dictionary<long, float> _wires = new Dictionary<long, float>();
+        // The overhead wires the streetscape strung, as short straight pieces (a strand's rings, a few metres apart) in the
+        // site's frame, bucketed by where they hang (see IndexWires).
+        private readonly List<(Vector3 a, Vector3 b)> _wires = new List<(Vector3, Vector3)>(1024);
+        private readonly Buckets _wireCells;
+        private int[] _wireSeen = new int[0];
+        private int _wireTick;
         private static readonly List<Vector3> s_WireVerts = new List<Vector3>(4096);
 
         /// <summary>
         /// Reads the overhead wires back from the meshes the streetscape pass hung under the site's overhead root (one
-        /// "Wires" object per cell; every three vertices a ring round a strand, and each ring three vertices on from the
-        /// last along the same strand): each stretch between two rings marks the cells it passes over with its height,
-        /// so the trees can keep their crowns off the lines. Nothing found (no wires, or a mesh that can't be read): no
-        /// wires to keep off.
+        /// "Wires" object per cell, every strand a run of rings of three vertices round it): each stretch between one
+        /// ring's middle and the next becomes a piece of wire, so the trees can keep their crowns off the lines. Where one
+        /// strand ends and the next begins the pieces jump: those longer than any span's stretch are passed over. Nothing
+        /// found (no wires, or a mesh that can't be read): no wires to keep off.
         /// </summary>
         private void IndexWires()
         {
@@ -662,46 +682,57 @@ namespace CloneZ
                 if (mesh == null || !mesh.isReadable) continue;
                 mesh.GetVertices(s_WireVerts);
                 Matrix4x4 m = toSite * t.localToWorldMatrix;
-                for (int i = 0; i + 3 < s_WireVerts.Count; i += 3)
+                for (int i = 0; i + 5 < s_WireVerts.Count; i += 3)
                 {
-                    Vector3 a = m.MultiplyPoint3x4(s_WireVerts[i]), b = m.MultiplyPoint3x4(s_WireVerts[i + 3]);
-                    float len = Vector2.Distance(new Vector2(a.x, a.z), new Vector2(b.x, b.z));
-                    if (len > 8f || float.IsNaN(len)) continue;   // the next strand's first ring
-                    int steps = Mathf.Max(1, Mathf.CeilToInt(len / 1f));
-                    for (int k = 0; k <= steps; k++)
-                    {
-                        Vector3 q = Vector3.Lerp(a, b, k / (float)steps);
-                        if (!InSquare(new Vector2(q.x, q.z), -WireCell)) continue;
-                        long key = Combine(Mathf.FloorToInt(q.x / WireCell), Mathf.FloorToInt(q.z / WireCell));
-                        if (!_wires.TryGetValue(key, out float low) || q.y < low) _wires[key] = q.y;
-                    }
+                    Vector3 a = m.MultiplyPoint3x4((s_WireVerts[i] + s_WireVerts[i + 1] + s_WireVerts[i + 2]) * (1f / 3f));
+                    Vector3 b = m.MultiplyPoint3x4((s_WireVerts[i + 3] + s_WireVerts[i + 4] + s_WireVerts[i + 5]) * (1f / 3f));
+                    float dx = b.x - a.x, dz = b.z - a.z;
+                    if (!(dx * dx + dz * dz < 64f)) continue;   // a jump to the next strand (or not a number)
+                    Rect r = Rect.MinMaxRect(Mathf.Min(a.x, b.x), Mathf.Min(a.z, b.z), Mathf.Max(a.x, b.x), Mathf.Max(a.z, b.z));
+                    if (r.xMax < -Reach || r.xMin > Reach || r.yMax < -Reach || r.yMin > Reach) continue;
+                    _wireCells.Add(_wires.Count, r);
+                    _wires.Add((a, b));
                 }
             }
             s_WireVerts.Clear();
+            _wireSeen = new int[_wires.Count];
         }
 
         /// <summary>The nearest overhead wire (in plan) within <paramref name="within"/> of <paramref name="p"/> hanging
-        /// lower than <paramref name="below"/>: the unit direction towards it, how far it is and how high it hangs there.</summary>
+        /// lower than <paramref name="below"/> there: the unit direction towards it, how far it is and how high it hangs.</summary>
         public bool WireNear(Vector2 p, float within, float below, out Vector2 dir, out float dist, out float height)
         {
             dir = Vector2.zero;
             dist = within;
             height = 0f;
             if (_wires.Count == 0) return false;
-            int r = Mathf.CeilToInt(within / WireCell);
-            int cx = Mathf.FloorToInt(p.x / WireCell), cz = Mathf.FloorToInt(p.y / WireCell);
             bool found = false;
-            for (int z = cz - r; z <= cz + r; z++)
-                for (int x = cx - r; x <= cx + r; x++)
+            _wireTick++;
+            _wireCells.Range(p, within, out int x0, out int z0, out int x1, out int z1);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
                 {
-                    if (!_wires.TryGetValue(Combine(x, z), out float y) || y >= below) continue;
-                    var at = new Vector2((x + 0.5f) * WireCell, (z + 0.5f) * WireCell);
-                    float d = Vector2.Distance(at, p);
-                    if (d >= dist) continue;
-                    dist = d;
-                    height = y;
-                    dir = d > 1e-3f ? (at - p) / d : Vector2.up;
-                    found = true;
+                    List<int> cell = _wireCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int k = 0; k < cell.Count; k++)
+                    {
+                        int i = cell[k];
+                        if (_wireSeen[i] == _wireTick) continue;
+                        _wireSeen[i] = _wireTick;
+                        (Vector3 a, Vector3 b) = _wires[i];
+                        var a2 = new Vector2(a.x, a.z);
+                        var ab = new Vector2(b.x - a.x, b.z - a.z);
+                        float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a2, ab) / ab.sqrMagnitude) : 0f;
+                        float y = a.y + (b.y - a.y) * t;
+                        if (y >= below) continue;
+                        Vector2 q = a2 + ab * t;
+                        float d = Vector2.Distance(p, q);
+                        if (d >= dist) continue;
+                        dist = d;
+                        height = y;
+                        dir = d > 1e-3f ? (q - p) / d : Vector2.up;
+                        found = true;
+                    }
                 }
             return found;
         }

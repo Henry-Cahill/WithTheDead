@@ -77,7 +77,7 @@ namespace CloneZ
         // and then, the open road hardly ever; main roads only park in front of the shops, alleys a little behind them.
         private static float KerbChance(Street st, float business, float urban)
         {
-            if (business > 0.06f) return st.Rank == 1 ? 0.12f : 0.5f;
+            if (business > 0.06f) return st.Rank == 1 ? 0.12f : 0.6f;
             if (st.Rank >= 4) return business > 0.03f ? 0.22f : 0f;
             if (urban > 0.035f) return st.Rank == 1 ? 0.04f : st.Width >= 7f ? 0.18f : 0.11f;
             return st.Rank == 1 ? 0f : 0.015f;
