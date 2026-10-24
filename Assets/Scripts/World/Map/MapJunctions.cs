@@ -5,15 +5,22 @@ using static CloneZ.KentuckyMap;
 namespace CloneZ
 {
     /// <summary>
-    /// Where a site's streets meet: every point inside the site's square where two or more street pieces have a vertex
-    /// (to 5 cm, on the same layer, tunnels aside), with an arm for each way a street leaves it: one where a piece ends
-    /// there, two where it runs through. Read through <see cref="Site.Junctions"/>, which finds them once per site.
-    /// Junctions come sorted by position and layer and their arms by street id, so a site always lists them alike.
+    /// Where a site's carriageways meet: every point inside the site's square where two or more street pieces have a
+    /// vertex (to 5 cm, on the same layer, tunnels aside; footways, paths, steps, cycleways, bridleways and pedestrian
+    /// streets aren't carriageways and never make a junction), with an arm for each way a street leaves it: one where a
+    /// piece ends there, two where it runs through. Two arms can be one road simply carrying on from one mapped piece to
+    /// the next. Read through <see cref="Site.Junctions"/>, which finds them once per site; <see cref="RoadPass"/> shapes
+    /// each one into a paved patch (<see cref="RoadPass.ArmSetback"/>, <see cref="RoadPass.StopLine"/>). Junctions come
+    /// sorted by position and layer and their arms by street id, so a site always lists them alike.
     /// </summary>
     internal static class MapJunctions
     {
         private const float Grid = 0.05f;   // vertices that round to the same point of this grid are one point
         private const float MinHalfWidth = 1.5f;
+
+        /// <summary>True for the kinds of street people walk (no junctions, no carriageway).</summary>
+        internal static bool IsPath(string kind) => kind == "footway" || kind == "path" || kind == "steps"
+            || kind == "cycleway" || kind == "bridleway" || kind == "pedestrian" || kind == "corridor";
 
         private struct Touch
         {
@@ -42,7 +49,7 @@ namespace CloneZ
             for (int p = 0; p < streets.Count; p++)
             {
                 Street s = streets[p];
-                if (s.Data.tunnel) continue;
+                if (s.Data.tunnel || IsPath(s.Data.kind)) continue;
                 for (int v = 0; v < s.Pts.Count; v++)
                 {
                     var key = (Snap(s.Pts[v].x), Snap(s.Pts[v].y), s.Data.layer);
