@@ -347,6 +347,13 @@ namespace CloneZ
                     Shop(plan, m, east, rng); break;
                 case InteriorUse.AutoShop: AutoShop(plan, m, east, rng); break;
                 case InteriorUse.Church: Church(plan, m, east, rng); break;
+                case InteriorUse.Funeral: Funeral(plan, m, east, rng); break;
+                case InteriorUse.Library: FrontHall(plan, m, east, RoomRole.Stacks, 0.26f, RoomRole.Office, RoomRole.Restroom, RoomRole.Records, RoomRole.Stock); break;
+                case InteriorUse.PostOffice: PostOffice(plan, m, east, rng); break;
+                case InteriorUse.Bank: FrontHall(plan, m, east, RoomRole.Lobby, 0.36f, RoomRole.Vault, RoomRole.Office, RoomRole.Restroom, RoomRole.Office,
+                    RoomRole.BreakRoom, RoomRole.Records); break;
+                case InteriorUse.Civic when plan.Purpose == MapGameplay.Purposes.Community:
+                    FrontHall(plan, m, east, RoomRole.Meeting, 0.26f, RoomRole.BreakRoom, RoomRole.Restroom, RoomRole.Office, RoomRole.Stock, RoomRole.Restroom); break;
                 case InteriorUse.School: School(plan, m, door, rng); break;
                 case InteriorUse.FireStation: FireStation(plan, m, east, rng); break;
                 case InteriorUse.Warehouse: case InteriorUse.Workshop: Works(plan, m, east, plan.Use == InteriorUse.Workshop ? RoomRole.Workshop : RoomRole.Warehouse, rng); break;
@@ -648,9 +655,12 @@ namespace CloneZ
                     else if (area >= 9f && small >= 2.6f)
                     {
                         double k = rng.NextDouble();
-                        Add(plan, k < 0.35 ? RoomRole.Den : k < 0.7 ? RoomRole.Bedroom : RoomRole.Laundry, r);
+                        RoomRole role = k < 0.35 ? RoomRole.Den : k < 0.7 ? RoomRole.Bedroom : RoomRole.Laundry;
+                        if (role == RoomRole.Laundry && Has(plan, RoomRole.Laundry)) role = RoomRole.Den;
+                        if (role == RoomRole.Den && Has(plan, RoomRole.Den)) role = RoomRole.Bedroom;
+                        Add(plan, role, r);
                     }
-                    else Add(plan, area < 6f ? RoomRole.Closet : RoomRole.Laundry, r);
+                    else Add(plan, area < 6f || Has(plan, RoomRole.Laundry) ? RoomRole.Closet : RoomRole.Laundry, r);
                     break;
                 case InteriorUse.Church: Add(plan, area >= 25f ? RoomRole.Meeting : RoomRole.Sacristy, r); break;
                 case InteriorUse.School: Add(plan, area >= 30f ? RoomRole.Classroom : RoomRole.Office, r); break;
@@ -659,7 +669,16 @@ namespace CloneZ
                 case InteriorUse.Restaurant: case InteriorUse.Bar: Add(plan, area >= 20f ? RoomRole.Eatery : RoomRole.Stock, r); break;
                 case InteriorUse.Clinic: case InteriorUse.Hospital: Add(plan, area >= 16f ? RoomRole.Exam : RoomRole.Stock, r); break;
                 case InteriorUse.Police: Add(plan, area >= 16f ? RoomRole.Office : RoomRole.Armory, r); break;
-                case InteriorUse.Apartments: case InteriorUse.Motel: Add(plan, area >= 12f ? RoomRole.Laundry : RoomRole.Closet, r); break;
+                case InteriorUse.Apartments: case InteriorUse.Motel:
+                    if (area >= 40f && small >= 4f)
+                    {
+                        // The tenants' laundry and a common room.
+                        Rect[] s = r.width >= r.height ? SplitX(r, false, 3f, 3.4f, 0f) : SplitZ(r, false, 3f, 3.4f, 0f);
+                        Add(plan, RoomRole.Laundry, s[0]);
+                        Add(plan, RoomRole.BreakRoom, s[1]);
+                    }
+                    else Add(plan, area >= 12f ? RoomRole.Laundry : RoomRole.Closet, r);
+                    break;
                 case InteriorUse.Greenhouse: Add(plan, RoomRole.Greenhouse, r); break;
                 default: Add(plan, area >= 14f && rng.NextDouble() < 0.5 ? RoomRole.Office : RoomRole.Stock, r); break;
             }

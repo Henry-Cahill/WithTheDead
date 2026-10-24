@@ -62,6 +62,8 @@ namespace CloneZ
         public double TotalMs, MaxStepMs;
         public string MaxStep = "";
         public int StepCount;
+        /// <summary>How long each room took to furnish (ms; null until the rooms are reached).</summary>
+        public double[] RoomMs;
 
         private Vector3 _offset;
         private IEnumerator<string> _steps;
@@ -93,11 +95,14 @@ namespace CloneZ
             }
             Switches();
             yield return "interior switches";
+            RoomMs = new double[Plan.Rooms.Count];
             for (int i = 0; i < Plan.Rooms.Count; i++)
             {
+                long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
                 // One room that can't be furnished leaves it as far as it got, not the building unfurnished.
                 try { InteriorPass.Furnish(this, i); }
                 catch (System.Exception e) { Trouble("room " + i + " (" + Plan.Rooms[i].Role + ")", e); }
+                RoomMs[i] = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
                 yield return "interior rooms";
             }
             EmitWalls();
@@ -366,6 +371,20 @@ namespace CloneZ
         private void Floors()
         {
             var m = new RaidMesh();
+            // Under the rooms, the whole outline in the biggest room's floor: what an irregular footprint's rectangles leave
+            // along its walls (and the exteriors' plain floor would show through).
+            if (Plan.Local != null && Plan.Local.Count >= 3)
+            {
+                PlanRoom main = Plan.Rooms[0];
+                foreach (PlanRoom r in Plan.Rooms) if (r.R.width * r.R.height > main.R.width * main.R.height) main = r;
+                Surf under = InteriorPass.FloorSurf(main);
+                List<int> tris = MapGeometry.Triangulate(Plan.Local);
+                for (int t = 0; t + 2 < tris.Count; t += 3)
+                {
+                    Vector2 a = Plan.Local[tris[t]], b = Plan.Local[tris[t + 1]], c = Plan.Local[tris[t + 2]];
+                    m.Tri(new Vector3(a.x, 0.026f, a.y), new Vector3(b.x, 0.026f, b.y), new Vector3(c.x, 0.026f, c.y), under);
+                }
+            }
             for (int i = 0; i < Plan.Rooms.Count; i++)
             {
                 PlanRoom r = Plan.Rooms[i];

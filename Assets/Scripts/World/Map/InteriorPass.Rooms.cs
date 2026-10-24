@@ -594,10 +594,13 @@ namespace CloneZ
         {
             switch (role)
             {
-                case RoomRole.Bathroom: case RoomRole.Restroom: case RoomRole.Closet: return 0.35f;
-                case RoomRole.Warehouse: case RoomRole.Barn: case RoomRole.Greenhouse: case RoomRole.Gym: return 0.25f;
-                case RoomRole.Stock: case RoomRole.Workshop: case RoomRole.Bays: case RoomRole.HomeGarage: case RoomRole.Shed: return 0.6f;
-                default: return 0.7f;
+                case RoomRole.Bathroom: case RoomRole.Restroom: case RoomRole.Closet: return 0.15f;
+                case RoomRole.Warehouse: case RoomRole.Barn: case RoomRole.Greenhouse: case RoomRole.Gym: case RoomRole.Nave: return 0.12f;
+                case RoomRole.Stock: case RoomRole.Workshop: case RoomRole.Bays: case RoomRole.HomeGarage: case RoomRole.Shed: return 0.35f;
+                case RoomRole.Living: case RoomRole.Dining: case RoomRole.Kitchen: case RoomRole.Bedroom: case RoomRole.Den:
+                case RoomRole.Laundry: case RoomRole.Guest:
+                    return 0.3f;
+                default: return 0.45f;
             }
         }
 
@@ -796,8 +799,14 @@ namespace CloneZ
                     MapStyle.Range(r, -40f, 40f), DecorMaterials.Paper(r.Next(3)), new Rect(0f, 0f, 1f, 1f));
             if (r.NextDouble() < 0.6)
                 m.Cylinder(new Vector3(MapStyle.Range(r, -w * 0.4f, w * 0.4f), 0.76f, MapStyle.Range(r, 0f, 0.2f)), 0.04f, 0.1f, 8,
-                    DecorPalette.Gloss(new Color(MapStyle.Range(r, 0.5f, 0.9f), MapStyle.Range(r, 0.4f, 0.8f), MapStyle.Range(r, 0.3f, 0.7f))));
+                    DecorPalette.Gloss(Mugs[r.Next(Mugs.Length)]));
         }
+
+        // A few colours for the small things (each new colour costs the shared palette an upload).
+        private static readonly Color[] Mugs =
+        {
+            new Color(0.86f, 0.84f, 0.78f), new Color(0.62f, 0.16f, 0.12f), new Color(0.20f, 0.32f, 0.52f), new Color(0.30f, 0.44f, 0.30f),
+        };
 
         /// <summary>A few clutter pieces (box stacks, barrels, crates, cardboard boxes) against free walls.</summary>
         private static void Clutter(RoomCtx c, int count)
