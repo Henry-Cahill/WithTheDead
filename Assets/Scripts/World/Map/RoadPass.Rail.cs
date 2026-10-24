@@ -13,13 +13,14 @@ namespace CloneZ
         private const float Gauge = 1.435f;
         private const float BedTop = 0.12f, TieTop = 0.13f, RailTop = 0.27f;
 
-        private static void Railways(Net net)
+        private static IEnumerable<string> Railways(Net net)
         {
             foreach (Line l in net.Site.Area.Lines)
             {
                 if (!l.IsRailway || l.Data.tunnel || l.Pts.Count < 2) continue;
                 foreach (List<Vector2> piece in net.Site.Chunked ? Whole(l.Pts) : MapGeometry.ClipLine(l.Pts, net.Square))
                     Railway(net, l, piece);
+                if (net.Site.StepDue) yield return "railways";
             }
         }
 

@@ -22,8 +22,7 @@ namespace CloneZ
     /// the game's own storage (<see cref="StorageFixture"/>), whose contents a streamed piece remembers like any
     /// container's. A Lite site has none. The driveways are planned before the trees grow (<see cref="PlanDriveways"/>,
     /// called by <see cref="VegetationPass"/>). The game's drivable cars (<see cref="VehicleModule"/>) are set down later on
-    /// spots <see cref="ZoneLandmarks.PublishPoints"/> finds; <see cref="ParkedCarNear"/> tells whether one of these is in
-    /// the way.
+    /// spots <see cref="ZoneLandmarks.PublishPoints"/> finds clear of every collider, these cars' among them.
     /// </summary>
     internal static partial class VehiclePass
     {
@@ -59,7 +58,7 @@ namespace CloneZ
             public readonly List<Vector2> NoParking = new List<Vector2>(32);
             /// <summary>The town crossroads (three or more roads), for the odd rear-ended pair at a stop line.</summary>
             public readonly List<Junction> Crossroads = new List<Junction>(16);
-            public Transform LootRoot, Registry;
+            public Transform LootRoot;
 
             public Parking(Site site, NaturePlan plan)
             {
@@ -129,6 +128,7 @@ namespace CloneZ
         {
             if (site.Detail == Detail.Lite) yield break;
             NaturePlan plan = NaturePlan.For(site);
+            plan.CatchUp();
             PlanDriveways(site, plan);
             var c = new Parking(site, plan);
             string diag = "";
@@ -326,7 +326,6 @@ namespace CloneZ
             for (int i = 0; i <= steps; i++) c.Site.Take(at + axis * Mathf.Lerp(-reach, reach, i / (float)steps), hw + 0.1f);
             c.Placed.Add(new NaturePlan.Keep { At = at, Axis = axis, HalfLength = hl, HalfWidth = hw, Kind = NaturePlan.KeepKind.Car });
             c.Count++;
-            Register(c, at, Mathf.Sqrt(hl * hl + hw * hw));
             if (tilt == Quaternion.identity) Storage(c, at3, yaw, look, key, size);
             return true;
         }
@@ -424,65 +423,6 @@ namespace CloneZ
 
         /// <summary>The yaw (degrees clockwise from north) of a plan direction.</summary>
         private static float Yaw(Vector2 dir) => Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
-        #endregion
-
-        #region Where the parked cars stand, for the game
-        /// <summary>A parked car in the world, as long as the piece of the map it was built with stands.</summary>
-        private struct Parked
-        {
-            public Vector2 At;
-            public float Radius;
-            public Transform Piece;
-        }
-
-        private const float ParkedCell = 16f;
-        private static readonly Dictionary<long, List<Parked>> s_Parked = new Dictionary<long, List<Parked>>();
-
-        /// <summary>
-        /// True when a car this pass parked stands within <paramref name="radius"/> (in plan, plus the car's own size) of
-        /// <paramref name="world"/>, a point in the world: for whatever is set down at run time (the game's drivable cars,
-        /// a landing pad) to keep off them. Only cars on pieces of the map still built count. Main thread only.
-        /// </summary>
-        internal static bool ParkedCarNear(Vector3 world, float radius)
-        {
-            var p = new Vector2(world.x, world.z);
-            int r = Mathf.CeilToInt((radius + 4f) / ParkedCell);
-            int cx = Mathf.FloorToInt(p.x / ParkedCell), cz = Mathf.FloorToInt(p.y / ParkedCell);
-            for (int z = cz - r; z <= cz + r; z++)
-                for (int x = cx - r; x <= cx + r; x++)
-                {
-                    if (!s_Parked.TryGetValue(NaturePlan.Combine(x, z), out List<Parked> list)) continue;
-                    for (int i = list.Count - 1; i >= 0; i--)
-                    {
-                        Parked car = list[i];
-                        if (car.Piece == null)
-                        {
-                            list.RemoveAt(i);   // its piece of the map is gone
-                            continue;
-                        }
-                        float reach = radius + car.Radius;
-                        if ((car.At - p).sqrMagnitude < reach * reach) return true;
-                    }
-                }
-            return false;
-        }
-
-        // Notes a car parked on the site, by where it ends up in the world, held by a marker under the site's root so it's
-        // forgotten when the site is.
-        private static void Register(Parking c, Vector2 at, float radius)
-        {
-            if (c.Registry == null)
-            {
-                c.Registry = new GameObject("ParkedCars").transform;
-                c.Registry.SetParent(c.Site.Town.World, false);
-            }
-            var w = new Vector2(at.x + c.Site.WorldOffset.x, at.y + c.Site.WorldOffset.z);
-            long cell = NaturePlan.Combine(Mathf.FloorToInt(w.x / ParkedCell), Mathf.FloorToInt(w.y / ParkedCell));
-            if (!s_Parked.TryGetValue(cell, out List<Parked> list)) s_Parked[cell] = list = new List<Parked>(8);
-            for (int i = list.Count - 1; i >= 0; i--)
-                if (list[i].Piece == null) list.RemoveAt(i);
-            list.Add(new Parked { At = w, Radius = radius, Piece = c.Registry });
-        }
         #endregion
 
         #region Driveways

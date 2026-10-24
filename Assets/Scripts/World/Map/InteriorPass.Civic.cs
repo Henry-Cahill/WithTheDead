@@ -145,17 +145,8 @@ namespace CloneZ
         private static void Nave(RoomCtx c)
         {
             RaidBuilding b = c.B;
-            int door = c.DoorSide >= 0 ? c.DoorSide : 0;
             Rect i = c.Inner;
-            // The front is an end of the nave's length: the one across from the door, or with the door in a long side, the
-            // end farther from it.
-            bool longZ = i.height >= i.width;
-            bool doorInEnd = longZ ? door == 0 || door == 2 : door == 1 || door == 3;
-            bool squarish = Mathf.Max(i.width, i.height) < 1.15f * Mathf.Min(i.width, i.height);
-            int front;
-            if (doorInEnd || squarish || c.DoorSide < 0) front = RoomCtx.Opposite(door);
-            else if (longZ) front = c.DoorAlong > i.center.y ? 0 : 2;
-            else front = c.DoorAlong > i.center.x ? 3 : 1;
+            int front = EndFront(c);
             int back = RoomCtx.Opposite(front);
             bool facingZ = front == 0 || front == 2;
             float width = facingZ ? i.width : i.height, depth = facingZ ? i.height : i.width;

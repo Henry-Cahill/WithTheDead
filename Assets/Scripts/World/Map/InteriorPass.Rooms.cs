@@ -197,6 +197,8 @@ namespace CloneZ
             public readonly List<Rect> Keep = new List<Rect>(6);
             public readonly List<Vector2>[] Gaps = { new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2) };
             public readonly List<Vector2>[] Panes = { new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2) };
+            /// <summary>The light switches on each wall (from..to along it): tall pieces keep off them as off the windows.</summary>
+            public readonly List<Vector2>[] Plates = { new List<Vector2>(1), new List<Vector2>(1), new List<Vector2>(1), new List<Vector2>(1) };
             public readonly bool[] Inside = new bool[4];
             private int _pool;
 
@@ -363,6 +365,7 @@ namespace CloneZ
                 float a = t - w * 0.5f, b = t + w * 0.5f;
                 foreach (Vector2 g in Gaps[side]) if (a < g.y && b > g.x) return false;
                 if (h > 1.0f) foreach (Vector2 g in Panes[side]) if (a < g.y + 0.05f && b > g.x - 0.05f) return false;
+                if (h > 1.05f) foreach (Vector2 g in Plates[side]) if (a < g.y && b > g.x) return false;
                 return Clear(fp);
             }
 
@@ -486,6 +489,12 @@ namespace CloneZ
                 float a = side == 0 || side == 2 ? w.A.x : w.A.y, b = side == 0 || side == 2 ? w.B.x : w.B.y;
                 c.Panes[side].Add(new Vector2(Mathf.Min(a, b), Mathf.Max(a, b)));
             }
+            foreach (KeyValuePair<int, Vector2> spot in build.SwitchSpots)
+            {
+                if (spot.Key != index) continue;
+                int side = NearestSide(inner, spot.Value, out float along);
+                if (side >= 0) c.Plates[side].Add(new Vector2(along - 0.12f, along + 0.12f));
+            }
             return c;
         }
 
@@ -546,7 +555,8 @@ namespace CloneZ
                 case RoomRole.HomeGarage: case RoomRole.Bays: Garage(c); break;
                 case RoomRole.Shed: Shed(c); break;
                 case RoomRole.Sales: Sales(c); break;
-                case RoomRole.Stock: case RoomRole.Records: case RoomRole.Sorting: case RoomRole.Dispensary: Stock(c); break;
+                case RoomRole.Stock: case RoomRole.Records: case RoomRole.Dispensary: Stock(c); break;
+                case RoomRole.Sorting: Sorting(c); break;
                 case RoomRole.BackOffice: case RoomRole.Office: case RoomRole.Sacristy: Office(c, false); break;
                 case RoomRole.OpenOffice: case RoomRole.Squad: Office(c, true); break;
                 case RoomRole.Lobby: case RoomRole.Waiting: case RoomRole.Narthex: Lobby(c); break;

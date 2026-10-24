@@ -145,13 +145,20 @@ namespace CloneZ
                 foreach (List<Vector2> cap in j.Caps) Polygon(net.Out, cap, MapGeometry.Middle(cap), PatchY, surf);
                 if (net.Full && j.Top.Winter == Winter.Ploughed) PatchSlush(net, j);
                 TakePatch(net, j);
+                if (net.Site.StepDue) yield return "streets";
             }
         }
 
-        /// <summary>A face-up polygon, ear-clipped (fanned from <paramref name="hub"/> should that fail).</summary>
+        /// <summary>A face-up polygon: fanned from <paramref name="hub"/> when it sees every edge (most junction patches),
+        /// else ear-clipped (fanned anyway should that fail).</summary>
         private static void Polygon(OutdoorBatches into, List<Vector2> poly, Vector2 hub, float y, in Surf s)
         {
-            List<int> tris = MapGeometry.Triangulate(poly, 600);
+            if (StarFrom(poly, hub))
+            {
+                Fan(into, hub, poly, y, s);
+                return;
+            }
+            List<int> tris = MapGeometry.Triangulate(poly, 200);
             if (tris.Count < (poly.Count - 2) * 3)
             {
                 Fan(into, hub, poly, y, s);
@@ -164,6 +171,19 @@ namespace CloneZ
                 if (!Finite(a) || !Finite(b) || !Finite(c)) continue;
                 m.Tri(a, b, c, s);
             }
+        }
+
+        /// <summary>True when every edge of the anticlockwise polygon turns left seen from <paramref name="hub"/> (so a fan
+        /// from it covers the polygon exactly once).</summary>
+        private static bool StarFrom(List<Vector2> poly, Vector2 hub)
+        {
+            int n = poly.Count;
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 p = poly[i], q = poly[(i + 1) % n];
+                if (Cross(p - hub, q - hub) <= 1e-4f) return false;
+            }
+            return true;
         }
 
         // The winter on a carriageway: slush along the edges (not across a side road's mouth), over the crown and
@@ -189,12 +209,9 @@ namespace CloneZ
                         for (int i = 0; i < n; i++)
                         {
                             ProfAt(c, side, s[i].S, out Prof d);
-                            bool parking = d.Edge > d.Lane + 0.8f;
                             float wander = Noise(s[i].P, 3.5f, seed + side);
-                            float inner = parking ? d.Lane + 0.15f + 0.4f * wander : d.Edge - 0.35f - 0.45f * wander;
-                            s_A[i] = side * inner;
+                            s_A[i] = side * (d.Edge - 0.35f - 0.45f * wander);
                             s_B[i] = side * d.Edge;
-                            s_YA[i] = parking ? 1f : 0f;
                         }
                         for (int i = 0; i + 1 < n; i++)
                         {
@@ -202,9 +219,7 @@ namespace CloneZ
                             any |= s_Keep[i];
                         }
                         if (!any) continue;
-                        // The parking lanes' looser slush, the plough's ridge along a kerb.
-                        bool parked = s_YA[0] > 0.5f || s_YA[n - 1] > 0.5f;
-                        Band(net, s, s_A, s_B, DetailY, DetailY, parked ? look.SlushLight : look.Slush, c.Lift, s_Keep);
+                        Band(net, s, s_A, s_B, DetailY, DetailY, look.Slush, c.Lift, s_Keep);
                     }
                     if (!w.OneWay && w.Centre != CentreLine.None)
                     {
@@ -327,9 +342,15 @@ namespace CloneZ
             if (s_Take.Count >= 2) net.Site.TakeRoad(new List<Vector2>(s_Take), runHalf, 0.3f);
         }
 
-        // A junction's patch and mouths kept clear of props, a metre's cell at a time.
+        // A junction's patch and mouths kept clear of props, a metre's cell at a time (Lite: their boxes, roughly).
         private static void TakePatch(Net net, Joint j)
         {
+            if (!net.Full)
+            {
+                if (j.Patch != null && j.Patch.Count >= 3) net.Site.Take(j.Bounds);
+                foreach (Rect b in j.CapBounds) net.Site.Take(b);
+                return;
+            }
             if (j.Patch != null && j.Patch.Count >= 3) TakeCells(net, j.Patch, j.Bounds);
             for (int k = 0; k < j.Caps.Count; k++) TakeCells(net, j.Caps[k], j.CapBounds[k]);
         }
