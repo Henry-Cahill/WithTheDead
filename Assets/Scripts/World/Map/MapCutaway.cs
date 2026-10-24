@@ -139,8 +139,10 @@ namespace CloneZ
                 b.Base = offset.y;
                 b.Pts = Moved(b.Local, offset);
                 b.Bounds = BoundsOf(b.Pts);
-                b.Cover = new Rect(b.Bounds.xMin - CoverMargin, b.Bounds.yMin - CoverMargin,
-                    b.Bounds.width + 2f * CoverMargin, b.Bounds.height + 2f * CoverMargin);
+                b.Cover = b.LocalCover.width > 0f
+                    ? new Rect(b.LocalCover.x + offset.x - CoverSlack, b.LocalCover.y + offset.z - CoverSlack,
+                        b.LocalCover.width + 2f * CoverSlack, b.LocalCover.height + 2f * CoverSlack)
+                    : new Rect(b.Bounds.xMin - CoverMargin, b.Bounds.yMin - CoverMargin, b.Bounds.width + 2f * CoverMargin, b.Bounds.height + 2f * CoverMargin);
                 Hash(b);
                 site.MaxTop = Mathf.Max(site.MaxTop, b.Base + b.Top);
                 s_Count++;

@@ -85,6 +85,10 @@ namespace CloneZ
             Vector3 origin = To3(f.Middle, 0f);
             string id = f.Data != null ? f.Data.id.ToString(CultureInfo.InvariantCulture) : "";
             RaidMesh w = shell.Walls[0], u = shell.Upper;
+            // What the upper part covers in plan, from its vertices as drawn (before they're handed to the bake).
+            Rect cover = f.Bounds;
+            if (u != null && u != w && u.PlanExtents(Vector3.zero, out Vector4 least, out Vector4 most) && Finite(least) && Finite(most))
+                cover = Rect.MinMaxRect(Mathf.Min(cover.xMin, least.x), Mathf.Min(cover.yMin, least.y), Mathf.Max(cover.xMax, most.x), Mathf.Max(cover.yMax, most.y));
             GameObject wallsGo = Place(site, w, "Walls " + id, wallsRoot, origin);
             GameObject upperGo = u != w ? Place(site, u, "Upper " + id, upperRoot, origin) : null;
             if ((wallsGo == null && upperGo == null) || f.Pts.Count < 3) return null;
@@ -95,6 +99,7 @@ namespace CloneZ
                 Kind = f.Data != null ? f.Data.kind : null,
                 Middle = f.Middle,
                 Local = f.Pts.ToArray(),
+                LocalCover = cover,
                 WallThickness = thickness.TryGetValue(f, out float t) ? t : DefaultWallThickness,
                 Walls = wallsGo != null ? wallsGo.GetComponent<MeshRenderer>() : null,
                 Upper = upperGo != null ? upperGo.GetComponent<MeshRenderer>() : null,
@@ -126,5 +131,8 @@ namespace CloneZ
             m.Release();
             return go;
         }
+
+        private static bool Finite(Vector4 v) => !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsInfinity(v.x) || float.IsInfinity(v.y)
+            || float.IsNaN(v.z) || float.IsNaN(v.w) || float.IsInfinity(v.z) || float.IsInfinity(v.w));
     }
 }

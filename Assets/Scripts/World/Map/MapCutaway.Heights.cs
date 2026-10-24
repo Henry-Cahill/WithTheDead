@@ -16,9 +16,11 @@ namespace CloneZ
         internal const float HeightStep = 0.25f;
         private const float MinHeightCell = 0.5f;
         private const int MaxHeightCells = 80;   // along a side
-        /// <summary>How far past its footprint a building is assumed to reach until its upper part is read (eaves, porch
+        /// <summary>How far past its footprint a building is assumed to reach when what it covers isn't known (eaves, porch
         /// roofs, awnings, signs): the spatial hash cells it's put in.</summary>
         private const float CoverMargin = 3f;
+        /// <summary>A little round what a building is known to cover (the heights grid rounds out to whole cells).</summary>
+        private const float CoverSlack = 0.6f;
         /// <summary>The roof test starts this far in front of the survivor: past their own radius and half a height cell,
         /// so the building at their back never counts.</summary>
         private const float RoofFrom = 0.45f;

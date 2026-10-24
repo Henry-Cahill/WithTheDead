@@ -79,6 +79,9 @@ namespace CloneZ
             /// <summary>Set once the baked meshes' bounds have been read into <see cref="WallTop"/>, <see cref="Top"/> and
             /// <see cref="ClipWalls"/>.</summary>
             public bool Measured;
+            /// <summary>When the roof reaches past the walls (eaves, a porch roof, an awning, a sign): the box in plan round the
+            /// footprint and everything above it, site-local (from the upper part's vertices as drawn, no mesh read back).</summary>
+            public Rect LocalCover;
             /// <summary>How thick the outside walls are (for sorting the walls by facing).</summary>
             public float WallThickness;
             public MeshRenderer Walls, Upper;
