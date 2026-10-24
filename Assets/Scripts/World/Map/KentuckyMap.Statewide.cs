@@ -98,6 +98,7 @@ namespace CloneZ
             job.Site = new Site(job.Build, job.Town, job.Area, true, job.Offset, job.Detail);
             foreach (string step in Passes(job.Site)) yield return step;
             job.Site.Overhead.Emit("Overhead", job.Town.Overhead, true);
+            job.Site.Roofs.Emit("Roofs", job.Town.Overhead, false);
             yield return "overhead";
             job.Town.EmitOutdoor();
             DecorPalette.Apply();

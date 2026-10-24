@@ -311,6 +311,11 @@ namespace CloneZ
             public readonly Vector3 WorldOffset;
             /// <summary>Upper storeys, ceilings and roofs: shown only from inside views.</summary>
             internal readonly ChunkedMesh Overhead = new ChunkedMesh(40f);
+            /// <summary>Roofs and upper storeys that show from the isometric camera too (shared building shells: Lite
+            /// sites, scenery), unlike <see cref="Overhead"/>.</summary>
+            internal readonly ChunkedMesh Roofs = new ChunkedMesh(40f);
+            /// <summary>The building shells handed out by <see cref="Shell"/>, in order.</summary>
+            public readonly List<BuildingShell> Shells = new List<BuildingShell>();
             /// <summary>The root the loot containers go under.</summary>
             public readonly Transform Loot;
             /// <summary>The buildings <see cref="BuildingPass"/> made enterable, in the order it built them, for
@@ -349,6 +354,10 @@ namespace CloneZ
             /// <summary>Where the site's streets meet (see <see cref="MapJunctions"/>), found the first time they're asked
             /// for.</summary>
             public List<Junction> Junctions => _junctions ??= MapJunctions.Find(this);
+
+            /// <summary>The meshes a building's walls and roof go into (see <see cref="BuildingShell"/>); call once per
+            /// building. <paramref name="scenery"/>: a building past the playable edge, drawn with the scenery.</summary>
+            public BuildingShell Shell(Footprint footprint, bool scenery = false) => MapCutaway.ShellFor(this, footprint, scenery);
 
             /// <summary>This site's share of the fixed 400 m square the map's per-map limits were tuned for.</summary>
             public float AreaShare => Half * Half / (200f * 200f);
@@ -444,7 +453,8 @@ namespace CloneZ
         }
 
         /// <summary>Overhead geometry (upper storeys, ceilings, roofs) gathered in square chunks, so the camera culls
-        /// what it can't see; each chunk's renderer is handed to <see cref="CeilingVisibility"/>.</summary>
+        /// what it can't see; with <c>ceilings</c>, each chunk's renderer is handed to <see cref="CeilingVisibility"/>
+        /// (shown only from inside views).</summary>
         internal sealed class ChunkedMesh
         {
             private readonly float _chunk;

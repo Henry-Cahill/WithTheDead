@@ -7,9 +7,11 @@ namespace CloneZ
     /// Builds a raid map from a real place in Kentucky: the streets, buildings, water and land use around the zone's
     /// <see cref="ZoneDef.RealPlace"/>, from the world store's current build (OpenStreetMap data, made by Tools/World;
     /// see <see cref="WorldStore"/>). Laid out like <see cref="RaidMapBuilder"/>'s town: ground-floor walls, floors and
-    /// props under <c>world</c> with colliders, so the NavMesh bake carves them; upper storeys, ceilings and roofs under
-    /// the overhead root, shown only from inside views; the surroundings past the playable square as scenery without
-    /// colliders; exits where streets leave the map. Everything is in metres from the place's centre, x east, z north.
+    /// props under <c>world</c> with colliders, so the NavMesh bake carves them; roofs and upper storeys under the
+    /// overhead root, shown from outside and cut away around the survivor in the isometric view, Project Zomboid-style
+    /// (<see cref="BuildingShell"/>, <see cref="MapCutaway"/>), and interior ceilings shown only from inside views; the
+    /// surroundings past the playable square as scenery without colliders; exits where streets leave the map.
+    /// Everything is in metres from the place's centre, x east, z north.
     /// Builds nothing and returns null (with the reason) when the store or the place can't be read, so the caller can
     /// build the procedural town instead. A statewide zone streams the whole state instead (KentuckyMap.Statewide,
     /// <see cref="KentuckyStreamer"/>). Map data © OpenStreetMap contributors (ODbL).
@@ -27,6 +29,7 @@ namespace CloneZ
     /// <see cref="MapGameplay.Loot"/>) and, past the edge, scenery ones; doors, windows, awnings, porches, mailboxes,
     /// eaves, chimneys, roof snow.</item>
     /// <item><see cref="InteriorPass"/>: the enterable buildings' insides.</item>
+    /// <item><see cref="CutawayPass"/>: each building's own shell meshes, for the isometric cutaway.</item>
     /// <item><see cref="StreetscapePass"/>: utility poles, street lights, signposts, hydrants, lot fences; then the
     /// roadside snow piles and the parked cars.</item>
     /// <item><see cref="VegetationPass"/>: trees.</item>
@@ -80,6 +83,7 @@ namespace CloneZ
                 MapGameplay.DefineExits(site);
                 MapGameplay.PickSpawn(site);
                 site.Overhead.Emit("Overhead", town.Overhead, true);
+                site.Roofs.Emit("Roofs", town.Overhead, false);
                 town.EmitOutdoor();
                 DecorPalette.Apply();
             }
@@ -105,6 +109,7 @@ namespace CloneZ
             foreach (string step in RoadPass.Build(site)) yield return step;
             foreach (string step in BuildingPass.Build(site)) yield return step;
             foreach (string step in InteriorPass.Build(site)) yield return step;
+            foreach (string step in CutawayPass.Build(site)) yield return step;
             foreach (string step in StreetscapePass.Build(site)) yield return step;
             foreach (string step in VegetationPass.Build(site)) yield return step;
             foreach (string step in VehiclePass.Build(site)) yield return step;
