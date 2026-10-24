@@ -30,6 +30,7 @@ namespace CloneZ
 
             public Profile(string purpose) { Purpose = purpose; }
 
+            /// <summary>True if this profile defines an else pool.</summary>
             public bool HasElse => _else != null;
 
             public Profile Room(string room, params ContainerType[] pool) => Rooms(new[] { room }, pool);
@@ -89,6 +90,7 @@ namespace CloneZ
         private static Dictionary<string, Profile> s_Profiles;
         private static Profile s_Generic;
 
+        /// <summary>Returns a new profile for the given purpose and registers it.</summary>
         private static Profile P(string purpose)
         {
             var p = new Profile(purpose);
@@ -98,6 +100,7 @@ namespace CloneZ
 
         // Every purpose's rooms. A pool's first entry is the room's signature container (the kitchen's fridge, the
         // bathroom's medicine cabinet, the armoury's gun locker); repeats weigh more.
+        /// <summary>Defines the loot profiles for every purpose.</summary>
         private static void DefineProfiles()
         {
             s_Profiles = new Dictionary<string, Profile>();
@@ -649,6 +652,7 @@ namespace CloneZ
 
         // A fractional count made whole, rounded up as often as its fraction says (from the building's id, so the same
         // every build).
+        /// <summary>Computes a deterministic whole number from a fractional count using the building's ID as seed.</summary>
         private static int Dither(float value, long id)
         {
             if (value <= 0f) return 0;
