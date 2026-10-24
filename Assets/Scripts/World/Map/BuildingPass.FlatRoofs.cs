@@ -37,7 +37,8 @@ namespace CloneZ
                     // Where the snow has gone, which shows from afar.
                     System.Random lrng = MapStyle.Rng(j.Id, SaltMelt + 3);
                     float r = Mathf.Clamp(Mathf.Sqrt(f.Size) * 0.06f, 1.2f, 3.2f);
-                    Patches(j, m, surface + 0.006f, lrng, snowy ? RoofSurf(RoofCover.Membrane, 1) : RoofSnow, 1 + Mathf.Min(2, (int)(f.Size / 1500f)), r, r * 1.5f);
+                    Surf bareLite = p.Covering == RoofCover.Membrane ? RoofSurf(RoofCover.Membrane, 1) : cover;
+                    Patches(j, m, surface + 0.006f, lrng, snowy ? bareLite : RoofSnow, 1 + Mathf.Min(2, (int)(f.Size / 1500f)), r, r * 1.5f);
                 }
                 return;
             }
