@@ -14,7 +14,7 @@ namespace CloneZ
         private const float FlickerDepth = 0.1f;   // the flicker's swing, as a fraction of the lamp's output
 
         private static readonly List<PorchLamp> s_All = new List<PorchLamp>();
-        private static Driver s_Driver;
+        private static PorchLampDriver s_Driver;
 
         private Light _light;
         private float _intensity, _phase;
@@ -43,10 +43,19 @@ namespace CloneZ
         private void OnEnable()
         {
             s_All.Add(this);
-            if (s_Driver == null) s_Driver = new GameObject("PorchLamps").AddComponent<Driver>();
+            if (s_Driver == null) s_Driver = new GameObject("PorchLamps").AddComponent<PorchLampDriver>();
         }
 
         private void OnDisable() => s_All.Remove(this);
+
+        /// <summary>Lights or puts out every porch lamp for the time of day, and flickers the lit ones.</summary>
+        internal static void TickAll()
+        {
+            TimeOfDay day = TimeOfDay.Instance;
+            bool night = day != null && day.IsNight;
+            float time = Time.time;
+            for (int i = 0; i < s_All.Count; i++) s_All[i].Tick(night, time);
+        }
 
         private void Tick(bool night, float time)
         {
@@ -55,17 +64,11 @@ namespace CloneZ
             if (night)
                 _light.intensity = _intensity * (1f - FlickerDepth * 0.5f + FlickerDepth * Mathf.PerlinNoise((time + _phase) * FlickerSpeed, 0f));
         }
+    }
 
-        /// <summary>Works every porch lamp, once a frame.</summary>
-        private sealed class Driver : MonoBehaviour
-        {
-            private void Update()
-            {
-                TimeOfDay day = TimeOfDay.Instance;
-                bool night = day != null && day.IsNight;
-                float time = Time.time;
-                for (int i = 0; i < s_All.Count; i++) s_All[i].Tick(night, time);
-            }
-        }
+    /// <summary>Works every <see cref="PorchLamp"/>, once a frame; made with the first lamp, gone with the scene.</summary>
+    internal sealed class PorchLampDriver : MonoBehaviour
+    {
+        private void Update() => PorchLamp.TickAll();
     }
 }
