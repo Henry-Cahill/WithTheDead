@@ -26,7 +26,7 @@ namespace CloneZ
             bool snowy = p.Snow != SnowCover.Bare;
             Surf cover = RoofCoverSurf(p, false);
             float surface = deck + (snowy ? 0.12f : 0.03f);
-            Deck(m, f, j.Tris, surface, snowy ? RoofSnow : cover);
+            Deck(m, j, surface, snowy ? RoofSnow : cover);
             j.Top = Mathf.Max(j.Top, deck + p.Parapet);
             if (j.Lite)
             {
@@ -49,9 +49,10 @@ namespace CloneZ
         }
 
         // The roof's top over the whole footprint at height y.
-        private static void Deck(RaidMesh m, Footprint f, List<int> tris, float y, in Surf s)
+        private static void Deck(RaidMesh m, Job j, float y, in Surf s)
         {
-            List<Vector2> pts = f.Pts;
+            List<int> tris = j.Tris;
+            List<Vector2> pts = j.TriPts;
             for (int t = 0; t + 2 < tris.Count; t += 3)
                 m.Tri(To3(pts[tris[t]], y), To3(pts[tris[t + 1]], y), To3(pts[tris[t + 2]], y), s);
         }

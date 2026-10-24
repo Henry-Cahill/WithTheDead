@@ -200,8 +200,38 @@ namespace CloneZ
             public float FloorY(int k) => k <= 0 ? 0f : P.FirstStorey + (k - 1) * P.Storey;
             public bool Party(int edge) => P.Party != null && edge < P.Party.Length && P.Party[edge];
 
-            /// <summary>The footprint in triangles (index triples into its points), worked out once.</summary>
-            public List<int> Tris => _tris ??= MapGeometry.Triangulate(F.Pts);
+            /// <summary>The footprint in triangles (index triples into <see cref="TriPts"/>), worked out once.</summary>
+            public List<int> Tris
+            {
+                get
+                {
+                    if (_tris != null) return _tris;
+                    if (F.Pts.Count <= MaxTriangulated) _tris = MapGeometry.Triangulate(F.Pts);
+                    else
+                    {
+                        // A very detailed outline: a simplified copy, a little coarser each time until it's small enough.
+                        for (float tol = 0.15f; ; tol *= 2f)
+                        {
+                            Simplify(F.Pts, tol, _simple);
+                            if (_simple.Count <= MaxTriangulated || tol > 3f) break;
+                        }
+                        _tris = MapGeometry.Triangulate(_simple);
+                    }
+                    return _tris;
+                }
+            }
+
+            /// <summary>The points <see cref="Tris"/> indexes: the footprint's own, or its simplified copy.</summary>
+            public List<Vector2> TriPts
+            {
+                get
+                {
+                    List<int> _ = Tris;
+                    return F.Pts.Count <= MaxTriangulated ? F.Pts : _simple;
+                }
+            }
+
+            private readonly List<Vector2> _simple = new List<Vector2>(MaxTriangulated);
 
             /// <summary>The top of wall <paramref name="edge"/> at <paramref name="s"/> along it.</summary>
             public float TopAt(int edge, float s)
@@ -260,15 +290,16 @@ namespace CloneZ
                     Roof(j);
                     return true;
                 case 3:
-                    if (!j.Lite)
-                    {
-                        Frontage(j);
-                        Special(j);
-                    }
+                    if (!j.Lite) Frontage(j);
+                    return true;
+                case 4:
+                    if (!j.Lite) Special(j);
                     else LiteSpecial(j);
                     return true;
                 default:
                     if (!j.Scenery) Inside(j);
+                    // A building the square's edge cuts through keeps the props off the ground it stands on.
+                    else if (j.Edge) Rows(j, false);
                     return Done(j);
             }
         }
@@ -426,6 +457,7 @@ namespace CloneZ
             if (!j.Lite)
             {
                 List<int> tris = j.Tris;
+                List<Vector2> pts = j.TriPts;
                 Vector3 middle = To3(f.Middle, 0f);
                 RaidMesh floor = j.Site.Town.Out.Flat(middle);
                 RaidMesh ceilings = j.Site.Overhead.At(middle);
@@ -434,7 +466,7 @@ namespace CloneZ
                 float ceiling = p.Storeys == 1 && p.Eave > 4.5f && p.Arch != Arch.Row ? p.Eave - 0.15f : CeilingY;
                 for (int t = 0; t + 2 < tris.Count; t += 3)
                 {
-                    Vector2 a = f.Pts[tris[t]], b = f.Pts[tris[t + 1]], c = f.Pts[tris[t + 2]];
+                    Vector2 a = pts[tris[t]], b = pts[tris[t + 1]], c = pts[tris[t + 2]];
                     floor.Tri(To3(a, 0.02f), To3(b, 0.02f), To3(c, 0.02f), floorSurf);
                     if (roofed) ceilings.Tri(To3(a, ceiling), To3(c, ceiling), To3(b, ceiling), ceilingSurf);
                 }
