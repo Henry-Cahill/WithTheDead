@@ -700,6 +700,10 @@ namespace CloneZ
                         d.WalkOut = d.WalkIn + 1.5f;
                     }
                 }
+                // A town's main street mapped without a sidewalk on this side (or with its sidewalks mapped apart, out of
+                // reach) still has its kerb: a bare edge with a berm along it reads as open country, and the gores
+                // between a square's one-way pieces as ragged wedges of snow.
+                else if (main && w.Town) d.Kerb = true;
                 d.Berm = (w.Winter == Winter.Ploughed || w.Winter == Winter.Packed) && !w.Bridge;
                 d.EdgeLine = w.Winter == Winter.Ploughed && (w.Cls <= Cls.Trunk || (w.Cls <= Cls.Tertiary && !d.Kerb && !w.Town));
                 d.EdgeYellow = side == 0 && w.OneWay && w.Cls <= Cls.Trunk;

@@ -213,10 +213,13 @@ namespace CloneZ
                             float wander = Noise(s[i].P, 3.5f, seed + side);
                             s_A[i] = side * (d.Edge - 0.35f - 0.45f * wander);
                             s_B[i] = side * d.Edge;
+                            // An edge lying on another carriageway (two pieces side by side, a gore's tip) has no slush:
+                            // it would be a stray stripe across the other road.
+                            s_YA[i] = OnPavement(net, s[i].P + s[i].N * (side * (d.Edge + 0.3f)), c, 0f) ? 0f : 1f;
                         }
                         for (int i = 0; i + 1 < n; i++)
                         {
-                            s_Keep[i] = !InMouth(c, side, (s[i].S + s[i + 1].S) * 0.5f);
+                            s_Keep[i] = !InMouth(c, side, (s[i].S + s[i + 1].S) * 0.5f) && s_YA[i] > 0.5f && s_YA[i + 1] > 0.5f;
                             any |= s_Keep[i];
                         }
                         if (!any) continue;
@@ -234,17 +237,20 @@ namespace CloneZ
                         }
                         Band(net, s, s_A, s_B, BuryY, BuryY, look.Slush, c.Lift, s_Keep);
                     }
-                    // Between the wheel paths: broken, lumpy, and churned away where the traffic crosses a junction.
+                    // Between the wheel paths, out of town: broken, lumpy, and churned away where the traffic crosses a
+                    // junction. (In town the traffic and the salt keep the lanes clear: a ridge down the middle of a
+                    // downtown street read as a stray strip.)
+                    if (w.Town || w.Downtown) break;
                     for (int k = 0; k < s_Lanes.Count; k++)
                     {
                         for (int i = 0; i < n; i++)
                         {
                             float lc = LaneAt(c, s[i].S, s_Lanes[k]);
-                            float half = 0.1f + 0.26f * Noise(s[i].P, 2.25f, seed + 20 + k);
+                            float half = 0.08f + 0.2f * Noise(s[i].P, 2.25f, seed + 20 + k);
                             float shift = 0.15f * (Noise(s[i].P, 6f, seed + 40 + k) - 0.5f);
                             s_A[i] = lc + shift - half;
                             s_B[i] = lc + shift + half;
-                            s_Keep[i] = Noise(s[i].P, 3.5f, seed + 60 + k) > 0.48f && !Crossing(c, s[i].S);
+                            s_Keep[i] = Noise(s[i].P, 3.5f, seed + 60 + k) > 0.55f && !Crossing(c, s[i].S);
                         }
                         Band(net, s, s_A, s_B, DetailY, DetailY, look.SlushLight, c.Lift, s_Keep);
                     }

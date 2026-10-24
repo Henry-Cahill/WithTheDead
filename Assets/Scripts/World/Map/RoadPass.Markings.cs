@@ -297,8 +297,8 @@ namespace CloneZ
         }
 
         // A straight painted bar square across a chain at <paramref name="s"/> (its direction there), <paramref name="half"/>
-        // either way along it, from <paramref name="lo"/> to <paramref name="hi"/> across it, in pieces of which the slush
-        // has buried some.
+        // either way along it, from <paramref name="lo"/> to <paramref name="hi"/> across it, in pieces; the slush at the
+        // gutters has buried an end piece here and there (never the middle: a lone piece left reads as a stray dash).
         private static void Bar(Net net, Chain c, float s, float half, float lo, float hi, in Surf surf, int seed)
         {
             if (hi - lo < 0.2f || s < 0f || s > c.Length) return;
@@ -308,7 +308,7 @@ namespace CloneZ
             for (int k = 0; k < pieces; k++)
             {
                 float a = lo + (hi - lo) * k / pieces, b = lo + (hi - lo) * (k + 1) / pieces;
-                if (Noise(p + n * ((a + b) * 0.5f), 1.75f, seed) < 0.22f) continue;
+                if (pieces > 3 && (k == 0 || k == pieces - 1) && Noise(p + n * ((a + b) * 0.5f), 1.75f, seed) < 0.4f) continue;
                 Vector3 p0 = To3(p + n * a - d * half, JunctionMarkY), p1 = To3(p + n * a + d * half, JunctionMarkY);
                 Vector3 q1 = To3(p + n * b + d * half, JunctionMarkY), q0 = To3(p + n * b - d * half, JunctionMarkY);
                 Face(net.Out.Flat((p0 + q1) * 0.5f), p0, p1, q1, q0, Vector3.up, surf);
