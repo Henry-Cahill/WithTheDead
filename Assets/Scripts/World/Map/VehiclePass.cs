@@ -31,19 +31,48 @@ namespace CloneZ
         {
             public readonly Site Site;
             public readonly NaturePlan Plan;
-            public readonly int Max;
-            public int Count;
+            public readonly int Max, MaxLoot;
+            public int Count, Loot, Yielded;
             public readonly List<NaturePlan.Keep> Placed = new List<NaturePlan.Keep>(64);
             public readonly List<NaturePlan.Station> Stations = new List<NaturePlan.Station>(64);
-            /// <summary>Where cars mustn't park: junctions, crossings, bus stops and hydrants.</summary>
-            public readonly List<Vector2> Junctions = new List<Vector2>(32), NoParking = new List<Vector2>(32);
+            /// <summary>Where cars mustn't park: street corners (10 m), the mouths of service roads and lot entrances
+            /// (5 m), crossings, bus stops, hydrants and signals.</summary>
+            public readonly List<Vector2> Corners = new List<Vector2>(32), Mouths = new List<Vector2>(32), NoParking = new List<Vector2>(32);
+            /// <summary>The corners where three or more roads meet, for the odd fender-bender.</summary>
+            public readonly List<Junction> Crossroads = new List<Junction>(16);
+            public Transform LootRoot;
 
             public Parking(Site site, NaturePlan plan)
             {
                 Site = site;
                 Plan = plan;
-                Max = Mathf.Max(70, Mathf.RoundToInt(280f * site.AreaShare));
-                foreach (Junction j in site.Junctions) Junctions.Add(j.At);
+                Max = Mathf.Max(70, Mathf.RoundToInt(300f * site.AreaShare));
+                MaxLoot = Mathf.Max(4, Mathf.RoundToInt(60f * site.AreaShare));
+                foreach (Junction j in site.Junctions)
+                {
+                    int roads = 0, minor = 0;
+                    Vector2 first = Vector2.zero, second = Vector2.zero;
+                    foreach (JunctionArm a in j.Arms)
+                    {
+                        string kind = a.Street.Data.kind;
+                        if (NaturePlan.FootKind(kind) || (a.Street.Rank == 0 && kind != "living_street")) continue;
+                        if (a.Street.Rank >= 2 || kind == "living_street")
+                        {
+                            if (roads == 0) first = a.Dir;
+                            else if (roads == 1) second = a.Dir;
+                            roads++;
+                        }
+                        else minor++;
+                    }
+                    if (roads >= 3)
+                    {
+                        Corners.Add(j.At);
+                        Crossroads.Add(j);
+                    }
+                    else if (roads >= 1 && roads + minor >= 3) Mouths.Add(j.At);
+                    else if (roads == 2 && Vector2.Dot(first, second) > -0.86f) Corners.Add(j.At);   // a corner between two streets
+                    else if (minor >= 2 && roads + minor >= 3) Mouths.Add(j.At);
+                }
                 foreach (Node n in site.Area.Nodes)
                     if (n.Data.kind == "crossing" || n.Data.kind == "bus_stop" || n.Data.kind == "hydrant" || n.Data.kind == "traffic_signals"
                         || n.Data.kind == "stop" || n.Data.kind == "give_way")
@@ -56,6 +85,14 @@ namespace CloneZ
                     if (NaturePlan.Overlap(at, axis, halfLength, halfWidth, k.At, k.Axis, k.HalfLength, k.HalfWidth)) return true;
                 return false;
             }
+
+            /// <summary>True every dozen cars or so: time to let the frame go.</summary>
+            public bool Due()
+            {
+                if (Count - Yielded < 12) return false;
+                Yielded = Count;
+                return true;
+            }
         }
 
         internal static IEnumerable<string> Build(Site site)
@@ -64,15 +101,20 @@ namespace CloneZ
             NaturePlan plan = NaturePlan.For(site);
             PlanDriveways(site, plan);
             var c = new Parking(site, plan);
-            DrivewayCars(c);
-            yield return "driveway cars";
+            string diag = "";
+            int before = 0;
+            foreach (string step in DrivewayCars(c)) yield return step;
+            diag += "driveways " + (c.Count - before) + " of " + plan.Driveways.Count + ", "; before = c.Count;
             Specials(c);
+            diag += "specials " + (c.Count - before) + ", "; before = c.Count;
             yield return "buses and cruisers";
-            KerbCars(c);
-            yield return "kerbside cars";
-            LotCars(c);
-            yield return "parking lot cars";
+            foreach (string step in KerbCars(c)) yield return step;
+            diag += "kerbs " + (c.Count - before) + ", "; before = c.Count;
+            foreach (string step in LotCars(c)) yield return step;
+            diag += "lots " + (c.Count - before) + ", "; before = c.Count;
             RoadWrecks(c);
+            diag += "wrecks " + (c.Count - before) + ", lootable " + c.Loot;
+            if (!site.Chunked) Debug.Log("[NatureDiag] cars " + c.Count + ": " + diag + "; corners " + c.Corners.Count + ", mouths " + c.Mouths.Count);
             yield return "wrecks";
         }
 
@@ -192,8 +234,9 @@ namespace CloneZ
                     look.Chrome = u() < 0.35f;
                     break;
             }
-            look.Snow = Mathf.Clamp01(snow + (MapStyle.Unit(key, SaltSnow) - 0.5f) * 0.35f);
-            look.Frosted = MapStyle.Unit(key, SaltSnow + 1) < (look.Snow > 0.3f ? 0.85f : 0.4f);
+            float s = MapStyle.Unit(key, SaltSnow);
+            look.Snow = s < 0.22f ? 0.05f + s * 0.6f : Mathf.Clamp01(snow + (s - 0.6f) * 0.5f);   // a fifth brushed off or lightly dusted
+            look.Frosted = MapStyle.Unit(key, SaltSnow + 1) < (look.Snow > 0.3f ? 0.6f : 0.25f);
             return look;
         }
         #endregion
@@ -202,7 +245,8 @@ namespace CloneZ
         /// <summary>
         /// Parks a vehicle at <paramref name="at"/>, nose to <paramref name="yaw"/> (degrees clockwise from north),
         /// <paramref name="tilt"/> on top (a car in a ditch): drawn into the outdoor batch, a box collider round it, its
-        /// spot taken. False, placing nothing, when it's outside the square, over the site's quota or in another's way.
+        /// spot taken, and one in five (up to the site's share) with a glovebox and a trunk to search. False, placing
+        /// nothing, when it's outside the square, over the site's quota or in another's way.
         /// </summary>
         private static bool Park(Parking c, Vector2 at, float yaw, in CarLook look, long key, Quaternion tilt)
         {
@@ -221,7 +265,57 @@ namespace CloneZ
             for (int i = 0; i <= steps; i++) c.Site.Take(at + axis * Mathf.Lerp(-reach, reach, i / (float)steps), size.x * 0.5f + 0.1f);
             c.Placed.Add(new NaturePlan.Keep { At = at, Axis = axis, HalfLength = size.z * 0.5f, HalfWidth = size.x * 0.5f, Kind = NaturePlan.KeepKind.Car });
             c.Count++;
+            if (tilt == Quaternion.identity) Storage(c, at3, yaw, look, key, size);
             return true;
+        }
+
+        private const int SaltLoot = 0xCA30;
+
+        /// <summary>A car's glovebox (on the passenger side of the cab) and its trunk, a pickup's bed or a box truck's box,
+        /// as the procedural town's wrecks have them: each a little storage of the game's own, rolled from the car's key.
+        /// Burnt-out shells and school buses have none.</summary>
+        private static void Storage(Parking c, Vector3 at, float yaw, in CarLook look, long key, Vector3 size)
+        {
+            if (c.Loot >= c.MaxLoot || (look.Wear & CarWear.Burnt) != 0 || look.Body == CarBody.Bus) return;
+            if (MapStyle.Unit(key, SaltLoot) >= 0.2f) return;
+            if (c.LootRoot == null)
+            {
+                c.LootRoot = new GameObject("Cars").transform;
+                c.LootRoot.SetParent(c.Site.Town.World, false);
+            }
+            var host = new GameObject("Car").transform;
+            host.SetParent(c.LootRoot, false);
+            host.SetPositionAndRotation(at, Quaternion.identity);
+            Quaternion q = Quaternion.Euler(0f, yaw, 0f);
+            float hw = size.x * 0.5f, hl = size.z * 0.5f;
+            bool box = look.Body == CarBody.BoxTruck, bed = look.Body == CarBody.Pickup || box;
+            Vector3 offset = c.Site.WorldOffset;   // keys by where it ends up in the world (a streamed piece is built at the origin)
+            int seed = unchecked((int)MapStyle.Hash(key, SaltLoot + 1));
+            if (!box)
+            {
+                Vector3 cab = at + q * new Vector3(hw + 0.12f, 0.95f, 0.3f);
+                StorageFixture.Create(host, "Glovebox", Interactable.KeyFor("carglovebox", cab + offset), cab, null, host, seed,
+                    new StorageOptions
+                    {
+                        Noun = "glovebox", LookLabel = "Search the glovebox", LootType = ContainerType.Desk,
+                        EmptyChance = CloneZConfig.RaidGloveboxEmptyChance, MaxStacks = CloneZConfig.RaidGloveboxMaxStacks, RaidBoost = false,
+                    });
+                c.Site.Containers++;
+            }
+            bool police = look.Body == CarBody.Cruiser;
+            string back = box ? "Cargo box" : bed ? "Truck bed" : "Trunk";
+            Vector3 rear = at + q * new Vector3(0f, box ? 1.2f : 0.9f, -hl - 0.12f);
+            StorageFixture.Create(host, back, Interactable.KeyFor("cartrunk", rear + offset), rear, null, host, seed + 1,
+                new StorageOptions
+                {
+                    Noun = back.ToLowerInvariant(), LookLabel = box ? "Roll up the cargo door" : bed ? "Search the truck bed" : "Pop the trunk",
+                    LootType = police ? ContainerType.GunLocker : box ? ContainerType.Shelf : ContainerType.Crate,
+                    EmptyChance = police ? CloneZConfig.RaidTrunkEmptyChance + 0.1f : CloneZConfig.RaidTrunkEmptyChance,
+                    MaxStacks = police ? 1 : CloneZConfig.RaidTrunkMaxStacks, SearchTime = CloneZConfig.RaidTrunkSearchSeconds,
+                    Noise = CloneZConfig.FixtureNoiseDoor, RaidBoost = false,
+                });
+            c.Site.Containers++;
+            c.Loot++;
         }
 
         /// <summary>The unit plan direction of a yaw (degrees clockwise from north).</summary>
@@ -332,7 +426,7 @@ namespace CloneZ
         }
 
         // The planned driveway cars, mostly snowed in, each at the end of its strip of tyre-tracked packed snow.
-        private static void DrivewayCars(Parking c)
+        private static IEnumerable<string> DrivewayCars(Parking c)
         {
             foreach (NaturePlan.CarSpot s in c.Plan.Driveways)
             {
@@ -342,7 +436,9 @@ namespace CloneZ
                 CarLook look = LookFor(s.Key, body, 0.62f);
                 if (!Park(c, s.At, s.Yaw, look, s.Key, Quaternion.identity)) continue;
                 if (s.StripWidth > 0f) Strip(c, s.Mouth, s.At + (s.At - s.Mouth).normalized * 2.6f, s.StripWidth);
+                if (c.Due()) yield return "driveway cars";
             }
+            yield return "driveway cars";
         }
 
         private static Surf PackedSnow => DecorPalette.Matte(new Color(0.76f, 0.78f, 0.82f));

@@ -88,6 +88,7 @@ namespace CloneZ
             public readonly bool Lite;
             public readonly int Max, MaxRing;
             public int Count, Ring;
+            public string Diag = "";
             public readonly List<NaturePlan.CellPoint> Cells = new List<NaturePlan.CellPoint>(512);
             public readonly List<NaturePlan.Station> Stations = new List<NaturePlan.Station>(128);
             /// <summary>The enterable buildings, by footprint (for their doors).</summary>
@@ -149,17 +150,33 @@ namespace CloneZ
                 yield return "driveways";
             }
             var p = new Planting(site, plan);
+            int before = p.Count;
             MappedTrees(p);
             TreeRows(p);
+            Diag(p, "mapped", ref before);
             yield return "mapped trees";
             foreach (string step in Yards(p)) yield return step;
+            Diag(p, "yards", ref before);
+            Grounds(p);
+            Diag(p, "grounds", ref before);
             StreetTrees(p);
+            Diag(p, "street", ref before);
             yield return "street trees";
             Creeks(p);
             RoadRows(p);
             FieldEdges(p);
+            Diag(p, "rows", ref before);
             yield return "fence rows";
             foreach (string step in Sweep(p)) yield return step;
+            Diag(p, "sweep", ref before);
+            if (!site.Chunked) Debug.Log("[NatureDiag] trees " + p.Count + " (ring " + p.Ring + "): " + p.Diag);
+        }
+
+        // Temporary: what each source planted, for tuning.
+        private static void Diag(Planting p, string what, ref int before)
+        {
+            p.Diag += what + " " + (p.Count - before) + ", ";
+            before = p.Count;
         }
 
         #region Planting
@@ -403,11 +420,10 @@ namespace CloneZ
                 foreach (NaturePlan.CellPoint c in p.Cells)
                 {
                     if (c.At.y >= z1 && z1 < reach) continue;   // the next band's
-                    Sow(p, c, forest, thin);
-                }
-                if (row % 2 == 1) yield return "trees";
+                        Sow(p, c, forest, thin);
+                    }
+                    yield return "trees";
             }
-            yield return "trees";
         }
 
         private static void Sow(Planting p, NaturePlan.CellPoint c, Mix forest, float thin)

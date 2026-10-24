@@ -20,7 +20,7 @@ namespace CloneZ
         /// then a car was left slewed across a lane in town, its door open, and at the odd junction two never cleared up
         /// after a fender-bender.
         /// </summary>
-        private static void KerbCars(Parking c)
+        private static IEnumerable<string> KerbCars(Parking c)
         {
             NaturePlan plan = c.Plan;
             var bends = new List<Vector2>(16);
@@ -29,14 +29,19 @@ namespace CloneZ
                 if (st.Data.tunnel || st.Data.bridge || st.Rank >= 6 || NaturePlan.FootKind(st.Data.kind)) continue;
                 if (st.Rank == 0 && st.Data.kind != "living_street") continue;
                 if (st.Width < 5.6f || (st.Data.kind != null && st.Data.kind.EndsWith("_link"))) continue;
+                // Real bends only: the vertices where the street turns by more than 12 degrees.
                 bends.Clear();
-                foreach (Vector2 v in st.Pts)
-                    if (!plan.CutVertex(v)) bends.Add(v);
+                for (int i = 1; i + 1 < st.Pts.Count; i++)
+                {
+                    Vector2 d0 = st.Pts[i] - st.Pts[i - 1], d1 = st.Pts[i + 1] - st.Pts[i];
+                    if (d0.sqrMagnitude > 1e-4f && d1.sqrMagnitude > 1e-4f && Vector2.Dot(d0.normalized, d1.normalized) < 0.978f) bends.Add(st.Pts[i]);
+                }
                 int only = (st.Data.id & 1) == 0 ? 1 : -1;
                 plan.Stations(st.Pts, 6.6f, c.Stations);
                 foreach (NaturePlan.Station s in c.Stations)
                 {
-                    if (!plan.InSquare(s.At, 0f) || Near(bends, s.At, 4f) || Near(c.Junctions, s.At, 11f) || Near(c.NoParking, s.At, 5f)) continue;
+                    if (!plan.InSquare(s.At, 0f) || Near(bends, s.At, 4f) || Near(c.Corners, s.At, 10f) || Near(c.Mouths, s.At, 5f)
+                        || Near(c.NoParking, s.At, 4.5f)) continue;
                     Vector2 right = new Vector2(s.Dir.y, -s.Dir.x);
                     float bizL = plan.Business(s.At - right * (st.Width * 0.5f + 9f)), bizR = plan.Business(s.At + right * (st.Width * 0.5f + 9f));
                     bool both = st.Width >= 8.4f || (Mathf.Max(bizL, bizR) > 0.06f && st.Width >= 7f);
@@ -46,7 +51,7 @@ namespace CloneZ
                         long key = NaturePlan.Combine(NaturePlan.Combine(st.Data.id, s.K), side + 3);
                         Vector2 n = right * side;
                         Vector2 front = s.At + n * (st.Width * 0.5f + 9f);
-                        if (MapStyle.Unit(key, SaltKerb) >= KerbChance(st, side > 0 ? bizR : bizL, plan.Urban(front), plan, front)) continue;
+                        if (MapStyle.Unit(key, SaltKerb) >= KerbChance(st, side > 0 ? bizR : bizL, plan.Urban(front))) continue;
                         Vector2 at = s.At + n * (st.Width * 0.5f - 1.15f + (MapStyle.Unit(key, SaltJitter) - 0.5f) * 0.25f)
                             + s.Dir * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 0.8f);
                         if (plan.IsKept(at, s.Dir, 2.5f, 1.0f)) continue;
@@ -56,18 +61,20 @@ namespace CloneZ
                         Park(c, at, yaw, LookFor(key, body, side > 0 ? 0.5f : 0.55f), key, Quaternion.identity);
                     }
                     Abandoned(c, st, s);
+                    if (c.Due()) yield return "kerbside cars";
                 }
             }
             Fenderbenders(c);
+            yield return "kerbside cars";
         }
 
         // How likely a kerbside station has a car: shops and offices across the sidewalk fill the kerb, homes see one now
         // and then, the open road hardly ever; main roads only park in front of the shops, alleys a little behind them.
-        private static float KerbChance(Street st, float business, float urban, NaturePlan plan, Vector2 front)
+        private static float KerbChance(Street st, float business, float urban)
         {
-            if (business > 0.06f) return st.Rank == 1 ? 0.18f : 0.62f;
-            if (st.Rank >= 4) return 0f;
-            if (urban > 0.035f) return st.Rank == 1 ? 0.04f : st.Width >= 7f ? 0.17f : 0.1f;
+            if (business > 0.06f) return st.Rank == 1 ? 0.18f : 0.66f;
+            if (st.Rank >= 4) return business > 0.03f ? 0.25f : 0f;
+            if (urban > 0.035f) return st.Rank == 1 ? 0.04f : st.Width >= 7f ? 0.2f : 0.12f;
             return st.Rank == 1 ? 0f : 0.015f;
         }
 
@@ -86,20 +93,21 @@ namespace CloneZ
             Park(c, at, yaw, LookFor(key, BodyFor(Where.Street, MapStyle.Unit(key, SaltBody)), 0.5f, wear), key, Quaternion.identity);
         }
 
-        // At one town junction in a dozen two cars never moved after a fender-bender: one slewed across the box, the other
+        // At one town crossroads in a dozen two cars never moved after a fender-bender: one slewed across the box, the other
         // nosed into its side.
         private static void Fenderbenders(Parking c)
         {
             NaturePlan plan = c.Plan;
-            foreach (Junction j in c.Site.Junctions)
+            foreach (Junction j in c.Crossroads)
             {
-                if (j.Arms.Count < 3 || !plan.InSquare(j.At, 30f) || plan.Urban(j.At) < 0.04f) continue;
+                if (!plan.InSquare(j.At, 30f) || plan.Urban(j.At) < 0.04f) continue;
                 int rank = 0;
                 foreach (JunctionArm a in j.Arms) rank = Mathf.Max(rank, a.Street.Rank);
                 if (rank < 3 || rank >= 6) continue;
                 long key = NaturePlan.Combine((long)System.Math.Round(plan.AbsX(j.At.x)), (long)System.Math.Round(plan.AbsZ(j.At.y)));
                 if (MapStyle.Unit(key, SaltCrash) >= 0.08f) continue;
                 JunctionArm arm = j.Arms[MapStyle.Pick(key, SaltCrash + 1, j.Arms.Count)];
+                if (NaturePlan.FootKind(arm.Street.Data.kind)) continue;
                 Vector2 right = new Vector2(arm.Dir.y, -arm.Dir.x);
                 Vector2 a0 = j.At + arm.Dir * 2.2f + right * 1.3f;
                 float yawA = Yaw(-arm.Dir) + 20f + MapStyle.Unit(key, SaltCrash + 2) * 25f;
@@ -129,7 +137,7 @@ namespace CloneZ
         /// quarter to three fifths full, fuller by the stores. The plough piles in the corners (planned first, see
         /// <see cref="SnowPass"/>) and the walls are kept clear.
         /// </summary>
-        private static void LotCars(Parking c)
+        private static IEnumerable<string> LotCars(Parking c)
         {
             NaturePlan plan = c.Plan;
             SnowPass.PlanPiles(c.Site, plan);
@@ -173,9 +181,11 @@ namespace CloneZ
                             at += u * ((MapStyle.Unit(key, SaltJitter) - 0.5f) * 0.3f) + v * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 0.4f);
                             float yaw = Yaw(heading) + (MapStyle.Unit(key, SaltJitter + 2) - 0.5f) * 8f;
                             Park(c, at, yaw, LookFor(key, BodyFor(Where.Street, MapStyle.Unit(key, SaltBody)), 0.55f), key, Quaternion.identity);
+                            if (c.Due()) yield return "parking lot cars";
                         }
                     }
             }
+            yield return "parking lot cars";
         }
 
         // A stall whose four corners are inside the lot.
@@ -367,7 +377,7 @@ namespace CloneZ
             {
                 float along = (k % 2 == 0 ? 1f : -1f) * ((k + 1) / 2) * 6.6f;
                 Vector2 at = foot + dir * along + right * side * (seg.Half - 1.15f);
-                if (Near(c.Junctions, at, 9f)) continue;
+                if (Near(c.Corners, at, 9f)) continue;
                 if (Park(c, at, Yaw(heading), LookFor(key, CarBody.Cruiser, 0.35f), key, Quaternion.identity)) return;
             }
         }

@@ -31,8 +31,16 @@ namespace CloneZ
             {
                 if (!NaturePlan.IsHome(f.Data) || f.Pts.Count < 3 || f.Size < 20f) continue;
                 bool inside = p.Plan.InSquare(f.Middle, 0f);
-                if (!inside && !p.Plan.InRing(f.Middle)) continue;
-                Yard(p, f, inside);
+                if (!inside && !p.Plan.InRing(f.Middle) && !p.Site.Chunked) continue;
+                Yard(p, f, inside || p.Site.Chunked);
+                if (++done % 20 == 0) yield return "yards";
+            }
+            // A streamed piece also grows the trees its neighbours' houses have in it (each piece plants only inside its
+            // own square, so no tree is grown twice).
+            foreach (Footprint f in p.Site.Area.Foreign)
+            {
+                if (!NaturePlan.IsHome(f.Data) || f.Pts.Count < 3 || f.Size < 20f) continue;
+                Yard(p, f, true);
                 if (++done % 20 == 0) yield return "yards";
             }
             yield return "yards";
@@ -47,7 +55,7 @@ namespace CloneZ
             long id = f.Data.id;
             float urban = plan.Urban(f.Middle);
             bool rural = urban < 0.035f;
-            int want = rural ? 3 + MapStyle.Pick(id, SaltYard, 4) : urban < 0.14f ? 1 + MapStyle.Pick(id, SaltYard, 3) : MapStyle.Pick(id, SaltYard, 3);
+            int want = rural ? 3 + MapStyle.Pick(id, SaltYard, 4) : urban < 0.25f ? 1 + MapStyle.Pick(id, SaltYard, 3) : MapStyle.Pick(id, SaltYard, 3);
             if (!inside) want = Mathf.Min(want, 2);
             float side = MapStyle.Unit(id, SaltYard + 1) < 0.5f ? 1f : -1f;
             int planted = 0;
@@ -142,11 +150,12 @@ namespace CloneZ
             return false;
         }
 
-        // Evergreen bushes along the wall that faces the street, a metre or two apart, the porch and the door left clear.
-        private static void Foundation(Planting p, Footprint f, NaturePlan.HouseFrame hf)
+        // Evergreen bushes along the wall that faces the street, a metre or two apart, the porch and the door left clear (on
+        // most homes, and on the grounds' buildings that get them).
+        private static void Foundation(Planting p, Footprint f, NaturePlan.HouseFrame hf, bool always = false)
         {
             long id = f.Data.id;
-            if (MapStyle.Unit(id, SaltFoundation) > 0.62f) return;
+            if (!always && MapStyle.Unit(id, SaltFoundation) > 0.62f) return;
             List<Vector2> pts = f.Pts;
             int front = -1;
             float best = 0f;
@@ -241,5 +250,83 @@ namespace CloneZ
                 if (NaturePlan.IsHome(f.Data)) return true;
             return false;
         }
+
+        #region Grounds
+        private const int SaltGrounds = 0x7A4D;
+
+        // The lawns round the churches, schools, the courthouse, the town hall, the library and the like: big shade trees
+        // and evergreens in front, beside and behind, where there's room off the street, and yews along the front.
+        private static void Grounds(Planting p)
+        {
+            var list = new List<Footprint>();
+            var seen = new HashSet<Footprint>();
+            foreach (Footprint f in p.Site.Area.Buildings)
+                if (CivicKind(f.Data.kind) && seen.Add(f)) list.Add(f);
+            foreach (Spot s in p.Site.Area.Points)
+            {
+                if (!CivicUse(s.Data.kind)) continue;
+                Footprint at = Housing(p, s.At);
+                if (at != null && seen.Add(at)) list.Add(at);
+            }
+            foreach (Footprint f in list)
+            {
+                if (f.Pts.Count < 3 || f.Size < 60f || !p.Plan.InSquare(f.Middle, 0f)) continue;
+                NaturePlan.HouseFrame hf = p.Plan.FrameOf(f);
+                long id = f.Data.id;
+                int want = 2 + MapStyle.Pick(id, SaltGrounds, 4), planted = 0;
+                for (int k = 0; k < 10 && planted < want; k++)
+                {
+                    long key = NaturePlan.Combine(id, 700 + k);
+                    float u = MapStyle.Unit(key, SaltGrounds + 1), v = MapStyle.Unit(key, SaltGrounds + 2);
+                    Vector2 at;
+                    switch (k % 5)
+                    {
+                        case 0: at = hf.At(Mathf.Lerp(hf.T0, hf.T1, 0.1f + u * 0.3f), hf.N0 - 5f - v * 6f); break;
+                        case 1: at = hf.At(Mathf.Lerp(hf.T0, hf.T1, 0.6f + u * 0.3f), hf.N0 - 5f - v * 6f); break;
+                        case 2: at = hf.At(hf.T0 - 4f - u * 4f, Mathf.Lerp(hf.N0, hf.N1, v)); break;
+                        case 3: at = hf.At(hf.T1 + 4f + u * 4f, Mathf.Lerp(hf.N0, hf.N1, v)); break;
+                        default: at = hf.At(Mathf.Lerp(hf.T0, hf.T1, u), hf.N1 + 4f + v * 6f); break;
+                    }
+                    if (!YardClear(p, f, at, 1.8f, 3.6f)) continue;
+                    TreeKind kind = GroundsMix.Pick(MapStyle.Unit(key, SaltKind));
+                    if (Plant(p, at, kind, HeightOf(kind, key, 1.1f), key, 1.8f, TreeTier.Full, false)) planted++;
+                }
+                if (!p.Lite && MapStyle.Unit(id, SaltGrounds + 3) < 0.7f) Foundation(p, f, hf, true);
+            }
+        }
+
+        private static bool CivicKind(string kind) => kind == "church" || kind == "school" || kind == "civic" || kind == "hospital";
+
+        private static bool CivicUse(string kind)
+        {
+            switch (kind)
+            {
+                case "courthouse": case "townhall": case "library": case "place_of_worship": case "school": case "police":
+                case "post_office": case "fire_station": case "community_centre": case "college":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // The footprint a point of interest stands in (or the nearest within 12 m).
+        private static Footprint Housing(Planting p, Vector2 at)
+        {
+            p.Plan.BuildingsNear(at, 12f, s_Near);
+            Footprint best = null;
+            float bestD = 12f;
+            foreach (Footprint f in s_Near)
+            {
+                if (MapGeometry.Contains(f.Pts, at)) return f;
+                float d = MapGeometry.DistanceToEdge(f.Pts, at);
+                if (d < bestD)
+                {
+                    bestD = d;
+                    best = f;
+                }
+            }
+            return best;
+        }
+        #endregion
     }
 }

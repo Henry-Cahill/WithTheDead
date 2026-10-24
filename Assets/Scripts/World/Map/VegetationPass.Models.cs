@@ -186,6 +186,7 @@ namespace CloneZ
             int count = lite ? 3 : tier == TreeTier.Wood ? Mathf.Max(3, f.Limbs - 1) : f.Limbs + rng.Next(0, 2);
             int branches = lite ? 1 : full ? 3 : 2;
             int snowy = full ? 3 : tier == TreeTier.Wood ? 1 : 0;
+            int limbSides = lite ? 3 : 5;
             float spin = R(rng, 0f, 360f);
             for (int i = 0; i < count; i++)
             {
@@ -201,20 +202,37 @@ namespace CloneZ
                 if (len < 0.4f) continue;
                 Vector3 start = up * y;
                 float radius = r0 * (f.Leader ? 0.45f : 0.58f) * R(rng, 0.85f, 1.1f) * (1f - 0.3f * frac);
-                m.Cylinder(start, radius, len, lite ? 3 : 5, limbs, Along(dir), 0.35f, false);
+                // The limb in two pieces: out along its heading to a knee, then turning up and aside.
+                float bend = lite ? 1f : R(rng, 0.45f, 0.62f);
+                float len1 = len * bend;
+                Vector3 knee = start + dir * len1;
+                m.Cylinder(start, radius, len1, limbSides, limbs, Along(dir), lite ? 0.35f : 0.62f, false);
+                Vector3 dir2 = dir;
+                float len2 = 0f, r1 = radius * 0.62f;
+                if (!lite)
+                {
+                    dir2 = Heading(azimuth + R(rng, -24f, 24f), Mathf.Min(84f, rise + R(rng, 8f, 26f)));
+                    len2 = len * (1f - bend) * 1.08f;
+                    m.Cylinder(knee, r1, len2, limbSides - 1, limbs, Along(dir2), 0.45f, false);
+                }
                 if (i < snowy && rise < 54f)
-                    m.Box(start + dir * (len * 0.32f) + Vector3.up * (radius * 0.85f), new Vector3(radius * 1.5f, radius * 0.6f, len * 0.5f),
+                    m.Box(start + dir * (len1 * 0.5f) + Vector3.up * (radius * 0.85f), new Vector3(radius * 1.5f, radius * 0.6f, len1 * 0.8f),
                         Quaternion.LookRotation(dir), snow, true);
                 for (int j = 0; j < branches; j++)
                 {
-                    float t = R(rng, 0.42f, 0.92f);
-                    Vector3 from = start + dir * (len * t);
-                    float bAzimuth = azimuth + (j % 2 == 0 ? 1f : -1f) * R(rng, 22f, 58f);
-                    float bRise = Mathf.Min(82f, rise + R(rng, 8f, 32f));
+                    // Off the outer piece or the end of the inner one, alternately.
+                    bool outer = !lite && j % 2 == 0;
+                    float t = outer ? R(rng, 0.15f, 0.85f) : R(rng, 0.55f, 1f);
+                    Vector3 from = outer ? knee + dir2 * (len2 * t) : start + dir * (len1 * t);
+                    Vector3 baseDir = outer ? dir2 : dir;
+                    float baseAzimuth = Mathf.Atan2(baseDir.x, baseDir.z) * Mathf.Rad2Deg;
+                    float baseRise = Mathf.Asin(Mathf.Clamp(baseDir.y, -1f, 1f)) * Mathf.Rad2Deg;
+                    float bAzimuth = baseAzimuth + (j % 2 == 0 ? 1f : -1f) * R(rng, 25f, 60f);
+                    float bRise = Mathf.Min(82f, baseRise + R(rng, 6f, 28f));
                     Vector3 bDir = Heading(bAzimuth, bRise);
-                    float bLen = len * R(rng, 0.38f, 0.62f) * (1.1f - 0.4f * t);
-                    float bRadius = Mathf.Max(0.025f, radius * (1f - 0.6f * t) * 0.7f);
-                    m.Cylinder(from, bRadius, bLen, lite ? 3 : 4, j == 0 ? limbs : twigs, Along(bDir), 0.3f, false);
+                    float bLen = len * R(rng, 0.32f, 0.52f) * (outer ? 0.9f : 1.05f);
+                    float bRadius = Mathf.Max(0.025f, (outer ? r1 * (1f - 0.5f * t) : radius * (1f - 0.4f * t)) * 0.62f);
+                    m.Cylinder(from, bRadius, bLen, lite ? 3 : 4, j == 1 ? limbs : twigs, Along(bDir), 0.3f, false);
                     if (!full) continue;
                     for (int k = 0; k < 2; k++)
                     {

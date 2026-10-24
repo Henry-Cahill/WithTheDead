@@ -29,7 +29,7 @@ namespace CloneZ
             PlanPiles(site, plan);
             LotPiles(site, plan);
             yield return "plough piles";
-            WallDrifts(site, plan);
+            foreach (string step in WallDrifts(site, plan)) yield return step;
             yield return "wall drifts";
             FenceDrifts(site, plan);
             yield return "fence drifts";
@@ -126,63 +126,130 @@ namespace CloneZ
         #endregion
 
         #region Drifts
-        // Drifts along the foot of every wall the square's buildings stand on: lumps a couple of metres long, deepest where
-        // the wall faces away from the wind; none at a door, on a lot, on the shovelled sidewalk, under a parked car or
-        // against a neighbour's wall.
-        private static void WallDrifts(Site site, NaturePlan plan)
+        private const float DriftStep = 1.1f;   // metres between a drift's cross-sections
+        private static float[] s_T = new float[64], s_H = new float[64], s_D = new float[64];
+
+        // Grows the scratch arrays to hold n stations.
+        private static void Room(int n)
+        {
+            if (s_T.Length >= n) return;
+            int size = Mathf.NextPowerOfTwo(n);
+            s_T = new float[size];
+            s_H = new float[size];
+            s_D = new float[size];
+        }
+
+        /// <summary>
+        /// A bank of snow along a straight run from <paramref name="a"/> (unit <paramref name="dir"/>) out towards
+        /// <paramref name="outward"/>: at each of <paramref name="n"/> stations (<see cref="s_T"/> metres along) its own
+        /// height and depth (<see cref="s_H"/>, <see cref="s_D"/>; 0 for none there), its cross-section a convex wedge
+        /// from just behind the line (so no gap shows at the wall) out to the ground. Flat-shaded; nothing where the bank
+        /// is flat on both sides of a gap.
+        /// </summary>
+        private static void Bank(RaidMesh m, Vector2 a, Vector2 dir, Vector2 outward, int n, in Surf snow)
+        {
+            for (int i = 0; i + 1 < n; i++)
+            {
+                if (s_H[i] < 0.01f && s_H[i + 1] < 0.01f) continue;
+                Vector2 p0 = a + dir * s_T[i], p1 = a + dir * s_T[i + 1];
+                Vector3 b0 = Point(p0, outward, -0.05f, s_H[i]), b1 = Point(p1, outward, -0.05f, s_H[i + 1]);
+                Vector3 m0 = Point(p0, outward, s_D[i] * 0.42f, s_H[i] * 0.68f), m1 = Point(p1, outward, s_D[i + 1] * 0.42f, s_H[i + 1] * 0.68f);
+                Vector3 f0 = Point(p0, outward, Mathf.Max(0.05f, s_D[i]), 0f), f1 = Point(p1, outward, Mathf.Max(0.05f, s_D[i + 1]), 0f);
+                Quad(m, b0, b1, m1, m0, snow);
+                Quad(m, m0, m1, f1, f0, snow);
+            }
+        }
+
+        private static Vector3 Point(Vector2 along, Vector2 outward, float off, float h) => To3(along + outward * off, h + 0.004f);
+
+        // Two triangles over a quad whose corners run round it, turned to face up.
+        private static void Quad(RaidMesh m, Vector3 a, Vector3 b, Vector3 c, Vector3 d, in Surf s)
+        {
+            if (Vector3.Cross(b - a, c - a).y < 0f)
+            {
+                Vector3 t = b;
+                b = d;
+                d = t;
+            }
+            m.Tri(a, b, c, s);
+            m.Tri(a, c, d, s);
+        }
+
+        /// <summary>How deep the snow banks against a face looking along <paramref name="outward"/>: deep in the lee of the
+        /// wind, a scoured ridge on the windward side (half of which are bare).</summary>
+        private static bool Exposure(Vector2 outward, float u, out float depth, out float height)
+        {
+            float lee = Vector2.Dot(outward, Downwind);
+            if (lee > 0.35f)
+            {
+                depth = 1.2f + u * 0.8f;
+                height = 0.42f + u * 0.26f;
+            }
+            else if (lee > -0.35f)
+            {
+                depth = 0.8f + u * 0.4f;
+                height = 0.26f + u * 0.12f;
+            }
+            else
+            {
+                depth = 0.5f;
+                height = 0.16f;
+                if (u < 0.5f) return false;
+            }
+            return true;
+        }
+
+        // Snow banked along the foot of the walls of every building the building pass raised (its shells), drifting in and
+        // out along the wall; none at a door, on the road, on a lot or under a parked car; squeezed between neighbours.
+        private static IEnumerable<string> WallDrifts(Site site, NaturePlan plan)
         {
             var doors = new Dictionary<Footprint, EnterableBuilding>();
             foreach (EnterableBuilding e in site.Enterables)
                 if (e.Footprint != null) doors[e.Footprint] = e;
-            Surf snow = DecorPalette.Matte(Snow), shade = DecorPalette.Matte(Shade);
-            foreach (Footprint f in site.Area.Buildings)
+            var seen = new HashSet<Footprint>();
+            Surf snow = DecorPalette.Matte(Snow);
+            int done = 0;
+            for (int s = 0; s < site.Shells.Count; s++)
             {
-                if (f.Pts.Count < 3 || f.Size < 12f || f.Data.kind == "canopy" || !plan.InSquare(f.Middle, 0f)) continue;
+                Footprint f = site.Shells[s].Footprint;
+                if (f == null || f.Pts.Count < 3 || f.Size < 12f || f.Data.kind == "canopy" || !seen.Add(f)) continue;
+                if (!f.Owned && !plan.InSquare(f.Middle, 0f)) continue;   // scenery past the edge
                 doors.TryGetValue(f, out EnterableBuilding entry);
                 List<Vector2> p = f.Pts;
+                RaidMesh m = site.Town.Out.Solid(To3(f.Middle, 0f));
                 for (int i = 0; i < p.Count; i++)
                 {
                     Vector2 a = p[i], b = p[(i + 1) % p.Count];
                     float len = Vector2.Distance(a, b);
                     if (len < 1.2f) continue;
-                    Vector2 d = (b - a) / len, outward = new Vector2(d.y, -d.x);
+                    Vector2 dir = (b - a) / len, outward = new Vector2(dir.y, -dir.x);
                     long key = NaturePlan.Combine(f.Data.id, i);
-                    float lee = Vector2.Dot(outward, Downwind), size = MapStyle.Unit(key, SaltDrift);
-                    float depth, height;
-                    if (lee > 0.35f)
+                    if (!Exposure(outward, MapStyle.Unit(key, SaltDrift), out float depth, out float height)) continue;
+                    int n = Mathf.Max(2, Mathf.CeilToInt(len / DriftStep) + 1);
+                    Room(n);
+                    for (int k = 0; k < n; k++)
                     {
-                        depth = 0.9f + size * 0.7f;
-                        height = 0.36f + size * 0.24f;
+                        float t = len * k / (n - 1);
+                        Vector2 at = a + dir * t;
+                        float wave = plan.NoiseAt(at, 5.0, SaltDrift + 1);
+                        float h = height * (0.45f + 0.75f * wave), d = depth * (0.75f + 0.5f * wave);
+                        float end = Mathf.Min(t, len - t);
+                        if (end < 0.9f) h *= Mathf.Lerp(0.3f, 1f, end / 0.9f);
+                        Vector2 foot = at + outward * (d * 0.5f);
+                        if (NearDoor(entry, at, 1.7f) || plan.RoadClearance(foot, 1f) < 0.2f || plan.LandAt(foot) == Land.Lot || plan.IsKept(foot, 0.3f))
+                            h = 0f;
+                        else if (plan.WallDistance(at + outward * (d + 0.3f), 0.6f) < 0.35f)
+                        {
+                            d *= 0.5f;
+                            h *= 0.6f;
+                        }
+                        s_T[k] = t;
+                        s_H[k] = h;
+                        s_D[k] = d;
                     }
-                    else if (lee > -0.35f)
-                    {
-                        depth = 0.55f + size * 0.3f;
-                        height = 0.22f + size * 0.12f;
-                    }
-                    else
-                    {
-                        if (size < 0.5f) continue;   // half the windward walls are scoured bare
-                        depth = 0.4f;
-                        height = 0.15f;
-                    }
-                    int lumps = Mathf.Max(1, Mathf.CeilToInt(len / 1.9f));
-                    float step = len / lumps;
-                    Quaternion facing = Quaternion.LookRotation(new Vector3(outward.x, 0f, outward.y));
-                    for (int k = 0; k < lumps; k++)
-                    {
-                        long lk = NaturePlan.Combine(key, k);
-                        float t = step * (k + 0.5f) + (MapStyle.Unit(lk, SaltDrift + 1) - 0.5f) * step * 0.3f;
-                        float dep = depth * (0.75f + MapStyle.Unit(lk, SaltDrift + 2) * 0.35f);
-                        Vector2 wall = a + d * t, foot = wall + outward * (dep * 0.5f - 0.06f);
-                        if (!plan.InSquare(foot, 0.6f) || NearDoor(entry, wall, 1.9f)) continue;
-                        if (plan.RoadClearance(foot, 3f) < 1.4f || plan.IsKept(foot, 0.4f) || plan.LandAt(foot) == Land.Lot) continue;
-                        if (plan.WallDistance(foot + outward * (dep * 0.5f + 0.3f), 0.5f) < 0.3f) continue;
-                        float lumpLen = Mathf.Min(step * (1.15f + MapStyle.Unit(lk, SaltDrift + 3) * 0.3f), len);
-                        float hgt = height * (0.8f + MapStyle.Unit(lk, SaltDrift + 4) * 0.4f);
-                        Vector3 c = To3(foot, 0.02f);
-                        site.Town.Out.Solid(c).Ellipsoid(c, new Vector3(lumpLen, hgt * 2f, dep), facing, MapStyle.Unit(lk, SaltDrift + 5) < 0.6f ? snow : shade, 6, 2);
-                    }
+                    Bank(m, a, dir, outward, n, snow);
                 }
+                if (++done % 12 == 0) yield return "wall drifts";
             }
         }
 
@@ -194,32 +261,56 @@ namespace CloneZ
             return false;
         }
 
-        // Drifts along the fences, walls and hedges, on their lee side, in runs with gaps (none where a road or path crosses).
+        // Banks along the fences, walls and hedges on their lee side, coming and going with the noise; none where they'd
+        // lie on a road, a lot or a parked car. The cross-sections stand on the state's lattice, so a fence cut by a
+        // seam drifts on unbroken.
         private static void FenceDrifts(Site site, NaturePlan plan)
         {
-            var stations = new List<NaturePlan.Station>(64);
-            Surf snow = DecorPalette.Matte(Snow), shade = DecorPalette.Matte(Shade);
+            Surf snow = DecorPalette.Matte(Snow);
             foreach (Line l in site.Area.Barriers)
             {
                 string kind = l.Data.kind;
                 if (kind != "fence" && kind != "wall" && kind != "hedge" && kind != "retaining_wall") continue;
-                plan.Stations(l.Pts, 2.2f, stations);
-                foreach (NaturePlan.Station s in stations)
+                for (int i = 0; i + 1 < l.Pts.Count; i++)
                 {
-                    long key = NaturePlan.Combine(l.Data.id, s.K);
-                    if (plan.NoiseAt(s.At, 24.0, SaltFence) < 0.38f || MapStyle.Unit(key, SaltFence) < 0.12f) continue;
-                    Vector2 normal = new Vector2(-s.Dir.y, s.Dir.x);
+                    Vector2 a = l.Pts[i], b = l.Pts[i + 1];
+                    float len = Vector2.Distance(a, b);
+                    if (len < 0.5f) continue;
+                    Vector2 dir = (b - a) / len, normal = new Vector2(-dir.y, dir.x);
                     float lee = Vector2.Dot(normal, Downwind);
-                    if (Mathf.Abs(lee) < 0.15f && MapStyle.Unit(key, SaltFence + 1) < 0.5f) continue;   // the wind runs along it
-                    Vector2 side = lee >= 0f ? normal : -normal;
-                    float dep = 0.55f + MapStyle.Unit(key, SaltFence + 2) * 0.4f, hgt = 0.2f + MapStyle.Unit(key, SaltFence + 3) * 0.16f;
-                    Vector2 foot = s.At + side * (dep * 0.5f + 0.05f);
-                    if (!plan.InSquare(foot, 0.6f) || plan.RoadClearance(foot, 2f) < 0.8f || plan.IsKept(foot, 0.3f)) continue;
-                    Land land = plan.LandAt(foot);
-                    if (land == Land.Lot || land == Land.Water || plan.WallDistance(foot, 1f) < 0.5f) continue;
-                    Vector3 c = To3(foot, 0.02f);
-                    Quaternion facing = Quaternion.LookRotation(new Vector3(side.x, 0f, side.y));
-                    site.Town.Out.Solid(c).Ellipsoid(c, new Vector3(2.5f, hgt * 2f, dep), facing, MapStyle.Unit(key, SaltFence + 4) < 0.6f ? snow : shade, 6, 2);
+                    Vector2 outward = lee >= 0f ? normal : -normal;
+                    float scale = Mathf.Lerp(0.55f, 1f, Mathf.Abs(lee));
+                    bool cutA = plan.CutVertex(a), cutB = plan.CutVertex(b);
+                    // Stations where the segment crosses the lattice's lines, and its ends.
+                    bool alongX = Mathf.Abs(dir.x) >= Mathf.Abs(dir.y);
+                    double from = alongX ? plan.AbsX(a.x) : plan.AbsZ(a.y), to = alongX ? plan.AbsX(b.x) : plan.AbsZ(b.y);
+                    double span = to - from;
+                    double step = DriftStep * (alongX ? Mathf.Abs(dir.x) : Mathf.Abs(dir.y));
+                    long k0 = (long)System.Math.Floor(System.Math.Min(from, to) / step) + 1, k1 = (long)System.Math.Ceiling(System.Math.Max(from, to) / step) - 1;
+                    int n = (int)System.Math.Max(0, k1 - k0 + 1) + 2;
+                    Room(n);
+                    int c = 0;
+                    s_T[c++] = 0f;
+                    if (span > 0)
+                        for (long k = k0; k <= k1; k++) s_T[c++] = (float)((k * step - from) / span) * len;
+                    else
+                        for (long k = k1; k >= k0; k--) s_T[c++] = (float)((k * step - from) / span) * len;
+                    s_T[c++] = len;
+                    for (int j = 0; j < c; j++)
+                    {
+                        Vector2 at = a + dir * s_T[j];
+                        float wave = plan.NoiseAt(at, 9.0, SaltFence), gap = plan.NoiseAt(at, 31.0, SaltFence + 1);
+                        float h = gap < 0.35f ? 0f : (0.2f + 0.22f * wave) * scale * Mathf.Clamp01((gap - 0.35f) * 6f);
+                        float d = (0.7f + 0.6f * wave) * scale;
+                        if ((j == 0 && !cutA) || (j == c - 1 && !cutB)) h *= 0.3f;
+                        Vector2 foot = at + outward * (d * 0.5f);
+                        if (!plan.InSquare(foot, -0.5f) || plan.RoadClearance(foot, 1f) < 0.3f || plan.LandAt(foot) == Land.Lot
+                            || plan.LandAt(foot) == Land.Water || plan.IsKept(foot, 0.3f) || plan.WallDistance(foot, 0.6f) < 0.4f)
+                            h = 0f;
+                        s_H[j] = h;
+                        s_D[j] = d;
+                    }
+                    Bank(site.Town.Out.Solid(To3((a + b) * 0.5f, 0f)), a, dir, outward, c, snow);
                 }
             }
         }

@@ -71,7 +71,7 @@ namespace CloneZ
         private static readonly Color Chrome = new Color(0.66f, 0.67f, 0.68f);
         private static readonly Color Trim = new Color(0.13f, 0.13f, 0.14f);
         private static readonly Color DarkGlass = new Color(0.07f, 0.09f, 0.11f);
-        private static readonly Color Frost = new Color(0.78f, 0.82f, 0.88f);
+        private static readonly Color Frost = new Color(0.50f, 0.56f, 0.63f);
         private static readonly Color Charred = new Color(0.15f, 0.12f, 0.10f);
         private static readonly Color Rust = new Color(0.36f, 0.19f, 0.10f);
 
@@ -180,16 +180,14 @@ namespace CloneZ
         private static void Wheels(RaidMesh m, in Spec s, CarWear wear, System.Random rng, bool burnt)
         {
             int flat = (wear & CarWear.Flat) != 0 ? rng.Next(4) : -1;
-            Surf tyre = burnt ? Mt(Rust) : M(Tyre), cap = Mt(Chrome);
+            Surf tyre = burnt ? Mt(Rust) : M(Tyre);
             for (int i = 0; i < 4; i++)
             {
                 float side = i % 2 == 0 ? -1f : 1f;
                 float x = side * (s.W * 0.5f - 0.13f);
                 float z = i < 2 ? s.AxleF : s.AxleR;
                 float r = burnt ? s.Wheel * 0.6f : i == flat ? s.Wheel * 0.8f : s.Wheel;
-                m.CylinderX(new Vector3(x, r, z), r, 0.22f, 7, tyre);
-                if (!burnt)
-                    m.Blob(new Vector3(x + side * 0.112f, r, z), new Vector3(0f, 0f, side), Vector3.up, r * 0.56f, r * 0.56f, 6, 0f, rng, cap);
+                m.CylinderX(new Vector3(x, r, z), r, 0.22f, 6, tyre);
             }
         }
 
@@ -320,23 +318,28 @@ namespace CloneZ
             }
         }
 
-        // Snow on the roof (heaped in a second, narrower layer when deep), the hood and the trunk, and banked against the
-        // wheels of a car that hasn't moved in a while.
+        // Snow on the roof (heaped in a second, narrower layer when deep), the hood and the trunk, a rim of paint showing
+        // round each (a car brushed off, or under a thin fall, shows most of its paint), and banked against the wheels of
+        // a car that hasn't moved in a while.
         private static void Snowfall(RaidMesh m, in Spec s, in CarLook look, float belt, float roof, float hw1, System.Random rng)
         {
             Surf snow = M(Snow);
             float d = 0.03f + look.Snow * 0.2f, dh = d * 0.65f;
-            float roofLen = s.Front1 - s.Back1 - 0.08f, roofMid = (s.Front1 + s.Back1) * 0.5f, roofW = hw1 * 2f - 0.06f;
+            float rim = Mathf.Lerp(0.34f, 0.12f, look.Snow);
+            float roofLen = s.Front1 - s.Back1 - rim, roofMid = (s.Front1 + s.Back1) * 0.5f, roofW = hw1 * 2f - rim;
             m.Box(new Vector3(0f, roof + d * 0.5f, roofMid), new Vector3(roofW, d, roofLen), Quaternion.identity, snow, true);
             if (d > 0.1f)
                 m.Box(new Vector3(0f, roof + d + d * 0.2f, roofMid), new Vector3(roofW - 0.34f, d * 0.4f, roofLen - 0.4f), Quaternion.identity, snow, true);
-            float hood = s.L * 0.5f - s.Front0 - 0.14f;
+            if (look.Snow < 0.2f) return;   // a thin fall: the roof only
+            float hood = s.L * 0.5f - s.Front0 - 0.14f - rim;
             if (hood > 0.3f && (look.Wear & CarWear.Crashed) == 0)
-                m.Box(new Vector3(0f, belt + dh * 0.5f, s.Front0 + 0.06f + hood * 0.5f), new Vector3(s.W - 0.16f, dh, hood), Quaternion.identity, snow, true);
-            float trunk = s.Back0 + s.L * 0.5f - 0.14f;
+                m.Box(new Vector3(0f, belt + dh * 0.5f, s.Front0 + 0.06f + rim * 0.5f + hood * 0.5f), new Vector3(s.W - rim * 1.6f, dh, hood),
+                    Quaternion.identity, snow, true);
+            float trunk = s.Back0 + s.L * 0.5f - 0.14f - rim;
             if (trunk > 0.3f && look.Body != CarBody.Pickup)
-                m.Box(new Vector3(0f, belt + dh * 0.5f, -s.L * 0.5f + 0.08f + trunk * 0.5f), new Vector3(s.W - 0.16f, dh, trunk), Quaternion.identity, snow, true);
-            if (look.Snow < 0.55f) return;
+                m.Box(new Vector3(0f, belt + dh * 0.5f, -s.L * 0.5f + 0.08f + rim * 0.5f + trunk * 0.5f), new Vector3(s.W - rim * 1.6f, dh, trunk),
+                    Quaternion.identity, snow, true);
+            if (look.Snow < 0.6f) return;
             Surf drift = M(R(rng, 0f, 1f) < 0.5f ? Snow : SnowShade);
             for (int side = -1; side <= 1; side += 2)
                 m.Ellipsoid(new Vector3(side * (s.W * 0.5f + 0.04f), 0.05f, R(rng, -0.2f, 0.2f)),
