@@ -29,6 +29,7 @@ namespace CloneZ
             {
                 PowerPass.MappedLines(ctx);
                 Landmarks.Lite(ctx);
+                BarrierPass.Lite(ctx);
                 ctx.Finish();
                 yield return "landmarks";
                 yield break;
@@ -50,11 +51,12 @@ namespace CloneZ
             yield return "street furniture";
             Landmarks.Build(ctx);
             yield return "landmarks";
-            BarrierPass.Build(ctx);
+            foreach (string step in BarrierPass.Build(ctx)) yield return step;
             yield return "fences and walls";
             ParkLitter(site);
-            ctx.Finish();
             yield return "park litter";
+            ctx.Finish();
+            yield return "wires";
         }
 
         /// <summary>Up to five trash bags or bits of litter in every park, anywhere still free, each with a small

@@ -12,8 +12,10 @@ namespace CloneZ
     /// (the Bluegrass's limestone walls with their coping of upright stones) and brick or block garden walls; hedges; W-beam
     /// guard rails on their posts; concrete retaining walls. Every style is the barrier's own (from its id, name and length),
     /// so a fence looks the same in every streamed piece it crosses; posts stand on a world-anchored lattice. Snow lies on
-    /// every rail and coping. Fences leave a gap (and a gate, swung open) at a mapped gate. Each straight run gets a collider;
-    /// tree rows are the vegetation's.
+    /// every rail and coping. Fences leave a gap (and a gate, swung open) at a mapped gate, and where the mapping runs one
+    /// across a carriageway or into a building. Each straight run gets a collider; tree rows are the vegetation's. Past a
+    /// fixed map's edge and on a Lite piece, each stretch is one plain shape seen from afar: no posts, gates or colliders.
+    /// The textures are the barriers' own, small, made once a session.
     /// </summary>
     internal static class BarrierPass
     {
@@ -26,10 +28,11 @@ namespace CloneZ
         private static readonly Color FenceWood = new Color(0.46f, 0.36f, 0.26f);
         private static readonly Color HedgeGreen = new Color(0.17f, 0.24f, 0.14f);
 
-        internal static void Build(Ctx ctx)
+        /// <summary>A full site's barriers: in full inside the square, plain past a fixed map's edge.</summary>
+        internal static IEnumerable<string> Build(Ctx ctx)
         {
             Site site = ctx.Site;
-            if (site.Area.Barriers.Count == 0) return;
+            if (site.Area.Barriers.Count == 0) yield break;
             float half = ctx.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
             var gates = new List<Vector2>();
@@ -39,7 +42,39 @@ namespace CloneZ
                 if (l.Data.kind == "tree_row" || l.Pts.Count < 2) continue;
                 Style style = StyleOf(l.Data);
                 foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, square)) Draw(ctx, l.Data, style, piece, gates);
+                if (!site.Chunked)
+                    foreach (List<Vector2> piece in Outside(l.Pts, half, ctx.Reach)) Plain(ctx, l.Data, style, piece);
+                if (site.StepDue) yield return "fences and walls";
             }
+        }
+
+        /// <summary>A Lite site's barriers: each straight stretch one plain shape.</summary>
+        internal static void Lite(Ctx ctx)
+        {
+            Site site = ctx.Site;
+            if (site.Area.Barriers.Count == 0) return;
+            float half = ctx.Half;
+            var square = Rect.MinMaxRect(-half, -half, half, half);
+            foreach (Line l in site.Area.Barriers)
+            {
+                if (l.Data.kind == "tree_row" || l.Pts.Count < 2) continue;
+                Style style = StyleOf(l.Data);
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, square)) Plain(ctx, l.Data, style, piece);
+            }
+        }
+
+        // The pieces of a line past the playable square, out to the reach: the four bands round the square.
+        private static IEnumerable<List<Vector2>> Outside(List<Vector2> pts, float half, float reach)
+        {
+            if (reach <= half + 0.01f) yield break;
+            var bands = new[]
+            {
+                Rect.MinMaxRect(-reach, -reach, -half, reach), Rect.MinMaxRect(half, -reach, reach, reach),
+                Rect.MinMaxRect(-half, half, half, reach), Rect.MinMaxRect(-half, -reach, half, -half),
+            };
+            foreach (Rect band in bands)
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(pts, band))
+                    yield return piece;
         }
 
         // The barrier's own look, from what's mapped about it (its id, name and length in the region's data).
@@ -125,8 +160,9 @@ namespace CloneZ
             }
         }
 
-        // One piece of a barrier inside the square: its runs between gates, each straight stretch drawn and given a
-        // collider, posts on the lattice and at the corners.
+        #region In full
+        // One piece of a barrier inside the square: its runs between the gates, the carriageways and the buildings, each
+        // straight stretch drawn and given a collider, posts on the lattice and at the corners.
         private static void Draw(Ctx ctx, MapLine data, Style style, List<Vector2> pts, List<Vector2> gates)
         {
             Site site = ctx.Site;
@@ -168,12 +204,37 @@ namespace CloneZ
                         float c0 = c.x - arc;
                         if (c0 > s && c0 < e) e = c0;
                     }
-                    if (e - s > 0.05f) Run(ctx, data, style, a + d * s, a + d * e, d, h, thick, i > 0 && s < 0.01f);
+                    if (e - s > 0.05f) Spans(ctx, data, style, a, d, s, e, h, thick, i > 0 && s < 0.01f);
                     s = e;
                 }
                 arc += len;
             }
             site.TakeLine(pts, thick * 0.5f + 0.35f);
+        }
+
+        // The stretch from s to e along a + d * t, less where it would cross a carriageway as the roads drew it or stand
+        // in a building (a metre at a time).
+        private static void Spans(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 d, float s, float e, float h, float thick, bool corner)
+        {
+            float start = -1f;
+            int steps = Mathf.Max(1, Mathf.CeilToInt(e - s));
+            float step = (e - s) / steps;
+            for (int k = 0; k <= steps; k++)
+            {
+                bool open = false;
+                if (k < steps)
+                {
+                    Vector2 mid = a + d * (s + (k + 0.5f) * step);
+                    open = ctx.Roads.Clearance(mid, 1.5f) >= 0.25f && !ctx.Blocks.Contains(mid, 0f);
+                }
+                float t = s + k * step;
+                if (open && start < 0f) start = t;
+                else if (!open && start >= 0f)
+                {
+                    if (t - start > 0.3f) Run(ctx, data, style, a + d * start, a + d * t, d, h, thick, corner && start <= s + 0.01f);
+                    start = -1f;
+                }
+            }
         }
 
         private static float ArcOf(List<Vector2> pts, Vector2 p)
@@ -244,11 +305,11 @@ namespace CloneZ
                 }
                 case Style.Privacy:
                 {
-                    Surf boards = DecorMaterials.Planks(Shade(FenceWood, shadeKey));
-                    m.Box(To3(mid, 0.95f), new Vector3(len, 1.7f, 0.03f), yaw, boards);
-                    m.Box(To3(mid, 1.82f), new Vector3(len, 0.05f, 0.1f), yaw, Matte(Shade(FenceWood, shadeKey) * 0.85f));
+                    Color wood = Shade(FenceWood, shadeKey);
+                    m.Box(To3(mid, 0.95f), new Vector3(len, 1.7f, 0.03f), yaw, Boards);
+                    m.Box(To3(mid, 1.82f), new Vector3(len, 0.05f, 0.1f), yaw, Matte(wood * 0.85f));
                     m.Box(To3(mid, 1.86f), new Vector3(len, 0.03f, 0.09f), yaw, SnowSurf);
-                    Posts(ctx, a, b, d, style, 1.85f, Matte(Shade(FenceWood, shadeKey) * 0.8f), corner);
+                    Posts(ctx, a, b, d, style, 1.85f, Matte(wood * 0.8f), corner);
                     break;
                 }
                 case Style.Picket:
@@ -271,9 +332,7 @@ namespace CloneZ
                 case Style.Brick:
                 case Style.Block:
                 {
-                    Surf wall = style == Style.Brick
-                        ? DecorMaterials.WallExterior(ExteriorStyle.Brick, Shade(new Color(0.56f, 0.30f, 0.24f), shadeKey))
-                        : DecorMaterials.WallExterior(ExteriorStyle.CinderBlock, new Color(0.62f, 0.62f, 0.60f));
+                    Surf wall = style == Style.Brick ? Brick : Block;
                     m.Box(To3(mid, h * 0.5f), new Vector3(len + 0.3f, h, 0.3f), yaw, wall);
                     m.Box(To3(mid, h + 0.04f), new Vector3(len + 0.34f, 0.08f, 0.38f), yaw, Concrete);
                     m.Box(To3(mid, h + 0.1f), new Vector3(len + 0.3f, 0.05f, 0.36f), yaw, SnowSurf);
@@ -283,12 +342,13 @@ namespace CloneZ
                 {
                     Surf green = Matte(Shade(HedgeGreen, shadeKey));
                     m.Box(To3(mid, 0.72f), new Vector3(len + 0.4f, 1.44f, 0.95f), yaw, green);
-                    int lumps = Mathf.Max(1, Mathf.RoundToInt(len / 1.6f));
+                    int lumps = Mathf.Max(1, Mathf.RoundToInt(len / 2.2f));
+                    Quaternion turn = Quaternion.Euler(0f, yaw, 0f);
                     for (int k = 0; k < lumps; k++)
                     {
                         Vector2 p = Vector2.Lerp(a, b, (k + 0.5f) / lumps);
-                        m.Ellipsoid(To3(p, 1.45f), new Vector3(1.5f, 0.42f, 1.0f), Quaternion.Euler(0f, yaw, 0f), green, 6, 3);
-                        m.Ellipsoid(To3(p, 1.58f), new Vector3(1.3f, 0.26f, 0.85f), Quaternion.Euler(0f, yaw, 0f), SnowSurf, 6, 3);
+                        m.Ellipsoid(To3(p, 1.45f), new Vector3(Mathf.Min(2.1f, len + 0.4f), 0.42f, 1.0f), turn, green, 6, 3);
+                        m.Ellipsoid(To3(p, 1.58f), new Vector3(Mathf.Min(1.8f, len + 0.2f), 0.26f, 0.85f), turn, SnowSurf, 6, 3);
                     }
                     break;
                 }
@@ -393,10 +453,63 @@ namespace CloneZ
             float k = 0.9f + 0.1f * MapStyle.Pick(key, SaltShade, 3);
             return new Color(c.r * k, c.g * k, c.b * k, 1f);
         }
+        #endregion
+
+        #region Plain
+        // One piece seen from afar: each straight stretch one shape, rails and wire as a see-through panel, walls and hedges
+        // as blocks with snow on top.
+        private static void Plain(Ctx ctx, MapLine data, Style style, List<Vector2> pts)
+        {
+            float h = Height(style);
+            for (int i = 0; i + 1 < pts.Count; i++)
+            {
+                Vector2 a = pts[i], b = pts[i + 1];
+                float len = Vector2.Distance(a, b);
+                if (len < 0.3f) continue;
+                Vector2 d = (b - a) / len, mid = (a + b) * 0.5f;
+                float yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                Vector3 n = To3(Left(d), 0f);
+                RaidMesh m = ctx.Low(mid);
+                switch (style)
+                {
+                    case Style.Plank: case Style.PlankBlack:
+                        m.Upright(To3(mid, 0.71f), n, len, 1.42f, style == Style.Plank ? PlankPanel : BlackPanel);
+                        break;
+                    case Style.WovenWire: case Style.Barbed:
+                        m.Upright(To3(mid, 0.6f), n, len, 1.2f, FieldFence);
+                        break;
+                    case Style.ChainLink: case Style.Security:
+                        m.Upright(To3(mid, h * 0.5f), n, len, h, ChainLink);
+                        break;
+                    case Style.Picket:
+                        m.Upright(To3(mid, 0.5f), n, len, 1.0f, Picket);
+                        break;
+                    case Style.Privacy:
+                        m.Box(To3(mid, 0.9f), new Vector3(len, 1.8f, 0.05f), yaw, Boards);
+                        break;
+                    case Style.GuardRail:
+                        m.Box(To3(mid, 0.55f), new Vector3(len, 0.3f, 0.08f), yaw, Galvanised);
+                        break;
+                    case Style.Hedge:
+                        m.Box(To3(mid, 0.75f), new Vector3(len + 0.4f, 1.5f, 0.95f), yaw, Matte(Shade(HedgeGreen, data.id)));
+                        m.Box(To3(mid, 1.52f), new Vector3(len + 0.3f, 0.05f, 0.85f), yaw, SnowSurf);
+                        break;
+                    default:
+                    {
+                        float t = Mathf.Max(Thickness(style), 0.3f);
+                        Surf wall = style == Style.DryStone ? DryStone : style == Style.Brick ? Brick : style == Style.Block ? Block : Concrete;
+                        m.Box(To3(mid, h * 0.5f), new Vector3(len + 0.1f, h, t), yaw, wall);
+                        m.Box(To3(mid, h + 0.03f), new Vector3(len + 0.1f, 0.06f, t + 0.04f), yaw, SnowSurf);
+                        break;
+                    }
+                }
+            }
+        }
+        #endregion
 
         #region Textures
-        private static Texture2D s_ChainTex, s_PicketTex, s_FieldTex, s_StoneTex;
-        private static Material s_ChainMat, s_PicketMat, s_FieldMat;
+        private static Texture2D s_ChainTex, s_PicketTex, s_FieldTex, s_StoneTex, s_PlankTex, s_BlackTex, s_BrickTex, s_BlockTex, s_BoardTex;
+        private static Material s_ChainMat, s_PicketMat, s_FieldMat, s_PlankMat, s_BlackMat;
 
         // Chain link: galvanised diamonds, see-through; tiles every 0.6 m.
         private static Surf ChainLink
@@ -458,6 +571,34 @@ namespace CloneZ
             }
         }
 
+        // A plank fence seen from afar: four rails with snow along their tops and a post every 2.4 m, as a see-through
+        // panel; the tile is 2.4 m square, the fence its lower 1.42 m.
+        private static Surf PlankPanel => Panel(ref s_PlankTex, ref s_PlankMat, "PlankPanel", new Color32(224, 224, 219, 255));
+
+        private static Surf BlackPanel => Panel(ref s_BlackTex, ref s_BlackMat, "PlankPanelBlack", new Color32(26, 23, 22, 255));
+
+        private static Surf Panel(ref Texture2D tex, ref Material mat, string name, Color32 paint)
+        {
+            if (mat == null || tex == null)
+            {
+                var snow = new Color32(219, 227, 242, 255);
+                tex = Cutout(name, 128, (x, y) =>
+                {
+                    float m = y * 2.4f / 128f;
+                    bool post = x < 6 && m < 1.42f;
+                    if (post) return m > 1.39f ? snow : paint;
+                    for (int k = 0; k < 4; k++)
+                    {
+                        float bottom = 0.28f + k * 0.32f, top = bottom + 0.14f;
+                        if (m >= bottom && m < top) return m > top - 0.025f ? snow : paint;
+                    }
+                    return Clear;
+                });
+                mat = CutoutMaterial(tex, name, true);
+            }
+            return new Surf(mat, Vector2.zero, 1f / 2.4f);
+        }
+
         // Dry-stone limestone: flat stones laid in rough courses, dark gaps between; a tile is 1.6 m.
         private static Surf DryStone
         {
@@ -490,16 +631,107 @@ namespace CloneZ
                         }
                         y += rowH;
                     }
-                    s_StoneTex = new Texture2D(S, S, TextureFormat.RGBA32, true)
-                    {
-                        name = "DryStone", wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear, anisoLevel = 4,
-                        hideFlags = HideFlags.DontUnloadUnusedAsset,
-                    };
-                    s_StoneTex.SetPixels32(px);
-                    s_StoneTex.Apply(true, false);
+                    s_StoneTex = Opaque("DryStone", S, px);
                 }
                 return DecorMaterials.Planar(s_StoneTex, 1.6f, 0.05f);
             }
+        }
+
+        // A garden wall's red-brown brick in running bond, pale mortar; a tile is 1.2 m (six bricks by eighteen courses).
+        private static Surf Brick
+        {
+            get
+            {
+                if (s_BrickTex == null)
+                    s_BrickTex = Opaque("BarrierBrick", 128, Bricks(128, 18, 6, new Color(0.55f, 0.29f, 0.22f), new Color(0.66f, 0.63f, 0.58f), 0xB21C));
+                return DecorMaterials.Planar(s_BrickTex, 1.2f, 0.05f);
+            }
+        }
+
+        // Grey concrete block, stack-bonded courses of 40 by 20 cm; a tile is 1.6 m.
+        private static Surf Block
+        {
+            get
+            {
+                if (s_BlockTex == null)
+                    s_BlockTex = Opaque("BarrierBlock", 128, Bricks(128, 8, 4, new Color(0.62f, 0.62f, 0.60f), new Color(0.50f, 0.50f, 0.48f), 0xB10C));
+                return DecorMaterials.Planar(s_BlockTex, 1.6f, 0.05f);
+            }
+        }
+
+        // A privacy fence's boards: upright, 15 cm wide, a dark seam between, the grain running up them; a tile is 1.2 m.
+        private static Surf Boards
+        {
+            get
+            {
+                if (s_BoardTex == null)
+                {
+                    const int S = 128;
+                    var px = new Color32[S * S];
+                    var rng = new System.Random(0xB0A2);
+                    var tones = new float[8];
+                    for (int i = 0; i < tones.Length; i++) tones[i] = 0.86f + (float)rng.NextDouble() * 0.22f;
+                    for (int x = 0; x < S; x++)
+                    {
+                        int board = x / 16;
+                        float grain = 0.94f + 0.06f * Mathf.Sin(x * 1.7f + board * 3.1f);
+                        for (int y = 0; y < S; y++)
+                        {
+                            float k = x % 16 == 0 ? 0.45f : tones[board] * grain * (0.97f + 0.03f * Mathf.Sin(y * 0.21f + board));
+                            px[y * S + x] = new Color32((byte)Mathf.Clamp(FenceWood.r * k * 255f, 0f, 255f),
+                                (byte)Mathf.Clamp(FenceWood.g * k * 255f, 0f, 255f), (byte)Mathf.Clamp(FenceWood.b * k * 255f, 0f, 255f), 255);
+                        }
+                    }
+                    s_BoardTex = Opaque("BarrierBoards", S, px);
+                }
+                return DecorMaterials.Planar(s_BoardTex, 1.2f, 0.06f);
+            }
+        }
+
+        // Bricks or blocks in courses (running bond when there are more than four to a course), each a shade of its own,
+        // with mortar lines.
+        private static Color32[] Bricks(int size, int courses, int perCourse, Color body, Color mortar, int seed)
+        {
+            var px = new Color32[size * size];
+            var rng = new System.Random(seed);
+            float courseH = size / (float)courses, brickW = size / (float)perCourse;
+            var shade = new float[courses * (perCourse + 1)];
+            for (int i = 0; i < shade.Length; i++) shade[i] = 0.88f + (float)rng.NextDouble() * 0.24f;
+            Color32 m = new Color32((byte)(mortar.r * 255f), (byte)(mortar.g * 255f), (byte)(mortar.b * 255f), 255);
+            bool bond = perCourse > 4;
+            for (int y = 0; y < size; y++)
+            {
+                int course = Mathf.Min(courses - 1, (int)(y / courseH));
+                float cy = y - course * courseH;
+                float shift = bond && course % 2 == 1 ? brickW * 0.5f : 0f;
+                for (int x = 0; x < size; x++)
+                {
+                    float fx = Mathf.Repeat(x + shift, size);
+                    int brick = (int)(fx / brickW);
+                    float cx = fx - brick * brickW;
+                    if (cy < 1f || cx < 1f)
+                    {
+                        px[y * size + x] = m;
+                        continue;
+                    }
+                    float k = shade[course * (perCourse + 1) + brick];
+                    px[y * size + x] = new Color32((byte)Mathf.Clamp(body.r * k * 255f, 0f, 255f), (byte)Mathf.Clamp(body.g * k * 255f, 0f, 255f),
+                        (byte)Mathf.Clamp(body.b * k * 255f, 0f, 255f), 255);
+                }
+            }
+            return px;
+        }
+
+        private static Texture2D Opaque(string name, int size, Color32[] px)
+        {
+            var tex = new Texture2D(size, size, TextureFormat.RGBA32, true)
+            {
+                name = name, wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear, anisoLevel = 4,
+                hideFlags = HideFlags.DontUnloadUnusedAsset,
+            };
+            tex.SetPixels32(px);
+            tex.Apply(true, false);
+            return tex;
         }
 
         // A tiling cut-out texture painted by a function, with its mips' coverage kept up so a fence doesn't fade away
