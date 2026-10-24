@@ -329,13 +329,16 @@ namespace CloneZ
         private static readonly bool s_Profiling =
             System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-clonez-buildings-profile") >= 0;
         private static long s_ProbeAt;
+        private static int s_ProbeGCs;
 #endif
 
         [System.Diagnostics.Conditional("UNITY_EDITOR")]
         private static void ProbeStart()
         {
 #if UNITY_EDITOR
-            if (s_Profiling) s_ProbeAt = System.Diagnostics.Stopwatch.GetTimestamp();
+            if (!s_Profiling) return;
+            s_ProbeGCs = System.GC.CollectionCount(0);
+            s_ProbeAt = System.Diagnostics.Stopwatch.GetTimestamp();
 #endif
         }
 
@@ -348,6 +351,8 @@ namespace CloneZ
             if (ms < 2.0) return;
             string what = stage == -2 ? "setup" : stage == -1 ? "plan" : stage == 0 ? "walls" : stage == 1 ? "openings"
                 : stage == 2 ? "roof" : stage == 3 ? "frontage" : stage == 4 ? "special" : "inside";
+            int gcs = System.GC.CollectionCount(0) - s_ProbeGCs;
+            if (gcs > 0) what += $" ({gcs} GC)";
             if (j == null)
             {
                 Debug.Log($"[Buildings] {ms:F1} ms {what}");
