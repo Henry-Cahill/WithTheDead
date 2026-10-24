@@ -327,7 +327,8 @@ namespace CloneZ
 
         private void OnDestroy()
         {
-            if (Active == this) Active = null;
+            bool current = Active == this;
+            if (current) Active = null;
             if (_navData != null)
             {
                 if (_navOp != null && !_navOp.isDone) NavMeshBuilder.Cancel(_navData);
@@ -348,6 +349,14 @@ namespace CloneZ
             DestroyMeshes(_deadMeshesOnExit);
             CloneZConfig.ArenaCenter = Vector3.zero;
             CloneZConfig.HardBounds = null;
+            // Let the raid's map go: what the gameplay layer learned of it, and the regions, pieces and memories held here
+            // (the NavMesh's rebuild hooks still point at this object until the next map registers its own).
+            if (current || Active == null) MapGameplay.ForgetMap();
+            _chunks.Clear();
+            _regions.Clear();
+            _memory.Clear();
+            _memoryOrder.Clear();
+            _areaReads.Clear();
         }
         #endregion
 
@@ -894,6 +903,9 @@ namespace CloneZ
             }
             if (c.Failed)
             {
+                // Its buildings' plans were left with the interiors before the build failed: nothing's to be furnished on
+                // bare snow.
+                if (InteriorStreamer.Active != null) InteriorStreamer.Active.Forget(c.Root.transform);
                 Clear(c);
                 List<Mesh> meshes = RaidMesh.CreatedMeshes;
                 RaidMesh.CreatedMeshes = c.Meshes;

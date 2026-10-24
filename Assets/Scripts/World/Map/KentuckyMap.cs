@@ -61,6 +61,9 @@ namespace CloneZ
         /// gets the whole state, streamed around the survivor (see <see cref="BuildStatewide"/>).</summary>
         public static RaidMapInfo Build(Transform world, ZoneDef zone, out string why)
         {
+            // A new raid's map: nothing the last one learned or had switched carries over.
+            MapGameplay.ForgetMap();
+            StreetLamp.ForgetSwitches();
             if (zone.RealStatewide) return BuildStatewide(world, zone, out why);
             MapBuild build = WorldStore.OpenCurrent(out why);
             if (build == null) return null;

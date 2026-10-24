@@ -192,6 +192,20 @@ namespace CloneZ
         }
 
         #region The map's frame and its places
+        // The map's frame and what it has learned of the density, forgotten (ForgetMap).
+        private static void ForgetDensity()
+        {
+            s_Cells.Clear();
+            s_SiteUnits.Clear();
+            s_DensityEpoch = null;
+            s_HasFrame = false;
+            s_FrameBuild = s_FramePlace = null;
+            s_OriginX = s_OriginZ = 0;
+            s_Places = new MapPlace[0];
+            s_PlaceGrid.Clear();
+            s_BigPlaces.Clear();
+        }
+
         // The start place (the world's origin) and the places of the site's build, read once per build.
         private static void UseFrame(Site site)
         {

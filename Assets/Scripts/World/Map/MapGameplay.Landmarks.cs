@@ -45,6 +45,15 @@ namespace CloneZ
         }
 
         private static readonly List<OpenGround> s_Open = new List<OpenGround>();
+
+        // The landmarks published and the open ground found, forgotten (a new raid's map).
+        private static void ForgetLandmarks()
+        {
+            s_Landmarks.Clear();
+            s_Open.Clear();
+            s_LandmarkEpoch = null;
+            MapGameplayRuntime.Reset();
+        }
         private const float OpenReach = 700f;   // metres from the start town's middle
 
         /// <summary>Open ground near <paramref name="target"/> (world metres, within <paramref name="within"/>) in the
@@ -217,10 +226,8 @@ namespace CloneZ
             object epoch = Epoch(site);
             if (!ReferenceEquals(epoch, s_LandmarkEpoch))
             {
-                s_Landmarks.Clear();
-                s_Open.Clear();
+                ForgetLandmarks();
                 s_LandmarkEpoch = epoch;
-                MapGameplayRuntime.Reset();
             }
             RecordOpenGround(site);
             SiteInfo info = Analyse(site);

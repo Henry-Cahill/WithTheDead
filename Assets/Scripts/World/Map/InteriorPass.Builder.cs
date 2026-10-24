@@ -43,6 +43,8 @@ namespace CloneZ
         public readonly List<Mesh> Meshes = new List<Mesh>();
         /// <summary>The containers it holds, in the order they were made (the same every build).</summary>
         public readonly List<LootContainer> Containers = new List<LootContainer>();
+        /// <summary>Its furniture pieces, in the order they were made (the same every build), once it's finished.</summary>
+        public readonly List<HomeFurniture> Furniture = new List<HomeFurniture>();
         /// <summary>The ceiling fittings' lamps, hung from the ceiling once the building is shown (see
         /// <see cref="RaidBuilding.HungLater"/>).</summary>
         private readonly List<HomeLamp> _hung = new List<HomeLamp>(16);
@@ -1041,6 +1043,7 @@ namespace CloneZ
             Lights = s_Lights.Count;
             s_Lights.Clear();
             Root.GetComponentsInChildren(true, Containers);
+            Root.GetComponentsInChildren(true, Furniture);
             Bounds b = new Bounds(World(Plan.Extent.center, Plan.WallH * 0.5f), Vector3.zero);
             foreach (Vector2 p in Plan.Footprint.Pts) b.Encapsulate(new Vector3(p.x + _offset.x, 0f, p.y + _offset.z));
             b.Encapsulate(b.center + Vector3.up * Plan.WallH * 0.5f);
@@ -1171,6 +1174,7 @@ namespace CloneZ
             for (int i = 0; i < Meshes.Count; i++) InteriorPass.Kill(Meshes[i]);
             Meshes.Clear();
             Containers.Clear();
+            Furniture.Clear();
             _hung.Clear();
         }
         #endregion

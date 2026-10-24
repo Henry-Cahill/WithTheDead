@@ -32,6 +32,7 @@ namespace CloneZ
 
         private static readonly List<StreetLamp> s_All = new List<StreetLamp>();
         // Lamps the survivor switched or steadied, by key: a streamed piece built again gets them back as they were left.
+        // Forgotten when a new map starts (ForgetSwitches), so one raid's switches don't carry into the next.
         private static readonly Dictionary<string, int> s_Changed = new Dictionary<string, int>();
         private static StreetLampDriver s_Driver;
         private static readonly Dictionary<Material, Material[]> s_LensStates = new Dictionary<Material, Material[]>();
@@ -300,6 +301,13 @@ namespace CloneZ
         #endregion
 
         #region The driver's work
+        /// <summary>Forgets the lamps switched on the last map (a new map starts).</summary>
+        internal static void ForgetSwitches() => s_Changed.Clear();
+
+        // Domain reload is off in the editor: a new play session mustn't start with the last one's switches.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetSwitches() => s_Changed.Clear();
+
         private static float s_NextScan;
         private static bool s_Night = true;
         private static readonly StreetLamp[] s_Nearest = new StreetLamp[MaxLit];

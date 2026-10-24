@@ -484,7 +484,11 @@ namespace CloneZ
         private const float RichFrom = 1.15f;
 
         /// <summary>How well stocked a building of a site is (<see cref="LootRichnessAt"/> at its middle).</summary>
-        internal static float RichnessOf(Site site, Footprint f) => LootRichnessAt(site.WorldOffset + To3(f.Middle, 0f));
+        internal static float RichnessOf(Site site, Footprint f)
+        {
+            UseFrame(site);
+            return LootRichnessAt(site.WorldOffset + To3(f.Middle, 0f));
+        }
 
         #region How many
         // How many of a building's pieces of storage hold loot. Every loot container rolls its table afresh each raid

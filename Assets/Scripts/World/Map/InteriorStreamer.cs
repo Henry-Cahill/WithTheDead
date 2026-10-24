@@ -50,6 +50,10 @@ namespace CloneZ
         {
             public Inventory[] Contents;
             public bool[] Searched, Gone;
+            /// <summary>The building's furniture pieces (in the order they were made) broken up while it stood.</summary>
+            public bool[] FurnitureGone;
+            /// <summary>Its fixtures' states by save key (null when none kept one).</summary>
+            public List<FixtureSave> Fixtures;
             public int Stamp;
         }
 
@@ -319,19 +323,34 @@ namespace CloneZ
         #endregion
 
         #region What was taken stays taken
-        // A building just furnished: what was left in it last time, else this raid's loot.
+        // A building just furnished: what was left in it last time (its containers' contents, the furniture broken up, its
+        // doors and other fixtures as they were left), else this raid's loot.
         private void Restore(Job j)
         {
             List<LootContainer> boxes = j.Build.Containers;
             long id = j.Plan.Id;
             _memory.TryGetValue(id, out Memory kept);
-            if (kept != null && kept.Contents.Length != boxes.Count) kept = null;
+            // Furniture broken up while the building last stood comes down again, whole (its drawers with it), switched off
+            // first so a merged piece's share of its room's mesh goes with it.
+            List<Transform> brokenUp = null;
+            List<HomeFurniture> furniture = j.Build.Furniture;
+            if (kept != null && kept.FurnitureGone != null && kept.FurnitureGone.Length == furniture.Count)
+                for (int i = 0; i < furniture.Count; i++)
+                {
+                    HomeFurniture piece = furniture[i];
+                    if (!kept.FurnitureGone[i] || piece == null) continue;
+                    (brokenUp ??= new List<Transform>(4)).Add(piece.transform);
+                    piece.gameObject.SetActive(false);
+                    InteriorPass.Kill(piece.gameObject);
+                }
+            bool keptBoxes = kept != null && kept.Contents.Length == boxes.Count;
             int raid = GameSession.RaidSeed;
             for (int i = 0; i < boxes.Count; i++)
             {
                 LootContainer box = boxes[i];
                 if (box == null || box.Type == ContainerType.Corpse || box.IsSack) continue;
-                if (kept != null)
+                if (brokenUp != null && Under(box.transform, brokenUp)) continue;
+                if (keptBoxes)
                 {
                     if (kept.Gone[i])
                     {
@@ -347,7 +366,78 @@ namespace CloneZ
                 }
                 RaidWorldRules.RollLoot(box, new System.Random(LootSeed(raid, id, i)));
             }
+            if (kept != null && kept.Fixtures != null) RestoreFixtures(j.Build, kept.Fixtures);
             if (kept != null) _memory.Remove(id);
+        }
+
+        private static bool Under(Transform t, List<Transform> roots)
+        {
+            for (int i = 0; i < roots.Count; i++)
+                if (t.IsChildOf(roots[i])) return true;
+            return false;
+        }
+
+        private static readonly List<Interactable> s_Fixtures = new List<Interactable>(64);
+        private static readonly List<Interactable> s_FixtureScratch = new List<Interactable>(64);
+
+        // The building's fixtures (doors, switches, cupboards...), in and over it.
+        private static void GatherFixtures(InteriorBuild b)
+        {
+            s_Fixtures.Clear();
+            if (b.Root != null)
+            {
+                b.Root.GetComponentsInChildren(true, s_FixtureScratch);
+                s_Fixtures.AddRange(s_FixtureScratch);
+            }
+            if (b.Town != null && b.Town.Overhead != null)
+            {
+                b.Town.Overhead.GetComponentsInChildren(true, s_FixtureScratch);
+                s_Fixtures.AddRange(s_FixtureScratch);
+            }
+            s_FixtureScratch.Clear();
+        }
+
+        // What each of the building's fixtures that keeps a state holds now (a door locked, battered or off its hinges, a lamp
+        // switched off...), by save key; null when none does.
+        private static List<FixtureSave> CaptureFixtures(InteriorBuild b)
+        {
+            List<FixtureSave> saves = null;
+            HashSet<string> seen = null;
+            GatherFixtures(b);
+            foreach (Interactable f in s_Fixtures)
+            {
+                string key = f != null ? f.SaveKey : null;
+                if (key == null || !(seen ??= new HashSet<string>()).Add(key)) continue;
+                var s = new FixtureSave { Key = key };
+                try { f.CaptureState(s); }
+                catch (System.Exception e)
+                {
+                    Debug.LogWarning("[CloneZ] Interiors: couldn't keep fixture " + key + ": " + e.Message);
+                    continue;
+                }
+                (saves ??= new List<FixtureSave>(16)).Add(s);
+            }
+            s_Fixtures.Clear();
+            return saves;
+        }
+
+        // Puts the states kept by CaptureFixtures back on the rebuilt building's fixtures with the same save keys.
+        private static void RestoreFixtures(InteriorBuild b, List<FixtureSave> saves)
+        {
+            var byKey = new Dictionary<string, FixtureSave>(saves.Count);
+            foreach (FixtureSave s in saves)
+                if (s != null && s.Key != null && !byKey.ContainsKey(s.Key)) byKey[s.Key] = s;
+            GatherFixtures(b);
+            // Restoring can add or remove fixtures (a lamp group, a part torn away), so it walks the list gathered first.
+            var live = new List<Interactable>(s_Fixtures);
+            s_Fixtures.Clear();
+            foreach (Interactable f in live)
+            {
+                string key = f != null ? f.SaveKey : null;
+                if (key == null || !byKey.TryGetValue(key, out FixtureSave s)) continue;
+                try { f.RestoreState(s); }
+                catch (System.Exception e) { Debug.LogWarning("[CloneZ] Interiors: couldn't restore fixture " + key + ": " + e.Message); }
+            }
         }
 
         /// <summary>The seed a building's <paramref name="index"/>th container rolls its loot from in raid
@@ -377,6 +467,14 @@ namespace CloneZ
                     m.Contents[i] = box.Contents;
                     m.Searched[i] = box.Searched;
                 }
+                if (standing)
+                {
+                    int pieces = b.Furniture.Count;
+                    m.FurnitureGone = new bool[pieces];
+                    for (int i = 0; i < pieces; i++)
+                        if (!ReferenceEquals(b.Furniture[i], null) && b.Furniture[i] == null) m.FurnitureGone[i] = true;
+                    m.Fixtures = CaptureFixtures(b);
+                }
                 _memory[j.Plan.Id] = m;
                 _memoryOrder.Enqueue((j.Plan.Id, m.Stamp));
                 while (_memory.Count > MemoryKept && _memoryOrder.Count > 0)
@@ -388,6 +486,27 @@ namespace CloneZ
             }
             b.Discard();
             _prune = true;
+        }
+
+        /// <summary>Drops the plans a streamed piece left here, its buildings never to be furnished: a piece whose build failed
+        /// (laid as bare snow).</summary>
+        internal void Forget(Transform parent)
+        {
+            for (int i = _jobs.Count - 1; i >= 0; i--)
+            {
+                Job j = _jobs[i];
+                if (j.Parent != parent) continue;
+                if (_active == j) _active = null;
+                if (j.Build != null)
+                {
+                    j.Build.Discard();
+                    j.Build = null;
+                    _live--;
+                }
+                _registered.Remove(j.Plan.Id);
+                _jobs[i] = _jobs[_jobs.Count - 1];
+                _jobs.RemoveAt(_jobs.Count - 1);
+            }
         }
 
         /// <summary>For tools: the building with id <paramref name="id"/>, as it stands now (null when it isn't furnished).</summary>

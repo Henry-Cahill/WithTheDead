@@ -274,6 +274,7 @@ namespace CloneZ
         /// site-aware overloads call it themselves.</summary>
         internal static void Prepare(Site site)
         {
+            UseFrame(site);
             SiteInfo info = Analyse(site);
             object epoch = Epoch(site);
             if (!ReferenceEquals(epoch, s_PreparedEpoch))
@@ -287,6 +288,17 @@ namespace CloneZ
         // A raid's map: a streamed one is its streamer's, a fixed one its town's. Whatever a raid learns is forgotten
         // with it.
         private static object Epoch(Site site) => KentuckyStreamer.Active != null ? (object)KentuckyStreamer.Active : site.Town.Info;
+
+        /// <summary>Forgets everything the gameplay layer learned of a raid's map (what its buildings were for, its density,
+        /// its landmarks, its frame): when a new map starts, and when a streamed map goes, so a finished raid's map isn't held
+        /// on to.</summary>
+        internal static void ForgetMap()
+        {
+            s_Prepared.Clear();
+            s_PreparedEpoch = null;
+            ForgetDensity();
+            ForgetLandmarks();
+        }
 
         /// <summary>The purpose of one of <paramref name="site"/>'s buildings, with its point of interest and surroundings.</summary>
         internal static string PurposeOf(Site site, Footprint f)
