@@ -12,13 +12,14 @@ namespace CloneZ
     internal static partial class GroundPass
     {
         private const int MaxStones = 3000;
-        private const int StonesPerStep = 600;
+        private const int StonesPerStep = 150;
+        private const float PlotBlock = 20f, PlotSize = 10f;   // a cemetery's bare plots for trees: one in every block
 
         private static readonly Color[] StoneColours =
         {
-            new Color(0.46f, 0.46f, 0.47f), new Color(0.37f, 0.37f, 0.39f), new Color(0.23f, 0.23f, 0.25f),
-            new Color(0.58f, 0.47f, 0.45f), new Color(0.72f, 0.72f, 0.70f), new Color(0.63f, 0.63f, 0.59f),
-            new Color(0.61f, 0.55f, 0.46f), new Color(0.52f, 0.52f, 0.52f),
+            new Color(0.46f, 0.46f, 0.47f), new Color(0.37f, 0.37f, 0.39f), new Color(0.22f, 0.22f, 0.24f),
+            new Color(0.55f, 0.55f, 0.56f), new Color(0.74f, 0.74f, 0.73f), new Color(0.66f, 0.66f, 0.63f),
+            new Color(0.56f, 0.52f, 0.47f), new Color(0.50f, 0.42f, 0.41f),
         };
 
         private static IEnumerable<string> Grounds(Ground g)
@@ -37,6 +38,7 @@ namespace CloneZ
                             stones += placed;
                             yield return "cemeteries";
                         }
+                        Clearings(g, o);
                         break;
                     case "playground": Playground(g, o); break;
                     case "pitch": Pitch(g, o); break;
@@ -44,8 +46,74 @@ namespace CloneZ
             }
             yield return "grounds";
             Yards(g);
+            Snowmen(g);
             yield return "yards";
         }
+
+        #region Front yards
+        // Now and then a snowman in a house's front yard, between the house and its street, from before it all went
+        // wrong: three balls of snow, coal eyes and buttons, a carrot, stick arms, maybe a scarf.
+        private static void Snowmen(Ground g)
+        {
+            foreach (Footprint f in g.Site.Area.Buildings)
+            {
+                if (f.Data.kind != "house" || f.Size > 400f || MapStyle.Unit(f.Data.id, SaltYard + 7) > 0.06f) continue;
+                Vector2 toStreet = g.Site.Area.NearestStreetDirection(f.Middle, 45f);
+                if (toStreet == Vector2.zero) continue;
+                float reach = 0f;
+                foreach (Vector2 q in f.Pts) reach = Mathf.Max(reach, Vector2.Dot(q - f.Middle, toStreet));
+                System.Random rng = MapStyle.Rng(f.Data.id, SaltYard + 8);
+                var aside = new Vector2(-toStreet.y, toStreet.x);
+                Vector2 at = f.Middle + toStreet * (reach + MapStyle.Range(rng, 3.2f, 5.5f)) + aside * MapStyle.Range(rng, -3f, 3f);
+                if (!g.Clear(at, 0.8f)) continue;
+                Owner o = g.OwnerAt(at);
+                if (o != null && (o.Tier == TierFeature || o.Kind == "water")) continue;
+                Snowman(g, at, Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg + MapStyle.Range(rng, -30f, 30f), rng);
+                g.Site.Take(at, 0.6f);
+            }
+        }
+
+        private static void Snowman(Ground g, Vector2 at, float yaw, System.Random rng)
+        {
+            Vector3 p = To3(at, 0f);
+            RaidMesh m = g.Site.Town.Out.Solid(p);
+            m.SetFrame(p, yaw);   // local +z: the way it looks
+            Surf snow = DecorPalette.Matte(new Color(0.86f, 0.91f, 0.99f));
+            Surf coal = DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f));
+            Surf stick = DecorPalette.Matte(new Color(0.32f, 0.24f, 0.17f));
+            float s = MapStyle.Range(rng, 0.85f, 1.1f);
+            float r0 = 0.42f * s, r1 = 0.31f * s, r2 = 0.22f * s;
+            float y0 = r0 * 0.85f, y1 = y0 + r0 * 0.75f + r1 * 0.8f, y2 = y1 + r1 * 0.75f + r2 * 0.85f;
+            m.Ellipsoid(new Vector3(0f, y0, 0f), new Vector3(r0 * 2f, r0 * 1.8f, r0 * 2f), snow, 10, 6);
+            m.Ellipsoid(new Vector3(0f, y1, 0f), new Vector3(r1 * 2f, r1 * 1.9f, r1 * 2f), snow, 10, 6);
+            m.Ellipsoid(new Vector3(0f, y2, 0f), new Vector3(r2 * 2f, r2 * 2f, r2 * 2f), snow, 10, 6);
+            for (int e = -1; e <= 1; e += 2) m.Box(new Vector3(e * r2 * 0.38f, y2 + r2 * 0.25f, r2 * 0.9f), new Vector3(0.035f, 0.035f, 0.03f), coal);
+            m.Cylinder(new Vector3(0f, y2, r2 * 0.9f), 0.025f, 0.16f * s, 5, DecorPalette.Matte(new Color(0.85f, 0.42f, 0.10f)),
+                Quaternion.Euler(80f, 0f, 0f), 0.1f);
+            for (int b = 0; b < 3; b++) m.Box(new Vector3(0f, y1 - r1 * 0.45f + b * r1 * 0.38f, r1 * 0.96f - Mathf.Abs(b - 1) * 0.02f), new Vector3(0.04f, 0.04f, 0.03f), coal);
+            for (int a = -1; a <= 1; a += 2)
+            {
+                var root = new Vector3(a * r1 * 0.85f, y1 + r1 * 0.2f, 0f);
+                Vector3 tip = root + new Vector3(a * MapStyle.Range(rng, 0.45f, 0.6f), MapStyle.Range(rng, 0.1f, 0.4f), MapStyle.Range(rng, -0.1f, 0.15f));
+                m.Rod(root, tip, 0.03f, stick);
+                m.Rod(Vector3.Lerp(root, tip, 0.7f), Vector3.Lerp(root, tip, 0.7f) + new Vector3(a * 0.1f, 0.14f, 0f), 0.02f, stick);
+            }
+            if (rng.NextDouble() < 0.5)
+            {
+                Color[] wool = { new Color(0.62f, 0.12f, 0.12f), new Color(0.14f, 0.27f, 0.52f), new Color(0.20f, 0.38f, 0.22f) };
+                Surf scarf = DecorPalette.Matte(wool[rng.Next(wool.Length)]);
+                m.Cylinder(new Vector3(0f, y1 + r1 * 0.68f, 0f), r1 * 0.72f, 0.09f, 10, scarf);
+                m.Box(new Vector3(r1 * 0.35f, y1 + r1 * 0.2f, r1 * 0.75f), new Vector3(0.1f, 0.3f, 0.03f), Quaternion.Euler(10f, 0f, -8f), scarf);
+            }
+            else if (rng.NextDouble() < 0.5)
+            {
+                Surf hat = DecorPalette.Matte(new Color(0.10f, 0.10f, 0.11f));
+                m.Cylinder(new Vector3(0f, y2 + r2 * 0.85f, 0f), r2 * 1.05f, 0.025f, 10, hat);
+                m.Cylinder(new Vector3(0f, y2 + r2 * 0.85f, 0f), r2 * 0.68f, 0.24f * s, 10, hat);
+            }
+            m.ResetFrame();
+        }
+        #endregion
 
         #region Cemeteries
         // A churchyard gets graves when the church stands out in the country: little else built round it.
@@ -111,14 +179,33 @@ namespace CloneZ
             if (since > 0) yield return since;
         }
 
-        // A bare 7 m patch in every 24 m square of a cemetery (fixed to the world), where the trees can stand.
+        // A bare plot in every block of a cemetery (fixed to the world), where the trees can stand.
         private static bool TreePlot(Vector2 w, long id)
         {
-            const float block = 24f, plot = 7f;
-            int bx = Mathf.FloorToInt(w.x / block), bz = Mathf.FloorToInt(w.y / block);
+            int bx = Mathf.FloorToInt(w.x / PlotBlock), bz = Mathf.FloorToInt(w.y / PlotBlock);
+            Vector2 p = PlotCorner(bx, bz);
+            return w.x >= p.x && w.x < p.x + PlotSize && w.y >= p.y && w.y < p.y + PlotSize;
+        }
+
+        private static Vector2 PlotCorner(int bx, int bz)
+        {
             long key = ((long)bx << 32) ^ (uint)bz;
-            float px = bx * block + MapStyle.Unit(key, SaltPlot) * (block - plot), pz = bz * block + MapStyle.Unit(key, SaltPlot + 1) * (block - plot);
-            return w.x >= px && w.x < px + plot && w.y >= pz && w.y < pz + plot;
+            return new Vector2(bx * PlotBlock + MapStyle.Unit(key, SaltPlot) * (PlotBlock - PlotSize),
+                bz * PlotBlock + MapStyle.Unit(key, SaltPlot + 1) * (PlotBlock - PlotSize));
+        }
+
+        // The middles of the bare plots in a cemetery (or graveyard) the ground pass has filled with stones, inside the
+        // square and clear of everything: where its trees belong.
+        private static void Clearings(Ground g, Owner o)
+        {
+            Rect b = o.Bounds;
+            Vector2 w0 = g.World(b.min), w1 = g.World(b.max);
+            for (int bz = Mathf.FloorToInt(w0.y / PlotBlock); bz <= Mathf.FloorToInt(w1.y / PlotBlock); bz++)
+                for (int bx = Mathf.FloorToInt(w0.x / PlotBlock); bx <= Mathf.FloorToInt(w1.x / PlotBlock); bx++)
+                {
+                    Vector2 at = PlotCorner(bx, bz) + new Vector2(PlotSize * 0.5f, PlotSize * 0.5f) - g.Offset;
+                    if (g.Square.Contains(at) && g.Shows(o, at) && !g.Blocked(at)) g.Clearings.Add(at);
+                }
         }
 
         private static void Headstone(Ground g, Vector2 at, float yaw, long key, long cemetery, float old)
@@ -396,6 +483,7 @@ namespace CloneZ
                     m.ResetFrame();
                     g.Site.Take(at, 1f);
                 }
+                if (football) Bleachers(g, mid, d, n, half, rng, snow);
                 return;
             }
             if (len >= 30f && len <= 45f && wid >= 14f && wid <= 25f && fill > 0.8f)
@@ -418,6 +506,44 @@ namespace CloneZ
             m.Rod(new Vector3(-2.82f, 3.05f, 0f), new Vector3(2.82f, 3.05f, 0f), 0.12f, yellow);
             m.Box(new Vector3(0f, 3.13f, 0f), new Vector3(5.6f, 0.03f, 0.1f), snow);
             for (int s = -1; s <= 1; s += 2) m.Rod(new Vector3(s * 2.82f, 3.05f, 0f), new Vector3(s * 2.82f, 9f, 0f), 0.1f, yellow);
+        }
+
+        // Aluminium bleachers along the home side of a football field: five rows of seat planks stepping back and up,
+        // snow on every one, on a frame, with one collider.
+        private static void Bleachers(Ground g, Vector2 mid, Vector2 d, Vector2 n, Vector2 half, System.Random rng, in Surf snow)
+        {
+            float side = rng.NextDouble() < 0.5 ? -1f : 1f;
+            float length = Mathf.Min(24f, half.x * 0.6f);
+            Vector2 at = mid + n * (side * (half.y + 3.2f));
+            Vector2 back = n * side;
+            if (!g.Square.Contains(at) || !g.Clear(at, 2f)) return;
+            for (int k = -1; k <= 1; k += 2)
+                if (g.Blocked(at + d * (k * length * 0.5f)) || g.Blocked(at + d * (k * length * 0.5f) + back * 3f)) return;
+            float yaw = Mathf.Atan2(back.x, back.y) * Mathf.Rad2Deg;   // local +z: away from the field, up the rows
+            Vector3 p = To3(at, 0f);
+            RaidMesh m = g.Site.Town.Out.Solid(p);
+            m.SetFrame(p, yaw);
+            Surf alu = DecorPalette.Metal(new Color(0.66f, 0.67f, 0.68f));
+            Surf frame = DecorPalette.Metal(new Color(0.40f, 0.41f, 0.42f));
+            const int rows = 5;
+            for (int r = 0; r < rows; r++)
+            {
+                float z = r * 0.62f, y = 0.42f + r * 0.4f;
+                m.Box(new Vector3(0f, y, z), new Vector3(length, 0.05f, 0.3f), alu);
+                m.Box(new Vector3(0f, y + 0.035f, z), new Vector3(length - 0.05f, 0.025f, 0.28f), snow);
+                m.Box(new Vector3(0f, y - 0.22f, z - 0.25f), new Vector3(length, 0.04f, 0.22f), alu);
+            }
+            for (float x = -length * 0.5f; x <= length * 0.5f + 0.01f; x += length / 4f)
+            {
+                m.Rod(new Vector3(x, 0f, -0.1f), new Vector3(x, 0.42f, -0.1f), 0.06f, frame);
+                m.Rod(new Vector3(x, 0f, (rows - 1) * 0.62f), new Vector3(x, 0.42f + (rows - 1) * 0.4f, (rows - 1) * 0.62f), 0.06f, frame);
+                m.Rod(new Vector3(x, 0f, -0.1f), new Vector3(x, 0.42f + (rows - 1) * 0.4f, (rows - 1) * 0.62f), 0.05f, frame);
+            }
+            m.ResetFrame();
+            float depth = (rows - 1) * 0.62f + 0.4f, height = 0.42f + rows * 0.4f;
+            Vector2 centre = at + back * (depth * 0.5f - 0.2f);
+            g.Site.Town.PropCollider(To3(centre, height * 0.5f), new Vector3(length, height, depth), yaw);
+            Take(g.Site, centre, d, n, new Vector2(length * 0.5f + 0.3f, depth * 0.5f + 0.3f));
         }
 
         private static void SoccerGoal(RaidMesh m, in Surf white, in Surf snow)

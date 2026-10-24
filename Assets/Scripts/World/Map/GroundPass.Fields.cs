@@ -27,29 +27,40 @@ namespace CloneZ
             var spans = new List<float>();
             var cut = new List<float>();
             foreach (Owner o in g.Owners)
-                if (o.Kind == "farmland" && o.Visible > 4f) Rows(g, o, g.Owners, g.Site.Town.Out, !g.Lite, spans, cut);
+                if (o.Visible > 4f) FieldRows(g, o, g.Owners, g.Site.Town.Out, !g.Lite, spans, cut);
             for (int b = 0; b < g.Ring.Count; b++)
                 foreach (Owner o in g.Ring[b])
-                    if (o.Kind == "farmland" && o.Visible > 4f) Rows(g, o, g.Ring[b], g.Site.Town.Far, false, spans, cut);
+                    if (o.Visible > 4f) FieldRows(g, o, g.Ring[b], g.Site.Town.Far, false, spans, cut);
             if (g.Lite) return;
             Marsh(g);
             TreeWells(g);
         }
 
-        #region Rows
-        // A field's rows: lines along its long axis every 76 cm, fixed to the world (so a field's rows run on unbroken
-        // from chunk to chunk), cut to where the field's ground shows, short of its mapped edges by a headland;
-        // detailed, each row is broken where the snow drifted over it.
-        private static void Rows(Ground g, Owner o, List<Owner> owners, OutdoorBatches into, bool detailed, List<float> spans, List<float> cut)
+        // Last year's crop rows on farmland (not on hay); the strips of leaf litter along an orchard's rows of trees.
+        private static void FieldRows(Ground g, Owner o, List<Owner> owners, OutdoorBatches into, bool detailed, List<float> spans, List<float> cut)
         {
-            Crop crop = CropOf(o);
-            if (crop == Crop.Hay) return;
-            float band = crop == Crop.Corn ? 0.34f : 0.28f;
-            Surf surf = crop == Crop.Corn ? StubbleSurf : FurrowSurf;
+            if (o.Kind == "farmland")
+            {
+                Crop crop = CropOf(o);
+                if (crop == Crop.Hay) return;
+                Rows(g, o, owners, into, detailed, spans, cut, RowSpacing, crop == Crop.Corn ? 0.34f : 0.28f,
+                    crop == Crop.Corn ? StubbleSurf : FurrowSurf, 2.5f + 3f * MapStyle.Unit(o.Id, SaltRows + 1), 52);
+            }
+            else if (o.Kind == "orchard")
+                Rows(g, o, owners, into, detailed, spans, cut, 6.5f, 1.5f, ForestFloorSurf, 4f, 24);
+        }
+
+        #region Rows
+        // An area's rows: lines along its long axis every <paramref name="spacing"/> metres, fixed to the world (so the
+        // rows run on unbroken from chunk to chunk), cut to where the area's ground shows, short of its mapped edges by
+        // a headland; detailed, each row is broken where the snow drifted over it (<paramref name="buried"/> in 256 of
+        // its 6 m stretches).
+        private static void Rows(Ground g, Owner o, List<Owner> owners, OutdoorBatches into, bool detailed, List<float> spans,
+            List<float> cut, float spacing, float band, in Surf surf, float headland, int buried)
+        {
             Vector2 d = o.Axis, n = new Vector2(-d.y, d.x);
-            float yaw = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;   // a row's length (local +z) along the field
-            float phase = MapStyle.Unit(o.Id, SaltRows) * RowSpacing;
-            float headland = 2.5f + 3f * MapStyle.Unit(o.Id, SaltRows + 1);
+            float yaw = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;   // a row's length (local +z) along the area
+            float phase = MapStyle.Unit(o.Id, SaltRows) * spacing;
             float offN = Vector2.Dot(g.Offset, n), offD = Vector2.Dot(g.Offset, d);
             Rect b = o.Bounds;
             float s0 = float.MaxValue, s1 = float.MinValue;
@@ -61,10 +72,10 @@ namespace CloneZ
                 s1 = Mathf.Max(s1, s);
             }
             Rect domain = Domain(g, o.Bounds.center);
-            int k0 = Mathf.CeilToInt((s0 - phase) / RowSpacing), k1 = Mathf.FloorToInt((s1 - phase) / RowSpacing);
+            int k0 = Mathf.CeilToInt((s0 - phase) / spacing), k1 = Mathf.FloorToInt((s1 - phase) / spacing);
             for (int k = k0; k <= k1; k++)
             {
-                Vector2 origin = n * (k * RowSpacing + phase - offN);
+                Vector2 origin = n * (k * spacing + phase - offN);
                 Spans(o.Pts, origin, d, spans);
                 for (int i = o.Rank + 1; i < owners.Count && spans.Count > 0; i++)
                 {
@@ -91,7 +102,7 @@ namespace CloneZ
                     {
                         long key = ((long)k << 32) ^ (uint)c;
                         uint h = MapStyle.Hash(key, (int)(o.Id & 0x7fffffff) ^ SaltRowGap);
-                        if ((h & 0xff) < 52) continue;
+                        if ((h & 0xff) < buried) continue;
                         float a = c * stretch - offD + ((h >> 8) & 0xff) / 255f * 1.6f;
                         float e = (c + 1) * stretch - offD - ((h >> 16) & 0xff) / 255f * 1.6f;
                         a = Mathf.Max(a, t0);

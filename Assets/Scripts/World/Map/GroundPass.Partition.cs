@@ -82,8 +82,9 @@ namespace CloneZ
                 case "wetland": surf = ReedsSurf; return true;
                 case "parking": surf = LotSurf; return true;
                 case "fuel": surf = ForecourtSurf; return true;
-                case "plaza": surf = PaversSurf; return true;
-                case "lot": case "sand": surf = MudSurf; return true;
+                case "plaza": surf = MapStyle.Unit(o.Id, SaltPlaza) < 0.5f ? BrickPaversSurf : SlabsSurf; return true;
+                case "lot": surf = MudSurf; return true;
+                case "sand": surf = SandSurf; return true;
                 case "farmyard": surf = FarmyardSurf; return true;
                 case "industrial": surf = YardSurf; return true;
                 case "quarry": case "rock": surf = RockSurf; return true;

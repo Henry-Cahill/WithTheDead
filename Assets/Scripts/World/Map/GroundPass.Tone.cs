@@ -5,11 +5,12 @@ using static CloneZ.KentuckyMap;
 
 namespace CloneZ
 {
-    // The snow's tone: one see-through sheet over the ground (a grid, 4 m a cell on a chunk, 5 m over a fixed map and
-    // its scenery ring), each corner looking up how drifted, scoured or grimy the snow is there in a small table
-    // (ToneMaterial). Drifts and scoured crust come from noise fixed to the world and stretched along the wind (from
-    // the north-west), so neighbouring chunks agree; grime from the land use (industry, lots, farmyards, town centres).
-    // Water and paving show through untouched.
+    // The snow's tone: one see-through sheet over the ground (a grid of 2.56 m cells on a chunk, 4 m over a fixed map
+    // and its scenery ring), each corner looking up how drifted, scoured or grimy the snow is there in a small table
+    // (ToneMaterial). Drifts and scoured crust come from noise fixed to the world and drawn out along the wind (from
+    // the north-west), so neighbouring chunks agree; grime from the land use (industry, lots, farmyards, town
+    // centres). On lots and paving the same sheet lays the snow the plow and the tyres packed down, in broad patches.
+    // Water shows through untouched.
     internal static partial class GroundPass
     {
         private static readonly Vector2 Downwind = new Vector2(0.7071f, -0.7071f);   // the wind blows to the south-east
@@ -18,7 +19,7 @@ namespace CloneZ
         {
             bool chunk = g.Site.Chunked;
             float half = chunk ? g.Half : g.Half + SceneryReach;
-            int cells = Mathf.CeilToInt(half * 2f / (chunk ? 4f : 5f));
+            int cells = chunk ? 50 : Mathf.CeilToInt(half * 2f / 4f);
             float cell = half * 2f / cells;
             int row = cells + 1;
             var uv = new Vector2[row * row];
@@ -74,27 +75,30 @@ namespace CloneZ
         private static bool Clean(Vector2 uv) => Mathf.Abs(uv.x - 0.5f) < 0.04f && uv.y < 0.02f;
 
         // The table's coordinates at a point: u how scoured (0) or drifted (1) the snow is, v how grimy; both eased to
-        // nothing (0.5, 0) by <paramref name="fade"/> and on water and paving.
+        // nothing (0.5, 0) by <paramref name="fade"/> and on water.
         private static Vector2 ToneAt(Ground g, Vector2 p, float fade)
         {
             Owner o = OwnerAnywhere(g, p);
-            if (o != null && (o.Kind == "water" || o.Kind == "parking" || o.Kind == "fuel" || o.Kind == "plaza")) return new Vector2(0.5f, 0f);
             Vector2 w = g.World(p);
             float along = Vector2.Dot(w, Downwind), across = Vector2.Dot(w, new Vector2(-Downwind.y, Downwind.x));
-            float large = WorldNoise(new Vector2(along / 70f, across / 26f), 1f, SaltTone);
-            float mid = WorldNoise(new Vector2(along / 21f, across / 8f), 1f, SaltTone + 1);
-            float drift = 0.5f + 0.95f * (0.65f * (large - 0.5f) + 0.35f * (mid - 0.5f));
-            float grime = 0f;
+            float grime = 0f, calm = 1f;
             if (o != null)
                 switch (o.Kind)
                 {
-                    case "industrial": grime = 0.55f; break;
-                    case "farmyard": grime = 0.4f; break;
-                    case "lot": case "quarry": grime = 0.35f; break;
-                    case "commercial": case "retail": grime = 0.22f; break;
-                    case "residential": grime = 0.05f; break;
-                    case "forest": drift = Mathf.Lerp(drift, 0.5f, 0.5f); break;   // the trees break the wind
+                    case "water": return new Vector2(0.5f, 0f);
+                    case "parking": case "fuel": case "plaza":
+                        float packed = 0.6f * WorldNoise(new Vector2(along / 11f, across / 7f), 1f, SaltTone + 3)
+                            + 0.4f * WorldNoise(w, 5f, SaltTone + 4);
+                        return new Vector2(0.5f + 0.5f * Smooth(0.48f, 0.78f, packed) * fade, 0.1f * fade);
+                    case "industrial": grime = 0.5f; break;
+                    case "farmyard": grime = 0.35f; break;
+                    case "lot": case "quarry": grime = 0.3f; break;
+                    case "commercial": case "retail": grime = 0.2f; break;
+                    case "forest": calm = 0.45f; break;   // the trees break the wind
                 }
+            float large = WorldNoise(new Vector2(along / 55f, across / 13f), 1f, SaltTone);
+            float streak = WorldNoise(new Vector2(along / 16f, across / 4.5f), 1f, SaltTone + 1);
+            float drift = 0.5f + calm * (0.75f * (large - 0.5f) + 0.55f * (streak - 0.5f));
             grime *= 0.6f + 0.8f * WorldNoise(w, 23f, SaltTone + 2);
             return new Vector2(Mathf.Lerp(0.5f, Mathf.Clamp01(drift), fade), Mathf.Clamp01(grime) * fade);
         }

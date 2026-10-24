@@ -243,7 +243,21 @@ namespace CloneZ
             Strip(into, pts, normals, bed, bed, BedY, BankSurf);
             Strip(into, pts, normals, shelf, shelf, StreamIceY, IceSurf);
             Strip(into, pts, normals, core, core, StreamWaterY, WaterSurf);
-            if (inside) g.Site.TakeLine(piece, width * 0.5f + 0.6f);
+            if (!inside) return;
+            if (!g.Lite && !ditch)
+                // Dead reeds and grass standing along the banks.
+                for (int i = 1; i + 1 < n; i++)
+                {
+                    if (bed[i] < 0.5f) continue;
+                    long key = MapStyle.Key(g.World(pts[i]));
+                    if (MapStyle.Unit(key, SaltReeds + 4) > 0.3f) continue;
+                    System.Random rng = MapStyle.Rng(key, SaltReeds + 5);
+                    float side = rng.NextDouble() < 0.5 ? -1f : 1f;
+                    Vector2 at = pts[i] + normals[i] * (side * bed[i] * MapStyle.Range(rng, 0.75f, 1.05f));
+                    if (!g.Clear(at, 0.3f)) continue;
+                    ReedClump(into, at, rng, MapStyle.Range(rng, 0.6f, 1.05f));
+                }
+            g.Site.TakeLine(piece, width * 0.5f + 0.6f);
         }
 
         private static Owner WaterAt(List<Owner> owners, Vector2 p)
@@ -364,11 +378,11 @@ namespace CloneZ
             float fx = x - xi, fy = y - yi;
             fx = fx * fx * (3f - 2f * fx);
             fy = fy * fy * (3f - 2f * fy);
-            float a = Lattice(xi, yi, seed), b = Lattice(xi + 1, yi, seed), c = Lattice(xi, yi + 1, seed), d = Lattice(xi + 1, yi + 1, seed);
+            float a = WorldValue(xi, yi, seed), b = WorldValue(xi + 1, yi, seed), c = WorldValue(xi, yi + 1, seed), d = WorldValue(xi + 1, yi + 1, seed);
             return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
         }
 
-        private static float Lattice(int x, int y, int seed) => MapStyle.Unit(((long)x << 32) ^ (uint)y, seed);
+        private static float WorldValue(int x, int y, int seed) => MapStyle.Unit(((long)x << 32) ^ (uint)y, seed);
         #endregion
 
         #region Reeds

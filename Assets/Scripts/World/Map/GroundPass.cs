@@ -94,12 +94,18 @@ namespace CloneZ
 
         private static readonly ConditionalWeakTable<Site, Ground> s_Sites = new ConditionalWeakTable<Site, Ground>();
         private static readonly List<ParkingStall> s_NoStalls = new List<ParkingStall>();
+        private static readonly List<Vector2> s_NoClearings = new List<Vector2>();
 
         /// <summary>The stalls painted on the site's parking lots (Full detail only), in a fixed order: where parked cars
         /// belong. The lots themselves are taken (<see cref="Site.Take(Rect)"/>), so place cars here without asking
         /// <see cref="Site.Free"/>.</summary>
         internal static IReadOnlyList<ParkingStall> Stalls(Site site)
             => s_Sites.TryGetValue(site, out Ground g) ? g.Stalls : s_NoStalls;
+
+        /// <summary>The middles of the bare 10 m plots the ground pass leaves among a cemetery's headstones (Full
+        /// detail only), in a fixed order: where the cemetery's trees belong (the rest of it is taken by the stones).</summary>
+        internal static IReadOnlyList<Vector2> Clearings(Site site)
+            => s_Sites.TryGetValue(site, out Ground g) ? g.Clearings : s_NoClearings;
 
         /// <summary>The kind of land whose ground shows at a site-local point inside the site's square ("water",
         /// "forest", "parking"...; see <see cref="MapArea.kind"/>), or "" for plain snow.</summary>
@@ -159,7 +165,7 @@ namespace CloneZ
             SaltRim = 0x6B02, SaltBank = 0x6B03, SaltChannel = 0x6B04, SaltStream = 0x6B05, SaltReeds = 0x6B06,
             SaltStone = 0x6C01, SaltGraves = 0x6C02, SaltPlot = 0x6C03, SaltPlay = 0x6C04, SaltPitch = 0x6C05,
             SaltYard = 0x6C06, SaltStall = 0x6D01, SaltLine = 0x6D02, SaltStop = 0x6D03, SaltLotEdge = 0x6D04,
-            SaltTone = 0x6E01;
+            SaltTone = 0x6E01, SaltPlaza = 0x6E02, SaltOrchard = 0x6A04;
 
         /// <summary>What the ground pass knows about one site while it's built (and, for <see cref="LandAt"/> and
         /// <see cref="Stalls"/>, afterwards).</summary>
@@ -177,6 +183,7 @@ namespace CloneZ
             /// <summary>A fixed map's areas past its edge (the scenery ring), in the four bands round the square.</summary>
             public readonly List<List<Owner>> Ring = new List<List<Owner>>();
             public readonly List<ParkingStall> Stalls = new List<ParkingStall>();
+            public readonly List<Vector2> Clearings = new List<Vector2>();
 
             private bool[] _blocked;
             private int _n;
@@ -269,31 +276,75 @@ namespace CloneZ
                 foreach (Footprint f in a.Foreign) MarkFootprint(f, 1.2f);
             }
 
-            private void Mark(Vector2 p, float r)
-            {
-                int k = Mathf.CeilToInt(r);
-                int cx = Cell(p.x), cz = Cell(p.y);
-                float r2 = (r + 0.71f) * (r + 0.71f);
-                for (int z = cz - k; z <= cz + k; z++)
-                    for (int x = cx - k; x <= cx + k; x++)
-                    {
-                        if (x < 0 || z < 0 || x >= _n || z >= _n) continue;
-                        float dx = x + 0.5f - Half - p.x, dz = z + 0.5f - Half - p.y;
-                        if (dx * dx + dz * dz <= r2) _blocked[z * _n + x] = true;
-                    }
-            }
-
             private void MarkLine(List<Vector2> pts, float r)
             {
-                float m = Half + r + 1f;
-                for (int i = 0; i + 1 < pts.Count; i++)
+                for (int i = 0; i + 1 < pts.Count; i++) MarkCapsule(pts[i], pts[i + 1], r + 0.71f);
+            }
+
+            // Every cell whose middle lies within r of the segment: a row at a time, the span of the row inside the
+            // capsule (convex, so one span: the union of what the two end discs and the band between them cover).
+            private void MarkCapsule(Vector2 a, Vector2 b, float r)
+            {
+                float zMin = Mathf.Min(a.y, b.y) - r, zMax = Mathf.Max(a.y, b.y) + r;
+                if (zMax < -Half || zMin > Half || Mathf.Max(a.x, b.x) + r < -Half || Mathf.Min(a.x, b.x) - r > Half) return;
+                Vector2 d = b - a;
+                float len = d.magnitude;
+                Vector2 u = len > 1e-5f ? d / len : Vector2.right;
+                int z0 = Mathf.Max(0, Mathf.CeilToInt(zMin + Half - 0.5f)), z1 = Mathf.Min(_n - 1, Mathf.FloorToInt(zMax + Half - 0.5f));
+                for (int z = z0; z <= z1; z++)
                 {
-                    Vector2 a = pts[i], b = pts[i + 1];
-                    if (Mathf.Max(a.x, b.x) < -m || Mathf.Min(a.x, b.x) > m || Mathf.Max(a.y, b.y) < -m || Mathf.Min(a.y, b.y) > m)
-                        continue;
-                    int steps = Mathf.Max(1, Mathf.CeilToInt(Vector2.Distance(a, b) / 0.5f));
-                    for (int k = 0; k <= steps; k++) Mark(Vector2.Lerp(a, b, k / (float)steps), r);
+                    float zc = z + 0.5f - Half;
+                    float lo = float.MaxValue, hi = float.MinValue;
+                    Disc(a, zc, r, ref lo, ref hi);
+                    Disc(b, zc, r, ref lo, ref hi);
+                    if (len > 1e-5f)
+                    {
+                        // The band: |cross(p - a, u)| <= r and 0 <= dot(p - a, u) <= len, along the row z = zc.
+                        float bLo = float.MinValue, bHi = float.MaxValue;
+                        Clamp(u.y, -(zc - a.y) * u.x, -r, r, a.x, ref bLo, ref bHi);
+                        Clamp(u.x, (zc - a.y) * u.y, 0f, len, a.x, ref bLo, ref bHi);
+                        if (bLo <= bHi)
+                        {
+                            lo = Mathf.Min(lo, bLo);
+                            hi = Mathf.Max(hi, bHi);
+                        }
+                    }
+                    if (lo > hi) continue;
+                    int x0 = Mathf.Max(0, Mathf.CeilToInt(lo + Half - 0.5f)), x1 = Mathf.Min(_n - 1, Mathf.FloorToInt(hi + Half - 0.5f));
+                    for (int x = x0; x <= x1; x++) _blocked[z * _n + x] = true;
                 }
+            }
+
+            private static void Disc(Vector2 c, float zc, float r, ref float lo, ref float hi)
+            {
+                float dz = zc - c.y, w2 = r * r - dz * dz;
+                if (w2 < 0f) return;
+                float w = Mathf.Sqrt(w2);
+                lo = Mathf.Min(lo, c.x - w);
+                hi = Mathf.Max(hi, c.x + w);
+            }
+
+            // Narrows [lo, hi] to the x where min <= k (x - ax) + c <= max.
+            private static void Clamp(float k, float c, float min, float max, float ax, ref float lo, ref float hi)
+            {
+                if (Mathf.Abs(k) < 1e-6f)
+                {
+                    if (c < min || c > max)
+                    {
+                        lo = float.MaxValue;
+                        hi = float.MinValue;
+                    }
+                    return;
+                }
+                float x0 = ax + (min - c) / k, x1 = ax + (max - c) / k;
+                if (x0 > x1)
+                {
+                    float t = x0;
+                    x0 = x1;
+                    x1 = t;
+                }
+                lo = Mathf.Max(lo, x0);
+                hi = Mathf.Min(hi, x1);
             }
 
             private void MarkFootprint(Footprint f, float margin)

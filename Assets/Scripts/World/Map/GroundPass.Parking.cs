@@ -140,19 +140,19 @@ namespace CloneZ
             return true;
         }
 
-        // A stall line across the row, faded and partly buried under packed snow (one to three pieces showing).
+        // A stall line across the row, faded and here and there buried under packed snow (one or two pieces showing).
         private static void PaintLine(Ground g, Vector2 at, Vector2 n, float yaw, in Surf paint, long key)
         {
             uint h = MapStyle.Hash(key, SaltLine);
             float len = StallDepth - 0.5f, from = -len * 0.5f;
-            int pieces = 1 + (int)(h % 3);
+            int pieces = 1 + (int)(h % 2);
             float piece = len / pieces;
             float lineYaw = yaw + 90f;   // the line's length (local +z) runs across the lot, along n
             for (int i = 0; i < pieces; i++)
             {
                 uint hi = h >> (4 + i * 8);
-                if ((hi & 7) < 2) continue;   // buried
-                float a = from + i * piece + (hi >> 3 & 3) * 0.12f, b = from + (i + 1) * piece - (hi >> 5 & 3) * 0.15f;
+                if ((hi & 7) == 0) continue;   // buried
+                float a = from + i * piece + (hi >> 3 & 3) * 0.1f, b = from + (i + 1) * piece - (hi >> 5 & 3) * 0.12f;
                 if (b - a < 0.25f) continue;
                 Vector3 c = To3(at + n * ((a + b) * 0.5f), MarkY);
                 g.Site.Town.Out.Flat(c).Flat(c, 0.1f, b - a, lineYaw, paint);
