@@ -190,6 +190,7 @@ namespace CloneZ
                 }
             }
             SamplesOf(c, at, c.To, step, s, true);
+            AddKnots(c, c.From, c.To, s);
             int n = s.Count;
             if (n < 2) return;
             FitSides(n);

@@ -198,7 +198,7 @@ namespace CloneZ
         private sealed class Look
         {
             public Surf Asphalt, Concrete, Packed, Sidewalk, Snow, Trodden, TroddenLine, Paved;
-            public Surf Kerb, KerbFace, Gutter, Slush, SlushLight, SlushPatch, Wet, Track, TrackGravel, Rut, BermGrime;
+            public Surf Kerb, KerbFace, Gutter, Slush, SlushLight, Wet, Track, TrackGravel, Rut, BermGrime;
             public Surf Yellow, White, Panel, Rubber, Apron, Crack, Tar, Pothole;
             public Surf Ballast, Tie, TieSnow, Rail, RailHead, RailRust, Girder;
             public Surf Parapet, ParapetCap, GuardRail, GuardPost, CrossbuckWhite, CrossbuckBlack, PostGrey, LampRed, LampHood;
@@ -229,7 +229,6 @@ namespace CloneZ
                 Rubber = DecorPalette.Matte(new Color(0.20f, 0.20f, 0.21f));
                 Apron = DecorMaterials.Planar(RoadTextures.Sidewalk(), 3f, 0.12f);
                 Crack = DecorPalette.Matte(new Color(0.075f, 0.075f, 0.08f));
-                SlushPatch = DecorPalette.Matte(new Color(0.40f, 0.39f, 0.385f));
                 Tar = DecorPalette.Gloss(new Color(0.035f, 0.035f, 0.04f));
                 Pothole = DecorPalette.Gloss(new Color(0.10f, 0.11f, 0.12f));
                 Ballast = DecorMaterials.Planar(RoadTextures.SnowyBallast(), 3f, 0.08f);

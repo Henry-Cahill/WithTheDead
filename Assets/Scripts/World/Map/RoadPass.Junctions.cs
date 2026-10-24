@@ -1035,7 +1035,8 @@ namespace CloneZ
 
         private static void EdgeRun(Net net, Chain c, int side, float from, float to, List<Vector2> into)
         {
-            SamplesOf(c, from, to, 1f, net.Samples2);
+            // The cross-section holds steady across a mouth (see BuildProfile): the chain's own points are enough.
+            SamplesOf(c, from, to, 0f, net.Samples2);
             foreach (Sample q in net.Samples2) AddPoint(into, q.P + q.N * (side * EdgeAt(c, side, q.S)));
         }
 
@@ -1125,7 +1126,7 @@ namespace CloneZ
                     }
                 }
                 // The ribbon's outline.
-                SamplesOf(c, c.From, c.To, 2f, net.Samples);
+                ProfileSamples(c, c.From, c.To, 4f, net.Samples);
                 List<Sample> s = net.Samples;
                 for (int i = 0; i < s.Count; i++)
                 {
@@ -1336,11 +1337,34 @@ namespace CloneZ
             }
         }
 
-        /// <summary><see cref="SamplesOf"/> with every point where the chain's cross-section changes slope added, so its
-        /// edges follow the tapers between parts.</summary>
+        /// <summary><see cref="SamplesOf"/> plus a point at every knot of the chain's cross-section (where a taper starts or
+        /// ends), so edges drawn through the samples follow the tapers exactly.</summary>
         private static void ProfileSamples(Chain c, float from, float to, float step, List<Sample> into)
         {
-            SamplesOf(c, from, to, c.Ramps ? Mathf.Min(step <= 0f ? 2f : step, 2f) : step, into);
+            SamplesOf(c, from, to, step, into);
+            AddKnots(c, from, to, into);
+        }
+
+        /// <summary>Adds a sample at each knot of <paramref name="c"/>'s cross-section strictly between
+        /// <paramref name="from"/> and <paramref name="to"/>, in order, unless a sample lies within 5 cm of it.</summary>
+        private static void AddKnots(Chain c, float from, float to, List<Sample> into)
+        {
+            if (!c.Ramps) return;
+            for (int si = 0; si < 2; si++)
+            {
+                float[] ks = c.KnotS[si];
+                if (ks == null) continue;
+                for (int k = 0; k < ks.Length; k++)
+                {
+                    float s = ks[k];
+                    if (s <= from + 0.05f || s >= to - 0.05f) continue;
+                    int i = 0;
+                    while (i < into.Count && into[i].S < s) i++;
+                    if ((i < into.Count && into[i].S - s < 0.05f) || (i > 0 && s - into[i - 1].S < 0.05f)) continue;
+                    PointOn(c, s, out Vector2 p, out Vector2 d);
+                    into.Insert(i, new Sample { P = p, N = Left(d), S = s });
+                }
+            }
         }
         #endregion
     }
