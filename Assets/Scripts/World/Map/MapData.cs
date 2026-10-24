@@ -2,11 +2,12 @@ using System;
 
 namespace CloneZ
 {
-    // The real-world map's data, as the world builder writes it (Tools/World/worldbuild.py, format 1). The files are
-    // JSON read with JsonUtility, so every field is public and named exactly as in the files. Coordinates are
+    // The real-world map's data, as the world builder writes it (Tools/World/worldbuild.py, formats 1 and 2). The files
+    // are JSON read with JsonUtility, so every field is public and named exactly as in the files. Coordinates are
     // decimetres from the region's south-west corner on Kentucky's flat grid (EPSG:3088, metres east and north), in
-    // flat lists: [x0, z0, x1, z1, ...]. Plain data only: how anything looks is up to the map's passes.
-    // Map data © OpenStreetMap contributors (ODbL).
+    // flat lists: [x0, z0, x1, z1, ...]. Format 2 only adds fields, arrays and area kinds: read from a format-1 build
+    // its arrays are null, its strings null and its numbers 0, all of which mean "unknown" (as does ""). Plain data
+    // only: how anything looks is up to the map's passes. Map data © OpenStreetMap contributors (ODbL).
 
     /// <summary>world/current.json: the build the game and the servers load.</summary>
     [Serializable]
@@ -29,11 +30,13 @@ namespace CloneZ
         public MapRegionEntry[] regions;
     }
 
-    /// <summary>One region listed in the manifest, with how many of each feature it holds.</summary>
+    /// <summary>One region listed in the manifest, with how many of each feature it holds (the last three from
+    /// format 2).</summary>
     [Serializable]
     public sealed class MapRegionEntry
     {
         public int rx, rz, streets, lines, buildings, areas, pois;
+        public int barriers, power, nodes;
     }
 
     /// <summary>A build's places.json: the named places (cities, towns, villages...), largest first.</summary>
@@ -65,6 +68,16 @@ namespace CloneZ
         public MapBuilding[] buildings;
         public MapArea[] areas;
         public MapPoi[] pois;
+        /// <summary>Format 2: fences, walls, hedges, guard rails, retaining walls and tree rows (<see cref="MapLine.kind"/>
+        /// "fence", "wall", "hedge", "guard_rail", "retaining_wall", "tree_row"; <see cref="MapLine.width"/> their
+        /// thickness), clipped to the region like the lines.</summary>
+        public MapLine[] barriers;
+        /// <summary>Format 2: power lines, "line" (transmission, on towers) or "minor_line" (distribution, on wooden
+        /// poles), clipped to the region like the lines. Every vertex of the mapped way is a support; clipping adds
+        /// vertices on the clip edges, so supports go only at the vertices strictly inside a consumer's own square.</summary>
+        public MapLine[] power;
+        /// <summary>Format 2: point features; each belongs to the region its point is in.</summary>
+        public MapNode[] nodes;
     }
 
     /// <summary>A piece of street (OpenStreetMap's highway=<see cref="kind"/>), clipped to its region.</summary>
@@ -72,15 +85,27 @@ namespace CloneZ
     public sealed class MapStreet
     {
         public long id;
-        public string kind, name;
+        public string kind;
+        /// <summary>The street's name; its route number (<see cref="route"/>) when it has no name.</summary>
+        public string name;
         /// <summary>Carriageway width in metres.</summary>
         public float width;
         public int lanes, layer;
         public bool oneway, bridge, tunnel;
         public int[] pts;
+        /// <summary>Format 2: "asphalt", "concrete", "brick", "gravel", "dirt", or ""/null when not mapped.</summary>
+        public string surface;
+        /// <summary>Format 2: which sides have a sidewalk: "both", "left", "right", "no" (also when the sidewalk is mapped
+        /// as a way of its own), or ""/null when not mapped.</summary>
+        public string sidewalk;
+        /// <summary>Format 2: whether the street is lit: 0 unknown, 1 yes, 2 no.</summary>
+        public int lit;
+        /// <summary>Format 2: the route number (OpenStreetMap's ref, e.g. "US 31E"), or ""/null.</summary>
+        public string route;
     }
 
-    /// <summary>A river, stream, canal, ditch or railway, clipped to its region.</summary>
+    /// <summary>A river, stream, canal, ditch or railway (or, in <see cref="MapRegion.barriers"/> and
+    /// <see cref="MapRegion.power"/>, a barrier or power line), clipped to its region.</summary>
     [Serializable]
     public sealed class MapLine
     {
@@ -88,6 +113,9 @@ namespace CloneZ
         public string kind, name;
         public float width;
         public int[] pts;
+        /// <summary>Format 2: on a bridge, in a tunnel or culvert, and its layer.</summary>
+        public bool bridge, tunnel;
+        public int layer;
     }
 
     /// <summary>A building's footprint (its outer wall, no repeated last point) and what it is.</summary>
@@ -105,9 +133,21 @@ namespace CloneZ
         /// <summary>Height in metres when mapped, else 0.</summary>
         public float height;
         public int[] pts;
+        /// <summary>Format 2: the roof's shape: "flat", "gabled", "hipped", "pyramidal", "skillion", "gambrel",
+        /// "mansard", "half-hipped", "dome", "round", or ""/null when not mapped.</summary>
+        public string roof;
+        /// <summary>Format 2: the walls' material: "brick", "wood", "vinyl", "stone", "concrete", "metal", "glass",
+        /// "stucco", or ""/null.</summary>
+        public string material;
+        /// <summary>Format 2: the walls' and the roof's colours as "#rrggbb", or ""/null.</summary>
+        public string colour, roofColour;
+        /// <summary>Format 2: storeys in the roof (0 when not mapped), and the year it was built (0 unknown).</summary>
+        public int roofLevels, year;
     }
 
-    /// <summary>A land-use area (water, parking, forest, farmland, residential, park...), clipped to its region.</summary>
+    /// <summary>A land-use area (water, parking, forest, farmland, residential, park...; from format 2 also school,
+    /// hospital, churchyard, lot, plaza, fuel, airfield and military), clipped to its region. A kind a reader doesn't
+    /// know is plain ground.</summary>
     [Serializable]
     public sealed class MapArea
     {
@@ -123,5 +163,18 @@ namespace CloneZ
         public long id;
         public string kind, name;
         public int x, z;
+    }
+
+    /// <summary>Format 2: a mapped point feature: a tree, street_lamp, traffic_signals, stop, give_way, crossing,
+    /// level_crossing, bus_stop, hydrant, bench, waste_basket, post_box, telephone, vending, flagpole, water_tower, mast,
+    /// memorial, gate or bollard; at (x, z) in decimetres like a point of interest.</summary>
+    [Serializable]
+    public sealed class MapNode
+    {
+        public long id;
+        public string kind, name;
+        public int x, z;
+        /// <summary>The way it faces, in degrees clockwise from north, or -1 when unknown.</summary>
+        public int dir;
     }
 }

@@ -48,10 +48,10 @@ namespace CloneZ
                 }
                 string folder = Path.Combine(root, "world", "builds", current.build);
                 MapManifest manifest = JsonUtility.FromJson<MapManifest>(File.ReadAllText(Path.Combine(folder, "manifest.json")));
-                if (manifest == null || manifest.format != MapBuild.Format)
+                if (manifest == null || manifest.format < MapBuild.OldestFormat || manifest.format > MapBuild.Format)
                 {
                     why = "build " + current.build + " is format " + (manifest != null ? manifest.format : 0)
-                        + "; this game reads format " + MapBuild.Format;
+                        + "; this game reads formats " + MapBuild.OldestFormat + " to " + MapBuild.Format;
                     return null;
                 }
                 why = null;
@@ -68,8 +68,11 @@ namespace CloneZ
     /// <summary>One published build of the real-world map: its manifest, its named places and its regions.</summary>
     public sealed class MapBuild
     {
-        /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>
-        public const int Format = 1;
+        /// <summary>The newest data format this game reads (worldbuild.py's FORMAT); it reads every format back to
+        /// <see cref="OldestFormat"/>, as each only adds to the one before (see <see cref="MapRegion"/>).</summary>
+        public const int Format = 2;
+        /// <summary>The oldest data format this game still reads.</summary>
+        public const int OldestFormat = 1;
 
         public readonly string Id;
         /// <summary>The build's folder in the store.</summary>

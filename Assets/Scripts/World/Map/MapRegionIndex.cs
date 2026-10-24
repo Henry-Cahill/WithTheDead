@@ -5,10 +5,11 @@ namespace CloneZ
 {
     /// <summary>
     /// One region of the world store's build (<see cref="MapRegion"/>), sorted by the pieces (chunks) the streamed
-    /// map is built in: for every chunk of the region, the streets, lines, land-use areas and points that reach into
-    /// it, the buildings it owns (the chunk holding the middle of a building's outline builds it whole, as the
-    /// world builder gives each building to the region its middle is in) and the buildings of its neighbours that
-    /// only reach into it. Plain data, built off the main thread (see <see cref="KentuckyStreamer"/>).
+    /// map is built in: for every chunk of the region, the streets, lines (and, from format 2, barriers and power lines),
+    /// land-use areas and points (points of interest, and from format 2 nodes) that reach into it, the buildings it owns
+    /// (the chunk holding the middle of a building's outline builds it whole, as the world builder gives each building
+    /// to the region its middle is in) and the buildings of its neighbours that only reach into it. Plain data, built
+    /// off the main thread (see <see cref="KentuckyStreamer"/>).
     /// </summary>
     internal sealed class MapRegionIndex
     {
@@ -21,6 +22,9 @@ namespace CloneZ
             public readonly List<int> Foreign = new List<int>();
             public readonly List<int> Areas = new List<int>();
             public readonly List<int> Pois = new List<int>();
+            public readonly List<int> Barriers = new List<int>();
+            public readonly List<int> Power = new List<int>();
+            public readonly List<int> Nodes = new List<int>();
         }
 
         private static readonly Bucket s_Empty = new Bucket();
@@ -66,10 +70,25 @@ namespace CloneZ
                 for (int i = 0; i < data.pois.Length; i++)
                 {
                     MapPoi p = data.pois[i];
-                    int limit = Size * 10;
-                    if (p.x < 0 || p.z < 0 || p.x >= limit || p.z >= limit) continue;
-                    Get(Cell(ChunkOf(p.x), ChunkOf(p.z))).Pois.Add(i);
+                    if (InRegion(p.x, p.z)) Get(Cell(ChunkOf(p.x), ChunkOf(p.z))).Pois.Add(i);
                 }
+            if (data.barriers != null)
+                for (int i = 0; i < data.barriers.Length; i++) AlongLine(data.barriers[i].pts, i, b => b.Barriers);
+            if (data.power != null)
+                for (int i = 0; i < data.power.Length; i++) AlongLine(data.power[i].pts, i, b => b.Power);
+            if (data.nodes != null)
+                for (int i = 0; i < data.nodes.Length; i++)
+                {
+                    MapNode n = data.nodes[i];
+                    if (InRegion(n.x, n.z)) Get(Cell(ChunkOf(n.x), ChunkOf(n.z))).Nodes.Add(i);
+                }
+        }
+
+        // True when a point (decimetres from the region's corner) lies in the region itself, not in the margin past it.
+        private bool InRegion(int x, int z)
+        {
+            int limit = Size * 10;
+            return x >= 0 && z >= 0 && x < limit && z < limit;
         }
 
         /// <summary>What global chunk (<paramref name="cx"/>, <paramref name="cz"/>) reads from this region.</summary>

@@ -53,7 +53,8 @@ namespace CloneZ
                 || kind == "residential" || kind == "unclassified" || kind == "living_street";
         }
 
-        /// <summary>A piece of a line feature: a waterway or a railway.</summary>
+        /// <summary>A piece of a line feature: a waterway or a railway (<see cref="Area.Lines"/>), a barrier
+        /// (<see cref="Area.Barriers"/>) or a power line (<see cref="Area.Power"/>).</summary>
         internal sealed class Line
         {
             public readonly MapLine Data;
@@ -109,10 +110,19 @@ namespace CloneZ
             public Spot(MapPoi data, Vector2 at) { Data = data; At = at; }
         }
 
+        /// <summary>A mapped point feature (format 2): a tree, a street lamp, a stop sign, a hydrant...</summary>
+        internal sealed class Node
+        {
+            public readonly MapNode Data;
+            public readonly Vector2 At;
+            public Node(MapNode data, Vector2 at) { Data = data; At = at; }
+        }
+
         /// <summary>Everything within reach of the place's centre, read from the build's regions and moved to raid-map
-        /// coordinates. Streets, lines and areas are cut to their own region (the builder overlaps neighbours a little)
-        /// and to the reach, so nothing is drawn twice. A streamed map piece's area holds exactly its own square
-        /// (see the chunk constructor).</summary>
+        /// coordinates. Streets, lines (waterways, railways, barriers, power lines) and areas are cut to their own region
+        /// (the builder overlaps neighbours a little) and to the reach, so nothing is drawn twice. A streamed map piece's
+        /// area holds exactly its own square (see the chunk constructor). The format-2 lists stay empty for a format-1
+        /// build.</summary>
         internal sealed class Area
         {
             public readonly string Place, BuildId, Attribution;
@@ -125,6 +135,13 @@ namespace CloneZ
             internal readonly List<Footprint> Foreign = new List<Footprint>();
             internal readonly List<Patch> Areas = new List<Patch>();
             internal readonly List<Spot> Points = new List<Spot>();
+            /// <summary>Fences, walls, hedges, guard rails, retaining walls and tree rows (format 2).</summary>
+            internal readonly List<Line> Barriers = new List<Line>();
+            /// <summary>Power lines (format 2). Every mapped vertex is a support, but cutting a line adds vertices where
+            /// it was cut, on the edge of its region or of the area: supports go only at vertices strictly inside those.</summary>
+            internal readonly List<Line> Power = new List<Line>();
+            /// <summary>Mapped point features: trees, street lamps, signs, hydrants... (format 2).</summary>
+            internal readonly List<Node> Nodes = new List<Node>();
 
             public Area(MapBuild build, MapPlace place, float half)
                 : this(build, place, half, half + SceneryReach, build.RegionsAround) { }
@@ -172,6 +189,16 @@ namespace CloneZ
                             Vector2 at = ToLocal(p.x, p.z, ox, oz);
                             if (near.Contains(at)) Points.Add(new Spot(p, at));
                         }
+                    if (r.barriers != null)
+                        foreach (MapLine l in r.barriers) AddLine(Barriers, l, ox, oz, own, near);
+                    if (r.power != null)
+                        foreach (MapLine l in r.power) AddLine(Power, l, ox, oz, own, near);
+                    if (r.nodes != null)
+                        foreach (MapNode n in r.nodes)
+                        {
+                            Vector2 at = ToLocal(n.x, n.z, ox, oz);
+                            if (near.Contains(at)) Nodes.Add(new Node(n, at));
+                        }
                 }
             }
 
@@ -215,6 +242,9 @@ namespace CloneZ
                     if (pts.Count >= 3) Areas.Add(new Patch(r.areas[i], pts));
                 }
                 foreach (int i in bucket.Pois) Points.Add(new Spot(r.pois[i], ToLocal(r.pois[i].x, r.pois[i].z, ox, oz)));
+                foreach (int i in bucket.Barriers) AddLine(Barriers, r.barriers[i], ox, oz, own, near);
+                foreach (int i in bucket.Power) AddLine(Power, r.power[i], ox, oz, own, near);
+                foreach (int i in bucket.Nodes) Nodes.Add(new Node(r.nodes[i], ToLocal(r.nodes[i].x, r.nodes[i].z, ox, oz)));
             }
 
             /// <summary>The unit direction from <paramref name="from"/> to the nearest street (tunnels aside) within
