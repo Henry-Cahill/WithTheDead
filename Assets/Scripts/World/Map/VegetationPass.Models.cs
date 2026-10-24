@@ -37,15 +37,15 @@ namespace CloneZ
     internal enum ShrubKind : byte { Yew, Boxwood, Juniper, Thicket }
 
     /// <summary>
-    /// What a tree's crown must keep clear of: up to two obstacles (the nearest wall, the nearest overhead wire), each as
-    /// the plan direction to it in the tree's own frame (degrees clockwise from the frame's +z) and its distance from the
-    /// trunk. A hardwood's limbs reaching towards one are cut back short of it, the way a yard tree is pruned off a house
-    /// and the power company side-trims the trees under its lines.
+    /// What a tree's crown must keep clear of: up to three obstacles (the nearest walls, the nearest overhead wire), each
+    /// as the plan direction to it in the tree's own frame (degrees clockwise from the frame's +z) and its distance from
+    /// the trunk. A hardwood's limbs reaching towards one are cut back short of it, the way a yard tree is pruned off a
+    /// house and the power company side-trims the trees under its lines.
     /// </summary>
     internal struct TreeRoom
     {
         public int Count;
-        public float Az0, D0, Az1, D1;
+        public float Az0, D0, Az1, D1, Az2, D2;
 
         public void Add(float azimuth, float distance)
         {
@@ -59,6 +59,11 @@ namespace CloneZ
                 Az1 = azimuth;
                 D1 = distance;
             }
+            else if (Count == 2)
+            {
+                Az2 = azimuth;
+                D2 = distance;
+            }
             else return;
             Count++;
         }
@@ -69,6 +74,7 @@ namespace CloneZ
             float best = float.MaxValue;
             if (Count > 0) best = Limit(azimuth, Az0, D0, best);
             if (Count > 1) best = Limit(azimuth, Az1, D1, best);
+            if (Count > 2) best = Limit(azimuth, Az2, D2, best);
             return best;
         }
 
@@ -175,14 +181,14 @@ namespace CloneZ
             return Mathf.Clamp(height * FormOf(kind).Girth * 1.25f, 0.15f, 0.55f);
         }
 
-        /// <summary>A conifer's widest skirt per metre of height (its lowest tiers at their widest and most ragged).</summary>
+        /// <summary>A conifer's widest skirt per metre of height: its tiers at their widest, most ragged and snow-rimmed.</summary>
         public static float Skirt(TreeKind kind)
         {
             switch (kind)
             {
-                case TreeKind.Cedar: return 0.3f;
-                case TreeKind.Spruce: return 0.37f;
-                default: return 0.36f;
+                case TreeKind.Cedar: return 0.34f;
+                case TreeKind.Spruce: return 0.41f;
+                default: return 0.43f;
             }
         }
 
@@ -308,11 +314,17 @@ namespace CloneZ
                 float horizontal = Mathf.Max(0.25f, Mathf.Cos(rise * Mathf.Deg2Rad));
                 float vertical = Mathf.Max(0.2f, Mathf.Sin(rise * Mathf.Deg2Rad));
                 float outward = crownR * (f.Leader ? 1f - 0.55f * frac : 1f) * R(rng, 0.75f, 1.05f);
-                // The knee's second piece and the branches carry a limb a third again past its heading's reach.
-                if (room.Count > 0) outward = Mathf.Min(outward, (room.Reach(azimuth) - 0.3f) / 1.35f);
+                Vector3 start = up * y;
+                if (room.Count > 0)
+                {
+                    // The knee's second piece and the branches carry a limb a third again past its heading's reach, and a
+                    // leaning trunk has already carried the limb's foot some way towards (or away from) what's there.
+                    float a = azimuth * Mathf.Deg2Rad;
+                    float carried = start.x * Mathf.Sin(a) + start.z * Mathf.Cos(a);
+                    outward = Mathf.Min(outward, (room.Reach(azimuth) - 0.3f - carried) / 1.35f);
+                }
                 float len = Mathf.Min(outward / horizontal, (h * 0.98f - y) / vertical);
                 if (len < 0.4f) continue;
-                Vector3 start = up * y;
                 float radius = r0 * (f.Leader ? 0.45f : 0.58f) * R(rng, 0.85f, 1.1f) * (1f - 0.3f * frac);
                 // The limb in two pieces: out along its heading to a knee, then turning up and aside.
                 float bend = lite ? 1f : R(rng, 0.45f, 0.62f);

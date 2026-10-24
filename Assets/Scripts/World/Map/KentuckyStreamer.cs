@@ -40,6 +40,7 @@ namespace CloneZ
         private const int MaxAreaReads = 2;        // pieces' data being cut out of their regions at once
         private const int MemoryKept = 1024;       // unloaded pieces whose containers are remembered
         private const float BuildBudget = 0.005f;  // seconds a frame spent building...
+        private const float RingBudget = 0.008f;   // ...or this, while a piece next to the local survivor isn't shown in Full...
         private const float CatchUpBudget = 0.04f; // ...or this, while the ground under a survivor isn't built yet
         private const float MaxDebt = 0.01f;       // a frame that ran over its budget is paid back over the next ones, up to this
         private const float AheadSpeed = 3f;       // m/s: faster than this, the pieces ahead are wanted in Full before they're next door
@@ -643,14 +644,16 @@ namespace CloneZ
             return Task.Run(() => new KentuckyMap.Area(place, id, attribution, region, cx, cz));
         }
 
-        // A few milliseconds of building a frame (more while a survivor stands on ground that isn't built yet), step by
-        // step: a step expected to take longer than what's left of the frame's budget waits for the next frame (unless
-        // it's the frame's first), and a frame that ran over pays it back out of the next frames' budgets.
+        // A few milliseconds of building a frame (a little more while a piece next to the local survivor isn't shown in Full,
+        // much more while a survivor stands on ground that isn't built yet), step by step: a step expected to take longer
+        // than what's left of the frame's budget waits for the next frame (unless it's the frame's first), and a frame that
+        // ran over pays it back out of the next frames' budgets.
         private void BuildSome()
         {
             Vector3 primary = _focus[0];
-            bool behind = !_chunks.TryGetValue(Key(ChunkX(primary.x), ChunkZ(primary.z)), out Chunk under) || !under.Ready;
-            float budget = behind ? CatchUpBudget : BuildBudget;
+            int px = ChunkX(primary.x), pz = ChunkZ(primary.z);
+            bool behind = !_chunks.TryGetValue(Key(px, pz), out Chunk under) || !under.Ready;
+            float budget = behind ? CatchUpBudget : FullAround(px, pz) ? BuildBudget : RingBudget;
             if (behind) _debt = 0f;
             else if (_debt > 0f)
             {
@@ -708,6 +711,16 @@ namespace CloneZ
         }
 
         private const string Starting = "(start)", Finishing = "(finish)";
+
+        // True when every piece within FullRadius of piece (cx, cz) is shown in Full.
+        private bool FullAround(int cx, int cz)
+        {
+            for (int dz = -FullRadius; dz <= FullRadius; dz++)
+                for (int dx = -FullRadius; dx <= FullRadius; dx++)
+                    if (!_chunks.TryGetValue(Key(cx + dx, cz + dz), out Chunk c) || !c.Ready || c.Detail != KentuckyMap.Detail.Full)
+                        return false;
+            return true;
+        }
 
         // What the step after <paramref name="c"/>'s last one is expected to take: what it took last time, scaled by how much
         // more (or less) this piece has to build than the ones it was learned on (a guess for an unknown one).
