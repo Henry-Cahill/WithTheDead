@@ -293,6 +293,10 @@ namespace CloneZ
             _active = null;
             _built++;
             Touch(j.Build.WorldBounds);
+            // A line in the log the first time (and every hundredth), so a play session's log shows the interiors at work.
+            if (!ToolMode && (_built == 1 || _built % 100 == 0))
+                Debug.Log("[CloneZ] Interiors: " + j.Plan.Use + " " + j.Plan.Id + " furnished near the survivor in " + Mathf.RoundToInt((float)j.Build.TotalMs)
+                    + " ms over " + j.Build.StepCount + " steps (" + j.Build.Containers.Count + " containers, " + j.Build.Lights + " lights); " + Summary);
             return true;
         }
 
