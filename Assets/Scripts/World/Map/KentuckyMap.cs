@@ -20,25 +20,34 @@ namespace CloneZ
     /// The map is drawn on a <see cref="Site"/> (KentuckyMap.Site.cs: the place's data in local metres, the batches, a
     /// 1 m occupancy grid and what the passes hand each other, typed in MapContracts.cs) by a pipeline of passes
     /// (<see cref="Passes"/>). Each is a static class of its own with one entry point,
-    /// <c>IEnumerable&lt;string&gt; Build(Site)</c>, that yields a step name between its heavy steps; they run in this
-    /// order:
+    /// <c>IEnumerable&lt;string&gt; Build(Site)</c>, that yields a step name between its heavy steps (and wherever
+    /// <see cref="Site.StepDue"/> says the frame's streaming budget is spent); they run in this order:
     /// <list type="number">
-    /// <item><see cref="GroundPass"/>: the snow, frozen ponds and lakes, plowed parking lots, waterways as ice.</item>
-    /// <item><see cref="RoadPass"/>: carriageways and their kerbs, sidewalks, centre lines, railways.</item>
-    /// <item><see cref="BuildingPass"/>: enterable buildings (listed in <see cref="Site.Enterables"/>, their loot from
-    /// <see cref="MapGameplay.Loot"/>) and, past the edge, scenery ones; doors, windows, awnings, porches, mailboxes,
-    /// eaves, chimneys, roof snow.</item>
-    /// <item><see cref="InteriorPass"/>: the enterable buildings' insides.</item>
-    /// <item><see cref="CutawayPass"/>: each building's own shell meshes, for the isometric cutaway.</item>
-    /// <item><see cref="StreetscapePass"/>: utility poles, street lights, signposts, hydrants, lot fences; then the
-    /// roadside snow piles and the parked cars.</item>
-    /// <item><see cref="VegetationPass"/>: trees.</item>
-    /// <item><see cref="VehiclePass"/>: (its cars are built in the streetscape's turn, see there).</item>
-    /// <item><see cref="SnowPass"/>: drifts along the streets.</item>
-    /// <item><see cref="MapGameplay"/>: gas pumps and the named places' signs; then litter in the parks.</item>
+    /// <item><see cref="GroundPass"/>: snow, land use (yards, fields, woods floor, cemeteries, pitches, ploughed parking
+    /// with stalls), frozen lakes and rivers with their banks.</item>
+    /// <item><see cref="RoadPass"/>: the street network with real junctions (<see cref="Site.Junctions"/>), winter
+    /// carriageways, kerbs, sidewalks, driveways, faded markings, paths, bridges and railways.</item>
+    /// <item><see cref="BuildingPass"/>: every building's shell, walls and roof drawn through its
+    /// <see cref="BuildingShell"/>, from an archetype read off its kind, use, shape and surroundings; doors, windows,
+    /// storefronts, porches, chimneys, roof snow; the enterable ones listed in <see cref="Site.Enterables"/>.</item>
+    /// <item><see cref="InteriorPass"/>: floor plans, furniture, fixtures, lights and loot (room by room, from
+    /// <see cref="MapGameplay.Allot"/>) for the enterable buildings: at once on a fixed square, lazily near the survivors
+    /// on a streamed map (<see cref="InteriorStreamer"/>).</item>
+    /// <item><see cref="CutawayPass"/>: each building's own shell meshes, which <see cref="MapCutaway"/> lifts off around
+    /// the survivor in the isometric view.</item>
+    /// <item><see cref="StreetscapePass"/>: utility lines (<see cref="PowerPass"/>; the "Wires" meshes' layout is read
+    /// back by the vegetation), street lights (no light of their own in play: <see cref="StreetLamp"/>'s pool lends a few
+    /// to the nearest), signals, signs and street-name blades (<see cref="SignPass"/>), street furniture, landmarks such as
+    /// water towers, fences and walls (<see cref="BarrierPass"/>).</item>
+    /// <item><see cref="VegetationPass"/>: winter trees (mapped, woods, yards, fence rows, street trees).</item>
+    /// <item><see cref="VehiclePass"/>: 1993 cars in driveways, at kerbs, in lot stalls, wrecks on the highways.</item>
+    /// <item><see cref="SnowPass"/>: plough piles and drifts.</item>
+    /// <item><see cref="MapGameplay"/>: points of interest, landmarks and their signs.</item>
     /// </list>
-    /// A pass only finds the spots the passes before it left free in the occupancy grid, and the passes that draw from
-    /// the town's seeded stream (<see cref="RaidTown.Rng"/>) get what the ones before them left, so their order matters.
+    /// A pass only finds the spots the passes before it left free in the occupancy grid, so their order matters; their
+    /// randomness comes from <see cref="MapStyle"/>'s per-feature hashes, so every machine and every rebuild of a piece
+    /// gets the same map. A streamed piece is built in <see cref="Detail.Full"/> near the survivors and in
+    /// <see cref="Detail.Lite"/> further out (and upgraded as they come near; see <see cref="KentuckyStreamer"/>).
     /// A fixed map then lays out its exits and spawn (<see cref="MapGameplay"/>) and emits its batches; a streamed piece
     /// emits its own in <see cref="ChunkSteps"/>.
     /// </remarks>
