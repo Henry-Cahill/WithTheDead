@@ -18,7 +18,7 @@ namespace CloneZ
             public CutKind Kind;
         }
 
-        private static bool[] s_KerbOk = new bool[256], s_WalkOk = new bool[256], s_Town = new bool[256], s_Ramp = new bool[256], s_Keep2 = new bool[256];
+        private static bool[] s_KerbOk = new bool[256], s_WalkOk = new bool[256], s_Town = new bool[256], s_Ramp = new bool[256], s_Keep2 = new bool[256], s_Ground = new bool[256];
         private static float[] s_WalkIn = new float[256], s_WalkOut = new float[256], s_Edge = new float[256], s_Verge = new float[256];
         private static readonly List<Vector2> s_Ring = new List<Vector2>(32);
 
@@ -32,6 +32,7 @@ namespace CloneZ
             s_Town = new bool[size];
             s_Ramp = new bool[size];
             s_Keep2 = new bool[size];
+            s_Ground = new bool[size];
             s_WalkIn = new float[size];
             s_WalkOut = new float[size];
             s_Edge = new float[size];
@@ -56,7 +57,13 @@ namespace CloneZ
         /// <summary>A verge wider than this is drawn as the snowy ground between two banks, not a kerb-high strip.</summary>
         private const float WideVergeWidth = 1.6f, VergeBank = 0.45f;
 
-        private static bool WideVerge(int i) => s_Verge[i] - (s_Edge[i] + KerbWidth) > WideVergeWidth;
+        private static bool WideVerge(int i) => VergeWidth(i) > WideVergeWidth;
+
+        // From the kerb's back to the verge's far side at sample i.
+        private static float VergeWidth(int i) => s_Verge[i] - (s_Edge[i] + KerbWidth);
+
+        // Each bank of a verge drawn as ground: 0.45 m, or half the verge where it's narrower than both.
+        private static float VergeBankAt(int i) => Mathf.Clamp(VergeWidth(i) * 0.5f, 0.05f, VergeBank);
 
         private static void AddCut(Chain c, float s0, float s1, CutKind kind, int side = 0)
         {
@@ -342,23 +349,29 @@ namespace CloneZ
                 // The verge between the kerb and a set-back sidewalk (or, with no sidewalk, a strip of it): a narrow one
                 // is a strip of snow at the kerb's height; a wide one is the snowy ground itself, a bank of snow sloping
                 // down to it from the kerb's back and up again to the sidewalk (a flat sheet of kerb-high snow metres
-                // wide read as a slab).
+                // wide read as a slab). Where a wide verge narrows (a taper into a junction) it stays ground, its banks
+                // narrowing with it, so no wedge of kerb-high snow fills the taper.
                 bool verge = false, wide = false;
+                for (int i = 0; i < n; i++) s_Ground[i] = WideVerge(i);
+                for (int i = 1; i < n; i++)
+                    if (!s_Ground[i] && s_Ground[i - 1] && VergeWidth(i) > 0.3f && VergeWidth(i) <= VergeWidth(i - 1) + 0.01f) s_Ground[i] = true;
+                for (int i = n - 2; i >= 0; i--)
+                    if (!s_Ground[i] && s_Ground[i + 1] && VergeWidth(i) > 0.3f && VergeWidth(i) <= VergeWidth(i + 1) + 0.01f) s_Ground[i] = true;
                 for (int i = 0; i + 1 < n; i++)
                 {
                     bool ok = s_Keep[i] && s_Verge[i] > s_Edge[i] + KerbWidth + 0.05f && s_Verge[i + 1] > s_Edge[i + 1] + KerbWidth + 0.05f;
                     s_Keep[i] = ok;
                     verge |= ok;
-                    wide |= ok && (WideVerge(i) || WideVerge(i + 1));
+                    wide |= ok && (s_Ground[i] || s_Ground[i + 1]);
                 }
                 if (verge)
                 {
                     for (int i = 0; i < n; i++)
                     {
                         float back = s_Edge[i] + KerbWidth;
-                        bool w = WideVerge(i) || (i > 0 && WideVerge(i - 1)) || (i + 1 < n && WideVerge(i + 1));
+                        bool w = s_Ground[i] || (i > 0 && s_Ground[i - 1]) || (i + 1 < n && s_Ground[i + 1]);
                         s_A[i] = side * back;
-                        s_B[i] = side * (w ? back + Mathf.Clamp(s_Verge[i] - back, 0.05f, VergeBank) : Mathf.Max(s_Verge[i], back));
+                        s_B[i] = side * (w ? back + VergeBankAt(i) : Mathf.Max(s_Verge[i], back));
                         s_YA[i] = KerbTop - 0.004f;
                         s_YB[i] = s_WalkOk[i] && !w ? KerbTop - 0.004f : 0.004f;
                     }
@@ -368,11 +381,11 @@ namespace CloneZ
                 {
                     // The far bank, up to a set-back sidewalk's inner edge.
                     for (int i = 0; i + 1 < n; i++)
-                        s_Keep[i] = s_Keep[i] && s_WalkOk[i] && s_WalkOk[i + 1] && (WideVerge(i) || WideVerge(i + 1))
+                        s_Keep[i] = s_Keep[i] && s_WalkOk[i] && s_WalkOk[i + 1] && (s_Ground[i] || s_Ground[i + 1])
                             && !InWalkCut(cuts, (s[i].S + s[i + 1].S) * 0.5f);
                     for (int i = 0; i < n; i++)
                     {
-                        s_A[i] = side * (s_Verge[i] - VergeBank);
+                        s_A[i] = side * (s_Verge[i] - VergeBankAt(i));
                         s_B[i] = side * s_Verge[i];
                         s_YA[i] = 0.004f;
                         s_YB[i] = KerbTop - 0.004f;
