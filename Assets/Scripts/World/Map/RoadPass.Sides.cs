@@ -18,7 +18,7 @@ namespace CloneZ
             public CutKind Kind;
         }
 
-        private static bool[] s_KerbOk = new bool[256], s_WalkOk = new bool[256], s_Town = new bool[256];
+        private static bool[] s_KerbOk = new bool[256], s_WalkOk = new bool[256], s_Town = new bool[256], s_Ramp = new bool[256], s_Keep2 = new bool[256];
         private static float[] s_WalkIn = new float[256], s_WalkOut = new float[256], s_Edge = new float[256], s_Verge = new float[256];
         private static readonly List<Vector2> s_Ring = new List<Vector2>(32);
 
@@ -30,11 +30,28 @@ namespace CloneZ
             s_KerbOk = new bool[size];
             s_WalkOk = new bool[size];
             s_Town = new bool[size];
+            s_Ramp = new bool[size];
+            s_Keep2 = new bool[size];
             s_WalkIn = new float[size];
             s_WalkOut = new float[size];
             s_Edge = new float[size];
             s_Verge = new float[size];
         }
+
+        // The walk's segments of one pass (0: the plain ones, 1: the ramps') into s_Keep2; false when there are none.
+        private static bool RampPass(int n, int pass)
+        {
+            bool any = false;
+            for (int i = 0; i + 1 < n; i++)
+            {
+                s_Keep2[i] = s_Keep[i] && s_Ramp[i] == (pass == 1);
+                any |= s_Keep2[i];
+            }
+            return any;
+        }
+
+        // Where the walk starts at sample i in a pass: 1.3 m out on a ramp's segments.
+        private static float WalkFrom(int i, int pass) => pass == 1 ? Mathf.Max(s_WalkIn[i], s_Edge[i] + 1.3f) : s_WalkIn[i];
 
         private static void AddCut(Chain c, float s0, float s1, CutKind kind, int side = 0)
         {
@@ -233,9 +250,11 @@ namespace CloneZ
             {
                 int cut = CutAt(cuts, (s[i].S + s[i + 1].S) * 0.5f);
                 s_Keep[i] = s_KerbOk[i] && s_KerbOk[i + 1] && cut < 0;
-                if (net.Full && cut == (int)CutKind.Ramp && s_KerbOk[i] && s_KerbOk[i + 1] && s_WalkOk[i] && s_WalkOk[i + 1])
-                    Ramp(net, c, s[i], s[i + 1], side, s_Edge[i], s_Edge[i + 1], roadY);
+                s_Ramp[i] = net.Full && cut == (int)CutKind.Ramp && s_KerbOk[i] && s_KerbOk[i + 1] && s_WalkOk[i] && s_WalkOk[i + 1];
             }
+            for (int i = 0; i + 1 < n; i++)
+                if (s_Ramp[i])
+                    Ramp(net, c, s[i], s[i + 1], side, s_Edge[i], s_Edge[i + 1], roadY, i == 0 || !s_Ramp[i - 1], i + 2 >= n || !s_Ramp[i + 1]);
             if (anyKerb && net.Full)
             {
                 for (int i = 0; i < n; i++)
@@ -278,34 +297,39 @@ namespace CloneZ
             {
                 int cut = CutAt(cuts, (s[i].S + s[i + 1].S) * 0.5f);
                 s_Keep[i] = s_WalkOk[i] && s_WalkOk[i + 1] && cut != (int)CutKind.Mouth;
-                if (cut == (int)CutKind.Ramp && net.Full)
-                {
-                    s_WalkIn[i] = Mathf.Max(s_WalkIn[i], s_Edge[i] + 1.3f);
-                    s_WalkIn[i + 1] = Mathf.Max(s_WalkIn[i + 1], s_Edge[i + 1] + 1.3f);
-                }
             }
             // Lite draws no kerb: a sidewalk at the kerb starts at the carriageway's edge.
             if (!net.Full)
                 for (int i = 0; i < n; i++)
                     if (s_WalkIn[i] <= s_Edge[i] + KerbWidth + 0.05f) s_WalkIn[i] = s_Edge[i];
-            for (int i = 0; i < n; i++)
+            // The walk, then (Full) its snow: each twice, the ramps' segments on their own from 1.3 m out (the ramp
+            // takes the rest), so the walk's inner edge steps round a ramp instead of slanting into its neighbours.
+            for (int pass = 0; pass < 2; pass++)
             {
-                s_A[i] = side * s_WalkIn[i];
-                s_B[i] = side * s_WalkOut[i];
+                if (!RampPass(n, pass)) continue;
+                for (int i = 0; i < n; i++)
+                {
+                    s_A[i] = side * WalkFrom(i, pass);
+                    s_B[i] = side * s_WalkOut[i];
+                }
+                Band(net, s, s_A, s_B, KerbTop, KerbTop, look.Sidewalk, c.Lift, s_Keep2);
             }
-            Band(net, s, s_A, s_B, KerbTop, KerbTop, look.Sidewalk, c.Lift, s_Keep);
             if (!net.Full) return;
             int seed = Seed(c.W, side > 0 ? 0x51D : 0x51E);
             // Downtown, shovelled in front of the shops: snow left against the walls. Elsewhere snow over the sidewalk
             // with a trodden line down it.
             for (int i = 0; i + 1 < n; i++) s_YA[i] = s_Keep[i] ? 1f : 0f;
-            for (int i = 0; i < n; i++)
+            for (int pass = 0; pass < 2; pass++)
             {
-                float wIn = s_WalkIn[i], wOut = s_WalkOut[i];
-                s_A[i] = side * (s_Town[i] ? Mathf.Max(wIn, wOut - 0.2f - 0.5f * Noise(s[i].P, 3.5f, seed)) : wIn);
-                s_B[i] = side * wOut;
+                if (!RampPass(n, pass)) continue;
+                for (int i = 0; i < n; i++)
+                {
+                    float wIn = WalkFrom(i, pass), wOut = s_WalkOut[i];
+                    s_A[i] = side * (s_Town[i] ? Mathf.Max(wIn, wOut - 0.2f - 0.5f * Noise(s[i].P, 3.5f, seed)) : wIn);
+                    s_B[i] = side * wOut;
+                }
+                Band(net, s, s_A, s_B, KerbTop + 0.003f, KerbTop + 0.003f, look.Snow, c.Lift, s_Keep2);
             }
-            Band(net, s, s_A, s_B, KerbTop + 0.003f, KerbTop + 0.003f, look.Snow, c.Lift, s_Keep);
             for (int i = 0; i < n; i++)
             {
                 float mid = (s_WalkIn[i] + s_WalkOut[i]) * 0.5f + 0.15f * (Noise(s[i].P, 4.5f, seed + 1) - 0.5f);
@@ -314,7 +338,7 @@ namespace CloneZ
                 s_B[i] = side * (mid + half);
             }
             for (int i = 0; i + 1 < n; i++)
-                s_Keep[i] = s_YA[i] > 0.5f && !s_Town[i] && !s_Town[i + 1] && Noise(s[i].P, 7f, seed + 3) > 0.3f;
+                s_Keep[i] = s_YA[i] > 0.5f && !s_Ramp[i] && !s_Town[i] && !s_Town[i + 1] && Noise(s[i].P, 7f, seed + 3) > 0.3f;
             Band(net, s, s_A, s_B, KerbTop + 0.005f, KerbTop + 0.005f, look.Trodden, c.Lift, s_Keep);
             // A low bank of snow past the sidewalk's outer edge, where nothing cut it short.
             for (int i = 0; i < n; i++)
@@ -329,14 +353,19 @@ namespace CloneZ
             Band(net, s, s_A, s_B, KerbTop + 0.003f, 0.004f, look.Snow, c.Lift, s_Keep);
         }
 
-        // A kerb ramp: the walk's first 1.3 m sloping down to the gutter between two samples.
-        private static void Ramp(Net net, Chain c, Sample a, Sample b, int side, float ea, float eb, float roadY)
+        // A kerb ramp: the walk's first 1.3 m sloping down to the gutter between two samples; at the ramp's ends (first,
+        // last), the kerb-high triangle that closes its side.
+        private static void Ramp(Net net, Chain c, Sample a, Sample b, int side, float ea, float eb, float roadY, bool first, bool last)
         {
             Vector2 a0 = a.P + a.N * (side * ea), b0 = b.P + b.N * (side * eb);
             Vector2 a1 = a.P + a.N * (side * (ea + 1.3f)), b1 = b.P + b.N * (side * (eb + 1.3f));
             float la = c.Lift != null ? c.Lift.At(a.S) : 0f, lb = c.Lift != null ? c.Lift.At(b.S) : 0f;
             Vector3 p0 = To3(a0, roadY + 0.006f + la), p1 = To3(b0, roadY + 0.006f + lb), q1 = To3(b1, KerbTop + lb), q0 = To3(a1, KerbTop + la);
-            Face(net.Out.Flat((p0 + q1) * 0.5f), p0, p1, q1, q0, Vector3.up, net.Look.Sidewalk);
+            RaidMesh m = net.Out.Flat((p0 + q1) * 0.5f);
+            Face(m, p0, p1, q1, q0, Vector3.up, net.Look.Sidewalk);
+            Vector3 along = To3(b.P - a.P, 0f);
+            if (first) Tri(m, p0, To3(a0, KerbTop + la), q0, along, net.Look.KerbFace);
+            if (last) Tri(m, p1, To3(b0, KerbTop + lb), q1, -along, net.Look.KerbFace);
         }
 
         // The corners of a junction: the kerb round each corner whose two sides are kerbed, the sidewalk round it (a fan
