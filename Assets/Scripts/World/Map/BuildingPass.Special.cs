@@ -373,6 +373,7 @@ namespace CloneZ
             Footprint f = j.F;
             Shape sh = j.Sh;
             j.Shell = j.Site.Shell(f, j.Scenery && !j.Edge);
+            Mark("deck shell");
             int decks = Mathf.Max(1, p.Storeys - 1) + 1;   // the floors over the ground one, the top deck last
             float h = p.Storey, spandrel = 1.05f, slab = 0.3f;
             j.Shell.WallTop = 0.4f;
@@ -395,6 +396,7 @@ namespace CloneZ
             }
             float roof = (decks - 1) * h;
             j.Top = roof + spandrel;
+            Mark("decks");
             // The columns: at the corners and every seven metres or so round the outline, up through every floor.
             Surf column = concrete;
             for (int i = 0; i < j.N; i++)
@@ -425,7 +427,9 @@ namespace CloneZ
                 }
                 else CurbRun(j, i, 0.3f, len - 0.3f);
             }
+            Mark("columns and curbs");
             StairTower(j, decks, h, roof, spandrel, snowy);
+            Mark("stair tower");
             if (!j.Lite)
             {
                 // Lamp posts on the top deck.
@@ -444,7 +448,9 @@ namespace CloneZ
                 Vector3 middle = To3(f.Middle, 0f);
                 Deck(j.Site.Town.Out.Flat(middle), j, 0.02f, AsphaltSurf);
             }
+            Mark("lamps and ground slab");
             if (!j.Scenery) Rows(j, true);
+            Mark("rows");
         }
 
         private static void CurbRun(Job j, int i, float s0, float s1)

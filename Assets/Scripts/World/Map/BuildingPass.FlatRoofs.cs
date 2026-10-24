@@ -31,7 +31,14 @@ namespace CloneZ
             if (j.Lite)
             {
                 if (p.Penthouse) Penthouse(j, deck, surface, snowy);
-                else if (p.RoofUnits && f.Size > 400f) LiteUnit(j, deck);
+                else if ((p.RoofUnits && f.Size > 400f) || f.Size > 900f) LiteUnits(j, deck);
+                if (f.Size > 600f && MapStyle.Unit(j.Id, SaltMelt + 2) < (p.Heated ? 0.8f : 0.35f))
+                {
+                    // Where the snow has gone, which shows from afar.
+                    System.Random lrng = MapStyle.Rng(j.Id, SaltMelt + 3);
+                    float r = Mathf.Clamp(Mathf.Sqrt(f.Size) * 0.06f, 1.2f, 3.2f);
+                    Patches(j, m, surface + 0.006f, lrng, snowy ? RoofSurf(RoofCover.Membrane, 1) : RoofSnow, 1 + Mathf.Min(2, (int)(f.Size / 1500f)), r, r * 1.5f);
+                }
                 return;
             }
             float coping = deck + p.Parapet;
@@ -318,12 +325,22 @@ namespace CloneZ
             return true;
         }
 
-        // One unit on a far roof, for its silhouette.
-        private static void LiteUnit(Job j, float deck)
+        // What stands on a far roof, for its silhouette: a unit, or a few spread along a big roof, as big as the roof.
+        private static void LiteUnits(Job j, float deck)
         {
             Shape sh = j.Sh;
-            if (!Fits(j, Vector2.zero, 1.2f, 0.8f, 1f)) return;
-            j.Upper.Box(To3(sh.O, deck + 0.6f), new Vector3(2.4f, 1.2f, 1.6f), sh.Yaw, DecorPalette.Matte(new Color(0.66f, 0.67f, 0.66f)));
+            float area = j.F.Size;
+            int count = Mathf.Clamp(Mathf.RoundToInt(area / 900f), 1, 4);
+            float scale = Mathf.Clamp(Mathf.Sqrt(area) / 34f, 1f, 2.2f);
+            float hl = 1.2f * scale, hw = 0.8f * scale, h = 1.2f * Mathf.Sqrt(scale);
+            Surf unit = DecorPalette.Matte(new Color(0.62f, 0.63f, 0.62f));
+            for (int k = 0; k < count; k++)
+            {
+                float t = count == 1 ? 0f : (k / (float)(count - 1) - 0.5f) * 1.1f;
+                var c = new Vector2(t * sh.HalfL, (count > 1 && (k & 1) == 1 ? -0.22f : 0.22f) * sh.HalfW);
+                if (!Fits(j, c, hl, hw, 1f)) continue;
+                j.Upper.Box(To3(sh.World(c), deck + h * 0.5f), new Vector3(hl * 2f, h, hw * 2f), sh.Yaw, unit);
+            }
         }
 
         private enum Kit { Unit, Condenser, Fan, Skylight, Hatch, Vent }
