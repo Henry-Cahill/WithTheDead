@@ -25,30 +25,40 @@ namespace CloneZ
         }
 
         private static readonly Dictionary<string, Painting> s_Paintings = new Dictionary<string, Painting>();
+        private static readonly Dictionary<string, Surf> s_Surfs = new Dictionary<string, Surf>();
         private static Task<Color[]> s_Snow;
+        private static bool s_AllMade;
 
         #region Surfaces
-        private static Surf IceSurf => DecorMaterials.Planar(Tex("ice"), 21f, 0.62f);
-        private static Surf WaterSurf => DecorMaterials.Planar(Tex("water"), 9f, 0.85f);
-        private static Surf ForestFloorSurf => DecorMaterials.Planar(Tex("forest"), 9f, 0.12f);
-        private static Surf MeadowSurf => DecorMaterials.Planar(Tex("meadow"), 9f, 0.22f);
-        private static Surf ScrubSurf => DecorMaterials.Planar(Tex("scrub"), 9f, 0.2f);
-        private static Surf ReedsSurf => DecorMaterials.Planar(Tex("reeds"), 9f, 0.25f);
-        private static Surf StubbleSurf => DecorMaterials.Planar(Tex("stubble"), 9f, 0.24f);
-        private static Surf FurrowSurf => DecorMaterials.Planar(Tex("furrow"), 9f, 0.24f);
-        private static Surf TroddenSurf => DecorMaterials.Planar(Tex("trodden"), 9f, 0.3f);
-        private static Surf FarmyardSurf => DecorMaterials.Planar(Tex("farmyard"), 9f, 0.2f);
-        private static Surf LotSurf => DecorMaterials.Planar(Tex("lot"), 12f, 0.3f);
-        private static Surf BrickPaversSurf => DecorMaterials.Planar(Tex("pavers"), 6f, 0.2f);
-        private static Surf SlabsSurf => DecorMaterials.Planar(Tex("slabs"), 6f, 0.2f);
-        private static Surf ForecourtSurf => DecorMaterials.Planar(Tex("forecourt"), 6f, 0.22f);
-        private static Surf MudSurf => DecorMaterials.Planar(Tex("mud"), 9f, 0.25f);
-        private static Surf SandSurf => DecorMaterials.Planar(Tex("sand"), 9f, 0.2f);
-        private static Surf YardSurf => DecorMaterials.Planar(Tex("yard"), 9f, 0.15f);
-        private static Surf RockSurf => DecorMaterials.Planar(Tex("rock"), 9f, 0.15f);
-        private static Surf BankSurf => DecorMaterials.Planar(Tex("bank"), 9f, 0.15f);
+        private static Surf IceSurf => Surface("ice", 21f, 0.62f);
+        private static Surf WaterSurf => Surface("water", 9f, 0.85f);
+        private static Surf FloeSurf => Surface("floe", 9f, 0.45f);
+        private static Surf ForestFloorSurf => Surface("forest", 9f, 0.12f);
+        private static Surf MeadowSurf => Surface("meadow", 9f, 0.22f);
+        private static Surf ScrubSurf => Surface("scrub", 9f, 0.2f);
+        private static Surf ReedsSurf => Surface("reeds", 9f, 0.25f);
+        private static Surf StubbleSurf => Surface("stubble", 9f, 0.24f);
+        private static Surf FurrowSurf => Surface("furrow", 9f, 0.24f);
+        private static Surf TroddenSurf => Surface("trodden", 9f, 0.3f);
+        private static Surf FarmyardSurf => Surface("farmyard", 9f, 0.2f);
+        private static Surf LotSurf => Surface("lot", 12f, 0.3f);
+        private static Surf BrickPaversSurf => Surface("pavers", 6f, 0.2f);
+        private static Surf SlabsSurf => Surface("slabs", 6f, 0.2f);
+        private static Surf ForecourtSurf => Surface("forecourt", 6f, 0.22f);
+        private static Surf MudSurf => Surface("mud", 9f, 0.25f);
+        private static Surf SandSurf => Surface("sand", 9f, 0.2f);
+        private static Surf YardSurf => Surface("yard", 9f, 0.15f);
+        private static Surf RockSurf => Surface("rock", 9f, 0.15f);
+        private static Surf BankSurf => Surface("bank", 9f, 0.15f);
 
-        private static Texture2D SnowTex() => Tex("snow");
+        // A ground surface, made once (the material is the decor's cached one for the texture).
+        private static Surf Surface(string key, float metres, float smoothness)
+        {
+            if (s_Surfs.TryGetValue(key, out Surf s) && s.Mat != null) return s;
+            s = DecorMaterials.Planar(Tex(key), metres, smoothness);
+            s_Surfs[key] = s;
+            return s;
+        }
 
         /// <summary>Starts painting every ground texture on worker threads (once a session).</summary>
         private static void Warm()
@@ -66,6 +76,7 @@ namespace CloneZ
             OnSnow("forest", PaintForestFloor);
             Paint("ice", 512, Task.Run(() => To32(PaintIce(512))));
             Paint("water", 128, Task.Run(() => To32(PaintWater(128))));
+            Paint("floe", 256, Task.Run(() => To32(PaintFloe(256))));
             Paint("lot", 512, Task.Run(() => To32(PaintLot(512))));
             Paint("pavers", 512, Task.Run(() => To32(PaintPavers(512))));
             Paint("slabs", 256, Task.Run(() => To32(PaintSlabs(256))));
@@ -75,6 +86,15 @@ namespace CloneZ
             Paint("yard", 256, Task.Run(() => To32(PaintYard(256))));
             Paint("rock", 256, Task.Run(() => To32(PaintRock(256))));
             Paint("bank", 256, Task.Run(() => To32(PaintBank(256))));
+        }
+
+        // Makes every texture the first time a site is built (the start square, while the game loads), so no piece
+        // streamed in later stops to make one.
+        private static void MakeAll()
+        {
+            if (s_AllMade) return;
+            s_AllMade = true;
+            foreach (KeyValuePair<string, Painting> kv in s_Paintings) Tex(kv.Key);
         }
 
         private static void Paint(string key, int size, Task<Color32[]> job) => s_Paintings[key] = new Painting { Job = job, Size = size };
@@ -252,12 +272,12 @@ namespace CloneZ
 
         #region Snow and what lies in it
         /// <summary>Wind-packed snow: faint undulations, finer ripples of crust running across the north-west wind, a
-        /// fine grain and the odd glint. Bright and a little blue, so the warm daylight leaves it white.</summary>
+        /// fine grain and the odd glint. Bright and cool, so the map's warm daylight leaves it white.</summary>
         private static Color[] PaintSnow(int s)
         {
             var px = new Color[s * s];
-            var hollow = new Color(0.79f, 0.87f, 0.97f);
-            var crest = new Color(0.88f, 0.945f, 1.00f);
+            var hollow = new Color(0.74f, 0.84f, 0.97f);
+            var crest = new Color(0.85f, 0.93f, 1.00f);
             var soft = new Fractal(4, 3, 101);
             var ripple = new Lattice(16, 3, 102);
             var ripple2 = new Lattice(33, 5, 103);
@@ -270,7 +290,7 @@ namespace CloneZ
                     Color c = Color.Lerp(hollow, crest, Smooth(0.3f, 0.7f, t));
                     c = Scale(c, 1f + (Rand(x, y, 105) - 0.5f) * 0.03f);
                     float glint = Rand(x, y, 106);
-                    if (glint > 0.998f) c = Color.Lerp(c, Color.white, 0.7f);
+                    if (glint > 0.9994f) c = Color.Lerp(c, Color.white, 0.6f);
                     px[y * s + x] = c;
                 }
             return px;
@@ -410,38 +430,38 @@ namespace CloneZ
             return px;
         }
 
-        /// <summary>The floor of a winter wood: thin snow in the trees' shade, with drifts of oak and maple leaves,
-        /// pine needles and twigs showing through.</summary>
+        /// <summary>The floor of a winter wood: thin snow in the trees' shade, with oak and maple leaves, pine needles
+        /// and twigs showing through in small drifts all over (the broad shade is the snow's tone, which doesn't repeat).</summary>
         private static Color[] PaintForestFloor(Color[] px, int s)
         {
             for (int i = 0; i < px.Length; i++)
             {
                 Color c = px[i];
-                px[i] = new Color(c.r * 0.8f, c.g * 0.82f, c.b * 0.86f);
+                px[i] = new Color(c.r * 0.84f, c.g * 0.86f, c.b * 0.9f);
             }
             var rng = new System.Random(301);
             var leaves = new[]
             {
-                new Color(0.47f, 0.32f, 0.20f), new Color(0.38f, 0.29f, 0.21f), new Color(0.42f, 0.37f, 0.31f),
-                new Color(0.52f, 0.38f, 0.24f), new Color(0.31f, 0.25f, 0.19f),
+                new Color(0.45f, 0.33f, 0.22f), new Color(0.38f, 0.30f, 0.22f), new Color(0.42f, 0.38f, 0.32f),
+                new Color(0.50f, 0.39f, 0.26f), new Color(0.32f, 0.27f, 0.21f),
             };
-            var litter = new Fractal(4, 3, 302);
-            for (int placed = 0, tries = 0; placed < s * s / 20 && tries < s * s / 5; tries++)
+            var litter = new Fractal(12, 2, 302);
+            for (int placed = 0, tries = 0; placed < s * s / 26 && tries < s * s / 6; tries++)
             {
                 float x = R(rng, 0, s), y = R(rng, 0, s);
-                if (rng.NextDouble() > Smooth(0.4f, 0.6f, litter.At(x / s, y / s))) continue;
+                if (rng.NextDouble() > Smooth(0.38f, 0.62f, litter.At(x / s, y / s))) continue;
                 placed++;
-                Ellipse(px, s, x, y, R(rng, 1.2f, 2.8f), R(rng, 0.8f, 1.8f), R(rng, 0f, 3.2f), leaves[rng.Next(leaves.Length)],
-                    R(rng, 0.55f, 1f), 0.5f);
+                Ellipse(px, s, x, y, R(rng, 1.2f, 2.6f), R(rng, 0.8f, 1.6f), R(rng, 0f, 3.2f), leaves[rng.Next(leaves.Length)],
+                    R(rng, 0.5f, 0.95f), 0.5f);
             }
-            for (int i = 0; i < s * s / 260; i++)
-                Stroke(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 0f, 6.3f), R(rng, 2f, 5f), 0.9f, new Color(0.29f, 0.24f, 0.18f), 0.7f);
-            for (int i = 0; i < s * s / 1400; i++)
+            for (int i = 0; i < s * s / 300; i++)
+                Stroke(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 0f, 6.3f), R(rng, 2f, 5f), 0.9f, new Color(0.29f, 0.24f, 0.18f), 0.65f);
+            for (int i = 0; i < s * s / 1800; i++)
             {
-                float x = R(rng, 0, s), y = R(rng, 0, s), a = R(rng, 0f, 6.3f), len = R(rng, 8f, 26f);
-                Stroke(px, s, x, y, a, len, R(rng, 1.2f, 2.2f), new Color(0.27f, 0.23f, 0.20f), 0.9f);
+                float x = R(rng, 0, s), y = R(rng, 0, s), a = R(rng, 0f, 6.3f), len = R(rng, 8f, 22f);
+                Stroke(px, s, x, y, a, len, R(rng, 1.2f, 2f), new Color(0.27f, 0.23f, 0.20f), 0.85f);
                 Stroke(px, s, x + Mathf.Cos(a) * len * 0.5f, y + Mathf.Sin(a) * len * 0.5f, a + R(rng, -0.9f, 0.9f), len * 0.4f, 1f,
-                    new Color(0.30f, 0.25f, 0.21f), 0.8f);
+                    new Color(0.30f, 0.25f, 0.21f), 0.75f);
             }
             return px;
         }
@@ -518,6 +538,27 @@ namespace CloneZ
             return px;
         }
 
+        /// <summary>Drift ice: snow-crusted plates of river ice, greyer where the crust is thin and wet, with ridges
+        /// where plates rafted over each other.</summary>
+        private static Color[] PaintFloe(int s)
+        {
+            var px = new Color[s * s];
+            var snow = new Color(0.82f, 0.88f, 0.97f);
+            var wet = new Color(0.55f, 0.64f, 0.74f);
+            var crust = new Fractal(4, 4, 341);
+            var ridges = new Lattice(5, 19, 342);
+            for (int y = 0; y < s; y++)
+                for (int x = 0; x < s; x++)
+                {
+                    float u = (x + 0.5f) / s, v = (y + 0.5f) / s;
+                    Color c = Color.Lerp(wet, snow, Smooth(0.32f, 0.62f, crust.At(u, v)));
+                    float r = ridges.At(u + v, u - v);
+                    if (r > 0.82f) c = Color.Lerp(c, Color.white, (r - 0.82f) * 3f);
+                    px[y * s + x] = Scale(c, 1f + (Rand(x, y, 343) - 0.5f) * 0.04f);
+                }
+            return px;
+        }
+
         /// <summary>A bank in winter: frozen mud, flattened dead grass and reeds, stones, snow lying in patches.</summary>
         private static Color[] PaintBank(int s)
         {
@@ -546,57 +587,57 @@ namespace CloneZ
         #endregion
 
         #region Hard ground
-        /// <summary>A plowed parking lot: worn mid-grey asphalt with its aggregate showing, a faint haze of road salt, a
-        /// few oil spots and sealed cracks, slush lying thin in the low spots (repeats every 12 m; the packed snow in
-        /// broad patches is the snow's tone, which doesn't repeat).</summary>
+        /// <summary>A plowed parking lot: worn grey asphalt with its aggregate showing, a faint haze of road salt, the odd
+        /// oil spot and sealed crack, slush lying thin in the low spots, all of it even enough not to show its 12 m repeat
+        /// (the snow left in the stall rows is the snow's tone).</summary>
         private static Color[] PaintLot(int s)
         {
             var px = new Color[s * s];
-            var salt = new Color(0.50f, 0.50f, 0.51f);
-            var slush = new Color(0.52f, 0.56f, 0.62f);
+            var salt = new Color(0.47f, 0.47f, 0.49f);
+            var slush = new Color(0.50f, 0.54f, 0.60f);
             var wear = new Fractal(6, 4, 401);
-            var haze = new Fractal(5, 2, 404);
-            var low = new Fractal(8, 3, 405);
+            var haze = new Fractal(3, 3, 404);
+            var low = new Fractal(10, 3, 405);
             for (int y = 0; y < s; y++)
                 for (int x = 0; x < s; x++)
                 {
                     float u = (x + 0.5f) / s, v = (y + 0.5f) / s;
-                    float g = 0.255f + 0.05f * wear.At(u, v) + (Rand(x, y, 402) - 0.5f) * 0.045f;
-                    if (Rand(x, y, 403) > 0.97f) g += 0.06f;
-                    var c = new Color(g, g, g * 1.05f);
-                    c = Color.Lerp(c, salt, Smooth(0.5f, 0.75f, haze.At(u, v)) * 0.35f);
-                    c = Color.Lerp(c, slush, Smooth(0.6f, 0.72f, low.At(u, v)) * 0.5f);
+                    float g = 0.25f + 0.035f * wear.At(u, v) + (Rand(x, y, 402) - 0.5f) * 0.04f;
+                    if (Rand(x, y, 403) > 0.975f) g += 0.05f;
+                    var c = new Color(g, g, g * 1.06f);
+                    c = Color.Lerp(c, salt, Smooth(0.45f, 0.8f, haze.At(u, v)) * 0.22f);
+                    c = Color.Lerp(c, slush, Smooth(0.62f, 0.78f, low.At(u, v)) * 0.3f);
                     px[y * s + x] = c;
                 }
             var rng = new System.Random(406);
-            for (int i = 0; i < 6; i++)
-                Ellipse(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 6f, 16f), R(rng, 5f, 11f), R(rng, 0f, 3.2f),
-                    new Color(0.13f, 0.13f, 0.14f), R(rng, 0.25f, 0.45f), 0.85f);
-            for (int k = 0; k < 4; k++)
+            for (int i = 0; i < 4; i++)
+                Ellipse(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 5f, 12f), R(rng, 4f, 9f), R(rng, 0f, 3.2f),
+                    new Color(0.15f, 0.15f, 0.16f), R(rng, 0.15f, 0.28f), 0.85f);
+            for (int k = 0; k < 3; k++)
             {
                 float x = R(rng, 0, s), y = R(rng, 0, s), a = R(rng, 0f, 6.3f);
-                for (int i = 0; i < 60; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     a += R(rng, -0.3f, 0.3f);
                     x += Mathf.Cos(a) * 2f;
                     y += Mathf.Sin(a) * 2f;
-                    Dab(px, s, x, y, 1.0f, new Color(0.11f, 0.11f, 0.12f), 0.75f);
+                    Dab(px, s, x, y, 0.7f, new Color(0.13f, 0.13f, 0.14f), 0.45f);
                 }
             }
             return px;
         }
 
-        /// <summary>Brick pavers in a running bond, weathered dull, snow packed into the joints and lying trodden over
-        /// most of them (6 m).</summary>
+        /// <summary>Brick pavers in a running bond, weathered dull, snow packed into the joints and a thin trodden layer
+        /// over them all (6 m; the broad patches of trodden snow are the snow's tone, which doesn't repeat).</summary>
         private static Color[] PaintPavers(int s)
         {
             var px = new Color[s * s];
             const int across = 30, rows = 60;   // 20 by 10 cm bricks
             float bw = s / (float)across, bh = s / (float)rows;
-            var joint = new Color(0.78f, 0.84f, 0.94f);
-            var trodden = new Color(0.70f, 0.76f, 0.86f);
+            var joint = new Color(0.76f, 0.83f, 0.94f);
+            var trodden = new Color(0.68f, 0.75f, 0.86f);
             var grain = new Lattice(48, 48, 413);
-            var cover = new Fractal(3, 4, 414);
+            var fine = new Fractal(12, 2, 414);
             for (int y = 0; y < s; y++)
             {
                 int row = Mathf.FloorToInt((y + 0.5f) / bh);
@@ -607,37 +648,37 @@ namespace CloneZ
                     int col = Mathf.FloorToInt(fx / bw);
                     float inX = fx - col * bw, inY = y + 0.5f - row * bh;
                     int wc = Wrap(col, across), wr = Wrap(row, rows);
-                    float k = 0.85f + 0.25f * Rand(wc, wr, 411);
-                    Color brick = Rand(wc, wr, 412) < 0.2f ? new Color(0.36f, 0.26f, 0.23f) : new Color(0.46f, 0.31f, 0.26f);
+                    float k = 0.88f + 0.2f * Rand(wc, wr, 411);
+                    Color brick = Rand(wc, wr, 412) < 0.2f ? new Color(0.34f, 0.26f, 0.23f) : new Color(0.43f, 0.31f, 0.27f);
                     Color c = Scale(brick, k);
                     float u = (x + 0.5f) / s, v = (y + 0.5f) / s;
-                    c = Scale(c, 0.92f + 0.12f * grain.At(u, v));
+                    c = Scale(c, 0.94f + 0.1f * grain.At(u, v));
                     if (inX < 1.1f || inY < 1.1f) c = joint;
-                    c = Color.Lerp(c, trodden, 0.2f + Smooth(0.42f, 0.56f, cover.At(u, v)) * 0.72f);
+                    c = Color.Lerp(c, trodden, 0.3f + 0.22f * fine.At(u, v));
                     px[y * s + x] = c;
                 }
             }
             return px;
         }
 
-        /// <summary>Square concrete slabs (1.5 m), joints packed with snow, trodden snow lying over half of them (6 m).</summary>
+        /// <summary>Square concrete slabs (1.5 m), joints packed with snow, a thin trodden layer over them (6 m).</summary>
         private static Color[] PaintSlabs(int s)
         {
             var px = new Color[s * s];
             float slab = s / 4f;
-            var trodden = new Color(0.72f, 0.78f, 0.88f);
+            var trodden = new Color(0.70f, 0.77f, 0.88f);
             var grain = new Fractal(6, 3, 421);
-            var cover = new Fractal(3, 4, 422);
+            var fine = new Fractal(12, 2, 422);
             for (int y = 0; y < s; y++)
                 for (int x = 0; x < s; x++)
                 {
                     float u = (x + 0.5f) / s, v = (y + 0.5f) / s;
                     int sx = Mathf.FloorToInt((x + 0.5f) / slab), sy = Mathf.FloorToInt((y + 0.5f) / slab);
-                    float g = 0.54f + 0.06f * Rand(sx, sy, 423) + 0.07f * grain.At(u, v) + (Rand(x, y, 424) - 0.5f) * 0.03f;
+                    float g = 0.54f + 0.05f * Rand(sx, sy, 423) + 0.06f * grain.At(u, v) + (Rand(x, y, 424) - 0.5f) * 0.03f;
                     var c = new Color(g, g * 0.985f, g * 0.95f);
                     float jx = Mathf.Repeat(x + 0.5f, slab), jy = Mathf.Repeat(y + 0.5f, slab);
-                    if (jx < 1.2f || jy < 1.2f) c = new Color(0.78f, 0.84f, 0.93f);
-                    c = Color.Lerp(c, trodden, 0.15f + Smooth(0.45f, 0.58f, cover.At(u, v)) * 0.7f);
+                    if (jx < 1.2f || jy < 1.2f) c = new Color(0.76f, 0.83f, 0.93f);
+                    c = Color.Lerp(c, trodden, 0.22f + 0.2f * fine.At(u, v));
                     px[y * s + x] = c;
                 }
             return px;
@@ -743,26 +784,29 @@ namespace CloneZ
         private static Material s_ToneMat;
 
         /// <summary>The see-through material the snow's tone is drawn with: a small table looked up by each vertex's
-        /// uv (u: scoured crust 0 .. untouched 0.5 .. fresh drift 1; v: clean 0 .. grimy 1), blended over the ground.</summary>
+        /// uv (see <see cref="ToneUv"/> and <see cref="PackedUv"/>), blended over the ground.</summary>
         private static Material ToneMaterial()
         {
             if (s_ToneMat != null && s_ToneTex != null) return s_ToneMat;
-            const int w = 64, h = 16;
-            var px = new Color32[w * h];
-            var scour = new Color(0.66f, 0.73f, 0.84f);
-            var drift = new Color(0.97f, 0.99f, 1.00f);
-            var grime = new Color(0.50f, 0.48f, 0.46f);
-            for (int y = 0; y < h; y++)
-                for (int x = 0; x < w; x++)
+            var px = new Color32[ToneW * ToneH];
+            var scour = new Color(0.60f, 0.69f, 0.84f);
+            var drift = new Color(1.00f, 1.00f, 1.00f);
+            var grime = new Color(0.45f, 0.46f, 0.49f);
+            var packed = new Color(0.79f, 0.83f, 0.90f);
+            for (int y = 0; y < ToneBand; y++)
+                for (int x = 0; x < ToneW; x++)
                 {
-                    float t = x / (w - 1f), d = y / (h - 1f);
+                    float t = x / (ToneW - 1f), d = y / (ToneBand - 1f);
                     Color c = t < 0.5f ? scour : drift;
-                    float a = 0.26f * Smooth(0.48f, 0.04f, t) + 0.34f * Smooth(0.52f, 0.96f, t);
+                    float a = 0.32f * Smooth(0.47f, 0.08f, t) + 0.42f * Smooth(0.53f, 0.92f, t);
                     c = Color.Lerp(c, grime, d);
-                    c.a = Mathf.Lerp(a, Mathf.Max(a, 0.45f), d);
-                    px[y * w + x] = c;
+                    c.a = Mathf.Lerp(a, Mathf.Max(a, 0.5f), d);
+                    px[y * ToneW + x] = c;
+                    Color p = packed;
+                    p.a = 0.85f * t;
+                    px[(y + ToneBand) * ToneW + x] = p;
                 }
-            s_ToneTex = new Texture2D(w, h, TextureFormat.RGBA32, false)
+            s_ToneTex = new Texture2D(ToneW, ToneH, TextureFormat.RGBA32, false)
             {
                 name = "Raid_ground_tone",
                 wrapMode = TextureWrapMode.Clamp,

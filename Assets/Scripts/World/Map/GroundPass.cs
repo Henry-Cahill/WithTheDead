@@ -66,6 +66,7 @@ namespace CloneZ
             s_Sites.Remove(site);
             s_Sites.Add(site, g);
             Warm();
+            MakeAll();
             BaseSnow(site);
             Partition(g);
             yield return "ground";
@@ -73,8 +74,8 @@ namespace CloneZ
             yield return "water";
             Fields(g);
             yield return "fields";
-            Parking(g);
-            yield return "parking";
+            Lots(g);
+            yield return "lots";
             if (!g.Lite)
                 foreach (string step in Grounds(g)) yield return step;
             Tone(g);
@@ -133,7 +134,7 @@ namespace CloneZ
 
         /// <summary>The snow the ground is made of: a planar texture of the ground's own, cooler than the decor snow so
         /// that it reads white under the map's warm daylight.</summary>
-        internal static Surf SnowSurf => DecorMaterials.Planar(SnowTex(), 9f, 0.28f);
+        internal static Surf SnowSurf => Surface("snow", 9f, 0.28f);
         #endregion
 
         #region The base snow
@@ -184,6 +185,12 @@ namespace CloneZ
             public readonly List<List<Owner>> Ring = new List<List<Owner>>();
             public readonly List<ParkingStall> Stalls = new List<ParkingStall>();
             public readonly List<Vector2> Clearings = new List<Vector2>();
+            /// <summary>See-through geometry drawn with the snow's tone (the packed snow left in the lots' stall rows):
+            /// positions, coordinates in the tone's table (<see cref="ToneMaterial"/>) and triangles, clockwise seen from
+            /// above.</summary>
+            public readonly List<Vector3> ToneVerts = new List<Vector3>();
+            public readonly List<Vector2> ToneUvs = new List<Vector2>();
+            public readonly List<int> ToneTris = new List<int>();
 
             private bool[] _blocked;
             private int _n;
@@ -227,12 +234,15 @@ namespace CloneZ
                 return true;
             }
 
-            /// <summary>Lets go of what only the build needed (the trapezoids, the ring, the mask).</summary>
+            /// <summary>Lets go of what only the build needed (the trapezoids, the ring, the mask, the tone's extras).</summary>
             public void Release()
             {
                 foreach (Owner o in Owners) o.Traps.Clear();
                 Ring.Clear();
                 _blocked = null;
+                ToneVerts.Clear();
+                ToneUvs.Clear();
+                ToneTris.Clear();
             }
 
             #region Where props can't go
@@ -347,18 +357,36 @@ namespace CloneZ
                 hi = Mathf.Min(hi, x1);
             }
 
+            // Every cell whose middle is inside the outline or within the margin of a wall: a band along each wall, and
+            // the inside a row at a time between the outline's crossings (even-odd), so a big footprint costs its rows
+            // and walls rather than its cells times its corners.
             private void MarkFootprint(Footprint f, float margin)
             {
+                List<Vector2> p = f.Pts;
                 Rect b = f.Bounds;
-                int x0 = Mathf.Max(0, Cell(b.xMin - margin)), x1 = Mathf.Min(_n - 1, Cell(b.xMax + margin));
-                int z0 = Mathf.Max(0, Cell(b.yMin - margin)), z1 = Mathf.Min(_n - 1, Cell(b.yMax + margin));
+                if (b.xMax + margin < -Half || b.xMin - margin > Half || b.yMax + margin < -Half || b.yMin - margin > Half) return;
+                for (int i = 0, j = p.Count - 1; i < p.Count; j = i++) MarkCapsule(p[j], p[i], margin + 0.71f);
+                int z0 = Mathf.Max(0, Mathf.CeilToInt(b.yMin + Half - 0.5f)), z1 = Mathf.Min(_n - 1, Mathf.FloorToInt(b.yMax + Half - 0.5f));
+                List<float> xs = _crossings;
                 for (int z = z0; z <= z1; z++)
-                    for (int x = x0; x <= x1; x++)
+                {
+                    float zc = z + 0.5f - Half;
+                    xs.Clear();
+                    for (int i = 0, j = p.Count - 1; i < p.Count; j = i++)
                     {
-                        var c = new Vector2(x + 0.5f - Half, z + 0.5f - Half);
-                        if (Inside(f.Pts, c) || MapGeometry.DistanceToEdge(f.Pts, c) < margin + 0.71f) _blocked[z * _n + x] = true;
+                        Vector2 a = p[i], c = p[j];
+                        if ((a.y > zc) != (c.y > zc)) xs.Add(a.x + (zc - a.y) * (c.x - a.x) / (c.y - a.y));
                     }
+                    xs.Sort();
+                    for (int k = 0; k + 1 < xs.Count; k += 2)
+                    {
+                        int x0 = Mathf.Max(0, Mathf.CeilToInt(xs[k] + Half - 0.5f)), x1 = Mathf.Min(_n - 1, Mathf.FloorToInt(xs[k + 1] + Half - 0.5f));
+                        for (int x = x0; x <= x1; x++) _blocked[z * _n + x] = true;
+                    }
+                }
             }
+
+            private readonly List<float> _crossings = new List<float>();
             #endregion
 
             #region Where an area's whole outline is
