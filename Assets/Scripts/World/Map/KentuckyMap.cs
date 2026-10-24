@@ -15,24 +15,29 @@ namespace CloneZ
     /// <see cref="KentuckyStreamer"/>). Map data © OpenStreetMap contributors (ODbL).
     /// </summary>
     /// <remarks>
-    /// The map is drawn on a <see cref="Site"/> (KentuckyMap.Site.cs: the place's data in local metres, the batches and a
-    /// 1 m occupancy grid) by a pipeline of passes, each a static class of its own that yields between its heavy steps
-    /// (<see cref="Passes"/>), in this order:
+    /// The map is drawn on a <see cref="Site"/> (KentuckyMap.Site.cs: the place's data in local metres, the batches, a
+    /// 1 m occupancy grid and what the passes hand each other, typed in MapContracts.cs) by a pipeline of passes
+    /// (<see cref="Passes"/>). Each is a static class of its own with one entry point,
+    /// <c>IEnumerable&lt;string&gt; Build(Site)</c>, that yields a step name between its heavy steps; they run in this
+    /// order:
     /// <list type="number">
     /// <item><see cref="GroundPass"/>: the snow, frozen ponds and lakes, plowed parking lots, waterways as ice.</item>
     /// <item><see cref="RoadPass"/>: carriageways and their kerbs, sidewalks, centre lines, railways.</item>
-    /// <item><see cref="BuildingPass"/>: enterable buildings (their loot from <see cref="MapGameplay.Loot"/>) and, past the
-    /// edge, scenery ones; doors, windows, awnings, porches, mailboxes, eaves, chimneys, roof snow.</item>
-    /// <item><see cref="StreetscapePass"/>: utility poles, street lights, signposts, hydrants, lot fences.</item>
-    /// <item><see cref="SnowPass"/>: drifts along the streets and plowed piles.</item>
-    /// <item><see cref="VehiclePass"/>: parked and wrecked cars.</item>
+    /// <item><see cref="BuildingPass"/>: enterable buildings (listed in <see cref="Site.Enterables"/>, their loot from
+    /// <see cref="MapGameplay.Loot"/>) and, past the edge, scenery ones; doors, windows, awnings, porches, mailboxes,
+    /// eaves, chimneys, roof snow.</item>
+    /// <item><see cref="InteriorPass"/>: the enterable buildings' insides.</item>
+    /// <item><see cref="StreetscapePass"/>: utility poles, street lights, signposts, hydrants, lot fences; then the
+    /// roadside snow piles and the parked cars.</item>
     /// <item><see cref="VegetationPass"/>: trees.</item>
-    /// <item><see cref="MapGameplay.BuildPoints"/>: gas pumps and the named places' signs.</item>
-    /// <item><see cref="StreetscapePass.BuildParks"/>: litter in the parks.</item>
+    /// <item><see cref="VehiclePass"/>: (its cars are built in the streetscape's turn, see there).</item>
+    /// <item><see cref="SnowPass"/>: drifts along the streets.</item>
+    /// <item><see cref="MapGameplay"/>: gas pumps and the named places' signs; then litter in the parks.</item>
     /// </list>
-    /// A pass only finds the spots the passes before it left free in the occupancy grid, so their order matters. A fixed
-    /// map then lays out its exits and spawn (<see cref="MapGameplay"/>) and emits its batches; a streamed piece does the
-    /// same in <see cref="ChunkSteps"/>.
+    /// A pass only finds the spots the passes before it left free in the occupancy grid, and the passes that draw from
+    /// the town's seeded stream (<see cref="RaidTown.Rng"/>) get what the ones before them left, so their order matters.
+    /// A fixed map then lays out its exits and spawn (<see cref="MapGameplay"/>) and emits its batches; a streamed piece
+    /// emits its own in <see cref="ChunkSteps"/>.
     /// </remarks>
     public static partial class KentuckyMap
     {
@@ -68,7 +73,7 @@ namespace CloneZ
             var info = new RaidMapInfo { HalfSize = half, PlayerSpawn = new Vector3(0f, 0.6f, 0f) };
             CeilingVisibility.Clear();
             var town = new RaidTown(world, zone.LayoutSeed, info);
-            var site = new Site(town, area);
+            var site = new Site(build, town, area);
             try
             {
                 foreach (string _ in Passes(site)) { }
@@ -99,12 +104,12 @@ namespace CloneZ
             foreach (string step in GroundPass.Build(site)) yield return step;
             foreach (string step in RoadPass.Build(site)) yield return step;
             foreach (string step in BuildingPass.Build(site)) yield return step;
+            foreach (string step in InteriorPass.Build(site)) yield return step;
             foreach (string step in StreetscapePass.Build(site)) yield return step;
-            foreach (string step in SnowPass.Build(site)) yield return step;
-            foreach (string step in VehiclePass.Build(site)) yield return step;
             foreach (string step in VegetationPass.Build(site)) yield return step;
-            foreach (string step in MapGameplay.BuildPoints(site)) yield return step;
-            foreach (string step in StreetscapePass.BuildParks(site)) yield return step;
+            foreach (string step in VehiclePass.Build(site)) yield return step;
+            foreach (string step in SnowPass.Build(site)) yield return step;
+            foreach (string step in MapGameplay.Build(site)) yield return step;
         }
 
         // A failed build mustn't leave half a town for the NavMesh bake or the procedural map to land on.

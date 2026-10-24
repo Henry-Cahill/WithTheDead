@@ -81,6 +81,8 @@ namespace CloneZ
             /// built and are moved to <see cref="Offset"/> afterwards.</summary>
             public Transform Root, Overhead;
             public Vector3 Offset;
+            /// <summary>How much of the piece to build.</summary>
+            public Detail Detail;
             public Area Area;
             public Site Site;
             public RaidTown Town;
@@ -93,7 +95,7 @@ namespace CloneZ
             job.Area = new Area(job.Place, job.Build.Id, job.Build.Attribution, job.Region, job.Cx, job.Cz);
             yield return "data";
             job.Town = new RaidTown(job.Root, job.Seed, new RaidMapInfo { HalfSize = job.Area.Half }, job.Overhead);
-            job.Site = new Site(job.Town, job.Area, true, job.Offset);
+            job.Site = new Site(job.Build, job.Town, job.Area, true, job.Offset, job.Detail);
             foreach (string step in Passes(job.Site)) yield return step;
             job.Site.Overhead.Emit("Overhead", job.Town.Overhead, true);
             yield return "overhead";

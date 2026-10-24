@@ -5,15 +5,29 @@ using static CloneZ.KentuckyMap;
 namespace CloneZ
 {
     /// <summary>
-    /// What the real-world map means for play: the raid's exits where its streets leave the square, the survivor's
-    /// spawn on the sidewalk nearest the middle, the loot in the buildings (<see cref="Loot"/>, called by
-    /// <see cref="BuildingPass"/> for every enterable building), and the points of interest: gas pumps where a gas
-    /// station is mapped and signs naming the places people would look for (<see cref="BuildPoints"/>).
+    /// What the real-world map means for play: the raid's exits where its streets leave the square and the survivor's
+    /// spawn on the sidewalk nearest the middle (laid out by <see cref="KentuckyMap.Build"/> and
+    /// <see cref="KentuckyMap.PlanStart"/>), the loot in the buildings (<see cref="Loot"/>, called by
+    /// <see cref="BuildingPass"/> for every enterable building), and, as the last pass (<see cref="Build"/>), the points
+    /// of interest: gas pumps where a gas station is mapped and signs naming the places people would look for. After
+    /// them it has <see cref="StreetscapePass.ParkLitter"/> strew the parks, the last thing a site has always got.
     /// </summary>
     internal static class MapGameplay
     {
         private const int MaxContainers = 450;   // per site
         private const int MaxSigns = 30;
+
+        internal static IEnumerable<string> Build(Site site)
+        {
+            Points(site);
+            yield return "points";
+            StreetscapePass.ParkLitter(site);
+            yield return "park litter";
+        }
+
+        /// <summary>How thick the Zone is at <paramref name="world"/> (the dead, the loot), as a multiple of the map's
+        /// usual: 1 everywhere for now.</summary>
+        internal static float DensityAt(Vector3 world) => 1f;
 
         #region Exits and spawn
         /// <summary>The fixed map's exits: see <see cref="DefineExits(Area, float, RaidMapInfo)"/>.</summary>
@@ -165,6 +179,10 @@ namespace CloneZ
             }
         }
 
+        /// <summary>The kinds of container a room of a building holds (a <see cref="RoomKinds"/> kind): for now the
+        /// building's own, whatever the room.</summary>
+        internal static ContainerType[] ContainersFor(MapBuilding b, string room) => ContainersFor(b);
+
         /// <summary>The kinds of container a building holds, by what it's used for or else what it is.</summary>
         internal static ContainerType[] ContainersFor(MapBuilding b)
         {
@@ -189,14 +207,8 @@ namespace CloneZ
         #endregion
 
         #region Points of interest
-        /// <summary>Gas pumps where a gas station is mapped, and a sign with the real name by the places people would
-        /// look for (the nearest the middle first), each at the nearest free spot.</summary>
-        internal static IEnumerable<string> BuildPoints(Site site)
-        {
-            Points(site);
-            yield return "points";
-        }
-
+        // Gas pumps where a gas station is mapped, and a sign with the real name by the places people would look for (the
+        // nearest the middle first), each at the nearest free spot.
         private static void Points(Site site)
         {
             var rng = new System.Random(site.Town.Rng.Next());

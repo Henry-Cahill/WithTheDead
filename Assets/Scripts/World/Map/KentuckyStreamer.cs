@@ -428,7 +428,7 @@ namespace CloneZ
             {
                 Build = _build, Region = region, Place = _place.name, Cx = cx, Cz = cz,
                 Seed = unchecked(_layoutSeed * 486187739 + cx * 73856093 ^ cz * 19349663),
-                Root = c.Root.transform, Overhead = c.Overhead.transform, Offset = c.Middle,
+                Root = c.Root.transform, Overhead = c.Overhead.transform, Offset = c.Middle, Detail = KentuckyMap.Detail.Full,
             };
             c.Steps = KentuckyMap.ChunkSteps(c.Job).GetEnumerator();
             _chunks[c.Key] = c;
@@ -758,6 +758,10 @@ namespace CloneZ
             foreach (Chunk c in _chunks.Values) if (c.Ready) c.SourcesDirty = true;
             _navDirty = true;
         }
+
+        /// <summary>Asks for the NavMesh to be baked again where something baked into it changed
+        /// (<paramref name="worldBounds"/>, world space). For now that bakes it all again, in the background.</summary>
+        internal void InvalidateNav(Bounds worldBounds) => RequestRebuild();
 
         private void NavTick()
         {

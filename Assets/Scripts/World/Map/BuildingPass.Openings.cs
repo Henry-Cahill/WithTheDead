@@ -42,9 +42,10 @@ namespace CloneZ
 
         // Dark panes about every 3.2 m along a wall, on every storey, clear of the door (<paramref name="doorAt"/> along
         // the wall, or negative for none), each with a wooden frame, a sill and a shutter either side. The ground
-        // floor's go with the walls, the upper storeys' overhead.
+        // floor's go with the walls, the upper storeys' overhead; the ground floor's are listed in <paramref name="record"/>
+        // (when there is one) as the openings of wall <paramref name="edge"/>.
         private static void Windows(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float height, float doorAt,
-            System.Random rng, in Surf outside)
+            System.Random rng, in Surf outside, int edge, EnterableBuilding record)
         {
             if (len < 2.4f) return;
             int count = Mathf.Max(1, Mathf.FloorToInt(len / 3.2f));
@@ -68,7 +69,14 @@ namespace CloneZ
                 for (float y = 1.55f; y + 0.7f < height; y += Storey)
                 {
                     Vector3 c = To3(at, y);
-                    RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
+                    bool ground = y < GroundStorey;
+                    RaidMesh m = ground ? site.Town.Out.Solid(c) : site.Overhead.At(c);
+                    if (ground && record != null)
+                        record.Windows.Add(new WindowSpan
+                        {
+                            Edge = edge, Storey = 0, From = s - winWidth * 0.5f, To = s + winWidth * 0.5f,
+                            Sill = y - winHeight * 0.5f, Head = y + winHeight * 0.5f,
+                        });
                     m.Upright(c, normal, winWidth, winHeight, Glass);
                     m.Box(c + new Vector3(0f, winHeight * 0.5f + half, 0f), across, yaw, frame);
                     m.Box(c + new Vector3(0f, -(winHeight * 0.5f) - half, 0f), across, yaw, frame);

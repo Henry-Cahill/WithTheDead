@@ -292,14 +292,19 @@ namespace CloneZ
 
         #region The build in progress
         /// <summary>What the build shares while it runs: the town, the place, a coarse map of where things already
-        /// stand (so props keep clear of walls, roads and each other), the overhead batches and the tallies.</summary>
+        /// stand (so props keep clear of walls, roads and each other), the overhead batches, what one pass hands the
+        /// next (the enterable buildings, the junctions) and the tallies.</summary>
         internal sealed class Site
         {
+            /// <summary>The world-store build the site's data comes from.</summary>
+            public readonly MapBuild Build;
             public readonly RaidTown Town;
             internal readonly Area Area;
             public readonly float Half;
             /// <summary>A piece (chunk) of a streamed map: no scenery past its edge, its owned buildings built whole.</summary>
             public readonly bool Chunked;
+            /// <summary>How much of the site to build: Full near the survivors (and on the fixed square), Lite far off.</summary>
+            public readonly Detail Detail;
             /// <summary>Where the site's middle ends up in the world. The site is built at the origin (so the builders'
             /// local and world positions agree) and its roots are moved here afterwards; anything registered in world
             /// space while it's built (the shelters) is moved by this.</summary>
@@ -308,6 +313,9 @@ namespace CloneZ
             internal readonly ChunkedMesh Overhead = new ChunkedMesh(40f);
             /// <summary>The root the loot containers go under.</summary>
             public readonly Transform Loot;
+            /// <summary>The buildings <see cref="BuildingPass"/> made enterable, in the order it built them, for
+            /// <see cref="InteriorPass"/> to furnish.</summary>
+            public readonly List<EnterableBuilding> Enterables = new List<EnterableBuilding>();
             public int Buildings, SceneryBuildings, Containers, Trees;
 
             private const float Cell = 1f;
@@ -316,15 +324,19 @@ namespace CloneZ
             // The roads' bands, kept apart from _taken so roadside props can test the roads exactly (FreeBeside).
             private readonly bool[] _road;
             private readonly List<(List<Vector2> pts, float half, Rect bounds)> _roads = new List<(List<Vector2>, float, Rect)>();
+            private List<Junction> _junctions;
 
-            public Site(RaidTown town, Area area) : this(town, area, false, Vector3.zero) { }
+            /// <summary>The fixed square's site.</summary>
+            public Site(MapBuild build, RaidTown town, Area area) : this(build, town, area, false, Vector3.zero) { }
 
-            public Site(RaidTown town, Area area, bool chunked, Vector3 worldOffset)
+            public Site(MapBuild build, RaidTown town, Area area, bool chunked, Vector3 worldOffset, Detail detail = Detail.Full)
             {
+                Build = build;
                 Town = town;
                 Area = area;
                 Half = area.Half;
                 Chunked = chunked;
+                Detail = detail;
                 WorldOffset = worldOffset;
                 _n = Mathf.CeilToInt(Half * 2f / Cell) + 1;
                 _taken = new bool[_n * _n];
@@ -333,6 +345,10 @@ namespace CloneZ
                 Loot.SetParent(town.World, false);
                 foreach (Footprint f in area.Foreign) Take(f.Bounds);
             }
+
+            /// <summary>Where the site's streets meet (see <see cref="MapJunctions"/>), found the first time they're asked
+            /// for.</summary>
+            public List<Junction> Junctions => _junctions ??= MapJunctions.Find(this);
 
             /// <summary>This site's share of the fixed 400 m square the map's per-map limits were tuned for.</summary>
             public float AreaShare => Half * Half / (200f * 200f);

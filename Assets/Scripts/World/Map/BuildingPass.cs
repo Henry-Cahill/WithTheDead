@@ -9,9 +9,10 @@ namespace CloneZ
     /// with colliders up to the ground floor's ceiling, a door in the wall facing the nearest street, windows, a floor,
     /// loot to suit what the building is (<see cref="MapGameplay.Loot"/>) and shelter from the weather; the upper
     /// storeys, the ceiling and the snowy roof go on the overhead batches, so the isometric view looks into the rooms as
-    /// it does in the procedural town. Past the edge of a fixed map they are scenery: whole and roofed, without
-    /// colliders; buildings the edge cuts through aren't raised at all. The door frames and windows are in
-    /// BuildingPass.Openings, the shop awnings, porches, mailboxes and fences in BuildingPass.Frontage, the eaves,
+    /// it does in the procedural town. Each one with a door is listed in <see cref="Site.Enterables"/> (its door and its
+    /// ground floor's windows) for <see cref="InteriorPass"/>. Past the edge of a fixed map they are scenery: whole and
+    /// roofed, without colliders; buildings the edge cuts through aren't raised at all. The door frames and windows are
+    /// in BuildingPass.Openings, the shop awnings, porches, mailboxes and fences in BuildingPass.Frontage, the eaves,
     /// chimneys and roof snow in BuildingPass.Roofs.
     /// </summary>
     internal static partial class BuildingPass
@@ -26,7 +27,7 @@ namespace CloneZ
 
         // Salts for the buildings' random choices (MapStyle).
         private const int SaltBuilding = 0x51ED, SaltSiding = 0x51D1, SaltBrick = 0xB41C, SaltStucco = 0x57CC,
-            SaltRoofShade = 0x4F00, SaltRoofSnow = 0x5A0A, SaltCornerPosts = 0xFE4C;
+            SaltRoofShade = 0x4F00, SaltRoofSnow = 0x5A0A, SaltCornerPosts = 0xFE4C, SaltInterior = 0x1A7E;
 
         private static readonly Color[] SidingColors =
         {
@@ -83,6 +84,12 @@ namespace CloneZ
             }
             List<Vector2> p = f.Pts;
             int door = DoorEdge(site, f);
+            // What the interiors get to furnish: a building with a door, its one floor so far the ground's.
+            EnterableBuilding record = door < 0 ? null : new EnterableBuilding
+            {
+                Footprint = f, Parent = site.Town.World, StoreyHeight = Storey, Storeys = 1, WallThickness = Thick,
+                Seed = unchecked((int)MapStyle.Hash(b.id, SaltInterior)),
+            };
             Vector2 doorPoint = new Vector2(float.MaxValue, float.MaxValue);
             float doorYaw = 0f;
             Vector2 doorOutward = Vector2.zero;
@@ -105,6 +112,7 @@ namespace CloneZ
                     doorPoint = a + d * (len * 0.5f);
                     doorYaw = yaw;
                     doorOutward = outward;
+                    record.Doors.Add(new Doorway { Edge = i, At = doorPoint, Outward = outward, Width = DoorWidth });
                     site.Take(doorPoint + outward * 1.2f, 1.1f);   // keep the doorstep clear of props
                     DoorFrame(site, a, d, len * 0.5f, yaw, outward, outside);
                     if (Retail(b)) Awning(site, doorPoint, doorOutward, doorYaw, b, rng);
@@ -112,7 +120,8 @@ namespace CloneZ
                 else Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                 if (height > groundTop)
                     Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
-                if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside);
+                if (b.kind != "ruin" && b.kind != "silo")
+                    Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside, i, record);
                 if (home && i != door) WallRail(site, a, d, outward, len, yaw);
             }
             if (door >= 0)
@@ -146,7 +155,9 @@ namespace CloneZ
                 Shelter.Register(site.ToWorld(new Bounds(new Vector3(f.Bounds.center.x, GroundStorey * 0.5f, f.Bounds.center.y),
                     new Vector3(Mathf.Max(0.5f, f.Bounds.width - 0.4f), GroundStorey, Mathf.Max(0.5f, f.Bounds.height - 0.4f)))));
             site.Take(f.Bounds);
-            if (door >= 0) MapGameplay.Loot(site, f, rng, doorPoint);
+            if (record == null) return;
+            site.Enterables.Add(record);
+            MapGameplay.Loot(site, f, rng, doorPoint);
         }
 
         private static void Wall(Site site, Vector2 a, Vector2 d, Vector2 inset, float s0, float s1, float y0, float y1,

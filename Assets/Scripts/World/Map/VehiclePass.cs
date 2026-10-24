@@ -6,7 +6,9 @@ namespace CloneZ
 {
     /// <summary>
     /// The real-world map's cars: left parked at the kerb of the residential streets, service roads and tertiary roads,
-    /// a few of them wrecks slewed across the road, in the faded paints of the late eighties.
+    /// a few of them wrecks slewed across the road, in the faded paints of the late eighties. They're built in
+    /// <see cref="StreetscapePass"/>'s turn (<see cref="ParkedCars"/>), after the roadside snow piles and before the
+    /// trees, where they've always claimed their spots; this pass's own turn has nothing left to do.
     /// </summary>
     internal static class VehiclePass
     {
@@ -21,14 +23,13 @@ namespace CloneZ
 
         internal static IEnumerable<string> Build(Site site)
         {
-            ParkedCars(site);
-            yield return "parked cars";
+            yield break;
         }
 
-        // A chance of a car every 18 m along the right-hand kerb, at least 6 m from the next one and 4 m in from the
-        // square's edge; bridges and tunnels have none. The cars are solid, but don't wait for a free spot: they're parked
-        // where they were left.
-        private static void ParkedCars(Site site)
+        /// <summary>A chance of a car every 18 m along the right-hand kerb, at least 6 m from the next one and 4 m in from
+        /// the square's edge; bridges and tunnels have none. Each takes its spot, but doesn't wait for a free one: the
+        /// cars are parked where they were left.</summary>
+        internal static void ParkedCars(Site site)
         {
             var rng = new System.Random(site.Town.Rng.Next());
             var placed = new List<Vector2>();

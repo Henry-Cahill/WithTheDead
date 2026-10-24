@@ -6,7 +6,9 @@ namespace CloneZ
 {
     /// <summary>
     /// The real-world map's lying snow, past what the ground and the roofs already carry: little drifts of plowed snow
-    /// along both sides of every street inside the square, and plowed piles at the roadside of the town's streets.
+    /// along both sides of every street inside the square, and plowed piles at the roadside of the town's streets
+    /// (<see cref="Piles"/>, built in <see cref="StreetscapePass"/>'s turn, after the hydrants and before the cars and
+    /// the trees, where they've always claimed their spots).
     /// </summary>
     internal static class SnowPass
     {
@@ -21,8 +23,6 @@ namespace CloneZ
         {
             Drifts(site);
             yield return "snow drifts";
-            Piles(site);
-            yield return "snow piles";
         }
 
         // A row of drifts along each side of every street piece inside the square, just past the kerb.
@@ -54,9 +54,9 @@ namespace CloneZ
             }
         }
 
-        // Plowed snow piled at the roadside of the town's streets (bridges and tunnels aside): one or two tries a
-        // segment, a little off the kerb where the roadside is free, each pile with a small collider.
-        private static void Piles(Site site)
+        /// <summary>Plowed snow piled at the roadside of the town's streets (bridges and tunnels aside): one or two tries a
+        /// segment, a little off the kerb where the roadside is free, each pile with a small collider.</summary>
+        internal static void Piles(Site site)
         {
             var rng = new System.Random(site.Town.Rng.Next());
             int placed = 0;

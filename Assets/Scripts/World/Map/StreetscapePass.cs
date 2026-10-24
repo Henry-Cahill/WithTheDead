@@ -7,9 +7,12 @@ namespace CloneZ
     /// <summary>
     /// The real-world map's street furniture: wooden utility poles along every street, the town's street lights (most
     /// dead, a few still burning near the middle, each burning one a <see cref="StreetLamp"/> that can be switched),
-    /// signposts along the main roads, hydrants along the town streets, a low metal fence round every parking lot and,
-    /// last of all (<see cref="BuildParks"/>), litter in the parks. Everything stands where the occupancy grid is still
-    /// free, roadside things just off the road (<see cref="Site.FreeBeside"/>), and takes its spot.
+    /// signposts along the main roads, hydrants along the town streets, a low metal fence round every parking lot, and
+    /// litter in the parks (<see cref="ParkLitter"/>, built last of all from <see cref="MapGameplay.Build"/>). Everything
+    /// stands where the occupancy grid is still free, roadside things just off the road (<see cref="Site.FreeBeside"/>),
+    /// and takes its spot. After the hydrants this pass also builds the roadside snow piles (<see cref="SnowPass.Piles"/>)
+    /// and the parked cars (<see cref="VehiclePass.ParkedCars"/>), so they claim their spots before the trees, as they
+    /// always have.
     /// </summary>
     internal static class StreetscapePass
     {
@@ -57,14 +60,10 @@ namespace CloneZ
             yield return "hydrants";
             LotFences(site);
             yield return "lot fences";
-        }
-
-        /// <summary>Trash bags and litter in the parks: the last thing a site gets, so the trees and the places' signs
-        /// have had their pick of the spots.</summary>
-        internal static IEnumerable<string> BuildParks(Site site)
-        {
-            ParkLitter(site);
-            yield return "park litter";
+            SnowPass.Piles(site);
+            yield return "snow piles";
+            VehiclePass.ParkedCars(site);
+            yield return "parked cars";
         }
 
         // Wooden utility poles every 30 m at the roadside of every street, on one side of it (as the lines run), clear of
@@ -295,8 +294,10 @@ namespace CloneZ
             }
         }
 
-        // Up to five trash bags or bits of litter in every park, anywhere still free, each with a small collider.
-        private static void ParkLitter(Site site)
+        /// <summary>Up to five trash bags or bits of litter in every park, anywhere still free, each with a small
+        /// collider: the last thing a site gets (from <see cref="MapGameplay.Build"/>), after the trees and the places'
+        /// signs have had their pick of the spots.</summary>
+        internal static void ParkLitter(Site site)
         {
             var rng = new System.Random(site.Town.Rng.Next());
             float half = site.Half;
