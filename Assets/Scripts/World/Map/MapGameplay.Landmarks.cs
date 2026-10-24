@@ -105,6 +105,19 @@ namespace CloneZ
         /// <summary>How many real landmarks the current map has published.</summary>
         internal static int LandmarkCount => s_Landmarks.Count;
 
+        /// <summary>"27 landmarks (Court Square courthouse, ...)": the most important first, at most
+        /// <paramref name="names"/> of them named.</summary>
+        internal static string LandmarkSummary(int names)
+        {
+            var all = new List<RealLandmark>(s_Landmarks.Values);
+            all.Sort((x, y) => x.Rank != y.Rank ? y.Rank.CompareTo(x.Rank) : string.CompareOrdinal(x.Id, y.Id));
+            var sb = new System.Text.StringBuilder();
+            sb.Append(all.Count).Append(" landmarks");
+            for (int i = 0; i < all.Count && i < names; i++) sb.Append(i == 0 ? " (" : ", ").Append(all[i].Name);
+            if (all.Count > 0) sb.Append(all.Count > names ? ", ...)" : ")");
+            return sb.ToString();
+        }
+
         // What makes a landmark of a point of interest's kind: its rank (how much it matters to someone finding their
         // way: 10 the courthouse, 4 a named store) and what to call it when it has no name.
         private static int LandmarkRank(string kind, bool named, out string noun)
@@ -297,14 +310,15 @@ namespace CloneZ
             });
         }
 
-        // What to call a landmark without a name of its own: by the square it stands on ("Court Square courthouse"), the
-        // town it's in ("Bardstown fire station"), else the road it's on ("gas station on KY 245").
+        // What to call a landmark without a name of its own: by the square it stands on ("Court Square courthouse",
+        // "memorial on Court Square"), the town it's in ("Bardstown fire station"), else the road it's on ("gas station
+        // on KY 245").
         private static string Describe(Site site, string noun, Vector2 at)
         {
             if (noun == null) return null;
             string street = NearestStreetName(site, at, 45f);
-            if (street != null && street.EndsWith(" Square", System.StringComparison.Ordinal) && noun == "courthouse")
-                return street + " courthouse";
+            if (street != null && street.EndsWith(" Square", System.StringComparison.Ordinal))
+                return noun == "courthouse" ? street + " courthouse" : noun + " on " + street;
             StrongestPlace(site.WorldOffset + To3(at, 0f), out MapPlace place, out float d);
             if (place != null && Within(place, d)) return place.name + " " + noun;
             if (street != null) return noun + " on " + street;

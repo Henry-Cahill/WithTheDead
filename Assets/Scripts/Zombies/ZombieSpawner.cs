@@ -49,10 +49,10 @@ namespace CloneZ
         private int _wave;
 
         // The streamed Kentucky map: the dead are where people lived (MapGameplay.DensityAt). The standing population
-        // follows how thick the Zone is around the survivors (a fifth of the usual out in the fields, more than twice it
-        // in a city's core), and the dead are placed where the density is.
+        // follows how thick the Zone is around the survivors (a fifth of the usual out in the fields, twice it in a
+        // city's core), and the dead are placed where the density is.
         private const float DensityInterval = 2f;           // seconds between looks at the country around
-        private const float MinDensityScale = 0.2f, MaxDensityScale = 2.4f;
+        private const float MinDensityScale = 0.2f, MaxDensityScale = 2f;
         private const float DensityFloor = 0.1f;            // the odd straggler out in the open even so
         private const float RefillMinDelay = 3f, RefillMaxDelay = 9f;   // a rising density fills in soon
         private float _densityScale = 1f, _densityPeak = 1f, _nextDensity;

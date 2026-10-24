@@ -10,8 +10,8 @@ namespace CloneZ
     // worth of people its buildings held (a house one, a flat block one per 90 m² of floor, a store one per 300 m²...),
     // and its land use. The density at a point weighs those cells around it (about 60 m), damped where no town is near
     // and lifted in the big places (places.json: Louisville's pull reaches 10 km, a village's half a kilometre).
-    // Calibrated on the data: downtown Bardstown and its residential streets about 1.4, a rural subdivision 0.6, open
-    // farmland 0.05-0.1, downtown Louisville past the cap of 3.
+    // Calibrated on the data (averaged over a 400 m arena): Bardstown's start square 1.15, Elizabethtown and Frankfort
+    // about the same, downtown Lexington 2, Louisville 2.4, a rural subdivision 0.4, farmland and forest 0.05.
     internal static partial class MapGameplay
     {
         private const float DensityCell = 32f;
@@ -71,7 +71,7 @@ namespace CloneZ
             if (!known) return Mathf.Clamp(0.25f + 0.6f * settled, 0.03f, MaxDensity);
             float perHectare = units / tw / (DensityCell * DensityCell / 10000f);
             float local = Mathf.Pow(perHectare / UsualHouseholds, 0.7f);
-            float d = 0.05f + local * (0.45f + 0.4f * settled) + 0.3f * settled + land / tw;
+            float d = 0.85f * (0.05f + local * (0.45f + 0.4f * settled) + 0.3f * settled + land / tw);
             d *= 1f - 0.85f * (water / tw);
             return Mathf.Clamp(d, 0.03f, MaxDensity);
         }

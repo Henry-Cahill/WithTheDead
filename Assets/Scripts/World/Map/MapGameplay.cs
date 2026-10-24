@@ -86,6 +86,12 @@ namespace CloneZ
                 {
                     Name = e.Name, Hint = e.Hint, Position = To3(e.At, 0f), Radius = 4.5f, ExtractSeconds = 8f, Side = e.Side,
                 });
+            var line = new System.Text.StringBuilder("[CloneZ] Map gameplay at " + area.Place + ": exits ");
+            for (int i = 0; i < plans.Count; i++) line.Append(i > 0 ? "; " : "").Append(plans[i].Name).Append(" (").Append(plans[i].Hint).Append(')');
+            line.Append(". ").Append(LandmarkSummary(8)).Append(". The Zone's density at the middle ")
+                .Append(DensityAt(Vector3.zero).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))
+                .Append(", loot richness ").Append(LootRichnessAt(Vector3.zero).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append('.');
+            Debug.Log(line.ToString());
         }
 
         private static List<ExitPlan> PlanExits(Area area, float half)
@@ -464,6 +470,7 @@ namespace CloneZ
                 System.Random rng = MapStyle.Rng(s.Data.id, s.Data.kind == "fuel" ? SaltPumps : SaltSign);
                 if (s.Data.kind == "fuel")
                 {
+                    GasSign(site, s, rng);
                     if (HasCanopy(site, s.At)) continue;
                     Vector2 along = site.Area.NearestStreetDirection(s.At, 40f);
                     Vector2 across = along == Vector2.zero ? Vector2.right : new Vector2(-along.y, along.x);
@@ -507,6 +514,51 @@ namespace CloneZ
                 site.Take(spot, 1.4f);
                 signs++;
             }
+        }
+
+        // A gas station's pylon sign at the curb, the tallest thing on its block: the station's name (or just GAS) and
+        // January 1993's price, seen both ways down the road.
+        private static void GasSign(Site site, Spot s, System.Random rng)
+        {
+            Vector2 toStreet = site.Area.NearestStreetDirection(s.At, 40f);
+            if (toStreet == Vector2.zero) return;
+            Vector2 spot = Vector2.zero;
+            bool found = false;
+            for (float k = 2f; k <= 30f; k += 1.5f)
+            {
+                Vector2 p = s.At + toStreet * k;
+                if (site.FreeBeside(p, 0.7f)) { spot = p; found = true; }
+                else if (found) break;
+            }
+            if (!found) return;
+            string name = string.IsNullOrEmpty(s.Data.name) ? "GAS" : s.Data.name.ToUpperInvariant();
+            if (name.Length > 16) name = name.Substring(0, 16).TrimEnd();
+            bool named = name != "GAS";
+            var red = new Color(0.64f, 0.12f, 0.10f);
+            var white = new Color(0.93f, 0.92f, 0.88f);
+            Surf nameSurf = DecorMaterials.Sign(name, named ? red : white, named ? white : red, out float nameAspect);
+            Surf priceSurf = DecorMaterials.Sign("REGULAR 1.07", white, new Color(0.10f, 0.10f, 0.12f), out float priceAspect);
+            float nameH = 0.9f, priceH = 0.45f;
+            float nameW = Mathf.Min(3.2f, nameH * nameAspect), priceW = Mathf.Min(2.6f, priceH * priceAspect);
+            float boardW = Mathf.Max(nameW, priceW) + 0.3f;
+            Vector3 at = To3(spot, 0f);
+            float yaw = Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg + 90f + MapStyle.Range(rng, -3f, 3f);
+            RaidMesh m = site.Town.Out.Solid(at);
+            m.SetFrame(at, yaw);
+            var steel = DecorPalette.Metal(new Color(0.46f, 0.47f, 0.48f));
+            m.Box(new Vector3(0f, 2.9f, 0f), new Vector3(0.22f, 5.8f, 0.22f), steel);
+            m.Box(new Vector3(0f, 5.25f, 0f), new Vector3(boardW, 1.15f, 0.24f), DecorPalette.Matte(named ? red * 0.8f : white * 0.9f));
+            m.Box(new Vector3(0f, 4.27f, 0f), new Vector3(boardW, 0.62f, 0.18f), DecorPalette.Matte(white * 0.85f));
+            for (int k = -1; k <= 1; k += 2)
+            {
+                Vector3 n = k > 0 ? Vector3.forward : Vector3.back;
+                m.Upright(new Vector3(0f, 5.25f, k * 0.125f), n, nameW, nameH, nameSurf, new Rect(0f, 0f, 1f, 1f));
+                m.Upright(new Vector3(0f, 4.27f, k * 0.095f), n, priceW, priceH, priceSurf, new Rect(0f, 0f, 1f, 1f));
+            }
+            m.Box(new Vector3(0f, 5.87f, 0f), new Vector3(boardW + 0.02f, 0.08f, 0.3f), DecorPalette.Matte(new Color(0.94f, 0.95f, 0.97f)));
+            m.ResetFrame();
+            site.Town.PropCollider(at + Vector3.up * 1.5f, new Vector3(0.4f, 3f, 0.4f), yaw);
+            site.Take(spot, 0.8f);
         }
 
         // A canopy (or a building used as a gas station) within 30 m: the building pass puts the pumps under it.
