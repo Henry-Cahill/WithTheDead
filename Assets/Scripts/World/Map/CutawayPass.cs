@@ -15,10 +15,10 @@ namespace CloneZ
     /// the outside walls from inside, into the shells); the shells point at the shared batches from then on. Shared
     /// (batched) shells are emitted with the site's batches instead.
     /// <para>
-    /// Light on the main thread: two objects a building, their meshes baked at once or, with <see cref="Deferred"/>,
-    /// queued on the site's bake; nothing is read back from them here (what the runtime needs from the meshes, their true
-    /// heights, it reads the first time a scan meets the building). A streamed piece's steps end every couple of
-    /// milliseconds (<see cref="Site.StepDue"/>).
+    /// Light on the main thread: two objects a building, their meshes queued on the site's bake (<see cref="Deferred"/>)
+    /// or baked at once; nothing is read back from them here (what the runtime needs from the meshes, their true heights,
+    /// it reads a slice at a time once they're baked). A streamed piece's steps end every couple of milliseconds
+    /// (<see cref="Site.StepDue"/>).
     /// </para>
     /// </summary>
     internal static class CutawayPass
@@ -27,9 +27,10 @@ namespace CloneZ
         /// <summary>A shell whose walls stop lower than this has no walls worth cutting (a canopy's posts).</summary>
         private const float MinWalls = 0.05f;
 
-        /// <summary>Queue the shells' meshes on the site's bake (<see cref="Site.Bake"/>: packed with the piece's other
-        /// meshes when it's emitted, off the main thread once the streamer packs it there) rather than bake each here.</summary>
-        internal static bool Deferred;
+        /// <summary>Queue the shells' meshes on the site's bake (<see cref="Site.Bake"/>: a streamed piece packs it on a worker
+        /// thread with the piece's other meshes, the fixed square bakes it with its outdoor meshes) rather than bake each
+        /// here, on the main thread. Off only for the harness's comparison.</summary>
+        internal static bool Deferred = true;
 
         /// <summary>Running totals over the process (the harness reads them around a build): buildings emitted and the time
         /// that took, in stopwatch ticks.</summary>
@@ -84,6 +85,10 @@ namespace CloneZ
             Vector3 origin = To3(f.Middle, 0f);
             string id = f.Data != null ? f.Data.id.ToString(CultureInfo.InvariantCulture) : "";
             RaidMesh w = shell.Walls[0], u = shell.Upper;
+            // What the upper part covers in plan, from its vertices as drawn (before they're handed to the bake).
+            Rect cover = f.Bounds;
+            if (u != null && u != w && u.PlanExtents(Vector3.zero, out Vector4 least, out Vector4 most) && Finite(least) && Finite(most))
+                cover = Rect.MinMaxRect(Mathf.Min(cover.xMin, least.x), Mathf.Min(cover.yMin, least.y), Mathf.Max(cover.xMax, most.x), Mathf.Max(cover.yMax, most.y));
             GameObject wallsGo = Place(site, w, "Walls " + id, wallsRoot, origin);
             GameObject upperGo = u != w ? Place(site, u, "Upper " + id, upperRoot, origin) : null;
             if ((wallsGo == null && upperGo == null) || f.Pts.Count < 3) return null;
@@ -94,6 +99,7 @@ namespace CloneZ
                 Kind = f.Data != null ? f.Data.kind : null,
                 Middle = f.Middle,
                 Local = f.Pts.ToArray(),
+                LocalCover = cover,
                 WallThickness = thickness.TryGetValue(f, out float t) ? t : DefaultWallThickness,
                 Walls = wallsGo != null ? wallsGo.GetComponent<MeshRenderer>() : null,
                 Upper = upperGo != null ? upperGo.GetComponent<MeshRenderer>() : null,
@@ -102,6 +108,7 @@ namespace CloneZ
             };
             bool cuttable = wallsGo != null && shell.WallTop >= MinWalls;
             b.WallTop = cuttable ? shell.WallTop : 0f;
+            b.ClipTop = b.WallTop;
             b.Top = Mathf.Max(shell.Top, b.WallTop);
             int n = b.Local.Length;
             b.EdgeGroup = new byte[n];
@@ -124,5 +131,8 @@ namespace CloneZ
             m.Release();
             return go;
         }
+
+        private static bool Finite(Vector4 v) => !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsInfinity(v.x) || float.IsInfinity(v.y)
+            || float.IsNaN(v.z) || float.IsNaN(v.w) || float.IsInfinity(v.z) || float.IsInfinity(v.w));
     }
 }

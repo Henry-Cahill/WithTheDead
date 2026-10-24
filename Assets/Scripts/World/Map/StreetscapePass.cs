@@ -69,7 +69,8 @@ namespace CloneZ
             foreach (Patch p in site.Area.Areas)
             {
                 if (p.Data.kind != "park") continue;
-                List<Vector2> inside = MapGeometry.ClipPolygon(p.Pts, square);
+                // A streamed piece's areas are cut to its square already; the fixed square's reach past it.
+                List<Vector2> inside = site.Chunked ? p.Pts : MapGeometry.ClipPolygon(p.Pts, square);
                 if (inside.Count < 3) continue;
                 System.Random rng = MapStyle.Rng(p.Data.id, SaltLitter);
                 MapGeometry.Extent(inside, out float x0, out float z0, out float x1, out float z1);

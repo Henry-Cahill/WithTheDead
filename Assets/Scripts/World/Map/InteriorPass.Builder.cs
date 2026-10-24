@@ -616,13 +616,21 @@ namespace CloneZ
             for (int i = 0; i < Plan.Rooms.Count; i++)
             {
                 if (Plan.Rooms[i].Lamps <= 0) continue;
+                bool wired = false;
                 foreach (InteriorPass.Piece p in Pieces)
                 {
                     if (p.Door == null || (p.Door.Minus != i && p.Door.Plus != i)) continue;
-                    if (TrySwitch(i, p)) break;
+                    if (TrySwitch(i, p)) { wired = true; break; }
                 }
+                if (!wired) EntranceSwitch(i);
             }
         }
+
+        /// <summary>Where the light switches are (frame points on the walls' faces), by room: the room's furnishing keeps
+        /// its tall pieces off them.</summary>
+        public readonly List<KeyValuePair<int, Vector2>> SwitchSpots = new List<KeyValuePair<int, Vector2>>();
+
+        private const float Plate = 0.07f;
 
         private bool TrySwitch(int room, InteriorPass.Piece door)
         {
@@ -632,28 +640,86 @@ namespace CloneZ
             RoomExtent(r, w.AlongX, out float ra, out float rb);
             int swing = SwingInto(Plan.Rooms[w.Minus], Plan.Rooms[w.Plus]);
             float leaf = swing == side ? (w.DoorWidth * 0.5f) + 0.05f : 0f;
-            const float plate = 0.07f;
             for (int e = 1; e >= -1; e -= 2)
             {
-                float at = w.DoorPos + e * (w.DoorWidth * 0.5f + 0.07f + 0.15f + plate * 0.5f + leaf);
-                if (at - plate < ra + 0.1f || at + plate > rb - 0.1f) continue;
+                float at = w.DoorPos + e * (w.DoorWidth * 0.5f + 0.07f + 0.15f + Plate * 0.5f + leaf);
+                if (at - Plate < ra + 0.1f || at + Plate > rb - 0.1f) continue;
                 InteriorPass.Piece wall = null;
                 foreach (InteriorPass.Piece p in Pieces)
-                    if (p.Door == null && p.Run == door.Run && at - plate >= p.S && at + plate <= p.E) { wall = p; break; }
+                    if (p.Door == null && p.Run == door.Run && at - Plate >= p.S && at + Plate <= p.E) { wall = p; break; }
                 if (wall == null) continue;
                 Vector3 faceL = P(wall.Run, at, Mathf.Max(SwitchHeight, RailClear(r)), side * (Half + 0.004f)), nL = N(wall.Run, side);
-                FurnitureBuilder.SwitchPlate(wall.Mesh, faceL, nL, plate);
-                FurnitureBuilder.SwitchSlot(wall.Mesh, faceL, nL);
-                Vector3 face = Frame.TransformPoint(faceL), n = Frame.TransformDirection(nL);
-                LightSwitch sw = LightSwitch.Create(wall.Object.transform, "Light switch", face + n * 0.03f, face, n, new[] { B.CircuitOf(Rooms[room]) });
-                Vector3 axis = Vector3.Cross(n, Vector3.up);
-                var mesh = new RaidMesh();
-                FurnitureBuilder.SwitchToggle(mesh, face + n * 0.009f, n, ToggleTilt);
-                FixturePart toggle = FixturePart.Hinge(sw.transform, "Toggle", mesh, face + n * 0.009f, axis, ToggleTilt * 2f, ShadowCastingMode.Off).WithSpeed(0.08f);
-                sw.SetToggles(new[] { toggle });
+                Wire(wall.Object.transform, wall.Mesh, faceL, nL, room);
                 return true;
             }
             return false;
+        }
+
+        // A room no partition's doorway leads into (a one-room building, or one reached through an open side) has its switch
+        // by its outside door instead, on the latch side if there's wall there: on the outside wall's inner face, its plate
+        // an object of its own.
+        private bool EntranceSwitch(int room)
+        {
+            PlanRoom r = Plan.Rooms[room];
+            foreach (PlanEntrance en in Plan.Entrances)
+            {
+                if (en.Room != room || en.Width < 0.6f || en.Outward.sqrMagnitude < 1e-6f) continue;
+                Vector2 outward = en.Outward.normalized;
+                Vector2 along = new Vector2(-outward.y, outward.x);
+                // The outside door's single leaf hangs at its -along end and opens inward against the wall there.
+                for (int e = 1; e >= -1; e -= 2)
+                {
+                    Vector2 at = en.At + along * (e * (en.Width * 0.5f + 0.07f + 0.15f + Plate * 0.5f + (e < 0 && en.Width < 1.1f ? en.Width * 0.5f + 0.05f : 0f)));
+                    if (!SolidWall(room, at, outward, along, en)) continue;
+                    var n3 = new Vector3(-outward.x, 0f, -outward.y);
+                    Vector3 faceL = new Vector3(at.x, Mathf.Max(SwitchHeight, RailClear(r)), at.y) + n3 * 0.004f;
+                    var host = new GameObject("Light switch plate");
+                    host.transform.SetParent(Frame, false);
+                    host.transform.localPosition = faceL;
+                    var m = new RaidMesh();
+                    Wire(host.transform, m, faceL, n3, room);
+                    m.ApplyTo(host, faceL, ShadowCastingMode.Off);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // True when a switch at `at` on the outside wall's inner face is on plain wall of `room`: no window or other doorway
+        // there, and no partition meeting the wall under it.
+        private bool SolidWall(int room, Vector2 at, Vector2 outward, Vector2 along, PlanEntrance self)
+        {
+            for (int s = -1; s <= 1; s++)
+                if (Plan.RoomAt(at - outward * 0.3f + along * (s * (Plate * 0.5f + Half + 0.05f))) != room) return false;
+            foreach (PlanWindow w in Plan.Windows)
+            {
+                Vector2 ab = w.B - w.A;
+                float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(at - w.A, ab) / ab.sqrMagnitude) : 0f;
+                if ((w.A + ab * t - at).sqrMagnitude < (Plate + 0.12f) * (Plate + 0.12f)) return false;
+            }
+            foreach (PlanEntrance en in Plan.Entrances)
+            {
+                if (en.At == self.At) continue;
+                float reach = en.Width * 0.5f + Plate + 0.15f;
+                if ((en.At - at).sqrMagnitude < reach * reach) return false;
+            }
+            return true;
+        }
+
+        // The plate, its slot and the working switch with its toggle, on a wall face at `faceL` (frame) facing `nL`: the
+        // plate drawn into `mesh` (the wall's), the switch under `parent`.
+        private void Wire(Transform parent, RaidMesh mesh, Vector3 faceL, Vector3 nL, int room)
+        {
+            FurnitureBuilder.SwitchPlate(mesh, faceL, nL, Plate);
+            FurnitureBuilder.SwitchSlot(mesh, faceL, nL);
+            Vector3 face = Frame.TransformPoint(faceL), n = Frame.TransformDirection(nL);
+            LightSwitch sw = LightSwitch.Create(parent, "Light switch", face + n * 0.03f, face, n, new[] { B.CircuitOf(Rooms[room]) });
+            Vector3 axis = Vector3.Cross(n, Vector3.up);
+            var toggleMesh = new RaidMesh();
+            FurnitureBuilder.SwitchToggle(toggleMesh, face + n * 0.009f, n, ToggleTilt);
+            FixturePart toggle = FixturePart.Hinge(sw.transform, "Toggle", toggleMesh, face + n * 0.009f, axis, ToggleTilt * 2f, ShadowCastingMode.Off).WithSpeed(0.08f);
+            sw.SetToggles(new[] { toggle });
+            SwitchSpots.Add(new KeyValuePair<int, Vector2>(room, new Vector2(faceL.x, faceL.z)));
         }
 
         // A switch keeps clear of the chair rail behind it.

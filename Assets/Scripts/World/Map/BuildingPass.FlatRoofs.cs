@@ -38,11 +38,13 @@ namespace CloneZ
             Copings(j, coping);
             if (p.FrontParapet > 0 && p.Front >= 0 && !j.Party(p.Front)) FrontParapet(j, p.Front, coping);
             System.Random rng = MapStyle.Rng(j.Id, SaltUnits);
+            // Where the snow has gone: a tar roof's gravel ballast, grey.
+            Surf bare = p.Covering == RoofCover.Membrane ? RoofSurf(RoofCover.Membrane, 1) : cover;
             if (snowy) Drifts(j, m, surface, rng);
             Rect keep = default;
             if (p.Penthouse) keep = Penthouse(j, deck, surface, snowy);
-            if (p.RoofUnits || f.Size > 220f) Furniture(j, deck, surface, snowy, cover, keep, rng);
-            if (p.Snow == SnowCover.Partial) Patches(j, m, surface + 0.006f, rng, cover, Mathf.Clamp(3 + Mathf.RoundToInt(f.Size / 140f), 3, 16), 0.8f, 2.8f);
+            if (p.RoofUnits || f.Size > 220f) Furniture(j, deck, surface, snowy, bare, keep, rng);
+            if (p.Snow == SnowCover.Partial) Patches(j, m, surface + 0.006f, rng, bare, Mathf.Clamp(2 + Mathf.RoundToInt(f.Size / 250f), 2, 10), 0.7f, 2.2f);
             else if (!snowy) Patches(j, m, surface + 0.006f, rng, RoofSnow, Mathf.Clamp(2 + Mathf.RoundToInt(f.Size / 200f), 2, 10), 0.5f, 1.6f);
         }
 
@@ -193,8 +195,8 @@ namespace CloneZ
             return Mathf.Min(reach * 3f, reach * cos / Mathf.Max(0.2f, sin)) + 0.1f;
         }
 
-        // Irregular patches of <paramref name="s"/> over the deck: tar where the snow has gone, or the last of the snow on
-        // a bare roof, clear of the walls.
+        // Irregular patches of <paramref name="s"/> over the deck: the bare roof where the snow has gone, or the last of the
+        // snow on a bare roof, clear of the walls; each a cluster of overlapping blobs.
         private static void Patches(Job j, RaidMesh m, float y, System.Random rng, in Surf s, int count, float r0, float r1)
         {
             Footprint f = j.F;
@@ -203,9 +205,17 @@ namespace CloneZ
                 var at = new Vector2(Mathf.Lerp(f.Bounds.xMin, f.Bounds.xMax, (float)rng.NextDouble()),
                     Mathf.Lerp(f.Bounds.yMin, f.Bounds.yMax, (float)rng.NextDouble()));
                 float rx = Range(rng, r0, r1), rz = rx * Range(rng, 0.5f, 0.9f);
-                if (!MapGeometry.Contains(f.Pts, at) || MapGeometry.DistanceToEdge(f.Pts, at) < rx + Thick + 0.3f) continue;
+                if (!MapGeometry.Contains(f.Pts, at) || MapGeometry.DistanceToEdge(f.Pts, at) < rx * 1.8f + Thick + 0.3f) continue;
                 k++;
-                m.FlatBlob(To3(at, y), rx, rz, Range(rng, 0f, 180f), 0.35f, rng, s);
+                float yaw = Range(rng, 0f, 180f);
+                m.FlatBlob(To3(at, y), rx, rz, yaw, 0.3f, rng, s);
+                int lobes = 1 + rng.Next(3);
+                for (int l = 0; l < lobes; l++)
+                {
+                    float a = Range(rng, 0f, Mathf.PI * 2f);
+                    Vector2 off = new Vector2(Mathf.Cos(a), Mathf.Sin(a)) * rx * Range(rng, 0.5f, 0.9f);
+                    m.FlatBlob(To3(at + off, y + 0.002f * (l + 1)), rx * Range(rng, 0.4f, 0.7f), rz * Range(rng, 0.4f, 0.7f), Range(rng, 0f, 180f), 0.3f, rng, s);
+                }
             }
         }
 

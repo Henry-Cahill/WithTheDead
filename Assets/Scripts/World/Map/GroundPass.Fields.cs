@@ -22,16 +22,24 @@ namespace CloneZ
             return u < 0.5f ? Crop.Corn : u < 0.82f ? Crop.Beans : Crop.Hay;
         }
 
-        private static void Fields(Ground g)
+        private static IEnumerable<string> Fields(Ground g)
         {
             var spans = new List<float>();
             var cut = new List<float>();
             foreach (Owner o in g.Owners)
-                if (o.Visible > 4f) FieldRows(g, o, g.Owners, g.Site.Town.Out, !g.Lite, spans, cut);
+                if (o.Visible > 4f && (o.Kind == "farmland" || o.Kind == "orchard"))
+                {
+                    FieldRows(g, o, g.Owners, g.Site.Town.Out, !g.Lite, spans, cut);
+                    if (g.Site.StepDue) yield return "fields";
+                }
             for (int b = 0; b < g.Ring.Count; b++)
                 foreach (Owner o in g.Ring[b])
-                    if (o.Visible > 4f) FieldRows(g, o, g.Ring[b], g.Site.Town.Far, false, spans, cut);
-            if (g.Lite) return;
+                    if (o.Visible > 4f && (o.Kind == "farmland" || o.Kind == "orchard"))
+                    {
+                        FieldRows(g, o, g.Ring[b], g.Site.Town.Far, false, spans, cut);
+                        if (g.Site.StepDue) yield return "fields";
+                    }
+            if (g.Lite) yield break;
             Marsh(g);
             TreeWells(g);
         }

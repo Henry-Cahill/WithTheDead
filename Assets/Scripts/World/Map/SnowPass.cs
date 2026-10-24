@@ -27,6 +27,7 @@ namespace CloneZ
         {
             if (site.Detail == Detail.Lite) yield break;
             NaturePlan plan = NaturePlan.For(site);
+            plan.CatchUp();
             PlanPiles(site, plan);
             LotPiles(site, plan);
             yield return "plough piles";

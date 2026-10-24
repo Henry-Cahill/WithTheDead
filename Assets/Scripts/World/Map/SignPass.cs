@@ -217,7 +217,7 @@ namespace CloneZ
             {
                 string k = n.Data.kind;
                 if (k != "stop" && k != "give_way" || !ctx.Inside(n.At)) continue;
-                Street s = NearestRoad(ctx.Site, n.At, 12f, out Vector2 on, out Vector2 along);
+                Street s = NearestRoad(ctx, n.At, 12f, out Vector2 on, out Vector2 along);
                 if (s == null) continue;
                 Crossing c = ctx.NearestCrossing(n.At, 40f);
                 Vector2 facing;

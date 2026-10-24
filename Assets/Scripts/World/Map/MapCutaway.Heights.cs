@@ -16,68 +16,65 @@ namespace CloneZ
         internal const float HeightStep = 0.25f;
         private const float MinHeightCell = 0.5f;
         private const int MaxHeightCells = 80;   // along a side
-        /// <summary>How far past its footprint a building is assumed to reach until its upper part is read (eaves, porch
+        /// <summary>How far past its footprint a building is assumed to reach when what it covers isn't known (eaves, porch
         /// roofs, awnings, signs): the spatial hash cells it's put in.</summary>
         private const float CoverMargin = 3f;
+        /// <summary>A little round what a building is known to cover (the heights grid rounds out to whole cells).</summary>
+        private const float CoverSlack = 0.6f;
         /// <summary>The roof test starts this far in front of the survivor: past their own radius and half a height cell,
         /// so the building at their back never counts.</summary>
         private const float RoofFrom = 0.45f;
-
-        /// <summary>Time a scan may spend reading buildings' meshes (ms); at least one is read a scan.</summary>
-        internal static float ResolveBudgetMs = 0.6f;
 
         /// <summary>Off: roofs are tested by the footprint up to the building's top even once read (the harness compares).</summary>
         internal static bool UseHeights = true;
 
         private static readonly List<Vector3> s_HV = new List<Vector3>(8192);
         private static readonly List<int> s_HI = new List<int>(16384);
+        private static readonly List<int> s_HRead = new List<int>(8192);
         private static readonly List<Building> s_Rehash = new List<Building>(8);
         private static bool s_HeightWarned;
 
-        /// <summary>Buildings read so far, the time that took in all and the longest (ms), and the heights' memory (bytes).</summary>
+        /// <summary>Buildings whose heights were read so far, the time that took in all and the longest slice (ms), and the
+        /// heights' memory (bytes).</summary>
         internal static int Resolves;
-        internal static double ResolveMs, ResolveMaxMs;
+        internal static double ResolveMs, ResolveSliceMaxMs;
         internal static long HeightBytes;
 
-        // Reads a building's baked meshes: how high its walls and its upper part really reach, and the upper part's heights.
-        // False while they aren't baked yet.
-        private static bool Resolve(Building b)
+        /// <summary>The heights being read, a slice at a time.</summary>
+        private sealed class HeightJob
         {
+            public Building B;
+            public int Tri;
+            public byte[] Field;
+            public int W, H;
+            public float X0, Z0, Cell;
+            public Vector3 Shift;
+        }
+
+        private static readonly HeightJob s_Height = new HeightJob();
+
+        /// <summary>Reads how high a building's baked walls and upper part reach (their bounds: cheap), and whether its walls
+        /// reach above its ground storey's top. False while they aren't baked yet.</summary>
+        private static bool Measure(Building b)
+        {
+            if (b.Measured) return true;
             Mesh wm = b.WallsMesh, um = b.UpperMesh;
             if (b.Walls != null && (wm == null || wm.vertexCount == 0)) return false;
             if (b.Upper != null && (um == null || um.vertexCount == 0)) return false;
-            long started = Stopwatch.GetTimestamp();
-            try
-            {
-                if (b.Groups != 0 && wm != null) b.WallTop = Mathf.Max(b.WallTop, wm.bounds.max.y);
-                b.Top = Mathf.Max(b.Top, b.WallTop);
-                if (um != null)
-                {
-                    b.Top = Mathf.Max(b.Top, um.bounds.max.y);
-                    if (um.isReadable) Heights(b, um);
-                }
-            }
-            catch (System.Exception e)
-            {
-                b.Height = null;
-                if (!s_HeightWarned) Debug.LogWarning("[MapCutaway] couldn't read the roof of building " + b.Id + "; its footprint stands in: " + e);
-                s_HeightWarned = true;
-            }
-            b.Resolved = true;
+            float walls = wm != null ? wm.bounds.max.y : 0f;
+            b.ClipWalls = b.Groups != 0 && b.ClipTop >= MinClip && walls > b.ClipTop + 0.02f;
+            // The walls the sight line is tested against are what shows of them once the storeys above are lifted.
+            if (b.Groups != 0) b.WallTop = b.ClipWalls ? b.ClipTop : walls;
+            b.Top = Mathf.Max(b.Top, Mathf.Max(walls, um != null ? um.bounds.max.y : 0f));
+            b.Measured = true;
+            if (b.Upper == null || um == null || !um.isReadable) b.Resolved = true;   // nothing to read: the footprint stands in
             if (b.Site != null) b.Site.MaxTop = Mathf.Max(b.Site.MaxTop, b.Base + b.Top);
             s_MaxTop = Mathf.Max(s_MaxTop, b.Base + b.Top);
-            if (b.Height != null && (b.HX < b.Cover.xMin || b.HZ < b.Cover.yMin
-                || b.HX + b.HW * b.HCell > b.Cover.xMax || b.HZ + b.HH * b.HCell > b.Cover.yMax))
-                s_Rehash.Add(b);   // it reaches past the cells it's in: re-hashed once the scan is done
-            double ms = (Stopwatch.GetTimestamp() - started) * 1000.0 / Stopwatch.Frequency;
-            Resolves++;
-            ResolveMs += ms;
-            if (ms > ResolveMaxMs) ResolveMaxMs = ms;
             return true;
         }
 
-        /// <summary>Reads every registered building's meshes now (the harness; the game reads them as scans meet them);
-        /// returns how many were read.</summary>
+        /// <summary>Reads every registered building's meshes now (the harness; the game reads them a slice a frame as scans
+        /// meet them, or before); returns how many roofs were read.</summary>
         internal static int ResolveAll()
         {
             int n = 0;
@@ -85,41 +82,144 @@ namespace CloneZ
             {
                 List<Building> list = s_Sites[i].Buildings;
                 for (int k = 0; k < list.Count; k++)
-                    if (!list[k].Resolved && list[k].Site != null && Resolve(list[k])) n++;
+                    if (ResolveOne(list[k])) n++;
             }
-            if (s_Rehash.Count > 0) Rehash();
             return n;
         }
 
-        // The upper part's heights over a grid covering it and the footprint, in the world's plan axes.
-        private static void Heights(Building b, Mesh um)
+        /// <summary>Measures building <paramref name="b"/> and reads its roof's heights now, whatever the time (the harness);
+        /// true when its heights were read.</summary>
+        internal static bool ResolveOne(Building b)
         {
-            Bounds mb = um.bounds;   // mesh space: x, z from the object (the footprint's middle), y from the base
-            Vector3 o = b.Upper.transform.position;
-            float x0 = Mathf.Min(o.x + mb.min.x, b.Bounds.xMin), x1 = Mathf.Max(o.x + mb.max.x, b.Bounds.xMax);
-            float z0 = Mathf.Min(o.z + mb.min.z, b.Bounds.yMin), z1 = Mathf.Max(o.z + mb.max.z, b.Bounds.yMax);
-            float cell = Mathf.Max(MinHeightCell, Mathf.Max(x1 - x0, z1 - z0) / MaxHeightCells);
-            int w = Mathf.Max(1, Mathf.CeilToInt((x1 - x0) / cell)), h = Mathf.Max(1, Mathf.CeilToInt((z1 - z0) / cell));
-            var field = new byte[w * h];
-            var shift = new Vector3(o.x - x0, o.y - b.Base, o.z - z0);   // mesh space to the grid's (x, z from its corner)
-            s_HV.Clear();
-            um.GetVertices(s_HV);
-            for (int sm = 0; sm < um.subMeshCount; sm++)
+            if (b.Site == null || !Measure(b) || b.Resolved) return false;
+            if (!ReferenceEquals(s_Height.B, b))
             {
-                if (um.GetTopology(sm) != MeshTopology.Triangles) continue;
-                s_HI.Clear();
-                um.GetIndices(s_HI, sm, true);
-                for (int t = 0; t + 2 < s_HI.Count; t += 3)
-                    Raster(field, w, h, cell, s_HV[s_HI[t]] + shift, s_HV[s_HI[t + 1]] + shift, s_HV[s_HI[t + 2]] + shift);
+                AbortHeightJob();
+                if (!StartHeightJob(b)) return false;
             }
-            if (b.Height != null) HeightBytes -= b.Height.Length;
-            b.Height = field;
-            b.HX = x0;
-            b.HZ = z0;
-            b.HCell = cell;
-            b.HW = w;
-            b.HH = h;
-            HeightBytes += field.Length;
+            StepHeightJob(long.MaxValue);
+            return b.Height != null;
+        }
+
+        private static void AbortHeightJob()
+        {
+            s_Height.B = null;
+            s_Height.Field = null;
+        }
+
+        // Starts reading b's heights: false when there's nothing to read (or it isn't baked yet).
+        private static bool StartHeightJob(Building b)
+        {
+            if (b.Site == null || b.Resolved || !Measure(b) || b.Resolved) return false;
+            Mesh um = b.UpperMesh;
+            long started = Stopwatch.GetTimestamp();
+            try
+            {
+                Bounds mb = um.bounds;   // mesh space: x, z from the object (the footprint's middle), y from the base
+                Vector3 o = b.Upper.transform.position;
+                float x0 = Mathf.Min(o.x + mb.min.x, b.Bounds.xMin), x1 = Mathf.Max(o.x + mb.max.x, b.Bounds.xMax);
+                float z0 = Mathf.Min(o.z + mb.min.z, b.Bounds.yMin), z1 = Mathf.Max(o.z + mb.max.z, b.Bounds.yMax);
+                float cell = Mathf.Max(MinHeightCell, Mathf.Max(x1 - x0, z1 - z0) / MaxHeightCells);
+                if (!(cell < 1e4f)) throw new System.InvalidOperationException("its bounds aren't finite");
+                HeightJob job = s_Height;
+                job.B = b;
+                job.Tri = 0;
+                job.Cell = cell;
+                job.W = Mathf.Max(1, Mathf.CeilToInt((x1 - x0) / cell));
+                job.H = Mathf.Max(1, Mathf.CeilToInt((z1 - z0) / cell));
+                job.X0 = x0;
+                job.Z0 = z0;
+                job.Field = new byte[job.W * job.H];
+                job.Shift = new Vector3(o.x - x0, o.y - b.Base, o.z - z0);   // mesh space to the grid's (x, z from its corner)
+                s_HV.Clear();
+                um.GetVertices(s_HV);
+                s_HI.Clear();
+                for (int sm = 0; sm < um.subMeshCount; sm++)
+                {
+                    if (um.GetTopology(sm) != MeshTopology.Triangles) continue;
+                    s_HRead.Clear();
+                    um.GetIndices(s_HRead, sm, true);
+                    s_HI.AddRange(s_HRead);
+                }
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                HeightFailed(b, e);
+                return false;
+            }
+            finally
+            {
+                Took(started, false);
+            }
+        }
+
+        private static void HeightFailed(Building b, System.Exception e)
+        {
+            AbortHeightJob();
+            b.Height = null;
+            b.Resolved = true;
+            if (!s_HeightWarned) Debug.LogWarning("[MapCutaway] couldn't read the roof of building " + b.Id + "; its footprint stands in: " + e);
+            s_HeightWarned = true;
+        }
+
+        // Runs the heights being read until they're done or `deadline` (stopwatch ticks) passes: true when done.
+        private static bool StepHeightJob(long deadline)
+        {
+            HeightJob job = s_Height;
+            Building b = job.B;
+            if (b == null) return true;
+            if (b.Site == null)
+            {
+                AbortHeightJob();
+                return true;
+            }
+            long started = Stopwatch.GetTimestamp();
+            try
+            {
+                byte[] field = job.Field;
+                int w = job.W, h = job.H;
+                float cell = job.Cell;
+                Vector3 shift = job.Shift;
+                for (; job.Tri + 2 < s_HI.Count; job.Tri += 3)
+                {
+                    if ((job.Tri & 127) == 0 && job.Tri > 0 && Stopwatch.GetTimestamp() > deadline) return false;
+                    Raster(field, w, h, cell, s_HV[s_HI[job.Tri]] + shift, s_HV[s_HI[job.Tri + 1]] + shift, s_HV[s_HI[job.Tri + 2]] + shift);
+                }
+                if (b.Height != null) HeightBytes -= b.Height.Length;
+                b.Height = field;
+                b.HX = job.X0;
+                b.HZ = job.Z0;
+                b.HCell = cell;
+                b.HW = w;
+                b.HH = h;
+                HeightBytes += field.Length;
+                b.Resolved = true;
+                Resolves++;
+                if (b.HX < b.Cover.xMin || b.HZ < b.Cover.yMin || b.HX + b.HW * cell > b.Cover.xMax || b.HZ + b.HH * cell > b.Cover.yMax)
+                {
+                    s_Rehash.Add(b);   // it reaches past the cells it's in
+                    Rehash();
+                }
+                AbortHeightJob();
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                HeightFailed(b, e);
+                return true;
+            }
+            finally
+            {
+                Took(started, deadline != long.MaxValue);
+            }
+        }
+
+        private static void Took(long started, bool slice)
+        {
+            double ms = (Stopwatch.GetTimestamp() - started) * 1000.0 / Stopwatch.Frequency;
+            ResolveMs += ms;
+            if (slice && ms > ResolveSliceMaxMs) ResolveSliceMaxMs = ms;
         }
 
         // Raises the cells under triangle a-b-c (grid space: x, z from the grid's corner, y above the base) to the

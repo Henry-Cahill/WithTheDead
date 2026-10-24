@@ -1,16 +1,21 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Debug = UnityEngine.Debug;
 
 namespace CloneZ
 {
     // The walls' stand-in. A building's walls object is baked into the NavMesh, so it's never changed: while some of its
-    // facings are cut it only casts shadows, and a stand-in under the site's overhead root shows the rest. The stand-in is
-    // a copy of the walls mesh with its triangles sorted by facing (each goes with the wall it stands nearest to, measured
-    // to the middle of each wall's thickness, so a wall's end at a corner stays with its own wall), plus, for every
-    // facing, a stub of its bottom StubHeight metres (the walls cut through, with the openings where the doors are) and a
-    // cap closing it; cutting a facing swaps its walls for its stub by emptying sub-meshes, which costs no allocation. It's
-    // made the first time a building is cut and kept until its site goes.
+    // facings are cut, or the storeys above are lifted, it only casts shadows and a stand-in under the site's overhead root
+    // shows the walls instead. The stand-in is a copy of the walls mesh with its triangles sorted by facing (each goes with
+    // the wall it stands nearest to, measured to the middle of each wall's thickness, so a wall's end at a corner stays with
+    // its own wall), cut off at the ground storey's top when anything of the walls (a tall window's head, the paper of a
+    // tall room) reaches above it, so nothing floats once the storeys above are lifted; plus, for every facing, a stub of its
+    // bottom StubHeight metres (the walls cut through, with the openings where the doors are) and a cap closing it. Cutting a
+    // facing swaps its walls for its stub by emptying sub-meshes, which costs no allocation. Stand-ins are made a slice at a
+    // time a frame (MapCutaway.Work) for the buildings round the survivor before they're needed, at once only when walls must
+    // be cut and theirs isn't ready, and let go of when the survivor has gone on.
     internal static partial class MapCutaway
     {
         /// <summary>What's left of a cut wall, PZ-style: its bottom this many metres, capped.</summary>
@@ -19,35 +24,105 @@ namespace CloneZ
         /// <summary>The cap on a cut wall: a dark section line, so the cut reads at a glance.</summary>
         internal static readonly Color CapColour = new Color(0.30f, 0.28f, 0.26f);
 
-        private const int Parts = 9;   // per facing: walls, stub; then caps (see Part)
-        private const MeshUpdateFlags QuietUpdate = MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices;
+        /// <summary>Walls whose ground storey stops lower than this are never clipped (a canopy's posts, a ruin's stumps).</summary>
+        private const float MinClip = 1.5f;
 
-        // Scratch for building stand-ins (main thread, one at a time).
+        /// <summary>Stand-ins kept at most (the farthest unused go first), and how far from the survivor an unused one goes.</summary>
+        internal static int MaxOverlays = 24;
+        internal static float EvictRadius = 40f;
+
+        private const MeshUpdateFlags Toggle = MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices;
+        private const MeshUpdateFlags Quiet = Toggle | MeshUpdateFlags.DontNotifyMeshUsers | MeshUpdateFlags.DontResetBoneBounds;
+
+        // What the walls show: the walls object, nothing (no stand-in could be made: the walls are cut whole), or the stand-in.
+        internal const int WallsWhole = 0, WallsNone = 1, WallsStandIn = 2;
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct StandInVertex
+        {
+            public Vector3 Position, Normal;
+            public Vector2 Uv;
+        }
+
+        private static readonly VertexAttributeDescriptor[] s_StandInLayout =
+        {
+            new VertexAttributeDescriptor(VertexAttribute.Position, VertexAttributeFormat.Float32, 3),
+            new VertexAttributeDescriptor(VertexAttribute.Normal, VertexAttributeFormat.Float32, 3),
+            new VertexAttributeDescriptor(VertexAttribute.TexCoord0, VertexAttributeFormat.Float32, 2),
+        };
+
+        // Scratch for the stand-in being made (main thread, one at a time, kept between its slices).
         private static readonly List<Vector3> s_V = new List<Vector3>(4096);
         private static readonly List<Vector3> s_N = new List<Vector3>(4096);
         private static readonly List<Vector2> s_U = new List<Vector2>(4096);
-        private static readonly List<int> s_Src = new List<int>(8192);
+        private static readonly List<int> s_Idx = new List<int>(16384);
+        private static readonly List<int> s_Read = new List<int>(8192);
+        private static int[] s_SubStart = new int[16], s_SubCount = new int[16];
         private static readonly List<List<int>> s_Lists = new List<List<int>>(64);
         private static readonly List<Vector3>[] s_Cuts = { new List<Vector3>(64), new List<Vector3>(64), new List<Vector3>(64), new List<Vector3>(64) };
         private static readonly Dictionary<long, int> s_Ends = new Dictionary<long, int>(256);
         private static readonly List<Vector2> s_Loop = new List<Vector2>(64);
         private static Vector2[] s_LineA = new Vector2[32], s_LineB = new Vector2[32];
         private static bool[] s_Used = new bool[256];
+        private static StandInVertex[] s_Packed = new StandInVertex[4096];
+        private static int[] s_Packed32 = new int[16384];
+        private static ushort[] s_Packed16 = new ushort[16384];
         private static bool s_Warned;
 
-        /// <summary>Stand-ins made so far, the time that took in all (ms) and the longest one (ms): the cost of a first cut.</summary>
-        internal static int OverlaysMade;
-        internal static double OverlayMs, OverlayMaxMs;
+        /// <summary>The buildings that have a stand-in now.</summary>
+        private static readonly List<Building> s_Overlays = new List<Building>(32);
 
-        // Sub-mesh slot (before packing) of facing g's walls (kind 0) or stub (kind 1) in material m, or its cap (kind 2).
+        /// <summary>Stand-ins made so far: how many, the time that took in all (ms, every slice), the longest slice (ms), the
+        /// longest a stand-in took in all (ms), and how many were let go of again.</summary>
+        internal static int OverlaysMade, OverlaysEvicted;
+        internal static double OverlayMs, OverlaySliceMaxMs, OverlayWholeMaxMs;
+
+        /// <summary>Stand-ins alive now, and their meshes' size in bytes.</summary>
+        internal static int OverlaysAlive => s_Overlays.Count;
+        internal static long OverlayBytes;
+
+        /// <summary>The stand-in being made, a slice at a time.</summary>
+        private sealed class OverlayJob
+        {
+            public Building B;
+            public int Stage, Mats, Slots, Lines, Sub, Tri, Vertices;
+            public Material[] Materials;
+            public bool Clip;
+            public float ClipTop;
+            public double Ms;
+        }
+
+        private static readonly OverlayJob s_Job = new OverlayJob();
+
+        // Sub-mesh slot (before packing) of facing g's standing walls (kind 0) or stub (kind 1) in material m, or its cap
+        // (kind 2).
         private static int Part(int kind, int g, int m, int mats) => kind == 2 ? 8 * mats + g : (kind * 4 + g) * mats + m;
 
-        /// <summary>Shows the stand-in, with the facings in <paramref name="cut"/> (bits 0-3) lowered to their stubs; makes it
-        /// the first time. When it can't be made, the building's walls all stay hidden.</summary>
-        private static void ShowOverlay(Building b, int cut)
+        private static bool OverlayReady(Building b) => b.Overlay != null && b.OverlayMesh != null;
+
+        /// <summary>True when the building's walls need its stand-in to show the parts in <paramref name="mask"/> cut.</summary>
+        private static bool NeedsStandIn(Building b, int mask)
+            => b.Walls != null && ((mask & WallBits) != 0 || ((mask & UpperBit) != 0 && b.ClipWalls));
+
+        // Puts the walls in the state the building's cut asks for (see Apply): whole, the stand-in with the cut facings lowered
+        // (a cut needing it is held back until it's ready: see Ready), or, when no stand-in can be made, cut whole.
+        private static void ShowWalls(Building b)
         {
-            if (b.Overlay == null && (b.OverlayFailed || !BuildOverlay(b))) return;
-            b.Overlay.enabled = true;
+            if (b.Walls == null) return;
+            int mask = b.Applied, cut = mask & WallBits;
+            int state = !NeedsStandIn(b, mask) ? WallsWhole : OverlayReady(b) ? WallsStandIn : cut != 0 ? WallsNone : WallsWhole;
+            if (state != b.WallState)
+            {
+                b.Walls.shadowCastingMode = state == WallsWhole ? ShadowCastingMode.On : ShadowCastingMode.ShadowsOnly;
+                if (b.Overlay != null) b.Overlay.enabled = state == WallsStandIn;
+                b.WallState = state;
+            }
+            if (state == WallsStandIn) Lower(b, cut);
+        }
+
+        // The stand-in's facings in `cut` lowered to their stubs, the others standing.
+        private static void Lower(Building b, int cut)
+        {
             int mats = b.OverlayMaterials;
             for (int g = 0; g < 4; g++)
             {
@@ -69,19 +144,31 @@ namespace CloneZ
             if (sub < 0) return;
             SubMeshDescriptor d = b.OverlayParts[sub];
             if (!on) d.indexCount = 0;
-            b.OverlayMesh.SetSubMesh(sub, d, QuietUpdate);
+            b.OverlayMesh.SetSubMesh(sub, d, Toggle);
         }
 
-        /// <summary>Lets go of a building's stand-in (its site is going).</summary>
+        /// <summary>Lets go of a building's stand-in (its site is going, or the survivor has gone on).</summary>
         private static void ReleaseOverlay(Building b)
         {
+            if (ReferenceEquals(s_Job.B, b)) AbortOverlayJob();
+            if (b.WallState == WallsStandIn && b.Walls != null)
+            {
+                b.Walls.shadowCastingMode = b.Applied != 0 ? ShadowCastingMode.ShadowsOnly : ShadowCastingMode.On;
+                b.WallState = b.Applied != 0 ? WallsNone : WallsWhole;
+            }
             if (b.Overlay != null) Destroy(b.Overlay.gameObject);
-            if (b.OverlayMesh != null) Destroy(b.OverlayMesh);
+            if (b.OverlayMesh != null)
+            {
+                OverlayBytes -= b.OverlayBytes;
+                Destroy(b.OverlayMesh);
+            }
             b.Overlay = null;
             b.OverlayMesh = null;
             b.OverlayParts = null;
             b.OverlayMap = null;
             b.OverlayShown = -1;
+            b.OverlayBytes = 0;
+            s_Overlays.Remove(b);
         }
 
         private static void Destroy(Object o)
@@ -90,119 +177,295 @@ namespace CloneZ
             else Object.DestroyImmediate(o);
         }
 
-        private static bool BuildOverlay(Building b)
+        // The unused stand-ins of buildings the survivor has left behind, and the farthest past the cap.
+        private static void Evict(Vector2 at)
         {
-            if (b.WallsMesh != null && b.WallsMesh.vertexCount == 0) return false;   // queued on its site's bake, not baked yet
-            long started = System.Diagnostics.Stopwatch.GetTimestamp();
+            for (int i = s_Overlays.Count - 1; i >= 0; i--)
+            {
+                Building b = s_Overlays[i];
+                if (b.Applied != 0 || b.Site == null) continue;
+                if (RectDistance(b.Bounds, at) <= EvictRadius) continue;
+                ReleaseOverlay(b);
+                OverlaysEvicted++;
+            }
+            while (s_Overlays.Count > MaxOverlays)
+            {
+                Building far = null;
+                float farD = -1f;
+                for (int i = 0; i < s_Overlays.Count; i++)
+                {
+                    Building b = s_Overlays[i];
+                    if (b.Applied != 0) continue;
+                    float d = RectDistance(b.Bounds, at);
+                    if (d > farD) { farD = d; far = b; }
+                }
+                if (far == null) break;
+                ReleaseOverlay(far);
+                OverlaysEvicted++;
+            }
+        }
+
+        #region Making a stand-in
+        // Makes building b's stand-in now, whatever the time (the harness's pictures).
+        private static void MakeOverlayNow(Building b)
+        {
+            if (!ReferenceEquals(s_Job.B, b))
+            {
+                AbortOverlayJob();
+                if (!StartOverlayJob(b)) return;
+            }
+            StepOverlayJob(long.MaxValue);
+        }
+
+        private static void AbortOverlayJob()
+        {
+            s_Job.B = null;
+            s_Job.Materials = null;
+            s_Job.Stage = 0;
+        }
+
+        // Starts making b's stand-in: false when it can't be (no walls, not baked yet, or unreadable: then never).
+        private static bool StartOverlayJob(Building b)
+        {
+            if (b.Walls == null || b.Site == null || b.OverlayFailed || OverlayReady(b)) return false;
+            Mesh src = b.WallsMesh;
+            if (src == null || src.vertexCount == 0 || !b.Measured) return false;   // not baked yet: later
+            Transform parent = b.Site.Overlays;
+            Material[] materials = b.Walls.sharedMaterials;
+            if (!src.isReadable || parent == null || materials.Length == 0 || src.subMeshCount == 0)
+            {
+                Failed(b, "its walls mesh can't be read");
+                return false;
+            }
+            s_Job.B = b;
+            s_Job.Stage = 0;
+            s_Job.Materials = materials;
+            s_Job.Mats = src.subMeshCount;
+            s_Job.Clip = b.ClipWalls;
+            s_Job.ClipTop = b.ClipTop;
+            s_Job.Ms = 0;
+            return true;
+        }
+
+        private static void Failed(Building b, string why)
+        {
+            b.OverlayFailed = true;
+            if (ReferenceEquals(s_Job.B, b)) AbortOverlayJob();
+            if (!s_Warned) Debug.LogWarning("[MapCutaway] couldn't make the cut walls of building " + b.Id + " (" + why + "); its walls go whole when cut.");
+            s_Warned = true;
+        }
+
+        // Runs the stand-in being made until it's done or `deadline` (stopwatch ticks) passes. True when it's done (made, or
+        // given up on).
+        private static bool StepOverlayJob(long deadline)
+        {
+            OverlayJob job = s_Job;
+            Building b = job.B;
+            if (b == null) return true;
+            if (b.Site == null || b.Walls == null || b.WallsMesh == null)
+            {
+                AbortOverlayJob();
+                return true;
+            }
+            long started = Stopwatch.GetTimestamp();
             try
             {
-                MeshFilter mf = b.Walls.GetComponent<MeshFilter>();
-                Mesh src = mf != null ? mf.sharedMesh : null;
-                Transform parent = b.Site != null ? b.Site.Overlays : null;
-                if (src == null || !src.isReadable || parent == null)
+                if (job.Stage == 0)
                 {
-                    b.OverlayFailed = true;
-                    return false;
+                    ReadWalls(job);
+                    job.Stage = 1;
                 }
-                Material[] materials = b.Walls.sharedMaterials;
-                int mats = src.subMeshCount;
-                if (materials.Length == 0 || mats == 0)
+                if (job.Stage == 1)
                 {
-                    b.OverlayFailed = true;
-                    return false;
+                    if (!Triangles(job, deadline)) return false;
+                    job.Stage = 2;
                 }
-                int slots = 8 * mats + 4;
-                for (int i = 0; i < slots; i++)
+                if (job.Stage == 2)
                 {
-                    if (i == s_Lists.Count) s_Lists.Add(new List<int>(256));
-                    s_Lists[i].Clear();
+                    Surf cap = DecorPalette.Matte(CapColour);
+                    for (int g = 0; g < 4; g++) Caps(s_Cuts[g], s_Lists[Part(2, g, 0, job.Mats)], cap.Uv);
+                    job.Stage = 3;
+                    if (Stopwatch.GetTimestamp() > deadline) return false;
                 }
-                for (int g = 0; g < 4; g++) s_Cuts[g].Clear();
-                s_V.Clear();
-                s_N.Clear();
-                s_U.Clear();
-                src.GetVertices(s_V);
-                src.GetNormals(s_N);
-                src.GetUVs(0, s_U);
-                while (s_N.Count < s_V.Count) s_N.Add(Vector3.up);
-                while (s_U.Count < s_V.Count) s_U.Add(Vector2.zero);
-
-                int lines = WallLines(b);
-                LineGrid(lines, src.bounds);
-                for (int m = 0; m < mats; m++)
-                {
-                    s_Src.Clear();
-                    src.GetIndices(s_Src, m, true);
-                    for (int t = 0; t + 2 < s_Src.Count; t += 3)
-                    {
-                        int i0 = s_Src[t], i1 = s_Src[t + 1], i2 = s_Src[t + 2];
-                        int g = FacingOf(b, lines, (s_V[i0] + s_V[i1] + s_V[i2]) * (1f / 3f));
-                        List<int> walls = s_Lists[Part(0, g, m, mats)];
-                        walls.Add(i0);
-                        walls.Add(i1);
-                        walls.Add(i2);
-                        Stub(i0, i1, i2, s_Lists[Part(1, g, m, mats)], s_Cuts[g]);
-                    }
-                }
-                Surf cap = DecorPalette.Matte(CapColour);
-                DecorPalette.Apply();
-                for (int g = 0; g < 4; g++) Caps(s_Cuts[g], s_Lists[Part(2, g, 0, mats)], cap.Uv);
-
-                var map = new int[slots];
-                var used = new List<Material>(slots);
-                var mesh = new Mesh { name = "Walls cut " + b.Id };
-                if (s_V.Count > 65000) mesh.indexFormat = IndexFormat.UInt32;
-                mesh.SetVertices(s_V);
-                mesh.SetNormals(s_N);
-                mesh.SetUVs(0, s_U);
-                int subs = 0;
-                for (int i = 0; i < slots; i++) map[i] = s_Lists[i].Count > 0 ? subs++ : -1;
-                mesh.subMeshCount = Mathf.Max(1, subs);
-                for (int i = 0; i < slots; i++)
-                {
-                    if (map[i] < 0) continue;
-                    mesh.SetTriangles(s_Lists[i], map[i], false);
-                    used.Add(i >= 8 * mats ? cap.Mat : materials[Mathf.Min(i % mats, materials.Length - 1)]);
-                }
-                mesh.RecalculateBounds();
-                var parts = new SubMeshDescriptor[subs];
-                for (int i = 0; i < subs; i++) parts[i] = mesh.GetSubMesh(i);
-
-                var go = new GameObject(mesh.name) { layer = b.Walls.gameObject.layer };
-                go.transform.SetParent(parent, false);
-                go.transform.SetPositionAndRotation(b.Walls.transform.position, b.Walls.transform.rotation);
-                go.AddComponent<MeshFilter>().sharedMesh = mesh;
-                var mr = go.AddComponent<MeshRenderer>();
-                mr.sharedMaterials = used.ToArray();
-                mr.shadowCastingMode = ShadowCastingMode.Off;   // the walls themselves still cast every shadow
-                mr.receiveShadows = true;
-                mr.lightProbeUsage = b.Walls.lightProbeUsage;
-                mr.reflectionProbeUsage = b.Walls.reflectionProbeUsage;
-                mr.renderingLayerMask = b.Walls.renderingLayerMask;
-                b.Overlay = mr;
-                b.OverlayMesh = mesh;
-                b.OverlayParts = parts;
-                b.OverlayMap = map;
-                b.OverlayMaterials = mats;
-                b.OverlayShown = -1;
+                FinishOverlay(job);
+                AbortOverlayJob();
                 return true;
             }
             catch (System.Exception e)
             {
-                b.OverlayFailed = true;
-                if (!s_Warned) Debug.LogWarning("[MapCutaway] couldn't make the cut walls of building " + b.Id + "; its walls go whole: " + e);
-                s_Warned = true;
-                return false;
+                Failed(b, e.GetType().Name + ": " + e.Message);
+                return true;
             }
             finally
             {
-                double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - started) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-                OverlaysMade++;
+                double ms = (Stopwatch.GetTimestamp() - started) * 1000.0 / Stopwatch.Frequency;
+                job.Ms += ms;
                 OverlayMs += ms;
-                if (ms > OverlayMaxMs) OverlayMaxMs = ms;
+                if (ms > OverlaySliceMaxMs && deadline != long.MaxValue) OverlaySliceMaxMs = ms;
             }
         }
 
+        // The walls mesh's vertices and every sub-mesh's triangles, the wall lines, and empty part lists.
+        private static void ReadWalls(OverlayJob job)
+        {
+            Building b = job.B;
+            Mesh src = b.WallsMesh;
+            int mats = job.Mats;
+            job.Slots = 8 * mats + 4;
+            for (int i = 0; i < job.Slots; i++)
+            {
+                if (i == s_Lists.Count) s_Lists.Add(new List<int>(256));
+                s_Lists[i].Clear();
+            }
+            for (int g = 0; g < 4; g++) s_Cuts[g].Clear();
+            s_V.Clear();
+            s_N.Clear();
+            s_U.Clear();
+            src.GetVertices(s_V);
+            src.GetNormals(s_N);
+            src.GetUVs(0, s_U);
+            while (s_N.Count < s_V.Count) s_N.Add(Vector3.up);
+            while (s_U.Count < s_V.Count) s_U.Add(Vector2.zero);
+            job.Vertices = s_V.Count;
+            if (s_SubStart.Length < mats)
+            {
+                s_SubStart = new int[mats * 2];
+                s_SubCount = new int[mats * 2];
+            }
+            s_Idx.Clear();
+            for (int m = 0; m < mats; m++)
+            {
+                s_SubStart[m] = s_Idx.Count;
+                if (src.GetTopology(m) == MeshTopology.Triangles)
+                {
+                    s_Read.Clear();
+                    src.GetIndices(s_Read, m, true);
+                    s_Idx.AddRange(s_Read);
+                }
+                s_SubCount[m] = s_Idx.Count - s_SubStart[m];
+            }
+            job.Lines = WallLines(b);
+            LineGrid(job.Lines, src.bounds);
+            job.Sub = 0;
+            job.Tri = 0;
+        }
+
+        // Sorts the triangles into their facing's standing walls and stub, a slice at a time: false when the deadline passed.
+        private static bool Triangles(OverlayJob job, long deadline)
+        {
+            Building b = job.B;
+            int mats = job.Mats;
+            for (; job.Sub < mats; job.Sub++, job.Tri = 0)
+            {
+                int m = job.Sub, start = s_SubStart[m], count = s_SubCount[m];
+                for (; job.Tri + 2 < count; job.Tri += 3)
+                {
+                    if ((job.Tri & 255) == 0 && job.Tri > 0 && Stopwatch.GetTimestamp() > deadline) return false;
+                    int i0 = s_Idx[start + job.Tri], i1 = s_Idx[start + job.Tri + 1], i2 = s_Idx[start + job.Tri + 2];
+                    int g = FacingOf(b, job.Lines, (s_V[i0] + s_V[i1] + s_V[i2]) * (1f / 3f));
+                    List<int> standing = s_Lists[Part(0, g, m, mats)];
+                    if (job.Clip) Below(i0, i1, i2, job.ClipTop, standing, null);
+                    else
+                    {
+                        standing.Add(i0);
+                        standing.Add(i1);
+                        standing.Add(i2);
+                    }
+                    Below(i0, i1, i2, StubHeight, s_Lists[Part(1, g, m, mats)], s_Cuts[g]);
+                }
+            }
+            return true;
+        }
+
+        // The stand-in's mesh (packed straight into its buffers, as RaidMesh bakes) and object.
+        private static void FinishOverlay(OverlayJob job)
+        {
+            Building b = job.B;
+            Mesh src = b.WallsMesh;
+            int slots = job.Slots, mats = job.Mats, vertices = s_V.Count;
+            var map = new int[slots];
+            int subs = 0, indices = 0;
+            for (int i = 0; i < slots; i++)
+            {
+                map[i] = s_Lists[i].Count > 0 ? subs++ : -1;
+                indices += s_Lists[i].Count;
+            }
+            if (subs == 0)
+            {
+                Failed(b, "it has no triangles");
+                return;
+            }
+            if (s_Packed.Length < vertices) s_Packed = new StandInVertex[Mathf.NextPowerOfTwo(vertices)];
+            for (int i = 0; i < vertices; i++)
+            {
+                s_Packed[i].Position = s_V[i];
+                s_Packed[i].Normal = s_N[i];
+                s_Packed[i].Uv = s_U[i];
+            }
+            var mesh = new Mesh { name = "Walls cut " + b.Id };
+            mesh.SetVertexBufferParams(vertices, s_StandInLayout);
+            mesh.SetVertexBufferData(s_Packed, 0, 0, vertices, 0, Quiet);
+            bool wide = vertices > 65535;
+            mesh.SetIndexBufferParams(indices, wide ? IndexFormat.UInt32 : IndexFormat.UInt16);
+            if (wide && s_Packed32.Length < indices) s_Packed32 = new int[Mathf.NextPowerOfTwo(indices)];
+            if (!wide && s_Packed16.Length < indices) s_Packed16 = new ushort[Mathf.NextPowerOfTwo(indices)];
+            int k = 0;
+            for (int i = 0; i < slots; i++)
+            {
+                List<int> list = s_Lists[i];
+                for (int t = 0; t < list.Count; t++)
+                {
+                    if (wide) s_Packed32[k++] = list[t];
+                    else s_Packed16[k++] = (ushort)list[t];
+                }
+            }
+            if (wide) mesh.SetIndexBufferData(s_Packed32, 0, 0, indices, Quiet);
+            else mesh.SetIndexBufferData(s_Packed16, 0, 0, indices, Quiet);
+            Bounds bounds = src.bounds;
+            mesh.subMeshCount = subs;
+            var parts = new SubMeshDescriptor[subs];
+            var used = new Material[subs];
+            Surf cap = DecorPalette.Matte(CapColour);
+            DecorPalette.Apply();
+            int startAt = 0;
+            for (int i = 0; i < slots; i++)
+            {
+                if (map[i] < 0) continue;
+                int n = s_Lists[i].Count;
+                parts[map[i]] = new SubMeshDescriptor(startAt, n) { bounds = bounds, firstVertex = 0, vertexCount = vertices };
+                mesh.SetSubMesh(map[i], parts[map[i]], Quiet);
+                used[map[i]] = i >= 8 * mats ? cap.Mat : job.Materials[Mathf.Min(i % mats, job.Materials.Length - 1)];
+                startAt += n;
+            }
+            mesh.bounds = bounds;
+
+            var go = new GameObject(mesh.name) { layer = b.Walls.gameObject.layer };
+            go.transform.SetParent(b.Site.Overlays, false);
+            go.transform.SetPositionAndRotation(b.Walls.transform.position, b.Walls.transform.rotation);
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var mr = go.AddComponent<MeshRenderer>();
+            mr.sharedMaterials = used;
+            mr.shadowCastingMode = ShadowCastingMode.Off;   // the walls themselves still cast every shadow
+            mr.receiveShadows = true;
+            mr.lightProbeUsage = b.Walls.lightProbeUsage;
+            mr.reflectionProbeUsage = b.Walls.reflectionProbeUsage;
+            mr.renderingLayerMask = b.Walls.renderingLayerMask;
+            mr.enabled = false;
+            b.Overlay = mr;
+            b.OverlayMesh = mesh;
+            b.OverlayParts = parts;
+            b.OverlayMap = map;
+            b.OverlayMaterials = mats;
+            b.OverlayShown = -1;
+            b.OverlayBytes = (long)vertices * 32 + (long)indices * (wide ? 4 : 2);
+            OverlayBytes += b.OverlayBytes;
+            OverlaysMade++;
+            if (job.Ms > OverlayWholeMaxMs) OverlayWholeMaxMs = job.Ms;
+            s_Overlays.Add(b);
+        }
+        #endregion
+
+        #region Facings
         // The middle of each wall's thickness (mesh space), run on past its ends by half the thickness, as the walls stand
         // just inside the footprint and overlap at the corners.
         private static int WallLines(Building b)
@@ -232,15 +495,27 @@ namespace CloneZ
             return n;
         }
 
-        // The nearest wall line to p (mesh space) decides its facing: the lines in p's cell of the grid first, then ring
-        // after ring of cells round it until no farther cell could hold a nearer line.
+        // The facing of the wall line nearest p (mesh space): every line for a simple outline, else the lines in p's cell of a
+        // grid and ring after ring of cells round it until no farther cell could hold a nearer one.
         private static int FacingOf(Building b, int lines, Vector3 p)
         {
             var q = new Vector2(p.x, p.z);
+            float best = float.MaxValue;
+            int at = -1;
+            if (lines <= BruteLines)
+            {
+                for (int line = 0; line < lines; line++)
+                {
+                    float d = LineDistance2(line, q);
+                    if (d >= best) continue;
+                    best = d;
+                    at = line;
+                }
+                return at >= 0 ? b.EdgeGroup[at] : 0;
+            }
             int ci = Mathf.Clamp(Mathf.FloorToInt((q.x - s_GX) / s_CW), 0, s_GW - 1);
             int cj = Mathf.Clamp(Mathf.FloorToInt((q.y - s_GZ) / s_CH), 0, s_GH - 1);
-            float best = float.MaxValue, ring = Mathf.Min(s_CW, s_CH);
-            int at = -1;
+            float ring = Mathf.Min(s_CW, s_CH);
             for (int r = 0; ; r++)
             {
                 bool any = false;
@@ -256,9 +531,7 @@ namespace CloneZ
                         for (int k = s_GridStart[cell]; k < s_GridStart[cell + 1]; k++)
                         {
                             int line = s_GridLines[k];
-                            Vector2 a = s_LineA[line], ab = s_LineB[line] - a;
-                            float t = ab.sqrMagnitude > 1e-8f ? Mathf.Clamp01(Vector2.Dot(q - a, ab) / ab.sqrMagnitude) : 0f;
-                            float d = (a + ab * t - q).sqrMagnitude;
+                            float d = LineDistance2(line, q);
                             if (d >= best) continue;
                             best = d;
                             at = line;
@@ -272,6 +545,16 @@ namespace CloneZ
             return at >= 0 ? b.EdgeGroup[at] : 0;
         }
 
+        private static float LineDistance2(int line, Vector2 q)
+        {
+            Vector2 a = s_LineA[line], ab = s_LineB[line] - a;
+            float t = ab.sqrMagnitude > 1e-8f ? Mathf.Clamp01(Vector2.Dot(q - a, ab) / ab.sqrMagnitude) : 0f;
+            return (a + ab * t - q).sqrMagnitude;
+        }
+
+        // Outlines with this many walls or fewer are searched whole; more get a grid (see LineGrid).
+        private const int BruteLines = 12;
+
         // A grid over the walls' mesh (mesh space, cells about LineCell metres), each cell listing the wall lines whose box
         // touches it: s_GridLines[s_GridStart[cell] .. s_GridStart[cell + 1]).
         private const float LineCell = 2f;
@@ -282,6 +565,7 @@ namespace CloneZ
 
         private static void LineGrid(int lines, Bounds mesh)
         {
+            if (lines <= BruteLines) return;
             float x0 = mesh.min.x, z0 = mesh.min.z, x1 = mesh.max.x, z1 = mesh.max.z;
             for (int i = 0; i < lines; i++)
             {
@@ -303,7 +587,6 @@ namespace CloneZ
                 s_GridFill = new int[cells];
             }
             System.Array.Clear(s_GridStart, 0, cells + 1);
-            int total = 0;
             for (int pass = 0; pass < 2; pass++)
             {
                 for (int line = 0; line < lines; line++)
@@ -327,22 +610,23 @@ namespace CloneZ
                     s_GridStart[cell + 1] += s_GridStart[cell];
                     s_GridFill[cell] = s_GridStart[cell];
                 }
-                total = s_GridStart[cells];
+                int total = s_GridStart[cells];
                 if (s_GridLines.Length < total) s_GridLines = new int[total * 2];
             }
         }
+        #endregion
 
-        // The part of triangle (i0, i1, i2) below StubHeight into stub, the points where its edges cross that height (in
-        // pairs, one pair per crossing) into cuts.
-        private static void Stub(int i0, int i1, int i2, List<int> stub, List<Vector3> cuts)
+        #region Cutting triangles
+        // The part of triangle (i0, i1, i2) below height h into `into`; with `cuts`, the points where its edges cross h (in
+        // pairs, one pair per crossing) into it, for the caps.
+        private static void Below(int i0, int i1, int i2, float h, List<int> into, List<Vector3> cuts)
         {
-            const float h = StubHeight;
             float y0 = s_V[i0].y, y1 = s_V[i1].y, y2 = s_V[i2].y;
             if (y0 <= h && y1 <= h && y2 <= h)
             {
-                stub.Add(i0);
-                stub.Add(i1);
-                stub.Add(i2);
+                into.Add(i0);
+                into.Add(i1);
+                into.Add(i2);
                 return;
             }
             if (y0 >= h && y1 >= h && y2 >= h) return;
@@ -364,17 +648,17 @@ namespace CloneZ
             }
             if (count >= 3)
             {
-                stub.Add(p0);
-                stub.Add(p1);
-                stub.Add(p2);
+                into.Add(p0);
+                into.Add(p1);
+                into.Add(p2);
             }
             if (count == 4)
             {
-                stub.Add(p0);
-                stub.Add(p2);
-                stub.Add(p3);
+                into.Add(p0);
+                into.Add(p2);
+                into.Add(p3);
             }
-            if (onA >= 0 && onB >= 0)
+            if (cuts != null && onA >= 0 && onB >= 0)
             {
                 cuts.Add(s_V[onA]);
                 cuts.Add(s_V[onB]);
@@ -411,8 +695,9 @@ namespace CloneZ
             Vector3 va = s_V[a], vc = s_V[c];
             float t = (h - va.y) / (vc.y - va.y);
             var p = new Vector3(va.x + (vc.x - va.x) * t, h, va.z + (vc.z - va.z) * t);
+            Vector3 n = s_N[a] + (s_N[c] - s_N[a]) * t;
             s_V.Add(p);
-            s_N.Add((s_N[a] + (s_N[c] - s_N[a]) * t).normalized);
+            s_N.Add(n.sqrMagnitude > 1e-8f ? n.normalized : s_N[a]);
             s_U.Add(s_U[a] + (s_U[c] - s_U[a]) * t);
             return s_V.Count - 1;
         }
@@ -500,5 +785,6 @@ namespace CloneZ
             }
             for (int i = 0; i < tris.Count; i++) into.Add(first + tris[i]);
         }
+        #endregion
     }
 }
