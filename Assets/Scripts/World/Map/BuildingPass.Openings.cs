@@ -5,23 +5,23 @@ using static CloneZ.KentuckyMap;
 namespace CloneZ
 {
     // Doors and windows. Where they go: the front door in the wall facing the road (centred on a farmhouse, a church or a
-    // courthouse, to one side on a ranch, a bungalow or a shotgun house), a back door opposite; garage, roll-up and barn
-    // doors along the front or the gable ends; windows bay by bay along every wall but the shared ones, the upper
-    // storeys' over the ground storey's, a shop front's glass between its pilasters. And how they look: sash windows
-    // with frames, meeting rails, sills, stone lintels or trim heads and shutters, picture windows, school ribbons,
-    // office bands, arched church windows in coloured glass, shop fronts with kick plates, display glass and transoms;
-    // a lit window here and there (it glows by night). Doors are real openings in the ground storey's walls (no leaf:
-    // the interiors may hang one); the closed ones are drawn on the wall. The ground storey's doors and windows are
-    // listed for the interiors exactly as placed.
+    // courthouse, to one side on a ranch, a bungalow or a shotgun house), a back door opposite, a door to each shop along
+    // a strip's front; garage, roll-up and barn doors along the front or the gable ends; windows bay by bay along every
+    // wall but the shared ones, the upper storeys' over the ground storey's, a shop front's glass between its pilasters.
+    // And how they look: sash windows with frames, meeting rails, sills, stone lintels or trim heads and shutters,
+    // picture windows, school ribbons, office bands, arched church windows in coloured glass, shop fronts with kick
+    // plates, display glass and transoms; a lit window here and there (it glows after dark). Doors are real openings in
+    // the ground storey's walls (no leaf: the interiors hang one); the shut ones (big doors, a motel's rooms, every door
+    // of a building the square's edge cuts through) are drawn on the wall. The ground storey's doors and windows are
+    // listed for the interiors exactly as placed. A tall building's upper floors, and a cheap building's every floor, get
+    // painted windows instead (BuildingPass.Facades).
     internal static partial class BuildingPass
     {
-        private static Surf LitGlass => DecorPalette.Glow(new Color(0.46f, 0.36f, 0.21f));
-
         #region Placing
         private static void PlanOpenings(Job j)
         {
             Plan p = j.P;
-            if (!j.Lite && p.Enterable) Doors(j);
+            if (!j.Lite && (p.Enterable || j.Edge)) Doors(j);
             Windows(j);
         }
 
@@ -43,11 +43,29 @@ namespace CloneZ
             AddDoor(j, edge, s, w, p.Door);
             j.DoorEdge = edge;
             j.DoorAt = s;
+            if (p.Arch == Arch.Store && p.Storefront) ShopDoors(j, edge, s);
             if (!p.BackDoor || j.F.Size < 45f) return;
             int back = Opposite(j, edge);
             if (back < 0 || j.Len[back] < DoorWidth + 1.4f) return;
-            float bs = Mathf.Clamp(j.Len[back] * Range(j.Rng, 0.3f, 0.7f), DoorWidth * 0.5f + 0.5f, j.Len[back] - DoorWidth * 0.5f - 0.5f);
+            float bs = Mathf.Clamp(j.Len[back] * Mathf.Lerp(0.3f, 0.7f, MapStyle.Unit(j.Id, SaltDetail + 1)), DoorWidth * 0.5f + 0.5f,
+                j.Len[back] - DoorWidth * 0.5f - 0.5f);
             if (Clear(j, back, bs, DoorWidth)) AddDoor(j, back, bs, DoorWidth, p.Door == DoorKind.Shop ? DoorKind.Plain : DoorKind.House);
+        }
+
+        // A strip of shops: a unit about every 12 m along a long front, each with its own door near its left end.
+        private static void ShopDoors(Job j, int edge, float main)
+        {
+            float len = j.Len[edge];
+            int units = Mathf.Min(8, Mathf.FloorToInt(len / 12f));
+            if (units < 2) return;
+            j.Units = units;
+            float each = len / units;
+            for (int u = 0; u < units; u++)
+            {
+                if (main >= each * u && main < each * (u + 1)) continue;   // the main door's unit
+                float s = Mathf.Clamp(each * u + each * 0.28f, DoorWidth * 0.5f + 0.6f, len - DoorWidth * 0.5f - 0.6f);
+                if (Clear(j, edge, s, DoorWidth)) AddDoor(j, edge, s, DoorWidth, DoorKind.Shop);
+            }
         }
 
         // Where along the front the door goes, by what the building is; -1 when there's no room.
@@ -56,7 +74,7 @@ namespace CloneZ
             Plan p = j.P;
             float len = j.Len[edge];
             if (len < w + 0.9f) return -1f;
-            bool left = MapStyle.Unit(j.F.Data.id, SaltPlan + 3) < 0.5f;
+            bool left = MapStyle.Unit(j.Id, SaltPlan + 3) < 0.5f;
             float t;
             switch (p.Arch)
             {
@@ -69,7 +87,7 @@ namespace CloneZ
                     }
                     break;
                 case Arch.Trailer: t = left ? 0.3f : 0.7f; break;
-                case Arch.Row: case Arch.Store: t = MapStyle.Unit(j.F.Data.id, SaltPlan + 4) < 0.45f ? 0.5f : left ? 0.2f : 0.8f; break;
+                case Arch.Row: case Arch.Store: t = MapStyle.Unit(j.Id, SaltPlan + 4) < 0.45f ? 0.5f : left ? 0.2f : 0.8f; break;
                 case Arch.Motel: t = left ? 0.12f : 0.88f; break;
                 default: t = 0.5f; break;
             }
@@ -92,15 +110,17 @@ namespace CloneZ
             return true;
         }
 
+        // A people's door: an opening listed for the interiors, or (a building that's shut) a door drawn on the wall.
         private static void AddDoor(Job j, int edge, float s, float w, DoorKind kind)
         {
-            float head = kind == DoorKind.Double ? 2.35f : DoorHeight;
-            j.Holes.Add(new Hole { Edge = edge, Storey = 0, S = s, W = w, Sill = 0f, Head = head, Win = WindowKind.None, Door = kind });
+            bool shut = !j.P.Enterable || j.Scenery;
+            j.Holes.Add(new Hole { Edge = edge, Storey = 0, S = s, W = w, Sill = 0f, Head = DoorHeight, Win = WindowKind.None, Door = kind, Closed = shut });
+            if (shut) return;
             if (j.Record == null)
                 j.Record = new EnterableBuilding
                 {
                     Footprint = j.F, Parent = j.Site.Town.World, StoreyHeight = GroundStorey, Storeys = 1, WallThickness = Thick,
-                    Seed = unchecked((int)MapStyle.Hash(j.F.Data.id, SaltInterior)),
+                    Seed = unchecked((int)MapStyle.Hash(j.Id, SaltInterior)),
                 };
             Vector2 at = j.At(edge, s);
             j.Record.Doors.Add(new Doorway { Edge = edge, At = at, Outward = j.Out[edge], Width = w });
@@ -135,15 +155,16 @@ namespace CloneZ
             for (int k = 0; k < count; k++)
             {
                 float s = count == 1 ? len * 0.5f : Mathf.Lerp(width * 0.5f + 0.9f, len - width * 0.5f - 0.9f, k / (float)(count - 1));
-                j.Holes.Add(new Hole { Edge = edge, Storey = 0, S = s, W = width, Sill = 0f, Head = p.BigDoorHeight, Win = WindowKind.None,
-                    Door = DoorKind.Plain, Closed = true });
+                j.Holes.Add(new Hole { Edge = edge, Storey = 0, S = s, W = width, Sill = p.Dock ? DockHeight : 0f, Head = p.BigDoorHeight,
+                    Win = WindowKind.None, Door = DoorKind.Plain, Closed = true, Big = true });
             }
+            j.BigEdge = edge;
             if (p.Arch == Arch.TobaccoBarn)
             {
                 int back = Opposite(j, edge);
                 if (back >= 0 && j.Len[back] >= width + 0.8f)
                     j.Holes.Add(new Hole { Edge = back, Storey = 0, S = j.Len[back] * 0.5f, W = width, Sill = 0f, Head = p.BigDoorHeight,
-                        Win = WindowKind.None, Door = DoorKind.Plain, Closed = true });
+                        Win = WindowKind.None, Door = DoorKind.Plain, Closed = true, Big = true });
             }
             // The people's door: beside the big ones if there's room, else along the next wall.
             if (len - count * (width + 0.3f) >= DoorWidth + 1.6f) return edge;
@@ -179,10 +200,13 @@ namespace CloneZ
         private static void Windows(Job j)
         {
             Plan p = j.P;
-            long id = j.F.Data.id;
+            long id = j.Id;
             int front = j.DoorEdge >= 0 ? j.DoorEdge : p.Front;
+            // Painted windows for a cheap building's floors and a tall one's upper floors.
+            bool painted = j.Lite || p.Storeys >= TallStoreys;
             for (int i = 0; i < j.N; i++)
             {
+                j.GridLow[i] = j.GridHigh[i] = false;
                 float len = j.Len[i];
                 if (len < 1.4f || j.Party(i)) continue;
                 bool isFront = i == front;
@@ -191,14 +215,22 @@ namespace CloneZ
                 {
                     WindowKind kind = k == 0 ? (isFront ? p.FrontWindow : p.GroundWindow) : p.UpperWindow;
                     if (kind == WindowKind.None) continue;
-                    // Churches, barns and warehouses light their long walls only; a store's sides stay blank.
+                    // Churches, barns and warehouses light their long walls only; a store's sides stay mostly blank.
                     if ((p.Arch == Arch.Church || p.Arch == Arch.Warehouse || p.Arch == Arch.Barn || p.Arch == Arch.Rickhouse)
                         && !alongLength) continue;
                     if (p.Arch == Arch.Store && !isFront && k == 0 && Unit(id, i, 1) < 0.6f) continue;
                     if (kind == WindowKind.Storefront)
                     {
-                        if (k == 0 && !j.Lite) Storefront(j, i);
-                        else if (k == 0) j.Holes.Add(new Hole { Edge = i, Storey = 0, S = len * 0.5f, W = len - 0.8f, Sill = 0.5f, Head = 2.85f, Win = WindowKind.Storefront });
+                        if (k != 0) continue;
+                        if (!j.Lite) Storefront(j, i);
+                        else j.Holes.Add(new Hole { Edge = i, Storey = 0, S = len * 0.5f, W = len - 0.8f, Sill = 0.5f, Head = 2.85f,
+                            Win = WindowKind.Storefront, Lit = p.Lit && Unit(id, i, 2) < 0.5f });
+                        continue;
+                    }
+                    if (painted && (k > 0 || j.Lite))
+                    {
+                        if (k == 0) j.GridLow[i] = true;
+                        else j.GridHigh[i] = true;
                         continue;
                     }
                     if (p.Arch == Arch.Motel && isFront)
@@ -261,21 +293,25 @@ namespace CloneZ
             }
         }
 
-        // A shop front: display glass either side of the door between brick piers, bays of about three metres.
+        private static readonly List<Vector2> s_DoorSpans = new List<Vector2>(8);
+        private static readonly System.Comparison<Vector2> s_SpanStart = (x, y) => x.x.CompareTo(y.x);
+
+        // A shop front: display glass between the doors and the brick piers, panes of up to six metres.
         private static void Storefront(Job j, int edge)
         {
             float len = j.Len[edge];
             const float Pier = 0.4f;
-            float a = Pier, b = len - Pier;
-            float doorA = -1f, doorB = -1f;
+            s_DoorSpans.Clear();
             foreach (Hole h in j.Holes)
-                if (h.Edge == edge && h.Storey == 0 && h.IsDoor) { doorA = h.S - h.W * 0.5f - 0.12f; doorB = h.S + h.W * 0.5f + 0.12f; }
-            if (doorA >= 0f)
+                if (h.Edge == edge && h.Storey == 0 && h.IsDoor) s_DoorSpans.Add(new Vector2(h.S - h.W * 0.5f - 0.12f, h.S + h.W * 0.5f + 0.12f));
+            if (s_DoorSpans.Count > 1) s_DoorSpans.Sort(s_SpanStart);
+            float cur = Pier;
+            for (int k = 0; k < s_DoorSpans.Count; k++)
             {
-                StorefrontRun(j, edge, a, doorA);
-                StorefrontRun(j, edge, doorB, b);
+                StorefrontRun(j, edge, cur, s_DoorSpans[k].x);
+                cur = Mathf.Max(cur, s_DoorSpans[k].y);
             }
-            else StorefrontRun(j, edge, a, b);
+            StorefrontRun(j, edge, cur, len - Pier);
         }
 
         private static void StorefrontRun(Job j, int edge, float a, float b)
@@ -287,7 +323,7 @@ namespace CloneZ
             for (int k = 0; k < panes; k++)
             {
                 float s0 = a + each * k + (k > 0 ? 0.2f : 0f), s1 = a + each * (k + 1) - (k < panes - 1 ? 0.2f : 0f);
-                AddWindow(j, edge, 0, (s0 + s1) * 0.5f, s1 - s0, 0.5f, 2.35f, WindowKind.Storefront, j.F.Data.id);
+                AddWindow(j, edge, 0, (s0 + s1) * 0.5f, s1 - s0, 0.5f, 2.35f, WindowKind.Storefront, j.Id);
             }
         }
 
@@ -303,7 +339,7 @@ namespace CloneZ
                 if (storey == 0 && !Clear(j, edge, c - 0.8f, 0.95f)) continue;
                 j.Holes.Add(new Hole { Edge = edge, Storey = storey, S = c - 0.8f, W = 0.95f, Sill = 0f, Head = 2.1f, Win = WindowKind.None,
                     Door = DoorKind.House, Closed = true });
-                AddWindow(j, edge, storey, c + 0.65f, 1.3f, 0.95f, 1.15f, WindowKind.Picture, j.F.Data.id);
+                AddWindow(j, edge, storey, c + 0.65f, 1.3f, 0.95f, 1.15f, WindowKind.Picture, j.Id);
             }
         }
         #endregion
@@ -316,7 +352,11 @@ namespace CloneZ
                 if (h.IsDoor) DoorShape(j, h);
                 else WindowShape(j, h);
             }
+            Facades(j);
         }
+
+        // The tone of a lit pane: lamplight mostly, now and then a television's blue.
+        private static int PaneTone(Job j, Hole h) => (int)(MapStyle.Hash(j.Id, SaltWindowsLit + h.Edge * 97 + h.Storey * 13 + Mathf.RoundToInt(h.S * 2f)) & 3);
 
         private static void WindowShape(Job j, Hole h)
         {
@@ -325,7 +365,7 @@ namespace CloneZ
             float floor = j.FloorY(h.Storey);
             RaidMesh m = h.Storey == 0 ? j.Facing(e) : j.Upper;
             float y0 = floor + h.Sill, y1 = floor + h.Head, yc = (y0 + y1) * 0.5f, height = y1 - y0;
-            Surf glass = h.Lit ? LitGlass : j.GlassS;
+            Surf glass = h.Lit ? LitPane(PaneTone(j, h)) : j.GlassS;
             if (j.Lite)
             {
                 OnWall(j, m, e, h.S, yc, h.W, height, 0.01f, glass);
@@ -386,7 +426,7 @@ namespace CloneZ
         {
             int e = h.Edge;
             Surf frame = j.AccentS;
-            Surf glass = h.Lit ? LitGlass : DecorPalette.Gloss(new Color(0.13f, 0.16f, 0.19f));
+            Surf glass = h.Lit ? LitPane(PaneTone(j, h)) : DecorPalette.Gloss(new Color(0.13f, 0.16f, 0.19f));
             float w = h.W;
             OnWallBox(j, m, e, h.S, 0.25f, w, 0.5f, 0.09f, frame);                 // the kick plate
             OnWall(j, m, e, h.S, 1.5f, w, 1.92f, 0.015f, glass);                   // display glass
@@ -405,11 +445,10 @@ namespace CloneZ
         {
             int e = h.Edge;
             float w = h.W, r = w * 0.5f, spring = y1 - r;
-            System.Random rng = MapStyle.Rng(j.F.Data.id + e * 977 + Mathf.RoundToInt(h.S * 10f), SaltWindowsLit);
-            Color[] stain = { new Color(0.12f, 0.18f, 0.44f), new Color(0.48f, 0.10f, 0.10f), new Color(0.58f, 0.40f, 0.12f), new Color(0.12f, 0.32f, 0.18f) };
-            Color tone = stain[rng.Next(stain.Length)], other = stain[rng.Next(stain.Length)];
-            Surf glass = h.Lit ? DecorPalette.Glow(tone * 0.9f) : DecorPalette.Gloss(tone * 0.6f);
-            Surf glass2 = h.Lit ? DecorPalette.Glow(other * 0.9f) : DecorPalette.Gloss(other * 0.6f);
+            uint pick = MapStyle.Hash(j.Id + e * 977 + Mathf.RoundToInt(h.S * 10f), SaltWindowsLit);
+            int tone = (int)(pick & 3), other = (int)((pick >> 2) & 3);
+            Surf glass = h.Lit ? StainedGlow(tone) : DecorPalette.Gloss(Stained[tone] * 0.6f);
+            Surf glass2 = h.Lit ? StainedGlow(other) : DecorPalette.Gloss(Stained[other] * 0.6f);
             Surf frame = j.P.Wall == WallKind.Siding ? j.TrimS : WallSurf(WallKind.Stone, 0);
             float rect = spring - y0;
             OnWall(j, m, e, h.S, (y0 + spring) * 0.5f, w + 0.16f, rect, 0.006f, frame);
@@ -420,12 +459,11 @@ namespace CloneZ
             Vector2 c = j.At(e, h.S);
             Vector3 o = To3(j.Out[e], 0f), along = To3(j.Dir[e], 0f);
             const int Segs = 7;
+            var centre = new Vector3(c.x, spring, c.y);
             for (int k = 0; k < Segs; k++)
             {
                 float a0 = Mathf.PI * k / Segs, a1 = Mathf.PI * (k + 1) / Segs;
-                Vector3 centre = new Vector3(c.x, spring, c.y);
-                Vector3 p0 = centre + (along * Mathf.Cos(a0) + Vector3.up * Mathf.Sin(a0)), p1 = centre + (along * Mathf.Cos(a1) + Vector3.up * Mathf.Sin(a1));
-                Vector3 dir0 = p0 - centre, dir1 = p1 - centre;
+                Vector3 dir0 = along * Mathf.Cos(a0) + Vector3.up * Mathf.Sin(a0), dir1 = along * Mathf.Cos(a1) + Vector3.up * Mathf.Sin(a1);
                 Tri3(m, centre + o * 0.006f, centre + dir0 * (r + 0.08f) + o * 0.006f, centre + dir1 * (r + 0.08f) + o * 0.006f, o, frame);
                 Tri3(m, centre + o * 0.012f, centre + dir0 * (r - 0.04f) + o * 0.012f, centre + dir1 * (r - 0.04f) + o * 0.012f, o, k < Segs / 2 ? glass2 : glass);
             }
@@ -440,7 +478,7 @@ namespace CloneZ
             RaidMesh m = h.Storey == 0 ? j.Facing(e) : j.Upper;
             float floor = j.FloorY(h.Storey);
             float w = h.W, top = floor + h.Head;
-            if (h.Closed)
+            if (h.Big || p.Arch == Arch.Motel)
             {
                 ClosedDoor(j, h, m, floor);
                 return;
@@ -456,13 +494,20 @@ namespace CloneZ
                 OnWall(j, m, e, h.S, top + 0.42f, w, 0.42f, 0.012f, j.GlassS);
                 OnWallBox(j, m, e, h.S, top + 0.68f, w + c * 2f, 0.08f, 0.06f, casing);
             }
+            if (!h.Closed) return;
+            // A shut door: its leaf on the wall, a pane in a shop's.
+            Surf leaf = p.Arch == Arch.Row || p.Arch == Arch.Store ? j.AccentS : DecorPalette.Matte(ShutterTones[MapStyle.Pick(j.Id, SaltDetail + 2, ShutterTones.Length)]);
+            OnWallBox(j, m, e, h.S, top * 0.5f, w, top, 0.04f, leaf);
+            if (h.Door == DoorKind.Shop || h.Door == DoorKind.Double)
+                OnWall(j, m, e, h.S, top * 0.62f, w * 0.7f, top * 0.5f, 0.045f, j.GlassS);
+            OnWall(j, m, e, h.S + w * 0.35f, 1.0f, 0.06f, 0.06f, 0.05f, DecorPalette.Metal(new Color(0.7f, 0.62f, 0.3f)));
         }
 
         private static void ClosedDoor(Job j, Hole h, RaidMesh m, float floor)
         {
             Plan p = j.P;
             int e = h.Edge;
-            float w = h.W, ht = h.Head, mid = floor + ht * 0.5f;
+            float w = h.W, y0 = floor + h.Sill, ht = h.Head - h.Sill, mid = y0 + ht * 0.5f;
             if (j.Lite)
             {
                 OnWallBox(j, m, e, h.S, mid, w, ht, 0.04f, DecorPalette.Matte(new Color(0.55f, 0.55f, 0.53f)));
@@ -486,7 +531,7 @@ namespace CloneZ
                         Beam(m, centre - d1, centre + d1, 0.14f, 0.04f, o, brace);
                         OnWallBox(j, m, e, h.S + w * 0.25f * half, mid, w * 0.5f - 0.04f, 0.12f, 0.09f, brace);
                     }
-                    OnWallBox(j, m, e, h.S, floor + ht + 0.1f, w * 2.1f, 0.12f, 0.1f, DecorPalette.Metal(new Color(0.22f, 0.22f, 0.23f)));
+                    OnWallBox(j, m, e, h.S, y0 + ht + 0.1f, w * 2.1f, 0.12f, 0.1f, DecorPalette.Metal(new Color(0.22f, 0.22f, 0.23f)));
                     return;
                 }
                 case Arch.Warehouse: case Arch.Industrial: case Arch.Rickhouse: case Arch.Civic:
@@ -495,16 +540,16 @@ namespace CloneZ
                     Surf slats = p.Arch == Arch.Civic ? DecorPalette.Matte(new Color(0.62f, 0.12f, 0.10f)) : WallSurf(WallKind.Metal, 2);
                     OnWallBox(j, m, e, h.S, mid, w, ht, 0.06f, slats);
                     for (int k = 1; k < 6; k++)
-                        OnWall(j, m, e, h.S, floor + ht * k / 6f, w, 0.03f, 0.065f, DecorPalette.Matte(new Color(0.35f, 0.35f, 0.36f)));
-                    OnWallBox(j, m, e, h.S, floor + ht + 0.22f, w + 0.3f, 0.44f, 0.18f, DecorPalette.Metal(new Color(0.5f, 0.5f, 0.5f)));
+                        OnWall(j, m, e, h.S, y0 + ht * k / 6f, w, 0.03f, 0.065f, DecorPalette.Matte(new Color(0.35f, 0.35f, 0.36f)));
+                    OnWallBox(j, m, e, h.S, y0 + ht + 0.22f, w + 0.3f, 0.44f, 0.18f, DecorPalette.Metal(new Color(0.5f, 0.5f, 0.5f)));
                     OnWallBox(j, m, e, h.S - w * 0.5f - 0.08f, mid, 0.16f, ht, 0.1f, j.TrimS);
                     OnWallBox(j, m, e, h.S + w * 0.5f + 0.08f, mid, 0.16f, ht, 0.1f, j.TrimS);
                     return;
                 }
                 case Arch.Motel:
                     OnWallBox(j, m, e, h.S, mid, w, ht, 0.04f, j.AccentS);
-                    OnWallBox(j, m, e, h.S, floor + ht + 0.06f, w + 0.2f, 0.12f, 0.06f, j.TrimS);
-                    OnWall(j, m, e, h.S, floor + 1.55f, 0.18f, 0.12f, 0.05f, DecorPalette.Metal(new Color(0.7f, 0.62f, 0.3f)));
+                    OnWallBox(j, m, e, h.S, y0 + ht + 0.06f, w + 0.2f, 0.12f, 0.06f, j.TrimS);
+                    OnWall(j, m, e, h.S, y0 + 1.55f, 0.18f, 0.12f, 0.05f, DecorPalette.Metal(new Color(0.7f, 0.62f, 0.3f)));
                     return;
                 default:
                 {
@@ -512,8 +557,8 @@ namespace CloneZ
                     Surf panel = DecorPalette.Matte(new Color(0.90f, 0.89f, 0.85f));
                     OnWallBox(j, m, e, h.S, mid, w, ht, 0.05f, panel);
                     for (int k = 1; k < 4; k++)
-                        OnWall(j, m, e, h.S, floor + ht * k / 4f, w, 0.03f, 0.055f, DecorPalette.Matte(new Color(0.6f, 0.6f, 0.58f)));
-                    OnWallBox(j, m, e, h.S, floor + ht + 0.06f, w + 0.24f, 0.12f, 0.06f, j.TrimS);
+                        OnWall(j, m, e, h.S, y0 + ht * k / 4f, w, 0.03f, 0.055f, DecorPalette.Matte(new Color(0.6f, 0.6f, 0.58f)));
+                    OnWallBox(j, m, e, h.S, y0 + ht + 0.06f, w + 0.24f, 0.12f, 0.06f, j.TrimS);
                     return;
                 }
             }

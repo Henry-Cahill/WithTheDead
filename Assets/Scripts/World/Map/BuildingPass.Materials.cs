@@ -1,15 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace CloneZ
 {
     // The buildings' own textures and colours: brick, lap siding, barn boards, ribbed metal, painted block, limestone,
     // stucco, trailer siding and precast concrete for the walls; three-tab shingles, standing-seam metal, tar, slate and
-    // the snow lying on them for the roofs; striped canvas for awnings. Each is painted once per session per colour
-    // (from small palettes, so a streamed state never grows past a few dozen) and every surface tiles in world metres
-    // with a period that divides RaidMesh.PlanarPeriod, so no seam shows where a streamed piece's UVs wrap. Wall
-    // textures carry no foundation band of their own (DecorTextures' do): the foundations are geometry. Candidates for
-    // DecorMaterials once the revamp settles.
+    // the snow lying on them for the roofs; striped canvas for awnings; the painted window grids of tall and far
+    // buildings. Each is painted once per session per colour (from small palettes, so a streamed state never grows past
+    // a few dozen) and every planar surface tiles in world metres with a period that divides RaidMesh.PlanarPeriod, so no
+    // seam shows where a streamed piece's UVs wrap. Wall textures carry no foundation band of their own (DecorTextures'
+    // do): the foundations are geometry. Lit windows and lamp globes glow through an emission that follows the dark
+    // (see Glowing): faint by day, bright by night, so a lit window reads as one after dark without looking like a yellow
+    // board at noon. Candidates for DecorMaterials once the revamp settles.
     internal static partial class BuildingPass
     {
         internal enum WallKind { Brick, Siding, Boards, Metal, Block, Stone, Stucco, Trailer, Concrete }
@@ -542,11 +545,16 @@ namespace CloneZ
         private static Color MembraneTexel(int x, int y, Color tone)
             => Shade(tone, 0.85f + TexFbm(x / 64f, y / 64f, 8, 151) * 0.2f + (TexRand(x, y, 152) - 0.5f) * 0.12f);
 
-        // Fresh snow on a roof: near white, the faintest blue in the hollows and a glint here and there.
+        // Fresh snow on a roof: near white, the faintest blue in the hollows, wind ripples across it and a glint here and
+        // there.
         private static Color RoofSnowTexel(int x, int y)
         {
             const int S = 128;
-            float n = TexFbm(x / (float)S, y / (float)S, 3, 161) * 0.7f + TexNoise(x / (float)S, y / (float)S, 24, 162) * 0.3f;
+            float u = x / (float)S, v = y / (float)S;
+            float n = TexFbm(u, v, 3, 161) * 0.7f + TexNoise(u, v, 24, 162) * 0.3f;
+            // Sastrugi: shallow ripples the wind combs into it, bent by the noise (whole waves per tile, so it tiles).
+            float ripple = Mathf.Sin((u * 5f + v * 2f) * Mathf.PI * 2f + TexNoise(u, v, 6, 164) * 4f);
+            n += ripple * 0.06f;
             Color c = Color.Lerp(new Color(0.80f, 0.84f, 0.90f), new Color(0.97f, 0.98f, 1.0f), Mathf.SmoothStep(0.15f, 0.85f, n));
             float r = TexRand(x, y, 163);
             if (r > 0.996f) c = Color.white;
@@ -560,6 +568,276 @@ namespace CloneZ
             bool coloured = x * 4 / S % 2 == 0;
             Color c = coloured ? tone : new Color(0.90f, 0.88f, 0.82f);
             return Shade(c, 0.92f + TexFbm(x / (float)S, y / (float)S, 8, 171) * 0.1f);
+        }
+        #endregion
+
+        #region Lights after dark
+        // Materials whose emission follows the dark: their full emission colours, and the share of it shown now.
+        private static readonly List<Material> s_Glowing = new List<Material>(16);
+        private static readonly List<Color> s_GlowFull = new List<Color>(16);
+        private static float s_GlowShown = -1f;
+        private static bool s_GlowHooked;
+        private static readonly int s_EmissionColor = Shader.PropertyToID("_EmissionColor");
+
+        /// <summary>Lit windows' and lamps' emission, as a share of full, by how dark the scene is.</summary>
+        private const float GlowByDay = 0.08f;
+
+        // Makes <paramref name="m"/> glow with <paramref name="emission"/> (times its emission map, if it has one) after dark,
+        // a little by day: once a camera renders, the share follows the ambient light (which the day and night cycle sets,
+        // and so does the map harness), worked out once a frame for all of them.
+        private static void Glowing(Material m, Color emission)
+        {
+            m.EnableKeyword("_EMISSION");
+            m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+            s_Glowing.Add(m);
+            s_GlowFull.Add(emission);
+            m.SetColor(s_EmissionColor, emission * GlowShare());
+            if (s_GlowHooked) return;
+            s_GlowHooked = true;
+            RenderPipelineManager.beginCameraRendering += OnCameraRendering;
+        }
+
+        private static void OnCameraRendering(ScriptableRenderContext context, Camera camera)
+        {
+            float share = GlowShare();
+            if (Mathf.Abs(share - s_GlowShown) < 0.005f) return;
+            s_GlowShown = share;
+            for (int i = s_Glowing.Count - 1; i >= 0; i--)
+            {
+                Material m = s_Glowing[i];
+                if (m == null)
+                {
+                    s_Glowing.RemoveAt(i);
+                    s_GlowFull.RemoveAt(i);
+                    continue;
+                }
+                m.SetColor(s_EmissionColor, s_GlowFull[i] * share);
+            }
+        }
+
+        // 1 at night, GlowByDay at noon: from the ambient light's brightest channel (day about 0.42, night about 0.1).
+        private static float GlowShare()
+        {
+            Color a = RenderSettings.ambientLight;
+            float level = Mathf.Max(a.r, Mathf.Max(a.g, a.b));
+            float dark = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.34f, 0.15f, level));
+            return Mathf.Lerp(GlowByDay, 1f, dark);
+        }
+
+        // The panes of lit windows, lit stained glass and the globes of lamps that are on: a palette of a few tones (base
+        // and emission side by side in two small point-sampled textures), one material.
+        private static Material s_PaneMat;
+        private const int PaneColumns = 8, PaneTones = 4;
+
+        /// <summary>Stained glass: blue, ruby, amber, green.</summary>
+        private static readonly Color[] Stained =
+        {
+            new Color(0.12f, 0.18f, 0.44f), new Color(0.48f, 0.10f, 0.10f), new Color(0.58f, 0.40f, 0.12f), new Color(0.12f, 0.32f, 0.18f),
+        };
+
+        // Row 0: lamplight panes, then stained glass; row 1: lamp globes.
+        private static readonly Color[] PaneBase =
+        {
+            new Color(0.30f, 0.25f, 0.17f), new Color(0.32f, 0.27f, 0.16f), new Color(0.20f, 0.23f, 0.28f), new Color(0.30f, 0.22f, 0.14f),
+            new Color(0.07f, 0.11f, 0.26f), new Color(0.29f, 0.06f, 0.06f), new Color(0.35f, 0.24f, 0.07f), new Color(0.07f, 0.19f, 0.11f),
+            new Color(0.93f, 0.91f, 0.84f), new Color(0.95f, 0.92f, 0.80f), new Color(0.93f, 0.91f, 0.84f), new Color(0.95f, 0.92f, 0.80f),
+            new Color(0.93f, 0.91f, 0.84f), new Color(0.95f, 0.92f, 0.80f), new Color(0.93f, 0.91f, 0.84f), new Color(0.95f, 0.92f, 0.80f),
+        };
+        private static readonly Color[] PaneGlow =
+        {
+            new Color(1.00f, 0.78f, 0.46f), new Color(1.00f, 0.86f, 0.42f), new Color(0.58f, 0.72f, 1.00f), new Color(1.00f, 0.66f, 0.34f),
+            new Color(0.25f, 0.40f, 1.00f), new Color(1.00f, 0.22f, 0.20f), new Color(1.00f, 0.72f, 0.24f), new Color(0.26f, 0.80f, 0.40f),
+            new Color(1.00f, 0.86f, 0.62f), new Color(1.00f, 0.80f, 0.50f), new Color(1.00f, 0.86f, 0.62f), new Color(1.00f, 0.80f, 0.50f),
+            new Color(1.00f, 0.86f, 0.62f), new Color(1.00f, 0.80f, 0.50f), new Color(1.00f, 0.86f, 0.62f), new Color(1.00f, 0.80f, 0.50f),
+        };
+
+        /// <summary>A lit window's pane: warm lamplight, a yellower one, a television's blue, amber.</summary>
+        private static Surf LitPane(int tone) => PaneSurf(Mathf.Abs(tone) % PaneTones, 0);
+
+        /// <summary>Stained glass lit from inside (tone as <see cref="Stained"/>).</summary>
+        private static Surf StainedGlow(int tone) => PaneSurf(PaneTones + Mathf.Abs(tone) % PaneTones, 0);
+
+        /// <summary>A lamp's globe, lit.</summary>
+        private static Surf LampGlobe(int tone) => PaneSurf(Mathf.Abs(tone) % PaneTones, 1);
+
+        private static Surf PaneSurf(int x, int y)
+        {
+            if (s_PaneMat == null)
+            {
+                Texture2D tex = Swatches("panes", PaneBase), glow = Swatches("paneglow", PaneGlow);
+                s_PaneMat = NewLit("Bldg_Panes", tex, 0.6f, 0f);
+                s_PaneMat.SetTexture("_EmissionMap", glow);
+                Glowing(s_PaneMat, new Color(0.85f, 0.85f, 0.85f));
+            }
+            return new Surf(s_PaneMat, new Vector2((x + 0.5f) / PaneColumns, (y + 0.5f) / 2f), 0f);
+        }
+
+        // A PaneColumns x 2 swatch texture, point-sampled.
+        private static Texture2D Swatches(string name, Color[] colours)
+        {
+            var t = new Texture2D(PaneColumns, 2, TextureFormat.RGBA32, false)
+            {
+                name = "Bldg_" + name, wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Point,
+                hideFlags = HideFlags.DontUnloadUnusedAsset,
+            };
+            t.SetPixels(colours);
+            t.Apply(false, true);
+            return t;
+        }
+
+        private static Material NewLit(string name, Texture2D tex, float smoothness, float metallic)
+        {
+            if (s_Lit == null) s_Lit = Shader.Find("Universal Render Pipeline/Lit");
+            if (s_Lit == null) s_Lit = Shader.Find("Standard");
+            var m = new Material(s_Lit) { name = name, hideFlags = HideFlags.DontUnloadUnusedAsset, enableInstancing = true };
+            if (m.HasProperty("_BaseMap")) m.SetTexture("_BaseMap", tex);
+            if (m.HasProperty("_MainTex")) m.SetTexture("_MainTex", tex);
+            if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", Color.white);
+            if (m.HasProperty("_Color")) m.SetColor("_Color", Color.white);
+            if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", smoothness);
+            if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", metallic);
+            return m;
+        }
+        #endregion
+
+        #region Painted window grids
+        private static readonly Dictionary<int, Texture2D> s_GridTex = new Dictionary<int, Texture2D>(8);
+        private static readonly Dictionary<int, Texture2D> s_GridGlow = new Dictionary<int, Texture2D>(8);
+        // The cells of a 4 x 4 grid whose panes are lit, and those with their blinds down.
+        private static readonly bool[] GridLit = { false, true, false, false, false, false, true, false, false, false, false, true, true, false, false, false };
+        private static readonly bool[] GridBlind = { false, false, false, true, false, false, false, false, true, false, false, false, false, false, true, false };
+
+        /// <summary>A grid of painted windows (fitted UVs: one unit is <see cref="GridCells"/> bays by as many storeys).
+        /// <paramref name="lit"/>: a few panes glow after dark; <paramref name="white"/>: white frames (else dark
+        /// bronze).</summary>
+        private static Surf FacadeSurf(FacadeStyle style, bool lit, bool white)
+        {
+            int texKey = (int)style * 2 + (white ? 1 : 0);
+            int key = 4000 + texKey * 2 + (lit ? 1 : 0);
+            if (s_Fitted.TryGetValue(key, out Surf s) && s.Valid) return s;
+            if (!s_GridTex.TryGetValue(texKey, out Texture2D tex) || tex == null)
+            {
+                PaintGrid(style, white, out tex, out Texture2D glow);
+                s_GridTex[texKey] = tex;
+                s_GridGlow[texKey] = glow;
+            }
+            Material m = NewLit("Bldg_Grid" + style + (white ? "W" : "D") + (lit ? "Lit" : ""), tex, style == FacadeStyle.Curtain ? 0.7f : 0.5f, 0.05f);
+            if (m.HasProperty("_AlphaClip")) m.SetFloat("_AlphaClip", 1f);
+            if (m.HasProperty("_Cutoff")) m.SetFloat("_Cutoff", 0.5f);
+            m.EnableKeyword("_ALPHATEST_ON");
+            m.renderQueue = (int)RenderQueue.AlphaTest;
+            if (lit)
+            {
+                m.SetTexture("_EmissionMap", s_GridGlow[texKey]);
+                Glowing(m, new Color(0.8f, 0.8f, 0.8f));
+            }
+            s = new Surf(m, Vector2.zero, 0f);
+            s_Fitted[key] = s;
+            return s;
+        }
+
+        // 128 px: 4 x 4 cells of 32, each a bay of one storey with its window(s); alpha 0 where the wall shows.
+        private static void PaintGrid(FacadeStyle style, bool white, out Texture2D tex, out Texture2D glow)
+        {
+            const int S = 128, C = 32;
+            var px = new Color32[S * S];
+            var em = new Color32[S * S];
+            Color frame = white ? new Color(0.90f, 0.90f, 0.87f) : new Color(0.19f, 0.18f, 0.17f);
+            Color sill = white ? new Color(0.86f, 0.85f, 0.80f) : new Color(0.62f, 0.61f, 0.58f);
+            Color spandrel = new Color(0.16f, 0.18f, 0.20f);
+            Color warm = new Color(1.0f, 0.78f, 0.46f);
+            for (int y = 0; y < S; y++)
+                for (int x = 0; x < S; x++)
+                {
+                    int cx = x / C, cy = y / C, lx = x % C, ly = y % C;
+                    int cell = cy * 4 + cx;
+                    bool lit = GridLit[cell], blind = GridBlind[cell];
+                    Color c = default;
+                    bool solid = false, pane = false;
+                    float gy0, gy1;   // the glass's bottom and top in the cell
+                    switch (style)
+                    {
+                        case FacadeStyle.Punched:
+                            gy0 = 9f; gy1 = 26f;
+                            if (lx >= 10 && lx < 22 && ly >= gy0 && ly < gy1)
+                            {
+                                solid = true;
+                                bool rim = lx == 10 || lx == 21 || ly == (int)gy0 || ly == (int)gy1 - 1 || ly == 17;
+                                if (rim) c = frame;
+                                else pane = true;
+                            }
+                            else if (lx >= 9 && lx < 23 && ly >= 7 && ly < 9) { solid = true; c = sill; }
+                            break;
+                        case FacadeStyle.Ribbon:
+                            gy0 = 10f; gy1 = 25f;
+                            if (lx >= 1 && lx < 31 && ly >= gy0 && ly < gy1)
+                            {
+                                solid = true;
+                                bool rim = lx == 1 || lx == 30 || lx == 16 || ly == (int)gy0 || ly == (int)gy1 - 1;
+                                if (rim) c = frame;
+                                else pane = true;
+                            }
+                            else if (lx >= 1 && lx < 31 && ly >= 8 && ly < 10) { solid = true; c = sill; }
+                            break;
+                        case FacadeStyle.Band:
+                            gy0 = 9f; gy1 = 26f;
+                            if (ly >= gy0 && ly < gy1)
+                            {
+                                solid = true;
+                                bool rim = lx == 0 || lx == 16 || ly == (int)gy0 || ly == (int)gy1 - 1;
+                                if (rim) c = frame;
+                                else pane = true;
+                            }
+                            break;
+                        case FacadeStyle.Small:
+                            gy0 = 12f; gy1 = 21f;
+                            if (lx >= 12 && lx < 20 && ly >= gy0 && ly < gy1)
+                            {
+                                solid = true;
+                                bool rim = lx == 12 || lx == 19 || ly == (int)gy0 || ly == (int)gy1 - 1;
+                                if (rim) c = frame;
+                                else pane = true;
+                            }
+                            else if (lx >= 11 && lx < 21 && ly >= 10 && ly < 12) { solid = true; c = sill; }
+                            break;
+                        default:   // a curtain wall: a dark spandrel under each floor's vision glass, mullions between
+                            gy0 = 8f; gy1 = 32f;
+                            solid = true;
+                            if (lx == 0 || lx == 16 || ly == 0 || ly == (int)gy0) c = frame;
+                            else if (ly < gy0) c = Shade(spandrel, 0.9f + TexRand(cx, cy, 181) * 0.2f);
+                            else pane = true;
+                            break;
+                    }
+                    if (pane)
+                    {
+                        float t = (ly - gy0) / Mathf.Max(1f, gy1 - gy0);
+                        Color glass = style == FacadeStyle.Curtain ? new Color(0.16f, 0.24f, 0.27f) : new Color(0.10f, 0.12f, 0.15f);
+                        glass = Shade(glass, 0.82f + t * 0.45f + TexRand(cx, cy, 182) * 0.15f);
+                        // A lit pane is glass like the rest by day (its light is all in the emission map).
+                        if (blind && t > 0.55f) glass = new Color(0.60f, 0.56f, 0.46f);
+                        c = glass;
+                        if (lit) em[y * S + x] = new Color32((byte)(warm.r * 255f), (byte)(warm.g * 255f), (byte)(warm.b * 255f), 255);
+                    }
+                    if (em[y * S + x].a == 0) em[y * S + x] = new Color32(0, 0, 0, 255);
+                    px[y * S + x] = solid
+                        ? new Color32((byte)Mathf.Clamp(c.r * 255f, 0f, 255f), (byte)Mathf.Clamp(c.g * 255f, 0f, 255f), (byte)Mathf.Clamp(c.b * 255f, 0f, 255f), 255)
+                        : new Color32(0, 0, 0, 0);
+                }
+            string name = "grid" + style + (white ? "W" : "D");
+            tex = new Texture2D(S, S, TextureFormat.RGBA32, true)
+            {
+                name = "Bldg_" + name, wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear, anisoLevel = 4,
+                hideFlags = HideFlags.DontUnloadUnusedAsset,
+            };
+            tex.SetPixels32(px);
+            tex.Apply(true, true);
+            glow = new Texture2D(S, S, TextureFormat.RGBA32, true)
+            {
+                name = "Bldg_" + name + "Glow", wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear,
+                hideFlags = HideFlags.DontUnloadUnusedAsset,
+            };
+            glow.SetPixels32(em);
+            glow.Apply(true, true);
         }
         #endregion
     }

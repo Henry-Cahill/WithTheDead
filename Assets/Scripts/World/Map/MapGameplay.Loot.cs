@@ -463,7 +463,8 @@ namespace CloneZ
         /// chapel, a bus shelter). <paramref name="room"/> is a <see cref="RoomKinds"/> kind; any other string gets the
         /// building's general pool. What the building was for comes from <see cref="PurposeOf(MapBuilding)"/>: its use,
         /// its name, its kind and size, and once its site has been <see cref="Prepare"/>d, the point of interest
-        /// standing in it and its surroundings. A shared array: don't change it.
+        /// standing in it and its surroundings. A shared array: don't change it. The pool says what kinds; how many of a
+        /// room's pieces hold loot is <see cref="Allot"/>'s.
         /// </summary>
         internal static ContainerType[] ContainersFor(MapBuilding b, string room) => PoolFor(PurposeOf(b), room, false);
 
@@ -482,39 +483,175 @@ namespace CloneZ
         /// <summary>Richness from which a pool adds its rarer finds.</summary>
         private const float RichFrom = 1.15f;
 
-        /// <summary>How many of a room's pieces of storage should hold loot (a suggestion for the interiors): by the
-        /// room's kind and floor area, the building's purpose and how well stocked the Zone is there.</summary>
+        /// <summary>How well stocked a building of a site is (<see cref="LootRichnessAt"/> at its middle).</summary>
+        internal static float RichnessOf(Site site, Footprint f) => LootRichnessAt(site.WorldOffset + To3(f.Middle, 0f));
+
+        #region How many
+        // How many of a building's pieces of storage hold loot. Every loot container rolls its table afresh each raid
+        // (RaidWorldRules.RollLoot: one to four draws, a quarter of the fixtures bare), so about two stacks each whatever
+        // the piece, and a building's loot is its count of containers: a drawer, a cupboard door and a freezer compartment
+        // count one each. A furnished building has far more of those than it should hold loot in (a raid-town kitchen
+        // alone has a dozen), and the real map has many more buildings to the hectare than the raid town the Central
+        // Economy's stock was set for, so the count is budgeted: each room's share by its kind and floor (RoomNeed), the
+        // building's sum scaled by what it was (its purpose's stock) and how well stocked the Zone is there
+        // (LootRichnessAt), within what a building of its kind and size can hold (BuildingCap, raised where the Zone is
+        // richer). In the start town that's four or five for a house (the fridge and a kitchen cupboard, the bathroom
+        // cabinet, a wardrobe, a desk), seven for a downtown store, thirteen for a pharmacy, eighteen or so for a
+        // supermarket, eleven or more for a school; seven or eight for a house 50 km out. Bardstown's 400 m square (117
+        // buildings) holds some 600 in its buildings, about 1,100 stacks.
+        private const int SaltBudget = 0x6A60;
+
+        /// <summary>How many loot containers a room of kind <paramref name="room"/> (<see cref="RoomKinds"/>) with
+        /// <paramref name="area"/> m² of floor holds in an ordinary building where the Zone is ordinarily stocked: its
+        /// share before the building's purpose and the Zone's richness scale it (see <see cref="Allot"/>).</summary>
+        internal static float RoomNeed(string room, float area)
+        {
+            switch (room)
+            {
+                case RoomKinds.Kitchen: return area >= 14f ? 3f : 2f;
+                case RoomKinds.Kitchenette: return area >= 10f ? 2f : 1f;
+                case RoomKinds.Bathroom: return 1f;
+                case RoomKinds.Bedroom: return area >= 16f ? 2f : 1f;
+                case RoomKinds.Living: return area < 10f ? 0f : area >= 30f ? 2f : 1f;
+                case RoomKinds.Hall: return area >= 12f ? 1f : 0f;
+                case RoomKinds.Sales: return Mathf.Min(8f, 1f + area / 40f);
+                case RoomKinds.Stock: return Mathf.Min(5f, 1f + area / 30f);
+                case RoomKinds.Office: return area >= 20f ? 2f : 1f;
+                case RoomKinds.Storage: return Mathf.Min(4f, 1f + area / 25f);
+                case RoomKinds.Workshop: case RoomKinds.Garage: return Mathf.Min(4f, 1f + area / 40f);
+                case RoomKinds.Classroom: return 1f;
+                case RoomKinds.Nave: return area >= 60f ? 1f : 0f;
+                case RoomKinds.Ward: return Mathf.Min(4f, 1f + area / 30f);
+                case RoomKinds.Cells: return 0f;
+                case RoomKinds.Open: return Mathf.Min(6f, 1f + area / 120f);
+                default: return Mathf.Min(3f, area / 30f);
+            }
+        }
+
+        /// <summary>The most loot containers a building of <paramref name="purpose"/> with <paramref name="area"/> m² of
+        /// furnished floor holds where the Zone is ordinarily stocked (a richer Zone raises it in step: see
+        /// <see cref="CapAt"/>).</summary>
+        internal static int BuildingCap(string purpose, float area)
+        {
+            switch (purpose)
+            {
+                case Purposes.None: return 0;
+                case Purposes.Vacant: case Purposes.Ruin: return 1;
+                case Purposes.Shed: case Purposes.Greenhouse: return 2;
+                case Purposes.Garage: case Purposes.Outbuilding: return 3;
+                case Purposes.Barn: return 4;
+                case Purposes.Trailer: return 5;
+                case Purposes.Home: return Mathf.Clamp(Mathf.RoundToInt(3f + area / 40f), 4, 9);
+                case Purposes.Church: case Purposes.Funeral: case Purposes.Childcare: return 6;
+                case Purposes.Apartments: case Purposes.Hotel: case Purposes.Care:
+                    return Mathf.Clamp(Mathf.RoundToInt(4f + area / 50f), 6, 24);
+                case Purposes.Warehouse: case Purposes.Industrial: case Purposes.StorageRental: case Purposes.Distillery:
+                    return Mathf.Clamp(Mathf.RoundToInt(3f + area / 300f), 4, 12);
+                case Purposes.Grocery: case Purposes.DepartmentStore:
+                    return Mathf.Clamp(Mathf.RoundToInt(4f + area / 60f), 6, 24);
+                case Purposes.School: case Purposes.Hospital: case Purposes.Prison:
+                    return Mathf.Clamp(Mathf.RoundToInt(4f + area / 150f), 8, 28);
+                default: return Mathf.Clamp(Mathf.RoundToInt(4f + area / 60f), 5, 16);
+            }
+        }
+
+        /// <summary>
+        /// How many of each room's pieces of storage hold loot, for the interiors: <paramref name="rooms"/> are the rooms'
+        /// kinds (<see cref="RoomKinds"/>) and <paramref name="areas"/> their floor areas in m², in the plan's order. Fills
+        /// <paramref name="counts"/> (at least as long as <paramref name="rooms"/>) and returns the building's total, which
+        /// the counts add up to. A room's count is the number of <see cref="LootContainer"/>s in it, whatever holds them:
+        /// a fridge counts one and its freezer another, a dresser one per drawer, a bank of lockers one per locker. Build
+        /// the room's signature piece first (the pool's first entry: <see cref="ContainersFor(Site, Footprint, string)"/>),
+        /// and once the count is used up, furniture without storage (it still reads as a kitchen, but only so many things
+        /// in it open). Deterministic: the same building gets the same counts in every build of its piece.
+        /// </summary>
+        internal static int Allot(Site site, Footprint f, IReadOnlyList<string> rooms, IReadOnlyList<float> areas, int[] counts)
+        {
+            Prepare(site);
+            return Allot(f.Data.id, PurposeOf(site, f), RichnessOf(site, f), rooms, areas, counts);
+        }
+
+        /// <summary><see cref="Allot(Site, Footprint, IReadOnlyList{string}, IReadOnlyList{float}, int[])"/> without the
+        /// site: the building's purpose from its own data (and what <see cref="Prepare"/> found for it), the Zone's
+        /// richness at <paramref name="world"/>, its middle in world metres.</summary>
+        internal static int Allot(MapBuilding b, Vector3 world, IReadOnlyList<string> rooms, IReadOnlyList<float> areas, int[] counts)
+            => Allot(b != null ? b.id : 0L, PurposeOf(b), LootRichnessAt(world), rooms, areas, counts);
+
+        private static int Allot(long id, string purpose, float richness, IReadOnlyList<string> rooms, IReadOnlyList<float> areas, int[] counts)
+        {
+            int n = rooms.Count;
+            for (int i = 0; i < n; i++) counts[i] = 0;
+            if (n == 0) return 0;
+            var need = new float[n];
+            float sum = 0f, floor = 0f;
+            for (int i = 0; i < n; i++)
+            {
+                need[i] = Mathf.Max(0f, RoomNeed(rooms[i], areas[i]));
+                sum += need[i];
+                floor += Mathf.Max(0f, areas[i]);
+            }
+            int total = Mathf.Min(CapAt(purpose, floor, richness), Dither(sum * ProfileOf(purpose).Stock * richness, id));
+            if (total <= 0 || sum <= 0f) return 0;
+            // Each room's share of the total, then the rest to the rooms nearest their next one (the first such room on a tie).
+            float scale = total / sum;
+            int given = 0;
+            var rest = new float[n];
+            for (int i = 0; i < n; i++)
+            {
+                float exact = need[i] * scale;
+                counts[i] = Mathf.FloorToInt(exact + 1e-4f);
+                rest[i] = need[i] > 0f ? exact - counts[i] : -1f;
+                given += counts[i];
+            }
+            for (; given < total; given++)
+            {
+                int best = -1;
+                for (int i = 0; i < n; i++)
+                    if (rest[i] >= 0f && (best < 0 || rest[i] > rest[best] + 1e-4f)) best = i;
+                if (best < 0) break;
+                counts[best]++;
+                rest[best] = -1f;
+            }
+            return given;
+        }
+
+        /// <summary>The loot containers a building without rooms holds (a shape the interiors couldn't split): its floor
+        /// worth of an ordinary open room, scaled and capped as <see cref="Allot"/> scales a building's rooms.</summary>
+        internal static int LootBudget(Site site, Footprint f)
+        {
+            Prepare(site);
+            string purpose = PurposeOf(site, f);
+            float richness = RichnessOf(site, f);
+            float target = Mathf.Clamp(f.Size / 45f, 1f, 7f) * ProfileOf(purpose).Stock * richness;
+            return Mathf.Min(CapAt(purpose, f.Size, richness), Dither(target, f.Data.id));
+        }
+
+        /// <summary>How many of a room's pieces of storage hold loot taken on its own (a room furnished apart from its
+        /// building; <see cref="Allot"/> shares a whole building's out): its <see cref="RoomNeed"/> by the building's
+        /// purpose and the Zone's richness there.</summary>
         internal static int ContainerCount(Site site, Footprint f, string room, float roomArea)
         {
             Prepare(site);
-            Profile p = ProfileOf(PurposeOf(site, f));
-            float n;
-            switch (room)
-            {
-                case RoomKinds.Kitchen: n = 2f + roomArea / 10f; break;
-                case RoomKinds.Kitchenette: n = 1f + roomArea / 12f; break;
-                case RoomKinds.Bathroom: n = 1f; break;
-                case RoomKinds.Bedroom: n = 1f + roomArea / 12f; break;
-                case RoomKinds.Living: n = 1f + roomArea / 20f; break;
-                case RoomKinds.Hall: n = roomArea > 8f ? 1f : 0f; break;
-                case RoomKinds.Sales: n = roomArea / 14f; break;
-                case RoomKinds.Stock: n = roomArea / 10f; break;
-                case RoomKinds.Office: n = 1f + roomArea / 12f; break;
-                case RoomKinds.Storage: n = roomArea / 6f; break;
-                case RoomKinds.Workshop: case RoomKinds.Garage: n = 1f + roomArea / 15f; break;
-                case RoomKinds.Classroom: n = 1f + roomArea / 30f; break;
-                case RoomKinds.Nave: n = roomArea > 60f ? 1f : 0f; break;
-                case RoomKinds.Ward: n = roomArea / 10f; break;
-                case RoomKinds.Cells: n = 0f; break;
-                default: n = roomArea / 25f; break;
-            }
-            n *= p.Stock * RichnessOf(site, f);
-            int max = room == RoomKinds.Sales || room == RoomKinds.Open ? 10 : 6;
-            return n <= 0f ? 0 : Mathf.Clamp(Mathf.RoundToInt(n), 1, max);
+            string purpose = PurposeOf(site, f);
+            float richness = RichnessOf(site, f);
+            float n = RoomNeed(room, roomArea) * ProfileOf(purpose).Stock * richness;
+            return Mathf.Min(CapAt(purpose, Mathf.Max(roomArea, f.Size), richness), Dither(n, f.Data.id ^ HumanUtil.StableHash(room)));
         }
 
-        /// <summary>How well stocked a building of a site is (<see cref="LootRichnessAt"/> at its middle).</summary>
-        internal static float RichnessOf(Site site, Footprint f) => LootRichnessAt(site.WorldOffset + To3(f.Middle, 0f));
+        /// <summary><see cref="BuildingCap"/> where the Zone's <paramref name="richness"/> is as given: raised in step where
+        /// it's richer than usual, never lowered (a picked-over town holds fewer by the count, not by the cap).</summary>
+        internal static int CapAt(string purpose, float area, float richness)
+            => Mathf.RoundToInt(BuildingCap(purpose, area) * Mathf.Max(1f, richness));
+
+        // A fractional count made whole, rounded up as often as its fraction says (from the building's id, so the same
+        // every build).
+        private static int Dither(float value, long id)
+        {
+            if (value <= 0f) return 0;
+            int whole = Mathf.FloorToInt(value);
+            return whole + (MapStyle.Unit(id, SaltBudget) < value - whole ? 1 : 0);
+        }
+        #endregion
 
         /// <summary>What a loose container of <paramref name="type"/> is called in a building of <paramref name="purpose"/>,
         /// or null for its usual name.</summary>
@@ -569,8 +706,8 @@ namespace CloneZ
 
         #region Loose containers
         /// <summary>Loose containers to suit a building the interiors couldn't split into rooms: its purpose's general
-        /// pool, one container per 45 m² of floor scaled by how well stocked it and the Zone there are (one to five,
-        /// more where the Zone is rich), standing clear of the walls, of each other and of the door; drawn from
+        /// pool, as many as its <see cref="LootBudget"/> (about one per 45 m² of floor, scaled by how well stocked it and
+        /// the Zone there are, at most seven), standing clear of the walls, of each other and of the door; drawn from
         /// <paramref name="rng"/>, the building's own stream.</summary>
         internal static void Loot(Site site, Footprint f, System.Random rng, Vector2 doorPoint)
         {
@@ -579,8 +716,7 @@ namespace CloneZ
             float richness = RichnessOf(site, f);
             ContainerType[] kinds = PoolFor(purpose, null, richness >= RichFrom);
             if (kinds.Length == 0 || profile.Stock <= 0f) return;
-            int max = Mathf.Clamp(Mathf.RoundToInt(5f * richness), 3, 7);
-            int count = Mathf.Clamp(Mathf.RoundToInt(f.Size / 45f * profile.Stock * richness), 1, max);
+            int count = Mathf.Min(7, LootBudget(site, f));
             var placed = new List<Vector2>(count);
             for (int i = 0; i < count && site.Containers < MaxContainers; i++)
             {

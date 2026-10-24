@@ -58,22 +58,30 @@ namespace CloneZ
         #region Signals
         private static void SpanWire(Ctx ctx, Crossing c)
         {
-            var arms = new List<JunctionArm>();
-            foreach (JunctionArm a in c.Arms) if (RoadRank(a.Street) >= 1) arms.Add(a);
+            var arms = new List<int>();
+            for (int k = 0; k < c.Arms.Count; k++) if (RoadRank(c.Arms[k].Street) >= 1) arms.Add(k);
             if (arms.Count < 2) return;
-            arms.Sort((a, b) => Mathf.Atan2(a.Dir.y, a.Dir.x).CompareTo(Mathf.Atan2(b.Dir.y, b.Dir.x)));
-            // The corners between neighbouring arms; the span runs between the two most nearly opposite.
+            arms.Sort((x, y) =>
+            {
+                Vector2 a = c.Arms[x].Dir, b = c.Arms[y].Dir;
+                int r = Mathf.Atan2(a.y, a.x).CompareTo(Mathf.Atan2(b.y, b.x));
+                return r != 0 ? r : x.CompareTo(y);
+            });
+            // The kerb corners between neighbouring arms; the span runs between the two most nearly opposite.
             var corners = new List<Vector2>();
             for (int i = 0; i < arms.Count; i++)
             {
-                JunctionArm a = arms[i], b = arms[(i + 1) % arms.Count];
+                int ka = arms[i], kb = arms[(i + 1) % arms.Count];
+                JunctionArm a = c.Arms[ka], b = c.Arms[kb];
                 float angA = Mathf.Atan2(a.Dir.y, a.Dir.x), angB = Mathf.Atan2(b.Dir.y, b.Dir.x);
                 float gap = Mathf.Repeat(angB - angA, Mathf.PI * 2f);
                 if (gap < 1e-3f) gap = Mathf.PI * 2f;
                 float mid = angA + gap * 0.5f;
                 var bis = new Vector2(Mathf.Cos(mid), Mathf.Sin(mid));
+                // The corner lies left of arm a (anticlockwise from it) and right of arm b.
+                float off = Mathf.Max(Roadside(a.Street, c.ApproachRight(ka)), Roadside(b.Street, -c.ApproachRight(kb)));
                 float half = Mathf.Max(0.35f, Mathf.Sin(Mathf.Min(gap, Mathf.PI) * 0.5f));
-                float r = Mathf.Clamp(Mathf.Max(a.HalfWidth, b.HalfWidth) / half + 2.2f, 4.5f, 20f);
+                float r = Mathf.Clamp(off / half + 0.5f, 4f, 22f);
                 corners.Add(c.At + bis * r);
             }
             int ia = 0, ib = 1;
@@ -98,11 +106,12 @@ namespace CloneZ
             bool yellow = MapStyle.Unit(key, SaltSignal + 1) < 0.65f;
             bool plates = MapStyle.Unit(key, SaltSignal + 2) < 0.5f;
             var hung = new List<Vector2>();
-            foreach (JunctionArm a in arms)
+            foreach (int k in arms)
             {
+                JunctionArm a = c.Arms[k];
                 if (!Approaches(a)) continue;
                 Vector2 v = -a.Dir, right = new Vector2(v.y, -v.x);
-                float lane = a.Street.Data.oneway ? 0f : a.HalfWidth * 0.5f;
+                float lane = a.Street.Data.oneway ? 0f : EdgeOf(a.Street, c.ApproachRight(k)) * 0.5f;
                 Vector2 o = c.At + right * lane;
                 // Where the span crosses the approach's lane, or the nearest the span comes to it.
                 if (!Cross(p1, p2, o, a.Dir, out float s)) s = 0.5f;
@@ -111,7 +120,7 @@ namespace CloneZ
                 foreach (Vector2 other in hung)
                     if ((other - h).sqrMagnitude < 0.5f) h += (p2 - p1).normalized * 0.7f;
                 hung.Add(h);
-                float wireY = Mathf.Lerp(attach, attach, s) - sag * 4f * s * (1f - s) - 0.5f;
+                float wireY = attach - sag * 4f * s * (1f - s) - 0.5f;
                 bool main = RoadRank(a.Street) >= c.TopRank;
                 Head(ctx, h, wireY, a.Dir, yellow, plates, main);
             }
@@ -146,7 +155,7 @@ namespace CloneZ
             for (int k = 0; k < 6; k++)
             {
                 Vector2 q = p + outward * k;
-                if (ctx.Site.FreeBeside(q, 0.4f)) return q;
+                if (ctx.Roadside(q, 0.4f)) return q;
             }
             return p;
         }
@@ -222,7 +231,8 @@ namespace CloneZ
                 // Square to the road, facing the way the sign does.
                 facing = Vector2.Dot(facing, along) >= 0f ? along : -along;
                 Vector2 v = -facing, right = new Vector2(v.y, -v.x);
-                Vector2 at = on + right * (HalfWidth(s) + 0.75f);
+                int side = Vector2.Dot(Left(along), right) >= 0f ? 1 : -1;
+                Vector2 at = on + right * Roadside(s, side);
                 if (c != null && (c.At - at).sqrMagnitude < 25f) at += facing * 2f;
                 if (!ctx.Site.FreeBeside(at, 0.3f)) continue;
                 if (c != null) c.Controlled = true;
@@ -259,28 +269,30 @@ namespace CloneZ
             bool allWay = throughRank <= 2 && names.Count >= 2 && c.Arms.Count >= 4 && rule < 0.2f;
             if (throughRank <= 2 && !allWay && rule > 0.86f) return;   // left uncontrolled
             c.Controlled = true;
-            foreach (JunctionArm a in c.Arms)
+            for (int k = 0; k < c.Arms.Count; k++)
             {
+                JunctionArm a = c.Arms[k];
                 if (RoadRank(a.Street) < 2 || !Approaches(a)) continue;
                 bool minor = NameKey(a.Street) != through;
                 if (!minor && !allWay) continue;
                 string face = rural && throughRank >= 3 && MapStyle.Unit(key ^ a.Street.Data.id, SaltStop) < 0.12f ? "yield" : "stop";
-                Vector2 at = ApproachSpot(ctx, c, a, 0.75f, out bool ok);
+                Vector2 at = ApproachSpot(ctx, c, k, out bool ok);
                 if (!ok) continue;
                 Sign(ctx, at, a.Dir, face, c.Named ? null : c, allWay && face == "stop");
             }
         }
 
-        // Beside an approach, on the right of its traffic, back from the crossing street's kerb.
-        private static Vector2 ApproachSpot(Ctx ctx, Crossing c, JunctionArm a, float verge, out bool ok)
+        // Beside an approach, on the right of its traffic, level with the stop line the roads painted (or just behind
+        // it), on the sidewalk or the verge.
+        private static Vector2 ApproachSpot(Ctx ctx, Crossing c, int k, out bool ok)
         {
-            float cross = 0f;
-            foreach (JunctionArm b in c.Arms)
-                if (NameKey(b.Street) != NameKey(a.Street)) cross = Mathf.Max(cross, b.HalfWidth);
-            Vector2 v = -a.Dir, right = new Vector2(v.y, -v.x);
-            for (int k = 0; k < 5; k++)
+            JunctionArm a = c.Arms[k];
+            float back = RoadPass.StopLine(c.Junction, c.ArmIndex[k], out _, out float distance) ? distance + 0.3f : c.Setback(k) + 1.5f;
+            float off = Roadside(a.Street, c.ApproachRight(k));
+            Vector2 right = Left(a.Dir);
+            for (int step = 0; step < 5; step++)
             {
-                Vector2 at = c.At + a.Dir * (cross + 2.2f + k * 1.2f) + right * (a.HalfWidth + verge);
+                Vector2 at = c.At + a.Dir * (back + step * 1.2f) + right * off;
                 if (!ctx.Inside(at) || !ctx.Site.FreeBeside(at, 0.3f)) continue;
                 ok = true;
                 return at;
@@ -348,20 +360,23 @@ namespace CloneZ
         {
             if (c.Named) return;
             // The two most important named streets.
-            JunctionArm first = default, second = default;
-            bool haveFirst = false, haveSecond = false;
-            foreach (JunctionArm a in c.Arms)
+            int first = -1, second = -1;
+            for (int k = 0; k < c.Arms.Count; k++)
             {
-                if (RoadRank(a.Street) < 2 || string.IsNullOrEmpty(a.Street.Data.name)) continue;
-                if (!haveFirst || RoadRank(a.Street) > RoadRank(first.Street)) { first = a; haveFirst = true; }
+                Street s = c.Arms[k].Street;
+                if (RoadRank(s) < 2 || string.IsNullOrEmpty(s.Data.name)) continue;
+                if (first < 0 || RoadRank(s) > RoadRank(c.Arms[first].Street)) first = k;
             }
-            if (!haveFirst) return;
-            foreach (JunctionArm a in c.Arms)
+            if (first < 0) return;
+            string firstName = c.Arms[first].Street.Data.name;
+            for (int k = 0; k < c.Arms.Count; k++)
             {
-                if (RoadRank(a.Street) < 2 || string.IsNullOrEmpty(a.Street.Data.name) || a.Street.Data.name == first.Street.Data.name) continue;
-                if (!haveSecond || RoadRank(a.Street) > RoadRank(second.Street)) { second = a; haveSecond = true; }
+                Street s = c.Arms[k].Street;
+                if (RoadRank(s) < 2 || string.IsNullOrEmpty(s.Data.name) || s.Data.name == firstName) continue;
+                if (second < 0 || RoadRank(s) > RoadRank(c.Arms[second].Street)) second = k;
             }
-            if (!haveSecond) return;
+            if (second < 0) return;
+            JunctionArm a = c.Arms[first], b = c.Arms[second];
             Vector2 at;
             float top;
             if (on.HasValue)
@@ -371,10 +386,14 @@ namespace CloneZ
             }
             else
             {
-                // A post of their own at the corner between the two streets.
-                Vector2 bis = (first.Dir + second.Dir);
-                bis = bis.sqrMagnitude > 1e-3f ? bis.normalized : Left(first.Dir);
-                float r = Mathf.Max(first.HalfWidth, second.HalfWidth) * 1.41f + 1.2f;
+                // A post of their own at the kerb corner between the two streets.
+                Vector2 bis = a.Dir + b.Dir;
+                bis = bis.sqrMagnitude > 1e-3f ? bis.normalized : Left(a.Dir);
+                int sideA = Cross(a.Dir, bis) > 0f ? c.ApproachRight(first) : -c.ApproachRight(first);
+                int sideB = Cross(b.Dir, bis) > 0f ? c.ApproachRight(second) : -c.ApproachRight(second);
+                float off = Mathf.Max(Roadside(a.Street, sideA), Roadside(b.Street, sideB));
+                float half = Mathf.Max(0.35f, Mathf.Sin(Vector2.Angle(a.Dir, b.Dir) * Mathf.Deg2Rad * 0.5f));
+                float r = Mathf.Clamp(off / half + 0.3f, 3f, 18f);
                 at = c.At + bis * r;
                 bool ok = false;
                 for (int k = 0; k < 4 && !ok; k++)
@@ -389,9 +408,11 @@ namespace CloneZ
             c.Named = true;
             NameAtlas names = ctx.Names;
             RaidMesh m = ctx.Low(at);
-            Blade(m, names, at, top - 0.08f, first, first.Street.Data.name);
-            Blade(m, names, at, top + 0.12f, second, second.Street.Data.name);
+            Blade(m, names, at, top - 0.08f, a, firstName);
+            Blade(m, names, at, top + 0.12f, b, b.Street.Data.name);
         }
+
+        private static float Cross(Vector2 u, Vector2 v) => u.x * v.y - u.y * v.x;
 
         // One blade along an arm's street, text on both faces.
         private static void Blade(RaidMesh m, NameAtlas names, Vector2 post, float y, JunctionArm a, string name)
@@ -461,8 +482,9 @@ namespace CloneZ
                 p = q;
             }
             if (left > 0f) return new Vector2(1e6f, 1e6f);
+            // On the right of the traffic: the street's own right where its points run the traffic's way.
             Vector2 r = new Vector2(d.y, -d.x);
-            return p + r * (HalfWidth(a.Street) + Verge(a.Street) + 0.3f);
+            return p + r * (Roadside(a.Street, step > 0 ? -1 : 1) + 0.2f);
         }
 
         private static int Limit(Ctx ctx, Street s, Vector2 at)
@@ -517,18 +539,20 @@ namespace CloneZ
         // One-way streets: ONE WAY where traffic may turn in, DO NOT ENTER where it comes out.
         private static void OneWays(Ctx ctx, Crossing c)
         {
-            foreach (JunctionArm a in c.Arms)
+            for (int k = 0; k < c.Arms.Count; k++)
             {
+                JunctionArm a = c.Arms[k];
                 if (!a.Street.Data.oneway || RoadRank(a.Street) < 2) continue;
-                Vector2 right = new Vector2(a.Dir.y, -a.Dir.x);
-                float cross = 0f;
+                bool crossed = false;
                 foreach (JunctionArm b in c.Arms)
-                    if (NameKey(b.Street) != NameKey(a.Street)) cross = Mathf.Max(cross, b.HalfWidth);
-                if (cross <= 0f) continue;
+                    if (NameKey(b.Street) != NameKey(a.Street)) crossed = true;
+                if (!crossed) continue;
+                Vector2 right = new Vector2(a.Dir.y, -a.Dir.x);
+                float back = c.Setback(k) + 0.9f;
                 if (Approaches(a))
                 {
                     // Traffic comes out of this street: nobody turns into it.
-                    Vector2 at = c.At + a.Dir * (cross + 1.6f) + right * (a.HalfWidth + 0.7f);
+                    Vector2 at = c.At + a.Dir * back + right * Roadside(a.Street, -c.ApproachRight(k));
                     if (!ctx.Inside(at) || !ctx.Site.FreeBeside(at, 0.3f)) continue;
                     Post(ctx, at, 2.7f, false);
                     Shaped(ctx.Low(at), at - a.Dir * 0.04f, 2.35f, -a.Dir, 0.62f, "donotenter", "roundback");
@@ -536,7 +560,7 @@ namespace CloneZ
                 else
                 {
                     // Traffic may turn in: an arrow along it, read from the crossing street.
-                    Vector2 at = c.At + a.Dir * (cross + 1.4f) - right * (a.HalfWidth + 0.7f);
+                    Vector2 at = c.At + a.Dir * back - right * Roadside(a.Street, c.ApproachRight(k));
                     if (!ctx.Inside(at) || !ctx.Site.FreeBeside(at, 0.3f)) continue;
                     Post(ctx, at, 2.9f, false);
                     RaidMesh m = ctx.Low(at);
@@ -567,7 +591,7 @@ namespace CloneZ
                 if (!ctx.Inside(mid) || ctx.Density.Town(mid)) continue;
                 Nearest(s.Pts, mid, out Vector2 on, out Vector2 d);
                 Vector2 right = new Vector2(d.y, -d.x);
-                Vector2 at = on + right * (HalfWidth(s) + Verge(s) + 0.4f);
+                Vector2 at = on + right * (Roadside(s, -1) + 0.2f);
                 if (!ctx.Site.FreeBeside(at, 0.3f)) continue;
                 Post(ctx, at, 2.6f, true);
                 Shaped(ctx.Low(at), at - d * 0.05f, 2.15f, -d, 0.75f, "deer", "diamondback");
