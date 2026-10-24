@@ -775,6 +775,9 @@ namespace CloneZ
         private List<MeshRenderer>[] _merge;
         private static readonly List<MonoBehaviour> s_Behaviours = new List<MonoBehaviour>(16);
         private static readonly List<MeshRenderer> s_MergeRenderers = new List<MeshRenderer>(16);
+        private static readonly List<Vector3> s_V = new List<Vector3>(1024), s_N = new List<Vector3>(1024);
+        private static readonly List<Vector2> s_UV = new List<Vector2>(1024);
+        private static readonly List<int> s_I = new List<int>(2048);
 
         /// <summary>Renderers merged into rooms' furniture meshes, and the merged renderers made.</summary>
         public int Merged, MergedInto;
@@ -889,15 +892,32 @@ namespace CloneZ
             foreach (KeyValuePair<MergeKey, List<MeshRenderer>> g in groups)
             {
                 if (g.Value.Count < 2) continue;
+                // Each source's vertices once (moved into the merged object's space), its triangles under its materials'
+                // sub-meshes; and where each source's triangles land (sub-mesh, first index, count), so a piece that can be
+                // dismantled hides its share when it goes.
                 var mats = new List<Material>(8);
-                var byMat = new List<List<CombineInstance>>(8);
-                var owners = new List<List<int>>(8);   // which of g.Value each instance came from
+                var tris = new List<List<int>>(8);
+                var verts = new List<Vector3>(4096);
+                var norms = new List<Vector3>(4096);
+                var uvs = new List<Vector2>(4096);
+                var ranges = new List<int>[g.Value.Count];
                 for (int ri = 0; ri < g.Value.Count; ri++)
                 {
                     MeshRenderer r = g.Value[ri];
                     Mesh mesh = r.GetComponent<MeshFilter>().sharedMesh;
+                    if (!mesh.isReadable) continue;
                     Material[] shared = r.sharedMaterials;
                     Matrix4x4 m = toLocal * r.transform.localToWorldMatrix;
+                    mesh.GetVertices(s_V);
+                    mesh.GetNormals(s_N);
+                    mesh.GetUVs(0, s_UV);
+                    int baseVertex = verts.Count;
+                    for (int v = 0; v < s_V.Count; v++)
+                    {
+                        verts.Add(m.MultiplyPoint3x4(s_V[v]));
+                        norms.Add(v < s_N.Count ? m.MultiplyVector(s_N[v]) : Vector3.up);
+                        uvs.Add(v < s_UV.Count ? s_UV[v] : Vector2.zero);
+                    }
                     for (int s = 0; s < mesh.subMeshCount && s < shared.Length; s++)
                     {
                         int at = mats.IndexOf(shared[s]);
@@ -905,40 +925,27 @@ namespace CloneZ
                         {
                             at = mats.Count;
                             mats.Add(shared[s]);
-                            byMat.Add(new List<CombineInstance>(16));
-                            owners.Add(new List<int>(16));
+                            tris.Add(new List<int>(1024));
                         }
-                        byMat[at].Add(new CombineInstance { mesh = mesh, subMeshIndex = s, transform = m });
-                        owners[at].Add(ri);
+                        mesh.GetIndices(s_I, s);
+                        (ranges[ri] ??= new List<int>(6)).Add(at);
+                        ranges[ri].Add(tris[at].Count);
+                        ranges[ri].Add(s_I.Count);
+                        for (int k = 0; k < s_I.Count; k++) tris[at].Add(s_I[k] + baseVertex);
                     }
                 }
-                // Where each source's triangles land (sub-mesh, first index, count): a piece that can be dismantled hides
-                // its share when it goes.
-                var ranges = new List<int>[g.Value.Count];
-                for (int j = 0; j < byMat.Count; j++)
-                {
-                    int offset = 0;
-                    for (int q = 0; q < byMat[j].Count; q++)
-                    {
-                        CombineInstance ci = byMat[j][q];
-                        int count = (int)ci.mesh.GetIndexCount(ci.subMeshIndex);
-                        int ri = owners[j][q];
-                        (ranges[ri] ??= new List<int>(6)).Add(j);
-                        ranges[ri].Add(offset);
-                        ranges[ri].Add(count);
-                        offset += count;
-                    }
-                }
-                var parts = new CombineInstance[mats.Count];
-                for (int j = 0; j < mats.Count; j++)
-                {
-                    var part = new Mesh { indexFormat = IndexFormat.UInt32 };
-                    part.CombineMeshes(byMat[j].ToArray(), true, true);
-                    parts[j] = new CombineInstance { mesh = part, transform = Matrix4x4.identity };
-                }
-                var merged = new Mesh { name = "Furniture " + pr.Name, indexFormat = IndexFormat.UInt32 };
-                merged.CombineMeshes(parts, false, false);
-                for (int j = 0; j < parts.Length; j++) Object.DestroyImmediate(parts[j].mesh);
+                s_V.Clear();
+                s_N.Clear();
+                s_UV.Clear();
+                s_I.Clear();
+                if (mats.Count == 0) continue;
+                var merged = new Mesh { name = "Furniture " + pr.Name, indexFormat = verts.Count > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16 };
+                merged.SetVertices(verts);
+                merged.SetNormals(norms);
+                merged.SetUVs(0, uvs);
+                merged.subMeshCount = mats.Count;
+                for (int j = 0; j < mats.Count; j++) merged.SetIndices(tris[j], MeshTopology.Triangles, j, false);
+                merged.RecalculateBounds();
                 if (RaidMesh.CreatedMeshes != null) RaidMesh.CreatedMeshes.Add(merged);
                 if (RaidMesh.CreatedMeshes != Meshes) Meshes.Add(merged);
 
@@ -958,10 +965,11 @@ namespace CloneZ
                 // The pieces keep everything but their looks; one that can be dismantled keeps the way to hide its share.
                 for (int ri = 0; ri < g.Value.Count; ri++)
                 {
+                    if (ranges[ri] == null) continue;   // nothing of it went in: it keeps its own
                     MeshRenderer r = g.Value[ri];
                     Transform body = r.transform;
                     while (body.parent != null && body.parent != B.Root) body = body.parent;
-                    if (ranges[ri] != null && body.GetComponent<IDemolishable>() != null)
+                    if (body.GetComponent<IDemolishable>() != null)
                     {
                         MergedPiece piece = body.GetComponent<MergedPiece>();
                         if (piece == null) piece = body.gameObject.AddComponent<MergedPiece>();
