@@ -124,8 +124,19 @@ namespace CloneZ
                     {
                         int cx = ChunkOf(t.X), cz = ChunkOf(t.Z);
                         var pair = new DetailPair { label = t.Label, cx = cx, cz = cz };
-                        ChunkReport full = BuildCounted(t, cx, cz, KentuckyMap.Detail.Full, out Fingerprint pf);
-                        ChunkReport lite = BuildCounted(t, cx, cz, KentuckyMap.Detail.Lite, out Fingerprint pl);
+                        // Each built three times, Full and Lite in turn: the middle run of each is the one reported (a single build
+                        // can catch a garbage collection).
+                        var fulls = new List<ChunkReport>(3);
+                        var lites = new List<ChunkReport>(3);
+                        Fingerprint pf = default, pl = default;
+                        for (int run = 0; run < 3; run++)
+                        {
+                            fulls.Add(BuildCounted(t, cx, cz, KentuckyMap.Detail.Full, out pf));
+                            lites.Add(BuildCounted(t, cx, cz, KentuckyMap.Detail.Lite, out pl));
+                        }
+                        fulls.Sort((a, b) => a.totalMs.CompareTo(b.totalMs));
+                        lites.Sort((a, b) => a.totalMs.CompareTo(b.totalMs));
+                        ChunkReport full = fulls[1], lite = lites[1];
                         pair.fullMs = full.totalMs;
                         pair.liteMs = lite.totalMs;
                         pair.ratio = full.totalMs > 0 ? Math.Round(lite.totalMs / full.totalMs, 3) : 0;
@@ -1299,7 +1310,7 @@ namespace CloneZ
                 worst.Sort((a, b) => b.maxMs.CompareTo(a.maxMs));
                 for (int i = 0; i < worst.Count && i < 6; i++) r.slowest.Add(worst[i]);
                 s.Census(out r.pieces, out r.litePieces, out r.meshes, out r.vertices, out r.regions);
-                r.managedMB = Math.Round(GC.GetTotalMemory(false) / 1048576.0, 1);
+                r.managedMB = Math.Round(GC.GetTotalMemory(true) / 1048576.0, 1);
                 r.totalMB = Math.Round(Profiler.GetTotalAllocatedMemoryLong() / 1048576.0, 1);
                 r.pooledMB = Math.Round(RaidMesh.PooledBytes / 1048576.0, 1);
                 Note("route " + name + ": " + frames + " frames, mean " + F2(r.meanMs) + " ms, p99 " + F2(r.p99Ms) + " ms, max " + F2(r.maxMs)
@@ -1359,7 +1370,7 @@ namespace CloneZ
                 md.Append("## Streaming performance\n\n");
                 if (p.detail.Count > 0)
                 {
-                    md.Append("### Lite against Full\n\nEach test piece built in both details, warm, back to back (Lite should cost at most a quarter of Full).\n\n")
+                    md.Append("### Lite against Full\n\nEach test piece built in both details, warm, three times each in turn; the middle run of each is shown (Lite should cost at most a quarter of Full).\n\n")
                         .Append("| piece | Full ms | Lite ms | Lite/Full | slowest step Full | slowest step Lite | vertices Full / Lite | objects Full / Lite ")
                         .Append("| renderers Full / Lite | colliders Full / Lite | lights Full / Lite |\n|---|--:|--:|--:|---|---|---|---|---|---|---|\n");
                     foreach (DetailPair d in p.detail)

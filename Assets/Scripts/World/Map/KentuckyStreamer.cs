@@ -82,6 +82,8 @@ namespace CloneZ
             public Chunk Replaces;
             /// <summary>Its upgrade failed: it stays in Lite.</summary>
             public bool NoUpgrade;
+            /// <summary>How much there is to build (see WeightOf), once its data is read.</summary>
+            public float Weight;
             public readonly List<Mesh> Meshes = new List<Mesh>();
             public readonly List<NavMeshBuildSource> Sources = new List<NavMeshBuildSource>();
             /// <summary>The sign textures the piece's build asked for, and (once it's counted) the distinct ones.</summary>
@@ -117,10 +119,11 @@ namespace CloneZ
         }
 
         // How long a step of a piece's build took last time, by the step before it (the passes yield in a fixed order), for
-        // each detail: weighed before the step is run, so a frame doesn't start a long one it has no time left for.
+        // each detail, and how much the pieces it was learned on had to build (see WeightOf): weighed before the step is
+        // run, so a frame doesn't start a long one it has no time left for.
         private sealed class StepCost
         {
-            public double Ms;
+            public double Ms, Weight;
             public int Seen;
         }
 
@@ -241,8 +244,18 @@ namespace CloneZ
                     Chunk c = Begin(cx, cz, RegionNow(RegionOf(cx), RegionOf(cz)), KentuckyMap.Detail.Full, null);
                     c.Job.Synchronous = true;
                     c.Pinned = true;
+                    _chunks[c.Key] = c;
                     _pinned++;
-                    while (Step(c)) { }
+                    // Timed as the streamer times its steps: the start teaches it what a Full piece's steps cost.
+                    string before = Starting;
+                    while (true)
+                    {
+                        double t0 = Now;
+                        bool more = Step(c);
+                        Learn(c, before, (Now - t0) * 1000.0);
+                        if (!more) break;
+                        before = c.LastStep;
+                    }
                     Finish(c);
                 }
             var start = new KentuckyMap.Area(_build, _place, half, half, RegionsAround);
@@ -665,7 +678,7 @@ namespace CloneZ
                 if (more)
                 {
                     ms = (Now - t0) * 1000.0;
-                    Learn(c.Detail, before, ms);
+                    Learn(c, before, ms);
                     Count(c.LastStep, ms);
                     // Its meshes are being packed on a worker: back to it next frame.
                     if (c.LastStep == KentuckyMap.WaitStep) break;
@@ -675,7 +688,7 @@ namespace CloneZ
                 {
                     // The last step ran; the piece is finished (shown) as a step of its own.
                     ms = (Now - t0) * 1000.0;
-                    Learn(c.Detail, before, ms);
+                    Learn(c, before, ms);
                     Count(before, ms);
                     c.Steps = null;
                     continue;
@@ -683,7 +696,7 @@ namespace CloneZ
                 bool swap = c.Replaces != null;
                 Finish(c);
                 ms = (Now - t0) * 1000.0;
-                Learn(c.Detail, Finishing, ms);
+                Learn(c, Finishing, ms);
                 Count(swap ? "(swap)" : "(activate)", ms);
                 _building = null;
             }
@@ -696,20 +709,35 @@ namespace CloneZ
 
         private const string Starting = "(start)", Finishing = "(finish)";
 
-        // What the step after <paramref name="c"/>'s last one took last time (a guess for an unknown one).
+        // What the step after <paramref name="c"/>'s last one is expected to take: what it took last time, scaled by how much
+        // more (or less) this piece has to build than the ones it was learned on (a guess for an unknown one).
         private double Expected(Chunk c)
         {
             string before = c.Steps == null ? Finishing : c.LastStep ?? Starting;
-            return _stepCosts[(int)c.Detail].TryGetValue(before, out StepCost s) ? s.Ms : 1.0;
+            if (!_stepCosts[(int)c.Detail].TryGetValue(before, out StepCost s)) return 1.0;
+            double scale = s.Weight > 0 && c.Weight > 0 ? Math.Min(4.0, Math.Max(0.5, c.Weight / s.Weight)) : 1.0;
+            return s.Ms * scale;
         }
 
-        private void Learn(KentuckyMap.Detail detail, string before, double ms)
+        private void Learn(Chunk c, string before, double ms)
         {
-            Dictionary<string, StepCost> costs = _stepCosts[(int)detail];
+            Dictionary<string, StepCost> costs = _stepCosts[(int)c.Detail];
             if (!costs.TryGetValue(before, out StepCost s)) costs[before] = s = new StepCost();
             // Quick to learn, slow to forget a long one: the next piece's step is likelier like the worst than the mean.
             s.Ms = s.Seen == 0 ? ms : ms > s.Ms ? s.Ms * 0.4 + ms * 0.6 : s.Ms * 0.85 + ms * 0.15;
+            if (c.Weight > 0) s.Weight = s.Weight <= 0 ? c.Weight : s.Weight * 0.7 + c.Weight * 0.3;
             s.Seen++;
+        }
+
+        // How much there is to build on a piece, roughly: its buildings by size, its streets, lines, land-use areas and mapped
+        // points. What a step took on one piece is scaled by this to guess what it takes on another (downtown Louisville
+        // against a Bardstown street).
+        private static float WeightOf(KentuckyMap.Area a)
+        {
+            if (a == null) return 0f;
+            float w = 4f + a.Streets.Count * 0.25f + a.Lines.Count * 0.25f + a.Barriers.Count * 0.25f + a.Areas.Count * 0.5f + a.Nodes.Count * 0.05f;
+            for (int i = 0; i < a.Buildings.Count; i++) w += 0.5f + Mathf.Min(a.Buildings[i].Size, 20000f) / 250f;
+            return w;
         }
 
         private void Count(string step, double ms)
@@ -790,6 +818,7 @@ namespace CloneZ
                 Root = c.Root.transform, Overhead = c.Overhead.transform, Offset = c.Middle, Detail = detail, Area = area,
             };
             c.Steps = KentuckyMap.ChunkSteps(c.Job).GetEnumerator();
+            c.Weight = WeightOf(area);
             return c;
         }
 
@@ -815,6 +844,7 @@ namespace CloneZ
                 if (c.Job != null && c.Job.Site != null) c.Job.Site.BeginStep();
                 bool more = c.Steps.MoveNext();
                 if (more) c.LastStep = c.Steps.Current;
+                if (c.Weight <= 0f && c.Job != null) c.Weight = WeightOf(c.Job.Area);
                 return more;
             }
             catch (Exception e)
