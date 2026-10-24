@@ -866,7 +866,7 @@ namespace CloneZ
             }
             c.Root.transform.position = c.Middle;
             c.Overhead.transform.position = c.Middle;
-            if (!c.Failed) ApplyLoot(c);
+            if (!c.Failed && c.Detail == KentuckyMap.Detail.Full) ApplyLoot(c);
             if (old != null)
             {
                 // The Lite piece goes as the Full one comes (its NavMesh sources with it).
@@ -1033,19 +1033,17 @@ namespace CloneZ
             }
         }
 
-        // A Lite piece rolls whatever containers it has afresh and keeps no record: what was taken from the piece is the Full
-        // piece's to remember and give back.
+        // Only a Full piece rolls its containers (a Lite piece's few, if any, stay empty: nobody comes near one before it's
+        // built again in Full); what was taken from a piece is the Full piece's to remember and give back.
         private void RollOrRestore(Chunk c)
         {
-            bool full = c.Detail == KentuckyMap.Detail.Full;
-            ChunkMemory kept = null;
-            if (full) _memory.TryGetValue(c.Key, out kept);
-            var spots = new HashSet<Vector3Int>();
+            _memory.TryGetValue(c.Key, out ChunkMemory kept);
+            c.Containers = new HashSet<Vector3Int>();
             foreach (LootContainer box in c.Root.GetComponentsInChildren<LootContainer>(true))
             {
                 if (box == null || box.Type == ContainerType.Corpse || box.IsSack) continue;
                 Vector3Int spot = SpotOf(c, box.transform);
-                if (!spots.Add(spot)) continue;
+                if (!c.Containers.Add(spot)) continue;
                 if (kept != null)
                 {
                     if (kept.Gone.Contains(spot))
@@ -1063,7 +1061,6 @@ namespace CloneZ
                 int seed = unchecked(_raidSeed ^ (c.Cx * 73856093) ^ (c.Cz * 19349663) ^ (spot.x * 83492791) ^ (spot.z * 39916801) ^ spot.y);
                 RaidWorldRules.RollLoot(box, new System.Random(seed));
             }
-            c.Containers = full ? spots : null;
             if (kept != null) _memory.Remove(c.Key);
         }
 
