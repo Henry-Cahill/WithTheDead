@@ -346,8 +346,8 @@ namespace CloneZ
                 _n = Mathf.CeilToInt(Half * 2f / Cell) + 1;
                 _taken = new bool[_n * _n];
                 _road = new bool[_n * _n];
-                // The map's prop colliders are made one MeshCollider when the site is emitted (see RaidTown).
-                town.MergedColliders = true;
+                // The prop colliders are made when the site is emitted (a streamed piece's in a step of their own).
+                town.DeferColliders = true;
                 Loot = new GameObject("Loot").transform;
                 Loot.SetParent(town.World, false);
                 foreach (Footprint f in area.Foreign) Take(f.Bounds);

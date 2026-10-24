@@ -16,25 +16,32 @@ namespace CloneZ
         private static NavMeshSurface s_Surface;
         private static Transform s_Root;
         private static System.Action s_Rebuild;
+        private static System.Action<Bounds> s_RebuildAround;
 
         public static void Register(NavMeshSurface surface)
         {
             s_Surface = surface;
             s_Root = surface != null ? surface.transform : null;
             s_Rebuild = null;
+            s_RebuildAround = null;
         }
 
         /// <summary>A NavMesh baked from the <paramref name="root"/> subtree by its owner, which
         /// <paramref name="rebuild"/> asks to bake again.</summary>
-        public static void RegisterStreamed(Transform root, System.Action rebuild)
+        public static void RegisterStreamed(Transform root, System.Action rebuild) => RegisterStreamed(root, rebuild, null);
+
+        /// <summary>As <see cref="RegisterStreamed(Transform, System.Action)"/>; <paramref name="rebuildAround"/> asks it to
+        /// bake again only where something changed (world space).</summary>
+        public static void RegisterStreamed(Transform root, System.Action rebuild, System.Action<Bounds> rebuildAround)
         {
             s_Surface = null;
             s_Root = root;
             s_Rebuild = rebuild;
+            s_RebuildAround = rebuildAround;
         }
 
         /// <summary>True when <paramref name="t"/> lies under the surface, so the bake takes in its geometry
-        /// (unless a <see cref="NavMeshModifier"/> keeps it out) and removing it calls for a <see cref="Rebuild"/>.</summary>
+        /// (unless a <see cref="NavMeshModifier"/> keeps it out) and removing it calls for a <see cref="Rebuild()"/>.</summary>
         public static bool Collects(Transform t) => s_Root != null && t != null && t.IsChildOf(s_Root);
 
         /// <summary>Re-bakes the world NavMesh. Call after removing a baked-in obstacle so the freed
@@ -44,6 +51,14 @@ namespace CloneZ
         {
             if (s_Rebuild != null) s_Rebuild();
             else if (s_Surface != null) s_Surface.BuildNavMesh();
+        }
+
+        /// <summary>As <see cref="Rebuild()"/>, when what changed lies within <paramref name="worldBounds"/>: a streamed map
+        /// then gathers again only what's there (much cheaper on the main thread); a fixed map bakes it all again.</summary>
+        public static void Rebuild(Bounds worldBounds)
+        {
+            if (s_RebuildAround != null) s_RebuildAround(worldBounds);
+            else Rebuild();
         }
     }
 }
