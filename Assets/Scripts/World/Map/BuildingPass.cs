@@ -37,6 +37,7 @@ namespace CloneZ
 
         private const int SaltInterior = 0x1A7E, SaltDetail = 0xDE7A;
 
+        /// <summary>Generates building geometry for the given site, yielding progress tokens for each stage.</summary>
         internal static IEnumerable<string> Build(Site site)
         {
             site.BeginStep();
@@ -288,7 +289,9 @@ namespace CloneZ
             /// <summary>A garage, roll-up or barn door (always closed).</summary>
             public bool Big;
             public bool Lit;
+            /// <summary>Indicates whether the opening is a door (vs a window).</summary>
             public bool IsDoor => Win == WindowKind.None;
+            /// <summary>Indicates whether the opening is a gap (a door without a closed flag).</summary>
             public bool Gap => Win == WindowKind.None && !Closed;
         }
 
