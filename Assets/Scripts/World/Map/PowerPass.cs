@@ -687,10 +687,10 @@ namespace CloneZ
         private static void Guy(Ctx ctx, Pole p, bool inside)
         {
             Vector2 ground = p.At + p.Guy * (p.Height * 0.42f);
-            if (!ctx.Roadside(ground, 0.3f))
+            if (!ctx.Roadside(ground, 0.3f) || ctx.Blocks.Crosses(p.At, ground, 0.2f))
             {
                 ground = p.At + p.Guy * (p.Height * 0.28f);
-                if (!ctx.Roadside(ground, 0.3f)) return;
+                if (!ctx.Roadside(ground, 0.3f) || ctx.Blocks.Crosses(p.At, ground, 0.2f)) return;
             }
             Vector3 top = To3(p.At, p.Height - 0.7f), anchor = To3(ground, 0.02f);
             ctx.Wires.Add(top, anchor, 0.02f, 0.01f, GuyGrey, !inside);
