@@ -233,19 +233,25 @@ namespace CloneZ
         }
 
         /// <summary>
-        /// Fits a tree inside the square to its room: a conifer cut down until its skirt keeps off the nearest wall and
+        /// Fits a tree inside the square to its room: a conifer cut down until its skirt keeps off the nearest walls and
         /// it tops out short of the wires hanging near it; a hardwood topped below a wire hanging straight over its trunk,
-        /// and its limbs cut back short of the nearest wall and wire otherwise (<paramref name="room"/>, in the tree's own
-        /// frame, turned <paramref name="yaw"/>). False when what's left isn't worth planting.
+        /// and its limbs cut back short of the two nearest buildings' walls and of the nearest wire otherwise
+        /// (<paramref name="room"/>, in the tree's own frame, turned <paramref name="yaw"/>). False when what's left isn't
+        /// worth planting.
         /// </summary>
         private static bool Fit(NaturePlan plan, Vector2 at, TreeKind kind, float yaw, ref float height, ref TreeRoom room)
         {
             bool conifer = TreeKit.Conifer(kind);
             float reach = TreeKit.Reach(kind, height) + 0.5f;
-            if (plan.NearestWall(at, reach, out Vector2 wallDir, out float wall))
+            plan.NearestWalls(at, reach, out Vector2 dir0, out float wall0, out Vector2 dir1, out float wall1);
+            if (wall0 < reach)
             {
-                if (conifer) height = Mathf.Min(height, (wall - 0.35f) / TreeKit.Skirt(kind));
-                else room.Add(Azimuth(wallDir) - yaw, wall);
+                if (conifer) height = Mathf.Min(height, (wall0 - 0.35f) / TreeKit.Skirt(kind));
+                else
+                {
+                    room.Add(Azimuth(dir0) - yaw, wall0);
+                    if (wall1 < reach) room.Add(Azimuth(dir1) - yaw, wall1);
+                }
             }
             if (plan.WireNear(at, reach, height + 0.5f, out Vector2 wireDir, out float wire, out float wireY))
             {

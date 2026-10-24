@@ -646,6 +646,10 @@ namespace CloneZ
         /// The site's overhead wires: sagging three-sided strands, a few hundred vertices a span, gathered into one mesh per
         /// 64 m cell (inside the square under the overhead root, which moves with a streamed piece and is never baked;
         /// past it with the scenery). One palette material, so a whole town's wires are a handful of draws.
+        /// <para>The vegetation pass reads the wires back from these meshes to keep the trees' crowns off them, so their
+        /// layout is a contract: readable meshes on objects named "Wires" directly under the overhead root, emitted before
+        /// the vegetation pass runs; each strand a run of three-vertex rings in order, no two rings of one strand more than
+        /// 5 m apart.</para>
         /// </summary>
         internal sealed class WireBatch
         {
@@ -674,7 +678,7 @@ namespace CloneZ
                 Vector3 ab = b - a;
                 float len = ab.magnitude;
                 if (len < 0.05f) return;
-                int segs = Mathf.Clamp(Mathf.CeilToInt(len / 5f), 2, 20);
+                int segs = Mathf.Clamp(Mathf.CeilToInt(len / 5f), 2, 80);
                 Surf s = DecorPalette.Matte(colour);
                 _material = s.Mat;
                 Bucket bucket = BucketAt((a + b) * 0.5f, far);
@@ -715,7 +719,7 @@ namespace CloneZ
                 Vector3 ab = b - a;
                 float len = ab.magnitude;
                 if (len < 0.05f) return;
-                int segs = Mathf.Clamp(Mathf.CeilToInt(len / 5f), 2, 20);
+                int segs = Mathf.Clamp(Mathf.CeilToInt(len / 5f), 2, 80);
                 var pts = new Vector3[segs + 1];
                 for (int k = 0; k <= segs; k++)
                 {

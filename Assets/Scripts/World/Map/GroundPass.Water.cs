@@ -333,8 +333,7 @@ namespace CloneZ
             for (int i = 0, j = whole.Count - 1; i < whole.Count; j = i++)
             {
                 Vector2 a = whole[j], c = whole[i];
-                if (CutVertex(g, a, g.GridX, g.GridZ) && CutVertex(g, c, g.GridX, g.GridZ)
-                    && (Mathf.Abs(a.x - c.x) < 0.05f || Mathf.Abs(a.y - c.y) < 0.05f)) continue;
+                if (OnBorder(a, c, o.Region)) continue;   // cut along the region's edge: the water carries on beyond
                 d = Mathf.Min(d, MapGeometry.DistanceToSegment(p, a, c));
             }
             return d;
@@ -377,7 +376,7 @@ namespace CloneZ
                 Vector2 w = g.World(pts[i]);
                 float wobble = 0.8f + 0.4f * WorldNoise(w, 6f, SaltStream);
                 float halfW = water[i] != null ? 0f : width * 0.5f * wobble;   // where it runs into a pond, it ends at the ice
-                bed[i] = halfW + (ditch ? 0.5f : 0.8f) * (0.7f + 0.6f * WorldNoise(w, 4f, SaltStream + 1));
+                bed[i] = water[i] != null ? 0f : halfW + (ditch ? 0.5f : 0.8f) * (0.7f + 0.6f * WorldNoise(w, 4f, SaltStream + 1));
                 shelf[i] = halfW;
                 float thread = WorldNoise(w, ditch ? 9f : 14f, SaltStream + 2);
                 core[i] = halfW * open * Smooth(ditch ? 0.42f : 0.2f, ditch ? 0.62f : 0.45f, thread) * (0.75f + 0.5f * WorldNoise(w, 3f, SaltStream + 3));
