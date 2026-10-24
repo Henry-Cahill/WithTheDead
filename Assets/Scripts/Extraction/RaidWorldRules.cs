@@ -69,7 +69,7 @@ namespace CloneZ
                 conditional++;
                 switch (e.Condition)
                 {
-                    case ExitCondition.Pay: e.Cost = 300 + rng.Next(5) * 100; e.Hint = "Smuggler's boat — pay the fare"; break;
+                    case ExitCondition.Pay: e.Cost = 300 + rng.Next(5) * 100; e.Hint = "Smuggler's truck — pay the fare"; break;
                     case ExitCondition.NoBackpack: e.Hint = "Storm culvert — too tight for a backpack"; break;
                     case ExitCondition.Switch: e.Hint = "Freight gate — needs the power on"; break;
                     case ExitCondition.CoopScav: e.Hint = "Scav trail — they only let their own through"; break;
