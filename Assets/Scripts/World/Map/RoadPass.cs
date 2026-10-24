@@ -80,9 +80,9 @@ namespace CloneZ
                 foreach (string step in Markings(net)) yield return step;
                 yield return "road markings";
             }
-            Paths(net);
+            foreach (string step in Paths(net)) yield return step;
             yield return "paths";
-            Railways(net);
+            foreach (string step in Railways(net)) yield return step;
             yield return "railways";
             Bridges(net);
             yield return "bridges";

@@ -232,10 +232,10 @@ namespace CloneZ
             {
                 int cut = CutAt(cuts, (s[i].S + s[i + 1].S) * 0.5f);
                 s_Keep[i] = s_KerbOk[i] && s_KerbOk[i + 1] && cut < 0;
-                if (cut == (int)CutKind.Ramp && s_KerbOk[i] && s_KerbOk[i + 1] && s_WalkOk[i] && s_WalkOk[i + 1])
+                if (net.Full && cut == (int)CutKind.Ramp && s_KerbOk[i] && s_KerbOk[i + 1] && s_WalkOk[i] && s_WalkOk[i + 1])
                     Ramp(net, c, s[i], s[i + 1], side, s_Edge[i], s_Edge[i + 1], roadY);
             }
-            if (anyKerb)
+            if (anyKerb && net.Full)
             {
                 for (int i = 0; i < n; i++)
                 {
@@ -277,12 +277,16 @@ namespace CloneZ
             {
                 int cut = CutAt(cuts, (s[i].S + s[i + 1].S) * 0.5f);
                 s_Keep[i] = s_WalkOk[i] && s_WalkOk[i + 1] && cut != (int)CutKind.Mouth;
-                if (cut == (int)CutKind.Ramp)
+                if (cut == (int)CutKind.Ramp && net.Full)
                 {
                     s_WalkIn[i] = Mathf.Max(s_WalkIn[i], s_Edge[i] + 1.3f);
                     s_WalkIn[i + 1] = Mathf.Max(s_WalkIn[i + 1], s_Edge[i + 1] + 1.3f);
                 }
             }
+            // Lite draws no kerb: a sidewalk at the kerb starts at the carriageway's edge.
+            if (!net.Full)
+                for (int i = 0; i < n; i++)
+                    if (s_WalkIn[i] <= s_Edge[i] + KerbWidth + 0.05f) s_WalkIn[i] = s_Edge[i];
             for (int i = 0; i < n; i++)
             {
                 s_A[i] = side * s_WalkIn[i];
@@ -381,22 +385,27 @@ namespace CloneZ
                     s_WalkOut[i] = Mathf.Max(KerbWidth + 0.05f, Mathf.Min(want, Mathf.Min(lim, (rb - 0.05f) / k)));
                 }
                 for (int i = 0; i + 1 < n; i++) s_Keep[i] = s_KerbOk[i] && s_KerbOk[i + 1];
-                for (int i = 0; i < n; i++)
+                if (net.Full)
                 {
-                    s_A[i] = 0f;
-                    s_B[i] = -KerbWidth;
+                    for (int i = 0; i < n; i++)
+                    {
+                        s_A[i] = 0f;
+                        s_B[i] = -KerbWidth;
+                    }
+                    Band(net, s, s_A, s_B, KerbTop, KerbTop, look.Kerb, null, s_Keep);
+                    float roadY = RoadY + j.Top.Order * 0.0003f;
+                    for (int i = 0; i + 1 < n; i++)
+                    {
+                        if (!s_Keep[i]) continue;
+                        Vector3 a0 = To3(s[i].P, roadY), b0 = To3(s[i + 1].P, roadY), b1 = To3(s[i + 1].P, KerbTop), a1 = To3(s[i].P, KerbTop);
+                        Face(net.Out.Flat((a0 + b1) * 0.5f), a0, b0, b1, a1, To3(s[i].N, 0f), look.KerbFace);
+                    }
                 }
-                Band(net, s, s_A, s_B, KerbTop, KerbTop, look.Kerb, null, s_Keep);
-                float roadY = RoadY + j.Top.Order * 0.0003f;
-                for (int i = 0; i + 1 < n; i++)
-                {
-                    if (!s_Keep[i]) continue;
-                    Vector3 a0 = To3(s[i].P, roadY), b0 = To3(s[i + 1].P, roadY), b1 = To3(s[i + 1].P, KerbTop), a1 = To3(s[i].P, KerbTop);
-                    Face(net.Out.Flat((a0 + b1) * 0.5f), a0, b0, b1, a1, To3(s[i].N, 0f), look.KerbFace);
-                }
-                for (int i = 0; i < n; i++) s_A[i] = -KerbWidth;
+                // Lite draws no kerbs: whatever lies behind one starts at the kerb line.
+                for (int i = 0; i < n; i++) s_A[i] = net.Full ? -KerbWidth : 0f;
                 if (!walk)
                 {
+                    if (!net.Full) continue;
                     for (int i = 0; i < n; i++)
                     {
                         s_B[i] = -Mathf.Max(KerbWidth, s_WalkOut[i]);
