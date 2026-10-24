@@ -32,7 +32,6 @@ namespace CloneZ
                 BuildProfile(c, -1);
             }
             foreach (Joint j in net.Joints) if (j.Through) MouthPatches(net, j);
-            Gores(net);
             IndexPavement(net);
         }
 
@@ -437,7 +436,6 @@ namespace CloneZ
                     continue;
                 }
                 float phi = Mathf.Repeat(b.Angle - a.Angle, Mathf.PI * 2f);
-                c.Phi = phi;
                 if (phi < 0.17f || phi > Mathf.PI * 2f - 0.01f) continue;   // arms on top of each other: they just overlap
                 if (phi > Mathf.PI - 0.17f) continue;                       // straight on, or the outside of a bend
                 c.Convex = true;
@@ -1090,106 +1088,6 @@ namespace CloneZ
                     j.CapBounds.Add(MapGeometry.Bounds(fillet));
                 }
             }
-        }
-
-        /// <summary>How far apart two carriageways leaving a junction at a narrow angle stand where their gore is paved up
-        /// to (see <see cref="Gores"/>).</summary>
-        private const float GoreWidth = 4.5f;
-
-        // The gores between two carriageways leaving a junction at a narrow angle (a one-way street splitting off a town
-        // street or joining it, the corners of a square): paved over from the kerb return out to where the two stand
-        // 4.5 m apart (or as far as the junction reaches along them), as such corners are, instead of a wedge of snow
-        // between two kerbs pointing into the junction. Past that, an island.
-        private static void Gores(Net net)
-        {
-            foreach (Joint j in net.Joints)
-            {
-                if (j.Link || j.All == null || (j.Through && j.OnChain == null)) continue;
-                foreach (Corner c in j.All)
-                {
-                    if (c.Skip || !c.Convex || c.Phi > 1.15f || c.Path.Count < 2) continue;
-                    Arm a = j.Arms[c.A], b = j.Arms[c.B];
-                    Way wa = a.W, wb = b.W;
-                    if (!wa.Carriage || !wb.Carriage || wa.Winter != Winter.Ploughed || wb.Winter != Winter.Ploughed) continue;
-                    if (wa.Cls <= Cls.Trunk || wb.Cls <= Cls.Trunk || (!wa.OneWay && !wb.OneWay) || (!wa.Town && !wb.Town)) continue;
-                    Gore(net, j, c, a, b);
-                }
-            }
-        }
-
-        private static void Gore(Net net, Joint j, Corner c, Arm a, Arm b)
-        {
-            float startA = a.Through ? a.TanL : a.Trim, startB = b.Through ? b.TanR : b.Trim;
-            float reachA = Mathf.Min(a.Cap, 25f), reachB = Mathf.Min(b.Cap, 25f);
-            if (reachA <= startA + 1f || reachB <= startB + 0.5f) return;
-            KerbLine ka = s_KerbA, kb = s_KerbB;
-            ArmKerb(j, a, 1, a.HL, reachA + 1f, ka);
-            ArmKerb(j, b, -1, b.HR, reachB + 1f, kb);
-            float g0 = GapTo(kb, ka.At(startA), out _);
-            if (g0 >= GoreWidth) return;
-            float tA = startA, tB = startB, gap = g0;
-            for (float t = startA + 0.5f; t <= reachA + 1e-3f; t += 0.5f)
-            {
-                float g = GapTo(kb, ka.At(t), out float tb);
-                if (tb > reachB) break;
-                tA = t;
-                tB = Mathf.Max(startB, tb);
-                gap = g;
-                if (g >= GoreWidth) break;
-            }
-            // Only where they part (not two carriageways side by side, nor a gore that never opens).
-            if (tA - startA < 1f || tB - startB < 0.5f || gap < Mathf.Max(g0 + 1f, GoreWidth * 0.5f)) return;
-            var poly = new List<Vector2>(c.Path.Count + 24);
-            foreach (Vector2 p in c.Path) AddPoint(poly, p);
-            KerbBetween(kb, startB, tB, poly);
-            AddPoint(poly, kb.At(tB));
-            AddPoint(poly, ka.At(tA));
-            KerbBetween(ka, tA, startA, poly);
-            if (poly.Count > 2 && (poly[0] - poly[poly.Count - 1]).sqrMagnitude <= 1e-4f) poly.RemoveAt(poly.Count - 1);
-            float area = poly.Count >= 3 ? MapGeometry.SignedArea(poly) : 0f;
-            if (Mathf.Abs(area) < 1f || float.IsNaN(area) || !IsSimple(poly)) return;
-            foreach (Vector2 p in poly)
-                if (!Finite(p) || InBuilding(net, p, 0f)) return;
-            if (area < 0f) poly.Reverse();
-            j.Caps.Add(poly);
-            j.CapBounds.Add(MapGeometry.Bounds(poly));
-            c.Gore = true;
-            ArmCut(j, a, 1, startA, tA, CutKind.Mouth);
-            ArmCut(j, b, -1, startB, tB, CutKind.Mouth);
-        }
-
-        /// <summary>The distance from <paramref name="p"/> to kerb line <paramref name="k"/>, and the arc length along it
-        /// of the nearest point.</summary>
-        private static float GapTo(KerbLine k, Vector2 p, out float t)
-        {
-            float best = float.MaxValue;
-            t = 0f;
-            for (int i = 0; i + 1 < k.P.Count; i++)
-            {
-                Vector2 a = k.P[i], ab = k.P[i + 1] - a;
-                float len2 = ab.sqrMagnitude;
-                float f = len2 > 1e-8f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / len2) : 0f;
-                float d = (a + ab * f - p).sqrMagnitude;
-                if (d >= best) continue;
-                best = d;
-                t = Mathf.Lerp(k.T[i], k.T[i + 1], f);
-            }
-            return best < float.MaxValue ? Mathf.Sqrt(best) : float.MaxValue;
-        }
-
-        /// <summary>A cut on one side (+1 left, as seen along the arm away from the junction) of the chain arm
-        /// <paramref name="arm"/> carries, from <paramref name="t0"/> to <paramref name="t1"/> metres out along it.</summary>
-        private static void ArmCut(Joint j, Arm arm, int armSide, float t0, float t1, CutKind kind)
-        {
-            Chain c = arm.Through ? j.OnChain : arm.Chain;
-            if (c == null) return;
-            if (arm.Through)
-            {
-                if (arm == j.Fwd) AddCut(c, j.AlongS + t0, j.AlongS + t1, kind, armSide);
-                else if (arm == j.Back) AddCut(c, j.AlongS - t1, j.AlongS - t0, kind, -armSide);
-            }
-            else if (arm.AtStart) AddCut(c, t0, t1, kind, armSide);
-            else AddCut(c, c.Length - t1, c.Length - t0, kind, -armSide);
         }
         #endregion
 
