@@ -30,6 +30,7 @@ namespace CloneZ
             public float Lane;              // where the travel lanes end (edge lines, parking beyond)
             public bool Walk => WalkOut > WalkIn + 0.25f;
 
+            /// <summary>Copies side geometry data from another Side instance.</summary>
             public void CopyFrom(Side o)
             {
                 Edge = o.Edge; Kerb = o.Kerb; WalkIn = o.WalkIn; WalkOut = o.WalkOut; Mapped = o.Mapped; Berm = o.Berm;
@@ -118,6 +119,7 @@ namespace CloneZ
             public Corner[] All;            // every corner by its first arm, the skipped ones too
             public bool Signals, Downtown;
             public bool Through => ThroughA != null;
+            /// <summary>Indicates whether this chain has a patch or mouths defined.</summary>
             public bool HasPatch => (Patch != null && Patch.Count >= 3) || Caps.Count > 0;
         }
 
@@ -264,6 +266,7 @@ namespace CloneZ
 
             private int Clamp(float v) => Mathf.Clamp(Mathf.FloorToInt((v - _min) / _cell), 0, _n - 1);
 
+            /// <summary>Adds an item to the grid covering the given axis-aligned box.</summary>
             public void Add(float x0, float z0, float x1, float z1, int item)
             {
                 int cx0 = Clamp(x0), cx1 = Clamp(x1), cz0 = Clamp(z0), cz1 = Clamp(z1);
