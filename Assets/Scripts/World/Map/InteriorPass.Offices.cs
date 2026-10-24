@@ -19,12 +19,14 @@ namespace CloneZ
             Color wood = Woods[rng.Next(Woods.Length)];
             if (floor && c.Width >= 4.2f && c.Depth >= 4.2f)
             {
-                // Pods of desks back to back across the floor, a swivel chair at each.
+                // Pods of desks back to back across the floor, a swivel chair at each (as many as the building's furniture
+                // budget takes).
                 Rect i = c.Inner;
                 int cols = Mathf.Clamp(Mathf.FloorToInt((i.width - 1.6f) / 3.4f), 1, 6), rows = Mathf.Clamp(Mathf.FloorToInt((i.height - 1.6f) / 4.2f), 1, 6);
                 for (int cx = 0; cx < cols; cx++)
                     for (int cz = 0; cz < rows; cz++)
                     {
+                        if (c.Crowded) break;
                         float x = Mathf.Lerp(i.xMin + 1.7f, i.xMax - 1.7f, cols == 1 ? 0.5f : cx / (float)(cols - 1));
                         float z = Mathf.Lerp(i.yMin + 2.1f, i.yMax - 2.1f, rows == 1 ? 0.5f : cz / (float)(rows - 1));
                         if (!c.FloorAt(new Rect(x - 1.5f, z - 0.75f, 3.0f, 1.5f), 0.7f)) continue;
@@ -33,13 +35,13 @@ namespace CloneZ
                             float dx = (k & 1) == 0 ? -0.75f : 0.75f;
                             bool south = k < 2;
                             var desk = new RaidBuilding.Place(x + dx, z + (south ? -0.375f : 0.375f), south ? 180f : 0f);
-                            RaidLayouts.WorkDesk(b, c.R, desk, 1.5f, Putty, rng.NextDouble() < 0.3, rng.NextDouble() < 0.3 ? 1 : 0, false, k == 0);
+                            RaidLayouts.WorkDesk(b, c.R, desk, 1.5f, Putty, rng.NextDouble() < 0.3, DeskLampOf(c, 0.25), false, k == 0 && c.TakeLoot());
                             var chair = new RaidBuilding.Place(x + dx, z + (south ? -1.2f : 1.2f), (south ? 0f : 180f) + MapStyle.Range(rng, -25f, 25f));
                             SwivelChair(c, chair, fabric);
                         }
                     }
                 for (int k = 0; k < 2; k++)
-                    if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) b.FilingCabinet(c.R, cab, 4, Putty);
+                    if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) Filing(c, cab);
                 if (c.AnyWall(order, 0.9f, 0.6f, 1.1f, -1f, out RaidBuilding.Place copier, out _)) Copier(c, copier);
                 if (c.AnyWall(order, 0.32f, 0.32f, 1.4f, -1f, out RaidBuilding.Place cooler, out _)) WaterCooler(c, cooler);
             }
@@ -52,7 +54,7 @@ namespace CloneZ
                 float deep = deskSide == 0 || deskSide == 2 ? c.Depth : c.Width;
                 bool placed = false;
                 string deskName = c.P.Role == RoomRole.Sacristy ? "Desk" : "Office desk";
-                int lamp = rng.NextDouble() < 0.25 ? 2 : 1;
+                int lamp = DeskLampOf(c, 0.85);
                 if (dw >= 1.1f && deep >= 3.4f)
                 {
                     c.Span(deskSide, out float lo, out float hi);
@@ -79,7 +81,7 @@ namespace CloneZ
                     if (c.Floor(0.55f, 0.55f, RoomCtx.YawOf(deskSide) + 180f, seat, 0.02f, out RaidBuilding.Place chair)) SwivelChair(c, chair, fabric);
                 }
                 if (c.P.Role == RoomRole.Sacristy && c.AnyWall(order, 1.0f, 0.6f, 1.95f, -1f, out RaidBuilding.Place robes, out _)) b.Wardrobe(c.R, robes, FurnitureBuilder.Walnut);
-                if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) b.FilingCabinet(c.R, cab, 4, Putty);
+                if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) Filing(c, cab);
                 if (c.Area > 9f && c.AnyWall(order, 0.9f, 0.32f, 1.8f, -1f, out RaidBuilding.Place books, out _)) Bookcase(c, books, wood);
                 if (c.Plan.Use == InteriorUse.Bank || c.P.Role == RoomRole.BackOffice && c.Rng.NextDouble() < 0.4)
                     if (c.AnyWall(order, 0.8f, 0.6f, 1.9f, 1f, out RaidBuilding.Place safe, out _)) Safe(c, safe);
@@ -323,6 +325,13 @@ namespace CloneZ
         }
 
         #region Office fittings
+        // A filing cabinet: one to search while the room's loot budget lasts, else plain.
+        private static void Filing(RoomCtx c, RaidBuilding.Place p)
+        {
+            if (c.TakeLoot()) c.B.FilingCabinet(c.R, p, 4, Putty);
+            else c.B.Furnish(c.R, p, new Vector3(0.46f, 1.4f, 0.62f), true, (m, r) => FurnitureBuilder.FilingCabinet(m, r, 4, Putty), "Filing cabinet");
+        }
+
         private static void SwivelChair(RoomCtx c, RaidBuilding.Place p, Color fabric)
         {
             Transform t = c.B.FixtureBody(c.R, p, new Vector3(0.55f, 1f, 0.55f), false, (m, r) => FurnitureBuilder.OfficeChair(m, r, fabric), "Office chair");

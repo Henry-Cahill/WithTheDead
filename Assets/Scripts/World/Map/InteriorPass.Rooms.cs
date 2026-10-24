@@ -200,6 +200,29 @@ namespace CloneZ
             public readonly bool[] Inside = new bool[4];
             private int _pool;
 
+            /// <summary>Pieces placed so far that hold loot (see <see cref="TakeLoot"/>).</summary>
+            public int LootUsed;
+
+            /// <summary>How many more of the room's pieces may hold loot (its share of the building's, set with its plan).</summary>
+            public int LootLeft => Mathf.Max(0, (P.Loot) - LootUsed);
+
+            /// <summary>Takes one piece's worth of the room's loot budget: false when it's spent (the piece is plain furniture).</summary>
+            public bool TakeLoot()
+            {
+                if (LootLeft <= 0) return false;
+                LootUsed++;
+                return true;
+            }
+
+            /// <summary>Gives back a piece's worth that went unused (it didn't fit).</summary>
+            public void GiveBack() => LootUsed = Mathf.Max(0, LootUsed - 1);
+
+            /// <summary>True once the building has as many pieces with bodies of their own as it may (the rest are plainer).</summary>
+            public bool Crowded => Build.Bodies >= Plan.PieceCap;
+
+            /// <summary>True when the building may have another lamp (desk, bedside or standard) besides its ceilings'.</summary>
+            public bool LampLeft => Build.Lamps < Plan.LampCap - Plan.CeilingLamps;
+
             public float Area => Inner.width * Inner.height;
             public float Width => Inner.width;
             public float Depth => Inner.height;
@@ -420,7 +443,7 @@ namespace CloneZ
                 Rng = new System.Random(unchecked(plan.Seed * 977 + index * 131 + 7)),
                 Inner = Rect.MinMaxRect(p.R.xMin + Half, p.R.yMin + Half, p.R.xMax - Half, p.R.yMax - Half),
             };
-            c.Pool = MapGameplay.ContainersFor(plan.Data, p.Kind);
+            c.Pool = p.Pool ?? NoPool;
             Rect inner = c.Inner;
             float longest = -1f;
             // Doorways and open sides between rooms.
@@ -551,16 +574,11 @@ namespace CloneZ
             Litter(c, LitterFor(c.P.Role));
         }
 
-        // The room's ceiling fittings: one over a small room, more over a big one, spread over its floor; a building lights
-        // no more than a dozen.
+        // The room's ceiling fittings, as its plan has them (none past the building's lamp budget), spread along its longer
+        // axis.
         private static void Lights(RoomCtx c)
         {
-            const int MaxPerBuilding = 12;
-            float area = c.Area;
-            int want = area < 22f ? 1 : area < 55f ? 2 : area < 140f ? 3 : 4;
-            if (c.P.Role == RoomRole.Closet || c.P.Role == RoomRole.Restroom && area < 8f) want = 1;
-            int have = c.Build.Town.LightCount;
-            want = Mathf.Min(want, MaxPerBuilding - have);
+            int want = c.P.Lamps;
             if (want <= 0) return;
             bool alongX = c.Inner.width >= c.Inner.height;
             for (int i = 0; i < want; i++)
@@ -603,10 +621,23 @@ namespace CloneZ
         #endregion
 
         #region Pieces every kind of room uses
+        private static readonly ContainerType[] NoPool = new ContainerType[0];
+
         /// <summary>A storage piece suited to loot of kind <paramref name="type"/> against one of the room's walls: shelving,
         /// lockers, a gun safe, a medicine cabinet, a filing cabinet or a desk, a tool bench, a crate, a fridge, a wardrobe.
-        /// False when nothing fits.</summary>
+        /// It holds loot while the room's budget lasts (<see cref="RoomCtx.TakeLoot"/>); past it, the shelving, lockers,
+        /// filing cabinets, benches, crates and wardrobes are plain furniture, and the rest isn't placed. False when nothing
+        /// was placed.</summary>
         private static bool LootPiece(RoomCtx c, ContainerType type, int[] sides, float pref = -1f)
+        {
+            bool loot = c.TakeLoot();
+            bool placed = loot ? StoragePiece(c, type, sides, pref) : PlainPiece(c, type, sides, pref);
+            if (loot && !placed) c.GiveBack();
+            return placed;
+        }
+
+        // A storage piece that holds loot.
+        private static bool StoragePiece(RoomCtx c, ContainerType type, int[] sides, float pref)
         {
             RaidBuilding b = c.B;
             RaidBuilding.Place p;
@@ -666,15 +697,76 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Up to <paramref name="count"/> more storage pieces from the room's loot pool, against its walls.</summary>
+        // The same piece as plain furniture (drawn into the building's meshes: no fixture, nothing to search), for storage
+        // past the room's loot budget; false for the pieces that only make sense holding something.
+        private static bool PlainPiece(RoomCtx c, ContainerType type, int[] sides, float pref)
+        {
+            RaidBuilding b = c.B;
+            RaidBuilding.Place p;
+            switch (type)
+            {
+                case ContainerType.Shelf: case ContainerType.Pantry:
+                {
+                    float w = c.Rng.NextDouble() < 0.5 ? 1.2f : 1.0f;
+                    if (!c.AnyWall(sides, w, 0.45f, 1.9f, pref, out p, out _)) return false;
+                    int stock = type == ContainerType.Pantry ? 2 : c.Rng.Next(4);
+                    b.Furnish(c.R, p, new Vector3(w, 1.9f, 0.45f), true, (m, r) => FurnitureBuilder.MetalShelf(m, r, w, 0.45f, 1.9f, 4, stock, ShelfGrey), "Shelves");
+                    return true;
+                }
+                case ContainerType.Locker:
+                {
+                    int n = c.Rng.Next(2, 4);
+                    Color paint = LockerPaints[c.Rng.Next(LockerPaints.Length)];
+                    if (!c.AnyWall(sides, n * 0.5f, 0.5f, 1.9f, pref, out p, out _)) return false;
+                    b.Furnish(c.R, p, new Vector3(n * 0.5f, 1.9f, 0.5f), true, (m, r) => FurnitureBuilder.LockerBank(m, r, n, paint), "Lockers");
+                    return true;
+                }
+                case ContainerType.Desk:
+                    if (!c.AnyWall(sides, 0.46f, 0.62f, 1.4f, pref, out p, out _)) return false;
+                    b.Furnish(c.R, p, new Vector3(0.46f, 1.4f, 0.62f), true, (m, r) => FurnitureBuilder.FilingCabinet(m, r, 4, Putty), "Filing cabinet");
+                    return true;
+                case ContainerType.ToolBench:
+                    if (!c.AnyWall(sides, 1.8f, 0.75f, 1.9f, pref, out p, out _)) return false;
+                    b.Furnish(c.R, p, new Vector3(1.8f, 1.9f, 0.75f), true, (m, r) => FurnitureBuilder.ToolBenchBody(m, r), "Tool bench");
+                    return true;
+                case ContainerType.Crate:
+                    if (!c.AnyWall(sides, 0.9f, 0.62f, 0.62f, pref, out p, out _)) return false;
+                    b.Furnish(c.R, p, new Vector3(0.9f, 0.55f, 0.62f), true, (m, r) => FurnitureBuilder.Crate(m, r, Vector3.zero, new Vector3(0.88f, 0.5f, 0.58f), 0f, false), "Crate");
+                    return true;
+                case ContainerType.Wardrobe:
+                {
+                    Color wood = Woods[c.Rng.Next(Woods.Length)];
+                    if (!c.AnyWall(sides, 1.0f, 0.6f, 1.95f, pref, out p, out _)) return false;
+                    b.Furnish(c.R, p, new Vector3(1.0f, 1.95f, 0.6f), true, (m, r) => FurnitureBuilder.Wardrobe(m, r, wood), "Wardrobe");
+                    return true;
+                }
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>Up to <paramref name="count"/> more storage pieces holding loot from the room's pool, against its walls, as
+        /// far as its loot budget goes.</summary>
         private static void MoreLoot(RoomCtx c, int count, int[] sides)
         {
+            count = Mathf.Min(count, c.LootLeft);
             for (int i = 0; i < count; i++)
             {
                 ContainerType? t = c.NextLoot();
                 if (t == null) return;
                 LootPiece(c, t.Value, sides);
             }
+        }
+
+        /// <summary>What's left of the room's loot budget, as storage pieces from its pool, against its walls.</summary>
+        private static void RestOfLoot(RoomCtx c, int[] sides, int max = 4) => MoreLoot(c, max, sides);
+
+        /// <summary>Open steel shelving (racking, records shelves, bottle shelves) at a placement, stocked as
+        /// <paramref name="stock"/> says while the room's loot budget lasts, else plain.</summary>
+        private static void ShelvingAt(RoomCtx c, RaidBuilding.Place p, Vector3 size, int levels, int stockKind, Color frame, string name, StorageOptions stock)
+        {
+            if (c.TakeLoot()) c.B.Shelving(c.R, p, size, levels, stockKind, frame, name, stock);
+            else c.B.Furnish(c.R, p, size, true, (m, r) => FurnitureBuilder.MetalShelf(m, r, size.x, size.z, size.y, levels, stockKind, frame), name);
         }
 
         /// <summary>How many storage pieces a room of this size is worth, beyond what its recipe gives it.</summary>

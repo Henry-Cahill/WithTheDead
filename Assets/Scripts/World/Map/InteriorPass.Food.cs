@@ -100,7 +100,7 @@ namespace CloneZ
             Rect behind = c.Foot(side, t, len, 0.6f + 1.0f);
             c.Taken.Add(behind);
             if (bar)
-                b.Shelving(c.R, backBar, new Vector3(len, 1.9f, 0.6f), 3, 3, new Color(0.24f, 0.16f, 0.10f), "Bottle shelves",
+                ShelvingAt(c, backBar, new Vector3(len, 1.9f, 0.6f), 3, 3, new Color(0.24f, 0.16f, 0.10f), "Bottle shelves",
                     RaidBuilding.MainStock(c.NextLoot() ?? ContainerType.Pantry, "bottle shelves"));
             else
                 b.SteelCounter(c.R, backBar, len, len > 3f ? (float?)(-len * 0.5f + 0.6f) : null, c.NextLoot() ?? ContainerType.Pantry, "Back counter",
