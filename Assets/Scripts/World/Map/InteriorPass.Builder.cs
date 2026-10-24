@@ -109,13 +109,13 @@ namespace CloneZ
             yield return "interior wall meshes";
             Settle();
             yield return "interior finish";
-            // The still, low furniture merged a room at a time (each room a step).
+            // The still, low furniture merged a room at a time (each batch a step).
             GatherMerge();
-            for (int i = 0; i < _merge.Length; i++)
+            List<MergeJob> merges = MergeJobs();
+            for (int i = 0; i < merges.Count; i++)
             {
-                if (_merge[i] == null) continue;
-                try { MergeRoom(i); }
-                catch (System.Exception e) { Trouble("merging room " + i + "'s furniture", e); }
+                try { MergeBatch(merges[i]); }
+                catch (System.Exception e) { Trouble("merging room " + merges[i].Room + "'s furniture", e); }
                 yield return "interior merge";
             }
             Finish();
@@ -864,34 +864,72 @@ namespace CloneZ
             public override int GetHashCode() => ((int)Shadows * 397) ^ (Receive ? 17 : 0) ^ (OffNav ? 1031 : 0) ^ (Layer * 7919);
         }
 
-        // One room's gathered renderers merged: a renderer for each way they're drawn (shadows, layer, kept out of the
-        // navmesh), a sub-mesh for each material.
-        private void MergeRoom(int room)
+        /// <summary>The most vertices merged in one step (a big room's furniture goes in a few meshes, a step each).</summary>
+        private const int MergeBatchVertices = 12000;
+
+        private struct MergeJob
         {
-            List<MeshRenderer> list = _merge[room];
-            _merge[room] = null;
-            if (list == null || list.Count < 2) return;
+            public int Room;
+            public MergeKey Key;
+            public List<MeshRenderer> Renderers;
+        }
+
+        // The gathered renderers as merge jobs: by room, by the way they're drawn (shadows, layer, kept out of the navmesh),
+        // in batches of at most MergeBatchVertices.
+        private List<MergeJob> MergeJobs()
+        {
+            var jobs = new List<MergeJob>(Plan.Rooms.Count);
             var groups = new List<KeyValuePair<MergeKey, List<MeshRenderer>>>(2);
-            foreach (MeshRenderer r in list)
+            for (int room = 0; room < _merge.Length; room++)
             {
-                if (r == null) continue;
-                var key = new MergeKey { Shadows = r.shadowCastingMode, Receive = r.receiveShadows, OffNav = OffNav(r.transform), Layer = r.gameObject.layer };
-                List<MeshRenderer> into = null;
-                foreach (KeyValuePair<MergeKey, List<MeshRenderer>> g in groups)
-                    if (g.Key.Equals(key)) { into = g.Value; break; }
-                if (into == null)
+                List<MeshRenderer> list = _merge[room];
+                _merge[room] = null;
+                if (list == null || list.Count < 2) continue;
+                groups.Clear();
+                foreach (MeshRenderer r in list)
                 {
-                    into = new List<MeshRenderer>(list.Count);
-                    groups.Add(new KeyValuePair<MergeKey, List<MeshRenderer>>(key, into));
+                    if (r == null) continue;
+                    var key = new MergeKey { Shadows = r.shadowCastingMode, Receive = r.receiveShadows, OffNav = OffNav(r.transform), Layer = r.gameObject.layer };
+                    List<MeshRenderer> into = null;
+                    foreach (KeyValuePair<MergeKey, List<MeshRenderer>> g in groups)
+                        if (g.Key.Equals(key)) { into = g.Value; break; }
+                    if (into == null)
+                    {
+                        into = new List<MeshRenderer>(list.Count);
+                        groups.Add(new KeyValuePair<MergeKey, List<MeshRenderer>>(key, into));
+                    }
+                    into.Add(r);
                 }
-                into.Add(r);
+                foreach (KeyValuePair<MergeKey, List<MeshRenderer>> g in groups)
+                {
+                    List<MeshRenderer> batch = null;
+                    int verts = 0;
+                    foreach (MeshRenderer r in g.Value)
+                    {
+                        int n = r.GetComponent<MeshFilter>().sharedMesh.vertexCount;
+                        if (batch != null && verts + n > MergeBatchVertices)
+                        {
+                            if (batch.Count >= 2) jobs.Add(new MergeJob { Room = room, Key = g.Key, Renderers = batch });
+                            batch = null;
+                            verts = 0;
+                        }
+                        (batch ??= new List<MeshRenderer>(16)).Add(r);
+                        verts += n;
+                    }
+                    if (batch != null && batch.Count >= 2) jobs.Add(new MergeJob { Room = room, Key = g.Key, Renderers = batch });
+                }
             }
-            PlanRoom pr = Plan.Rooms[room];
+            return jobs;
+        }
+
+        // One batch merged into one renderer, a sub-mesh for each material.
+        private void MergeBatch(MergeJob job)
+        {
+            PlanRoom pr = Plan.Rooms[job.Room];
             Vector3 origin = World(pr.R.center, 0f);
             Matrix4x4 toLocal = Matrix4x4.Translate(-origin);
-            foreach (KeyValuePair<MergeKey, List<MeshRenderer>> g in groups)
+            var g = new KeyValuePair<MergeKey, List<MeshRenderer>>(job.Key, job.Renderers);
             {
-                if (g.Value.Count < 2) continue;
                 // Each source's vertices once (moved into the merged object's space), its triangles under its materials'
                 // sub-meshes; and where each source's triangles land (sub-mesh, first index, count), so a piece that can be
                 // dismantled hides its share when it goes.
@@ -938,7 +976,7 @@ namespace CloneZ
                 s_N.Clear();
                 s_UV.Clear();
                 s_I.Clear();
-                if (mats.Count == 0) continue;
+                if (mats.Count == 0) return;
                 var merged = new Mesh { name = "Furniture " + pr.Name, indexFormat = verts.Count > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16 };
                 merged.SetVertices(verts);
                 merged.SetNormals(norms);
