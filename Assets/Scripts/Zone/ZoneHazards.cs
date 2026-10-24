@@ -191,12 +191,14 @@ namespace CloneZ
                 }
             }
 
-            // Radiation hot spots: by the industrial landmarks, then a few loose in the open.
+            // Radiation hot spots: by the industrial landmarks (the zone's own, not the real map's courthouses and churches),
+            // then a few loose in the open.
             int spots = Mathf.RoundToInt(1f + zone.Radiation * 600f);
             foreach (string kind in WorldMarkers.Kinds)
             {
                 if (spots <= 0) break;
                 if (!kind.StartsWith("landmark:")) continue;
+                if (kind.StartsWith("landmark:" + MapGameplay.LandmarkPrefix, System.StringComparison.Ordinal)) continue;
                 IReadOnlyList<Vector3> pts = WorldMarkers.Get(kind);
                 if (pts.Count == 0 || rng.NextDouble() < 0.5) continue;
                 Vector3 at = pts[0] + new Vector3(ZoneKit.R(rng, -10f, 10f), 0f, ZoneKit.R(rng, -10f, 10f));
