@@ -89,12 +89,15 @@ namespace CloneZ
         }
 
         // Makes every texture the first time a site is built (the start square, while the game loads), so no piece
-        // streamed in later stops to make one.
+        // streamed in later stops to make one: the ground's own, the work yards' wood and the snow's tone.
         private static void MakeAll()
         {
             if (s_AllMade) return;
             s_AllMade = true;
             foreach (KeyValuePair<string, Painting> kv in s_Paintings) Tex(kv.Key);
+            DecorMaterials.Planks(PalletWood);
+            DecorMaterials.Planks(CrateWood);
+            ToneMaterial();
         }
 
         private static void Paint(string key, int size, Task<Color32[]> job) => s_Paintings[key] = new Painting { Job = job, Size = size };

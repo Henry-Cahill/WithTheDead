@@ -379,7 +379,7 @@ namespace CloneZ
                 bed[i] = water[i] != null ? 0f : halfW + (ditch ? 0.5f : 0.8f) * (0.7f + 0.6f * WorldNoise(w, 4f, SaltStream + 1));
                 shelf[i] = halfW;
                 float thread = WorldNoise(w, ditch ? 9f : 14f, SaltStream + 2);
-                core[i] = halfW * open * Smooth(ditch ? 0.42f : 0.2f, ditch ? 0.62f : 0.45f, thread) * (0.75f + 0.5f * WorldNoise(w, 3f, SaltStream + 3));
+                core[i] = halfW * open * Smooth(ditch ? 0.48f : 0.32f, ditch ? 0.66f : 0.55f, thread) * (0.75f + 0.5f * WorldNoise(w, 3f, SaltStream + 3));
             }
             Strip(into, pts, normals, bed, bed, BedY, BankSurf);
             Strip(into, pts, normals, shelf, shelf, StreamIceY, IceSurf);

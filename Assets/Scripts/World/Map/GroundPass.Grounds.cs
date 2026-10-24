@@ -22,6 +22,9 @@ namespace CloneZ
             new Color(0.56f, 0.52f, 0.47f), new Color(0.50f, 0.42f, 0.41f),
         };
 
+        // The wood of the work yards' pallets and crates (their plank textures are made with the ground's, MakeAll).
+        private static readonly Color PalletWood = new Color(0.58f, 0.47f, 0.33f), CrateWood = new Color(0.52f, 0.43f, 0.31f);
+
         private static IEnumerable<string> Grounds(Ground g)
         {
             int stones = 0;
@@ -749,7 +752,7 @@ namespace CloneZ
             if (what == 0)
             {
                 // Pallets in two or three stacks.
-                Surf wood = DecorMaterials.Planks(new Color(0.58f, 0.47f, 0.33f));
+                Surf wood = DecorMaterials.Planks(PalletWood);
                 int stacks = rng.Next(2, 4);
                 for (int s = 0; s < stacks; s++)
                 {
@@ -779,7 +782,7 @@ namespace CloneZ
             else if (what == 2)
             {
                 // Crates, some stacked.
-                Surf wood = DecorMaterials.Planks(new Color(0.52f, 0.43f, 0.31f));
+                Surf wood = DecorMaterials.Planks(CrateWood);
                 int count = rng.Next(2, 5);
                 float x = -1.2f;
                 for (int i = 0; i < count; i++)

@@ -6,14 +6,14 @@ namespace CloneZ
 {
     // Parking lots after the plough: the asphalt (the fill), the snow shoved off the lot in a ragged white band along its
     // edges, and the stalls: 90-degree stalls in rows along the lot's long side, laid out on its whole outline the way a
-    // lot is striped (centred across it, double rows back to back between 7.2 m aisles, a single row along one curb when
-    // there's room for just that), their faded lines half buried, a concrete wheel stop at the head of most; and the snow
-    // the plough couldn't reach round the parked cars lying packed in the stall rows while the aisles it ran down show
-    // black. The parked cars stand in the stalls (VehiclePass parks in Stalls), and every piece of a lot a seam cuts
-    // lays them out alike.
+    // lot is striped (centred across it, double rows back to back between aisles of 6 to 7.2 m, a single row along one
+    // curb when there's room for just that), their faded lines half buried, a concrete wheel stop at the head of most; and
+    // the snow the plough couldn't reach round the parked cars lying packed in the stall rows while the aisles it ran
+    // down show black. The parked cars stand in the stalls (VehiclePass parks in Stalls), and every piece of a lot a seam
+    // cuts lays them out alike.
     internal static partial class GroundPass
     {
-        private const float StallWidth = 2.7f, StallDepth = 5.4f, Aisle = 7.2f, Module = StallDepth * 2f + Aisle;
+        private const float StallWidth = 2.7f, StallDepth = 5.4f, AisleMin = 6.0f, AisleMax = 7.2f;
         private const float LotMargin = 1.2f;   // in from the lot's edge: the plowed snow lies there
         private const float MarkY = DecalY + 0.0005f;   // paint on a lot, over its plowed edge
         private const int MaxStalls = 1500;
@@ -85,20 +85,24 @@ namespace CloneZ
                 u0 = Mathf.Min(u0, pu); u1 = Mathf.Max(u1, pu);
                 v0 = Mathf.Min(v0, pv); v1 = Mathf.Max(v1, pv);
             }
-            // Across the lot: double rows round each aisle, then a single row on its aisle if there's room left, all of
-            // it centred between the margins.
+            // Across the lot: double rows round each aisle, then a single row on its aisle if there's room left, the
+            // aisles widened from 6 m towards 7.2 m with what's left over, all of it centred between the margins.
             float usable = v1 - v0 - LotMargin * 2f;
-            int modules = Mathf.FloorToInt(usable / Module);
-            bool single = usable - modules * Module >= StallDepth + Aisle;
-            if (modules == 0 && !single) return;
-            float used = modules * Module + (single ? StallDepth + Aisle : 0f);
+            int modules = Mathf.FloorToInt(usable / (StallDepth * 2f + AisleMin));
+            float spare = usable - modules * (StallDepth * 2f + AisleMin);
+            bool single = spare >= StallDepth + AisleMin;
+            if (single) spare -= StallDepth + AisleMin;
+            int aisles = modules + (single ? 1 : 0);
+            if (aisles == 0) return;
+            float aisle = Mathf.Min(AisleMax, AisleMin + spare / aisles), module = StallDepth * 2f + aisle;
+            float used = modules * module + (single ? StallDepth + aisle : 0f);
             float y = (v0 + v1) * 0.5f - used * 0.5f;
             var rows = new List<(float at, float face)>(modules * 2 + 1);
             for (int m = 0; m < modules; m++)
             {
                 rows.Add((y + StallDepth * 0.5f, -1f));   // its back on the row before's (or the curb), its aisle above
-                rows.Add((y + Module - StallDepth * 0.5f, 1f));
-                y += Module;
+                rows.Add((y + module - StallDepth * 0.5f, 1f));
+                y += module;
             }
             if (single) rows.Add((y + StallDepth * 0.5f, -1f));
             // Along the lot: stalls centred between the margins.
