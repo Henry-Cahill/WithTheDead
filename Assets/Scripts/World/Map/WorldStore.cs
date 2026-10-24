@@ -17,7 +17,6 @@ namespace CloneZ
         /// <summary>The environment variable that points the game at another copy of the store.</summary>
         public const string RootVariable = "CLONEZ_WORLD";
         public const string StreetLampMaterialPath = "Materials/Metal";
-        public const string KerbMaterialPath = "Materials/KerbConcrete";
         public const string StreetLampGlassMaterialPath = "Materials/StreetLampGlass";
         public const string PorchMaterialPath = "Materials/WoodPlank";
         /// <summary>Returns the translucent glass material for lamp heads.</summary>
@@ -31,14 +30,6 @@ namespace CloneZ
             return s_StreetLampGlassMaterial;
         }
 
-        /// <summary>Loads the concrete kerb material defined by <see cref="KerbMaterialPath"/>.</summary>
-        public static Material GetKerbMaterial()
-        {
-            var mat = Resources.Load<Material>(KerbMaterialPath);
-            return mat ?? Resources.Load<Material>("Materials/DefaultConcrete");
-        }
-        /// <summary>Base material for mailboxes (reuses porch wood).</summary>
-        public static Material GetMailboxMaterial() => GetPorchMaterial();
         public static Material GetPorchMaterial()
         {
             if (s_PorchMaterial != null) return s_PorchMaterial;
@@ -135,20 +126,6 @@ namespace CloneZ
                     return (hash % 100) < 30; // 30% chance
                 }
         }
-        /// <summary>
-        /// Determine if a road segment should get a sidewalk/curb on its side.
-        /// Deterministic based on the build ID and the segment ID.
-        /// Approximately 45 % of road pieces receive a sidewalk.
-        /// </summary>
-        public bool HasSidewalk(long segmentId)
-        {
-            unchecked
-            {
-                uint hash = (uint)segmentId ^ 0x517cc1b7u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 45; // 45% chance
-            }
-        }
 
         /// <summary>
         /// Determines if a building should receive a modest front porch (low railing and steps).
@@ -195,22 +172,6 @@ namespace CloneZ
             }
         }
 
-
-
-        /// <summary>
-        /// Determine if an upper‑story window should receive a period‑correct metal grate.
-        /// Deterministic based on the build ID and the building ID.
-        /// Approximately 35 % of eligible windows get a grate, adding a hand‑built 1993 Kentucky look.
-        /// </summary>
-        public bool HasWindowGrate(long buildingId)
-        {
-            unchecked
-            {
-                uint hash = (uint)buildingId ^ 0x7f4a7c13u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 35; // ~35% chance
-            }
-        }
         /// <summary>
         /// Determine if a road segment should receive a street lamp.
         /// Deterministic based on the build Id and the segment Id.
@@ -250,24 +211,6 @@ namespace CloneZ
 
         /// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>
         public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());
-
-        /// <summary>Deterministic colour for a building (or other feature) identified by <paramref name="seed"/>.
-        /// Uses the build‑id hash combined with the seed to produce a stable hue in a muted range.</summary>
-        public Color GetBuildingColour(int seed)
-        {
-            // combine build id hash with the specific seed so each feature gets its own stream
-            int combined = Id.GetHashCode() ^ seed;
-            var rand = new System.Random(combined);
-            // Generate a hue in [0,1) and muted saturation/value
-            float hue = (float)rand.NextDouble();
-            float sat = 0.4f + (float)rand.NextDouble() * 0.2f; // 0.4‑0.6
-            float val = 0.6f + (float)rand.NextDouble() * 0.2f; // 0.6‑0.8
-            return Color.HSVToRGB(hue, sat, val);
-        }
-
-        /// <summary>Deterministic colour for a building identified by its long ID.
-        /// Delegates to the int‑seed overload.</summary>
-        public Color GetBuildingColour(long buildingId) => GetBuildingColour((int)buildingId);
 
         /// <summary>The credit line the game shows for the map data.</summary>
         public string Attribution => string.IsNullOrEmpty(Manifest.attribution)

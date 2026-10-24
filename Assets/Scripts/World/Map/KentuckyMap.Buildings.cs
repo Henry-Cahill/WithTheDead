@@ -20,9 +20,6 @@ namespace CloneZ
         private const float DoorFrameThickness = 0.08f; // thickness of side‑studs and lintel
         private const float DoorLintelHeight = 0.12f; // height of the top lintel piece
         private const int MaxContainers = 450;
-private const float BuildingKerbHeight = 0.12f; // height of concrete kerb
-private const float BuildingKerbWidth = 0.20f; // thickness of kerb slab
-private const float BuildingVergeWidth = 0.60f; // distance of grass verge beyond kerb
         private const float RoadMarkDash = 2.0f; // length of a white dash (metres)
         private const float RoadMarkGap = 1.0f; // gap between dashes (metres)
 

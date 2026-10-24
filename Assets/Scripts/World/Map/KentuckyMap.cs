@@ -22,7 +22,6 @@ namespace CloneZ
 
         private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces
         private const float SidewalkWidth = 1.5f; // modest concrete sidewalk width
-        private const float SignPostHeight = 2.5f; // height of wooden street sign post
 
         /// <summary>A one-line summary of the last map built.</summary>
         public static string LastStats { get; private set; } = "";
@@ -167,30 +166,6 @@ namespace CloneZ
                 }
             }
         }
-
-private static void BuildSnow(Site site)
-        {
-            foreach (Footprint f in site.Area.Buildings)
-            {
-                if (!f.Inside(site.Half, 2f)) continue;
-                // Deterministic snow presence based on building ID (approx 30% chance).
-                unchecked
-                {
-                    uint hash = (uint)f.Data.id ^ 0x9e3779b9u;
-                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                    bool hasSnow = (hash % 100) < 30;
-                    if (!hasSnow) continue;
-                }
-                // Use mapped height if present, else fallback to 0.
-                float roofY = f.Data.height > 0f ? f.Data.height : 0f;
-                roofY += SnowDepth * 0.5f;
-                Vector3 center = new Vector3(f.Middle.x, roofY, f.Middle.y);
-                Vector3 size = new Vector3(f.Size, SnowDepth, f.Size);
-                site.Overhead.At(f.Middle).Box(center, size, DecorMaterials.Snow);
-            }
-        }
-
-
 
         #region Exits and spawn
         // Where streets leave the playable square: the best-ranked street on each side becomes an exit (two at least;

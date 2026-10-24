@@ -21,8 +21,6 @@ namespace CloneZ
         // Upper bound for litter/ trash‑bag props placed in park areas.
         private const int MaxParkProps = 200;
         private const int MaxSnowPiles = 80; // upper bound of snow‑pile props placed per map
-        private const float CurbWidth = 0.2f; // metres, thickness of the curb
-        private const float CurbHeight = 0.20f; // metres, height of the curb
 
         private static readonly Color[] CarPaints =
         {
@@ -131,48 +129,6 @@ namespace CloneZ
         }
 
 
-
-        // Not called: BuildStreets already lays a raised kerb strip along both edges of every road, and these boxes
-        // (and their colliders) run across the road instead of along it.
-        private static void BuildKerbs(Site site)
-        {
-            var rng = new System.Random(site.Town.Rng.Next());
-            foreach (Street s in site.Area.Streets)
-            {
-                if (!TownStreet(s.Data.kind) || s.Data.tunnel || s.Data.bridge) continue;
-                // walk each street segment and lay a curb on both sides
-                for (int i = 0; i + 1 < s.Pts.Count; i++)
-                {
-                    Vector2 a = s.Pts[i], b = s.Pts[i + 1];
-                    float segLen = Vector2.Distance(a, b);
-                    if (segLen < 0.05f) continue;
-                    Vector2 dir = (b - a) / segLen;
-                    Vector2 normal = new Vector2(-dir.y, dir.x); // left‑hand normal (road side)
-                    // place curb on each side (left = +1, right = -1)
-                    for (int side = -1; side <= 1; side += 2)
-                    {
-                        // centre of the curb box
-                         Vector2 at = ((a + b) * 0.5f) + normal * (s.Data.width * 0.5f + CurbWidth * 0.5f) * side;
-                         if (!site.Free(at, CurbWidth)) continue;
-                         // colour per OSM id
-                          Color curbCol = MapGeometry.GetKerbColor((int)s.Data.id);
-                          // random yaw jitter ±2°
-                          float yaw = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg + R(rng, -2f, 2f);
-                          Vector3 at3 = To3(at, 0f);
-                          RaidMesh m = site.Town.Out.Solid(at3);
-                          m.SetFrame(at3, yaw);
-                          // box centred at half‑length forward, half‑height up, zero lateral offset
-                          Vector3 boxCenter = new Vector3(segLen * 0.5f, CurbHeight * 0.5f, 0f);
-                          Vector3 boxSize = new Vector3(segLen, CurbHeight, CurbWidth);
-                          m.Box(boxCenter, boxSize, DecorPalette.Matte(curbCol));
-                          m.ResetFrame();
-                          // collider so the player can bump the curb
-                          site.Town.PropCollider(at3 + Vector3.up * (CurbHeight * 0.5f), new Vector3(segLen, CurbHeight, CurbWidth), yaw);
-                          site.Take(at, CurbWidth);
-                    }
-                }
-            }
-        }
 
         private static void BuildHydrants(Site site)
         {
