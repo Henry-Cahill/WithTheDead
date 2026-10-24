@@ -618,6 +618,39 @@ class PlannerTest(unittest.TestCase):
         self.assertFalse(coord.docs_only(worker("spark", None)))
         self.assertFalse(ns.Coordinator(dict(ns.DEFAULTS)).docs_only(worker("laserengraver", "htsadmin@laserengraver")))
 
+    def test_docs_workers_all_names_every_worker(self):
+        coord = ns.Coordinator(dict(ns.DEFAULTS, NIGHTSHIFT_DOCS_WORKERS=" All "))
+        worker = lambda name, target: types.SimpleNamespace(name=name, target=target)
+        self.assertTrue(coord.docs_only(worker("spark", None)))
+        self.assertTrue(coord.docs_only(worker("hts-llm", "htsadmin@192.168.1.202")))
+        self.assertTrue(coord.docs_only(worker("laserengraver", "htsadmin@laserengraver")))
+
+    def test_with_every_worker_on_documentation_nothing_else_is_taken_or_planned(self):
+        coord, helper, spark = self.routed()
+        helper.docs = spark.docs = True
+        heading = "### Auto-planned test"
+        ns.append_planned(self.big_task("B1"), heading)
+        ns.append_planned(self.docs_task("D1"), heading)
+        with ns.TASKS.open("a", encoding="utf-8") as f:
+            f.write("\n## Mine\n\n- [ ] A task I wrote about Assets/Scripts/World/Mine.cs\n")
+        self.assertEqual(self.docs_task("D1").key, coord.claim(spark).key)  # the Spark too, small-task model or not
+        self.assertIsNone(coord.claim(helper))  # the rest waits in tasks.md
+        self.assertEqual("docs", coord.wanted([self.docs_task("D2")]))  # one is kept waiting for each worker
+        self.assertIsNone(coord.wanted([self.docs_task("D2"), self.docs_task("D3")]))
+        self.assertIsNone(coord.wanted([], docs=False))  # nothing left to document: nothing else is planned instead
+        coord.take_tasks = lambda worker: None
+        with mock.patch.object(ns, "log") as log:
+            coord.worker_loop(helper)
+            coord.worker_loop(spark)
+        self.assertFalse(any("the others take documentation tasks" in c.args[0] for c in log.call_args_list))
+
+    def test_the_others_take_documentation_tasks_once_the_last_docs_worker_is_done(self):
+        coord, helper, spark, docs = self.docs_team()
+        coord.take_tasks = lambda worker: None
+        with mock.patch.object(ns, "log") as log:
+            coord.worker_loop(docs)
+        self.assertTrue(any("the others take documentation tasks" in c.args[0] for c in log.call_args_list))
+
     def test_claim_routes_docs_tasks_to_the_docs_workers(self):
         coord, helper, spark, docs = self.docs_team()
         heading = "### Auto-planned test"

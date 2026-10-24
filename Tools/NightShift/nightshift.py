@@ -515,6 +515,73 @@ def take_lessons(repo: Path, base: str) -> list[str]:
     return [l for l in added if l and not l.startswith("#")]
 
 
+def split_lines(text: str) -> list[str]:
+    """`text` split after each newline, endings kept: lines as git counts them (str.splitlines also splits at form
+    feeds, \\u2028 and the like, which can sit inside a string literal)."""
+    return re.findall(r"[^\n]*\n|[^\n]+", text)
+
+
+def already_documented(lines: list[str], at: int) -> bool:
+    """Whether a /// comment is already beside the spot just before lines[at]: above it (blank lines and attributes
+    passed over) or below it (blank lines passed over). A summary inserted there would be the member's second."""
+    above = at - 1
+    while above >= 0 and (not lines[above].strip() or lines[above].strip().startswith("[")):
+        above -= 1
+    below = at
+    while below < len(lines) and not lines[below].strip():
+        below += 1
+    return ((above >= 0 and lines[above].strip().startswith("///"))
+            or (below < len(lines) and lines[below].strip().startswith("///")))
+
+
+def new_comments_only(old: str, new: str) -> str:
+    """`old` plus the comment lines `new` inserts between its lines, and nothing else `new` changes: code, existing
+    comments, blank lines and indentation stay as in `old`. Lines are matched ignoring whitespace, so a declaration the
+    agent re-indented keeps its old indentation and gets its new summary, indented like it. A /// block for a member
+    that has one already is left out (see already_documented), and so is anything after the last line."""
+    bom = "\ufeff" if old.startswith("\ufeff") else ""
+    a, b = split_lines(old[len(bom):]), split_lines(new.removeprefix("\ufeff"))
+    eol = "\r\n" if "\r\n" in old else "\n"
+    out: list[str] = []
+    matcher = difflib.SequenceMatcher(None, ["".join(l.split()) for l in a], ["".join(l.split()) for l in b],
+                                      autojunk=False)
+    for op, i1, i2, j1, j2 in matcher.get_opcodes():
+        added = [l.strip() for l in b[j1:j2] if l.strip()]
+        if op == "insert" and added and i1 < len(a) and all(l.startswith("//") for l in added) \
+                and not (any(l.startswith("///") for l in added) and already_documented(a, i1)):
+            below = next((l for l in a[i1:] if l.strip()), "")
+            out += [below[:len(below) - len(below.lstrip())] + l + eol for l in added]
+        out += a[i1:i2]
+    return bom + "".join(out)
+
+
+def keep_only_new_comments(repo: Path, base: str) -> list[str]:
+    """For a documentation task: changes back everything the agent changed except the comment lines it added to existing
+    scripts (see new_comments_only), so the task lands comments and nothing else. Files it added go, files it deleted
+    come back. Returns the files changed back, wholly or in part. Protected files and LESSONS.md are left to
+    revert_protected and take_lessons."""
+    put_back = []
+    for path in changed_files(repo, base):
+        if PROTECTED.search(path) or path == LESSONS_REL:
+            continue
+        full = repo / path
+        if not in_commit(repo, base, path):
+            full.unlink(missing_ok=True)
+        elif path.endswith(".cs") and full.is_file():
+            old = subprocess.run(["git", *GIT_SAFE, "-C", str(repo), "show", f"{base}:{path}"], capture_output=True,
+                                 stdin=subprocess.DEVNULL, check=True).stdout
+            new = full.read_bytes()
+            kept = new_comments_only(old.decode("utf-8", "surrogateescape"),
+                                     new.decode("utf-8", "surrogateescape")).encode("utf-8", "surrogateescape")
+            if kept == new:
+                continue
+            full.write_bytes(kept)
+        else:
+            git(repo, "checkout", base, "--", path)
+        put_back.append(path)
+    return put_back
+
+
 CS_META = "fileFormatVersion: 2\nguid: {guid}\n"
 FOLDER_META = ("fileFormatVersion: 2\nguid: {guid}\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {{}}\n"
                "  userData: \n  assetBundleName: \n  assetBundleVariant: \n")
@@ -635,6 +702,11 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
     reverted = revert_protected(repo, base)
     if reverted:
         log("  rolled back protected files: " + ", ".join(reverted[:8]))
+    docs = task.startswith(DOC_TASK_START)  # a documentation task lands the comments it adds and nothing else
+    if docs:
+        put_back = keep_only_new_comments(repo, base)
+        if put_back:
+            log("  kept only the comments it added; changed the rest back in: " + ", ".join(put_back[:8]))
     res.lessons += take_lessons(repo, base)
     ok, out = compile_check(repo, env)
     rounds = 0
@@ -643,6 +715,8 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
         log(f"  compile check failed; fix round {rounds}/{fix_rounds}")
         agent(FIX_PROMPT.format(errors=out[-6000:]), session=first.session)
         revert_protected(repo, base)
+        if docs:
+            keep_only_new_comments(repo, base)
         res.lessons += take_lessons(repo, base)
         ok, out = compile_check(repo, env)
     sync_meta(repo, base)
@@ -1070,6 +1144,7 @@ DOC_DETAILS = (
 DOC_TASK_START = DOC_TASK.split("{path}")[0]
 DOC_AGAIN = " (Pass {n} over this file: most of it has summaries already.)"  # ends a follow-up pass's task, so keys differ
 DOC_PASSES = 3  # documentation passes one script gets at most (see plan_candidates)
+EVERY_WORKER = "all"  # NIGHTSHIFT_DOCS_WORKERS=all: every worker takes only documentation tasks
 
 
 def is_docs(task: Task) -> bool:
@@ -1780,6 +1855,7 @@ class Coordinator:
         self.small_models = {m.strip().removesuffix(":latest")
                              for m in cfg.get("NIGHTSHIFT_SMALL_TASK_MODELS", "").split(",") if m.strip()}
         # Workers named here (or their host) take only documentation tasks (see is_docs); the others leave those to them.
+        # "all" (EVERY_WORKER) names every worker, so the night shift writes documentation and nothing else.
         self.docs_names = {n.strip().lower() for n in cfg.get("NIGHTSHIFT_DOCS_WORKERS", "").split(",") if n.strip()}
         self.queue_lock, self.land_lock = threading.Lock(), threading.Lock()
         self.in_flight: dict[str, tuple[str, str]] = {}  # task key -> (worker, since)
@@ -1896,9 +1972,10 @@ class Coordinator:
         return [w for w in self.workers if not getattr(w, "retired", False) and getattr(w, "docs", False)]
 
     def docs_only(self, worker: Worker) -> bool:
-        """Whether NIGHTSHIFT_DOCS_WORKERS names `worker`, by its name, its host or its user@host."""
+        """Whether NIGHTSHIFT_DOCS_WORKERS names `worker`, by its name, its host or its user@host, or is "all"."""
         target = (worker.target or "").lower()
-        return bool(self.docs_names & {worker.name.lower(), target, target.split("@")[-1]})
+        names = {worker.name.lower(), target, target.split("@")[-1]}
+        return EVERY_WORKER in self.docs_names or bool(self.docs_names & names)
 
     def claim(self, worker: Worker) -> Task | None:
         with self.queue_lock:
@@ -1982,9 +2059,13 @@ class Coordinator:
                                leave_out=lambda: {"docs"} if self.docs_team() else ())
         self.planning.set()
         docs_team = self.docs_team()
-        docs = f"; a documentation task is kept waiting for {', '.join(w.name for w in docs_team)}" if docs_team else ""
-        log(f"auto-planning on: {model} writes the next task whenever fewer than {self.low_water()} are waiting "
-            f"({', '.join(dict.fromkeys(self.planner.focus))}){docs}")
+        if docs_team and not any(self.team()):
+            log(f"auto-planning on, documentation only: a documentation task is kept waiting for each of "
+                f"{', '.join(w.name for w in docs_team)}")
+        else:
+            docs = f"; a documentation task is kept waiting for {', '.join(w.name for w in docs_team)}" if docs_team else ""
+            log(f"auto-planning on: {model} writes the next task whenever fewer than {self.low_water()} are waiting "
+                f"({', '.join(dict.fromkeys(self.planner.focus))}){docs}")
         threading.Thread(target=self.plan_loop, daemon=True).start()
 
     def plan_loop(self) -> None:
@@ -2146,7 +2227,7 @@ class Coordinator:
             worker.retired = True
             big_takers, small_only = self.team()
             if getattr(worker, "docs", False):
-                if not self.docs_team() and not self.off_duty():
+                if not self.docs_team() and any(self.team()) and not self.off_duty():
                     log("no documentation worker is left, so the others take documentation tasks now", worker.name)
             elif getattr(worker, "big", True) and small_only and not big_takers and not self.off_duty():
                 log("no worker that takes big tasks is left, so the others take any task now", worker.name)
@@ -2221,8 +2302,9 @@ class Coordinator:
                 w.model = self.model
             w.big = w.model.removesuffix(":latest") not in self.small_models
             w.docs = self.docs_only(w)
-        unknown = self.docs_names - {n for w in candidates for n in (w.name.lower(), (w.target or "").lower(),
-                                                                         (w.target or "").split("@")[-1].lower())}
+        known = {n for w in candidates for n in (w.name.lower(), (w.target or "").lower(),
+                                                  (w.target or "").split("@")[-1].lower())}
+        unknown = self.docs_names - known - {EVERY_WORKER}
         if unknown:
             log(f"NIGHTSHIFT_DOCS_WORKERS names {', '.join(sorted(unknown))}, which isn't a worker here "
                 f"(set a helper up with NightShift.ps1 helpers)")
@@ -2255,7 +2337,10 @@ class Coordinator:
         elif small_only:
             log("every worker's model is in NIGHTSHIFT_SMALL_TASK_MODELS, so they take any task and the planner writes "
                 "only small ones")
-        if self.docs_team():
+        if self.docs_team() and not any(self.team()):
+            log("every worker takes only documentation tasks (/// <summary> comments), so the night shift writes "
+                "comments and nothing else; other tasks wait in tasks.md")
+        elif self.docs_team():
             log(f"documentation tasks (/// <summary> comments) go to {', '.join(w.name for w in self.docs_team())}, "
                 f"which take{'s' if len(self.docs_team()) == 1 else ''} nothing else")
         self.start_planner(ollama)
