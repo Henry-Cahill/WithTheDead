@@ -3,14 +3,16 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace CloneZ.EditorTools
 {
     /// <summary>
     /// Entry points for running the editor headless (<c>Unity.exe -batchmode -executeMethod ...</c>):
-    /// regenerating the IDE project files after a package change and building a standalone player for
-    /// the multiplayer smoke test (a host and a client launched side by side).
+    /// regenerating the IDE project files after a package change, building a standalone player for
+    /// the multiplayer smoke test (a host and a client launched side by side), and the map harness.
     /// </summary>
     public static class CloneZBatch
     {
@@ -51,6 +53,66 @@ namespace CloneZ.EditorTools
             UnityEditor.SceneManagement.EditorSceneManager.OpenScene(scene);
             Debug.Log("[CloneZBatch] Entering play mode in " + scene);
             EditorApplication.EnterPlaymode();
+        }
+
+        /// <summary>
+        /// The map harness: builds the Kentucky map's start square in an empty edit-mode scene, photographs it as the game
+        /// shows it, times the build and streamed chunks, and writes &lt;outDir&gt;\*.png, report.json and report.md
+        /// (see <see cref="global::CloneZ.MapShots"/>). Run it with no <c>-quit</c> (it exits by itself) and with
+        /// <c>CLONEZ_WORLD</c> pointing at a world store:
+        /// <c>Unity.exe -batchmode -projectPath &lt;project&gt; -executeMethod CloneZ.EditorTools.CloneZBatch.MapShots
+        /// -clonez-mapshots &lt;outDir&gt; [-clonez-mapshots-place &lt;name&gt;] [-clonez-mapshots-quick] -logFile &lt;log&gt;</c>.
+        /// Exit code: 0 ok, 1 harness failure, 2 the map failed to build or logged errors while building, 3 no world store
+        /// or no such place.
+        /// </summary>
+        public static void MapShots()
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            string outDir = ArgValue(args, "-clonez-mapshots");
+            if (string.IsNullOrEmpty(outDir)) outDir = Path.Combine(Directory.GetCurrentDirectory(), "Temp", "MapShots");
+            int code = global::CloneZ.MapShots.ExitHarness;
+            bool asyncShaders = ShaderUtil.allowAsyncCompilation;
+            try
+            {
+                // Edit mode in a fresh, empty scene: play mode would boot the whole game (GameBootstrapper).
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                // A picture must never catch a shader still compiling (it would draw as the cyan placeholder).
+                ShaderUtil.allowAsyncCompilation = false;
+                var options = new global::CloneZ.MapShots.Options
+                {
+                    OutDir = outDir,
+                    Place = ArgValue(args, "-clonez-mapshots-place"),
+                    Quick = Array.IndexOf(args, "-clonez-mapshots-quick") >= 0,
+                    GameProfile = GameVolumeProfile(),
+                };
+                code = global::CloneZ.MapShots.Run(options);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("[MapShots] the harness failed to start: " + e);
+                global::CloneZ.MapShots.WriteFailure(outDir, e.GetType().Name + ": " + e.Message);
+                code = global::CloneZ.MapShots.ExitHarness;
+            }
+            finally
+            {
+                ShaderUtil.allowAsyncCompilation = asyncShaders;
+            }
+            EditorApplication.Exit(code);
+        }
+
+        private static string ArgValue(string[] args, string name)
+        {
+            int i = Array.IndexOf(args, name);
+            return i >= 0 && i + 1 < args.Length && !args[i + 1].StartsWith("-", StringComparison.Ordinal) ? args[i + 1] : null;
+        }
+
+        // The game scene's Global Volume profile (its bloom, tonemapping and vignette), so the pictures are graded as the game is.
+        private static VolumeProfile GameVolumeProfile()
+        {
+            string scene = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).FirstOrDefault() ?? "Assets/Scenes/SampleScene.unity";
+            foreach (string dep in AssetDatabase.GetDependencies(scene, false))
+                if (AssetDatabase.GetMainAssetTypeAtPath(dep) == typeof(VolumeProfile)) return AssetDatabase.LoadAssetAtPath<VolumeProfile>(dep);
+            return AssetDatabase.LoadAssetAtPath<VolumeProfile>("Assets/Settings/SampleSceneProfile.asset");
         }
     }
 }
