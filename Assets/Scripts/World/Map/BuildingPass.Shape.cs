@@ -231,5 +231,64 @@ namespace CloneZ
             }
             return cuts;
         }
+
+        /// <summary>From this many corners on, an outline is triangulated simplified (ear clipping is cubic in them).</summary>
+        private const int MaxTriangulated = 64;
+
+        /// <summary>The outline with the corners that stray less than <paramref name="tolerance"/> from the line through
+        /// their neighbours dropped (Douglas-Peucker, the ring split at its two farthest-apart corners), in order, into
+        /// <paramref name="into"/>.</summary>
+        private static void Simplify(List<Vector2> pts, float tolerance, List<Vector2> into)
+        {
+            into.Clear();
+            int n = pts.Count;
+            if (n < 8)
+            {
+                into.AddRange(pts);
+                return;
+            }
+            int far = 0;
+            float best = -1f;
+            for (int i = 1; i < n; i++)
+            {
+                float d = (pts[i] - pts[0]).sqrMagnitude;
+                if (d <= best) continue;
+                best = d;
+                far = i;
+            }
+            var keep = new bool[n];
+            keep[0] = keep[far] = true;
+            Keep(pts, 0, far, tolerance, keep);
+            Keep(pts, far, n, tolerance, keep);
+            for (int i = 0; i < n; i++)
+                if (keep[i]) into.Add(pts[i]);
+            if (into.Count < 3)
+            {
+                into.Clear();
+                into.AddRange(pts);
+            }
+        }
+
+        // Marks the corners between a and b (b may be n: corner 0 again) that stand farther than the tolerance from
+        // the line a-b, recursively.
+        private static void Keep(List<Vector2> pts, int a, int b, float tolerance, bool[] keep)
+        {
+            int n = pts.Count;
+            if (b - a < 2) return;
+            Vector2 pa = pts[a], pb = pts[b % n];
+            int worst = -1;
+            float worstD = tolerance;
+            for (int i = a + 1; i < b; i++)
+            {
+                float d = MapGeometry.DistanceToSegment(pts[i], pa, pb);
+                if (d <= worstD) continue;
+                worstD = d;
+                worst = i;
+            }
+            if (worst < 0) return;
+            keep[worst] = true;
+            Keep(pts, a, worst, tolerance, keep);
+            Keep(pts, worst, b, tolerance, keep);
+        }
     }
 }
