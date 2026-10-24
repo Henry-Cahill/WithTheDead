@@ -10315,9 +10315,10 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
 
 ### Auto-planned 2026-10-24: written by the night shift when the queue ran low (delete any you don't want)
 
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Map/InteriorPass.Plan.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Map/InteriorPass.Plan.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 15:41 landed by 0htsserver in 5.4 min: Added a concise XML‑style summary to the public `Footprint` property in **Assets/Scripts/World/Map/InteriorPass.Plan.cs**:
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Map/RoadPass.Network.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

@@ -69,6 +69,7 @@ namespace CloneZ
         /// <summary>The footprint in the frame.</summary>
         public List<Vector2> Local;
 
+        /// <summary>Gets the building's footprint from its record.</summary>
         public Footprint Footprint => Record.Footprint;
         public MapBuilding Data => Record.Footprint.Data;
         public long Id => Record.Footprint.Data.id;
