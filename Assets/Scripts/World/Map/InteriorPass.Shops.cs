@@ -143,13 +143,6 @@ namespace CloneZ
                 if (c.AnyWall(order, 0.76f, 0.72f, 1.75f, -1f, out RaidBuilding.Place fridge, out _))
                     b.WorkFridge(c.R, fridge, new Color(0.86f, 0.86f, 0.84f), ContainerType.Fridge, "Medical fridge", true);
             }
-            if (role == RoomRole.Sorting && c.Floor(1.6f, 0.8f, 0f, c.Inner.center, 0.6f, out RaidBuilding.Place table))
-                b.WorkTable(c.R, table, new Vector3(1.6f, 0.9f, 0.8f), (m, r) =>
-                {
-                    FurnitureBuilder.Table(m, r, 1.6f, 0.8f, new Color(0.70f, 0.70f, 0.68f));
-                    for (int k = 0; k < 4; k++) FurnitureBuilder.CardboardBox(m, r, new Vector3(MapStyle.Range(r, -0.6f, 0.6f), 0.755f, MapStyle.Range(r, -0.2f, 0.2f)),
-                        new Vector3(0.3f, 0.2f, 0.24f), MapStyle.Range(r, 0f, 90f));
-                }, "Sorting table", SpareStock(ContainerType.Desk, "mail"));
             // Shelving round the walls, the room's loot on it; crates and a pallet on the floor of a big one.
             int n = Mathf.Clamp(Mathf.FloorToInt(c.Area / 4.5f), 1, 8);
             for (int i = 0; i < n; i++)
@@ -167,6 +160,110 @@ namespace CloneZ
             if (c.Area > 20f && c.Floor(1.2f, 1.0f, 0f, c.Inner.center, 0.6f, out RaidBuilding.Place pallet))
                 b.Furnish(c.R, pallet, new Vector3(1.2f, 1.0f, 1.0f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, 0f, true), "pallet");
             Clutter(c, c.Area > 12f ? 3 : 1);
+        }
+
+        // A post office's workroom: sorting cases (the pigeonholes) along the walls and back to back in rows across the floor,
+        // the canvas hampers, the sorting tables with their trays of letters, sacks about.
+        private static void Sorting(RoomCtx c)
+        {
+            RaidBuilding b = c.B;
+            Rect i = c.Inner;
+            int[] order = c.Sides(false);
+            System.Random rng = c.Rng;
+            MoreLoot(c, Mathf.Min(2, c.LootLeft), order);
+            foreach (int side in order)
+                for (int k = 0; k < 4; k++)
+                {
+                    if (!c.Wall(side, 1.5f, 0.45f, 1.8f, 0f, out RaidBuilding.Place p)) break;
+                    b.Furnish(c.R, p, new Vector3(1.5f, 1.8f, 0.45f), true, (m, r) => SortingCase(m, r, 1.5f), "Sorting case");
+                }
+            // Rows of cases back to back across the room's length, an aisle round them.
+            bool longZ = i.height >= i.width;
+            float u0 = longZ ? i.yMin : i.xMin, u1 = longZ ? i.yMax : i.xMax, v0 = longZ ? i.xMin : i.yMin, v1 = longZ ? i.xMax : i.yMax;
+            float run = Mathf.Min(4.5f, Mathf.Floor(((v1 - v0) - 3.2f) / 1.5f) * 1.5f);
+            if (run >= 1.5f)
+            {
+                float vm = (v0 + v1) * 0.5f;
+                int rows = 0;
+                for (float u = u0 + 2.2f; u < u1 - 2.0f && rows < 6; u += 3.0f)
+                {
+                    Rect fp = longZ ? new Rect(vm - run * 0.5f, u - 0.45f, run, 0.9f) : new Rect(u - 0.45f, vm - run * 0.5f, 0.9f, run);
+                    if (!c.FloorAt(fp, 0.5f)) continue;
+                    for (int s = -1; s <= 1; s += 2)
+                    {
+                        var p = longZ ? new RaidBuilding.Place(vm, u + s * 0.23f, s > 0 ? 0f : 180f) : new RaidBuilding.Place(u + s * 0.23f, vm, s > 0 ? 90f : 270f);
+                        b.Furnish(c.R, p, new Vector3(run, 1.8f, 0.45f), true, (m, r) => SortingCase(m, r, run), "Sorting case");
+                    }
+                    rows++;
+                }
+            }
+            // The sorting tables and the hampers.
+            for (int k = 0; k < Mathf.Clamp(Mathf.FloorToInt(c.Area / 40f), 1, 3); k++)
+            {
+                var near = new Vector2(MapStyle.Range(rng, i.xMin + 2f, i.xMax - 2f), MapStyle.Range(rng, i.yMin + 2f, i.yMax - 2f));
+                if (!c.Floor(2.4f, 0.9f, longZ ? 90f : 0f, near, 0.8f, out RaidBuilding.Place table)) break;
+                System.Action<RaidMesh, System.Random> draw = (m, r) =>
+                {
+                    FurnitureBuilder.Table(m, r, 2.4f, 0.9f, new Color(0.62f, 0.62f, 0.60f));
+                    for (int t = 0; t < 4; t++)
+                        if (r.NextDouble() < 0.75) MailTray(m, r, new Vector3(-0.85f + t * 0.56f, 0.76f, MapStyle.Range(r, -0.15f, 0.15f)));
+                };
+                if (c.TakeLoot()) b.WorkTable(c.R, table, new Vector3(2.4f, 0.95f, 0.9f), draw, "Sorting table", SpareStock(ContainerType.Desk, "mail"));
+                else b.Furnish(c.R, table, new Vector3(2.4f, 0.95f, 0.9f), true, draw, "Sorting table");
+            }
+            for (int k = 0; k < Mathf.Clamp(Mathf.FloorToInt(c.Area / 20f), 2, 8); k++)
+            {
+                var near = new Vector2(MapStyle.Range(rng, i.xMin + 1f, i.xMax - 1f), MapStyle.Range(rng, i.yMin + 1f, i.yMax - 1f));
+                if (!c.Floor(1.0f, 0.7f, rng.NextDouble() < 0.5 ? 0f : 90f, near, 0.35f, out RaidBuilding.Place h)) continue;
+                var turned = new RaidBuilding.Place(h.X, h.Z, h.Yaw + MapStyle.Range(rng, -12f, 12f));
+                b.Furnish(c.R, turned, new Vector3(1.0f, 0.9f, 0.7f), true, (m, r) => Hamper(m, r), "Mail hamper");
+            }
+            Clutter(c, 2);
+        }
+
+        // A sorting case `w` long (front +Z): a ledge on a cupboard base, and over it pigeonholes in a 6-high grid with
+        // letters left in some.
+        private static void SortingCase(RaidMesh m, System.Random r, float w)
+        {
+            Surf wood = DecorPalette.Matte(new Color(0.55f, 0.50f, 0.42f)), back = DecorPalette.Matte(new Color(0.34f, 0.31f, 0.27f));
+            Surf paper = DecorPalette.Matte(new Color(0.92f, 0.90f, 0.84f));
+            int cols = Mathf.Max(4, Mathf.RoundToInt(w / 0.25f));
+            m.Box(new Vector3(0f, 0.43f, 0f), new Vector3(w, 0.86f, 0.42f), back);
+            m.Box(new Vector3(0f, 0.875f, 0.02f), new Vector3(w, 0.03f, 0.45f), wood);
+            m.Box(new Vector3(0f, 1.34f, -0.19f), new Vector3(w, 0.9f, 0.03f), back);
+            for (int k = 0; k <= cols; k++) m.Box(new Vector3(-w * 0.5f + w * k / cols, 1.34f, -0.07f), new Vector3(0.015f, 0.9f, 0.25f), wood);
+            for (int k = 0; k <= 6; k++) m.Box(new Vector3(0f, 0.89f + k * 0.15f, -0.07f), new Vector3(w, 0.015f, 0.25f), wood);
+            for (int row = 0; row < 6; row++)
+                for (int col = 0; col < cols; col++)
+                    if (r.NextDouble() < 0.35)
+                        m.Box(new Vector3(-w * 0.5f + w * (col + 0.5f) / cols, 0.9f + row * 0.15f + 0.04f, -0.09f), new Vector3(w / cols - 0.05f, 0.07f, 0.17f), paper);
+        }
+
+        // A canvas mail hamper on its steel frame and casters, some parcels in it.
+        private static void Hamper(RaidMesh m, System.Random r)
+        {
+            Surf canvas = DecorPalette.Matte(new Color(0.60f, 0.55f, 0.42f)), steel = DecorPalette.Metal(new Color(0.52f, 0.52f, 0.50f));
+            Surf dark = DecorPalette.Matte(new Color(0.12f, 0.12f, 0.12f)), kraft = DecorPalette.Matte(new Color(0.66f, 0.50f, 0.32f));
+            m.Box(new Vector3(0f, 0.56f, 0f), new Vector3(0.95f, 0.6f, 0.65f), canvas);
+            m.Box(new Vector3(0f, 0.87f, 0f), new Vector3(0.98f, 0.03f, 0.68f), steel);
+            m.Box(new Vector3(0f, 0.24f, 0f), new Vector3(0.95f, 0.04f, 0.65f), steel);
+            for (int k = 0; k < 4; k++)
+                m.Box(new Vector3((k & 1) == 0 ? -0.42f : 0.42f, 0.11f, (k & 2) == 0 ? -0.27f : 0.27f), new Vector3(0.06f, 0.22f, 0.06f), dark);
+            int parcels = r.Next(0, 4);
+            for (int k = 0; k < parcels; k++)
+                m.Box(new Vector3(MapStyle.Range(r, -0.25f, 0.25f), 0.84f + k * 0.02f, MapStyle.Range(r, -0.12f, 0.12f)),
+                    new Vector3(MapStyle.Range(r, 0.2f, 0.4f), 0.12f, MapStyle.Range(r, 0.15f, 0.3f)), Quaternion.Euler(0f, MapStyle.Range(r, -30f, 30f), 0f), kraft);
+        }
+
+        // A grey plastic mail tray of letters standing on end (its middle at `at`, on a table top).
+        private static void MailTray(RaidMesh m, System.Random r, Vector3 at)
+        {
+            Surf tray = DecorPalette.Matte(new Color(0.46f, 0.48f, 0.50f)), paper = DecorPalette.Matte(new Color(0.92f, 0.90f, 0.84f));
+            m.Box(at + new Vector3(0f, 0.005f, 0f), new Vector3(0.5f, 0.01f, 0.28f), tray);
+            for (int s = -1; s <= 1; s += 2) m.Box(at + new Vector3(s * 0.245f, 0.06f, 0f), new Vector3(0.01f, 0.12f, 0.28f), tray);
+            for (int s = -1; s <= 1; s += 2) m.Box(at + new Vector3(0f, 0.06f, s * 0.135f), new Vector3(0.5f, 0.12f, 0.01f), tray);
+            float fill = MapStyle.Range(r, 0.3f, 0.95f);
+            m.Box(at + new Vector3(-0.24f + 0.24f * fill, 0.065f, 0f), new Vector3(0.48f * fill, 0.11f, 0.24f), paper);
         }
 
         #region The raid town's shop fittings
