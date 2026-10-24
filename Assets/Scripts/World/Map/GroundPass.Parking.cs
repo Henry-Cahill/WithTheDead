@@ -30,6 +30,7 @@ namespace CloneZ
                 {
                     PlowedEdge(g, o, g.Square, g.Site.Town.Out);
                     any = true;
+                    if (g.Site.StepDue) yield return "lots";
                 }
             for (int b = 0; b < g.Ring.Count; b++)
                 foreach (Owner o in g.Ring[b])
@@ -116,6 +117,7 @@ namespace CloneZ
                 if (!anyHere) continue;
                 for (int j = 0; j <= across; j++)
                 {
+                    if (j > 0 && g.Site.StepDue) yield return "lots";
                     bool here = j < across && fits[j], before = j > 0 && fits[j - 1];
                     // A line between two stalls, or at the end of a run.
                     Vector2 lineAt = Middle(u, v, x0 + j * StallWidth, rowAt);
