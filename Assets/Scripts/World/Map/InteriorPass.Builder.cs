@@ -107,6 +107,17 @@ namespace CloneZ
             }
             EmitWalls();
             yield return "interior wall meshes";
+            Settle();
+            yield return "interior finish";
+            // The still, low furniture merged a room at a time (each room a step).
+            GatherMerge();
+            for (int i = 0; i < _merge.Length; i++)
+            {
+                if (_merge[i] == null) continue;
+                try { MergeRoom(i); }
+                catch (System.Exception e) { Trouble("merging room " + i + "'s furniture", e); }
+                yield return "interior merge";
+            }
             Finish();
             yield return "interior finish";
         }
@@ -747,13 +758,195 @@ namespace CloneZ
             }
         }
 
-        private void Finish()
+        // The raid town's own output (its static furniture, floors and ceilings), then the loot kept to the budget.
+        private void Settle()
         {
             B.Finish();
+            KeepLoot();
+        }
+
+        #region Merging
+        // A furnished room's still, low furniture drawn as one renderer (a sub-mesh a material) instead of a renderer and
+        // its material slots a piece: the pieces keep their colliders, seats and storage, and lose only their looks. A
+        // piece keeps its own renderer when the iso cutaway may have to lift it (as tall as the raid town's tall furniture),
+        // when something moves it or swaps its looks (a swivel chair, a fridge's light, a bed's bedding, the bathroom's
+        // water: anything but seats, storage and the parts storage opens), or while storage is there to open its doors
+        // and drawers (those stay their own; once its loot was taken out of it, they're as still as the rest).
+        private List<MeshRenderer>[] _merge;
+        private static readonly List<MonoBehaviour> s_Behaviours = new List<MonoBehaviour>(16);
+        private static readonly List<MeshRenderer> s_MergeRenderers = new List<MeshRenderer>(16);
+
+        /// <summary>Renderers merged into rooms' furniture meshes, and the merged renderers made.</summary>
+        public int Merged, MergedInto;
+
+        /// <summary>Pieces this tall keep their own renderers (the raid town's tall furniture: the iso cutaway lifts them out
+        /// of the way).</summary>
+        private const float TallPiece = 1.35f;
+
+        private void GatherMerge()
+        {
+            _merge = new List<MeshRenderer>[Plan.Rooms.Count];
+            Transform root = B.Root;
+            float floor = World(0f, 0f, 0f).y;
+            for (int k = 0; k < root.childCount; k++)
+            {
+                Transform body = root.GetChild(k);
+                if (!Still(body, out bool driven)) continue;
+                body.GetComponentsInChildren(true, s_MergeRenderers);
+                foreach (MeshRenderer r in s_MergeRenderers)
+                {
+                    if (!r.enabled || !r.gameObject.activeSelf || r.shadowCastingMode == ShadowCastingMode.ShadowsOnly) continue;
+                    MeshFilter mf = r.GetComponent<MeshFilter>();
+                    if (mf == null || mf.sharedMesh == null || mf.sharedMesh.subMeshCount == 0) continue;
+                    if (driven && r.GetComponent<FixturePart>() != null) continue;
+                    if (r.GetComponent<LootContainer>() != null) continue;
+                    Bounds b = r.bounds;
+                    // Tall pieces stay for the cutaway; the building's own merged meshes (its static furniture, its floors)
+                    // stay as they are.
+                    if (b.max.y - floor >= TallPiece || b.size.x > 5f || b.size.z > 5f) continue;
+                    Vector2 at = LocalOf(b.center);
+                    int room = Plan.RoomAt(at);
+                    if (room < 0) room = Plan.NearestRoom(at);
+                    if (room < 0) continue;
+                    (_merge[room] ??= new List<MeshRenderer>(32)).Add(r);
+                }
+                s_MergeRenderers.Clear();
+            }
+        }
+
+        // True when nothing in a piece moves it or swaps its looks; `driven` when storage is there to open its parts.
+        private static bool Still(Transform body, out bool driven)
+        {
+            driven = false;
+            if (body.GetComponent<LootContainer>() != null) return false;   // a free-standing container: dismantled whole
+            body.GetComponentsInChildren(true, s_Behaviours);
+            bool still = true;
+            foreach (MonoBehaviour mb in s_Behaviours)
+            {
+                if (mb == null) continue;
+                System.Type t = mb.GetType();
+                if (t == typeof(StorageFixture)) { driven = true; continue; }
+                if (t == typeof(SeatFixture) || t == typeof(FixturePart) || t == typeof(NavMeshModifier) || t == typeof(LootContainer)) continue;
+                still = false;
+                break;
+            }
+            s_Behaviours.Clear();
+            return still;
+        }
+
+        private struct MergeKey : System.IEquatable<MergeKey>
+        {
+            public ShadowCastingMode Shadows;
+            public bool Receive, OffNav;
+            public int Layer;
+
+            public bool Equals(MergeKey o) => Shadows == o.Shadows && Receive == o.Receive && OffNav == o.OffNav && Layer == o.Layer;
+            public override bool Equals(object o) => o is MergeKey k && Equals(k);
+            public override int GetHashCode() => ((int)Shadows * 397) ^ (Receive ? 17 : 0) ^ (OffNav ? 1031 : 0) ^ (Layer * 7919);
+        }
+
+        // One room's gathered renderers merged: a renderer for each way they're drawn (shadows, layer, kept out of the
+        // navmesh), a sub-mesh for each material.
+        private void MergeRoom(int room)
+        {
+            List<MeshRenderer> list = _merge[room];
+            _merge[room] = null;
+            if (list == null || list.Count < 2) return;
+            var groups = new List<KeyValuePair<MergeKey, List<MeshRenderer>>>(2);
+            foreach (MeshRenderer r in list)
+            {
+                if (r == null) continue;
+                var key = new MergeKey { Shadows = r.shadowCastingMode, Receive = r.receiveShadows, OffNav = OffNav(r.transform), Layer = r.gameObject.layer };
+                List<MeshRenderer> into = null;
+                foreach (KeyValuePair<MergeKey, List<MeshRenderer>> g in groups)
+                    if (g.Key.Equals(key)) { into = g.Value; break; }
+                if (into == null)
+                {
+                    into = new List<MeshRenderer>(list.Count);
+                    groups.Add(new KeyValuePair<MergeKey, List<MeshRenderer>>(key, into));
+                }
+                into.Add(r);
+            }
+            PlanRoom pr = Plan.Rooms[room];
+            Vector3 origin = World(pr.R.center, 0f);
+            Matrix4x4 toLocal = Matrix4x4.Translate(-origin);
+            foreach (KeyValuePair<MergeKey, List<MeshRenderer>> g in groups)
+            {
+                if (g.Value.Count < 2) continue;
+                var mats = new List<Material>(8);
+                var byMat = new List<List<CombineInstance>>(8);
+                foreach (MeshRenderer r in g.Value)
+                {
+                    Mesh mesh = r.GetComponent<MeshFilter>().sharedMesh;
+                    Material[] shared = r.sharedMaterials;
+                    Matrix4x4 m = toLocal * r.transform.localToWorldMatrix;
+                    for (int s = 0; s < mesh.subMeshCount && s < shared.Length; s++)
+                    {
+                        int at = mats.IndexOf(shared[s]);
+                        if (at < 0)
+                        {
+                            at = mats.Count;
+                            mats.Add(shared[s]);
+                            byMat.Add(new List<CombineInstance>(16));
+                        }
+                        byMat[at].Add(new CombineInstance { mesh = mesh, subMeshIndex = s, transform = m });
+                    }
+                }
+                var parts = new CombineInstance[mats.Count];
+                for (int j = 0; j < mats.Count; j++)
+                {
+                    var part = new Mesh { indexFormat = IndexFormat.UInt32 };
+                    part.CombineMeshes(byMat[j].ToArray(), true, true);
+                    parts[j] = new CombineInstance { mesh = part, transform = Matrix4x4.identity };
+                }
+                var merged = new Mesh { name = "Furniture " + pr.Name, indexFormat = IndexFormat.UInt32 };
+                merged.CombineMeshes(parts, false, false);
+                for (int j = 0; j < parts.Length; j++) Object.DestroyImmediate(parts[j].mesh);
+                if (RaidMesh.CreatedMeshes != null) RaidMesh.CreatedMeshes.Add(merged);
+                if (RaidMesh.CreatedMeshes != Meshes) Meshes.Add(merged);
+
+                var go = new GameObject("Furniture " + pr.Name);
+                go.layer = g.Key.Layer;
+                go.transform.SetParent(B.Root, false);
+                go.transform.SetPositionAndRotation(origin, Quaternion.identity);
+                go.AddComponent<MeshFilter>().sharedMesh = merged;
+                var mr = go.AddComponent<MeshRenderer>();
+                mr.sharedMaterials = mats.ToArray();
+                mr.shadowCastingMode = g.Key.Shadows;
+                mr.receiveShadows = g.Key.Receive;
+                if (g.Key.OffNav) go.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
+                MergedInto++;
+
+                // The pieces keep everything but their looks.
+                foreach (MeshRenderer r in g.Value)
+                {
+                    MeshFilter mf = r.GetComponent<MeshFilter>();
+                    Mesh old = mf.sharedMesh;
+                    Object.DestroyImmediate(r);
+                    Object.DestroyImmediate(mf);
+                    if (old != null) Object.DestroyImmediate(old);
+                    Merged++;
+                }
+            }
+        }
+
+        // True when a NavMeshModifier on the object (or one above it in its piece) keeps it out of the navmesh bake.
+        private bool OffNav(Transform t)
+        {
+            for (Transform p = t; p != null && p != B.Root; p = p.parent)
+            {
+                NavMeshModifier mod = p.GetComponent<NavMeshModifier>();
+                if (mod != null && mod.ignoreFromBuild && (p == t || mod.applyToChildren)) return true;
+            }
+            return false;
+        }
+        #endregion
+
+        private void Finish()
+        {
             Root.GetComponentsInChildren(true, s_Lights);
             Lights = s_Lights.Count;
             s_Lights.Clear();
-            KeepLoot();
             Root.GetComponentsInChildren(true, Containers);
             Bounds b = new Bounds(World(Plan.Extent.center, Plan.WallH * 0.5f), Vector3.zero);
             foreach (Vector2 p in Plan.Footprint.Pts) b.Encapsulate(new Vector3(p.x + _offset.x, 0f, p.y + _offset.z));

@@ -25,6 +25,27 @@ namespace CloneZ
         /// <summary>The last fixed-square build's tally (for the logs and the harness).</summary>
         internal static string LastStats = "";
 
+        /// <summary>The longest single piece of planning work since <see cref="ResetPlanTiming"/> (ms) and what it was (for
+        /// the harness: a streamed piece's plan steps must stay within a frame's budget).</summary>
+        internal static double SlowestPlanMs;
+        internal static string SlowestPlanWhat = "";
+
+        internal static void ResetPlanTiming()
+        {
+            SlowestPlanMs = 0;
+            SlowestPlanWhat = "";
+        }
+
+        private static void NotePlan(long t0, string what, InteriorPlan plan = null)
+        {
+            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            if (ms <= SlowestPlanMs) return;
+            SlowestPlanMs = ms;
+            SlowestPlanWhat = plan == null ? what
+                : what + " " + plan.Use + " " + plan.Id + " (" + Mathf.RoundToInt(plan.Footprint.Size) + " m², " + plan.Rooms.Count + " rooms, "
+                    + plan.Footprint.Pts.Count + " corners, " + plan.Record.Windows.Count + " windows)";
+        }
+
         /// <summary>For tools (the interiors harness): told of every building the fixed square furnished (or failed to:
         /// the exception), in order.</summary>
         internal static System.Action<InteriorBuild, System.Exception> Furnished;
@@ -34,7 +55,10 @@ namespace CloneZ
             if (site.Detail == Detail.Lite || site.Enterables.Count == 0) yield break;
             float started = Time.realtimeSinceStartup;
             // What each building was for (its point of interest, its surroundings), as the loot tables will see it.
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             MapGameplay.Prepare(site);
+            NotePlan(t0, "the purposes (MapGameplay.Prepare)");
+            if (site.StepDue) yield return "interior plans";
             var shells = new Dictionary<Footprint, BuildingShell>(site.Shells.Count);
             foreach (BuildingShell s in site.Shells)
                 if (s != null && s.Footprint != null && !shells.ContainsKey(s.Footprint)) shells[s.Footprint] = s;
@@ -48,12 +72,14 @@ namespace CloneZ
                 EnterableBuilding e = site.Enterables[i];
                 if (e == null || e.Footprint == null) continue;
                 InteriorPlan plan;
+                t0 = System.Diagnostics.Stopwatch.GetTimestamp();
                 try { plan = MakePlan(site, e); }
                 catch (System.Exception ex)
                 {
                     Debug.LogWarning("[CloneZ] Interiors: no plan for building " + e.Footprint.Data.id + ": " + ex);
                     plan = null;
                 }
+                if (plan != null) NotePlan(t0, "the plan of", plan);
                 // The exteriors' loose crates in a building that's furnished make way for its furniture; a building that
                 // can't be furnished keeps them, or gets its own.
                 int crates = LooseIn(site, loose, e.Footprint, plan != null);
@@ -66,8 +92,23 @@ namespace CloneZ
                 {
                     if (shells.TryGetValue(e.Footprint, out BuildingShell shell))
                     {
-                        try { Linings(plan, shell); }
-                        catch (System.Exception ex) { Debug.LogWarning("[CloneZ] Interiors: lining building " + plan.Id + " failed: " + ex); }
+                        // Lined a wall at a time, so a big building's many windows don't hold up a frame.
+                        if (site.StepDue) yield return "interior plans";
+                        IEnumerator<bool> lining = Linings(plan, shell).GetEnumerator();
+                        while (true)
+                        {
+                            t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                            bool more;
+                            try { more = lining.MoveNext(); }
+                            catch (System.Exception ex)
+                            {
+                                Debug.LogWarning("[CloneZ] Interiors: lining building " + plan.Id + " failed: " + ex);
+                                more = false;
+                            }
+                            NotePlan(t0, "a wall's lining of", plan);
+                            if (!more) break;
+                            if (site.StepDue) yield return "interior plans";
+                        }
                     }
                     plans.Add(plan);
                     rooms += plan.Rooms.Count;
