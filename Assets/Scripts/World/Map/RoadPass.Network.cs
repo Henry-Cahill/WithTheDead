@@ -98,6 +98,8 @@ namespace CloneZ
             public bool SetBack;
             public Vector2 InMeet, OutMeet;
             public float WalkA, WalkB;
+            public float Phi;               // the angle from arm A round to arm B
+            public bool Gore;               // paved over between its arms (see Gores): no kerb return, no corner sidewalk
         }
 
         private sealed class Joint
