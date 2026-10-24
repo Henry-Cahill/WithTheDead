@@ -114,6 +114,7 @@ namespace CloneZ
             s_PrewarmCount = 0;
             AbortHeightJob();
             AbortOverlayJob();
+            ForgetInteractables();
             OverlayBytes = HeightBytes = 0;
             s_Count = 0;
             s_MaxTop = 0f;
@@ -223,6 +224,7 @@ namespace CloneZ
             s_PrewarmCount = 0;
             AbortHeightJob();
             AbortOverlayJob();
+            ForgetInteractables();
             s_Count = 0;
             s_MaxTop = 0f;
             s_Iso = false;
@@ -261,6 +263,7 @@ namespace CloneZ
             float pitch = cam.IsoPitch;
             float reach = cam.IsoDistance * Mathf.Cos(Mathf.Clamp(pitch, 10f, 89f) * Mathf.Deg2Rad) + 1f;
             Run(cam.Target.position, cam.IsoYaw, pitch, reach, cam.WallCutaway, now, false);
+            KeepDoors();
             Work(WorkBudgetMs);
         }
 
@@ -412,7 +415,6 @@ namespace CloneZ
                 if ((mask & WallBits) != 0) mask |= UpperBit;
                 mask = Ready(b, mask);
                 if (mask != b.Applied) Apply(b, mask);
-                else if ((mask & WallBits) != 0) KeepDoorsHidden(b);
                 if (mask != 0 || b.HoldFrame >= 0) continue;
                 b.Active = false;
                 b.Occupied = false;
