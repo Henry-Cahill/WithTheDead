@@ -791,7 +791,16 @@ namespace CloneZ
             for (int k = 0; k < root.childCount; k++)
             {
                 Transform body = root.GetChild(k);
-                if (!Still(body, out bool driven)) continue;
+                if (!Still(body, out bool driven, out string blocker))
+                {
+                    if (blocker != null)
+                    {
+                        Unmerged ??= new Dictionary<string, int>();
+                        Unmerged.TryGetValue(blocker, out int n);
+                        Unmerged[blocker] = n + 1;
+                    }
+                    continue;
+                }
                 body.GetComponentsInChildren(true, s_MergeRenderers);
                 foreach (MeshRenderer r in s_MergeRenderers)
                 {
@@ -814,11 +823,13 @@ namespace CloneZ
             }
         }
 
-        // True when nothing in a piece moves it or swaps its looks; `driven` when storage is there to open its parts.
-        private static bool Still(Transform body, out bool driven)
+        // True when nothing in a piece moves it or swaps its looks; `driven` when storage is there to open its parts;
+        // `blocker` names what keeps it apart otherwise (for the harness).
+        private static bool Still(Transform body, out bool driven, out string blocker)
         {
             driven = false;
-            if (body.GetComponent<LootContainer>() != null) return false;   // a free-standing container: dismantled whole
+            blocker = null;
+            if (body.GetComponent<LootContainer>() != null) { blocker = "LootContainer (free-standing)"; return false; }
             body.GetComponentsInChildren(true, s_Behaviours);
             bool still = true;
             foreach (MonoBehaviour mb in s_Behaviours)
@@ -826,13 +837,18 @@ namespace CloneZ
                 if (mb == null) continue;
                 System.Type t = mb.GetType();
                 if (t == typeof(StorageFixture)) { driven = true; continue; }
-                if (t == typeof(SeatFixture) || t == typeof(FixturePart) || t == typeof(NavMeshModifier) || t == typeof(LootContainer)) continue;
+                if (t == typeof(SeatFixture) || t == typeof(FixturePart) || t == typeof(NavMeshModifier) || t == typeof(LootContainer)
+                    || t == typeof(HomeFurniture) || t == typeof(MergedPiece)) continue;
+                blocker = t.Name;
                 still = false;
                 break;
             }
             s_Behaviours.Clear();
             return still;
         }
+
+        /// <summary>What kept pieces from being merged, by the component that did (for the harness).</summary>
+        public Dictionary<string, int> Unmerged;
 
         private struct MergeKey : System.IEquatable<MergeKey>
         {
@@ -875,8 +891,10 @@ namespace CloneZ
                 if (g.Value.Count < 2) continue;
                 var mats = new List<Material>(8);
                 var byMat = new List<List<CombineInstance>>(8);
-                foreach (MeshRenderer r in g.Value)
+                var owners = new List<List<int>>(8);   // which of g.Value each instance came from
+                for (int ri = 0; ri < g.Value.Count; ri++)
                 {
+                    MeshRenderer r = g.Value[ri];
                     Mesh mesh = r.GetComponent<MeshFilter>().sharedMesh;
                     Material[] shared = r.sharedMaterials;
                     Matrix4x4 m = toLocal * r.transform.localToWorldMatrix;
@@ -888,8 +906,27 @@ namespace CloneZ
                             at = mats.Count;
                             mats.Add(shared[s]);
                             byMat.Add(new List<CombineInstance>(16));
+                            owners.Add(new List<int>(16));
                         }
                         byMat[at].Add(new CombineInstance { mesh = mesh, subMeshIndex = s, transform = m });
+                        owners[at].Add(ri);
+                    }
+                }
+                // Where each source's triangles land (sub-mesh, first index, count): a piece that can be dismantled hides
+                // its share when it goes.
+                var ranges = new List<int>[g.Value.Count];
+                for (int j = 0; j < byMat.Count; j++)
+                {
+                    int offset = 0;
+                    for (int q = 0; q < byMat[j].Count; q++)
+                    {
+                        CombineInstance ci = byMat[j][q];
+                        int count = (int)ci.mesh.GetIndexCount(ci.subMeshIndex);
+                        int ri = owners[j][q];
+                        (ranges[ri] ??= new List<int>(6)).Add(j);
+                        ranges[ri].Add(offset);
+                        ranges[ri].Add(count);
+                        offset += count;
                     }
                 }
                 var parts = new CombineInstance[mats.Count];
@@ -909,7 +946,8 @@ namespace CloneZ
                 go.layer = g.Key.Layer;
                 go.transform.SetParent(B.Root, false);
                 go.transform.SetPositionAndRotation(origin, Quaternion.identity);
-                go.AddComponent<MeshFilter>().sharedMesh = merged;
+                MeshFilter into = go.AddComponent<MeshFilter>();
+                into.sharedMesh = merged;
                 var mr = go.AddComponent<MeshRenderer>();
                 mr.sharedMaterials = mats.ToArray();
                 mr.shadowCastingMode = g.Key.Shadows;
@@ -917,9 +955,18 @@ namespace CloneZ
                 if (g.Key.OffNav) go.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
                 MergedInto++;
 
-                // The pieces keep everything but their looks.
-                foreach (MeshRenderer r in g.Value)
+                // The pieces keep everything but their looks; one that can be dismantled keeps the way to hide its share.
+                for (int ri = 0; ri < g.Value.Count; ri++)
                 {
+                    MeshRenderer r = g.Value[ri];
+                    Transform body = r.transform;
+                    while (body.parent != null && body.parent != B.Root) body = body.parent;
+                    if (ranges[ri] != null && body.GetComponent<IDemolishable>() != null)
+                    {
+                        MergedPiece piece = body.GetComponent<MergedPiece>();
+                        if (piece == null) piece = body.gameObject.AddComponent<MergedPiece>();
+                        piece.Add(into, ranges[ri]);
+                    }
                     MeshFilter mf = r.GetComponent<MeshFilter>();
                     Mesh old = mf.sharedMesh;
                     Object.DestroyImmediate(r);
@@ -1081,5 +1128,50 @@ namespace CloneZ
             _hung.Clear();
         }
         #endregion
+    }
+
+    /// <summary>
+    /// A piece of furniture whose looks were merged into its room's furniture mesh (<see cref="InteriorBuild"/>): when the
+    /// piece itself is switched off (dismantled), its share of the mesh (sub-mesh, first index, count, in threes) is
+    /// collapsed so it doesn't linger; when the building goes, nothing is done. (Edit mode too, for the harness.)
+    /// </summary>
+    [ExecuteAlways]
+    internal sealed class MergedPiece : MonoBehaviour
+    {
+        private readonly List<MeshFilter> _into = new List<MeshFilter>(1);
+        private readonly List<List<int>> _ranges = new List<List<int>>(1);
+        private static readonly List<int> s_Indices = new List<int>(1024);
+
+        internal void Add(MeshFilter into, List<int> ranges)
+        {
+            _into.Add(into);
+            _ranges.Add(ranges);
+        }
+
+        private void OnDisable()
+        {
+            Transform parent = transform.parent;
+            if (parent == null || !parent.gameObject.activeInHierarchy) return;   // the building going, not the piece
+            for (int i = 0; i < _into.Count; i++)
+            {
+                MeshFilter mf = _into[i];
+                Mesh m = mf != null ? mf.sharedMesh : null;
+                if (m == null || !m.isReadable) continue;
+                List<int> r = _ranges[i];
+                for (int k = 0; k + 2 < r.Count; k += 3)
+                {
+                    int sub = r[k], first = r[k + 1], count = r[k + 2];
+                    if (sub >= m.subMeshCount || count <= 0) continue;
+                    m.GetIndices(s_Indices, sub);
+                    if (first + count > s_Indices.Count) continue;
+                    int keep = s_Indices[first];
+                    for (int j = first; j < first + count; j++) s_Indices[j] = keep;
+                    m.SetIndices(s_Indices, MeshTopology.Triangles, sub, false);
+                }
+            }
+            s_Indices.Clear();
+            _into.Clear();
+            _ranges.Clear();
+        }
     }
 }

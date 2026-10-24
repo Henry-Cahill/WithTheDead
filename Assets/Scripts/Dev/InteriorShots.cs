@@ -46,6 +46,8 @@ namespace CloneZ
             public long Vertices;
             /// <summary>Its renderers and their material slots, and the pieces' renderers merged into rooms' meshes.</summary>
             public int Renderers, Slots, Merged;
+            /// <summary>Pieces kept out of the rooms' merged meshes, by the component that kept them.</summary>
+            public Dictionary<string, int> Unmerged;
             public double TotalMs, MaxStepMs;
             public string MaxStep;
             /// <summary>Each room's role and how long it took to furnish (ms).</summary>
@@ -338,6 +340,45 @@ namespace CloneZ
                 }
                 Buildings(recs);
                 Pictures(recs);
+                DismantleCheck(recs);
+            }
+
+            // Switches off a merged piece that can be dismantled (as dismantling does) and checks its share of its room's
+            // merged mesh went with it.
+            private void DismantleCheck(List<Rec> recs)
+            {
+                foreach (Rec r in recs)
+                {
+                    if (r.Build == null || r.Build.Root == null || r.Build.B == null) continue;
+                    MergedPiece piece = r.Build.Root.GetComponentInChildren<MergedPiece>(true);
+                    if (piece == null) continue;
+                    int before = Collapsed(r.Build);
+                    piece.gameObject.SetActive(false);
+                    int after = Collapsed(r.Build);
+                    _md.Append("Dismantling a merged piece (").Append(Md(piece.name)).Append(" in ").Append(r.Use).Append(' ').Append(r.Id).Append("): ")
+                        .Append(after - before).Append(" of its triangles hidden in its room's furniture mesh, ").Append(after > before ? "**OK**" : "**FAIL**").Append(".\n\n");
+                    if (after <= before) _errors++;
+                    return;
+                }
+                _md.Append("No merged piece that can be dismantled was found to check.\n\n");
+            }
+
+            // The collapsed triangles in a building's merged furniture meshes.
+            private static int Collapsed(InteriorBuild b)
+            {
+                int n = 0;
+                foreach (MeshFilter mf in b.B.Root.GetComponentsInChildren<MeshFilter>(true))
+                {
+                    Mesh m = mf.sharedMesh;
+                    if (m == null || !mf.name.StartsWith("Furniture ", StringComparison.Ordinal) || !m.isReadable) continue;
+                    for (int s = 0; s < m.subMeshCount; s++)
+                    {
+                        int[] ix = m.GetIndices(s);
+                        for (int i = 0; i + 2 < ix.Length; i += 3)
+                            if (ix[i] == ix[i + 1] && ix[i + 1] == ix[i + 2]) n++;
+                    }
+                }
+                return n;
             }
 
             private static Rec Record(InteriorBuild b, Exception e, string place)
@@ -371,6 +412,7 @@ namespace CloneZ
                 if (b.Root != null) r.Vertices += VerticesUnder(b.Root.transform);
                 if (b.Town != null && b.Town.Overhead != null) r.Vertices += VerticesUnder(b.Town.Overhead);
                 r.Merged = b.Merged;
+                r.Unmerged = b.Unmerged;
                 foreach (Transform t in new[] { b.Root != null ? b.Root.transform : null, b.Town != null ? b.Town.Overhead : null })
                 {
                     if (t == null) continue;
@@ -608,6 +650,11 @@ namespace CloneZ
                         .Append(" | ").Append(F1(ms / d)).Append(" / ").Append(F1(msMax)).Append(" | ").Append(F1(step)).Append(" |\n");
                 }
                 _md.Append("\n").Append(total).Append(" buildings furnished, ").Append(totalContainers).Append(" loot containers in them.\n\n");
+                var apart = new Dictionary<string, int>(StringComparer.Ordinal);
+                foreach (Rec r in _all)
+                    if (r.Unmerged != null)
+                        foreach (KeyValuePair<string, int> kv in r.Unmerged) Add(apart, kv.Key, kv.Value);
+                if (apart.Count > 0) _md.Append("Pieces kept out of the rooms' merged furniture meshes, by what keeps them apart: ").Append(Top(apart, 16)).Append(".\n\n");
                 RoomTimes();
                 _md.Append("## Pictures\n\nLeft: from straight above in the building's own axes (its front door's wall at the bottom), roofs, upper storeys ")
                     .Append("and ceilings off, plain overcast daylight without shadows. Right: the game's isometric camera (widened to fit the building), the red ")
