@@ -34,11 +34,14 @@ namespace CloneZ
             {
                 Site = site;
                 _reach = site.Chunked ? site.Half : site.Half + SceneryReach;
+                Mark("pre-paint");
                 foreach (Footprint f in site.Area.Buildings) Add(f);
                 foreach (Footprint f in site.Area.Foreign) Add(f);
                 foreach (Patch a in site.Area.Areas) _areas.Add((a, MapGeometry.Bounds(a.Pts)));
+                Mark("context buildings and areas");
                 foreach (Street s in site.Area.Streets)
                     if (s.Rank >= 1 && !s.Data.tunnel && s.Pts.Count >= 2) AddRoad(s);
+                Mark("context roads");
                 foreach (Spot p in site.Area.Points)
                 {
                     if (p.Data.kind == "fuel") _fuel.Add(p);
@@ -46,7 +49,9 @@ namespace CloneZ
                     if (!_spotGrid.TryGetValue(key, out List<Spot> list)) _spotGrid[key] = list = new List<Spot>(2);
                     list.Add(p);
                 }
+                Mark("context points");
                 HasPlaces = FindPlaces(site, _places);
+                Mark("context places");
             }
 
             private void AddRoad(Street s)
@@ -61,15 +66,51 @@ namespace CloneZ
                     _segA.Add(a);
                     _segB.Add(b);
                     _segRoad.Add(index);
-                    int x0 = Mathf.FloorToInt(Mathf.Min(a.x, b.x) / RoadCell), x1 = Mathf.FloorToInt(Mathf.Max(a.x, b.x) / RoadCell);
-                    int z0 = Mathf.FloorToInt(Mathf.Min(a.y, b.y) / RoadCell), z1 = Mathf.FloorToInt(Mathf.Max(a.y, b.y) / RoadCell);
-                    for (int z = z0; z <= z1; z++)
-                        for (int x = x0; x <= x1; x++)
-                        {
-                            long key = ((long)x << 32) | (uint)z;
-                            if (!_segGrid.TryGetValue(key, out List<int> list)) _segGrid[key] = list = new List<int>(4);
-                            list.Add(seg);
-                        }
+                    AddSegment(seg, a, b);
+                }
+            }
+
+            // Lists segment <paramref name="seg"/> in the cells it runs through (walked cell by cell: a highway's
+            // kilometre-long diagonal listed in every cell of its bounding box cost a piece tens of milliseconds), and
+            // only those within reach of the site's buildings. A query looks in every cell near its point, so the cell
+            // of the segment's nearest point is always among them.
+            private void AddSegment(int seg, Vector2 a, Vector2 b)
+            {
+                float limit = _reach + 160f;
+                int x = Mathf.FloorToInt(a.x / RoadCell), z = Mathf.FloorToInt(a.y / RoadCell);
+                int xe = Mathf.FloorToInt(b.x / RoadCell), ze = Mathf.FloorToInt(b.y / RoadCell);
+                Vector2 d = b - a;
+                int sx = d.x > 0f ? 1 : -1, sz = d.y > 0f ? 1 : -1;
+                float tMaxX = float.MaxValue, tMaxZ = float.MaxValue, tDeltaX = float.MaxValue, tDeltaZ = float.MaxValue;
+                if (Mathf.Abs(d.x) > 1e-5f)
+                {
+                    tMaxX = ((x + (sx > 0 ? 1 : 0)) * RoadCell - a.x) / d.x;
+                    tDeltaX = RoadCell / Mathf.Abs(d.x);
+                }
+                if (Mathf.Abs(d.y) > 1e-5f)
+                {
+                    tMaxZ = ((z + (sz > 0 ? 1 : 0)) * RoadCell - a.y) / d.y;
+                    tDeltaZ = RoadCell / Mathf.Abs(d.y);
+                }
+                int steps = Mathf.Abs(xe - x) + Mathf.Abs(ze - z);
+                for (int k = 0; k <= steps; k++)
+                {
+                    if ((x + 1) * RoadCell >= -limit && x * RoadCell <= limit && (z + 1) * RoadCell >= -limit && z * RoadCell <= limit)
+                    {
+                        long key = ((long)x << 32) | (uint)z;
+                        if (!_segGrid.TryGetValue(key, out List<int> list)) _segGrid[key] = list = new List<int>(4);
+                        list.Add(seg);
+                    }
+                    if (tMaxX < tMaxZ)
+                    {
+                        tMaxX += tDeltaX;
+                        x += sx;
+                    }
+                    else
+                    {
+                        tMaxZ += tDeltaZ;
+                        z += sz;
+                    }
                 }
             }
 

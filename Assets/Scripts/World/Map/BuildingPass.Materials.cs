@@ -700,8 +700,9 @@ namespace CloneZ
         private static bool s_GlowHooked;
         private static readonly int s_EmissionColor = Shader.PropertyToID("_EmissionColor");
 
-        /// <summary>Lit windows' and lamps' emission, as a share of full, by how dark the scene is.</summary>
-        private const float GlowByDay = 0.08f;
+        /// <summary>Lit windows' and lamps' emission, as a share of full, by how dark the scene is: by day a hint of warmth
+        /// in the glass, no more (at 8% a lit pane on a shaded wall read as an orange board).</summary>
+        private const float GlowByDay = 0.03f;
 
         // Makes <paramref name="m"/> glow with <paramref name="emission"/> (times its emission map, if it has one) after dark,
         // a little by day: once a camera renders, the share follows the ambient light (which the day and night cycle sets,
@@ -830,6 +831,20 @@ namespace CloneZ
         #region Painted window grids
         private static readonly Dictionary<int, Texture2D> s_GridTex = new Dictionary<int, Texture2D>(8);
         private static readonly Dictionary<int, Texture2D> s_GridGlow = new Dictionary<int, Texture2D>(8);
+        private static int s_Warmed;
+
+        // Makes the next of the finishes the pass makes on first use (the painted window grids and the pane palette),
+        // false once they're all made: the first pieces built make them between their time slices, so the first tall
+        // building or Lite piece met later doesn't make them inside its own.
+        private static bool WarmNext()
+        {
+            const int Grids = 5 * 4;
+            if (s_Warmed > Grids) return false;
+            int k = s_Warmed++;
+            if (k == Grids) PaneSurf(0, 0);
+            else FacadeSurf((FacadeStyle)(k / 4), (k & 1) == 1, (k & 2) == 2);
+            return true;
+        }
         // The cells of a 4 x 4 grid whose panes are lit, and those with their blinds down.
         private static readonly bool[] GridLit = { false, true, false, false, false, false, true, false, false, false, false, true, true, false, false, false };
         private static readonly bool[] GridBlind = { false, false, false, true, false, false, false, false, true, false, false, false, false, false, true, false };
