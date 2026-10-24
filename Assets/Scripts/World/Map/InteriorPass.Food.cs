@@ -37,25 +37,16 @@ namespace CloneZ
                     booths++;
                 }
             }
-            // Tables of four on the floor.
+            // Tables of four on the floor (each with its chairs one body), no more than a busy diner's worth.
             Rect i = c.Inner;
-            for (float z = i.yMin + 1.4f; z < i.yMax - 1.2f; z += 2.1f)
-                for (float x = i.xMin + 1.4f; x < i.xMax - 1.2f; x += 2.1f)
+            int tables = 0;
+            for (float z = i.yMin + 1.4f; z < i.yMax - 1.2f && tables < 28; z += 2.1f)
+                for (float x = i.xMin + 1.4f; x < i.xMax - 1.2f && tables < 28; x += 2.1f)
                 {
-                    if (!c.FloorAt(new Rect(x - 0.4f, z - 0.4f, 0.8f, 0.8f), 0.55f)) continue;
-                    var table = new RaidBuilding.Place(x, z, 0f);
-                    b.WorkTable(c.R, table, new Vector3(0.8f, 0.8f, 0.8f), (m, r) => FurnitureBuilder.Table(m, r, 0.8f, 0.8f, wood), "Table", null, true);
-                    for (int s = 0; s < 4; s++)
-                    {
-                        if (rng.NextDouble() < 0.2) continue;
-                        float yaw = s * 90f;
-                        Vector3 off = Quaternion.Euler(0f, yaw, 0f) * new Vector3(0f, 0f, -0.62f);
-                        var chair = new RaidBuilding.Place(x + off.x, z + off.z, yaw + (rng.NextDouble() < 0.3 ? MapStyle.Range(rng, -30f, 30f) : 0f));
-                        var fp = new Rect(chair.X - 0.22f, chair.Z - 0.22f, 0.44f, 0.44f);
-                        if (!c.Clear(fp) || !c.Inner.Overlaps(fp)) continue;
-                        c.Taken.Add(fp);
-                        b.WoodChairSeat(c.R, chair, wood);
-                    }
+                    if (!c.FloorAt(new Rect(x - 0.95f, z - 0.95f, 1.9f, 1.9f), 0.05f)) continue;
+                    TableSet(c, new RaidBuilding.Place(x, z, 0f), new Vector3(0.8f, 0.8f, 0.8f), SquareChairs, 0.8, wood, "Table",
+                        (m, r) => FurnitureBuilder.Table(m, r, 0.8f, 0.8f, wood));
+                    tables++;
                 }
             if (c.AnyWall(c.Sides(true), 0.9f, 0.8f, 1.85f, -1f, out RaidBuilding.Place vend, out _) && rng.NextDouble() < 0.4) Vending(c, vend, c.P.Lit);
             WallDecor(c, 3);

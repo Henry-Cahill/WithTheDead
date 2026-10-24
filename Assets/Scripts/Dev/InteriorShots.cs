@@ -487,6 +487,7 @@ namespace CloneZ
                         + (string.IsNullOrEmpty(r.DataUse) ? "" : " / " + r.DataUse) + ") " + r.Id + " | " + F0(r.Area) + " m², turned " + F0(r.Angle) + "°, " + r.Verts
                         + " corners, fill " + r.Fill.ToString("0.00", CultureInfo.InvariantCulture) + " | " + r.Rooms + " | " + r.Containers + " (" + r.Allotted + ") | "
                         + r.Lights + (r.Lit > 0 ? ", " + r.Lit + " lit" : "") + " | " + r.Objects + " |");
+                    if (r.Build != null && r.Build.Root != null) _mixes.Add("- `" + file + "`: " + Mix(r.Build.Root.transform));
                 }
                 finally
                 {
@@ -588,6 +589,48 @@ namespace CloneZ
                     .Append("| file | place | building | footprint | rooms | containers (allotted) | lights | objects |\n|---|---|---|---|---|--:|--:|--:|\n");
                 foreach (string p in _pictures) _md.Append(p).Append('\n');
                 _md.Append('\n');
+                if (_mixes.Count > 0)
+                {
+                    _md.Append("<details><summary>What the pictured buildings are made of (bodies by name; lights by the body holding them)</summary>\n\n");
+                    foreach (string m in _mixes) _md.Append(m).Append('\n');
+                    _md.Append("\n</details>\n\n");
+                }
+            }
+
+            private readonly List<string> _mixes = new List<string>();
+
+            // The pieces under an interior's root by name (numbers stripped), the commonest first; and its lights by the piece
+            // holding them.
+            private static string Mix(Transform root)
+            {
+                var bodies = new Dictionary<string, int>(StringComparer.Ordinal);
+                var lights = new Dictionary<string, int>(StringComparer.Ordinal);
+                for (int k = 0; k < root.childCount; k++)
+                {
+                    Transform t = root.GetChild(k);
+                    string name = t.name.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '(', ')');
+                    bodies.TryGetValue(name, out int n);
+                    bodies[name] = n + 1;
+                    int l = t.GetComponentsInChildren<Light>(true).Length;
+                    if (l == 0) continue;
+                    lights.TryGetValue(name, out int m);
+                    lights[name] = m + l;
+                }
+                return "bodies " + root.childCount + ": " + Top(bodies, 14) + "; lights: " + Top(lights, 10);
+            }
+
+            private static string Top(Dictionary<string, int> counts, int max)
+            {
+                var list = new List<KeyValuePair<string, int>>(counts);
+                list.Sort((a, b) => a.Value != b.Value ? b.Value.CompareTo(a.Value) : string.CompareOrdinal(a.Key, b.Key));
+                var sb = new StringBuilder();
+                for (int i = 0; i < list.Count && i < max; i++)
+                {
+                    if (sb.Length > 0) sb.Append(", ");
+                    sb.Append(Md(list[i].Key)).Append('×').Append(list[i].Value);
+                }
+                if (list.Count > max) sb.Append(", …");
+                return sb.Length > 0 ? sb.ToString() : "none";
             }
 
             // How long rooms of each role take to furnish: the streamer can't split a room, so the slowest is a frame's hitch.
