@@ -26,7 +26,7 @@ namespace CloneZ
     /// loses the rest, and the report is always written. Everything that touches the map's internals is in the MapApi
     /// region at the bottom: fix it there when they're renamed.
     /// </summary>
-    public static class MapShots
+    public static partial class MapShots
     {
         public const int ExitOk = 0, ExitHarness = 1, ExitMap = 2, ExitNoWorld = 3;
 
@@ -91,6 +91,9 @@ namespace CloneZ
             public List<RegionReport> regions = new List<RegionReport>();
             public BlockReport louisvilleBlock = new BlockReport();
             public DeterminismReport determinism = new DeterminismReport();
+            /// <summary>The streaming performance tests (MapShots.Perf.cs): Lite against Full, the cost of the things a build
+            /// makes, simulated walks and drives through the streamed state, determinism across build orders.</summary>
+            public PerfReport perf = new PerfReport();
             /// <summary>Everything logged as a warning or an error during the whole run (the build stages' own logs are
             /// in their sections).</summary>
             public LogReport runLog = new LogReport();
@@ -181,6 +184,13 @@ namespace CloneZ
             public List<StepTiming> steps = new List<StepTiming>();
             public int bucketStreets, bucketLines, bucketOwned, bucketForeign, bucketAreas, bucketPois;
             public int buildings, containers, trees, lights;
+            /// <summary>Where the main thread's time went (from RaidTown's and RaidMesh's running totals): colliders made and
+            /// the objects holding them, lights, meshes baked (their vertices) and the objects made to show them; and the
+            /// NavMesh sources the streamer would collect from the piece, and how long that takes.</summary>
+            public int madeColliders, madeColliderObjects, madeLights, bakedMeshes, emits, navSources;
+            public long bakedVertices;
+            public double colliderMs, lightMs, bakeMs, emitMs, navCollectMs;
+            public string detail;
             public SceneCounts counts = new SceneCounts();
             public bool failed;
             public string error;
@@ -194,6 +204,11 @@ namespace CloneZ
             public bool built;
             public int centreCx, centreCz;
             public double totalMs, maxChunkMs;
+            /// <summary>The NavMesh over the nine pieces, baked at once (the streamer bakes in the background, tile by tile):
+            /// the sources collected, the ms collecting them and baking.</summary>
+            public int navSources;
+            public double navCollectMs, navBakeMs;
+            public string navError;
             public SceneCounts counts = new SceneCounts();
             public List<ChunkReport> chunks = new List<ChunkReport>();
             public string seams;
@@ -205,8 +220,10 @@ namespace CloneZ
             public bool ran, match;
             public string label, detail;
             public int cx, cz, objectsA, objectsB, meshes, differingMeshes;
+            /// <summary>Colliders, lights and loot containers counted into the "other" hash; meshes that couldn't be read.</summary>
+            public int parts, unreadableMeshes;
             public long verticesA, verticesB, trianglesA, trianglesB;
-            public string orderedHashA, orderedHashB, unorderedHashA, unorderedHashB;
+            public string orderedHashA, orderedHashB, unorderedHashA, unorderedHashB, otherHashA, otherHashB;
             /// <summary>The first meshes that came out different (their place in the piece, vertex count, position).</summary>
             public List<string> differences = new List<string>();
         }
@@ -369,6 +386,10 @@ namespace CloneZ
                             Stage("chunks: stress test", ChunkStress);
                             Stage("chunks: Louisville 3x3", LouisvilleBlock);
                             Stage("chunks: determinism", Determinism);
+                            Stage("perf: Lite against Full", DetailComparison);
+                            Stage("perf: determinism across build orders", OrderDeterminism);
+                            Stage("perf: what things cost", Costs);
+                            Stage("perf: walking and driving through the state", Routes);
                         }
                     }
                 }
@@ -2077,9 +2098,11 @@ namespace CloneZ
 
         private sealed class Fingerprint
         {
-            public int Objects;
+            public int Objects, Parts, Unreadable;
             public long Vertices, Triangles;
             public ulong Ordered = 14695981039346656037UL, Unordered;
+            /// <summary>Everything but the meshes: objects, colliders, lights, loot.</summary>
+            public ulong Other = 14695981039346656037UL;
             /// <summary>Every mesh in order: where it is in the piece, and its own hash.</summary>
             public readonly List<string> Names = new List<string>();
             public readonly List<ulong> Hashes = new List<ulong>();
@@ -2212,6 +2235,18 @@ namespace CloneZ
                 rep.containers = c.Containers;
                 rep.trees = c.Trees;
                 rep.lights = c.Lights;
+                rep.detail = c.Detail.ToString();
+                rep.madeColliders = c.MadeColliders;
+                rep.madeColliderObjects = c.MadeColliderObjects;
+                rep.madeLights = c.MadeLights;
+                rep.bakedMeshes = c.BakedMeshes;
+                rep.bakedVertices = c.BakedVertices;
+                rep.emits = c.Emits;
+                rep.colliderMs = Math.Round(c.ColliderMs, 2);
+                rep.lightMs = Math.Round(c.LightMs, 2);
+                rep.bakeMs = Math.Round(c.BakeMs, 2);
+                rep.emitMs = Math.Round(c.EmitMs, 2);
+                rep.navCollectMs = Math.Round(MapApi.CollectNavSources(c, out rep.navSources), 2);
                 Note("chunk " + label + " " + cx + "_" + cz + ": " + F0(rep.totalMs) + " ms, slowest step " + rep.slowestStep + " "
                     + F0(rep.slowestMs) + " ms, " + F0(rep.counts.gameObjects) + " objects, " + F0(rep.counts.vertices) + " vertices"
                     + (c.Failed ? "; FAILED: " + c.Error : ""));
@@ -2274,6 +2309,7 @@ namespace CloneZ
                             File = "chunks_louisville_iso_" + look.Name + ".png", Kind = ShotKind.Iso, Look = look, At = corner, Yaw = _cn.IsoYaw,
                             Size = _cn.Wide, Title = "Streamed look: downtown Louisville in the isometric view, centred where four chunks meet",
                         });
+                    BakeBlock(block, kept);
                 }
                 finally
                 {
@@ -2296,36 +2332,10 @@ namespace CloneZ
                 try
                 {
                     Fingerprint a = BuildPrint(cx, cz), b = BuildPrint(cx, cz);
-                    d.ran = true;
-                    d.objectsA = a.Objects;
-                    d.objectsB = b.Objects;
-                    d.verticesA = a.Vertices;
-                    d.verticesB = b.Vertices;
-                    d.trianglesA = a.Triangles;
-                    d.trianglesB = b.Triangles;
-                    d.orderedHashA = a.Ordered.ToString("x16");
-                    d.orderedHashB = b.Ordered.ToString("x16");
-                    d.unorderedHashA = a.Unordered.ToString("x16");
-                    d.unorderedHashB = b.Unordered.ToString("x16");
-                    d.match = a.Objects == b.Objects && a.Vertices == b.Vertices && a.Triangles == b.Triangles && a.Unordered == b.Unordered;
-                    if (a.Hashes.Count != b.Hashes.Count) d.differences.Add("mesh count " + a.Hashes.Count + " vs " + b.Hashes.Count);
-                    else
-                        for (int i = 0; i < a.Hashes.Count; i++)
-                        {
-                            if (a.Hashes[i] == b.Hashes[i]) continue;
-                            d.differingMeshes++;
-                            if (d.differences.Count < 12) d.differences.Add(a.Names[i] + (a.Names[i] != b.Names[i] ? " vs " + b.Names[i] : ""));
-                        }
-                    d.meshes = a.Hashes.Count;
-                    if (d.match) d.detail = a.Ordered == b.Ordered ? "identical, in the same order" : "the same geometry, emitted in a different order";
-                    else
-                    {
-                        d.detail = "objects " + a.Objects + " vs " + b.Objects + ", vertices " + a.Vertices + " vs " + b.Vertices
-                            + ", triangles " + a.Triangles + " vs " + b.Triangles + "; " + d.differingMeshes + " of " + d.meshes
-                            + " meshes differ (positions to the millimetre)";
+                    Compare(d, a, b);
+                    if (!d.match)
                         Remark("Determinism: chunk " + cx + "_" + cz + " came out different the second time (" + d.detail + "), first: "
                             + string.Join("; ", d.differences));
-                    }
                     Note("determinism: " + (d.match ? "" : "MISMATCH: ") + d.detail);
                 }
                 finally
@@ -2334,14 +2344,55 @@ namespace CloneZ
                 }
             }
 
-            private Fingerprint BuildPrint(int cx, int cz)
+            // Fills <paramref name="d"/> from two prints of the same piece.
+            private static void Compare(DeterminismReport d, Fingerprint a, Fingerprint b)
+            {
+                d.ran = true;
+                d.objectsA = a.Objects;
+                d.objectsB = b.Objects;
+                d.verticesA = a.Vertices;
+                d.verticesB = b.Vertices;
+                d.trianglesA = a.Triangles;
+                d.trianglesB = b.Triangles;
+                d.orderedHashA = a.Ordered.ToString("x16");
+                d.orderedHashB = b.Ordered.ToString("x16");
+                d.unorderedHashA = a.Unordered.ToString("x16");
+                d.unorderedHashB = b.Unordered.ToString("x16");
+                d.otherHashA = a.Other.ToString("x16");
+                d.otherHashB = b.Other.ToString("x16");
+                d.parts = a.Parts;
+                d.unreadableMeshes = a.Unreadable;
+                d.match = a.Objects == b.Objects && a.Vertices == b.Vertices && a.Triangles == b.Triangles && a.Unordered == b.Unordered
+                    && a.Other == b.Other;
+                d.differences.Clear();
+                d.differingMeshes = 0;
+                if (a.Hashes.Count != b.Hashes.Count) d.differences.Add("mesh count " + a.Hashes.Count + " vs " + b.Hashes.Count);
+                else
+                    for (int i = 0; i < a.Hashes.Count; i++)
+                    {
+                        if (a.Hashes[i] == b.Hashes[i]) continue;
+                        d.differingMeshes++;
+                        if (d.differences.Count < 12) d.differences.Add(a.Names[i] + (a.Names[i] != b.Names[i] ? " vs " + b.Names[i] : ""));
+                    }
+                if (a.Other != b.Other) d.differences.Add("objects, colliders, lights or loot differ (" + a.Parts + " vs " + b.Parts + " parts)");
+                d.meshes = a.Hashes.Count;
+                if (d.match) d.detail = a.Ordered == b.Ordered ? "identical, in the same order" : "the same geometry, emitted in a different order";
+                else
+                    d.detail = "objects " + a.Objects + " vs " + b.Objects + ", vertices " + a.Vertices + " vs " + b.Vertices
+                        + ", triangles " + a.Triangles + " vs " + b.Triangles + "; " + d.differingMeshes + " of " + d.meshes
+                        + " meshes differ (positions, normals, UVs, triangles or materials)" + (a.Other != b.Other ? "; objects, colliders, lights or loot differ" : "");
+            }
+
+            private Fingerprint BuildPrint(int cx, int cz) => BuildPrint(cx, cz, MapApi.ChunkDetail);
+
+            private Fingerprint BuildPrint(int cx, int cz, KentuckyMap.Detail detail)
             {
                 var middle = new Vector3((float)((cx + 0.5) * MapApi.ChunkSize - _place.x), 0f, (float)((cz + 0.5) * MapApi.ChunkSize - _place.z));
                 MapApi.Chunk c;
                 Begin(new LogReport());
                 try
                 {
-                    c = MapApi.BuildChunk(_build, _place.name, cx, cz, _zone.LayoutSeed, middle, _streamed, _overheadRoot);
+                    c = MapApi.BuildChunk(_build, _place.name, cx, cz, _zone.LayoutSeed, middle, _streamed, _overheadRoot, detail);
                 }
                 finally
                 {
@@ -2358,15 +2409,57 @@ namespace CloneZ
                 }
             }
 
-            // FNV-1a over every mesh's place in the piece and its vertices to the millimetre: in order, and as an
-            // order-free sum of the meshes' own hashes.
+            // FNV-1a over every mesh's place in the piece, its vertices to the millimetre, normals, UVs, triangles and the
+            // materials it's drawn with, in order and as an order-free sum of the meshes' own hashes; and, apart, over
+            // everything else in the piece: every object's place, rotation, scale and state, every collider, light and
+            // loot container (its contents too).
             private static Fingerprint Print(params Transform[] roots)
             {
                 var f = new Fingerprint();
                 var verts = new List<Vector3>();
+                var normals = new List<Vector3>();
+                var uvs = new List<Vector2>();
+                var indices = new List<int>();
                 foreach (Transform root in roots)
                 {
-                    f.Objects += root.GetComponentsInChildren<Transform>(true).Length;
+                    Transform[] all = root.GetComponentsInChildren<Transform>(true);
+                    f.Objects += all.Length;
+                    foreach (Transform t in all)
+                    {
+                        ulong h = Mix(14695981039346656037UL, PathOf(t, root));
+                        h = Mix(Mix(Mix(h, Q(t.localPosition.x)), Q(t.localPosition.y)), Q(t.localPosition.z));
+                        Quaternion q = t.localRotation;
+                        h = Mix(Mix(Mix(Mix(h, Q(q.x * 10f)), Q(q.y * 10f)), Q(q.z * 10f)), Q(q.w * 10f));
+                        h = Mix(Mix(Mix(h, Q(t.localScale.x)), Q(t.localScale.y)), Q(t.localScale.z));
+                        h = Mix(Mix(h, (ulong)(t.gameObject.activeSelf ? 1 : 0)), (ulong)t.gameObject.layer);
+                        foreach (Collider c in t.GetComponents<Collider>())
+                        {
+                            f.Parts++;
+                            h = Mix(Mix(Mix(h, c.GetType().Name), (ulong)(c.enabled ? 1 : 0)), (ulong)(c.isTrigger ? 1 : 0));
+                            if (c is BoxCollider bc)
+                                h = Mix(Mix(Mix(Mix(Mix(Mix(h, Q(bc.center.x)), Q(bc.center.y)), Q(bc.center.z)), Q(bc.size.x)), Q(bc.size.y)), Q(bc.size.z));
+                            else if (c is MeshCollider mc && mc.sharedMesh != null) h = Mix(h, (ulong)mc.sharedMesh.vertexCount);
+                        }
+                        Light l = t.GetComponent<Light>();
+                        if (l != null)
+                        {
+                            f.Parts++;
+                            h = Mix(Mix(Mix(Mix(Mix(h, (ulong)l.type), Q(l.color.r)), Q(l.color.g)), Q(l.color.b)), Q(l.range));
+                            h = Mix(Mix(Mix(h, Q(l.intensity)), (ulong)l.shadows), (ulong)(l.enabled ? 1 : 0));
+                        }
+                        LootContainer box = t.GetComponent<LootContainer>();
+                        if (box != null)
+                        {
+                            f.Parts++;
+                            h = Mix(Mix(h, (ulong)box.Type), (ulong)(box.Searched ? 1 : 0));
+                            if (box.Contents != null)
+                                foreach (ItemStack s in box.Contents.Stacks)
+                                    if (s != null) h = Mix(Mix(h, s.Def != null ? s.Def.Id ?? "" : ""), (ulong)s.Count);
+                        }
+                        Renderer r = t.GetComponent<Renderer>();
+                        if (r != null) h = Mix(Mix(h, (ulong)r.shadowCastingMode), (ulong)(r.enabled ? 1 : 0));
+                        f.Other = Mix(f.Other, h);
+                    }
                     foreach (MeshFilter mf in root.GetComponentsInChildren<MeshFilter>(true))
                     {
                         string path = PathOf(mf.transform, root);
@@ -2380,13 +2473,27 @@ namespace CloneZ
                             count = m.vertexCount;
                             f.Vertices += count;
                             f.Triangles += Triangles(m);
-                            h = Mix(h, (ulong)count);
+                            h = Mix(Mix(h, (ulong)count), (ulong)m.subMeshCount);
                             if (m.isReadable)
                             {
                                 m.GetVertices(verts);
                                 foreach (Vector3 v in verts) h = Mix(Mix(Mix(h, Q(v.x)), Q(v.y)), Q(v.z));
+                                m.GetNormals(normals);
+                                foreach (Vector3 n in normals) h = Mix(Mix(Mix(h, Q(n.x)), Q(n.y)), Q(n.z));
+                                m.GetUVs(0, uvs);
+                                foreach (Vector2 uv in uvs) h = Mix(Mix(h, Q(uv.x * 10f)), Q(uv.y * 10f));
+                                for (int s = 0; s < m.subMeshCount; s++)
+                                {
+                                    m.GetIndices(indices, s);
+                                    h = Mix(h, (ulong)m.GetTopology(s));
+                                    foreach (int i in indices) h = Mix(h, (ulong)i);
+                                }
                             }
+                            else f.Unreadable++;
                         }
+                        Renderer mr = mf.GetComponent<Renderer>();
+                        if (mr != null)
+                            foreach (Material mat in mr.sharedMaterials) h = Mix(h, mat != null ? mat.name : "-");
                         f.Names.Add((root == roots[0] ? "root" : "overhead") + path + " (" + count + " vertices at " + F1(at.x) + ", " + F1(at.z) + ")");
                         f.Hashes.Add(h);
                         f.Ordered = Mix(f.Ordered, h);
@@ -2572,7 +2679,12 @@ namespace CloneZ
                     md.Append("### Determinism\n\nChunk ").Append(d.cx).Append('_').Append(d.cz).Append(" (").Append(d.label).Append(") built twice: **")
                         .Append(d.match ? "match" : "MISMATCH").Append("**: ").Append(Esc(d.detail)).Append(" (").Append(F0(d.verticesA))
                         .Append(" vertices, ").Append(F0(d.trianglesA)).Append(" triangles, ").Append(F0(d.objectsA)).Append(" objects, ")
-                        .Append(d.meshes).Append(" meshes; hash ").Append(d.unorderedHashA).Append(" vs ").Append(d.unorderedHashB).Append(").\n\n");
+                        .Append(d.meshes).Append(" meshes; hash ").Append(d.unorderedHashA).Append(" vs ").Append(d.unorderedHashB)
+                        .Append("; ").Append(d.parts).Append(" colliders, lights and loot containers, hash ").Append(d.otherHashA).Append(" vs ")
+                        .Append(d.otherHashB).Append("). Compared: every mesh's vertices (mm), normals, UVs, triangles and materials; every ")
+                        .Append("object's place, rotation, scale and state; every collider, light and loot container with its contents.")
+                        .Append(d.unreadableMeshes > 0 ? " " + d.unreadableMeshes + " meshes weren't readable (their vertices aren't compared)." : "")
+                        .Append("\n\n");
                     if (d.differences.Count > 0)
                     {
                         md.Append("Meshes that came out different (first ").Append(d.differences.Count).Append("):\n\n");
@@ -2580,6 +2692,8 @@ namespace CloneZ
                         md.Append('\n');
                     }
                 }
+                if (_r.chunks.Count > 0 || block.chunks.Count > 0) BreakdownTable(md);
+                PerfMarkdown(md);
 
                 md.Append("## Pictures\n\nNight = the game's look as a raid starts (").Append(F0(_zone != null ? _zone.StartHour : 22f))
                     .Append(":00, overcast, the survivor's sight light, the zone's fog and tint, lights budgeted around the survivor as the game does). ")
@@ -2706,6 +2820,7 @@ namespace CloneZ
             {
                 public int Cx, Cz;
                 public Vector3 Middle;
+                public KentuckyMap.Detail Detail;
                 public GameObject Root, Overhead;
                 public readonly List<Mesh> Meshes = new List<Mesh>();
                 public readonly List<string> Signs = new List<string>();
@@ -2715,7 +2830,24 @@ namespace CloneZ
                 public bool Failed;
                 public string Error;
                 public int Buildings, Containers, Trees, Lights;
+                /// <summary>RaidTown's and RaidMesh's running totals over the build (see ChunkReport).</summary>
+                public int MadeColliders, MadeColliderObjects, MadeLights, BakedMeshes, Emits;
+                public long BakedVertices;
+                public double ColliderMs, LightMs, BakeMs, EmitMs;
             }
+
+            /// <summary>The NavMesh sources KentuckyStreamer collects from a built piece (its render meshes, as the
+            /// modifiers say), and the ms it takes.</summary>
+            public static double CollectNavSources(Chunk c, out int sources)
+            {
+                var list = new List<UnityEngine.AI.NavMeshBuildSource>();
+                var sw = Stopwatch.StartNew();
+                KentuckyStreamer.Collect(c.Root.transform, null, list);
+                sources = list.Count;
+                return sw.Elapsed.TotalMilliseconds;
+            }
+
+            private static double TicksMs(long ticks) => ticks * 1000.0 / Stopwatch.Frequency;
 
             public struct RegionTiming
             {
@@ -2794,15 +2926,30 @@ namespace CloneZ
 
             public static void ReleaseRegions() => s_Regions.Clear();
 
+            /// <summary>Piece (cx, cz)'s data as its build reads it (the "data" step).</summary>
+            public static KentuckyMap.Area ChunkArea(MapBuild build, string placeName, int cx, int cz)
+            {
+                PrepareRegion(build, RegionOf(cx), RegionOf(cz));
+                return new KentuckyMap.Area(placeName, build.Id, build.Attribution, s_Regions[Key(RegionOf(cx), RegionOf(cz))], cx, cz);
+            }
+
             /// <summary>KentuckyStreamer's Begin, every Step and Finish for one piece, back to back, each step timed. The piece ends
             /// up built and active at <paramref name="middle"/> under the two parents (or as bare snow when its build threw, as in
             /// the game); its loot isn't rolled and no NavMesh sources are gathered.</summary>
             public static Chunk BuildChunk(MapBuild build, string placeName, int cx, int cz, int layoutSeed, Vector3 middle,
                 Transform streamed, Transform overheadRoot)
+                => BuildChunk(build, placeName, cx, cz, layoutSeed, middle, streamed, overheadRoot, ChunkDetail);
+
+            public static Chunk BuildChunk(MapBuild build, string placeName, int cx, int cz, int layoutSeed, Vector3 middle,
+                Transform streamed, Transform overheadRoot, KentuckyMap.Detail detail)
             {
                 PrepareRegion(build, RegionOf(cx), RegionOf(cz));
                 MapRegionIndex region = s_Regions[Key(RegionOf(cx), RegionOf(cz))];
-                var c = new Chunk { Cx = cx, Cz = cz, Middle = middle };
+                var c = new Chunk { Cx = cx, Cz = cz, Middle = middle, Detail = detail };
+                long colliders = RaidTown.Colliders, colliderObjects = RaidTown.ColliderObjects, colliderTicks = RaidTown.ColliderTicks;
+                long lights = RaidTown.Lights, lightTicks = RaidTown.LightTicks;
+                long baked = RaidMesh.BakedMeshes, bakedVertices = RaidMesh.BakedVertices, bakeTicks = RaidMesh.BakeTicks;
+                long emits = RaidMesh.Emits, emitTicks = RaidMesh.EmitTicks;
                 string name = "Piece " + cx + "_" + cz;
                 // Built inactive at the origin, where the builders' local and world positions agree; moved into place after.
                 c.Root = new GameObject(name);
@@ -2817,7 +2964,7 @@ namespace CloneZ
                 {
                     Build = build, Region = region, Place = placeName, Cx = cx, Cz = cz,
                     Seed = unchecked(layoutSeed * 486187739 + cx * 73856093 ^ cz * 19349663),
-                    Root = c.Root.transform, Overhead = c.Overhead.transform, Offset = middle, Detail = ChunkDetail,
+                    Root = c.Root.transform, Overhead = c.Overhead.transform, Offset = middle, Detail = detail,
                 };
                 var uv = new Vector3((float)Wrap((cx + 0.5) * ChunkSize), 0f, (float)Wrap((cz + 0.5) * ChunkSize));
                 var total = Stopwatch.StartNew();
@@ -2873,6 +3020,16 @@ namespace CloneZ
                     }
                 }
                 c.TotalMs = total.Elapsed.TotalMilliseconds;
+                c.MadeColliders = (int)(RaidTown.Colliders - colliders);
+                c.MadeColliderObjects = (int)(RaidTown.ColliderObjects - colliderObjects);
+                c.ColliderMs = TicksMs(RaidTown.ColliderTicks - colliderTicks);
+                c.MadeLights = (int)(RaidTown.Lights - lights);
+                c.LightMs = TicksMs(RaidTown.LightTicks - lightTicks);
+                c.BakedMeshes = (int)(RaidMesh.BakedMeshes - baked);
+                c.BakedVertices = RaidMesh.BakedVertices - bakedVertices;
+                c.BakeMs = TicksMs(RaidMesh.BakeTicks - bakeTicks);
+                c.Emits = (int)(RaidMesh.Emits - emits);
+                c.EmitMs = TicksMs(RaidMesh.EmitTicks - emitTicks);
 
                 if (c.Failed)
                 {

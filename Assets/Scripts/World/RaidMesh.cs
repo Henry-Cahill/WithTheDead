@@ -458,11 +458,16 @@ namespace CloneZ
         /// destroy the piece's meshes with it (runtime meshes outlive their GameObjects).</summary>
         internal static List<Mesh> CreatedMeshes;
 
+        /// <summary>Running totals over the process (the map harness reads them around a build): meshes baked, their
+        /// vertices and the time it took, and the objects made to show them (<see cref="Emit"/>) with their time.</summary>
+        internal static long BakedMeshes, BakedVertices, BakeTicks, Emits, EmitTicks;
+
         /// <summary>Bakes the accumulated geometry into a mesh, with vertices made relative to
         /// <paramref name="origin"/> (mesh space). Returns null when empty.</summary>
         public Mesh ToMesh(string name, Vector3 origin)
         {
             if (_v.Count == 0) return null;
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             var mesh = new Mesh { name = name };
             CreatedMeshes?.Add(mesh);
             if (_v.Count > 65000) mesh.indexFormat = IndexFormat.UInt32;
@@ -480,6 +485,9 @@ namespace CloneZ
             mesh.subMeshCount = _mats.Count;
             for (int i = 0; i < _tris.Count; i++) mesh.SetTriangles(_tris[i], i, false);
             mesh.RecalculateBounds();
+            BakedMeshes++;
+            BakedVertices += _v.Count;
+            BakeTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
             return mesh;
         }
 
@@ -507,12 +515,146 @@ namespace CloneZ
         public GameObject Emit(string name, Transform parent, Vector3 origin, ShadowCastingMode shadows = ShadowCastingMode.On)
         {
             if (_v.Count == 0) return null;
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
             go.transform.position = origin;
             ApplyTo(go, origin, shadows);
+            Emits++;
+            EmitTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
             return go;
         }
+
+        // One vertex as the meshes MeshBake makes store it: position, normal and UV interleaved.
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct PackedVertex
+        {
+            public Vector3 Position, Normal;
+            public Vector2 Uv;
+        }
+
+        private static readonly VertexAttributeDescriptor[] s_Layout =
+        {
+            new VertexAttributeDescriptor(VertexAttribute.Position, VertexAttributeFormat.Float32, 3),
+            new VertexAttributeDescriptor(VertexAttribute.Normal, VertexAttributeFormat.Float32, 3),
+            new VertexAttributeDescriptor(VertexAttribute.TexCoord0, VertexAttributeFormat.Float32, 2),
+        };
+
+        internal const MeshUpdateFlags QuietUpdate = MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices
+            | MeshUpdateFlags.DontNotifyMeshUsers | MeshUpdateFlags.DontResetBoneBounds;
+
+        /// <summary>Copies the geometry into <paramref name="d"/> (any thread), vertices relative to
+        /// <paramref name="origin"/>, 16-bit indices where they fit; <paramref name="bounds"/> is what it covers.</summary>
+        internal void PackInto(Mesh.MeshData d, Vector3 origin, out Bounds bounds)
+        {
+            int vc = _v.Count;
+            d.SetVertexBufferParams(vc, s_Layout);
+            Unity.Collections.NativeArray<PackedVertex> vs = d.GetVertexData<PackedVertex>(0);
+            float x0 = float.MaxValue, y0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, y1 = float.MinValue, z1 = float.MinValue;
+            for (int i = 0; i < vc; i++)
+            {
+                Vector3 p = _v[i];
+                p.x -= origin.x;
+                p.y -= origin.y;
+                p.z -= origin.z;
+                if (p.x < x0) x0 = p.x;
+                if (p.x > x1) x1 = p.x;
+                if (p.y < y0) y0 = p.y;
+                if (p.y > y1) y1 = p.y;
+                if (p.z < z0) z0 = p.z;
+                if (p.z > z1) z1 = p.z;
+                vs[i] = new PackedVertex { Position = p, Normal = _n[i], Uv = _uv[i] };
+            }
+            bounds = vc > 0 ? new Bounds(new Vector3((x0 + x1) * 0.5f, (y0 + y1) * 0.5f, (z0 + z1) * 0.5f), new Vector3(x1 - x0, y1 - y0, z1 - z0))
+                : new Bounds();
+            int ic = 0;
+            for (int s = 0; s < _tris.Count; s++) ic += _tris[s].Count;
+            bool wide = vc > 65535;
+            d.SetIndexBufferParams(ic, wide ? IndexFormat.UInt32 : IndexFormat.UInt16);
+            int k = 0;
+            if (wide)
+            {
+                Unity.Collections.NativeArray<int> ix = d.GetIndexData<int>();
+                for (int s = 0; s < _tris.Count; s++)
+                {
+                    List<int> t = _tris[s];
+                    for (int j = 0; j < t.Count; j++) ix[k++] = t[j];
+                }
+            }
+            else
+            {
+                Unity.Collections.NativeArray<ushort> ix = d.GetIndexData<ushort>();
+                for (int s = 0; s < _tris.Count; s++)
+                {
+                    List<int> t = _tris[s];
+                    for (int j = 0; j < t.Count; j++) ix[k++] = (ushort)t[j];
+                }
+            }
+            d.subMeshCount = _tris.Count;
+            int start = 0;
+            for (int s = 0; s < _tris.Count; s++)
+            {
+                int n = _tris[s].Count;
+                d.SetSubMesh(s, new SubMeshDescriptor(start, n) { bounds = bounds, firstVertex = 0, vertexCount = vc }, QuietUpdate);
+                start += n;
+            }
+        }
         #endregion
+    }
+
+    /// <summary>
+    /// Bakes many <see cref="RaidMesh"/>es into their meshes in one go through Unity's MeshData API: queue them with
+    /// <see cref="Add"/>, then <see cref="Allocate"/> and <see cref="Apply"/> on the main thread, with <see cref="Pack"/>
+    /// (the heavy part: copying the geometry into the meshes' buffers) in between on any thread. The queued RaidMeshes
+    /// mustn't change until it's applied.
+    /// </summary>
+    internal sealed class MeshBake
+    {
+        private readonly List<RaidMesh> _sources = new List<RaidMesh>();
+        private readonly List<Vector3> _origins = new List<Vector3>();
+        private readonly List<Mesh> _meshes = new List<Mesh>();
+        private Bounds[] _bounds;
+        private Mesh.MeshDataArray _data;
+        private bool _allocated;
+
+        public int Count => _sources.Count;
+
+        /// <summary>The meshes queued, in order (empty until applied).</summary>
+        public List<Mesh> Meshes => _meshes;
+
+        /// <summary>Queues <paramref name="source"/>'s geometry for <paramref name="mesh"/>, its vertices relative to
+        /// <paramref name="origin"/>.</summary>
+        public void Add(RaidMesh source, Vector3 origin, Mesh mesh)
+        {
+            _sources.Add(source);
+            _origins.Add(origin);
+            _meshes.Add(mesh);
+        }
+
+        public void Allocate()
+        {
+            _data = Mesh.AllocateWritableMeshData(_sources.Count);
+            _bounds = new Bounds[_sources.Count];
+            _allocated = true;
+        }
+
+        public void Pack()
+        {
+            for (int i = 0; i < _sources.Count; i++) _sources[i].PackInto(_data[i], _origins[i], out _bounds[i]);
+        }
+
+        public void Apply()
+        {
+            Mesh.ApplyAndDisposeWritableMeshData(_data, _meshes, RaidMesh.QuietUpdate);
+            _allocated = false;
+            for (int i = 0; i < _meshes.Count; i++) _meshes[i].bounds = _bounds[i];
+        }
+
+        /// <summary>Lets go of the buffers when it won't be applied after all.</summary>
+        public void Dispose()
+        {
+            if (_allocated) _data.Dispose();
+            _allocated = false;
+        }
     }
 }

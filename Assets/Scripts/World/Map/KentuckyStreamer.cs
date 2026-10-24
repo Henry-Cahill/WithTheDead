@@ -59,6 +59,7 @@ namespace CloneZ
             public GameObject Root, Overhead;
             public KentuckyMap.ChunkJob Job;
             public IEnumerator<string> Steps;
+            public string LastStep;
             public HashSet<Vector3Int> Containers;
             public Bounds SourceBounds;
             public readonly List<Mesh> Meshes = new List<Mesh>();
@@ -286,11 +287,103 @@ namespace CloneZ
         }
         #endregion
 
+        #region Simulation (the map harness drives the streamer in edit mode)
+        /// <summary>What one <see cref="Tick"/> did, for the harness's simulated walks and drives.</summary>
+        internal sealed class TickStats
+        {
+            public double Ms, BuildMs;
+            public int Steps, Finished, FinishedFull, FinishedLite, Upgraded, Unloaded;
+            public string LongestStep;
+            public double LongestStepMs;
+
+            public void Clear()
+            {
+                Ms = BuildMs = LongestStepMs = 0;
+                Steps = Finished = FinishedFull = FinishedLite = Upgraded = Unloaded = 0;
+                LongestStep = null;
+            }
+        }
+
+        /// <summary>Driven by <see cref="Simulate"/> instead of Update: no NavMesh, no agents, the survivors where
+        /// <see cref="SimulatedFocus"/> says.</summary>
+        internal bool Simulated;
+        internal readonly List<Vector3> SimulatedFocus = new List<Vector3>(4);
+        private TickStats _stats;
+
+        /// <summary>One frame of the streamer as the harness simulates it (edit mode).</summary>
+        internal void Simulate(TickStats stats)
+        {
+            Simulated = true;
+            stats.Clear();
+            double t0 = Now;
+            _stats = stats;
+            try { Tick(); }
+            finally { _stats = null; }
+            stats.Ms = (Now - t0) * 1000.0;
+        }
+
+        /// <summary>How many pieces are built, how many meshes they hold (and their vertices), and how many regions are read.</summary>
+        internal void Census(out int pieces, out int meshes, out long vertices, out int regions)
+        {
+            pieces = 0;
+            meshes = 0;
+            vertices = 0;
+            foreach (Chunk c in _chunks.Values)
+            {
+                if (c.Ready) pieces++;
+                meshes += c.Meshes.Count;
+                for (int i = 0; i < c.Meshes.Count; i++) if (c.Meshes[i] != null) vertices += c.Meshes[i].vertexCount;
+            }
+            regions = _regions.Count;
+        }
+
+        /// <summary>The detail the piece at <paramref name="p"/> (world) is shown in, or null when it isn't built.</summary>
+        internal KentuckyMap.Detail? DetailAt(Vector3 p)
+            => _chunks.TryGetValue(Key(ChunkX(p.x), ChunkZ(p.z)), out Chunk c) && c.Ready ? KentuckyMap.Detail.Full : (KentuckyMap.Detail?)null;
+
+        /// <summary>Everything the streamer made, gone (the harness's teardown; the game's is OnDestroy).</summary>
+        internal void Teardown()
+        {
+            foreach (Chunk c in _chunks.Values)
+            {
+                Shelter.Forget(c);
+                DestroyMeshes(c.Meshes);
+                if (c.Root != null) DestroyImmediate(c.Root);
+                if (c.Overhead != null) DestroyImmediate(c.Overhead);
+            }
+            _chunks.Clear();
+            DestroyMeshes(_deadMeshes);
+            DestroyMeshes(_deadMeshesOnExit);
+            if (_streamed != null) DestroyImmediate(_streamed.gameObject);
+            if (_overhead != null) DestroyImmediate(_overhead.gameObject);
+            CeilingVisibility.Clear();
+            if (Active == this) Active = null;
+            CloneZConfig.ArenaCenter = Vector3.zero;
+            CloneZConfig.HardBounds = null;
+            DestroyImmediate(gameObject);
+        }
+
+        private static double Now => System.Diagnostics.Stopwatch.GetTimestamp() / (double)System.Diagnostics.Stopwatch.Frequency;
+
+        // Destroy in play mode; at once in edit mode (the harness), where Destroy isn't allowed.
+        private static void Kill(UnityEngine.Object o)
+        {
+            if (o == null) return;
+            if (Application.isPlaying) Destroy(o);
+            else DestroyImmediate(o);
+        }
+        #endregion
+
         #region Every frame
         private void Update()
         {
+            if (!Simulated) Tick();
+        }
+
+        private void Tick()
+        {
             if (!_started) return;
-            if (!_navReady) BakeNow();   // a world built without the bootstrapper's bake still gets its NavMesh
+            if (!_navReady && !Simulated) BakeNow();   // a world built without the bootstrapper's bake still gets its NavMesh
             FinishRegionLoads();
             GatherFocus();
             if (_focus.Count > 0)
@@ -307,6 +400,12 @@ namespace CloneZ
                 Plan();
                 BuildSome();
             }
+            if (Simulated)
+            {
+                if (_deadMeshes.Count > 0) DestroyMeshes(_deadMeshes);
+                EvictRegions();
+                return;
+            }
             NavTick();
             if (Time.unscaledTime >= _nextAgents)
             {
@@ -320,6 +419,11 @@ namespace CloneZ
         private void GatherFocus()
         {
             _focus.Clear();
+            if (Simulated)
+            {
+                _focus.AddRange(SimulatedFocus);
+                return;
+            }
             Actor local = Actor.LocalPlayer;
             if (local != null) _focus.Add(local.transform.position);
             for (int i = 0; i < Actor.All.Count; i++)
@@ -388,8 +492,34 @@ namespace CloneZ
                     _building = Next();
                     if (_building == null) return;
                 }
-                if (Step(_building)) continue;
+                double t0 = _stats != null ? Now : 0;
+                bool more = Step(_building);
+                if (_stats != null)
+                {
+                    double ms = (Now - t0) * 1000.0;
+                    _stats.Steps++;
+                    _stats.BuildMs += ms;
+                    if (ms > _stats.LongestStepMs)
+                    {
+                        _stats.LongestStepMs = ms;
+                        _stats.LongestStep = more ? _building.LastStep : "(finish)";
+                    }
+                }
+                if (more) continue;
+                double f0 = _stats != null ? Now : 0;
                 Finish(_building);
+                if (_stats != null)
+                {
+                    double ms = (Now - f0) * 1000.0;
+                    _stats.BuildMs += ms;
+                    _stats.Finished++;
+                    _stats.FinishedFull++;
+                    if (ms > _stats.LongestStepMs)
+                    {
+                        _stats.LongestStepMs = ms;
+                        _stats.LongestStep = "(activate)";
+                    }
+                }
                 _building = null;
             }
         }
@@ -454,7 +584,9 @@ namespace CloneZ
             ItemDatabase.LootRolled = null;
             try
             {
-                return c.Steps.MoveNext();
+                bool more = c.Steps.MoveNext();
+                if (more) c.LastStep = c.Steps.Current;
+                return more;
             }
             catch (Exception e)
             {
@@ -526,8 +658,8 @@ namespace CloneZ
             Shelter.Forget(c);
             DestroyMaterialCopies(c.Root);
             DestroyMaterialCopies(c.Overhead);
-            if (c.Root != null) Destroy(c.Root);
-            if (c.Overhead != null) Destroy(c.Overhead);
+            Kill(c.Root);
+            Kill(c.Overhead);
             _deadMeshes.AddRange(c.Meshes);   // destroyed once no NavMesh update is reading them
             c.Meshes.Clear();
             ReleaseSigns(c);
@@ -537,6 +669,7 @@ namespace CloneZ
                 _ready--;
                 _navDirty = true;
             }
+            if (_stats != null) _stats.Unloaded++;
             _unloadsSinceSweep++;
             _prune = true;
         }
@@ -547,7 +680,7 @@ namespace CloneZ
             if (root == null) return;
             foreach (Renderer r in root.GetComponentsInChildren<Renderer>(true))
                 foreach (Material m in r.sharedMaterials)
-                    if (m != null && m.name.EndsWith(" (Instance)", StringComparison.Ordinal)) Destroy(m);
+                    if (m != null && m.name.EndsWith(" (Instance)", StringComparison.Ordinal)) Kill(m);
         }
 
         // Signs are textures of their own (a named place's sign is shown by its piece alone): the ones no built piece
@@ -567,7 +700,7 @@ namespace CloneZ
 
         private static void DestroyMeshes(List<Mesh> meshes)
         {
-            for (int i = 0; i < meshes.Count; i++) if (meshes[i] != null) Destroy(meshes[i]);
+            for (int i = 0; i < meshes.Count; i++) Kill(meshes[i]);
             meshes.Clear();
         }
         #endregion
@@ -879,7 +1012,7 @@ namespace CloneZ
 
         // As the fixed maps' NavMeshSurface collects the world's children: their render meshes, as the modifiers on
         // them say, leaving out agents and obstacles (and, here, whatever lies under <paramref name="skip"/>).
-        private static void Collect(Transform root, Transform skip, List<NavMeshBuildSource> into)
+        internal static void Collect(Transform root, Transform skip, List<NavMeshBuildSource> into)
         {
             s_Markups.Clear();
             root.GetComponentsInChildren(false, s_Modifiers);

@@ -78,17 +78,26 @@ namespace CloneZ
         /// <summary>A room / desk / street light (counted).</summary>
         public void Light(Transform parent, Vector3 pos, Color color, float range, float intensity, bool flicker, bool shadows)
         {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             RoomLight.Spawn(parent, pos, color, range, intensity, flicker, shadows);
             LightCount++;
+            Lights++;
+            LightTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
         }
+
+        /// <summary>Running totals over every town built in the process (the map harness reads them around a build):
+        /// colliders made, the objects made to hold them, lights, and the time spent making each.</summary>
+        internal static long Colliders, ColliderObjects, ColliderTicks, Lights, LightTicks;
 
         /// <summary>A solid outdoor collider (cars, trees, dumpsters, barricades) under <c>world</c>.</summary>
         public void PropCollider(Vector3 center, Vector3 size, float yaw)
         {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             if (_propColliders == null)
             {
                 _propColliders = new GameObject("PropColliders");
                 _propColliders.transform.SetParent(World, false);
+                ColliderObjects++;
             }
             float k = Mathf.Repeat(yaw, 90f);
             if (k < 1f || k > 89f)
@@ -104,8 +113,11 @@ namespace CloneZ
                 go.transform.SetParent(_propColliders.transform, false);
                 go.transform.SetPositionAndRotation(center, Quaternion.Euler(0f, yaw, 0f));
                 go.AddComponent<BoxCollider>().size = size;
+                ColliderObjects++;
             }
             ColliderCount++;
+            Colliders++;
+            ColliderTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
         }
 
         /// <summary>A thin overhead collider (ceiling, canopy, tent roof) under the overhead root, so the
