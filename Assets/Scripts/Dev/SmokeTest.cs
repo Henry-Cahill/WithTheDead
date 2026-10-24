@@ -69,11 +69,14 @@ namespace CloneZ
             foreach (MeshFilter mf in FindObjectsByType<MeshFilter>(FindObjectsSortMode.None))
             {
                 Mesh m = mf.sharedMesh;
-                if (m == null || !m.isReadable || Finite(m)) continue;
-                Debug.Log("[Smoke] non-finite mesh: " + PathOf(mf.transform) + " (mesh '" + m.name + "', " + m.vertexCount + " vertices)");
-                if (++found >= 10) break;
+                if (m == null) continue;
+                string why = !m.isReadable ? "not readable" : m.vertexCount == 0 ? "no vertices" : !Finite(m) ? "non-finite" : null;
+                if (why == null) continue;
+                Debug.Log("[Smoke] suspect mesh (" + why + "): " + PathOf(mf.transform) + " (mesh '" + m.name + "', "
+                    + m.vertexCount + " vertices, " + m.subMeshCount + " submeshes)");
+                if (++found >= 20) break;
             }
-            if (found == 0) Debug.Log("[Smoke] non-finite mesh: none found among the scene's readable meshes");
+            if (found == 0) Debug.Log("[Smoke] suspect mesh: none among the scene's mesh filters");
         }
 
         private static bool Finite(Mesh m)
