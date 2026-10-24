@@ -207,7 +207,12 @@ namespace CloneZ
                         tallSpot = behind.Value;
                     }
                     _md.Append("| file | shows | cut away | old test |\n|---|---|---|---|\n");
-                    if (tall != null) Shot("25_louisville_behind.png", "Behind " + Describe(tall) + " in streamed Louisville", tallSpot, _isoYaw, Wide, true, true, false);
+                    if (tall != null)
+                    {
+                        string what = "Behind " + Describe(tall) + " in streamed Louisville";
+                        Shot("25_louisville_behind_roofs_on.png", what + ", roofs on (before)", tallSpot, _isoYaw, Wide, true, false, false);
+                        Shot("25_louisville_behind.png", what, tallSpot, _isoYaw, Wide, true, true, false);
+                    }
                     if (big == null)
                     {
                         _md.Append("\nNo building with walls and a roof in piece ").Append(cx0).Append('_').Append(cz0).Append(".\n\n");
@@ -215,7 +220,9 @@ namespace CloneZ
                     }
                     long bigId = big.Id;
                     Vector3 at = Inside(big);
-                    Shot("24_louisville_inside.png", "Inside " + Describe(big) + " in streamed piece " + cx0 + "_" + cz0, at, _isoYaw, Wide, true, true, false);
+                    string inside = "Inside " + Describe(big) + " in streamed piece " + cx0 + "_" + cz0;
+                    Shot("24_louisville_inside_roofs_on.png", inside + ", roofs on (before)", at, _isoYaw, Wide, true, false, false);
+                    Shot("24_louisville_inside.png", inside, at, _isoYaw, Wide, true, true, false);
                     _md.Append('\n');
                     int cutBefore = MapCutaway.CutBuildings, overlaysCut = OverlayMeshes();
 
