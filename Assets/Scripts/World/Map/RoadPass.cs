@@ -238,7 +238,7 @@ namespace CloneZ
                 KerbFace = DecorPalette.Matte(new Color(0.56f, 0.56f, 0.55f));
                 Gutter = DecorPalette.Matte(new Color(0.47f, 0.46f, 0.44f));
                 Slush = DecorPalette.Matte(new Color(0.52f, 0.50f, 0.47f));
-                SlushLight = DecorPalette.Matte(new Color(0.47f, 0.46f, 0.44f));
+                SlushLight = DecorPalette.Matte(new Color(0.40f, 0.39f, 0.37f));
                 Wet = DecorPalette.Gloss(new Color(0.13f, 0.13f, 0.14f));
                 Track = DecorPalette.Matte(new Color(0.42f, 0.40f, 0.38f));
                 TrackGravel = DecorPalette.Matte(new Color(0.46f, 0.39f, 0.31f));
