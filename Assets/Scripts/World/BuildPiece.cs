@@ -160,6 +160,7 @@ namespace CloneZ
             return Build(parent, type, center, yaw, cur, max, prebuilt);
         }
 
+        /// <summary>Constructs a new build piece GameObject and initializes its data.</summary>
         private static BuildPiece Build(Transform parent, BuildPieceType type, Vector3 center, float yaw, float health, float maxHealth, bool prebuilt)
         {
             var root = new GameObject("House_" + type);
@@ -185,6 +186,7 @@ namespace CloneZ
             return piece;
         }
 
+        /// <summary>Constructs the piece's geometry and adds visual and navmesh components.</summary>
         private void BuildGeometry()
         {
             // A piece standing in one of the wave-survival starter home's slots builds the home's finished
@@ -333,6 +335,7 @@ namespace CloneZ
             col.size = size;
         }
 
+        /// <summary>Adds a NavMesh carving obstacle for blocking AI navigation.</summary>
         private static void AddCarver(GameObject go, Vector3 center, Vector3 size)
         {
             var obstacle = go.AddComponent<NavMeshObstacle>();
@@ -371,6 +374,7 @@ namespace CloneZ
             NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeHit);
         }
 
+        /// <summary>Handles piece destruction, playing effects and removing it from registries.</summary>
         private void Break()
         {
             Health = 0f;
@@ -470,6 +474,7 @@ namespace CloneZ
                 ?? FirstOn(tile, HomeFurniture.All) ?? FirstOn(tile, LootContainer.All);
         }
 
+        /// <summary>Finds the first IDemolishable object on a given floor tile.</summary>
         private static IDemolishable FirstOn<T>(Rect tile, List<T> list) where T : Component, IDemolishable
         {
             // Nothing that stands on a floor reaches further than this from its pivot, so farther ones skip the bounds work.

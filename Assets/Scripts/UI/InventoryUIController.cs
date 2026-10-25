@@ -475,6 +475,7 @@ private void PositionTooltip()
 
         // Pops a PZ-style context menu at the cursor (right-click a row or a tile, or a row's "…" button),
         // over whichever view is showing.
+        /// <summary>Shows a context menu at the cursor with a title and a list of options.</summary>
         private void ShowMenu(string title, List<MenuOption> options, float width = 220f)
         {
             HideMenu();
@@ -565,19 +566,24 @@ private void PositionTooltip()
             RefreshPicker(force: true);
         }
 
+        /// <summary>Updates the player‑header line showing weight, equipped weapon and clothing status.</summary>
         private void RefreshPlayerHeader()
         {
+            // Compute load fraction (weight / capacity) and number of worn items for UI display.
             float load = _player.Load;
             int worn = _clothing != null ? _clothing.WornCount : 0;
+            // Build the header text showing weight, capacity, weapon and clothing, then fit it within the UI width.
             string header = "YOU   " + _player.Weight.ToString("0.0") + " / " + _player.Capacity.ToString("0.0") + " kg"
                 + (_player.EquippedWeapon != null ? "     Wielding: " + _player.EquippedWeapon.DisplayName : "     Bare hands")
                 + (worn > 0 ? "     Wearing " + worn : "");
             _playerHeader.text = FitText(_playerHeader, header, "", ListW);
+            // Choose warning colour: red if overloaded, orange if past encumbrance start, otherwise white.
             Color warn = load >= 1f ? new Color(0.95f, 0.3f, 0.2f)
                 : load >= CloneZConfig.EncumbranceStart ? new Color(0.95f, 0.7f, 0.2f)
                 : Color.white;
             _playerHeader.color = warn;
 
+            // Update the weight meter fill amount and colour to match current load.
             if (_weightMeterFill != null)
             {
                 Vector3 ms = _weightMeterFill.rectTransform.localScale;
@@ -587,17 +593,21 @@ private void PositionTooltip()
             }
         }
 
+        /// <summary>Updates the loot‑header showing container name, item count, weight and distance, or floor summary when no container is open.</summary>
         private void RefreshLootHeader()
         {
+            // When a container is open, display its name, total items, total weight and distance from the player.
             if (_openInventory != null && _openContainer != null)
             {
                 CountContents(_openInventory, out int items, out float kg);
+                // If the container is empty, show "Empty" otherwise show item count and weight, plus distance.
                 _lootHeader.text = FitText(_lootHeader, _openContainer.DisplayName.ToUpperInvariant(), "", ListW - 140f);
                 _lootSubHeader.text = (items == 0 ? "Empty" : Plural(items, "item") + "  \u00b7  " + kg.ToString("0.0") + " kg")
                     + "  \u00b7  " + FlatDistance(_openContainer.transform.position).ToString("0.0") + " m away";
                 return;
             }
 
+            // No container open: sum up floor items to show total piles, items and weight.
             int units = 0;
             float floorKg = 0f;
             for (int i = 0; i < _floorItems.Count; i++)
@@ -607,6 +617,7 @@ private void PositionTooltip()
                 units += w.Count;
                 floorKg += w.Def.Weight * w.Count;
             }
+            // Set header to "FLOOR" and sub‑header to show pile count, total items and total weight within reach.
             _lootHeader.text = "FLOOR";
             _lootSubHeader.text = _floorItems.Count == 0
                 ? "Nothing on the ground within reach"
@@ -888,9 +899,11 @@ private void PositionTooltip()
             return text;
         }
 
+        /// <summary>Creates a UI button with the given text, colour and click action, and returns the Button component.</summary>
         private Button MakeButton(RectTransform parent, Vector2 anchor, Vector2 pos, Vector2 size, string text, Color color,
             UnityEngine.Events.UnityAction onClick, int fontSize = 16)
         {
+            // Create button game object in a disabled state so we can set colours before Unity activates it and causes a visible flicker.
             var go = new GameObject("Button");
             go.SetActive(false);   // configure the tint before the button wakes, so rebuilt rows don't flicker
             var rt = go.AddComponent<RectTransform>();
@@ -898,9 +911,11 @@ private void PositionTooltip()
             rt.anchorMin = anchor; rt.anchorMax = anchor; rt.pivot = anchor;
             rt.anchoredPosition = pos; rt.sizeDelta = size;
 
+            // Set up Image component for background colour.
             var img = go.AddComponent<Image>();
             img.color = color;
 
+            // Configure Button component colours for normal, highlighted and pressed states, then attach click listener.
             var btn = go.AddComponent<Button>();
             btn.targetGraphic = img;
             ColorBlock cb = btn.colors;
@@ -912,6 +927,7 @@ private void PositionTooltip()
             btn.colors = cb;
             if (onClick != null) btn.onClick.AddListener(onClick);
 
+            // Create Text child for the button label, set font and alignment, then activate the button GameObject.
             var txtGo = new GameObject("Text");
             var txtRt = txtGo.AddComponent<RectTransform>();
             txtRt.SetParent(rt, false);

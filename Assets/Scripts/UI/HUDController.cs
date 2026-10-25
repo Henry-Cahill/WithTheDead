@@ -78,7 +78,9 @@ namespace CloneZ
         /// <paramref name="stats"/> object (gear, movement, temperature and clothing always are).</summary>
         public void Bind(PlayerStats stats, PlayerInventory inventory = null, PlayerInteractor interactor = null, PlayerCombat combat = null, PlayerSleep sleep = null, PlayerSkills skills = null, PlayerBuilder builder = null, PlayerWounds wounds = null, PlayerPanic panic = null, PlayerFoodSickness sickness = null, PlayerFarming farming = null, PlayerHydration hydration = null)
         {
+            // Clear previous bindings to avoid duplicate listeners
             Unbind();
+            // Populate the HUD context with player components, using supplied arguments or falling back to components on the stats object
             _ctx.Stats = stats;
             _ctx.Inventory = inventory != null ? inventory : Find<PlayerInventory>(stats);
             _ctx.Interactor = interactor != null ? interactor : Find<PlayerInteractor>(stats);
@@ -96,12 +98,14 @@ namespace CloneZ
             _ctx.Clothing = Find<PlayerClothing>(stats);
             _ctx.GearComponent = Find<PlayerGear>(stats);
 
+            // Hook up HUD event listeners from the newly bound player components
             if (_ctx.Stats != null) _ctx.Stats.OnDamaged += OnPlayerDamaged;
             if (_ctx.Skills != null) _ctx.Skills.OnLevelUp += OnSkillLevelUp;
             if (_ctx.Inventory != null) _ctx.Inventory.Notice += OnNotice;
             if (_ctx.GearComponent != null) _ctx.GearComponent.Notice += OnNotice;
             if (_ctx.Interactor != null) _ctx.Interactor.Notice += OnNotice;
             if (_feedback != null) _feedback.BindCombat(_ctx.Combat);
+            // Register global UI events for toasts and subtitles
             GameEvents.Toast += OnNotice;
             GameEvents.Subtitle += OnSubtitle;
         }
@@ -115,6 +119,7 @@ namespace CloneZ
             Subtitles.Show(speaker, line, new Color(0.85f, 0.75f, 0.5f), Mathf.Clamp(2.5f + line.Length * 0.05f, 3f, 9f));
         }
 
+        /// <summary>Removes HUD event listeners and unbinds from the previously attached player components.</summary>
         private void Unbind()
         {
             if (_ctx.Stats != null) _ctx.Stats.OnDamaged -= OnPlayerDamaged;
@@ -197,10 +202,12 @@ namespace CloneZ
         }
 
         // Names the view just switched to and its own controls, for a few seconds (full HUD style only).
+        // Show view banner only for full HUD style and secondary tier
         private void ShowViewBanner(CameraView view)
         {
             if (!HudViewLayout.StyleShows(GameSettings.Current.Hud, HudTier.Secondary)) return;
             string name, keys;
+            // Choose view name and key hints based on camera view
             switch (view)
             {
                 case CameraView.ThirdPerson:
@@ -221,12 +228,14 @@ namespace CloneZ
                         + Key(GameInput.KeyName(GameAction.AimLine)) + "  Aim line";
                     break;
             }
+            // Set formatted banner text and start display timer (seconds)
             _viewBanner.text = "<size=20><b><color=#F2B544>" + HudUI.Spaced(name) + "</color></b></size>\n" + keys + "     " + Key("V") + "  Next view";
             _viewBannerTimer = 3.2f;
         }
 
         private static string Key(string k) => "<color=#F2EED8><b>" + k + "</b></color>";
 
+        /// <summary>Updates the view banner display when the camera view changes.</summary>
         private void UpdateViewBanner(float unscaledDt, bool blocked)
         {
             if (_bannerPending && !blocked)
@@ -242,6 +251,7 @@ namespace CloneZ
         }
 
         #region Per-frame
+        /// <summary>Updates interaction prompts based on player state and UI blockages.</summary>
         private void UpdatePrompts(bool blocked)
         {
             PlayerInteractor interactor = _ctx.Interactor;
@@ -266,6 +276,7 @@ namespace CloneZ
             if (showBuild) _buildPromptText.text = prompt;
         }
 
+        /// <summary>Updates progress bar UI for searching, working, building and farming actions.</summary>
         private void UpdateProgressBars()
         {
             // One bar for rummaging through a container or working at a fixture (washing up, a shower…).
@@ -312,6 +323,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Updates on-screen notices for level‑up, water shut‑off and power cut events.</summary>
         private void UpdateNotices(float dt)
         {
             if (_levelUpTimer > 0f)
@@ -355,6 +367,7 @@ namespace CloneZ
             else if (_powerNoticeText.enabled) _powerNoticeText.enabled = false;
         }
 
+        /// <summary>Updates the sleep overlay timer and display while the survivor is sleeping.</summary>
         private void UpdateSleep(bool blocked)
         {
             PlayerSleep sleep = _ctx.Sleep;
@@ -375,6 +388,7 @@ namespace CloneZ
             _sleepText.text = "Sleeping\u2026\n<size=26>" + (tod != null ? "Day " + tod.Day + "   " + tod.ClockText : "") + "</size>";
         }
 
+        /// <summary>Updates the screen‑wide damage vignette based on health and recent damage flashes.</summary>
         private void UpdateVignette()
         {
             if (_damageFlash > 0f)
@@ -431,23 +445,29 @@ namespace CloneZ
         #endregion
 
         #region UI construction
+        // Build the HUD UI hierarchy and widgets
         private void Build()
         {
+            // Create root canvas for HUD rendering
             var canvasGo = new GameObject("HUD Canvas");
             canvasGo.transform.SetParent(transform);
+            // Configure canvas for overlay rendering with proper sorting order
             var canvas = canvasGo.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.sortingOrder = 100;
+            // Set up canvas scaler to keep UI size consistent across resolutions
             var scaler = canvasGo.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
             scaler.matchWidthOrHeight = 0.5f;
+            // Add raycaster so UI can receive input events (even if not used)
             canvasGo.AddComponent<GraphicRaycaster>();
 
             RectTransform root = canvas.GetComponent<RectTransform>();
             _ctx.Root = root;
 
             // Full-screen damage vignette (behind the HUD) — flashes red on hits, glows near death.
+            // Create full-screen damage vignette (behind HUD) for hit feedback
             RectTransform vign = HudUI.Stretch(root, "DamageVignette");
             _damageVignette = vign.gameObject.AddComponent<Image>();
             _damageVignette.sprite = VignetteSprite();
@@ -456,12 +476,15 @@ namespace CloneZ
             _damageVignette.enabled = false;
 
             // World-anchored labels sit under every panel.
+            // World‑anchored label layer for interaction prompts and subtitles
             RectTransform worldLayer = HudUI.Stretch(root, "WorldLabels");
 
             // The bodycam's display goes under the rest of the HUD (its scanlines cover the whole screen).
+            // Bodycam HUD underlays everything else (scanlines cover whole screen)
             _bodycamGroup = _layout.Add(root, "BodycamHud", new Vector2(0.5f, 0.5f), HudTier.Essential);
             _bodycam = new HudBodycamView(_ctx, _bodycamGroup.Rect);
 
+            // Initialize core HUD widgets for hands, watch, moodles, stamina and shoulder view
             _handsGroup = _layout.Add(root, "Hands", new Vector2(0f, 1f), HudTier.Essential);
             _hands = new HudHands(_ctx, _handsGroup.Rect);
             _watchGroup = _layout.Add(root, "Watch", new Vector2(1f, 1f), HudTier.Secondary);
@@ -478,6 +501,7 @@ namespace CloneZ
             _feedbackGroup = _layout.Add(root, "CombatFeedback", new Vector2(0.5f, 0.5f), HudTier.Essential);
             _feedback = new HudCombatFeedback(_ctx, _feedbackGroup.Rect);
 
+            // Build on-screen prompts and progress bars for interactions and construction
             BuildPrompts(root);
             BuildProgressBar(root, "SearchRow", 132f, new Color(0.95f, 0.9f, 0.7f), new Color(0.95f, 0.85f, 0.35f), out _searchRow, out _searchLabel, out _searchFill);
             BuildProgressBar(root, "BuildRow", 176f, new Color(0.72f, 0.9f, 0.55f), new Color(0.55f, 0.85f, 0.4f), out _buildRow, out _buildLabel, out _buildFill);

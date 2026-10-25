@@ -191,15 +191,21 @@ namespace CloneZ
             return merged;
         }
 
+        /// <summary>Clips a line segment to the rectangle using Liang–Barsky, returning the parametric range [t0,t1] of the inside portion.</summary>
         private static bool ClipSegment(Vector2 a, Vector2 b, Rect r, out float t0, out float t1)
         {
             t0 = 0f;
             t1 = 1f;
+            // Compute the delta for the segment (direction vector components).
             float dx = b.x - a.x, dy = b.y - a.y;
+            // p[i] holds the direction factor for the parametric equation; q[i] is the distance from the segment start to the clipping edge.
+            // p[i] holds the direction factor for the parametric equation; q[i] is the distance from the segment start to the clipping edge.
             float[] p = { -dx, dx, -dy, dy };
             float[] q = { a.x - r.xMin, r.xMax - a.x, a.y - r.yMin, r.yMax - a.y };
             for (int i = 0; i < 4; i++)
             {
+                // If the segment is parallel to the clipping edge (p[i] == 0), it is either completely outside (q[i] < 0) or inside (continue).
+                // If the segment is parallel to the clipping edge (p[i] == 0), it is either completely outside (q[i] < 0) or inside (continue).
                 if (Mathf.Approximately(p[i], 0f))
                 {
                     if (q[i] < 0f) return false;
@@ -208,11 +214,13 @@ namespace CloneZ
                 float t = q[i] / p[i];
                 if (p[i] < 0f)
                 {
+                    // The intersection is an entering point; tighten the lower bound t0.
                     if (t > t1) return false;
                     if (t > t0) t0 = t;
                 }
                 else
                 {
+                    // The intersection is a leaving point; tighten the upper bound t1.
                     if (t < t0) return false;
                     if (t < t1) t1 = t;
                 }
@@ -232,9 +240,13 @@ namespace CloneZ
                 {
                     Vector2 a = cur[(i + cur.Count - 1) % cur.Count], b = cur[i];
                     bool ina = Inside(a, r, edge), inb = Inside(b, r, edge);
+                    // When clipping against an edge, we may need to emit the intersection point where the segment enters or exits the rectangle.
+                    // When clipping against an edge, we may need to emit the intersection point where the segment enters or exits the rectangle.
                     if (inb)
                     {
+                        // If the current vertex is inside but the previous one was outside, add the intersection point at the clipping edge.
                         if (!ina) next.Add(Cross(a, b, r, edge));
+                        // Add the current vertex.
                         next.Add(b);
                     }
                     else if (ina) next.Add(Cross(a, b, r, edge));
@@ -330,11 +342,16 @@ namespace CloneZ
             }
             for (int i = 0; i < n; i++)
             {
+                // For each vertex we compute the normalized direction of the incoming and outgoing segments.
                 Vector2 dPrev = (i > 0 ? pts[i] - pts[i - 1] : pts[1] - pts[0]).normalized;
                 Vector2 dNext = (i < n - 1 ? pts[i + 1] - pts[i] : dPrev).normalized;
+                // Compute left‑hand normals for the incoming and outgoing directions; they point outward from the segment.
                 Vector2 nPrev = new Vector2(-dPrev.y, dPrev.x), nNext = new Vector2(-dNext.y, dNext.x);
+                // The miter vector is the sum of the two normals; it gives the direction of the offset at the vertex.
                 Vector2 miter = nPrev + nNext;
+                // Normalise the miter unless the two normals cancel (sharp 180° turn); fall back to the outgoing normal.
                 miter = miter.sqrMagnitude > 1e-6f ? miter.normalized : nNext;
+                // Stretch factor compensates for the angle between the miter and the outgoing normal; clamp to avoid extreme scaling.
                 float stretch = 1f / Mathf.Max(0.4f, Vector2.Dot(miter, nNext));
                 moved.Add(pts[i] + miter * (offset * stretch));
             }

@@ -63,6 +63,7 @@ namespace CloneZ
                 _profile = profile;
             }
 
+            /// <summary>Runs the harness and returns an exit code.</summary>
             public int Execute()
             {
                 int code = ExitOk;
@@ -300,28 +301,40 @@ namespace CloneZ
                 return c;
             }
 
+            /// <summary>
+            /// Counts and reports the composition of the built square.
+            /// </summary>
             private void CountSquare()
             {
+                // Write markdown header for composition table
                 _md.Append("## What the square is made of\n\n| root | objects | renderers | vertices | building walls (renderers) | upper parts (renderers) |\n|---|--:|--:|--:|--:|--:|\n");
+                // Gather root transforms: the world root plus any additional root objects created during build
                 var roots = new List<Transform> { _world };
                 foreach (GameObject go in _roots) roots.Add(go.transform);
                 foreach (Transform t in roots)
                 {
+                    // Count objects, renderers and vertices for this root
                     Count(t, out int o, out int r, out long v);
+                    // Count how many mesh renderers belong to building shells under this root
                     int shells = 0;
                     foreach (Transform c in t.GetComponentsInChildren<Transform>(true))
                         if (c.name == "Building shells") shells += c.GetComponentsInChildren<MeshRenderer>(true).Length;
+                    // Determine whether this root is the world root (overhead vs ground)
                     bool overhead = t != _world;
+                    // Append a markdown row with the counts for this root; omit shell count for overhead roots
                     _md.Append("| ").Append(t.name).Append(" | ").Append(F0(o)).Append(" | ").Append(F0(r)).Append(" | ").Append(F0(v)).Append(" | ")
                         .Append(overhead ? "" : F0(shells)).Append(" | ").Append(overhead ? F0(shells) : "").Append(" |\n");
                 }
+                // Get total counts across all roots for summary row
                 Counts now = CountRoots();
                 _md.Append("| **all** | ").Append(F0(now.Objects)).Append(" | ").Append(F0(now.Renderers)).Append(" | ").Append(F0(now.Vertices))
                     .Append(" | ").Append(F0(now.Shells)).Append(" | ").Append(F0(now.Uppers)).Append(" |\n");
+                // If we have batched counts, add a comparison row showing the cost saved by batching
                 if (_batched.Objects > 0)
                     _md.Append("| *every building batched (before)* | ").Append(F0(_batched.Objects)).Append(" | ").Append(F0(_batched.Renderers)).Append(" | ")
                         .Append(F0(_batched.Vertices)).Append(" | 0 | 0 |\n");
                 _md.Append('\n');
+                // Add a summary line showing the extra cost of shells when not batched
                 if (_batched.Objects > 0)
                     _md.Append("Shells of their own cost ").Append(Signed(now.Objects - _batched.Objects)).Append(" objects and ")
                         .Append(Signed(now.Renderers - _batched.Renderers)).Append(" renderers over the same square batched (")
@@ -451,17 +464,24 @@ namespace CloneZ
             // frame, its work every frame): a first lap reads the roofs and makes the stand-ins round the path as the game
             // would; then two laps time the scans and check them for allocations, with the roofs told by their heights and by
             // their footprint up to their top (the old test), and time the frames with their work.
+            /// <summary>
+            /// Runs the timing tests for cutaway scans and records results.
+            /// </summary>
             private void Timing()
             {
+                // Configure scan parameters and temporary overlay limits for timing
                 const int scans = 3000, framesPerScan = 6;
+                // Preserve current overlay settings and increase limits for the timed laps
                 int keep = MapCutaway.MaxOverlays;
                 float evict = MapCutaway.EvictRadius;
                 MapCutaway.MaxOverlays = 100000;   // the timed laps find the first lap's stand-ins (eviction is timed in the walk)
                 MapCutaway.EvictRadius = 1e6f;
                 try
                 {
+                    // Reset caches and advance simulation time before warm‑up lap
                     MapCutaway.DropCaches();
                     float now = _t += 1000f;
+                    // Perform a warm‑up lap to populate stand‑ins before measuring
                     LapStats warm = Lap(scans, framesPerScan, ref now);
                     _md.Append("## Scan timing\n\n").Append(scans).Append(" scans while the stand-in walks a 70 m circle round the middle of the square, ")
                         .Append("the camera turning a quarter every 750, ").Append(framesPerScan).Append(" frames of the cutaway's work after each, after a first ")
@@ -505,6 +525,9 @@ namespace CloneZ
                     + F0(MapCutaway.OverlaySliceMaxVertices) + " vertices" + (MapCutaway.OverlaySliceMaxGc ? ", a garbage collection in it" : "");
             }
 
+            /// <summary>
+            /// Aggregated timing and cut statistics for a lap of scans.
+            /// </summary>
             private struct LapStats
             {
                 public double ScanUs, FrameUs, WorstMs, AvgCut, AvgUpper;
@@ -513,21 +536,33 @@ namespace CloneZ
             }
 
             // One lap of the 70 m circle: a scan per step and `frames` frames of the cutaway's work after it.
+            /// <summary>
+            /// Executes a single lap of scans and work frames, returning aggregated statistics.
+            /// </summary>
             private LapStats Lap(int scans, int frames, ref float now)
             {
+                // Initialise stats container for this lap
                 var s = new LapStats();
+                // Stopwatch to time each frame's work
                 var frame = new Stopwatch();
                 long scanTicks = 0, frameTicks = 0, sumCut = 0, sumUpper = 0;
                 for (int i = 0; i < scans; i++)
                 {
+                    // Compute angle around the circle for this scan step
                     float a = i * Mathf.PI * 2f / scans;
+                    // Position on a 70 m radius circle at the computed angle
                     var p = new Vector3(Mathf.Cos(a) * 70f, 0f, Mathf.Sin(a) * 70f);
+                    // Advance the simulated time for the next scan interval
                     now += MapCutaway.ScanInterval;
+                    // Record memory allocation before performing the scan
                     long bytes = GC.GetAllocatedBytesForCurrentThread();
+                    // Run a cutaway scan at the current position and camera orientation
                     frame.Restart();
                     MapCutaway.Run(p, _isoYaw + (i / 750) * 90f, _isoPitch, Reach(Wide), true, now, false);
+                    // Accumulate scan time and memory usage
                     scanTicks += frame.ElapsedTicks;
                     s.ScanBytes += GC.GetAllocatedBytesForCurrentThread() - bytes;
+                    // For each frame after the scan, update doors and process cutaway work
                     for (int f = 0; f < frames; f++)
                     {
                         if (f > 0) frame.Restart();
@@ -536,13 +571,16 @@ namespace CloneZ
                         frameTicks += frame.ElapsedTicks;
                         s.WorstMs = Math.Max(s.WorstMs, frame.Elapsed.TotalMilliseconds);
                     }
+                    // Record how many buildings were cut in this scan step
                     int cut = MapCutaway.CutBuildings;
                     s.MaxCut = Mathf.Max(s.MaxCut, cut);
                     sumCut += cut;
+                    // Count how many upper parts were applied in the cut buildings
                     IReadOnlyList<MapCutaway.Building> list = MapCutaway.Cut;
                     for (int k = 0; k < list.Count; k++)
                         if ((list[k].Applied & 16) != 0) sumUpper++;
                 }
+                // Convert tick counts to microseconds and compute averages
                 double tickUs = 1e6 / Stopwatch.Frequency;
                 s.ScanUs = scanTicks * tickUs / scans;
                 s.FrameUs = frames > 0 ? frameTicks * tickUs / (scans * frames) : s.ScanUs;

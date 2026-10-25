@@ -25,10 +25,13 @@ namespace CloneZ
         // A corridor down the long axis of `m` from a lobby at the front door, with bays of about `bay` metres either side of
         // it (or along one side of a block too narrow for two): the lobby and the corridor go into the plan, the bays come back
         // nearest the lobby first. False (and nothing added) when the block can't take a corridor.
+        /// <summary>Build a corridor with surrounding bays for a given building block.</summary>
         private static bool Corridor(InteriorPlan plan, Rect m, Vector2 door, RoomRole lobbyRole, float lobbyDepth, float bay, List<Bay> bays)
         {
+            // Cache block width and depth for later calculations.
             float w = m.width, d = m.height;
             bays.Clear();
+            // Choose layout based on block aspect ratio (deep vs wide).
             if (d >= w)
             {
                 // Deep: the lobby across the front, the corridor from it to the back wall.
@@ -637,6 +640,7 @@ namespace CloneZ
         private static readonly Color[] OfficeCarpets = { new Color(0.30f, 0.32f, 0.36f), new Color(0.24f, 0.28f, 0.34f), new Color(0.32f, 0.30f, 0.28f) };
 
         // Every room's wallpaper, floor, fitting and whether its light was left on, by what it's for and what the building is.
+        /// <summary>Assign finishes, lighting and design to each room based on its role and building type.</summary>
         private static void Style(InteriorPlan plan, System.Random rng)
         {
             bool bare = plan.Use == InteriorUse.Warehouse || plan.Use == InteriorUse.Workshop || plan.Use == InteriorUse.Barn

@@ -127,18 +127,27 @@ namespace CloneZ
         }
 
         #region UI construction
+        /// <summary>Builds the raid summary UI for the given summary data.</summary>
         private void Build(RaidSummary s)
         {
+            // Prevent player interaction and pause the world while the report is shown.
             Freeze();
+            // Record the time the UI became visible so we can enforce a short input delay.
             _shownAt = Time.unscaledTime;
+            // Choose accent colour based on raid outcome (extracted, dead, or missing).
             Color accent = OutcomeColor(s.Outcome);
+            // Determine if the kit was kept (extracted) for later UI text.
             bool kept = s.Outcome == ExtractionManager.RaidState.Extracted;
 
+            // Build a new canvas that renders over the game UI.
             var canvasGo = new GameObject("RaidSummary Canvas");
+            // Parent the canvas to this component so it moves with the UI hierarchy.
             canvasGo.transform.SetParent(transform);
+            // Use screen‑space overlay to draw UI directly on the screen.
             var canvas = canvasGo.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.sortingOrder = 150;   // above the HUD and panels, below the pause menu / title screen
+            // Ensure UI scales with resolution while preserving aspect ratio.
             var scaler = canvasGo.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
@@ -146,20 +155,24 @@ namespace CloneZ
             canvasGo.AddComponent<GraphicRaycaster>();
             RectTransform root = canvas.GetComponent<RectTransform>();
 
+            // Create a full‑size page under the canvas to hold all UI elements.
             var page = new GameObject("Page");
             var pageRt = page.AddComponent<RectTransform>();
             pageRt.SetParent(root, false);
             Stretch(pageRt);
             page.AddComponent<CanvasGroup>();
+            // Add a canvas group so we can fade the whole page in/out.
             var fader = page.AddComponent<UIFader>();   // fades in on unscaled time (the world is frozen)
 
             // Shade out the frozen world (and anything the HUD put up) behind the report.
+            // Dark overlay that dims the frozen world behind the report.
             var dim = new GameObject("Dim");
             var dimRt = dim.AddComponent<RectTransform>();
             dimRt.SetParent(pageRt, false);
             Stretch(dimRt);
             dim.AddComponent<Image>().color = new Color(0.02f, 0.025f, 0.035f, 0.93f);
 
+            // Panel that holds all report elements; sized and positioned at centre.
             var panel = new GameObject("Panel");
             var prt = panel.AddComponent<RectTransform>();
             prt.SetParent(pageRt, false);
@@ -170,16 +183,24 @@ namespace CloneZ
             UITheme.AddTopAccent(prt, accent, 4f);
             // Add a subtle metal border on all four edges to give a worn wooden/metal board feel.
 
+// Add a subtle metal border on all four edges to give a worn wooden/metal board feel.
+// Add a subtle metal border on all four edges to give a worn wooden/metal board feel.
 AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
+            // Add rivets to the corners for visual detail.
             AddRivets(prt, new Color(0.12f, 0.12f, 0.12f, 1f), 6f);
+            // Add small screw decorations for period‑appropriate hardware look.
             AddScrews(prt, new Color(0.20f, 0.20f, 0.20f, 1f), 4f);
+            // Add a worn edge strip to suggest years of use on the board.
             AddEdgeWear(prt, new Color(0.15f, 0.12f, 0.09f, 1f), 2f);
 
             var top = new Vector2(0.5f, 1f);
+            // Title showing the raid mode.
             Label(prt, "Caption", top, new Vector2(0f, -22f), new Vector2(1000f, 24f), 17, TextAnchor.MiddleCenter, AmberText)
                 .text = "EXTRACTION MODE  \u00b7  RAID REPORT";
+            // Large outcome title (EXTRACTED / KILLED IN ACTION / MISSING IN ACTION).
             Label(prt, "Title", top, new Vector2(0f, -54f), new Vector2(1100f, 80f), 62, TextAnchor.MiddleCenter, accent)
                 .text = OutcomeTitle(s.Outcome);
+            // Brief descriptive line under the title.
             Label(prt, "Detail", top, new Vector2(0f, -140f), new Vector2(1100f, 30f), 21, TextAnchor.MiddleCenter, BodyText)
                 .text = s.DetailLine();
 
@@ -190,6 +211,7 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             Stat(prt, 145f, "EXIT", string.IsNullOrEmpty(s.ExitName) ? "\u2014" : s.ExitName);
             Stat(prt, 435f, "CLOCK", clock);
 
+            // Horizontal rule separating header from the item list.
             var rule = new GameObject("Rule");
             var ruleRt = rule.AddComponent<RectTransform>();
             ruleRt.SetParent(prt, false);
@@ -213,6 +235,7 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             MakeButton(prt, bottom, new Vector2(170f, 40f), new Vector2(300f, 60f), "Main Menu", MenuButton, OnMainMenu);
             next.Select();
 
+            // Bottom hint showing which button to press.
             Label(pageRt, "Hint", new Vector2(0.5f, 0.025f), Vector2.zero, new Vector2(1200f, 24f), 15, TextAnchor.MiddleCenter, DimText)
                 .text = kept
                     ? "Enter \u2014 Next Raid  \u00b7  your kit is waiting for the next raid"
@@ -497,9 +520,11 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             imgRight.raycastTarget = false;
         }        private Text Label(RectTransform parent, string name, Vector2 anchor, Vector2 pos, Vector2 size, int fontSize, TextAnchor align, Color color)
         {
+            // Create the label GameObject and set up its RectTransform for absolute positioning.
             var go = new GameObject(name);
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(parent, false);
+            // Anchor, pivot and size are all set to the same point so the label stays fixed relative to its parent.
             rt.anchorMin = anchor; rt.anchorMax = anchor; rt.pivot = anchor;
             rt.anchoredPosition = pos; rt.sizeDelta = size;
             var txt = go.AddComponent<Text>();
@@ -511,17 +536,22 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             return txt;
         }
 
+        /// <summary>Creates a UI button with text and click handler, applying visual styling.</summary>
         private Button MakeButton(RectTransform parent, Vector2 anchor, Vector2 pos, Vector2 size, string text, Color color, UnityEngine.Events.UnityAction onClick)
         {
+            // Create the button GameObject and configure its RectTransform for absolute positioning.
             var go = new GameObject("Button");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(parent, false);
+            // Anchor and pivot are set to the same point so the button stays positioned relative to its parent.
             rt.anchorMin = anchor; rt.anchorMax = anchor; rt.pivot = anchor;
             rt.anchoredPosition = pos; rt.sizeDelta = size;
 
+            // Background image for the button with the supplied colour.
             var img = go.AddComponent<Image>();
             img.color = color;
 
+            // Button component – configure colour transitions for normal, highlighted, pressed, etc.
             var btn = go.AddComponent<Button>();
             btn.targetGraphic = img;
             ColorBlock cb = btn.colors;
@@ -534,6 +564,7 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             btn.colors = cb;
             if (onClick != null) btn.onClick.AddListener(onClick);
 
+            // Text child – fills the button area and displays the label.
             var txtGo = new GameObject("Text");
             var txtRt = txtGo.AddComponent<RectTransform>();
             txtRt.SetParent(rt, false);
@@ -588,17 +619,23 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
         /// hand and its loaded rounds noted), and adds up the weight.</summary>
         public void AddKit(RaidKit kit)
         {
+            // Clear any previous data before building a fresh summary.
             Lines.Clear();
+            // Initialise total weight accumulator.
             TotalKg = 0f;
+            // If there is no kit (should not happen) just exit early.
             if (kit == null) return;
 
             if (kit.Clothing != null)
             {
+                // Add each piece of worn clothing as a separate line and count its weight.
                 for (int i = 0; i < kit.Clothing.Count; i++)
                 {
                     RaidKitPiece p = kit.Clothing[i];
+                    // Resolve the item definition; skip if missing.
                     ItemDef def = p != null && !string.IsNullOrEmpty(p.Id) ? ItemDatabase.Get(p.Id) : null;
                     if (def == null) continue;
+                    // Record the worn item and add its weight.
                     Lines.Add(new RaidSummaryLine { Def = def, Name = def.DisplayName, Count = 1, Kg = def.Weight, Note = "worn" });
                     TotalKg += def.Weight;
                 }
@@ -607,24 +644,31 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
 
             if (kit.Items != null)
             {
+                // Process each item stack in the bag: combine with existing entries of the same type.
                 for (int i = 0; i < kit.Items.Count; i++)
                 {
                     RaidKitStack st = kit.Items[i];
+                    // Resolve the item definition; skip empty stacks.
                     ItemDef def = st != null && !string.IsNullOrEmpty(st.Id) && st.Count > 0 ? ItemDatabase.Get(st.Id) : null;
                     if (def == null) continue;
+                    // Compute total weight for this stack.
                     float kg = def.Weight * st.Count;
                     TotalKg += kg;
+                    // Look for an existing entry (created from worn items) to merge counts.
                     RaidSummaryLine line = null;
                     for (int k = worn; k < Lines.Count; k++)
                         if (Lines[k].Def == def) { line = Lines[k]; break; }
+                    // If not found, add a new line; otherwise accumulate count and weight.
                     if (line == null) Lines.Add(new RaidSummaryLine { Def = def, Name = def.DisplayName, Count = st.Count, Kg = kg });
                     else { line.Count += st.Count; line.Kg += kg; }
                 }
             }
 
+            // If the survivor has a weapon equipped, mark it as "in hand" and record loaded ammo.
             ItemDef weapon = string.IsNullOrEmpty(kit.EquippedWeaponId) ? null : ItemDatabase.Get(kit.EquippedWeaponId);
             if (weapon != null)
             {
+                // Scan forward in the list (past worn items) to find the weapon entry.
                 for (int k = worn; k < Lines.Count; k++)
                 {
                     if (Lines[k].Def != weapon) continue;
@@ -632,11 +676,13 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
                     break;
                 }
                 // Rounds sitting in the magazine weigh their share too.
+                // Add weight of loaded ammo (magazine) if the weapon is a firearm.
                 ItemDef ammo = weapon.IsFirearm && kit.LoadedAmmo > 0 && !string.IsNullOrEmpty(weapon.AmmoId)
                     ? ItemDatabase.Get(weapon.AmmoId) : null;
                 if (ammo != null) TotalKg += ammo.Weight * kit.LoadedAmmo;
             }
 
+            // Sort only the items that were not part of the worn clothing block.
             if (Lines.Count - worn > 1) Lines.Sort(worn, Lines.Count - worn, LineOrder.Instance);
         }
 

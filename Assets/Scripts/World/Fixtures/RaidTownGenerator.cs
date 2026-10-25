@@ -83,6 +83,7 @@ namespace CloneZ
             into.Add(new InteractAction("Check next noise", CheckNoise));
         }
 
+        /// <summary>Pull the starter cord to attempt to start the generator.</summary>
         private void Pull(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.RaidGeneratorPullNoise);
@@ -155,6 +156,7 @@ namespace CloneZ
             if (!_running && _fuel > 0f)
                 Inspect(ctx);
         }
+        /// <summary>Show the current fuel level and running status of the generator.</summary>
         private void Inspect(InteractContext ctx)
         {
             float percent = _fuel / CloneZConfig.RaidGeneratorFuelMax;

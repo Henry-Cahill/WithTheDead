@@ -47,48 +47,70 @@ namespace CloneZ
         };
         public static readonly string[] GuideHints = new[] { "Take the left fork near the old mill.", "Avoid the frozen river – the ice cracks under weight.", "The road by the burnt barn saves you an hour.", "Keep to the high ground when the fog rolls in.", "Follow the charcoal markers; they’re the only reliable trail.", "Cross the cracked bridge at dawn; the ice holds till the sun climbs.", "Skirt the frozen quarry – the snow muffles any footsteps, but the wind whistles warnings.", "Take the old logging road east of the sawmill; the trees still whisper about the Zone.", "Head south to the abandoned farm, then cut through the willow thicket before the fog settles.", "Watch for the broken lantern on the ridge; it marks a safe perch above the crevasse.", "Run the hidden trail behind the ruined chapel; the stones are warm from last night’s fire." };
 
+        /// <summary>Creates and configures a hub NPC GameObject with animation, collider and interaction components.</summary>
         public static HubNpc Spawn(Transform parent, Vector3 position, Vector3 lookAt, string name, string faction, Role role, string script, bool seated = false)
         {
+            // Create a new GameObject for the NPC and name it for debugging/identification.
             var go = new GameObject("HubNpc " + name);
+            // Parent the NPC under the hub container without inheriting any transform offsets.
             go.transform.SetParent(parent, false);
+            // Determine a sensible seat height; fallback to a default if the supplied position is near ground.
             float seatHeight = position.y > 0.1f ? position.y : 0.46f;
+            // Position the NPC; musicians sit slightly above ground for their instrument.
             go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : 0f, position.z);
+            // Compute direction to look at, ignoring vertical component for a natural upright orientation.
             Vector3 face = lookAt - go.transform.position;
+            // Zero out Y so the NPC doesn't tilt up/down when looking.
             face.y = 0f;
+            // Only rotate if the target direction is significant to avoid jitter on zero-length vectors.
             if (face.sqrMagnitude > 0.01f) go.transform.rotation = Quaternion.LookRotation(face.normalized, Vector3.up);
 
+            // Attach the HubNpc script to the GameObject and initialise its key properties.
             var npc = go.AddComponent<HubNpc>();
             npc.Kind = role;
             npc.Name = name;
             npc.Script = script;
             npc.LookAt = lookAt;
+            // Seed the random generator with the NPC's name hash for deterministic variation.
             npc._rng = new System.Random(name.GetHashCode());
 
+            // Create a default survivor look and dress the NPC according to faction and role.
             HumanoidLook look = HumanoidLook.Survivor();
             npc.Dress(look, faction, role);
+            // Build the visual rig for the NPC and bind the animator component.
             HumanoidRig rig = HumanoidRig.Create(go.transform, look);
             npc._anim = rig.gameObject.AddComponent<HumanoidAnimator>();
+            // Disable automatic animator updates; we drive it manually each frame.
             npc._anim.AutoUpdate = false;
+            // Use the generic survivor gait for walking/running animations.
             npc._anim.Gait = HumanoidGait.Survivor;
+            // If the NPC should be seated (e.g., at a bar), flag the animator and set the seat point.
             if (seated)
             {
                 npc._anim.Seated = true;
                 npc._anim.SeatPoint = new Vector3(position.x, role == Role.Musician ? 0.7f : seatHeight, position.z);
             }
 
+            // Add a capsule collider to give the NPC a physical presence for interaction and raycasts.
             var col = go.AddComponent<CapsuleCollider>();
+            // Set collider dimensions to roughly match a human shape.
             col.center = new Vector3(0f, 0.9f, 0f);
             col.height = 1.8f;
             col.radius = 0.3f;
 
+            // Attach an Actor component so the NPC participates in world systems (e.g., faction, targeting).
             Actor actor = go.AddComponent<Actor>();
             actor.Kind = ActorKind.Human;
+            // Default to Freehold faction if none provided.
             actor.Faction = faction ?? Factions.Freehold;
             actor.DisplayName = name;
             actor.Untargetable = true;
 
+            // Add the interaction component that routes player actions to this NPC.
             var talk = go.AddComponent<HubNpcTalk>();
+            // Wire the talk component back to this HubNpc instance.
             talk.Npc = npc;
+            // Return the fully constructed NPC for further use.
             return npc;
         }
 
@@ -141,20 +163,30 @@ namespace CloneZ
         /// <summary>Tells a whole story over a few seconds. Listening is remembered (quietly).</summary>
         public System.Collections.IEnumerator TellStory()
         {
+            // Retrieve the story lines for this NPC; if none exist, exit silently.
             if (!Lines.TryGetValue(Script, out string[] lines)) yield break;
+            // Iterate through each line, displaying it with a pause so the player can read.
             for (int i = 0; i < lines.Length; i++)
             {
+                // Show the subtitle for the current line.
                 GameEvents.RaiseSubtitle(Name, lines[i]);
+                // Wait a few seconds before the next line to give time to read.
                 yield return new WaitForSeconds(4.5f);
             }
+            // After the story finishes, flag the player as having heard it and grant any related rewards.
             AccountProfile a = ProfileStore.Account;
             CharacterProfile c = ProfileStore.ActiveCharacter;
+            // Build a unique flag key for this story.
             string flag = "heard:" + Script;
+            // If the player hasn't already recorded hearing this story, set the flag and log it.
             if (c != null && !c.HasFlag(flag))
             {
                 c.SetFlag(flag);
+                // Record that the player listened to this story for moral tracking.
                 MoralLedger.Record("listened to " + Name, MoralLedger.ListenedToStory);
+                // If this is the Pell story, unlock the Kestrel north road route for the player.
                 if (Script == "story_pell" && a.Learn("route:kestrel:north_road")) GameEvents.RaiseToast("Learned a route: Kestrel's north-road ditch skirts the sinkholes.");
+                // If this is the Dana story, grant the "lodestar" rumor to the player's knowledge.
                 if (Script == "story_dana" && a.Learn("rumour:lodestar")) GameEvents.RaiseToast("You've heard of the Lodestar.");
                 ProfileStore.Save();
             }
@@ -266,6 +298,7 @@ case HubNpc.Role.Keeper:
                                 GameEvents.RaiseSubtitle(Npc.Name, hint);
                                 MoralLedger.Record("asked guide for hint", MoralLedger.HintFromGuide);
                                 Sfx.PlayUI(SfxIds.Cash);
+                                // Persist changes to player's profile.
                                 ProfileStore.Save();
                             }));
                             break;

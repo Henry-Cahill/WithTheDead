@@ -8,6 +8,7 @@ namespace CloneZ
         private static Shader s_LitShader;
         private static Shader s_UnlitShader;
 
+        /// <summary>Gets the URP Lit shader, falling back to the Standard shader if URP is not active.</summary>
         private static Shader LitShader
         {
             get
@@ -20,6 +21,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Gets the URP Unlit shader, falling back to a simple Unlit/Color shader if URP is not active.</summary>
         private static Shader UnlitShader
         {
             get
@@ -59,6 +61,7 @@ namespace CloneZ
         private static readonly System.Collections.Generic.Dictionary<int, Material> s_MatCache
             = new System.Collections.Generic.Dictionary<int, Material>(512);
 
+        /// <summary>Computes a deterministic cache key for a material based on colour, smoothness and metallic values.</summary>
         private static int MatKey(Color c, float smoothness, float metallic)
         {
             int r = Mathf.Clamp(Mathf.RoundToInt(c.r * 63f), 0, 63);

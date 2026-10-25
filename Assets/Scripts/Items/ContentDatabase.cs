@@ -319,13 +319,18 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
         /// items keep the hand-authored placement in <see cref="LootSeedSql"/>.</summary>
         private static void DistributeCatalogueLoot(SqliteConnection db, HashSet<string> curatedIds)
         {
+            // Build a batch of INSERT statements to avoid many DB executions.
             var sb = new StringBuilder();
+            // Iterate all items to decide where they belong.
             using (var q = db.Prepare("SELECT id, category, perishable FROM item;"))
                 while (q.Step())
                 {
                     string id = q.GetString(0);
+                    // Skip items that were already placed by curated loot.
                     if (curatedIds != null && curatedIds.Contains(id)) continue;   // hand-placed already
+                    // Determine if food is perishable for special handling (fridge vs pantry).
                     bool perishable = q.GetBool(2);
+                    // Map item category to appropriate container types and loot weights.
                     switch ((ItemCategory)q.GetInt(1))
                     {
                         case ItemCategory.Food:
@@ -358,6 +363,7 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
                             break;
                     }
                 }
+            // Execute the accumulated INSERTs if any rows were added.
             if (sb.Length > 0) db.Execute(sb.ToString());
         }
 
@@ -404,9 +410,13 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
             }
         }
 
+        /// <summary>Loads the full content catalogue from the database.</summary>
         private static void ReadItems(SqliteConnection db, Dictionary<string, ItemDef> items)
         {
+            // Query all columns from item table in the order defined by ItemCols.
             using (var st = db.Prepare("SELECT " + ItemCols + " FROM item;"))
+                // Iterate each row and construct ItemDef objects.
+                // Group entries by their container type.
                 while (st.Step())
                 {
                     var d = new ItemDef
@@ -482,13 +492,17 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
                         SizeW = st.GetInt(70),
                         SizeH = st.GetInt(71),
                     };
+                    // Store the definition keyed by its id for fast lookup.
                     items[d.Id] = d;
                 }
         }
 
+        /// <summary>Loads the loot tables and their entries from the database.</summary>
         private static void ReadTables(SqliteConnection db, Dictionary<ContainerType, LootTable> tables)
         {
+            // Temporary map from table type id to list of loot entries.
             var entriesByType = new Dictionary<int, List<LootEntry>>();
+            // Load all loot_entry rows ordered by seq to preserve defined order.
             using (var st = db.Prepare("SELECT tableType,itemId,weight,minCount,maxCount FROM loot_entry ORDER BY seq;"))
                 while (st.Step())
                 {
@@ -501,10 +515,12 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
                     list.Add(new LootEntry(st.GetString(1), st.GetInt(2), st.GetInt(3), st.GetInt(4)));
                 }
 
+            // Load loot_table metadata and combine with collected entries.
             using (var st = db.Prepare("SELECT type,minRolls,maxRolls,emptyWeight FROM loot_table;"))
                 while (st.Step())
                 {
                     int type = st.GetInt(0);
+                    // Use empty list if no entries exist for this type.
                     tables[(ContainerType)type] = new LootTable
                     {
                         MinRolls = st.GetInt(1),
@@ -515,10 +531,13 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
                 }
         }
 
+        /// <summary>Loads the farming crop definitions from the database.</summary>
         private static void ReadCrops(SqliteConnection db, List<FarmCrop> crops)
         {
+            // Query all crop definition fields.
             using (var st = db.Prepare(
                 "SELECT id,name,seedId,produceId,growHours,yieldMin,yieldMax,ripeR,ripeG,ripeB FROM crop;"))
+                // Iterate each crop row and add to the output list.
                 while (st.Step())
                     crops.Add(new FarmCrop
                     {

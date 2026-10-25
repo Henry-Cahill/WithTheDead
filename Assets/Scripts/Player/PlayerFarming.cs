@@ -84,6 +84,9 @@ public string WorkLabel { get; private set; } = "";
 
         private readonly Collider[] _overlapBuf = new Collider[16];
 
+        /// <summary>
+        /// Retrieves the nearest farm plot to the given position, using a cached result when the player hasn't moved.
+        /// </summary>
         private FarmPlot GetCachedNearestPlot(Vector3 pos)
         {
             // If the player hasn't moved significantly since last lookup, reuse cached plot.
@@ -234,6 +237,9 @@ public string WorkLabel { get; private set; } = "";
             return true;
         }
 
+        /// <summary>
+        /// Searches the player's inventory for any seed item and returns its id and associated crop.
+        /// </summary>
         private bool FindSeed(out string seedId, out FarmCrop crop)
         {
             seedId = null; crop = null;
@@ -266,6 +272,9 @@ public string WorkLabel { get; private set; } = "";
         #endregion
 
         #region Work
+        /// <summary>
+        /// Begins the timed farming job, initializing state and calculating the total duration based on the action.
+        /// </summary>
         private void StartWork()
         {
             IsBusy = true;
@@ -303,6 +312,9 @@ public string WorkLabel { get; private set; } = "";
             if (_workTimer >= _workTotal) CompleteWork();
         }
 
+        /// <summary>
+        /// Checks that the ongoing job is still valid (player hasn't moved, tools still present, etc.).
+        /// </summary>
         private bool StillValid()
         {
             switch (_busyAction)

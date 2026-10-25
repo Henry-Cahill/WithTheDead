@@ -30,25 +30,30 @@ namespace CloneZ
         /// <summary>A supply's level (what its icon fills to), colour and severity; false when it doesn't apply (no battery carried).</summary>
         public static bool Need(HudContext ctx, HudNeed need, out float level01, out Color color, out int severity)
         {
+            // Initialise defaults; will be overwritten per need
             level01 = 1f;
             color = HudUI.Ink;
             severity = 0;
             PlayerStats s = ctx.Stats;
+            // Choose which need to calculate based on the enum
             switch (need)
             {
                 case HudNeed.Water:
+                    // Water need requires player stats; if missing, indicate not applicable
                     if (s == null) return false;
                     level01 = 1f - s.Thirst;
                     severity = Level(s.Thirst, 0.6f, 0.85f);
                     color = Severity(s.Thirst, 0.6f, 0.85f);
                     return true;
                 case HudNeed.Food:
+                    // Food need also depends on player stats; abort if unavailable
                     if (s == null) return false;
                     level01 = 1f - s.Hunger;
                     severity = Level(s.Hunger, 0.6f, 0.85f);
                     color = Severity(s.Hunger, 0.6f, 0.85f);
                     return true;
                 case HudNeed.Warmth:
+                    // Warmth need needs stats; if missing, cannot compute
                     if (s == null) return false;
                     float t = s.Temperature;
                     level01 = t;
@@ -65,6 +70,7 @@ namespace CloneZ
                         color = critical ? HudUI.WithAlpha(Hot, HudUI.Pulse(5f, 0.35f)) : Hot;
                     }
                     return true;
+                // Battery need is handled here when other needs are not matched
                 default:
                     PlayerGear gear = ctx.Gear;
                     float b = gear != null ? gear.BatteryCharge01 : -1f;

@@ -191,6 +191,7 @@ namespace CloneZ
             DecorPalette.Apply();
         }
 
+        /// <summary>Selects the visual style and lighting parameters for a hub based on its identifier.</summary>
         private static Style StyleFor(HubDef hub)
         {
             switch (hub.Id)
@@ -620,6 +621,7 @@ namespace CloneZ
             go.AddComponent<Heater>();
         }
 
+        /// <summary>Creates point lights and decorative lamps at predefined positions in the hub.</summary>
         private static void BuildLights(Transform world, Style st)
         {
             Vector3[] spots =

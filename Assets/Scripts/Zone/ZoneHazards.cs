@@ -10,6 +10,9 @@ namespace CloneZ
     /// </summary>
     public static class ZoneExposure
     {
+        /// <summary>
+        /// Represents a single exposure mark that can modify character stats.
+        /// </summary>
         public sealed class Mark
         {
             public string Id, Name, Description;
@@ -146,6 +149,7 @@ namespace CloneZ
         /// <summary>Builds the Zone's hazards (anomalies and radiation spots) on the raid map.</summary>
         public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSiteMap site, System.Random rng)
         {
+            // Guard against missing zone, map, or no defined anomalies
             if (zone == null || map == null || zone.Anomalies.Length == 0) return;
             var root = new GameObject("Anomalies").transform;
             root.SetParent(world, false);
@@ -247,6 +251,7 @@ namespace CloneZ
         /// <summary>Initialises the Zone hazards module: registers items and subscribes to world‑hook events.</summary>
         public void Init()
         {
+            // Register items and event handlers needed for zone hazards
             PlayerRadiation.RegisterItems();
             DetectorDevice.RegisterItemVerbs();
             ArtifactBelt.RegisterItemVerbs();

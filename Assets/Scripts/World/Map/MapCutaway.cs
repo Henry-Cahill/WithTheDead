@@ -104,28 +104,48 @@ namespace CloneZ
         /// <summary>The buildings cut away right now (read only; for the harness and debugging).</summary>
         internal static IReadOnlyList<Building> Cut => s_Active;
 
+        /// <summary>Reset static state for the cutaway system (called on domain reload).</summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetStatics()
         {
+            // Clear the spatial hash cells that map building positions.
             s_Cells.Clear();
+            // Reset the collection of active MapCutaway sites.
             s_Sites.Clear();
+            // Remove any buildings currently marked as cut.
             s_Active.Clear();
+            // Clear pending rehash work queues.
             s_Rehash.Clear();
+            // Clear urgent rebuild requests.
             s_Urgent.Clear();
+            // Clear pending read requests for building height data.
             s_ToRead.Clear();
+            // Remove any pre‑cached overlay texture data.
             s_Overlays.Clear();
+            // Reset the prewarm buffer that speeds up repeated scans.
             System.Array.Clear(s_Prewarm, 0, PrewarmSlots);
+            // No buildings are currently cut; reset hold counters.
             s_PrewarmCount = 0;
+            // Abort any outstanding height‑reading background job.
             AbortHeightJob();
+            // Abort any overlay‑generation background job.
             AbortOverlayJob();
+            // Forget any interactable objects that were awaiting cut‑away processing.
             ForgetInteractables();
             OverlayBytes = HeightBytes = 0;
+            // Reset statistics counters for this session.
             SitesRegistered = SitesLetGo = MostRegistered = Scans = Cuts = 0;
+            // Reset overlay and hold counters.
             OverlaysMade = OverlaysEvicted = Holds = LongestHold = DoorsHidden = 0;
+            // Reset global counters.
             s_Count = 0;
+            // Reset the recorded maximum top height.
             s_MaxTop = 0f;
+            // Reset the current driver reference.
             s_Driver = null;
+            // No longer in isometric view.
             s_Iso = false;
+            // Reset next scan/sweep timers.
             s_NextScan = s_NextSweep = s_NextEvict = 0f;
         }
 
@@ -146,17 +166,25 @@ namespace CloneZ
                 b.Site = site;
                 b.Base = offset.y;
                 b.Pts = Moved(b.Local, offset);
+                // Compute the axis‑aligned bounding box of the moved footprint.
                 b.Bounds = BoundsOf(b.Pts);
+                // Choose the cover rectangle: use the fixture’s explicit cover if present, otherwise expand the building bounds.
                 b.Cover = b.LocalCover.width > 0f
                     ? new Rect(b.LocalCover.x + offset.x - CoverSlack, b.LocalCover.y + offset.z - CoverSlack,
                         b.LocalCover.width + 2f * CoverSlack, b.LocalCover.height + 2f * CoverSlack)
                     : new Rect(b.Bounds.xMin - CoverMargin, b.Bounds.yMin - CoverMargin, b.Bounds.width + 2f * CoverMargin, b.Bounds.height + 2f * CoverMargin);
+                // Insert the building into the spatial hash for fast lookup.
                 Hash(b);
+                // Update the site's highest point for later scan range calculations.
                 site.MaxTop = Mathf.Max(site.MaxTop, b.Base + b.Top);
+                // Increment the global building count.
                 s_Count++;
             }
+            // Record the highest point across all sites for the scan reach.
             s_MaxTop = Mathf.Max(s_MaxTop, site.MaxTop);
+            // Update the peak number of simultaneously registered buildings.
             MostRegistered = Mathf.Max(MostRegistered, s_Count);
+            // Ensure the driver object exists in play mode to drive per‑frame updates.
             if (Application.isPlaying && s_Driver == null) s_Driver = new GameObject("MapCutaway").AddComponent<MapCutawayDriver>();
         }
 
@@ -182,6 +210,7 @@ namespace CloneZ
 
         private static void MaxTopAgain()
         {
+            // Reset the recorded maximum top height.
             s_MaxTop = 0f;
             for (int i = 0; i < s_Sites.Count; i++)
                 if (!ReferenceEquals(s_Sites[i], null)) s_MaxTop = Mathf.Max(s_MaxTop, s_Sites[i].MaxTop);
@@ -222,20 +251,35 @@ namespace CloneZ
         internal static void Clear()
         {
             for (int i = s_Sites.Count - 1; i >= 0; i--) Forget(s_Sites[i]);
+            // Reset the collection of active MapCutaway sites.
             s_Sites.Clear();
+            // Remove any buildings currently marked as cut.
             s_Active.Clear();
+            // Clear the spatial hash cells that map building positions.
             s_Cells.Clear();
+            // Clear pending rehash work queues.
             s_Rehash.Clear();
+            // Clear urgent rebuild requests.
             s_Urgent.Clear();
+            // Clear pending read requests for building height data.
             s_ToRead.Clear();
+            // Remove any pre‑cached overlay texture data.
             s_Overlays.Clear();
+            // Reset the prewarm buffer that speeds up repeated scans.
             System.Array.Clear(s_Prewarm, 0, PrewarmSlots);
+            // No buildings are currently cut; reset hold counters.
             s_PrewarmCount = 0;
+            // Abort any outstanding height‑reading background job.
             AbortHeightJob();
+            // Abort any overlay‑generation background job.
             AbortOverlayJob();
+            // Forget any interactable objects that were awaiting cut‑away processing.
             ForgetInteractables();
+            // Reset global counters.
             s_Count = 0;
+            // Reset the recorded maximum top height.
             s_MaxTop = 0f;
+            // No longer in isometric view.
             s_Iso = false;
         }
 
@@ -301,7 +345,9 @@ namespace CloneZ
         {
             bool turned = !s_Iso || Mathf.Abs(Mathf.DeltaAngle(yaw, s_Yaw)) > 1f;
             bool jumped = (feet - s_Feet).sqrMagnitude > JumpDistance * JumpDistance;
+            // Reset all state before a full rescan when the survivor jumps or an immediate scan is forced.
             if (immediate || jumped) ResetAll(AllBits);
+            // Only reset wall‑related state when the view has rotated, to avoid lingering walls.
             else if (turned) ResetAll(WallBits);   // the walls turned to the camera are others now: no lingering
             if (!immediate && !turned && !jumped && now < s_NextScan) return;
             s_NextScan = now + ScanInterval;
@@ -335,7 +381,9 @@ namespace CloneZ
                 b.Occupied = false;
                 b.Active = false;
             }
+            // Remove any buildings currently marked as cut.
             s_Active.Clear();
+            // No longer in isometric view.
             s_Iso = false;
         }
 
@@ -353,29 +401,43 @@ namespace CloneZ
         // Finds what's in the way now and marks it seen.
         private static void Scan(Vector3 feet, float yawDeg, float pitchDeg, float camReach, bool walls, float now)
         {
+            // Convert yaw from degrees to radians for trigonometric functions.
             float yaw = yawDeg * Mathf.Deg2Rad;
+            // Unit vector of the camera's horizontal direction.
             var look = new Vector2(Mathf.Sin(yaw), Mathf.Cos(yaw));   // the camera's heading on the ground
+            // Vector pointing from survivor toward the camera.
             Vector2 back = -look;                                      // from the survivor toward the camera
+            // Perpendicular vector to define the sight corridor width.
             var side = new Vector2(back.y, -back.x);
+            // Tangent of the pitch angle, clamped to avoid extreme values.
             float tan = Mathf.Tan(Mathf.Clamp(pitchDeg, 10f, 89f) * Mathf.Deg2Rad);
+            // Survivor's foot position projected onto the X‑Z plane.
             var at = new Vector2(feet.x, feet.z);
             float y0 = feet.y;
             int facing = 0;
+            // Determine which cardinal directions face away from the camera enough to be considered.
             for (int g = 0; g < 4; g++)
                 if (Vector2.Dot(Cardinal(g), look) < 0.2f) facing |= 1 << g;
+            // How far ahead we need to scan, based on world top and camera pitch, with a little slack.
             float reach = Mathf.Clamp((s_MaxTop - y0) / tan, 0.5f, Mathf.Max(2f, camReach)) + Slack;
+            // Half‑width of the scan corridor, based on survivor size and view width, plus slack.
             float width = Mathf.Max(BodyHalfWidth, ViewHalfWidth) + Slack;
+            // Endpoints of the scan line, extended behind and ahead of the survivor.
             Vector2 a = at - back * (Behind + DoorwaySlack), c = at + back * reach;
+            // Convert world extents to spatial hash cell indices.
             int x0 = Cell(Mathf.Min(a.x, c.x) - width), x1 = Cell(Mathf.Max(a.x, c.x) + width);
             int z0 = Cell(Mathf.Min(a.y, c.y) - width), z1 = Cell(Mathf.Max(a.y, c.y) + width);
             int stamp = ++s_Stamp;
+            // Iterate over all cells intersecting the scan corridor.
             for (int z = z0; z <= z1; z++)
                 for (int x = x0; x <= x1; x++)
                 {
                     if (!s_Cells.TryGetValue(Key(x, z), out List<Building> cell)) continue;
+                    // Examine each building in the current cell.
                     for (int i = 0; i < cell.Count; i++)
                     {
                         Building b = cell[i];
+                        // already processed this scan
                         if (b.Stamp == stamp) continue;
                         b.Stamp = stamp;
                         if (!b.Measured) Measure(b);
@@ -389,6 +451,7 @@ namespace CloneZ
                         s_Active.Add(b);
                     }
                 }
+            // Pre‑warm any frequently accessed data for the next frame.
             Prewarm(at);
         }
 

@@ -240,17 +240,22 @@ var byKey = new Dictionary<string, FixtureSave>(fixtures.Count);
         /// <summary>Snapshots every fixture that has a <see cref="SaveKey"/>.</summary>
         public static void CaptureAll(List<FixtureSave> into)
         {
+            // Track which save keys have already been processed to avoid duplicates.
             var seen = new HashSet<string>();
+            // Iterate over every live fixture to capture its save data.
             for (int i = 0; i < All.Count; i++)
             {
                 Interactable f = All[i];
+                // Skip fixtures that don't have a persistent save key.
                 string key = f != null ? f.SaveKey : null;
                 if (key == null) continue;
+                // Emit a warning and skip this fixture if its key was already seen.
                 if (!seen.Add(key))
                 {
                     Debug.LogWarning("[CloneZ] Two fixtures share the save key " + key + "; only the first is saved.");
                     continue;
                 }
+                // Create a new fixture save record and ask the fixture to fill it with its current state.
                 var s = new FixtureSave { Key = key };
                 try { f.CaptureState(s); }
                 catch (Exception e) { Debug.LogWarning("[CloneZ] Could not save fixture " + key + ": " + e.Message); continue; }

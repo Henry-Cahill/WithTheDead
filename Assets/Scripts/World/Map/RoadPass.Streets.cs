@@ -112,11 +112,15 @@ namespace CloneZ
             for (int k = 0; k < right; k++) into.Add(0.5f - 0.5f * (k + 0.5f) / right);
         }
 
+        /// <summary>Processes each carriageway chain, generating its main surface, winter details, wear, and prop clearances.</summary>
+        /// <summary>Processes each carriageway chain, generating its main surface, winter details, wear, and prop clearances.</summary>
+        // Iterate each carriageway chain in the map.
         private static IEnumerable<string> Carriageways(Net net)
         {
             Look look = net.Look;
             foreach (Chain c in net.Chains)
             {
+                // Skip negligible chain length that wouldn't render.
                 if (c.To - c.From < 0.02f) continue;
                 Way w = c.W;
                 float y = RoadY + w.Order * 0.0003f;
@@ -129,12 +133,16 @@ namespace CloneZ
                     s_B[i] = EdgeAt(c, 1, s[i].S);
                 }
                 Band(net, s, s_A, s_B, y, y, BaseSurf(look, w), c.Lift);
+                // Only generate extra details in full‑detail mode.
                 if (net.Full)
                 {
+                    // Apply road wear like cracks and ruts.
                     Wear(net, c);
                     if (net.Site.StepDue) yield return "streets";
+                    // Add seasonal details (slush, tyre tracks, ruts).
                     WinterDetail(net, c);
                 }
+                // Register clear area for prop placement.
                 TakeChain(net, c);
                 if (net.Site.StepDue) yield return "streets";
             }
@@ -190,6 +198,9 @@ namespace CloneZ
         // The winter on a carriageway: slush along the edges (not across a side road's mouth), over the crown and
         // between the wheel tracks of a ploughed road; dark tyre tracks pressed into a packed one; two ruts down a farm
         // track. Every edge wanders a little, by noise over the ground that neighbouring chunks agree on.
+        /// <summary>Generates winter‑specific details (slush, tyre tracks, ruts) on a carriageway.
+        /// This runs only for full‑detail passes and varies by the way’s winter type.
+        /// </summary>
         private static void WinterDetail(Net net, Chain c)
         {
             Way w = c.W;
@@ -203,6 +214,7 @@ namespace CloneZ
             LaneFractions(c, s_Lanes);
             switch (w.Winter)
             {
+                // Process each side of the road for slush strips on ploughed surfaces.
                 case Winter.Ploughed:
                     for (int side = -1; side <= 1; side += 2)
                     {
@@ -327,6 +339,9 @@ namespace CloneZ
 
         // The road's surface kept clear of props: the carriageway's middle line between its trims and its half width,
         // in runs where the width holds steady.
+        /// <summary>Collects the central line of a road for prop‑clearance, handling runs of consistent width.
+        /// It buffers samples, detects width changes, and registers each run with the world’s take‑road system.
+        /// </summary>
         private static void TakeChain(Net net, Chain c)
         {
             SamplesOf(c, c.From, c.To, c.Ramps ? 3f : 0f, net.Samples2);
@@ -378,6 +393,9 @@ namespace CloneZ
 
         // A fixed map's roads past the edge: the same surfaces (no seam of colour at the edge), sidewalks flat, no
         // junction patches, kerbs or markings.
+        /// <summary>Generates road geometry and surfaces for map areas beyond the playable edge.
+        /// It mirrors interior road properties, creates road bands, and adds sidewalks or snow as appropriate.
+        /// </summary>
         private static void Scenery(Net net)
         {
             float half = net.Half;

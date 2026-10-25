@@ -67,9 +67,11 @@ namespace CloneZ
         }
 
 
+        /// <summary>Initialise references to gameplay components and subscribe to events.</summary>
         // The gameplay components are added after this one is created, so they're looked up here.
         private void Start()
         {
+            // Cache commonly‑used component references for quick access.
             _controller = GetComponent<PlayerController>();
             _combat = GetComponent<PlayerCombat>();
             _inventory = GetComponent<PlayerInventory>();
@@ -80,12 +82,17 @@ namespace CloneZ
             _builder = GetComponent<PlayerBuilder>();
             _farming = GetComponent<PlayerFarming>();
             _seat = GetComponent<PlayerSeat>();
+            // Store seat version to detect seat changes later.
             _seatVersion = _seat != null ? _seat.Version : 0;
+                        // Cache tool item definitions to avoid per‑frame lookups.
                         _hammerDef = ItemDatabase.Get(HammerId);
             _trowelDef = ItemDatabase.Get(TrowelId);
             _wateringCanDef = ItemDatabase.Get(WateringCanId);
+            // Flag that Start has completed; other methods will check this.
             _started = true;
+            // Hook up event callbacks now that all components are cached.
             Subscribe();
+            // Refresh reference to the local actor (may have changed between Awake and Start).
             _localActor = Actor.LocalPlayer;
 
             RefreshOutfit();
@@ -103,10 +110,13 @@ namespace CloneZ
 
         private void OnDisable() => Unsubscribe();
 
+        /// <summary>Subscribe to gameplay event callbacks.</summary>
         private void Subscribe()
         {
+            // Prevent double‑subscription if called multiple times.
             if (_subscribed) return;
             _subscribed = true;
+            // Hook combat callbacks if a combat component exists.
             if (_combat != null)
             {
                 _combat.OnSwing += HandleSwing;
@@ -115,18 +125,23 @@ namespace CloneZ
                 _combat.OnDryFire += HandleDryFire;
                 _combat.OnReload += HandleReload;
             }
+            // Hook health callbacks if a stats component exists.
             if (_stats != null)
             {
                 _stats.OnDamaged += HandleDamaged;
                 _stats.OnDied += HandleDied;
             }
+            // Listen for clothing changes to refresh the avatar's look.
             if (_clothing != null) _clothing.Changed += MarkLookDirty;
         }
 
+        /// <summary>Unsubscribe from gameplay event callbacks.</summary>
         private void Unsubscribe()
         {
+            // Guard against unsubscribing when not subscribed.
             if (!_subscribed) return;
             _subscribed = false;
+            // Remove combat event listeners.
             if (_combat != null)
             {
                 _combat.OnSwing -= HandleSwing;
@@ -135,11 +150,13 @@ namespace CloneZ
                 _combat.OnDryFire -= HandleDryFire;
                 _combat.OnReload -= HandleReload;
             }
+            // Remove health event listeners.
             if (_stats != null)
             {
                 _stats.OnDamaged -= HandleDamaged;
                 _stats.OnDied -= HandleDied;
             }
+            // Stop listening for clothing changes.
             if (_clothing != null) _clothing.Changed -= MarkLookDirty;
         }
 
