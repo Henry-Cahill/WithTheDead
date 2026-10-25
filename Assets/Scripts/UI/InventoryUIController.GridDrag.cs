@@ -33,6 +33,7 @@ namespace CloneZ
             public int GrabX, GrabY;        // the footprint cell held under the cursor
         }
 
+        /// <summary>Kinds of drop locations for a dragged item.</summary>
         private enum DropKind { None, Cell, Equip, Window }
 
         // Why a drop would be refused (the status line explains it on release).
@@ -60,12 +61,14 @@ namespace CloneZ
         private int _lastClickSlot = -1;
 
         #region Pointer events (from GridPointerRelay)
+        /// <summary>Handles pointer entering a UI element, showing tooltips or highlights based on drag state.</summary>
         internal void GridPointerEnter(GridPointerRelay r)
         {
             if (r == null || !IsOpen || !_gridMode) return;
             _hover = r;
             switch (r.Element)
             {
+                // Handle hover over an inventory tile.
                 case GridElement.Tile:
                 {
                     TileView t = TileFor(r);
@@ -76,6 +79,7 @@ namespace CloneZ
                     _tipOwner = r;
                     break;
                 }
+                // Handle hover over an equipment slot.
                 case GridElement.EquipSlot:
                 {
                     EquipView ev = EquipFor(r);
@@ -86,6 +90,7 @@ namespace CloneZ
                     _tipOwner = r;
                     break;
                 }
+                // Handle hover over a tab or other UI element.
                 default:
                 {
                     TabView tab = TabFor(r);
@@ -105,18 +110,21 @@ namespace CloneZ
             if (_hover == r) _hover = null;
             switch (r.Element)
             {
+                // Handle hover over an inventory tile.
                 case GridElement.Tile:
                 {
                     TileView t = TileFor(r);
                     if (t != null) t.Bg.color = IsDragSource(t) ? Faded(t.BaseColor) : t.BaseColor;
                     break;
                 }
+                // Handle hover over an equipment slot.
                 case GridElement.EquipSlot:
                 {
                     EquipView ev = EquipFor(r);
                     if (ev != null) ev.Bg.color = ev.BaseColor;
                     break;
                 }
+                // Handle hover over a tab or other UI element.
                 default:
                 {
                     TabView tab = TabFor(r);
@@ -148,12 +156,14 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Handles left‑clicks on UI elements, performing quick‑transfer or navigation actions.</summary>
         internal void GridPointerClick(GridPointerRelay r, PointerEventData e)
         {
             if (r == null || !IsOpen || !_gridMode || _drag.Active || e.button != PointerEventData.InputButton.Left) return;
             if (e.dragging || _dragEndFrame == Time.frameCount) return;   // the release that ended a drag isn't a click
             switch (r.Element)
             {
+                // Handle hover over an inventory tile.
                 case GridElement.Tile:
                 {
                     // Double-click — or Ctrl+click — sends the whole stack to the other window.
@@ -161,6 +171,7 @@ namespace CloneZ
                     if (t != null && (CtrlHeld() || IsDoubleClick(t.Stack, t.Ground, -1))) QuickTransfer(t);
                     break;
                 }
+                // Handle hover over an equipment slot.
                 case GridElement.EquipSlot:
                 {
                     EquipView ev = EquipFor(r);
@@ -289,6 +300,7 @@ namespace CloneZ
             MarkDirty();   // un-fades the source tile
         }
 
+        /// <summary>Ends a drag operation without moving the item (Esc, right‑click, or window close).</summary>
         private void EndDrag()
         {
             _drag.Active = false;
@@ -313,6 +325,7 @@ namespace CloneZ
                     if (!Holds(_openInventory, _drag.Stack)) return false;
                     _drag.Count = Mathf.Min(_drag.Count, _drag.Stack.Count);
                     return true;
+                // Handle hover over a tab or other UI element.
                 default:
                     return _drag.Ground != null && _drag.Ground.StillThere && _drag.Ground.Count > 0;
             }
@@ -358,15 +371,19 @@ namespace CloneZ
 
         // Over cells the ghost snaps onto them above a preview (green: all of it fits, amber: some of it,
         // red: none); anywhere else it simply follows the cursor.
+        /// <summary>Shows a preview of where the dragged item would land, with colour indicating fit.</summary>
         private void ShowDropPreview(Vector2 screen)
         {
             DropTarget t = ResolveDrop(screen);
             bool cell = false, wear = false;
+            // If the cursor is over a grid cell, calculate preview rectangle.
             if (t.Kind == DropKind.Cell)
             {
                 SectionView v = t.View;
+                // Determine the footprint of the dragged item (or merged stack) to size the preview.
                 Vector2Int f = InventoryLayout.Footprint(_drag.Def, _drag.Rotated);
                 int px = t.X, py = t.Y, pw = f.x, ph = f.y;
+                // If merging onto an existing stack, use its footprint instead of the dragged item's.
                 if (t.Merge != null)
                 {
                     Vector2Int mf = InventoryLayout.Footprint(t.Merge);
@@ -375,19 +392,26 @@ namespace CloneZ
                     pw = mf.x;
                     ph = mf.y;
                 }
+                // Show the cell preview and position the ghost at the cell's top‑left corner.
                 cell = ShowCellPreview(v, px, py, pw, ph, t.Fit);
+                // Position the ghost visual under the cursor when not over a cell.
                 _ghost.Rt.position = v.Grid.TransformPoint(new Vector3(px * Cell + 1f, -(py * Cell + 1f), 0f));
             }
             else
             {
+                // If the cursor is over an equipment slot, show the equip preview.
                 if (t.Kind == DropKind.Equip) wear = ShowEquipPreview(t);
+                // Convert screen position to local UI coordinates for the ghost when not over a cell or equip.
                 if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_gridRootRt, screen, null, out Vector2 local))
                     _ghost.Rt.anchoredPosition = local + new Vector2(-(_drag.GrabX * Cell + Cell * 0.5f), _drag.GrabY * Cell + Cell * 0.5f);
             }
+            // Hide the cell preview if not currently showing a valid cell preview.
             if (!cell && _preview.gameObject.activeSelf) _preview.gameObject.SetActive(false);
+            // Hide the equip preview if not currently showing a valid equip preview.
             if (!wear && _equipPreview.gameObject.activeSelf) _equipPreview.gameObject.SetActive(false);
         }
 
+        /// <summary>Shows a cell‑level preview rectangle while dragging.</summary>
         private bool ShowCellPreview(SectionView v, int x, int y, int w, int h, int fit)
         {
             // Clamped to the drawn cells (a growable grid simply grows once the item lands).
@@ -446,6 +470,7 @@ namespace CloneZ
 
         #region Dropping
         // What's under the cursor: a worn-slot tile, a cell of a section, or just a window's panel.
+        /// <summary>Determines what is under the cursor (cell, equip slot or window) and computes drop feasibility.</summary>
         private DropTarget ResolveDrop(Vector2 screen)
         {
             var t = new DropTarget { Slot = -1 };
@@ -506,6 +531,7 @@ namespace CloneZ
         // Would the held item fit at this cell, and how much of it? Mirrors what the inventory model will
         // accept on release: a move / split within the same grid, a transfer from the other window (the pack
         // minds weight; a container doesn't), or topping up a matching stack under the cursor.
+        /// <summary>Evaluates whether the dragged item fits at the candidate cell and how much of it can be placed.</summary>
         private void EvaluateCell(ref DropTarget t)
         {
             SectionView v = t.View;
@@ -620,6 +646,7 @@ namespace CloneZ
             MarkDirty();
         }
 
+        /// <summary>Handles dropping an item onto a grid cell, including merging, moving or splitting.</summary>
         private void DropOnCell(DropTarget t)
         {
             SectionView v = t.View;
@@ -652,6 +679,7 @@ namespace CloneZ
             Inventory src = _drag.From == GridSide.Player ? _player.Inventory : _openInventory;
             if (src == dest)
             {
+                // If merging onto an existing stack, use its footprint instead of the dragged item's.
                 if (t.Merge != null) dest.MergeInto(t.Merge, dest, _drag.Stack, MergeRoom(v, t.Merge), enforceWeight: false);
                 else if (_drag.Count >= _drag.Stack.Count) dest.MoveTo(_drag.Stack, s, t.X, t.Y, _drag.Rotated, weigh);
                 else dest.SplitTo(_drag.Stack, _drag.Count, s, t.X, t.Y, _drag.Rotated);
@@ -674,6 +702,7 @@ namespace CloneZ
                 case GridSide.Container:
                     if (win.Left) TakeIntoPack(_drag.Stack, _drag.Count);
                     break;
+                // Handle hover over a tab or other UI element.
                 default:
                     if (win.Left && _player.PickUp(_drag.Ground, _drag.Count) <= 0) GridStatus(_leftWin, "Too heavy \u2014 no room in the pack");
                     break;
@@ -686,6 +715,7 @@ namespace CloneZ
             {
                 case GridSide.Player: WearFromPack(_drag.Stack); break;
                 case GridSide.Container: WearFromContainer(_drag.Stack); break;
+                // Handle hover over a tab or other UI element.
                 default: WearFromGround(_drag.Ground); break;
             }
         }
@@ -708,6 +738,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Formats the reason a drop was rejected for display in the status line.</summary>
         private string RefusalText(DropTarget t)
         {
             switch (t.Why)
@@ -717,6 +748,7 @@ namespace CloneZ
                 case DropRefusal.StackFull: return "That stack is full";
                 case DropRefusal.NotWearable: return "That can't be worn";
                 case DropRefusal.AlreadyWorn: return "Already wearing one";
+                // Handle hover over a tab or other UI element.
                 default: return "No room there";
             }
         }
@@ -734,6 +766,7 @@ namespace CloneZ
                 case GridSide.Container:
                     if (Holds(_openInventory, t.Stack)) TakeIntoPack(t.Stack, t.Stack.Count);
                     break;
+                // Handle hover over a tab or other UI element.
                 default:
                     if (t.Ground != null && t.Ground.StillThere && _player.PickUp(t.Ground) <= 0)
                         GridStatus(_leftWin, "Too heavy \u2014 no room in the pack");
@@ -773,6 +806,7 @@ namespace CloneZ
             MarkDirty();
         }
 
+        /// <summary>Handles dropping a clothing item from the ground onto the player, passing through the pack.</summary>
         private void WearFromGround(WorldItem w)
         {
             if (w == null || w.Def == null || !w.Def.IsClothing || !w.StillThere || RefuseWornAlready(w.Def)) return;
@@ -783,6 +817,7 @@ namespace CloneZ
             MarkDirty();
         }
 
+        /// <summary>Creates a temporary stack in the pack to wear a garment, ensuring it passes through inventory weight checks.</summary>
         private ItemStack PassThroughPack(ItemDef def, float spawnHours, int condition, int timesRepaired, ItemExtra extra)
         {
             List<ItemStack> stacks = _player.Inventory.Stacks;
@@ -826,6 +861,7 @@ namespace CloneZ
             {
                 case GridSide.Player: PackMenu(options, t.Stack, t.InHand); break;
                 case GridSide.Container: ContainerMenu(options, t.Stack); break;
+                // Handle hover over a tab or other UI element.
                 default: GroundMenu(options, t.Ground); break;
             }
             int n = t.Shown.Count;
