@@ -36,9 +36,12 @@ namespace CloneZ
         // is ready (or can't be made: the walls are then cut whole); until then what's cut already, while the stand-in is made
         // first thing (a frame or two: holding the cut back that long beats showing bits of wall floating over a lifted roof,
         // or a frame's spike to make it at once).
+        /// <summary>Marks a building as ready for a cut, handling stand‑in creation and hold timing.</summary>
         private static int Ready(Building b, int mask)
         {
+            // Record the mask the cut is requesting for this building.
             b.Wanted = mask;
+            // When no walls, no stand‑in needed, or overlay already ready/failed, clear any hold timing and exit.
             if (b.Walls == null || !NeedsStandIn(b, mask) || OverlayReady(b) || b.OverlayFailed)
             {
                 if (b.HoldFrame >= 0)
