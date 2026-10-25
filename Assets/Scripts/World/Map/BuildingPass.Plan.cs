@@ -12,16 +12,22 @@ namespace CloneZ
     // out the same wherever and whenever it's built.
     internal static partial class BuildingPass
     {
+        /// <summary>Types of building archetypes used for procedural generation.</summary>
         internal enum Arch
         {
             House, Trailer, Shed, Garage, Barn, TobaccoBarn, Silo, Row, Store, Office, Apartments, Motel, Church, School,
             Civic, Courthouse, Hospital, Warehouse, Industrial, Rickhouse, Canopy, Greenhouse, Ruin, Parking,
         }
 
+        /// <summary>Main house styles for residential buildings.</summary>
         internal enum HouseStyle { None, Ranch, Cottage, Bungalow, Shotgun, TwoStorey, Foursquare, Farmhouse, Victorian, Cape }
+        /// <summary>Roof shapes used for most building types.</summary>
         internal enum RoofKind { Flat, Gable, Hip, Pyramid, Skillion, Gambrel, Round, Mansard }
+        /// <summary>Snow coverage options for roof rendering.</summary>
         internal enum SnowCover { Full, Partial, Bare }
+        /// <summary>Window types used across building facades.</summary>
         internal enum WindowKind { None, Sash, Picture, Storefront, Ribbon, Arched, Small, Band }
+        /// <summary>Door variants for different building uses.</summary>
         internal enum DoorKind { House, Shop, Double, Plain }
 
         private const int SaltPlan = 0x51A7, SaltWindowsLit = 0x11E7;
@@ -308,6 +314,7 @@ namespace CloneZ
             return area > 700f && rng.NextDouble() < 0.5 ? Arch.Warehouse : Arch.Barn;
         }
 
+        /// <summary>Utility for weighted random selection.</summary>
         private static int Pick(System.Random rng, params float[] weights)
         {
             float sum = 0f;
