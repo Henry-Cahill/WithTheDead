@@ -32,8 +32,11 @@ namespace CloneZ
 
             private readonly Dictionary<long, MapRegionIndex> _regions = new Dictionary<long, MapRegionIndex>();
 
+            /// <summary>Collect and report timing data for building streamed pieces in various configurations.</summary>
             private void ChunkTimings()
             {
+                // Header for the markdown table describing build step timings across configurations
+                // Build markdown header describing the timing table for streamed pieces across configurations
                 _md.Append("## Streamed pieces: build steps\n\nThe piece holding each place's middle, built the way the streamer builds it (`ChunkSteps`, ")
                     .Append("Full detail, every step timed back to back on the main thread; the waits while its meshes are packed on a worker don't count), ")
                     .Append("after a warm-up build of it, three times each (the middle total is shown, the range in brackets): with every building in the ")
@@ -45,6 +48,7 @@ namespace CloneZ
                     .Append("| piece | shells | total ms | slowest step | cutaway steps: Σ / max ms | interior plans ms | meshes ms | register ms | read ms ")
                     .Append("| objects | renderers | vertices |\n|---|---|--:|---|--:|--:|--:|--:|--:|--:|--:|--:|\n");
                 var targets = new[] { new[] { "start-centre", _place.name }, new[] { "lexington-downtown", "Lexington" }, new[] { "louisville-downtown", "Louisville" } };
+                // Create temporary root objects to hold streamed geometry for the benchmarks
                 Transform streamed = new GameObject("Streamed").transform, overhead = new GameObject("RaidOverhead").transform;
                 const int size = KentuckyMap.ChunkSize;
                 try
@@ -52,6 +56,7 @@ namespace CloneZ
                     MapCutaway.Clear();
                     foreach (string[] t in targets)
                     {
+                        // For each target location, find its map place and compute the chunk coordinates
                         MapPlace p = _build.FindPlace(t[1]);
                         if (p == null)
                         {
@@ -60,9 +65,11 @@ namespace CloneZ
                         }
                         int cx = (int)Math.Floor(p.x / size), cz = (int)Math.Floor(p.z / size);
                         var middle = new Vector3((float)((cx + 0.5) * size - p.x), 0f, (float)((cz + 0.5) * size - p.z));
+                        // Build a piece once to warm up caches, then unload it before timing runs
                         UnloadPiece(BuildPiece(p, cx, cz, middle, streamed, overhead));
                         for (int config = 0; config < Configs.Length; config++)
                         {
+                            // For each configuration (batched, baked, queued) run three builds and keep the middle timing as representative
                             MapCutaway.OwnShells = config != 0;
                             CutawayPass.Deferred = config == 2;
                             // Three builds; the one with the middle total is reported (one build's steps are noisy).
@@ -73,13 +80,16 @@ namespace CloneZ
                                 {
                                     Piece piece = BuildPiece(p, cx, cz, middle, streamed, overhead);
                                     rounds.Add(piece);
+                                    // Hide earlier rounds so they don't interfere with later timing
                                     if (round < 2) HideRound(piece);
                                 }
+                                // Sort by total time and pick the median piece for reporting
                                 rounds.Sort((x, y) => x.TotalMs.CompareTo(y.TotalMs));
                                 ReportPiece(t[0] + " " + cx + "_" + cz, config, rounds[1], rounds[0].TotalMs, rounds[2].TotalMs);
                             }
                             finally
                             {
+                                // Ensure all temporary pieces are cleaned up even if a build fails
                                 foreach (Piece piece in rounds) UnloadPiece(piece);
                             }
                         }
@@ -87,6 +97,9 @@ namespace CloneZ
                 }
                 finally
                 {
+                    // After each configuration we restore the global cutaway state and destroy the temporary roots
+                    // Restore global state after finishing all configurations for this target
+                    // Clean up after the entire ChunkTimings operation for all targets
                     MapCutaway.OwnShells = true;
                     CutawayPass.Deferred = true;
                     MapCutaway.Clear();
@@ -103,10 +116,12 @@ namespace CloneZ
                 if (piece.Over != null) piece.Over.SetActive(false);
             }
 
+            /// <summary>Generate a markdown table row reporting timings and mesh stats for a piece.</summary>
             private void ReportPiece(string label, int config, Piece piece, double fastest, double slowestTotal)
             {
                 double cutSum = 0, cutMax = 0, plans = 0, meshes = 0, slowest = 0;
                 string slowestName = "";
+                // Iterate over each recorded step, aggregating cutaway, interior and mesh times and finding the slowest step
                 foreach (KeyValuePair<string, double> s in piece.Steps)
                 {
                     if (s.Key == "cutaway")
@@ -127,15 +142,19 @@ namespace CloneZ
                     shells = piece.Site.Buildings.Count;
                     piece.Root.SetActive(true);
                     piece.Over.SetActive(true);
+                    // Register the piece's buildings into the cutaway and time how long it takes
                     var sw = Stopwatch.StartNew();
                     piece.Site.Register();
                     register = sw.Elapsed.TotalMilliseconds;
+                    // Resolve all cutaway geometry and time the read step
                     sw.Restart();
                     MapCutaway.ResolveAll();
                     read = sw.Elapsed.TotalMilliseconds;
                 }
+                // Count meshes, renderers and vertices for both the piece's main and overhead objects
                 Count(piece.Root.transform, out int o1, out int r1, out long v1);
                 Count(piece.Over.transform, out int o2, out int r2, out long v2);
+                // Append a markdown row with all collected timing and mesh statistics
                 _md.Append("| ").Append(label).Append(" | ").Append(Configs[config]).Append(config > 0 ? " (" + shells + ")" : "").Append(" | ")
                     .Append(F1(piece.TotalMs)).Append(" (").Append(F0(fastest)).Append("-").Append(F0(slowestTotal)).Append(") | ")
                     .Append(slowestName).Append(' ').Append(F1(slowest)).Append(" | ")
@@ -149,6 +168,9 @@ namespace CloneZ
             // Four streamed pieces of Louisville, built as KentuckyStreamer builds them: their buildings register when the
             // pieces are switched on, one inside them is cut, its piece is let go of while cut and built again, and they all
             // go with their pieces (here unregistered by hand: nothing runs OnDisable in edit mode). Nothing may be left.
+            /// <summary>
+            /// Generate a markdown report that builds streamed pieces, then loads, cuts, unloads and reloads them to verify no leftovers.
+            /// </summary>
             private void Pieces()
             {
                 MapPlace lou = _build.FindPlace("Louisville");
@@ -303,6 +325,9 @@ namespace CloneZ
             }
 
             // KentuckyStreamer's Begin, Steps and Finish for one piece (no loot roll, no NavMesh), every step timed.
+            /// <summary>
+            /// Build a single streamed piece, timing each step, and optionally register, cut, and read its meshes.
+            /// </summary>
             private Piece BuildPiece(MapPlace place, int cx, int cz, Vector3 middle, Transform streamed, Transform overhead)
             {
                 const int size = KentuckyMap.ChunkSize;
@@ -311,17 +336,20 @@ namespace CloneZ
                 long key = ((long)rx << 32) | (uint)rz;
                 if (!_regions.TryGetValue(key, out MapRegionIndex region))
                     _regions[key] = region = new MapRegionIndex(_build.HasRegion(rx, rz) ? _build.LoadRegion(rx, rz) : null, rx, rz, _build.RegionSize, size);
+                // Create GameObjects that will hold the piece's geometry and its overhead objects
                 string name = "Piece " + cx + "_" + cz;
                 var piece = new Piece { Cx = cx, Cz = cz, Root = new GameObject(name), Over = new GameObject(name) };
                 piece.Root.SetActive(false);
                 piece.Root.transform.SetParent(streamed, false);
                 piece.Over.SetActive(false);
                 piece.Over.transform.SetParent(overhead, false);
+                // Set up the job that drives KentuckyMap's chunk building for this piece
                 var job = new KentuckyMap.ChunkJob
                 {
                     Build = _build, Region = region, Place = place.name, Cx = cx, Cz = cz, Seed = unchecked(_zone.LayoutSeed * 486187739 + cx * 73856093 ^ cz * 19349663),
                     Root = piece.Root.transform, Overhead = piece.Over.transform, Offset = middle, Detail = KentuckyMap.Detail.Full,
                 };
+                // Swap global state so that the chunk builder writes into this piece's collections
                 List<Mesh> outerMeshes = RaidMesh.CreatedMeshes;
                 List<string> outerSigns = DecorTextures.SignsUsed;
                 Vector3 outerUv = RaidMesh.PlanarOrigin;
@@ -340,6 +368,7 @@ namespace CloneZ
                 double waited = 0;
                 try
                 {
+                    // Iterate over each chunk step, measuring elapsed time; handle the special WaitStep where meshes are packed async
                     using (IEnumerator<string> steps = KentuckyMap.ChunkSteps(job).GetEnumerator())
                         while (true)
                         {
@@ -373,6 +402,7 @@ namespace CloneZ
                     piece.TotalMs = total.Elapsed.TotalMilliseconds - waited;
                     piece.Emitted = CutawayPass.Emitted - emitted;
                     piece.EmitTicks = CutawayPass.EmitTicks - emitTicks;
+                    // Restore the original global state so later builds are unaffected
                     RaidMesh.CreatedMeshes = outerMeshes;
                     DecorTextures.SignsUsed = outerSigns;
                     RaidMesh.PlanarOrigin = outerUv;
@@ -380,6 +410,7 @@ namespace CloneZ
                     ItemDatabase.LootGate = gate;
                     ItemDatabase.LootRolled = rolled;
                 }
+                // Position the piece at its calculated middle point and enable it for later use
                 piece.Root.transform.position = middle;
                 piece.Over.transform.position = middle;
                 piece.Root.SetActive(true);
