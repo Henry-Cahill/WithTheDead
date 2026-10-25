@@ -70,11 +70,17 @@ namespace CloneZ
             if (rural && MapStyle.Unit(id, SaltWindbreak) < 0.4f) Windbreak(p, f, hf);
         }
 
+        /// <summary>
+        /// Attempts to place a single yard tree of the given slot for a house.
+        /// Returns true if a tree was successfully planted.
+        /// </summary>
         private static bool YardTree(Planting p, Footprint f, NaturePlan.HouseFrame hf, Slot slot, float side, long key, bool inside)
         {
+            // Helper to fetch deterministic per‑tree random values used for placement variation.
             float u(int k) => MapStyle.Unit(key, SaltYard + 10 + k);
             float t, n, wall, room;
             Mix mix;
+            // Choose placement parameters (position, spacing, tree variety) based on which yard slot is being processed.
             switch (slot)
             {
                 case Slot.FrontShade:
@@ -113,10 +119,15 @@ namespace CloneZ
                     mix = FarmMix; wall = 4f; room = 2.0f;
                     break;
             }
+            // Convert the chosen t/n coordinates into world space.
             Vector2 at = hf.At(t, n);
+            // If the tree is inside the playable square, ensure it does not collide with other yard objects.
             if (inside && !YardClear(p, at, room, wall)) return false;
+            // Pick a tree species based on the random mix for this slot.
             TreeKind kind = mix.Pick(MapStyle.Unit(key, SaltKind));
+            // Slightly enlarge front shade and far‑back trees for visual variety.
             float scale = slot == Slot.FrontShade || slot == Slot.BackFar ? 1.05f : 1f;
+            // Plant the tree with the calculated parameters.
             return Plant(p, at, kind, HeightOf(kind, key, scale), key, room, TreeTier.Full, false);
         }
 
@@ -143,6 +154,9 @@ namespace CloneZ
 
         // Evergreen bushes along the wall that faces the street, a metre or two apart, the porch and the door left clear (on
         // most homes, and on the grounds' buildings that get them).
+        /// <summary>
+        /// Places a line of evergreen shrubs along the front of a house when the style calls for it.
+        /// </summary>
         private static void Foundation(Planting p, Footprint f, NaturePlan.HouseFrame hf, bool always = false)
         {
             long id = f.Data.id;
@@ -254,6 +268,9 @@ namespace CloneZ
 
         // The lawns round the churches, schools, the courthouse, the town hall, the library and the like: big shade trees
         // and evergreens in front, beside and behind, where there's room off the street, and yews along the front.
+        /// <summary>
+        /// Grows trees and shrubs in civic building lawns, adding shade trees, evergreens and front‑row yews.
+        /// </summary>
         private static IEnumerable<string> Grounds(Planting p)
         {
             var list = new List<Footprint>();
