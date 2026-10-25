@@ -108,8 +108,12 @@ namespace CloneZ
         public int AddAt(ItemDef def, int count, GridSection section, int x, int y, bool rotated,
             bool enforceWeight = true, float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0, ItemExtra extra = null)
         {
+            // Validate inputs and ensure layout/section exist.
             if (def == null || count <= 0 || Layout == null || section == null) return 0;
+            // Clamp count to a sensible maximum: at most one stack's worth.
+            // Limit count to one stack's max size; ensures we don't over-add.
             count = Mathf.Min(count, Mathf.Max(1, def.MaxStack));
+            // If weight enforcement is on, ensure there is enough overall and section capacity for the items.
             if (enforceWeight)
             {
                 float room = MaxWeight - CurrentWeight;
@@ -117,8 +121,10 @@ namespace CloneZ
                 if (def.Weight > 0f) count = Mathf.Min(count, Mathf.FloorToInt((room + 1e-4f) / def.Weight));
                 if (count <= 0) return 0;
             }
+            // Verify the layout can accommodate the new stack at the requested spot with the given rotation.
             if (!Layout.FitsNew(def, def.Weight * count, section, x, y, rotated, enforceWeight)) return 0;
 
+            // Build the new stack and place it on the layout.
             ItemStack ns = NewStack(def, spawnHours, condition, timesRepaired, extra);
             ns.Count = count;
             InventoryLayout.Assign(ns, section, x, y, rotated);
@@ -185,20 +191,28 @@ namespace CloneZ
         /// new stack there. Returns the amount actually moved.</summary>
         public int TransferToCell(Inventory other, ItemStack stack, int count, GridSection section, int x, int y, bool rotated, bool enforceWeight = true)
         {
+            // Ensure both inventories and the source stack are valid before proceeding.
             if (other == null || stack == null || other.Layout == null || !Stacks.Contains(stack)) return 0;
+            // Clamp count to the amount actually present in the stack.
             count = Mathf.Min(count, stack.Count);
             if (count <= 0) return 0;
 
+            // Look for an existing stack at the target cell.
             ItemStack there = other.Layout.StackAt(section, x, y);
+            // If there's a stack there and it's a different one, try to merge if same item type.
             if (there != null && there != stack)
                 return there.Def == stack.Def ? other.MergeInto(there, this, stack, count, enforceWeight) : 0;
 
+            // If the destination inventory is the same as the source, either move the whole stack or split it.
             if (other == this)
             {
+                // Moving the whole stack to a new spot.
                 if (count >= stack.Count) return MoveTo(stack, section, x, y, rotated, enforceWeight) ? count : 0;
+                // Splitting part of the stack into a new spot.
                 return SplitTo(stack, count, section, x, y, rotated) != null ? count : 0;
             }
 
+            // Otherwise, add a new stack to the other inventory and remove the transferred amount from this one.
             int moved = other.AddAt(stack.Def, count, section, x, y, rotated, enforceWeight, stack.SpawnHours,
                 stack.Def != null && stack.Def.IsDamageable ? stack.Condition : -1, stack.TimesRepaired, stack.Extra);
             if (moved > 0) Remove(stack, moved);
