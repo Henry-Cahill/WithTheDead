@@ -240,6 +240,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Creates a small shrub with foliage clumps and optional flower blossoms.</summary>
         private static void Shrub(RaidMesh m, System.Random rng, Vector3 at)
         {
             float s = 0.75f + (float)rng.NextDouble() * 0.4f;
