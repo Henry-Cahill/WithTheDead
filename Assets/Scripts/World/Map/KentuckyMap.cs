@@ -65,6 +65,7 @@ namespace CloneZ
             MapGameplay.ForgetMap();
             StreetLamp.ForgetSwitches();
             if (zone.RealStatewide) return BuildStatewide(world, zone, out why);
+            ForgetLot();
             MapBuild build = WorldStore.OpenCurrent(out why);
             if (build == null) return null;
             float half = Mathf.Clamp(zone.RealHalfSize, 60f, 400f);

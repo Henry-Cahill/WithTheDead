@@ -238,7 +238,22 @@ namespace CloneZ
         /// the survivor's spawn on <paramref name="info"/> from the square's data.</summary>
         internal void BuildStart(float half, RaidMapInfo info)
         {
+            IEnumerator<float> steps = BuildStartSteps(half, info);
+            while (steps.MoveNext()) { }
+        }
+
+        /// <summary>The start square's build so far, as a stage of the passes (see <see cref="KentuckyMap.StageOf"/>).</summary>
+        internal string StartStage { get; private set; } = "";
+
+        /// <summary>As <see cref="BuildStart"/>, a step at a time: yields how far through the start square it is (0 to 1)
+        /// after every step of every piece, so a loading screen can show the town going up. The square's data is read
+        /// first, and the lot asked for (the hub's bar: <see cref="KentuckyMap.WantLot"/>) is kept clear in every piece.</summary>
+        internal IEnumerator<float> BuildStartSteps(float half, RaidMapInfo info)
+        {
+            var start = new KentuckyMap.Area(_build, _place, half, half, RegionsAround);
+            KentuckyMap.PlanLot(start, half);
             int cx0 = ChunkX(-half), cx1 = ChunkX(half), cz0 = ChunkZ(-half), cz1 = ChunkZ(half);
+            int total = (cx1 - cx0 + 1) * (cz1 - cz0 + 1), done = 0;
             for (int cz = cz0; cz <= cz1; cz++)
                 for (int cx = cx0; cx <= cx1; cx++)
                 {
@@ -249,6 +264,7 @@ namespace CloneZ
                     _pinned++;
                     // Timed as the streamer times its steps: the start teaches it what a Full piece's steps cost.
                     string before = Starting;
+                    int steps = 0;
                     while (true)
                     {
                         double t0 = Now;
@@ -256,10 +272,15 @@ namespace CloneZ
                         Learn(c, before, (Now - t0) * 1000.0);
                         if (!more) break;
                         before = c.LastStep;
+                        StartStage = c.LastStep;
+                        steps++;
+                        // A piece's steps aren't counted beforehand: its share creeps towards whole as they come.
+                        yield return (done + 0.95f * steps / (steps + 40f)) / total;
                     }
                     Finish(c);
+                    done++;
+                    yield return (float)done / total;
                 }
-            var start = new KentuckyMap.Area(_build, _place, half, half, RegionsAround);
             KentuckyMap.PlanStart(start, half, info, StartFree);
             foreach (Chunk c in _chunks.Values) c.Job = null;   // the start's sites were kept for the spawn only
             _started = true;
@@ -292,6 +313,7 @@ namespace CloneZ
         /// survivors in the background.</summary>
         internal void BakeNow()
         {
+            if (_navReady) return;   // baked already (once is all the start needs; the rest is kept up in the background)
             _navSettings = NavMesh.GetSettingsByID(AgentType);
             if (_navSettings.agentTypeID == -1) _navSettings.agentTypeID = AgentType;
             _navSettings.minRegionArea = 2f;

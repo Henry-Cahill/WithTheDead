@@ -9,7 +9,8 @@ namespace CloneZ
     /// A lightweight weather simulation. Cycles between clear, overcast, fog, rain
     /// and storm, easing precipitation and fog intensities so transitions are gradual.
     /// Rain darkens the sky (feeding <see cref="TimeOfDay"/>), thickens the fog, spawns a
-    /// code-built rain particle effect that trails the camera, and — like Project
+    /// code-built rain particle effect that trails the camera (never over a building's interior,
+    /// and none in view while the survivor is indoors), and — like Project
     /// Zomboid — cuts down how far the zombies can see.
     ///
     /// On a winter raid (<see cref="Climate.Winter"/>) the sky starts low (overcast or
@@ -59,7 +60,10 @@ namespace CloneZ
 
         private Camera _cam;
         private ParticleSystem _rain;
-        private ParticleSystem.EmissionModule _rainEmission;
+        private ParticleSystem.EmitParams _rainEmit;
+        private float _rainToEmit;
+        private bool _rainIndoors;
+        private readonly RoofMap _roofs = new RoofMap();
 
         private void Awake()
         {
@@ -220,6 +224,11 @@ namespace CloneZ
         }
 
         #region Rain effect
+        // The rain's drops: born in a box this far across and this high over the view's focus, falling this fast
+        // (and drifting with the wind) for this long, emitted by hand so none are born over a roof.
+        private const float RainBox = 44f, RainHeight = 13f, RainFall = 28f, RainDrift = -3.5f, RainLife = 1.1f;
+        private const float RainPerSecond = 1500f;
+
         /// <summary>Initialises the rain particle system used for precipitation effects.</summary>
         private void BuildRain()
         {
@@ -237,7 +246,7 @@ namespace CloneZ
             // Enable looping so the rain never stops on its own
             main.loop = true;
             // Lifetime of each droplet particle, matching the height of the volume box
-            main.startLifetime = 1.1f;
+            main.startLifetime = RainLife;
             // Speed zero so particles stay static relative to the volume; velocity later moves them
             main.startSpeed = 0f;
             // Visual size of each rain drop sprite
@@ -251,20 +260,11 @@ namespace CloneZ
             // No gravity; we manually set velocity for a consistent fall speed
             main.gravityModifier = 0f;
 
-            // Set up emission module; start with zero rate and control it later
+            // Emitted by hand (ApplyRain), so the columns over a building's interior can be skipped.
             var emission = _rain.emission;
-            // will be driven by intensity each frame
-            emission.rateOverTime = 0f;
-            // keep reference for fast updates in ApplyRain
-            _rainEmission = emission;
-
-            // Configure the shape of the emission volume as a wide shallow box around the player
+            emission.enabled = false;
             var shape = _rain.shape;
-            shape.shapeType = ParticleSystemShapeType.Box;
-            // Width and depth cover a large area; height is thin because particles are generated at top
-            shape.scale = new Vector3(44f, 1f, 44f);
-            // Position the box above the player so rain appears to fall from the sky
-            shape.position = new Vector3(0f, 13f, 0f);
+            shape.enabled = false;
 
             // Velocity over lifetime adds a downward and slight horizontal drift to particles
             var vel = _rain.velocityOverLifetime;
@@ -272,8 +272,8 @@ namespace CloneZ
             vel.enabled = true;
             vel.space = ParticleSystemSimulationSpace.World;
             // Negative Y makes particles fall; X adds slight sideways motion for realism
-            vel.y = new ParticleSystem.MinMaxCurve(-28f);
-            vel.x = new ParticleSystem.MinMaxCurve(-3.5f);
+            vel.y = new ParticleSystem.MinMaxCurve(-RainFall);
+            vel.x = new ParticleSystem.MinMaxCurve(RainDrift);
 
             // Configure renderer for stretched billboard particles to look like rain streaks
             var renderer = go.GetComponent<ParticleSystemRenderer>();
@@ -287,6 +287,7 @@ namespace CloneZ
             // Align particles to view direction so streaks face the camera correctly
             renderer.alignment = ParticleSystemRenderSpace.View;
 
+            _rainEmit = new ParticleSystem.EmitParams { startLifetime = RainLife, applyShapeToPosition = false, velocity = Vector3.zero };
             // Start the particle system now that it's fully configured
             _rain.Play();
         }
@@ -310,15 +311,53 @@ namespace CloneZ
         {
             if (_rain == null) return;
             if (_cam == null) _cam = Camera.main;
+            Vector3 centre = _rain.transform.position;
             if (_cam != null)
             {
                 // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
                 // centres on the point the view looks at; in the close views, on the camera itself.
                 bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
-                _rain.transform.position = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
+                centre = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
+                _rain.transform.position = centre;
+            }
+
+            // No rain indoors: none is born over a building's interior, and while the survivor is inside one, none falls
+            // in view at all (from above, the drops over the street would streak across the room).
+            Actor me = Actor.LocalPlayer;
+            float ground = me != null ? me.transform.position.y : centre.y;
+            bool indoors = me != null && Shelter.Count > 0 && Shelter.IsSheltered(me.transform.position + Vector3.up);
+            if (indoors != _rainIndoors)
+            {
+                _rainIndoors = indoors;
+                if (indoors) _rain.Clear();
             }
             // Only liquid rain draws streaks — falling snow is drawn by the vision effects instead.
-            _rainEmission.rateOverTime = RainIntensity * 1500f;
+            float rate = indoors ? 0f : RainIntensity * RainPerSecond;
+            _rainToEmit += rate * Time.deltaTime;
+            int n = (int)_rainToEmit;
+            _rainToEmit -= n;
+            if (n > 0) EmitRain(n, centre, ground);
+        }
+
+        // Drops anywhere in the box, high over the focus, except where the column they fall down (from where they're
+        // born to where the wind sets them down) passes through a building's interior.
+        private void EmitRain(int count, Vector3 centre, float ground)
+        {
+            int room = _rain.main.maxParticles - _rain.particleCount;
+            if (count > room) count = room;
+            if (count <= 0) return;
+            float half = RainBox * 0.5f;
+            float top = centre.y + RainHeight;
+            float drift = RainDrift * (top - ground) / RainFall;
+            _roofs.Cover(Rect.MinMaxRect(centre.x - half + Mathf.Min(0f, drift), centre.z - half, centre.x + half + Mathf.Max(0f, drift), centre.z + half), 0f);
+            for (int i = 0; i < count; i++)
+            {
+                float x = centre.x + Random.Range(-half, half);
+                float z = centre.z + Random.Range(-half, half);
+                if (_roofs.CoveredAlong(x, z, drift, 0f)) continue;
+                _rainEmit.position = new Vector3(x, top, z);
+                _rain.Emit(_rainEmit, 1);
+            }
         }
 
         // An occasional lightning flash during a storm.

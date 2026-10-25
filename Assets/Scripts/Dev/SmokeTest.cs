@@ -4,22 +4,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace CloneZ
 {
     /// <summary>
     /// An automated smoke test, inert unless the game (or a batch-mode editor in play mode) is started with
-    /// <c>-clonez-smoke solo|hunter|host|client</c>. It plays through the real flows — makes a character, walks into
+    /// <c>-clonez-smoke solo|hunter|host|client|lobby</c>. It plays through the real flows — makes a character, walks into
     /// the bar, deploys into a Zone — and pokes the systems (a grenade, a drone, a car, a camp gate and a breaching
     /// charge, the tablet, cuffs, the economy; as a hunter, claws and a trick; as host and client, a networked raid),
-    /// counting every error and exception the game logs. It uses its own profile file and never touches the
-    /// player's. Results are logged as "[Smoke] ..." lines; the process exits with 0 (clean) or 2 (errors).
+    /// counting every error and exception the game logs. <c>lobby</c> plays the starter lobby in the town instead: into
+    /// the Kettle from the title screen, out of its front door into the raid where you stand, and back through an exit;
+    /// with <c>-clonez-smoke-shots &lt;dir&gt;</c> it photographs each step. It uses its own profile file and never touches
+    /// the player's. Results are logged as "[Smoke] ..." lines; the process exits with 0 (clean) or 2 (errors).
     /// </summary>
     public sealed class SmokeTest : MonoBehaviour
     {
         private const ushort Port = 7791;
         private static string s_Mode;
         private static int s_Errors;
+        private static string s_ShotDir;
+        private static int s_SceneLoads;
         private static readonly List<string> s_FirstErrors = new List<string>();
         private readonly List<string> _checks = new List<string>();
         private int _failed;
@@ -35,6 +40,13 @@ namespace CloneZ
             s_Mode = args[i + 1].ToLowerInvariant();
             s_Errors = 0;
             s_FirstErrors.Clear();
+            int shots = Array.IndexOf(args, "-clonez-smoke-shots");
+            if (shots >= 0 && shots + 1 < args.Length)
+            {
+                s_ShotDir = args[shots + 1];
+                try { Directory.CreateDirectory(s_ShotDir); } catch { s_ShotDir = null; }
+            }
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, how) => s_SceneLoads++;
             ProfileStore.PathOverride = "smoke_" + s_Mode + "_profile.json";
             try { if (File.Exists(ProfileStore.FilePath)) File.Delete(ProfileStore.FilePath); } catch { }
             Application.logMessageReceived += OnLog;
@@ -163,6 +175,7 @@ namespace CloneZ
             {
                 case "host": yield return Host(); break;
                 case "client": yield return Client(); break;
+                case "lobby": yield return Lobby(); break;
                 default: yield return Solo(s_Mode == "hunter"); break;
             }
             Finish();
@@ -440,6 +453,379 @@ namespace CloneZ
             Try("quest progress", () => QuestBook.Apply("kill:human", 1f));
             yield return new WaitForSeconds(3f);
         }
+
+        #region The lobby in the town
+        // The starter lobby: the title screen, into the Kettle under the loading card (the town built a step at a time), the
+        // bar standing on its clear lot in Bardstown, walking out of its front door into the raid where you stand (no
+        // reload), and back through an exit to the bar again. With -clonez-smoke-shots <dir>, pictures of each.
+        private IEnumerator Lobby()
+        {
+            // The title, rebuilt so the runner made above has its card.
+            var boot = FindAnyObjectByType<GameBootstrapper>();
+            MainMenuController old = FindAnyObjectByType<MainMenuController>();
+            if (old != null) Destroy(old.gameObject);
+            yield return null;
+            var menu = new GameObject("MainMenu").AddComponent<MainMenuController>();
+            menu.Bind(boot);
+            yield return new WaitForSeconds(1.5f);
+            Shot("01-title", null);
+
+            // Into the Kettle the way the title screen goes.
+            int loadsBefore = s_SceneLoads;
+            float t0 = Time.realtimeSinceStartup;
+            Try("into the Kettle", () => typeof(MainMenuController).GetMethod("EnterHub", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(menu, null));
+            yield return null;
+            yield return null;
+            yield return null;
+            Check("loading card up", LoadingScreen.Showing);
+            Shot("02-loading", null);
+            int frames = 0;
+            while (!(GameSession.IsHub && Actor.LocalPlayer != null) && Time.realtimeSinceStartup - t0 < 180f)
+            {
+                frames++;
+                if (frames == 120) Shot("02b-loading-progress", null);
+                yield return null;
+            }
+            float secs = Time.realtimeSinceStartup - t0;
+            Check("hub up", GameSession.IsHub && Actor.LocalPlayer != null, secs.ToString("0.0") + " s");
+            Check("the Kettle stands in the town", KettleLobby.Active && KentuckyStreamer.Active != null,
+                KettleLobby.Active ? "lot " + KentuckyMap.ReservedLot.Center + " on " + KentuckyMap.ReservedLot.Street : "standalone (" + KentuckyMap.LotWhy + ")");
+            Check("the town went up a step at a time under the card", frames > 30, frames + " frames in " + secs.ToString("0.0") + " s");
+            if (!KettleLobby.Active) yield break;
+            yield return Until(() => !LoadingScreen.Showing, 10f);
+            Check("loading card gone", !LoadingScreen.Showing);
+            yield return new WaitForSeconds(2.5f);
+
+            Actor me = Actor.LocalPlayer;
+            Transform room = KettleLobby.Room;
+            Check("survivor inside the bar", KettleLobby.Inside(me.transform.position), "at " + me.transform.position);
+            Check("hub rules hold in the bar", GameSession.IsHub && HubRules.SafeZone && ExtractionManager.Instance == null);
+            List<string> intruders = TownInsideBar(room);
+            Check("nothing of the town stands in the bar", intruders.Count == 0, intruders.Count == 0 ? "clear" : string.Join(", ", intruders));
+            Check("stations and keepers", room.GetComponentsInChildren<HubStation>().Length >= 12 && room.GetComponentsInChildren<HubNpc>().Length >= 10,
+                room.GetComponentsInChildren<HubStation>().Length + " stations, " + room.GetComponentsInChildren<HubNpc>().Length + " people");
+            Check("sheltered inside", Shelter.IsSheltered(me.transform.position + Vector3.up));
+            Check("the town's loot is the raid's (found in raid)", TownLootFound(room, out string loot), loot);
+            Check("no anomaly or radiation in the safe zone round the bar", SafeZoneClear(out string hazards), hazards);
+            Check("no anomaly in the Rusty Kettle, and none can be put there", KettleClear(room, out string kettle), kettle);
+            RaidMapInfo raidMap = ZoneWorld.Map;
+            float startToDoor = raidMap != null && KettleLobby.Door != null
+                ? Vector2.Distance(new Vector2(raidMap.PlayerSpawn.x, raidMap.PlayerSpawn.z),
+                    new Vector2(KettleLobby.Door.transform.position.x, KettleLobby.Door.transform.position.z))
+                : -1f;
+            Check("the raid starts at the bar's door", startToDoor >= 0f && startToDoor < 4f, startToDoor.ToString("0.0") + " m from the door");
+
+            // No rain or snow in the bar, whatever the sky does: a mild night's rain first, then the winter night's flurry
+            // (a dry sky after dark always brings one; rain over thawing air would wash it out).
+            bool winter = Climate.Winter;
+            WeatherSystem weather = WeatherSystem.Instance;
+            Transform rainHost = weather != null ? weather.transform.Find("Rain") : null;
+            ParticleSystem rain = rainHost != null ? rainHost.GetComponent<ParticleSystem>() : null;
+            SnowFX snowFx = FindAnyObjectByType<SnowFX>();
+            ParticleSystem snow = snowFx != null ? snowFx.GetComponent<ParticleSystem>() : null;
+            Climate.Winter = false;
+            if (weather != null) weather.Restore(Weather.Rain, 0.6f, 0.28f, 0.75f);
+            yield return new WaitForSeconds(1f);
+            Check("no rain in the bar", rain != null && weather.RainIntensity > 0.3f && rain.particleCount == 0,
+                rain != null ? "raining " + weather.RainIntensity.ToString("0.00") + ", " + rain.particleCount + " drops" : "no rain");
+            Climate.Winter = true;
+            if (weather != null) weather.Restore(Weather.Overcast, 0f, 0.28f, 1f);
+            yield return new WaitForSeconds(1f);
+            Check("no snow in the bar", snow != null && Climate.SnowIntensity > 0.1f && snow.particleCount == 0,
+                snow != null ? "snowing " + Climate.SnowIntensity.ToString("0.00") + ", " + snow.particleCount + " flakes" : "no snow");
+            Climate.Winter = winter;
+            Shot("03-bar-iso", null);
+            HubScreensPass();
+            GiveRaidKit();
+
+            // Out of the door.
+            KettleDoor door = KettleLobby.Door;
+            Check("front door", door != null);
+            if (door == null) yield break;
+            Try("open the door", () => door.SetOpen(true, false));
+            yield return new WaitForSeconds(1f);
+            var cc = me.GetComponent<CharacterController>();
+            Vector3 outward = door.transform.rotation * Vector3.back;
+            Vector3 porch = door.transform.position + outward * 2.2f;
+            for (int i = 0; i < 400 && !KettleLobby.RaidUnderway; i++)
+            {
+                Vector3 to = porch - me.transform.position;
+                to.y = 0f;
+                // Line up on the doorway first, then straight out through it.
+                Vector3 lane = door.transform.position + outward * Vector3.Dot(me.transform.position - door.transform.position, outward);
+                Vector3 side = lane - me.transform.position;
+                side.y = 0f;
+                Vector3 step = (side.magnitude > 0.15f ? side : to).normalized * 0.06f;
+                if (cc != null && cc.enabled) cc.Move(step + Vector3.down * 0.02f);
+                yield return null;
+            }
+            Check("walked out of the door", !KettleLobby.Inside(me.transform.position), "at " + me.transform.position);
+            Check("the raid began where we stood", KettleLobby.RaidUnderway && GameSession.IsExtraction && ExtractionManager.Instance != null && !HubRules.SafeZone);
+            Check("no reload", s_SceneLoads == loadsBefore, (s_SceneLoads - loadsBefore) + " scene loads since the title");
+            yield return null;
+            yield return null;
+            Check("door barred behind us", door.Barred && !door.IsOpen);
+            Check("stash gone with the hub", room.GetComponentsInChildren<HubStashLocker>(true).Length == 0);
+            Check("one HUD, one pause menu", FindObjectsByType<HUDController>().Length == 1 && FindObjectsByType<PauseMenuController>().Length == 1,
+                FindObjectsByType<HUDController>().Length + " HUDs, " + FindObjectsByType<PauseMenuController>().Length + " menus");
+            Check("the dead are coming", FindAnyObjectByType<ZombieSpawner>() != null && FindAnyObjectByType<ZombieSpawner>().enabled);
+            Check("exits up", ExtractionManager.Instance != null && ExtractionManager.Instance.Exits.Count > 0, ExtractionManager.Instance != null ? ExtractionManager.Instance.Exits.Count + " exits" : "none");
+            Shot("05-out-the-door", null);
+            // On out across the porch and down the steps into the street: the roof comes back over the bar.
+            for (int i = 0; i < 160 && Vector3.Dot(me.transform.position - door.transform.position, outward) < 5.5f; i++)
+            {
+                if (cc != null && cc.enabled) cc.Move(outward * 0.06f + Vector3.down * 0.02f);
+                yield return null;
+            }
+            yield return new WaitForSeconds(1.5f);
+            Check("roof back over the bar from the street", RoofShown(), "survivor " + Vector3.Dot(me.transform.position - door.transform.position, outward).ToString("0.0") + " m out of the door");
+            // From the street, rain and snow fall round the bar and none inside it.
+            Climate.Winter = false;
+            if (weather != null) weather.Restore(Weather.Rain, 0.6f, 0.28f, 0.75f);
+            yield return new WaitForSeconds(1.5f);
+            int wet = rain != null ? InBar(rain, room, 0f) : -1;
+            Check("rain falls round the bar, none inside it", rain != null && rain.particleCount > 100 && wet == 0,
+                rain != null ? rain.particleCount + " drops, " + wet + " inside" : "no rain");
+            Shot("06a-street-rain", null);
+            Climate.Winter = true;
+            if (weather != null) weather.Restore(Weather.Overcast, 0f, 0.28f, 1f);
+            yield return new WaitForSeconds(2f);
+            // (a flake's noise may carry it a hand's breadth past a wall; none gets further in)
+            int flakesIn = snow != null ? InBar(snow, room, 0.5f) : -1;
+            Check("snow falls round the bar, none inside it", snow != null && Climate.SnowIntensity > 0.1f && snow.particleCount > 0 && flakesIn == 0,
+                snow != null ? snow.particleCount + " flakes, " + flakesIn + " inside (snowing " + Climate.SnowIntensity.ToString("0.00") + ")" : "no snow");
+            Climate.Winter = winter;
+            Shot("06-street-iso", null);
+            KentuckyMap.Lot lot = KentuckyMap.ReservedLot;
+            Vector2 front = lot.ToWorld(new Vector2(8f, -30f));
+            Vector2 aim = lot.ToWorld(new Vector2(0f, -4f));
+            ShotFrom("07-bar-street", new Vector3(front.x, 16f, front.y), new Vector3(aim.x, 2.5f, aim.y), 45f);
+            yield return Until(() => ZombiesNear(me.transform.position, 200f) > 0, 90f);
+            Check("the dead roam the town", ZombiesNear(me.transform.position, 200f) > 0, ZombiesNear(me.transform.position, 200f) + " within 200 m");
+            Census();
+
+            // Back through an exit, and so to the bar again (its town built afresh).
+            ExtractionManager em = ExtractionManager.Instance;
+            RaidExit exit = null;
+            foreach (RaidExit e in em.Exits) if (e.Open && e.Condition == ExitCondition.None) { exit = e; break; }
+            Check("an open exit", exit != null);
+            if (exit == null) yield break;
+            me.Untargetable = true;
+            if (cc != null) cc.enabled = false;
+            me.transform.position = exit.Position + Vector3.up * 0.6f;
+            if (cc != null) cc.enabled = true;
+            Physics.SyncTransforms();
+            yield return Until(() => em == null || em.State == ExtractionManager.RaidState.Extracted, 60f);
+            Check("extracted", em != null && em.State == ExtractionManager.RaidState.Extracted, exit.Name);
+            yield return new WaitForSecondsRealtime(1.5f);
+            Try("back to the bar", ExtractionManager.ReturnFromRaid);
+            yield return Until(() => s_SceneLoads > loadsBefore, 30f);
+            yield return Until(() => GameSession.IsHub && Actor.LocalPlayer != null && KettleLobby.Active, 180f);
+            Check("back in the Kettle, in the town", GameSession.IsHub && KettleLobby.Active && KettleLobby.Inside(Actor.LocalPlayer.transform.position));
+            yield return new WaitForSeconds(2f);
+
+            // The hub on its own (another hub, a networked session, or a town the world store can't build): the same bar,
+            // whose door opens the deploy screen.
+            KettleLobby.Disabled = true;
+            int loads = s_SceneLoads;
+            Try("the hub on its own", GameFlow.GoToHub);
+            yield return Until(() => s_SceneLoads > loads, 30f);
+            yield return Until(() => GameSession.IsHub && Actor.LocalPlayer != null && !LoadingScreen.Showing, 60f);
+            Check("the hub stands on its own", GameSession.IsHub && Actor.LocalPlayer != null && !KettleLobby.Active && KentuckyStreamer.Active == null
+                && FindAnyObjectByType<KettleDoor>() == null);
+            yield return new WaitForSeconds(2f);
+            Shot("08-standalone-iso", null);
+            KettleLobby.Disabled = false;
+        }
+
+        // Anything of the town's own (a prop, a tree, a car, a wall) standing inside the bar's walls.
+        private static List<string> TownInsideBar(Transform room)
+        {
+            var found = new List<string>();
+            Vector2 half = HubWorld.HalfSize;
+            Collider[] hits = Physics.OverlapBox(room.TransformPoint(new Vector3(0f, 1.3f, 0f)), new Vector3(half.x - 0.4f, 1.0f, half.y - 0.4f),
+                room.rotation, ~0, QueryTriggerInteraction.Ignore);
+            foreach (Collider c in hits)
+                if (c != null && !c.transform.IsChildOf(room) && c.GetComponentInParent<Actor>() == null) found.Add(c.name);
+            return found;
+        }
+
+        // True when the Kettle's roof is drawn (it lifts away only while the survivor is inside, in the isometric view).
+        private static bool RoofShown()
+        {
+            KettleRoof roof = FindAnyObjectByType<KettleRoof>();
+            if (roof == null || roof.Parts == null) return false;
+            foreach (Renderer r in roof.Parts.GetComponentsInChildren<Renderer>())
+                if (r.shadowCastingMode != ShadowCastingMode.On) return false;
+            return true;
+        }
+
+        // Every stack the town's containers were filled with round the bar is found in raid (the bar's own stash aside).
+        private static bool TownLootFound(Transform room, out string detail)
+        {
+            int stacks = 0, found = 0;
+            foreach (LootContainer c in LootContainer.All)
+            {
+                if (c == null || c.Contents == null || c.IsSack || c.Type == ContainerType.Corpse || c.transform.IsChildOf(room)) continue;
+                foreach (ItemStack s in c.Contents.Stacks)
+                {
+                    if (s == null || s.Def == null) continue;
+                    stacks++;
+                    if (s.IsFoundInRaid()) found++;
+                }
+            }
+            detail = found + " of " + stacks + " stacks found in raid";
+            return stacks > 0 && found == stacks;
+        }
+
+        // None of the Zone's hazards reaches into the safe zone round the bar.
+        private static bool SafeZoneClear(out string detail)
+        {
+            int inside = 0;
+            float nearest = float.MaxValue;
+            Vector3 door = KettleLobby.Door != null ? KettleLobby.Door.transform.position : Vector3.zero;
+            void Look(Vector3 at, float radius)
+            {
+                if (KettleLobby.InSafeZone(at, radius)) inside++;
+                nearest = Mathf.Min(nearest, Vector2.Distance(new Vector2(at.x, at.z), new Vector2(door.x, door.z)) - radius);
+            }
+            foreach (Anomaly a in Anomaly.All) if (a != null) Look(a.transform.position, a.Radius);
+            foreach (RadiationSpot r in RadiationSpot.All) if (r != null) Look(r.transform.position, r.Radius);
+            detail = Anomaly.All.Count + " anomalies and " + RadiationSpot.All.Count + " radiation spots in the town, " + inside
+                + " in the safe zone; the nearest reaches to " + (nearest < float.MaxValue ? nearest.ToString("0") + " m" : "-") + " from the door";
+            return inside == 0;
+        }
+
+        // By the bar's own walls (not the lot the hazards were kept off): nothing of the Zone's reaches inside, and every kind
+        // of anomaly asked for in its middle is refused.
+        private static bool KettleClear(Transform room, out string detail)
+        {
+            int reaching = 0;
+            foreach (Anomaly a in Anomaly.All) if (a != null && HubWorld.Inside(room, a.transform.position, a.Radius)) reaching++;
+            foreach (RadiationSpot r in RadiationSpot.All) if (r != null && HubWorld.Inside(room, r.transform.position, r.Radius)) reaching++;
+            var put = new List<string>();
+            foreach (AnomalyDef def in AnomalyCatalog.All.Values)
+            {
+                Anomaly stray = Anomaly.Spawn(room, def, room.position, 1f, new System.Random(7));
+                if (stray == null) continue;
+                put.Add(def.Id);
+                UnityEngine.Object.DestroyImmediate(stray.gameObject);
+            }
+            detail = reaching + " of the Zone's hazards reach inside its walls; "
+                + (put.Count == 0 ? "all " + AnomalyCatalog.All.Count + " kinds of anomaly refused in the bar" : "put in the bar: " + string.Join(", ", put));
+            return reaching == 0 && put.Count == 0;
+        }
+
+        // The particles of a falling effect inside the bar's walls (more than <paramref name="inset"/> in), between its floor
+        // and its ceiling.
+        private static int InBar(ParticleSystem ps, Transform room, float inset)
+        {
+            var parts = new ParticleSystem.Particle[ps.main.maxParticles];
+            int n = ps.GetParticles(parts);
+            int inside = 0;
+            for (int i = 0; i < n; i++)
+            {
+                Vector3 p = parts[i].position;
+                float y = room.InverseTransformPoint(p).y;
+                if (y > 0f && y < 3.2f && HubWorld.Inside(room, p, -inset)) inside++;
+            }
+            return inside;
+        }
+
+        // A picture through the game's camera (with the screen's UI when <paramref name="cam"/> is null).
+        private static void Shot(string name, Camera cam)
+        {
+            if (string.IsNullOrEmpty(s_ShotDir)) return;
+            Camera main = Camera.main;
+            var go = new GameObject("[SmokeShot]");
+            Camera shot = go.AddComponent<Camera>();
+            if (cam != null) shot.CopyFrom(cam);
+            else if (main != null) shot.CopyFrom(main);
+            else
+            {
+                shot.clearFlags = CameraClearFlags.SolidColor;
+                shot.backgroundColor = Color.black;
+                shot.cullingMask = 0;
+            }
+            Capture(name, shot, cam == null);
+            Destroy(go);
+        }
+
+        // A picture from a place of our own choosing (the bar from the street, from above).
+        private static void ShotFrom(string name, Vector3 eye, Vector3 at, float fov)
+        {
+            if (string.IsNullOrEmpty(s_ShotDir)) return;
+            var go = new GameObject("[SmokeShot]");
+            Camera shot = go.AddComponent<Camera>();
+            Camera main = Camera.main;
+            if (main != null) shot.CopyFrom(main);
+            shot.orthographic = false;
+            shot.fieldOfView = fov;
+            shot.nearClipPlane = 0.2f;
+            shot.farClipPlane = 800f;
+            shot.cullingMask = ~0;
+            go.transform.position = eye;
+            go.transform.LookAt(at);
+            Capture(name, shot, false);
+            Destroy(go);
+        }
+
+        private static void Capture(string name, Camera cam, bool withUi)
+        {
+            const int W = 1600, H = 900;
+            var moved = new List<(Canvas canvas, RenderMode mode, Camera camera, float distance)>();
+            var rt = new RenderTexture(W, H, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB) { name = "[SmokeShot]", antiAliasing = 1 };
+            rt.Create();
+            RenderTexture active = RenderTexture.active;
+            try
+            {
+                cam.enabled = false;
+                cam.aspect = W / (float)H;
+                if (withUi)
+                    foreach (Canvas c in FindObjectsByType<Canvas>())
+                    {
+                        if (c == null || !c.isRootCanvas || !c.isActiveAndEnabled || c.renderMode != RenderMode.ScreenSpaceOverlay) continue;
+                        moved.Add((c, c.renderMode, c.worldCamera, c.planeDistance));
+                        c.renderMode = RenderMode.ScreenSpaceCamera;
+                        c.worldCamera = cam;
+                        c.planeDistance = cam.nearClipPlane + 0.02f + (5000 - Mathf.Clamp(c.sortingOrder, 0, 5000)) * 0.0001f;
+                    }
+                Canvas.ForceUpdateCanvases();
+                for (int pass = 0; pass < 2; pass++)
+                {
+                    var request = new RenderPipeline.StandardRequest { destination = rt };
+                    if (RenderPipeline.SupportsRenderRequest(cam, request)) RenderPipeline.SubmitRenderRequest(cam, request);
+                    else
+                    {
+                        cam.targetTexture = rt;
+                        cam.Render();
+                        cam.targetTexture = null;
+                    }
+                }
+                RenderTexture.active = rt;
+                var tex = new Texture2D(W, H, TextureFormat.RGB24, false);
+                tex.ReadPixels(new Rect(0, 0, W, H), 0, 0, false);
+                tex.Apply(false);
+                File.WriteAllBytes(Path.Combine(s_ShotDir, name + ".png"), tex.EncodeToPNG());
+                Destroy(tex);
+                Debug.Log("[Smoke] shot " + name);
+            }
+            catch (Exception e) { Debug.LogWarning("[Smoke] shot " + name + " failed: " + e.Message); }
+            finally
+            {
+                foreach (var m in moved)
+                {
+                    if (m.canvas == null) continue;
+                    m.canvas.renderMode = m.mode;
+                    m.canvas.worldCamera = m.camera;
+                    m.canvas.planeDistance = m.distance;
+                }
+                RenderTexture.active = active;
+                rt.Release();
+                Destroy(rt);
+            }
+        }
+        #endregion
 
         private IEnumerator HunterPass()
         {

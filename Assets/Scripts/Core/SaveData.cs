@@ -39,6 +39,7 @@ namespace CloneZ
         public float TimeSurvived;
 
         // The survivor.
+        public string SurvivorName;     // null in a save from before survivors had random names
         public PlayerSave Player;
 
         // Dynamic world objects.

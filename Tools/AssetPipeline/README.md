@@ -1,7 +1,7 @@
-# CLONE-Z LLM asset pipeline
+# WithTheDead LLM asset pipeline
 
 Generates ground models for the item catalogue with a local LLM on the DGX Spark (`spark-f146`,
-Ollama, `gpt-oss:120b`). The output is CLONE-Z's own model format: a list of coloured cubes,
+Ollama, `gpt-oss:120b`). The output is WithTheDead's own model format: a list of coloured cubes,
 spheres and cylinders. That way generated models bake and draw instanced exactly like the
 hand-built ones in `ItemModels.cs`, and nothing has to be imported.
 

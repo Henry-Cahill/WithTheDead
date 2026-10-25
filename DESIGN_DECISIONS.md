@@ -1,6 +1,6 @@
-# CLONE-Z — Design decisions
+# WithTheDead — Design decisions
 
-The mechanics breakdown (*Survival Shooter Mechanics Breakdown*, Oct 2026) says to "answer tensions 1, 2, 5 and 10 in writing" before building. This file answers all twelve. It also records the three design rules, the rights rule and the blended core loop as CLONE-Z implements them. See [MECHANICS_COVERAGE.md](MECHANICS_COVERAGE.md) for where each mechanic lives in the code.
+The mechanics breakdown (*Survival Shooter Mechanics Breakdown*, Oct 2026) says to "answer tensions 1, 2, 5 and 10 in writing" before building. This file answers all twelve. It also records the three design rules, the rights rule and the blended core loop as WithTheDead implements them. See [MECHANICS_COVERAGE.md](MECHANICS_COVERAGE.md) for where each mechanic lives in the code.
 
 ## The premise and the three rules
 
@@ -12,11 +12,11 @@ The Zones are alien leftovers that don't care about you. People go in because th
 
 ## Rights
 
-Roadside Picnic supplies the premise and structure only. Its title, character names, place names and object names are not used. CLONE-Z invents its own: Zones such as *Kestrel* and *the Spillway*, the *Passing*, the *Lodestar* (standing in for the wish-granting sphere), the *Sunken Star*, factions such as *Freehold*, *Vanguard*, *the Lantern Syndicate*, *the Wardens*, *the Hollow Choir* and *the Institute*, and the hub *the Kettle*. Check with a lawyer before shipping anything commercial. This file isn't legal advice.
+Roadside Picnic supplies the premise and structure only. Its title, character names, place names and object names are not used. WithTheDead invents its own: Zones such as *Kestrel* and *the Spillway*, the *Passing*, the *Lodestar* (standing in for the wish-granting sphere), the *Sunken Star*, factions such as *Freehold*, *Vanguard*, *the Lantern Syndicate*, *the Wardens*, *the Hollow Choir* and *the Institute*, and the hub *the Kettle*. Check with a lawyer before shipping anything commercial. This file isn't legal advice.
 
 ## The twelve tensions
 
-| # | Tension | CLONE-Z's answer |
+| # | Tension | WithTheDead's answer |
 | --- | --- | --- |
 | 1 | Instanced raids or a persistent world? | **Hybrid.** A persistent hub (the bar: stash, hideout, traders, upkeep) plus raid instances into Zones. Some threads persist per Zone: A-Life squads, emptied open-zone containers, buried stashes, outpost owners, corpses waiting under corpse recovery, your **camp** and your **cars**. The Open Zone run has no clock, which is GZW's middle ground. |
 | 2 | What does death take? | **"You lose what you carried — never what you learned, never your pouch."** The character survives by default. Ironman and server permadeath are opt-in. Insurance returns unlooted pieces, and corpse recovery (GZW) is a sandbox option. Scav and hunter runs use a borrowed body, so their deaths cost the runner nothing. |
@@ -46,6 +46,10 @@ the bar (hub) ── gear up, jobs, rent ──► the door: Zone + how you go i
       └──── extract (conditional exits, a flare for the helicopter) ◄── or die: lose what you carried,
                                                                         keep skills, pouch and knowledge
 ```
+
+The starter hub, the Kettle, stands in Bardstown on the statewide Kentucky map. The map keeps a lot clear for it (`KentuckyMap.ReservedLot`) and builds the town around it under a loading card. Walking out of its front door is the runner raid on foot, started where the survivor stands with no reload ([KettleLobby](Assets/Scripts/Hub/KettleLobby.cs)). The bar is barred behind them until they come back through an exit. Scav runs, the open Zone, hunts and helicopter insertions still go through the door's deploy screen and load into their raid. So do the other hubs, multiplayer sessions and a town the world store can't build.
+
+The bar's lot and 20 m round it are a safe zone (`KettleLobby.InSafeZone`). No anomaly or radiation spot reaches into it, and nothing the Zone's overlays put down stands there. `Anomaly.Spawn` itself refuses the bar and the safe zone, whatever asks for one. The raid starts on the porch, and no rain or snow falls inside the bar or any other building.
 
 ## Networking model
 

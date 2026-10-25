@@ -91,6 +91,7 @@ namespace CloneZ
             {
                 Version = SaveVersion,
                 SavedAtUtc = DateTime.UtcNow.ToString("o"),
+                SurvivorName = GameSession.SurvivorName,
             };
             // Initialise all collection fields – they are null by default and cause NRE when we Add().
             data.Containers = new List<ContainerSave>();

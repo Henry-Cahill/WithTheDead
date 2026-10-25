@@ -1,17 +1,17 @@
-# CLONE-Z — Mechanics coverage
+# WithTheDead — Mechanics coverage
 
 This maps every row of *Survival Shooter Mechanics Breakdown* (Oct 2026) to where it lives in the game. Paths are relative to the repo root. Systems wire themselves in as `IGameModule`s ([GameModules.cs](Assets/Scripts/Core/GameModules.cs)), so each row names the module or class to start from. The answers to the doc's design tensions are in [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md).
 
 ## Roadside Picnic: book to mechanic
 
-| Book element | In CLONE-Z | Where |
+| Book element | In WithTheDead | Where |
 | --- | --- | --- |
 | The Visitation (several Zones, never explained) | Several Zones, each with its own map, depth, loot multiplier, mutants, cordon and special rule. The cause is never explained (in-game it's "the Passing"). | [ZoneCatalog.cs](Assets/Scripts/Zone/ZoneCatalog.cs), [ZoneWorld.cs](Assets/Scripts/World/Zone/ZoneWorld.cs) |
 | Litter, not treasure | Artifacts have hidden properties, learned by wearing them on the belt or paying the Institute. Knowledge is kept per account and sold as rumours. | [Artifacts.cs](Assets/Scripts/Zone/Artifacts.cs), [ArtifactCatalog.cs](Assets/Scripts/Zone/ArtifactCatalog.cs), `RumoursScreen` in [ServiceScreens.cs](Assets/Scripts/Hub/Screens/ServiceScreens.cs) |
 | Bolts | Throw a bolt (X) with its own feel and sound. Anomalies react to the bolt first. | [Bolts.cs](Assets/Scripts/Zone/Bolts.cs) |
 | Anomalies | Five types with consistent but alien rules (sinkhole, embermoss, staticbloom, greysyrup, tollgate). A rule is learned by surviving it. | [Anomalies.cs](Assets/Scripts/Zone/Anomalies.cs) |
 | Illegal entry | A cordon with a restricted belt where the Wardens shoot. Pay for a pass, bribe the gate or risk it. Two economies: the Institute (legal, fair) and the fence (rich, risky, raises your Heat). | [ZoneCordon.cs](Assets/Scripts/World/Zone/ZoneCordon.cs), `CordonRules` in [Factions.cs](Assets/Scripts/Core/Factions.cs), [TraderCatalog.cs](Assets/Scripts/Economy/TraderCatalog.cs) |
-| The bar and the fences | The hub is a bar full of people with buyers, rumours, music and stories. | [HubWorld.cs](Assets/Scripts/Hub/HubWorld.cs), [HubNpc.cs](Assets/Scripts/Hub/HubNpc.cs), [TradeScreens.cs](Assets/Scripts/Hub/Screens/TradeScreens.cs) |
+| The bar and the fences | The hub is a bar full of people with buyers, rumours, music and stories. The starter bar, the Kettle, stands in Bardstown on the Kentucky map, and walking out of its front door starts the raid where you stand. | [HubWorld.cs](Assets/Scripts/Hub/HubWorld.cs), [KettleLobby.cs](Assets/Scripts/Hub/KettleLobby.cs), [HubNpc.cs](Assets/Scripts/Hub/HubNpc.cs), [TradeScreens.cs](Assets/Scripts/Hub/Screens/TradeScreens.cs) |
 | The Zone's cost on the body | Exposure builds lasting marks (buffs with drawbacks) that outlive death. Radiation dose carries between raids. | `ZoneExposure` in [ZoneHazards.cs](Assets/Scripts/Zone/ZoneHazards.cs), [Radiation.cs](Assets/Scripts/Zone/Radiation.cs) |
 | Uncanny, not hostile | The cemeteries' dead walk home and sit. Whispers, stingers and wrongness, with no health bar. | [Uncanny.cs](Assets/Scripts/World/Zone/Uncanny.cs) |
 | The deadly route | The tollgate anomaly lets you through only after it takes someone. A hired companion can be ordered to go first. | [Anomalies.cs](Assets/Scripts/Zone/Anomalies.cs), [Companions.cs](Assets/Scripts/AI/Humans/Companions.cs) |
@@ -167,7 +167,7 @@ Input is one Input System action map per view (Common, Isometric, Shoulder, Firs
 
 ## Unity setup
 
-| Doc | CLONE-Z |
+| Doc | WithTheDead |
 | --- | --- |
 | URP | URP throughout. `PostFx` volume, URP materials. |
 | Cinemachine | Cinemachine 3: one virtual camera per mode with custom blends, plus impulse shake ([CinemachineViews.cs](Assets/Scripts/Camera/CinemachineViews.cs)). Iso roof and wall cutaways in [IsoCutaway.cs](Assets/Scripts/Camera/IsoCutaway.cs). |
@@ -192,7 +192,7 @@ Each of these can be switched off from the sandbox rules where the doc suggests 
 
 ## How it's checked
 
-[SmokeTest.cs](Assets/Scripts/Dev/SmokeTest.cs) plays the game end to end. It stays inert unless the game or a batch-mode editor is started with `-clonez-smoke solo|hunter|host|client`.
+[SmokeTest.cs](Assets/Scripts/Dev/SmokeTest.cs) plays the game end to end. It stays inert unless the game or a batch-mode editor is started with `-clonez-smoke solo|hunter|host|client|lobby`.
 
 * **Solo:** makes a throwaway character with its own save file, walks into the bar, and opens every hub screen. Then it deploys into Kestrel Flats, or the zone named with `-clonez-smoke-zone`, and checks:
   * the tablet;
@@ -208,6 +208,15 @@ Each of these can be switched off from the sandbox rules where the doc suggests 
     left behind is let go of, and a container emptied there is still empty when it's built again.
 * **Hunter:** plays a raid as a monster.
 * **Host and client:** play a networked raid together on port 7791.
+* **Lobby:** goes from the title screen into the Kettle and checks that:
+  * the town goes up a step at a time under the loading card;
+  * the bar stands on a clear lot in Bardstown;
+  * no anomaly or radiation spot reaches into the bar or the 20 m safe zone round it, and no anomaly can be spawned in the bar;
+  * no rain or snow falls inside the bar, while it still falls in the street outside;
+  * walking out of its front door starts the raid where the survivor stands, with no reload, and the door is barred behind them;
+  * extracting brings the survivor back into the bar.
+
+  Add `-clonez-smoke-shots <dir>` to save pictures of the title, the loading card, the bar and the street. This mode needs graphics, so leave out `-nographics`.
 
 Any error or exception the game logs fails the run.
 

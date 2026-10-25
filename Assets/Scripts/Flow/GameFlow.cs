@@ -20,6 +20,9 @@ namespace CloneZ
             if (NetworkTransition != null && NetworkTransition(GameMode.Hub, null, -1, RaidKind.Operative)) return;
             GameSession.AutoStartHub = true;
             GameSession.AutoStartRaid = false;
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            HubDef hub = HubCatalog.Get(c != null ? c.Hub : HubCatalog.Kettle);
+            LoadingScreen.Show(hub.Name.ToUpperInvariant(), KettleLobby.Where(hub));
             Reload();
         }
 
@@ -30,6 +33,9 @@ namespace CloneZ
             PrepareRaid(zoneId, landingZone, kind);
             GameSession.AutoStartRaid = true;
             GameSession.AutoStartHub = false;
+            ZoneDef zone = ZoneCatalog.Current;
+            LoadingScreen.Show(zone.Name.ToUpperInvariant(),
+                (string.IsNullOrEmpty(zone.RealPlace) ? "" : zone.RealPlace + "  \u00b7  ") + LoadingScreen.NightOf());
             Reload();
         }
 
@@ -49,14 +55,31 @@ namespace CloneZ
             Reload();
         }
 
-        /// <summary>Saves and reloads the scene (the bootstrapper reads the session flags on the way back up).</summary>
+        private static bool s_ReloadPending;
+
+        /// <summary>Saves and reloads the scene (the bootstrapper reads the session flags on the way back up). With the
+        /// loading card up, the reload waits until the card has been drawn (a world is built on the main thread, so
+        /// nothing redraws until it's done); the world is held still meanwhile, and a second request is ignored.</summary>
         public static void Reload()
         {
+            if (s_ReloadPending) return;
             ProfileStore.Save();
             NoiseSystem.Clear();
             Time.timeScale = 1f;
-            UIState.GameplayBlocked = false;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            int scene = SceneManager.GetActiveScene().buildIndex;
+            if (!LoadingScreen.Showing)
+            {
+                UIState.GameplayBlocked = false;
+                SceneManager.LoadScene(scene);
+                return;
+            }
+            s_ReloadPending = true;
+            UIState.GameplayBlocked = true;
+            LoadingScreen.Run(() =>
+            {
+                s_ReloadPending = false;
+                SceneManager.LoadScene(scene);
+            });
         }
     }
 }

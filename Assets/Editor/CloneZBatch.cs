@@ -24,17 +24,17 @@ namespace CloneZ.EditorTools
             Debug.Log("[CloneZBatch] Project files synced via " + Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().Name);
         }
 
-        /// <summary>Builds a Windows player into Builds/CloneZ (used by the networked smoke test).</summary>
+        /// <summary>Builds a Windows player into Builds/WithTheDead (used by the networked smoke test).</summary>
         public static void BuildWindowsPlayer()
         {
-            string outDir = Path.Combine(Directory.GetCurrentDirectory(), "Builds", "CloneZ");
+            string outDir = Path.Combine(Directory.GetCurrentDirectory(), "Builds", "WithTheDead");
             Directory.CreateDirectory(outDir);
             string[] scenes = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
             if (scenes.Length == 0) scenes = new[] { "Assets/Scenes/SampleScene.unity" };
             var options = new BuildPlayerOptions
             {
                 scenes = scenes,
-                locationPathName = Path.Combine(outDir, "CloneZ.exe"),
+                locationPathName = Path.Combine(outDir, "WithTheDead.exe"),
                 target = BuildTarget.StandaloneWindows64,
                 options = BuildOptions.Development,
             };

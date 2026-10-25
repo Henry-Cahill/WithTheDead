@@ -55,7 +55,7 @@ namespace CloneZ
                 Directory.CreateDirectory(outDir);
                 var r = new Report { exitCode = ExitHarness, exitReason = error, started = Now() };
                 File.WriteAllText(Path.Combine(outDir, "report.json"), JsonUtility.ToJson(r, true));
-                File.WriteAllText(Path.Combine(outDir, "report.md"), "# CLONE-Z map harness\n\nThe harness failed before it started: "
+                File.WriteAllText(Path.Combine(outDir, "report.md"), "# WithTheDead map harness\n\nThe harness failed before it started: "
                     + error + "\n");
             }
             catch (Exception e)
@@ -2606,7 +2606,7 @@ namespace CloneZ
             {
                 var md = new StringBuilder();
                 string place = _place != null ? _place.name : _r.place;
-                md.Append("# CLONE-Z map harness: ").Append(place).Append(" (build ").Append(_r.buildId ?? "?").Append(")\n\n");
+                md.Append("# WithTheDead map harness: ").Append(place).Append(" (build ").Append(_r.buildId ?? "?").Append(")\n\n");
                 md.Append("**Exit ").Append(_r.exitCode).Append("**: ").Append(Esc(_r.exitReason)).Append(". ")
                     .Append(_o.Quick ? "Quick run" : "Full run").Append(_o.Lite ? " (streamed chunks in Lite detail)" : "").Append(", ").Append(F1(_r.totalSeconds)).Append(" s, started ")
                     .Append(_r.started).Append(".  \nUnity ").Append(_r.unity).Append(", ").Append(Esc(_r.graphics)).Append(". World store `")

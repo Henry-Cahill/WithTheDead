@@ -50,6 +50,9 @@ namespace CloneZ
     {
         public const string DefaultZone = "intro";
 
+        /// <summary>The zone the hubs point runners at first: the whole of Kentucky, from Bardstown (where the Kettle stands).</summary>
+        public const string FeaturedZone = "bardstown";
+
         public static readonly List<ZoneDef> All = new List<ZoneDef>
         {
             new ZoneDef

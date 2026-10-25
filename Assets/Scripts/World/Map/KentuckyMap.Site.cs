@@ -351,7 +351,30 @@ namespace CloneZ
                 Loot = new GameObject("Loot").transform;
                 Loot.SetParent(town.World, false);
                 foreach (Footprint f in area.Foreign) Take(f.Bounds);
+                if (ReservedLot != null) TakeLot(ReservedLot);
                 BeginStep();
+            }
+
+            /// <summary>Marks the lot kept clear for the game's own building (<see cref="ReservedLot"/>) taken where it lies
+            /// on this site, so nothing a pass places for itself stands on it.</summary>
+            private void TakeLot(Lot lot)
+            {
+                float ox = WorldOffset.x, oz = WorldOffset.z;
+                float x0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, z1 = float.MinValue;
+                foreach (Vector2 c in lot.Corners())
+                {
+                    x0 = Mathf.Min(x0, c.x - ox); x1 = Mathf.Max(x1, c.x - ox);
+                    z0 = Mathf.Min(z0, c.y - oz); z1 = Mathf.Max(z1, c.y - oz);
+                }
+                if (x1 < -Half - 1f || x0 > Half + 1f || z1 < -Half - 1f || z0 > Half + 1f) return;
+                int ix0 = Mathf.Max(0, Index(x0) - 1), ix1 = Mathf.Min(_n - 1, Index(x1) + 1);
+                int iz0 = Mathf.Max(0, Index(z0) - 1), iz1 = Mathf.Min(_n - 1, Index(z1) + 1);
+                for (int z = iz0; z <= iz1; z++)
+                    for (int x = ix0; x <= ix1; x++)
+                    {
+                        var at = new Vector2(-Half + (x + 0.5f) * Cell + ox, -Half + (z + 0.5f) * Cell + oz);
+                        if (lot.Contains(at, 0.75f)) _taken[z * _n + x] = true;
+                    }
             }
 
             #region Time slices

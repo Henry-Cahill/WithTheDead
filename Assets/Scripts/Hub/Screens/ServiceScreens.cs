@@ -289,10 +289,14 @@ namespace CloneZ
     public sealed class DeployScreen : HubScreenBase
     {
         protected override string Title => "Into the Zone";
-        private static string s_Zone = ZoneCatalog.DefaultZone;
+        private static string s_Zone = ZoneCatalog.FeaturedZone;
         private static int s_Lz = -1;
         private static RaidKind s_Kind = RaidKind.Operative;
         private static bool s_Heli;
+
+        // In the Kettle's lobby in the town, your runner on foot into Kentucky goes out of the front door (no reload).
+        private static bool ByTheFrontDoor => KettleLobby.Active && !KettleLobby.RaidUnderway && s_Zone == KettleLobby.ZoneId
+            && s_Kind == RaidKind.Operative && !s_Heli && !GameSession.Networked;
 
         protected override void BuildContent()
         {
@@ -301,6 +305,9 @@ namespace CloneZ
             HubUI.Card(cols[0]);
             RectTransform zones = HubUI.Scroll(cols[0], 0f, 0f, 6f);
             HubUI.Heading(zones, "Choose a Zone", 22);
+            if (KettleLobby.Active)
+                HubUI.Para(zones, "You're in Bardstown: the Kettle's front door opens straight onto the town. Walk out of it for a raid as your runner, on foot. "
+                    + "The other ways in start somewhere else, and take you there from here.", 15, UIKit.Good);
             // Playing together, the Zone runs on the host: a client follows the host's raid (or waits for one).
             bool follower = GameSession.Networked && !NetAuthority.IsServer;
             if (follower)
@@ -313,7 +320,11 @@ namespace CloneZ
                     HubUI.Para(zones, "The host's raid is under way. You'll come in wherever you choose to enter.", 15, UIKit.TextDim);
                 }
             }
-            foreach (ZoneDef z in ZoneCatalog.All)
+            // The featured zone first, the rest in the catalogue's order.
+            var ordered = new List<ZoneDef>(ZoneCatalog.All.Count);
+            foreach (ZoneDef z in ZoneCatalog.All) if (z.Id == ZoneCatalog.FeaturedZone) ordered.Add(z);
+            foreach (ZoneDef z in ZoneCatalog.All) if (z.Id != ZoneCatalog.FeaturedZone) ordered.Add(z);
+            foreach (ZoneDef z in ordered)
             {
                 if (follower && z.Id != NetSession.HostRaidZone) continue;
                 bool ok = c.Level >= z.MinLevel;
@@ -366,6 +377,17 @@ namespace CloneZ
             bool canGo = c.Level >= zone.MinLevel && !(s_Kind == RaidKind.Monster && !ServerRules.AllowPlayerMonsters)
                 && !(s_Kind == RaidKind.Scav && ProfileStore.NowUnix < c.ScavReadyUnix)
                 && !(follower && NetSession.HostRaidZone == null);
+            if (ByTheFrontDoor)
+            {
+                // Your runner on foot into the town the Kettle stands in: the door's right there.
+                HubUI.Btn(side, "Open the front door", () =>
+                {
+                    HubKit.AfterChange();
+                    Close();
+                    KettleLobby.OpenDoor();
+                }, 320f, 44f, UIKit.Accent, canGo, 18);
+                return;
+            }
             HubUI.Btn(side, "Go — " + zone.Name, () =>
             {
                 if (s_Heli && s_Kind != RaidKind.Monster && !Money.TrySpend(heliCost, Carried)) { Report(false, "You can't pay the pilot."); return; }

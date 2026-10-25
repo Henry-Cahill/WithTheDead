@@ -12,7 +12,7 @@ namespace CloneZ
     /// </summary>
     public sealed class GridSection
     {
-        /// <summary>Header text, e.g. "Clone Z's Inventory" or "Chest Rig - Tactical".</summary>
+        /// <summary>Header text, e.g. "Dale Mattingly's Inventory" or "Chest Rig - Tactical".</summary>
         public string Name;
         /// <summary>The worn item that provides this section (null for the pockets or a world container).</summary>
         public readonly ItemDef Source;

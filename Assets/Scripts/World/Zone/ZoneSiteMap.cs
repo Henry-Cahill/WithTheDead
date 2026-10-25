@@ -15,7 +15,7 @@ namespace CloneZ
         Paved = 2,
         /// <summary>Something solid stands here (a wreck, a dumpster, a barrier, a tree).</summary>
         Solid = 4,
-        /// <summary>Kept clear for play: exits, the survivor's start.</summary>
+        /// <summary>Kept clear for play: exits, the survivor's start, the safe zone round the hub's bar in the town.</summary>
         Reserved = 8,
         /// <summary>Claimed by a structure or clearing the overlays placed.</summary>
         Taken = 16,
@@ -68,6 +68,15 @@ namespace CloneZ
             int x0 = Ix(r.xMin), x1 = Ix(r.xMax - 0.001f), z0 = Ix(r.yMin), z1 = Ix(r.yMax - 0.001f);
             for (int z = z0; z <= z1; z++)
                 for (int x = x0; x <= x1; x++) _cells[z * _n + x] |= flag;
+        }
+
+        /// <summary>Sets <paramref name="flag"/> on every cell an XZ rect overlaps whose middle passes <paramref name="inside"/>.</summary>
+        public void Mark(Rect r, Func<Vector3, bool> inside, SiteCell flag)
+        {
+            int x0 = Ix(r.xMin), x1 = Ix(r.xMax - 0.001f), z0 = Ix(r.yMin), z1 = Ix(r.yMax - 0.001f);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                    if (inside(new Vector3(_min + (x + 0.5f) * CellSize, 0f, _min + (z + 0.5f) * CellSize))) _cells[z * _n + x] |= flag;
         }
 
         /// <summary>Sets <paramref name="flag"/> on every cell whose centre lies within <paramref name="radius"/> of <paramref name="c"/>.</summary>
@@ -265,6 +274,10 @@ namespace CloneZ
                 foreach (RaidExit e in map.Exits) m.MarkCircle(e.Position, e.Radius + 5f, SiteCell.Reserved);
                 m.MarkCircle(map.PlayerSpawn, 5f, SiteCell.Reserved);
             }
+            // The hub's bar standing in the town: its lot and the safe zone round it, where the raid starts at its door.
+            const float halfCell = CellSize * 0.71f;
+            if (KettleLobby.SafeArea(halfCell, out Rect safe))
+                m.Mark(safe, c => KettleLobby.InSafeZone(c, halfCell), SiteCell.Reserved);
             for (int i = 0; i < ToxicZone.All.Count; i++)
             {
                 ToxicZone z = ToxicZone.All[i];

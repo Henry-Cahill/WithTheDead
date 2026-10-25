@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -49,6 +50,8 @@ namespace CloneZ
             ServerRules.FromSandbox(SandboxSettings.Current);
             WorldMarkers.Clear();
             HubRules.SafeZone = false;
+            KettleLobby.Reset();
+            CentralEconomy.ForgetWorld();
 
             // "Next Raid" / a deploy from the hub reloads the scene straight into a raid; a raid's end (or
             // "Return to hub") reloads straight into the hub.
@@ -70,6 +73,7 @@ namespace CloneZ
         // The title screen decides whether to start fresh or continue a saved run.
         private void ShowMainMenu()
         {
+            LoadingScreen.Hide();
             var menu = new GameObject("MainMenu").AddComponent<MainMenuController>();
             menu.Bind(this);
         }
@@ -81,10 +85,12 @@ namespace CloneZ
             if (_worldBuilt) return;
             _worldBuilt = true;
             GameSession.Mode = GameMode.Extraction;
-            BuildRaidWorld();
+            try { BuildRaidWorld(); }
+            finally { LoadingScreen.Hide(); }
         }
 
-        /// <summary>Opens the hub (the bar between raids) for the active character.</summary>
+        /// <summary>Opens the hub (the bar between raids) for the active character: The Rusty Kettle standing in Bardstown
+        /// with the town around it when it can (<see cref="KettleLobby"/>), else the hub on its own.</summary>
         public void StartHub()
         {
             if (_worldBuilt) return;
@@ -95,7 +101,14 @@ namespace CloneZ
             }
             _worldBuilt = true;
             GameSession.Mode = GameMode.Hub;
-            BuildHubWorld();
+            HubDef hub = HubCatalog.Get(ProfileStore.ActiveCharacter.Hub);
+            if (KettleLobby.Wants(hub))
+            {
+                StartCoroutine(BuildLobbyWorld(hub));
+                return;
+            }
+            try { BuildHubWorld(); }
+            finally { LoadingScreen.Hide(); }
         }
 
         /// <summary>Begins a brand-new wave-survival run, discarding any existing save (called by the title screen).</summary>
@@ -104,9 +117,11 @@ namespace CloneZ
             if (_worldBuilt) return;
             _worldBuilt = true;
             GameSession.Mode = GameMode.WaveSurvival;
+            GameSession.SurvivorName = SurvivorNames.Roll();
             WorldMarkers.Clear();
             SaveSystem.Delete();
-            BuildWorld(false);
+            try { BuildWorld(false); }
+            finally { LoadingScreen.Hide(); }
         }
 
         /// <summary>Resumes the saved wave-survival run (called by the title screen's Continue button).</summary>
@@ -115,7 +130,8 @@ namespace CloneZ
             if (_worldBuilt) return;
             _worldBuilt = true;
             GameSession.Mode = GameMode.WaveSurvival;
-            BuildWorld(true);
+            try { BuildWorld(true); }
+            finally { LoadingScreen.Hide(); }
         }
 
         // A raid into one of the Zones. The map's layout is the zone's own, fixed layout (the same streets every
@@ -234,6 +250,196 @@ namespace CloneZ
             GameEvents.RaiseToast("Welcome back to " + hub.Name + ". Day " + (c != null ? c.Day : 1) + ".");
         }
 
+        #region The lobby in the town
+        // The Kettle standing in Bardstown (KettleLobby): the statewide map is built around the bar a step at a time
+        // under the loading card, the survivor starts inside by the door, and walking out of it starts the raid where
+        // they stand (BeginLobbyRaid): no reload. Anything that goes wrong falls back to the hub on its own.
+        private Transform _lobbyWorld;
+        private RaidMapInfo _lobbyMap;
+        private ZoneDef _lobbyZone;
+        private GameManager _lobbyGm;
+        private HUDController _hud;
+        private GameObject _pauseMenu;
+
+        // Seconds a frame may spend building the town under the loading card (which still animates in between).
+        private const float LobbyFrameBudget = 0.045f;
+
+        private IEnumerator BuildLobbyWorld(HubDef hub)
+        {
+            if (!LoadingScreen.Showing) LoadingScreen.Show(hub.Name.ToUpperInvariant(), KettleLobby.Where(hub));
+            LoadingScreen.SetProgress(0f, "Reading the map");
+            UIState.GameplayBlocked = true;
+            yield return null;
+            yield return null;
+
+            ZoneDef zone = ZoneCatalog.Get(KettleLobby.ZoneId);
+            // Nothing is worth drawing until the town is up: the camera draws nothing meanwhile.
+            Camera cam = Camera.main;
+            int mask = cam != null ? cam.cullingMask : ~0;
+            if (cam != null) cam.cullingMask = 0;
+
+            string fail = null;
+            KentuckyMap.MapBuildJob job = null;
+            Transform world = null;
+            try
+            {
+                world = BeginLobby(zone);
+                KentuckyMap.WantLot = KettleLobby.LotSize;
+                job = KentuckyMap.BeginBuild(world, zone);
+            }
+            catch (System.Exception e) { fail = e.ToString(); }
+
+            while (fail == null)
+            {
+                float until = Time.realtimeSinceStartup + LobbyFrameBudget;
+                bool more = true;
+                while (more && Time.realtimeSinceStartup < until) more = job.Step();
+                LoadingScreen.SetProgress(job.Progress * 0.9f, job.Stage);
+                if (!string.IsNullOrEmpty(KentuckyMap.LotWhy)) fail = KentuckyMap.LotWhy;
+                else if (!more)
+                {
+                    if (job.Info == null) fail = job.Why;
+                    else if (KentuckyMap.ReservedLot == null) fail = "no lot was kept for the bar";
+                    break;
+                }
+                else yield return null;
+            }
+            if (fail == null)
+            {
+                // In the same frame the town finished: the streamer's own update would bake the NavMesh without the bar.
+                LoadingScreen.SetProgress(0.95f, "Opening the Kettle");
+                try { FinishLobby(hub, zone, world, job.Info, cam, mask); }
+                catch (System.Exception e) { fail = e.ToString(); }
+            }
+            if (fail != null)
+            {
+                Debug.LogWarning("[CloneZ] The Kettle couldn't stand in " + zone.Name + " (" + fail + "); the hub is built on its own instead.");
+                KettleLobby.Disabled = true;
+                KentuckyMap.ForgetLot();
+                if (cam != null) cam.cullingMask = mask;
+                GameFlow.GoToHub();
+                yield break;
+            }
+            LoadingScreen.SetProgress(1f, "Open");
+            UIState.GameplayBlocked = false;
+            LoadingScreen.Hide();
+        }
+
+        // The session, the light and the clock for the lobby: the hub's rules over the zone's town.
+        private Transform BeginLobby(ZoneDef zone)
+        {
+            UIState.BuildMode = false;
+            UIState.ActionMenuOpen = false;
+            Time.timeScale = 1f;
+            Climate.Winter = zone.Winter;
+            Shelter.Clear();
+            WorldMarkers.Clear();
+            StarterHome.SetActive(false);
+            HubRules.SafeZone = true;
+            GameSession.Mode = GameMode.Hub;
+            GameSession.HubInRaidTown = true;   // the town round the bar is the raid's: its loot is rolled as the raid's
+            GameSession.ZoneId = zone.Id;
+            GameSession.Raid = RaidKind.Operative;
+            GameSession.InsertionPoint = RaidWorldRules.OnFoot;
+            GameSession.RaidSeed = Random.Range(1, int.MaxValue);
+
+            _lobbyGm = new GameObject("GameManager").AddComponent<GameManager>();
+            Light sun = SetupEnvironment();
+            SetupTimeAndWeather(sun);
+            // The clock waits just short of the zone's hour, barely moving while the survivor is inside; it keeps raid
+            // pace from the moment they step out (the dawn deadline is counted from then).
+            if (TimeOfDay.Instance != null)
+                TimeOfDay.Instance.Configure(zone.StartHour - 0.25f, CloneZConfig.RaidDayLengthSeconds * 8f, CloneZConfig.RaidStartMonth, CloneZConfig.RaidStartDay);
+            EnsureEventSystem();
+
+            var world = new GameObject("World").transform;
+            CloneZConfig.ResetArena(CloneZConfig.ArenaHalfSize);
+            // A fresh hub: whatever a raid left running stops now, before this town's overlays go up.
+            WorldHooks.RaiseHubBuilt(world);
+            _lobbyWorld = world;
+            _lobbyZone = zone;
+            return world;
+        }
+
+        // Everything after the town is up: the raid's rolls, the bar on its lot, the zone's overlays round it, the
+        // NavMesh, and the survivor inside by the door.
+        private void FinishLobby(HubDef hub, ZoneDef zone, Transform world, RaidMapInfo map, Camera cam, int mask)
+        {
+            _lobbyMap = map;
+            CloneZConfig.ArenaHalfSize = map.HalfSize;
+            RaidWorldRules.RerollLoot(world, GameSession.RaidSeed);
+            RaidWorldRules.RollExits(map, new System.Random(GameSession.RaidSeed));
+            HubWorld.Result bar = HubWorld.BuildInTown(world, hub, KentuckyMap.ReservedLot);
+            // The bar stands: known from here on (the zone's overlays and hazards keep out of it as they're laid out).
+            KettleLobby.Opened(bar.Root, BeginLobbyRaid);
+            // The raid starts at the bar's door, not where the map would have set the survivor down: whatever keeps clear of
+            // the start (anomalies, radiation, landmarks, outposts, trees) keeps clear of the porch.
+            map.PlayerSpawn = bar.Root.TransformPoint(new Vector3(0f, 0f, -HubWorld.HalfSize.y - 2.5f));
+            map.PlayerSpawnYaw = bar.Root.eulerAngles.y + 180f;
+            WorldHooks.RaiseRaidMapBuilt(world, map, zone, new System.Random(GameSession.RaidSeed ^ 0x2F6E));
+            BakeNavMesh(world);
+
+            PlayerStats player = BuildPlayer(bar.PlayerSpawn, bar.PlayerYaw);
+            _lobbyGm.Player = player;
+            RaidLoadout.Apply(player.GetComponent<PlayerInventory>(), player.GetComponent<PlayerClothing>());
+            if (cam != null) cam.cullingMask = mask;
+            BuildSurvivorViews(player);
+            _pauseMenu = new GameObject("PauseMenu");
+            _pauseMenu.AddComponent<PauseMenuController>();
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            GameEvents.RaiseToast("Welcome back to " + hub.Name + ", Bardstown. Day " + (c != null ? c.Day : 1) + ". The front door opens onto the town.");
+            Debug.Log("[CloneZ] The Kettle stands in " + zone.RealPlace + " (" + map.Exits.Count + " exits rolled); walk out of its door to start the raid.");
+        }
+
+        /// <summary>The survivor has walked out of the Kettle's door: the raid starts where they stand. The zone's rules
+        /// switch on, the clock keeps raid pace, the dead start to walk, the exits light up, and the bar shuts behind them.</summary>
+        private void BeginLobbyRaid()
+        {
+            if (!GameSession.IsHub || _lobbyMap == null || _lobbyGm == null || _lobbyGm.Player == null) return;
+            PlayerStats player = _lobbyGm.Player;
+            ZoneDef zone = _lobbyZone;
+
+            if (UIScreen.Current != null) UIScreen.Current.Close();
+            HubKit.AfterChange();   // the kit that walks out of the door is the kit at risk (committed while still the hub's)
+            GameSession.Mode = GameMode.Extraction;
+            GameSession.HubInRaidTown = false;
+            GameSession.Raid = RaidKind.Operative;
+            HubRules.SafeZone = false;
+            if (TimeOfDay.Instance != null)
+                TimeOfDay.Instance.Configure(TimeOfDay.Instance.Hour, CloneZConfig.RaidDayLengthSeconds, CloneZConfig.RaidStartMonth, CloneZConfig.RaidStartDay);
+
+            // The HUD and the pause menu were made for the hub (the hub's quit keeps the kit); the raid's differ.
+            if (_hud != null) Destroy(_hud.gameObject);
+            BuildHUD(player, player.GetComponent<PlayerInventory>(), player.GetComponent<PlayerInteractor>(), player.GetComponent<PlayerCombat>(),
+                player.GetComponent<PlayerSleep>(), player.GetComponent<PlayerSkills>(), player.GetComponent<PlayerBuilder>(), player.GetComponent<PlayerWounds>(),
+                player.GetComponent<PlayerPanic>(), player.GetComponent<PlayerFoodSickness>(), player.GetComponent<PlayerFarming>(), player.GetComponent<PlayerHydration>());
+            if (_pauseMenu != null) Destroy(_pauseMenu);
+            _pauseMenu = new GameObject("PauseMenu");
+            _pauseMenu.AddComponent<PauseMenuController>();
+
+            ZombieSpawner spawner = BuildSpawner(player.transform);
+            spawner.Mode = SpawnerMode.Ambient;
+            spawner.AmbientPopulation = Mathf.RoundToInt(CloneZConfig.RaidZombiePopulation * zone.ZombieDensity * SandboxSettings.Current.ZombiePopulation);
+            spawner.enabled = NetAuthority.IsServer;
+
+            ExtractionManager.Begin(player, _lobbyMap.Exits, CloneZConfig.RaidSpawnProtectionSeconds);
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            if (c != null) c.Raids++;
+            KettleLobby.CloseUp();
+            WorldHooks.RaiseRaidStarted(_lobbyWorld, _lobbyMap, zone);
+            GameEvents.RaiseRaidStarted(zone.Id, GameSession.Raid);
+            ProfileStore.Save();
+
+            TimeOfDay tod = TimeOfDay.Instance;
+            string clock = tod != null ? tod.Clock12Text + " " + tod.AmPm + "  \u00b7  " : "";
+            KettleLobby.ShowArrival(zone.RealPlace.ToUpperInvariant() + ", KENTUCKY", clock + "Reach an exit before dawn");
+            Debug.Log("[CloneZ] The raid begins at the Kettle's door: " + zone.Name + ", " + _lobbyMap.Exits.Count + " exits.");
+        }
+        #endregion
+
         private void BuildWorld(bool loadSave)
         {
             UIState.GameplayBlocked = false;
@@ -254,6 +460,7 @@ namespace CloneZ
             // Continue from a saved run when asked (and one exists); otherwise start fresh.
             SaveData save = null;
             bool loaded = loadSave && SaveSystem.TryLoad(out save) && save.Player != null;
+            if (loaded && !string.IsNullOrEmpty(save.SurvivorName)) GameSession.SurvivorName = save.SurvivorName;
 
             var world = BuildArena();
             if (loaded)
@@ -511,7 +718,7 @@ namespace CloneZ
             root.AddComponent<PlayerFarming>();       // till / sow / water / harvest crops (F)
             root.AddComponent<PlayerHydration>();     // drink / fill bottles at a tap or barrel (G)
             root.AddComponent<PlayerGear>();          // night vision (N), flashlight (L), gas mask + filters
-            root.AddComponent<PlayerAvatar>();        // Clone Z's body: a rigged humanoid animated from all of the above
+            root.AddComponent<PlayerAvatar>();        // the survivor's body: a rigged humanoid animated from all of the above
             root.AddComponent<PlayerModifiers>();     // the sum of traits, artifacts, Zone marks, broken limbs...
             root.AddComponent<TraitEffects>();        // the character's chosen traits
             root.AddComponent<PlayerLimbs>();         // seven hit zones, fractures, blacked-out limbs, armour
@@ -589,6 +796,7 @@ namespace CloneZ
         {
             var hud = new GameObject("HUD").AddComponent<HUDController>();
             hud.Bind(player, inventory, interactor, combat, sleep, skills, builder, wounds, panic, nutrition, farming, hydration);
+            _hud = hud;
         }
 
         private ZombieSpawner BuildSpawner(Transform player)
@@ -646,7 +854,7 @@ namespace CloneZ
             inventory.AddStarter("hoodie", 1);
         }
 
-        // Dresses the survivor in Clone Z's outfit — a teal T-shirt, jeans and leather boots — with a
+        // Dresses the survivor in the starting outfit — a teal T-shirt, jeans and leather boots — with a
         // hiking bag for the building kit. It's enough for a mild day but no match for a cold night
         // or a downpour; better clothing has to be looted.
         private void EquipStartingClothes(PlayerClothing clothing)

@@ -5,15 +5,22 @@ using UnityEngine.UI;
 namespace CloneZ
 {
     /// <summary>
-    /// The title screen: your runners (up to three per account), making a new one, hosting or joining a server, the
-    /// settings and the field manual — and the original wave-survival mode. Picking a runner takes you to their hub;
-    /// a dead runner's slot can take a new runner.
+    /// The title screen: a winter night over a small Kentucky town, your runners (up to three per account) and making a
+    /// new one, playing together (hosting or joining a server), the original wave-survival mode, and the settings and the
+    /// field manual. Picking a runner takes you to their hub under the loading card — for a new runner, The Rusty Kettle
+    /// in Bardstown, whose front door opens onto the town; a dead runner's slot can take a new runner.
     /// </summary>
     public class MainMenuController : MonoBehaviour
     {
         /// <summary>Set by the netcode: start a host (then enter the hub) / join an address. Null hides the buttons.</summary>
         public static System.Action<ushort> HostAction;
         public static System.Action<string, ushort> JoinAction;
+
+        private static readonly Color TitleRed = new Color(0.86f, 0.24f, 0.20f);
+        private static readonly Color PlaceColor = new Color(0.88f, 0.83f, 0.74f);
+        private static readonly Color CardColor = new Color(0.055f, 0.065f, 0.085f, 0.90f);
+        private static readonly Color CardActive = new Color(0.10f, 0.11f, 0.14f, 0.95f);
+        private static readonly Color HomeColor = new Color(0.90f, 0.72f, 0.44f);
 
         private GameBootstrapper _boot;
         private Canvas _canvas;
@@ -30,8 +37,9 @@ namespace CloneZ
             UIKit.EnsureEventSystem();
             _canvas = UIKit.CreateCanvas("MainMenu Canvas", 200, transform);
             _root = (RectTransform)_canvas.transform;
-            Image bg = UIKit.Panel(_root, "Backdrop", new Color(0.04f, 0.05f, 0.07f, 1f));
+            Image bg = UIKit.Panel(_root, "Backdrop", new Color(0.02f, 0.025f, 0.04f, 1f));
             UIKit.Stretch(bg.rectTransform);
+            WinterBackdrop.Build(_root, 160, true);
             ShowTitle();
         }
 
@@ -42,6 +50,18 @@ namespace CloneZ
             UIKit.Stretch(_panel);
         }
 
+        // Letters spread out, for the small caps under the title (a word gap comes out three spaces wide).
+        private static string Spaced(string s)
+        {
+            var sb = new System.Text.StringBuilder(s.Length * 2);
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (i > 0) sb.Append(' ');
+                sb.Append(s[i]);
+            }
+            return sb.ToString();
+        }
+
         private void ShowTitle()
         {
             // Reset UI state before rebuilding title screen
@@ -49,79 +69,142 @@ namespace CloneZ
             // Clear previous UI elements to start fresh
             Clear();
             // Add title text with large font and bold styling
-            Text title = UIKit.Label(_panel, "CLONE-Z", 96, new Color(0.85f, 0.22f, 0.2f), TextAnchor.MiddleCenter, FontStyle.Bold);
-            UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.86f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1000f, 130f));
+            Text title = UIKit.Label(_panel, "WithTheDead", 112, TitleRed, TextAnchor.MiddleCenter, FontStyle.Bold);
+            UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.885f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 140f));
+            Text place = UIKit.Label(_panel, Spaced("BARDSTOWN, KENTUCKY") + "      \u00b7      " + Spaced("WINTER 1993"), 22, PlaceColor, TextAnchor.MiddleCenter);
+            UIKit.Place(place.rectTransform, new Vector2(0.5f, 0.8f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 34f));
             AccountProfile a = ProfileStore.Account;
-            Text sub = UIKit.Label(_panel, "The Zone  \u00b7  season " + a.Season + (a.Wipes > 0 ? " (" + a.Wipes + " wipes survived)" : ""), 24, new Color(0.7f, 0.74f, 0.8f), TextAnchor.MiddleCenter);
-            UIKit.Place(sub.rectTransform, new Vector2(0.5f, 0.78f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1000f, 40f));
+            Text season = UIKit.Label(_panel, "Season " + a.Season + (a.Wipes > 0 ? "  \u00b7  " + a.Wipes + " wipes survived" : ""), 16, UIKit.TextDim, TextAnchor.MiddleCenter);
+            UIKit.Place(season.rectTransform, new Vector2(0.5f, 0.765f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900f, 26f));
 
             // Runners.
-            RectTransform slots = UIKit.Place(UIKit.Rect("Runners", _panel), new Vector2(0.5f, 0.56f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 260f));
+            Text runners = UIKit.Label(_panel, Spaced("YOUR RUNNERS"), 15, UIKit.Accent, TextAnchor.MiddleLeft, FontStyle.Bold);
+            UIKit.Place(runners.rectTransform, new Vector2(0.5f, 0.69f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1364f, 24f));
+            RectTransform slots = UIKit.Place(UIKit.Rect("Runners", _panel), new Vector2(0.5f, 0.555f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 250f));
             var h = slots.gameObject.AddComponent<HorizontalLayoutGroup>();
-            h.spacing = 20f;
+            h.spacing = 22f;
             h.childAlignment = TextAnchor.MiddleCenter;
             h.childControlWidth = h.childControlHeight = true;
             h.childForceExpandWidth = h.childForceExpandHeight = false;
             for (int i = 0; i < AccountProfile.MaxCharacters; i++) Slot(slots, i);
 
-            RectTransform col = UIKit.Place(UIKit.Rect("Buttons", _panel), new Vector2(0.5f, 0.24f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 210f));
-            var row1 = UIKit.Row(col, 52f, null, 16f, 0);
-            UIKit.Place(row1, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), Vector2.zero, new Vector2(1500f, 52f));
-            row1.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
-            Big(row1, "Host a server", HostAction != null, () => { ushort.TryParse(_port, out ushort p); HostAction(p == 0 ? (ushort)7777 : p); });
-            UIKit.Size(UIKit.Input(row1, _joinAddress, "address", v => _joinAddress = v, 18).gameObject, 220f, 46f);
-            UIKit.Size(UIKit.Input(row1, _port, "port", v => _port = v, 18).gameObject, 100f, 46f);
-            Big(row1, "Join", JoinAction != null, () => { ushort.TryParse(_port, out ushort p); JoinAction(_joinAddress, p == 0 ? (ushort)7777 : p); });
+            // The other ways to play: together, or the waves.
+            RectTransform modes = UIKit.Place(UIKit.Rect("Modes", _panel), new Vector2(0.5f, 0.3f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 124f));
+            var mh = modes.gameObject.AddComponent<HorizontalLayoutGroup>();
+            mh.spacing = 22f;
+            mh.childAlignment = TextAnchor.MiddleCenter;
+            mh.childControlWidth = mh.childControlHeight = true;
+            mh.childForceExpandWidth = mh.childForceExpandHeight = false;
+            Together(modes);
+            Waves(modes);
 
-            var row2 = UIKit.Row(col, 52f, null, 16f, 0);
-            UIKit.Place(row2, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 52f));
-            row2.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
-            Big(row2, "Settings", true, () => UIScreen.Show<SettingsScreen>());
-            Big(row2, "Field manual", true, () => UIScreen.Show<ManualScreen>());
-            Big(row2, "Sandbox rules", true, () => UIScreen.Show<SandboxScreen>());
-            Big(row2, "Wave survival (new)", true, () => { if (_boot != null) _boot.StartNewGame(); Destroy(gameObject); });
-            Big(row2, "Continue waves", SaveSystem.HasSave, () => { if (_boot != null) _boot.ContinueGame(); Destroy(gameObject); });
-            Big(row2, "Quit", true, Quit);
+            // The rest, small, along the foot.
+            RectTransform foot = UIKit.Row(_panel, 40f, null, 12f, 0);
+            UIKit.Place(foot, new Vector2(0.5f, 0.125f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(800f, 40f));
+            foot.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+            Small(foot, "Settings", () => UIScreen.Show<SettingsScreen>());
+            Small(foot, "Field manual", () => UIScreen.Show<ManualScreen>());
+            Small(foot, "Sandbox rules", () => UIScreen.Show<SandboxScreen>());
+            Small(foot, "Quit", Quit);
 
-            Text hint = UIKit.Label(_panel, "You lose what you carried if you die \u2014 never what you learned, never your secure pouch.", 16,
-                new Color(0.5f, 0.54f, 0.6f), TextAnchor.MiddleCenter);
-            UIKit.Place(hint.rectTransform, new Vector2(0.5f, 0.06f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 40f));
+            Text hint = UIKit.Label(_panel, "You lose what you carried if you die \u2014 never what you learned, never your secure pouch.", 15,
+                new Color(0.66f, 0.70f, 0.76f), TextAnchor.MiddleCenter);
+            UIKit.Place(hint.rectTransform, new Vector2(0.5f, 0.07f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 26f));
+            Text osm = UIKit.Label(_panel, "Map data \u00a9 OpenStreetMap contributors", 13, new Color(0.68f, 0.71f, 0.76f), TextAnchor.MiddleRight);
+            UIKit.Place(osm.rectTransform, new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-24f, 44f), new Vector2(520f, 22f));
         }
 
         private void Slot(RectTransform parent, int i)
         {
             AccountProfile a = ProfileStore.Account;
             CharacterProfile c = i < a.Characters.Count ? a.Characters[i] : null;
-            Image card = UIKit.Panel(parent, "Slot", new Color(1f, 1f, 1f, c != null && i == a.ActiveIndex ? 0.1f : 0.05f));
-            UIKit.Size(card.gameObject, 440f, 240f);
-            RectTransform col = UIKit.Column(card.rectTransform, 6f, 14);
-            UIKit.Stretch(col);
+            bool active = c != null && !c.Dead && i == a.ActiveIndex;
+            Image card = UIKit.Panel(parent, "Slot", active ? CardActive : CardColor);
+            UIKit.Size(card.gameObject, 440f, 250f);
+            // A strip along the top: the accent for the runner you last played, else their faction's colour (red for the
+            // dead, faint for an empty slot).
+            Color strip = c == null ? new Color(1f, 1f, 1f, 0.08f) : c.Dead ? UIKit.Bad : active ? UIKit.Accent : Factions.Get(c.Faction).Color;
+            Image bar = UIKit.Panel(card.rectTransform, "Strip", strip);
+            RectTransform br = bar.rectTransform;
+            br.anchorMin = new Vector2(0f, 1f);
+            br.anchorMax = new Vector2(1f, 1f);
+            br.pivot = new Vector2(0.5f, 1f);
+            br.anchoredPosition = Vector2.zero;
+            br.sizeDelta = new Vector2(0f, active ? 6f : 4f);
+            RectTransform col = UIKit.Column(card.rectTransform, 6f, 16);
+            UIKit.Stretch(col, 0f, 0f, 0f, 4f);
             if (c == null)
             {
                 UIKit.Label(col, "Empty slot", 22, UIKit.TextDim, TextAnchor.MiddleCenter);
+                UIKit.Label(col, "A new runner starts at The Rusty Kettle, a roadhouse in Bardstown.", 14, UIKit.TextDim, TextAnchor.MiddleCenter);
                 UIKit.Size(UIKit.Button(col, "New runner", () => NewRunner(-1), UIKit.Accent, 20).gameObject, -1f, 54f);
                 return;
             }
             ProfessionDef p = ProfessionCatalog.Get(c.Profession);
-            UIKit.Label(col, c.Name + (c.Ironman ? "  [IRONMAN]" : ""), 24, c.Dead ? UIKit.Bad : UIKit.TextColor, TextAnchor.MiddleLeft, FontStyle.Bold);
-            UIKit.Label(col, "Level " + c.Level + " " + p.Name + " \u00b7 " + Factions.NameOf(c.Faction), 16, UIKit.TextDim);
-            UIKit.Label(col, c.Dead ? "Dead: " + (string.IsNullOrEmpty(c.CauseOfDeath) ? "the Zone" : c.CauseOfDeath) : "Day " + c.Day + " \u00b7 raids " + c.Raids + " \u00b7 extracts " + c.Extracts + " \u00b7 " + HubCatalog.Get(c.Hub).Name, 15, UIKit.TextDim);
+            HubDef hub = HubCatalog.Get(c.Hub);
+            UIKit.Label(col, c.Name + (c.Ironman ? "  <size=14><color=#e0b050>IRONMAN</color></size>" : ""), 26, c.Dead ? UIKit.Bad : UIKit.TextColor, TextAnchor.MiddleLeft, FontStyle.Bold);
+            UIKit.Label(col, "Level " + c.Level + " " + p.Name + "  \u00b7  " + Factions.NameOf(c.Faction), 16, UIKit.TextDim);
+            if (c.Dead) UIKit.Label(col, "Dead: " + (string.IsNullOrEmpty(c.CauseOfDeath) ? "the Zone" : c.CauseOfDeath), 15, UIKit.Bad);
+            else
+            {
+                UIKit.Label(col, "Day " + c.Day + "  \u00b7  " + c.Raids + " raids  \u00b7  " + c.Extracts + " extracts", 15, UIKit.TextColor);
+                UIKit.Label(col, "At " + hub.Name + (hub.Id == HubCatalog.Kettle ? ", Bardstown" : ""), 15, HomeColor);
+            }
             RectTransform row = UIKit.Row(col, 46f, null, 8f, 0);
             row.GetComponent<LayoutElement>().flexibleHeight = 0f;   // keep to its own height, not the card's spare room
             int idx = i;
             // A dead runner can't be played, so their slot takes a new runner instead.
             Button main = c.Dead
                 ? UIKit.Button(row, "New runner", () => NewRunner(idx), UIKit.Accent, 20)
-                : UIKit.Button(row, "Play", () =>
+                : UIKit.Button(row, hub.Id == HubCatalog.Kettle ? "Into the Kettle" : "Play", () =>
                 {
                     ProfileStore.SelectCharacter(idx);
-                    if (_boot != null) _boot.StartHub();
-                    Destroy(gameObject);
+                    EnterHub();
                 }, UIKit.Accent, 20);
             Button delete = UIKit.Button(row, "Delete", () => ConfirmDelete(idx), UIKit.ButtonColor, 16);
             // The row hands out width by flexible share only; a bare button has none and would collapse to nothing.
             UIKit.Size(main.gameObject, -1f, -1f, 2f);
             UIKit.Size(delete.gameObject, -1f, -1f, 1f);
+        }
+
+        private void Together(RectTransform parent)
+        {
+            RectTransform card = GroupCard(parent, "PLAY TOGETHER", 800f);
+            RectTransform row = UIKit.Row(card, 48f, null, 12f, 0);
+            Big(row, "Host a server", HostAction != null, () => { ushort.TryParse(_port, out ushort p); HostAction(p == 0 ? (ushort)7777 : p); }, 200f);
+            UIKit.Size(UIKit.Input(row, _joinAddress, "address", v => _joinAddress = v, 18).gameObject, 230f, 44f);
+            UIKit.Size(UIKit.Input(row, _port, "port", v => _port = v, 18).gameObject, 96f, 44f);
+            Big(row, "Join", JoinAction != null, () => { ushort.TryParse(_port, out ushort p); JoinAction(_joinAddress, p == 0 ? (ushort)7777 : p); }, 150f);
+        }
+
+        private void Waves(RectTransform parent)
+        {
+            RectTransform card = GroupCard(parent, "WAVE SURVIVAL", 520f);
+            RectTransform row = UIKit.Row(card, 48f, null, 12f, 0);
+            Big(row, "New run", true, () => { if (_boot != null) _boot.StartNewGame(); Destroy(gameObject); }, 230f);
+            Big(row, "Continue", SaveSystem.HasSave, () => { if (_boot != null) _boot.ContinueGame(); Destroy(gameObject); }, 230f);
+        }
+
+        // A titled card in the row of other ways to play: its heading over a row of controls.
+        private static RectTransform GroupCard(RectTransform parent, string heading, float width)
+        {
+            Image card = UIKit.Panel(parent, heading, CardColor);
+            UIKit.Size(card.gameObject, width, 120f);
+            RectTransform col = UIKit.Column(card.rectTransform, 10f, 16);
+            UIKit.Stretch(col);
+            UIKit.Label(col, Spaced(heading), 15, UIKit.Accent, TextAnchor.MiddleLeft, FontStyle.Bold);
+            return col;
+        }
+
+        // Off to the active runner's hub, under the loading card (the Kettle's town takes a while to build).
+        private void EnterHub()
+        {
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            HubDef hub = HubCatalog.Get(c != null ? c.Hub : HubCatalog.Kettle);
+            LoadingScreen.Show(hub.Name.ToUpperInvariant(), KettleLobby.Where(hub));
+            GameBootstrapper boot = _boot;
+            LoadingScreen.Run(() => { if (boot != null) boot.StartHub(); });
+            Destroy(gameObject);
         }
 
         private void ConfirmDelete(int idx)
@@ -167,8 +250,11 @@ namespace CloneZ
             Clear();
             if (_blood == null) _blood = BloodTypes.Roll();
             Text title = UIKit.Label(_panel, "A new runner", 40, UIKit.Accent, TextAnchor.MiddleCenter, FontStyle.Bold);
-            UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.95f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900f, 60f));
-            RectTransform area = UIKit.Place(UIKit.Rect("Create", _panel), new Vector2(0.5f, 0.48f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1800f, 820f));
+            UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.955f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900f, 60f));
+            Text where = UIKit.Label(_panel, "You'll start at The Rusty Kettle, a roadhouse on the edge of Bardstown, Kentucky. Its front door opens onto the town.",
+                17, PlaceColor, TextAnchor.MiddleCenter);
+            UIKit.Place(where.rectTransform, new Vector2(0.5f, 0.915f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 28f));
+            RectTransform area = UIKit.Place(UIKit.Rect("Create", _panel), new Vector2(0.5f, 0.48f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1800f, 800f));
             RectTransform[] cols = HubUI.Columns(area, 16f, 1f, 1.2f, 1f);
 
             // Who.
@@ -225,7 +311,7 @@ namespace CloneZ
 
             RectTransform row = UIKit.Place(UIKit.Row(_panel, 54f, null, 20f, 0), new Vector2(0.5f, 0.04f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(700f, 54f));
             Big(row, "Back", true, ShowTitle);
-            Big(row, "Into the bar", left >= 0 && _name.Trim().Length > 0, Create);
+            Big(row, "Into the Kettle", left >= 0 && _name.Trim().Length > 0, Create);
         }
 
         private void Create()
@@ -234,17 +320,22 @@ namespace CloneZ
             ProfessionCatalog.ApplyKit(c);
             ProfileStore.AddCharacter(c, _replaceSlot);
             GameSession.SurvivorName = c.Name;
-            if (_boot != null) _boot.StartHub();
-            Destroy(gameObject);
+            EnterHub();
         }
         #endregion
 
-        private static Button Big(Transform parent, string text, bool enabled, System.Action onClick)
+        private static Button Big(Transform parent, string text, bool enabled, System.Action onClick, float width = 230f)
         {
             Button b = UIKit.Button(parent, text, onClick, enabled ? UIKit.ButtonColor : new Color(0.18f, 0.18f, 0.2f), 20);
             b.interactable = enabled;
-            UIKit.Size(b.gameObject, 230f, 50f);
+            UIKit.Size(b.gameObject, width, 50f);
             return b;
+        }
+
+        private static void Small(Transform parent, string text, System.Action onClick)
+        {
+            Button b = UIKit.Button(parent, text, onClick, new Color(0.13f, 0.15f, 0.18f, 0.92f), 16);
+            UIKit.Size(b.gameObject, 170f, 36f);
         }
 
         private static void Quit()

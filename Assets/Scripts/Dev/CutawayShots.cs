@@ -71,7 +71,7 @@ namespace CloneZ
                 try
                 {
                     Directory.CreateDirectory(_out);
-                    _md.Append("# CLONE-Z isometric cutaway harness\n\n");
+                    _md.Append("# WithTheDead isometric cutaway harness\n\n");
                     if (!Stage("setup", Setup)) code = ExitNoWorld;
                     else
                     {

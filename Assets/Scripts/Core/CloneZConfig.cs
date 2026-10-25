@@ -1,4 +1,4 @@
-// CLONE-Z — a 3D reimagining of Project Zomboid.
+// WithTheDead (WTD) — a 3D reimagining of Project Zomboid.
 // Tuning constants grounded in values decompiled from the reference game
 // (ref/_decompiled). Values are re-expressed for a 3D, metre/second world.
 namespace CloneZ

@@ -68,6 +68,9 @@ namespace CloneZ
     {
         public static readonly List<Anomaly> All = new List<Anomaly>();
 
+        /// <summary>The most an anomaly grows past its kind's <see cref="AnomalyDef.Radius"/>.</summary>
+        public const float MaxGrowth = 1.2f;
+
         /// <summary>The definition of this anomaly instance.</summary>
         public AnomalyDef Def { get; private set; }
         /// <summary>Radius of the anomaly effect area.</summary>
@@ -90,9 +93,11 @@ namespace CloneZ
         private Light _flash;
         private float _flashUntil;
 
-        /// <summary>Create a new anomaly instance under a parent transform.</summary>
+        /// <summary>Create a new anomaly instance under a parent transform, or null where none may be: in the hub's bar
+        /// standing in the town, or the safe zone round it (<see cref="KettleLobby.InSafeZone"/>), whoever asks.</summary>
         public static Anomaly Spawn(Transform parent, AnomalyDef def, Vector3 at, float strength, System.Random rng)
         {
+            if (def == null || KettleLobby.InSafeZone(at, def.Radius * MaxGrowth)) return null;
             var go = new GameObject("Anomaly " + def.Id);
             go.transform.SetParent(parent, false);
             go.transform.position = at;
@@ -100,7 +105,7 @@ namespace CloneZ
             var a = go.AddComponent<Anomaly>();
             a.Def = def;
             a.Strength = strength;
-            a.Radius = def.Radius * Mathf.Lerp(0.85f, 1.2f, (float)rng.NextDouble());
+            a.Radius = def.Radius * Mathf.Lerp(0.85f, MaxGrowth, (float)rng.NextDouble());
             a.BuildVisual(rng);
             return a;
         }

@@ -140,8 +140,9 @@ namespace CloneZ
 
     /// <summary>
     /// Lays the Zone's hazards over a raid map: clusters of anomalies (anomaly fields), radiation hot spots near the
-    /// industrial landmarks, and the artifacts inside them. Clear of the exits, the insertion points and the streets'
-    /// buildings; deterministic from the raid seed.
+    /// industrial landmarks, and the artifacts inside them. Clear of the exits, the insertion points, the streets'
+    /// buildings and the safe zone round the hub's bar standing in the town (<see cref="KettleLobby.InSafeZone"/>);
+    /// deterministic from the raid seed.
     /// </summary>
     internal static class AnomalyField
     {
@@ -187,8 +188,9 @@ namespace CloneZ
                     Vector3 p = centre + Quaternion.Euler(0f, ZoneKit.R(rng, 0f, 360f), 0f) * new Vector3(ZoneKit.R(rng, 0f, 7f), 0f, 0f);
                     p.y = GroundY(p);
                     if (site != null && site.Any(p, def.Radius + 0.5f, SiteCell.Building | SiteCell.Reserved | SiteCell.Hazard)) continue;
+                    if (KettleLobby.InSafeZone(p, def.Radius * Anomaly.MaxGrowth + 0.5f)) continue;
                     if (!Clear(p, keepClear, 18f)) continue;
-                    Anomaly.Spawn(root, def, p, Mathf.Lerp(0.85f, 1.15f, (float)rng.NextDouble()) * (0.8f + zone.Depth * 0.15f), rng);
+                    if (Anomaly.Spawn(root, def, p, Mathf.Lerp(0.85f, 1.15f, (float)rng.NextDouble()) * (0.8f + zone.Depth * 0.15f), rng) == null) continue;
                     site?.MarkCircle(p, def.Radius + 0.5f, SiteCell.Hazard);
                     if (kind == "tollgate") tollgates++;
                     placed++;
@@ -206,7 +208,7 @@ namespace CloneZ
                 IReadOnlyList<Vector3> pts = WorldMarkers.Get(kind);
                 if (pts.Count == 0 || rng.NextDouble() < 0.5) continue;
                 Vector3 at = pts[0] + new Vector3(ZoneKit.R(rng, -10f, 10f), 0f, ZoneKit.R(rng, -10f, 10f));
-                if (!Clear(at, keepClear, 25f)) continue;
+                if (!Clear(at, keepClear, 25f) || KettleLobby.InSafeZone(at, 12f)) continue;   // (as wide as these spots get)
                 RadiationSpot.Spawn(root, at, ZoneKit.R(rng, 7f, 12f), ZoneKit.R(rng, 0.0012f, 0.003f) * (0.6f + zone.Depth * 0.4f), rng);
                 spots--;
             }
@@ -214,7 +216,7 @@ namespace CloneZ
             {
                 float r = map.HalfSize - 10f;
                 var at = new Vector3(ZoneKit.R(rng, -r, r), 0f, ZoneKit.R(rng, -r, r));
-                if (!Clear(at, keepClear, 25f)) continue;
+                if (!Clear(at, keepClear, 25f) || KettleLobby.InSafeZone(at, 10f)) continue;
                 RadiationSpot.Spawn(root, at, ZoneKit.R(rng, 6f, 10f), ZoneKit.R(rng, 0.0008f, 0.002f) * (0.6f + zone.Depth * 0.4f), rng);
             }
             Debug.Log("[CloneZ] Zone hazards: " + placed + " anomalies in " + clusters + " fields, radiation spots " + RadiationSpot.All.Count);

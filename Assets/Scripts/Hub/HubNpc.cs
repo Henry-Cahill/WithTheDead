@@ -114,6 +114,14 @@ namespace CloneZ
             return npc;
         }
 
+        /// <summary>Carries what the NPC looks at and sits on along with its room: a hub in the town is built at the origin
+        /// and then moved onto its lot, and these were kept in world space.</summary>
+        internal void Relocate(Transform room)
+        {
+            LookAt = room.TransformPoint(LookAt);
+            if (_anim != null && _anim.Seated) _anim.SeatPoint = room.TransformPoint(_anim.SeatPoint);
+        }
+
         private void Dress(HumanoidLook look, string faction, Role role)
         {
             string[] tops = { "camojacket", "leatherjacket", "jacket", "hoodie", "parka" };

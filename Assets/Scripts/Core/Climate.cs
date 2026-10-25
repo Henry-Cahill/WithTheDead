@@ -209,7 +209,7 @@ namespace CloneZ
         // A small per-raid shift so no two raid nights read quite the same on the watch.
         private static float RunOffsetC()
         {
-            int seed = GameSession.IsExtraction ? GameSession.RaidSeed : 0;
+            int seed = GameSession.IsRaidWorld ? GameSession.RaidSeed : 0;
             if (seed == 0) return 0f;
             if (seed != s_OffsetSeed)
             {

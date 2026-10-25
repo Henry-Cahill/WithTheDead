@@ -9,8 +9,8 @@ namespace CloneZ
     /// flakes need to fill the bottom of the screen) and the flakes are sized to stay specks of a few pixels; over
     /// the shoulder and in first person a tighter box sits ahead of the camera. How hard it snows comes
     /// from <see cref="Climate.SnowIntensity"/>. Flakes are only born over open ground (not inside
-    /// registered <see cref="Shelter"/> interiors), and none at all while the survivor is indoors in the
-    /// close-up views. Ticked by the <see cref="VisionController"/>.
+    /// registered <see cref="Shelter"/> interiors), and none at all while the survivor is indoors.
+    /// Ticked by the <see cref="VisionController"/>.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class SnowFX : MonoBehaviour
@@ -52,8 +52,11 @@ namespace CloneZ
         private ParticleSystem _ps;
         private ParticleSystem.EmitParams _emit;
         private float _toEmit;
-        private bool _filled;
+        private bool _filled, _indoors;
         private CameraView _lastView;
+        private readonly RoofMap _roofs = new RoofMap();
+        // The noise lets a flake wander this far off its line: rooms are kept that much clear.
+        private const float RoofPad = 0.75f;
 
         /// <summary>Creates the particle system (called once by the vision controller).</summary>
         internal void Build()
@@ -128,7 +131,16 @@ namespace CloneZ
             }
 
             float intensity = Mathf.Clamp01(Climate.SnowIntensity);
-            if (close && Shelter.IsSheltered(player.position + Vector3.up * ShelterProbeHeight)) intensity = 0f;
+            // Indoors, no snow in any view (from above, flakes over the street would drift across the room): those in the
+            // air go at once, and the box fills again straight away on the way back out.
+            bool indoors = Shelter.Count > 0 && Shelter.IsSheltered(player.position + Vector3.up * ShelterProbeHeight);
+            if (indoors != _indoors)
+            {
+                _indoors = indoors;
+                if (indoors) _ps.Clear();
+                else _filled = false;
+            }
+            if (indoors) intensity = 0f;
             if (intensity <= 0.001f)
             {
                 _toEmit = 0f;
@@ -205,25 +217,29 @@ namespace CloneZ
 
         // Flakes are born anywhere in the box (fading in, so none pop) and live until they reach the
         // floor. The pre-fill samples the steady state, where flakes thin out towards the top of the box.
+        // None falls inside a building: a flake whose drift would carry it over a room on the way down isn't born.
         private void EmitFlakes(int count, Vector3 centre, float size, float floorY, float height, bool prefill,
             Vector3 wind, float minSize, float maxSize)
         {
             float half = size * 0.5f;
             int room = MaxParticles - _ps.particleCount;
             if (count > room) count = room;
+            if (count <= 0) return;
+            float reach = half + height / (FallSpeed - FallJitter) * wind.magnitude;
+            _roofs.Cover(Rect.MinMaxRect(centre.x - reach, centre.z - reach, centre.x + reach, centre.z + reach), RoofPad);
             for (int i = 0; i < count; i++)
             {
                 float x = centre.x + Random.Range(-half, half);
                 float z = centre.z + Random.Range(-half, half);
-                if (Shelter.Count > 0 && Shelter.IsSheltered(new Vector3(x, floorY + BelowGround + ShelterProbeHeight, z)))
-                    continue;   // no snow inside buildings
-
                 float u = Random.value;
                 float y = floorY + height * (prefill ? 1f - Mathf.Sqrt(u) : u);
                 float fall = FallSpeed + Random.Range(-FallJitter, FallJitter);
+                float life = Mathf.Max(0.4f, (y - floorY) / fall);
+                if (_roofs.CoveredAlong(x, z, wind.x * life, wind.z * life)) continue;
+
                 _emit.position = new Vector3(x, y, z);
                 _emit.velocity = new Vector3(wind.x, -fall, wind.z);
-                _emit.startLifetime = Mathf.Max(0.4f, (y - floorY) / fall);
+                _emit.startLifetime = life;
                 _emit.startSize = Random.Range(minSize, maxSize);
                 _ps.Emit(_emit, 1);
             }

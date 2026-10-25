@@ -1,0 +1,26 @@
+Twitch tags for twitch.tv/videogame_withthedead
+Up to 10 per stream, 25 characters max, letters and numbers only. Add them in Creator Dashboard > Stream Manager > Edit Stream Info > Tags (Enter after each).
+
+Playing WithTheDead (category: Games + Demos)
+  WithTheDead
+  IndieGame
+  Zombies
+  ZombieSurvival
+  SurvivalGame
+  ExtractionShooter
+  Isometric
+  Playtest
+  GameDev
+  Unity
+
+Building WithTheDead (category: Software and Game Development)
+  WithTheDead
+  GameDev
+  IndieDev
+  Unity
+  CSharp
+  Coding
+  Programming
+  IndieGame
+  Zombies
+  SurvivalGame

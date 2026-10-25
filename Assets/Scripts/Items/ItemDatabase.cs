@@ -530,13 +530,13 @@ public static ItemDef Get(string id)
             if (s_Tables == null || !s_Tables.TryGetValue(type, out LootTable table)) return;
 
             int rolls = rng.Next(table.MinRolls, table.MaxRolls + 1);
-            float abundance = SandboxSettings.Current.LootAbundance * (GameSession.IsExtraction ? ZoneCatalog.Current.LootMultiplier : 1f);
+            float abundance = SandboxSettings.Current.LootAbundance * (GameSession.IsRaidWorld ? ZoneCatalog.Current.LootMultiplier : 1f);
             if (!Mathf.Approximately(abundance, 1f))
             {
                 float scaled = rolls * Mathf.Max(0f, abundance);
                 rolls = Mathf.FloorToInt(scaled) + (rng.NextDouble() < scaled - Mathf.Floor(scaled) ? 1 : 0);
             }
-            ItemExtra raidLoot = GameSession.IsExtraction ? new ItemExtra { FoundInRaid = true } : null;
+            ItemExtra raidLoot = GameSession.IsRaidWorld ? new ItemExtra { FoundInRaid = true } : null;
             for (int r = 0; r < rolls; r++)
             {
                 int total = table.EmptyWeight;
