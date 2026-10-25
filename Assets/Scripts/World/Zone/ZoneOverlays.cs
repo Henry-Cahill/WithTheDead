@@ -38,33 +38,54 @@ namespace CloneZ
             return Mathf.Clamp01(n / 14f);
         }
 
+        /// <summary>
+        /// Builds the forest overlay: trunks, canopies, undergrowth and colliders based on zone density.
+        /// </summary>
         public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSiteMap site, System.Random rng)
         {
+            // Create chunk containers for tree trunks, canopies, and ground foliage, each with 24 m cell size.
             var trunks = new ZoneChunks(24f);
+            // Separate chunk for canopy geometry (leaves, needles).
             var canopies = new ZoneChunks(24f);
+            // Separate chunk for ground-level details such as ferns and fallen logs.
             var ground = new ZoneChunks(24f);
+            // Container for physics colliders representing solid tree trunks.
             Transform colliders = ZoneKit.Child(world, "TreeColliders", Vector3.zero);
+            // Container for unbaked geometry (visible but excluded from static batching).
             Transform unbaked = ZoneWorld.Unbaked != null ? ZoneWorld.Unbaked : ZoneKit.Child(null, "ZoneUnbaked", Vector3.zero);
 
+            // Desired number of trees based on zone's forest density setting.
             int want = Mathf.RoundToInt(430f * zone.ForestDensity);
+            // Bitmask for checking placement against existing hard surfaces, paved areas, and map edges.
             SiteCell mask = ZoneSiteMap.Hard | SiteCell.Paved | SiteCell.Edge;
+            // Maximum radius from map centre where trees may be placed (leaving a margin).
             float reach = site.Half - 4f;
             Color needles = new Color(0.13f, 0.20f, 0.14f);
             Color snowCap = new Color(0.86f, 0.89f, 0.93f);
             Color birch = new Color(0.78f, 0.77f, 0.72f);
 
+            // Place trees randomly within the reachable area, respecting placement constraints.
             for (int i = 0; i < want * 6 && TreeCount < want; i++)
             {
+                // Pick a random position within the zone's bounds.
                 var p = new Vector3(ZoneKit.R(rng, -reach, reach), 0f, ZoneKit.R(rng, -reach, reach));
+                // Skip positions that intersect existing structures or are too close to the player spawn.
                 if (site.Any(p, 1.7f, mask)) continue;
+                // Ensure trees are not placed within 10 m of the player start point.
                 if ((p - map.PlayerSpawn).sqrMagnitude < 100f) continue;
+                // Determine tree species: ~72 % chance of a conifer, otherwise a birch.
                 bool conifer = rng.NextDouble() < 0.72;
+                // Randomize height and radius according to species.
                 float h = conifer ? ZoneKit.R(rng, 7f, 13f) : ZoneKit.R(rng, 6f, 10f);
                 float r = conifer ? ZoneKit.R(rng, 0.18f, 0.3f) : ZoneKit.R(rng, 0.12f, 0.18f);
+                // Create trunk geometry at the chosen position.
                 RaidMesh tm = trunks.At(p);
                 tm.Cylinder(p + Vector3.down * 0.1f, r, h * (conifer ? 0.45f : 0.9f), 7, ZoneKit.M(conifer ? ZoneKit.V(ZoneKit.Bark, rng) : ZoneKit.V(birch, rng, 0.05f)));
+                // Add a small top cylinder for conifers to give a bark texture highlight.
                 if (conifer) tm.Cylinder(p + Vector3.up * (h * 0.44f), r * 1.02f, 0.02f, 7, ZoneKit.Mt(ZoneKit.V(new Color(0.78f, 0.85f, 0.80f), rng, 0.04f)));
+                // Begin canopy geometry; distinct handling for conifers vs birches.
                 RaidMesh cm = canopies.At(p);
+                // Conifer canopy: layered needles and occasional snow caps.
                 if (conifer)
                 {
                     int tiers = 3 + rng.Next(2);
@@ -132,6 +153,9 @@ namespace CloneZ
     {
         public static bool Wants(ZoneDef zone) => zone != null && zone.Id == "spillway";
 
+        /// <summary>
+        /// Builds the industrial overlay for the spillway zone, including walls, pipes, tanks and containers.
+        /// </summary>
         public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSiteMap site, System.Random rng)
         {
             Transform unbaked = ZoneWorld.Unbaked;
