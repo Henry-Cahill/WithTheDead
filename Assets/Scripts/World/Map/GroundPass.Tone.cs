@@ -38,17 +38,28 @@ namespace CloneZ
         private static readonly List<Vector2> s_ToneUvs = new List<Vector2>(4096);
         private static readonly List<int> s_ToneTris = new List<int>(16384);
 
+        /// <summary>
+        /// Generate the snow‑tone mesh for a given ground patch.
+        /// </summary>
         private static void Tone(Ground g)
         {
+            // Determine whether we are generating tone for a streamed chunk (full detail) or a static site
             bool chunk = g.Site.Chunked;
+            // Use the larger half‑extent for static sites so the tone extends a bit beyond visible ground
             float half = chunk ? g.Half : g.Half + SceneryReach;
             // 2.56 m cells on a chunk (5.12 m on a Lite one: far off, the tone's broad anyway), about 2.9 m on a fixed map.
+            // Choose cell resolution: finer on streamed chunks (2.56 m) and coarser on static sites
             int cells = chunk ? (g.Lite ? 25 : 50) : Mathf.CeilToInt(half * 2f / 2.9f);
+            // Compute cell size based on total extent and number of cells
             float cell = half * 2f / cells;
+            // Grid dimensions: rows = cells+1 to include the far edge, total points = row*row
             int row = cells + 1, points = row * row;
+            // Ensure working buffers are large enough for the grid points
             if (s_ToneOwners.Length < points)
             {
+                // Allocate fresh arrays for owners, tone values and vertex indices
                 s_ToneOwners = new Owner[points];
+                // Allocate parallel arrays for tone UVs and vertex indices
                 s_ToneAt = new Vector2[points];
                 s_ToneIndex = new int[points];
             }
