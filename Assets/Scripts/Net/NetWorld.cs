@@ -28,8 +28,10 @@ namespace CloneZ
 
                 /// <summary>Register all network message handlers for the world and set up event hooks.</summary>
         internal static void Register()
+        // Register all network message handlers and event hooks for world synchronization
         {
             NetSession.Register("cz.ai", OnAi);
+            // Register handler for AI state updates sent from server to clients
             NetSession.Register("cz.aispawn", OnAiSpawn);
             NetSession.Register("cz.aigone", (s, m) => { uint id = m.U(); if (s_Agents.TryGetValue(id, out NetAgentProxy p) && p != null) Object.Destroy(p.gameObject); s_Agents.Remove(id); });
             NetSession.Register("cz.world", OnWorld);
@@ -106,7 +108,9 @@ namespace CloneZ
 
         private static void SendAi(NetworkManager nm)
         {
+            // Clear temporary list used for this tick's AI processing.
             s_Scratch.Clear();
+            // Scan all actors and collect those that need to be network‑synced.
             for (int i = 0; i < Actor.All.Count; i++)
             {
                 Actor a = Actor.All[i];
@@ -115,11 +119,13 @@ namespace CloneZ
                 if (a.NetId == 0) a.NetId = Actor.AllocateNetId();
                 s_Scratch.Add(a);
             }
+            // For each connected client, determine which actors are relevant (within interest radius and line‑of‑sight).
             foreach (ulong client in nm.ConnectedClientsIds)
             {
                 if (client == nm.LocalClientId || !NetSession.Clients.TryGetValue(client, out NetClientInfo ci) || !ci.InRaid) continue;
                 if (!s_Known.TryGetValue(client, out HashSet<uint> known)) s_Known[client] = known = new HashSet<uint>();
                 s_Visible.Clear();
+                // Filter visible actors for this client.
                 foreach (Actor a in s_Scratch)
                 {
                     float d = Vector3.Distance(a.transform.position, ci.Position);
@@ -132,9 +138,11 @@ namespace CloneZ
                 s_Keep.Clear();
                 using (var o = new NetOut(64 + s_Visible.Count * 24, 1 << 15))
                 {
+                    // Send count of visible actors.
                     o.I(s_Visible.Count);
                     foreach (Actor a in s_Visible)
                     {
+                        // If this actor is new to the client, send a spawn packet.
                         if (!known.Contains(a.NetId)) SendSpawn(client, a);
                         s_Keep.Add(a.NetId);
                         byte flags = 0;
@@ -149,10 +157,13 @@ namespace CloneZ
                         if (a.Cloaked) flags |= 64;
                         o.U(a.NetId).V(a.transform.position).By((byte)(a.transform.eulerAngles.y / 360f * 255f)).By(flags);
                     }
+                    // Send the AI snapshot to the client.
                     NetSession.SendTo(client, "cz.ai", o, NetworkDelivery.UnreliableSequenced);
                 }
+                // Notify client about agents that have disappeared.
                 foreach (uint id in known)
                     if (!s_Keep.Contains(id)) using (var o = new NetOut(8)) { o.U(id); NetSession.SendTo(client, "cz.aigone", o); }
+                // Update known set for next tick.
                 known.Clear();
                 foreach (uint id in s_Keep) known.Add(id);
             }
@@ -160,6 +171,7 @@ namespace CloneZ
 
         private static void SendSpawn(ulong client, Actor a)
         {
+            // Build the spawn payload with the actor's type, appearance and unique seed for deterministic visual variation.
             string sub = "";
             var cr = a.GetComponent<Creature>();
             if (cr != null) sub = cr.Def.Id;
@@ -466,14 +478,18 @@ namespace CloneZ
                 /// <summary>Update the proxy's interpolation target position, rotation, and state flags received from the server.</summary>
         public void Push(Vector3 pos, float yaw, byte flags)
         {
+            // Adjust the interpolation interval based on time since last update, clamped to avoid extreme values.
             if (_last > 0f) _interval = Mathf.Clamp(Time.time - _last, 0.05f, 0.3f);
             _last = Time.time;
+            // Set start and end positions for interpolation; if this is the first update, snap to the received position.
             _from = transform.position == Vector3.zero ? pos : transform.position;
             _to = pos;
+            // Record current and target yaw for smooth rotation.
             _yawFrom = transform.eulerAngles.y;
             _yawTo = yaw;
             _t = 0f;
             _flags = flags;
+            // Apply state flags to the underlying actor.
             Actor.Surrendered = (flags & 32) != 0;
             Actor.Cloaked = (flags & 64) != 0;
             bool dead = (flags & 1) != 0;
