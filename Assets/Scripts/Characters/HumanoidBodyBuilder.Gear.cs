@@ -33,18 +33,23 @@ namespace CloneZ
         }
 
         // ── Legs ─────────────────────────────────────────────────────────────────────────────────────
+        /// <summary>Builds the thigh and shin geometry, applying skin and clothing based on the selected bottom style.</summary>
 
         private void BuildLeg(float sx)
         {
             int thigh = sx > 0f ? (int)HumanBone.ThighR : (int)HumanBone.ThighL, shin = thigh + 1;
+            // Offset hip slightly upward to avoid clipping with the torso
             Vector3 hip = _p.Bind[thigh] + new Vector3(0f, 0.02f, 0f), knee = _p.Bind[shin], ankle = _p.Bind[shin + 1];
             Key[] tk = ThighKeys(), sk = ShinKeys();
             const HumanoidSlot skin = HumanoidSlot.Skin, cloth = HumanoidSlot.Bottom;
             Vector3 kneeCap = knee + new Vector3(0f, 0f, 0.004f);
 
+            // Pants require extra handling for tucking boots and custom limb end point
             if (_s.Bottom == BottomStyle.Pants)
             {
+                // Determine if boots are worn, affecting where the pant leg ends
                 bool tucked = _s.Feet == FootwearStyle.Boots;
+                // End point of thigh geometry differs when boots are tucked in
                 float end = tucked ? 0.66f : 0.965f;
                 Limb(cloth, thigh, hip, knee, Fwd, tk, 0.013f);
                 Ellipsoid(cloth, shin, kneeCap, Vector3.one * (_p.Knee + 0.013f), I, 12, 8);
@@ -55,6 +60,7 @@ namespace CloneZ
                 return;
             }
 
+            // Short shorts use a different set of limb parameters for a looser fit
             if (_s.Bottom == BottomStyle.Shorts)
             {
                 Limb(cloth, thigh, hip, knee, Fwd, tk, 0.016f, 0f, 0.5f, true, false, flare: 0.006f);
@@ -77,11 +83,13 @@ namespace CloneZ
         private void BuildFoot(float sx)
         {
             int foot = sx > 0f ? (int)HumanBone.FootR : (int)HumanBone.FootL, shin = foot - 1;
+            // Horizontal offset based on hip width and side sign
             float x = sx * _p.HipX;
             const float heel = -0.08f, toe = 0.196f;
             Key[] sk = ShinKeys();
             Vector3 knee = _p.Bind[shin], ankle = _p.Bind[foot];
 
+            // Choose footwear handling based on selected style
             switch (_s.Feet)
             {
                 case FootwearStyle.Shoes:
@@ -126,6 +134,9 @@ namespace CloneZ
             Loft(slot, 14, !fromHeel, !toToe);
         }
 
+        /// <summary>Generates a Ring for the foot profile, interpolating width, height and vertical position.
+        /// Used by FootLoft to build shoe geometry.
+        /// </summary>
         private Ring FootRing(int bone, float x, float z, float growW, float growH, float shift)
         {
             int i = 0;
@@ -155,6 +166,7 @@ namespace CloneZ
             const int head = (int)HumanBone.Head;
             const HumanoidSlot hat = HumanoidSlot.Hat, trim = HumanoidSlot.HatTrim;
 
+            // Build headwear geometry based on selected style, using hat and trim slots
             switch (_s.Headwear)
             {
                 case HeadwearStyle.Cap:
@@ -166,6 +178,7 @@ namespace CloneZ
                     Ellipsoid(trim, head, top, new Vector3(0.011f, 0.007f, 0.011f), tilt, 8, 4);
                     if (_s.Headwear == HeadwearStyle.Cap)
                         Ellipsoid(hat, head, new Vector3(0f, 1.742f, 0.105f), new Vector3(0.080f, 0.008f, 0.070f), Quaternion.Euler(8f, 0f, 0f), 16, 6);
+                    // No bottom clothing – just skin
                     else
                         Ellipsoid(hat, head, new Vector3(0f, 1.695f, -0.162f), new Vector3(0.080f, 0.008f, 0.066f), Quaternion.Euler(-12f, 0f, 0f), 16, 6);
                     break;
@@ -230,6 +243,7 @@ namespace CloneZ
 
         // ── Gore ─────────────────────────────────────────────────────────────────────────────────────
 
+        /// <summary>Adds blood splatter geometry to the body at a random point on a limb.</summary>
         private void BuildGore()
         {
             var rng = new System.Random(_s.Gore * 7919 + 101);
@@ -246,6 +260,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Creates a random blood splash on the torso, then on random limbs.</summary>
         private void TorsoSplash(System.Random rng)
         {
             float y = Mathf.Lerp(0.98f, 1.40f, (float)rng.NextDouble());
@@ -267,20 +282,30 @@ namespace CloneZ
                 Mathf.Lerp(0.03f, 0.055f, (float)rng.NextDouble()), Mathf.Lerp(0.03f, 0.065f, (float)rng.NextDouble()));
         }
 
+        /// <summary>Creates a blood splatter on a limb surface, using random placement and size.</summary>
         private void LimbSplash(System.Random rng, int index)
         {
+            // Generate a blood splatter on a limb surface with random placement and size
             if (index < 0 || index >= _limbs.Count) return;
+            // Determine limb orientation and dimensions for the splatter
             LimbSurface l = _limbs[index];
+            // Compute a random point along the limb surface
             LimbFrame(l.A, l.B, Fwd, out Vector3 axis, out float len, out Vector3 r, out Vector3 f);
+            // Random position along the limb length for the splatter
             float t = Mathf.Lerp(0.15f, 0.85f, (float)rng.NextDouble());
+            // Interpolate radius and depth values at the chosen point
             SampleKeys(l.Keys, t, out float rx, out float rz, out float dz);
+            // Apply any clothing cover inflation if the point falls within covered region
             float inflate = t <= l.CoverTo ? l.Cover : 0f;
             rx += inflate; rz += inflate;
 
             float a = (float)rng.NextDouble() * Mathf.PI * 2f;
             float c = Mathf.Cos(a), s = Mathf.Sin(a);
+            // Final point on the limb surface where the blood will appear
             Vector3 point = l.A + axis * (t * len) + f * dz + r * (c * rx) + f * (s * rz);
+            // Normal vector for the splatter based on local limb curvature
             Vector3 normal = (r * (c / rx) + f * (s / rz)).normalized;
+            // Emit the blood splatter at the calculated point and orientation
             Splash(l.Bone, point, normal, Mathf.Lerp(0.018f, 0.032f, (float)rng.NextDouble()), Mathf.Lerp(0.025f, 0.05f, (float)rng.NextDouble()));
         }
 
