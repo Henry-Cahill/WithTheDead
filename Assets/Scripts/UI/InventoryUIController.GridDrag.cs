@@ -163,7 +163,7 @@ namespace CloneZ
             if (e.dragging || _dragEndFrame == Time.frameCount) return;   // the release that ended a drag isn't a click
             switch (r.Element)
             {
-                // Handle hover over an inventory tile.
+                // Handle a click on an inventory tile.
                 case GridElement.Tile:
                 {
                     // Double-click — or Ctrl+click — sends the whole stack to the other window.
@@ -325,7 +325,7 @@ namespace CloneZ
                     if (!Holds(_openInventory, _drag.Stack)) return false;
                     _drag.Count = Mathf.Min(_drag.Count, _drag.Stack.Count);
                     return true;
-                // Handle hover over a tab or other UI element.
+                // Validate a dragged ground item.
                 default:
                     return _drag.Ground != null && _drag.Ground.StillThere && _drag.Ground.Count > 0;
             }

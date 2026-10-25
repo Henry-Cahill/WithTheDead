@@ -99,7 +99,6 @@ namespace CloneZ
         }
 
         /// <summary>Provides the list of actions the player can perform on the TV depending on its state and proximity.</summary>
-        /// <summary>Provides the list of actions the player can perform on the TV depending on its state and proximity.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             // Determine if the player is close enough to reach the TV's knobs.

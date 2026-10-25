@@ -557,7 +557,6 @@ namespace CloneZ
         private static void ReedClump(OutdoorBatches into, Vector2 at, System.Random rng, float size)
         {
             // Convert the ground position to world space at water level (y=0) for mesh placement
-            // Convert the ground position to world space at water level (y=0) for mesh placement
             Vector3 c = To3(at, 0f);
             RaidMesh m = into.Solid(c);
             int blades = rng.Next(6, 11);
