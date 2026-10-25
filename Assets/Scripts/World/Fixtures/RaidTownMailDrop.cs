@@ -95,6 +95,7 @@ private Vector3 _point;
 
         private bool IsEmpty() => _read >= Letters.Length;
 
+        /// <summary>Preview the next letter in the chute.</summary>
         private void PeekNext(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
@@ -106,6 +107,7 @@ private Vector3 _point;
             ctx.Notify(Letters[_read]);
         }
 
+        /// <summary>Peering into the chute to read a letter.</summary>
         private void PeerIn(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
@@ -125,6 +127,7 @@ private Vector3 _point;
             }
         }
         
+        /// <summary>Cycle through the box's history notes.</summary>
         private void ReadHistory(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.FixtureNoiseSmall);

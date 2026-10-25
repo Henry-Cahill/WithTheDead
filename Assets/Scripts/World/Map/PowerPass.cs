@@ -33,6 +33,7 @@ namespace CloneZ
 
         #region Lines along the roads
         // A run of one road's pieces joined end to end, as its line follows them.
+        /// <summary>Represents a connected set of road pieces that a power line follows.</summary>
         private sealed class Chain
         {
             public readonly List<Vector2> C = new List<Vector2>();   // centreline

@@ -107,6 +107,8 @@ namespace CloneZ
             if (_glow != null) Destroy(_glow.gameObject);
         }
 
+        /// <summary>Builds or rebuilds the particle system and glow based on the current radius.</summary>
+        // Build or rebuild the particle system and its glow according to the current radius.
         private void Build()
         {
             _builtRadius = Radius;
@@ -120,6 +122,7 @@ namespace CloneZ
                 _particles = go.AddComponent<ParticleSystem>();
             }
             ParticleSystem ps = _particles;
+            // Set particle system to start in a stopped state and clear any existing particles.
             ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
             // Density follows the area: enough big puffs to overlap into one churning layer.
@@ -127,6 +130,7 @@ namespace CloneZ
             float size = Mathf.Clamp(r * 0.5f, 2.2f, 5.5f);
             const float lifetime = 12f;
 
+            // Set up the main particle module: looping, duration, pre‑warm, lifetime, speed, size, rotation, colour, particle limit, etc.
             var main = ps.main;
             main.loop = true;
             main.duration = lifetime;
@@ -141,11 +145,13 @@ namespace CloneZ
             main.simulationSpace = ParticleSystemSimulationSpace.Local;
             main.scalingMode = ParticleSystemScalingMode.Hierarchy;
 
+            // Configure emission rate based on particle count and lifetime for a steady cloud density.
             var emission = ps.emission;
             emission.enabled = true;
             emission.rateOverTime = count / lifetime;
 
             // A flat disc a little above the ground; the jitter spreads the puffs through the layer.
+            // Shape a flat disc slightly above ground; jitter spreads particles vertically for a volumetric effect.
             var shape = ps.shape;
             shape.enabled = true;
             shape.shapeType = ParticleSystemShapeType.Circle;
@@ -157,6 +163,7 @@ namespace CloneZ
             shape.randomDirectionAmount = 0.7f;
 
             // Slow drift, a lazy swirl about the centre and a little turbulence: the gas churns in place.
+            // Velocity over lifetime adds lazy swirl and turbulence, making the gas churn.
             var velocity = ps.velocityOverLifetime;
             velocity.enabled = true;
             velocity.space = ParticleSystemSimulationSpace.Local;
@@ -167,6 +174,7 @@ namespace CloneZ
             velocity.orbitalY = new ParticleSystem.MinMaxCurve(0.03f, 0.07f);
             velocity.orbitalZ = new ParticleSystem.MinMaxCurve(0f, 0f);
 
+            // Noise adds subtle random motion to avoid a perfectly uniform look.
             var noise = ps.noise;
             noise.enabled = true;
             noise.strength = 0.25f;
@@ -175,10 +183,12 @@ namespace CloneZ
             noise.damping = true;
             noise.quality = ParticleSystemNoiseQuality.Low;
 
+            // Rotation over lifetime gives each puff a slow spin for visual variety.
             var rotation = ps.rotationOverLifetime;
             rotation.enabled = true;
             rotation.z = new ParticleSystem.MinMaxCurve(-0.3f, 0.3f);
 
+            // Size over lifetime makes puffs grow then shrink, adding depth to the cloud.
             var sizeOverLife = ps.sizeOverLifetime;
             sizeOverLife.enabled = true;
             sizeOverLife.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 0.75f, 1f, 1.2f));
@@ -187,10 +197,12 @@ namespace CloneZ
             fade.SetKeys(
                 new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
                 new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(1f, 0.25f), new GradientAlphaKey(1f, 0.7f), new GradientAlphaKey(0f, 1f) });
+            // Color over lifetime uses a gradient to fade particles in and out smoothly.
             var colorOverLife = ps.colorOverLifetime;
             colorOverLife.enabled = true;
             colorOverLife.color = new ParticleSystem.MinMaxGradient(fade);
 
+            // Set up the renderer for billboards that face the camera, with appropriate sorting and shadows off.
             var renderer = ps.GetComponent<ParticleSystemRenderer>();
             renderer.renderMode = ParticleSystemRenderMode.Billboard;
             renderer.alignment = ParticleSystemRenderSpace.View;
@@ -201,8 +213,10 @@ namespace CloneZ
             renderer.receiveShadows = false;
             renderer.sharedMaterial = GasMaterial();
 
+            // Ensure the particle system starts playing after all settings are applied.
             ps.Play();
 
+            // Create a point light to provide a subtle green glow within the cloud, if not already present.
             if (_glow == null)
             {
                 var lightGo = new GameObject("GasGlow");
@@ -213,6 +227,7 @@ namespace CloneZ
                 _glow.color = GlowColor;
                 _glow.shadows = LightShadows.None;
             }
+            // Set range based on radius, clamped to avoid too small or too large light extents.
             _glow.range = Mathf.Clamp(r * 0.9f, 3f, 14f);
             _glow.intensity = GlowIntensity;
         }
@@ -282,6 +297,10 @@ namespace CloneZ
         }
 
         // A soft round puff with a little lumpy noise in it, white (the particle colour tints it).
+        /// <summary>
+        /// Generates a circular soft‑round puff texture with subtle Perlin noise to give the gas particles a lumpy appearance.
+        /// </summary>
+        // Ensure the procedural puff texture is created once and reused for all cloud instances.
         private static Texture2D PuffTexture()
         {
             if (s_Texture != null) return s_Texture;

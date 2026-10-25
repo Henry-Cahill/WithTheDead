@@ -85,6 +85,9 @@ namespace CloneZ
 
         // The window's working parts, once its segment is an object and the room is furnished: the lower sash (and its lock's
         // lever), each sash's glazing, the boards, the dressing; then the RaidWindow that works them.
+        /// <summary>
+        /// Builds the interactive window components (sashes, locks, glazing, boards, curtains/blinds) and registers them with the RaidWindow system.
+        /// </summary>
         private void FitWindow(WallPiece p)
         {
             Opening o = p.Opening;
@@ -98,6 +101,7 @@ namespace CloneZ
             Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
 
             Transform segment = OpeningObject(o);
+            // Create a root GameObject to hold all window parts and attach a NavMeshModifier so the window geometry is ignored by NavMesh baking.
             var root = new GameObject("WindowFittings");
             root.transform.SetParent(segment, false);
             root.transform.SetPositionAndRotation(RunPoint(r, o.Pos, 0f, 0f), Quaternion.identity);
@@ -105,10 +109,12 @@ namespace CloneZ
 
             // The lower sash in the inner track, its lock's body on the meeting rail. A smashed window's lever is left turned
             // on it: there's no working that sash any more.
+            // Initialize the lower sash mesh on the inner track; its lock sits on the meeting rail. If the window is smashed, the lever stays turned up because it can't be used.
             var lower = new RaidMesh();
             FurnitureBuilder.OpeningSash(lower, l, o.Pos, sashW, SashBottom, SashMeet + 0.02f, inner, true, roomSide, SashPaint);
             lower.Box(l.P(o.Pos, SashMeet + 0.024f, inner), l.Size(0.05f, 0.008f, 0.032f), brass);
 
+            // If the window is intact, create the latch lever geometry; otherwise leave it as a static box.
             if (!glazed) lower.Box(l.P(o.Pos, SashMeet + 0.042f, 0f), l.Size(0.02f, 0.008f, 0.06f), brass);
             FixturePart sash = FixturePart.Slide(root.transform, "LowerSash", lower, l.P(o.Pos, SashBottom, inner), Vector3.up * SashLift)
                 .WithSpeed(CloneZConfig.WindowSashSeconds);
@@ -208,6 +214,7 @@ namespace CloneZ
         // What hangs at a window, by what the building is: a house's curtains (a blind where furniture crowds the wall
         // beside it), an office's or a clinic's blind, the depot office's too, an army post's blackout cloth (or nothing),
         // nothing in a shop front.
+        // Determine whether the window should have curtains or a blind based on building type and surrounding space.
         private RaidWindow.Dressing DressingFor(Opening o, RaidRoom room, int roomSide, int outside)
         {
             if (room == null || outside == 0) return RaidWindow.Dressing.None;

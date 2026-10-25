@@ -18,13 +18,21 @@ namespace CloneZ
         /// surroundings.</summary>
         internal static InteriorUse UseOf(Site site, EnterableBuilding e, out bool town, out string purpose)
         {
+            // Retrieve the map building data associated with the building's footprint.
             MapBuilding b = e.Footprint.Data;
+            // Extract the raw "use" and "kind" attributes, defaulting to empty strings.
             string use = b.use ?? "", kind = b.kind ?? "";
+            // Determine the building's ground‑area in square metres.
             float area = e.Footprint.Size;
+            // Decide if the building sits inside the town based on proximity to other structures and streets.
             town = InTown(site, e.Footprint);
+            // Get the map's functional purpose (e.g., "Home", "Shop") if the building has a recognized POI.
             purpose = MapGameplay.PurposeOf(site, e.Footprint);
+            // Buildings like canopies, ruins or silos are purely decorative; they get no interior layout.
             if (kind == "canopy" || kind == "ruin" || kind == "silo") return InteriorUse.None;
+            // Let the purpose (if any) dictate the interior use; this overrides other heuristics.
             InteriorUse byPurpose = ByPurpose(purpose, e, area, town);
+            // If the purpose gave a concrete interior, use it directly.
             if (byPurpose != InteriorUse.None) return byPurpose;
             if (purpose == MapGameplay.Purposes.None || purpose == MapGameplay.Purposes.Ruin) return InteriorUse.None;
             float pick = MapStyle.Unit(b.id, SaltUse);
@@ -72,23 +80,35 @@ namespace CloneZ
 
         private static InteriorUse ByUse(string use, float area)
         {
+            // Empty "use" strings mean we have no explicit categorisation; defer to purpose or kind heuristics.
             if (use.Length == 0) return InteriorUse.None;
+            // "shop:" prefixes encode specific retail types; we further differentiate by footprint area.
             if (use.StartsWith("shop:", System.StringComparison.Ordinal))
             {
+                // Route to a specific shop type based on the suffix after "shop:".
                 switch (use.Substring(5))
                 {
+                    // Large supermarkets become big stores; smaller ones stay as regular stores.
                     case "supermarket": case "department_store": case "mall": case "variety_store": case "furniture": case "wholesale":
                         return area < 300f ? InteriorUse.Store : InteriorUse.BigStore;
+                    // Convenience‑type shops are always treated as small stores regardless of area.
                     case "convenience": case "alcohol": case "kiosk": case "tobacco": case "newsagent":
                         return InteriorUse.Convenience;
+                    // A "chemist" or pharmacy is its own interior type.
                     case "chemist": return InteriorUse.Pharmacy;
+                    // Hardware‑type shops cover DIY, farming supplies etc.
                     case "doityourself": case "hardware": case "country_store": case "trade": case "paint": case "farm":
                         return InteriorUse.Hardware;
+                    // Car‑related shops become auto‑shops regardless of area.
                     case "car_repair": case "tyres": case "car": case "car_parts": case "motorcycle":
                         return InteriorUse.AutoShop;
+                    // Hairdresser/beauty salons are a distinct interior; they never become larger stores.
                     case "hairdresser": case "beauty": return InteriorUse.Salon;
+                    // Funeral directors are a unique interior type.
                     case "funeral_directors": return InteriorUse.Funeral;
+                    // Storage rentals map to warehouses.
                     case "storage_rental": return InteriorUse.Warehouse;
+                    // Default fallback: treat as a store, scaling up if the footprint is very large.
                     default: return area > 900f ? InteriorUse.BigStore : InteriorUse.Store;
                 }
             }

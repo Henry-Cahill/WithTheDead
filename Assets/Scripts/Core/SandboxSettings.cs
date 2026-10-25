@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    /// <summary>Defines how zombie bites affect the survivor: lethal, chance‑based, or disabled.</summary>
     public enum InfectionMode { BiteLethal, BiteChance, Off }
+    /// <summary>Determines what happens to a survivor's inventory on death.</summary>
     public enum DeathPenalty { LoseCarried, CorpseRecovery }
 
     /// <summary>
@@ -144,6 +146,7 @@ public static SandboxSettings LoadFromDisk()
         }
     }
 
+    /// <summary>The HUD style options available to the player.</summary>
     public enum HudMode { Full, Minimal, Diegetic, Hardcore }
 
     /// <summary>

@@ -175,13 +175,16 @@ public static string CaliberOfGun(ItemDef gun)
         /// <summary>Works out a gun's current numbers from its base stats, attachments, technician upgrades and fouling.</summary>
         public static WeaponBuild Build(ItemStack gunStack)
         {
+            // Resolve the underlying item definition, handling a possible null stack.
             ItemDef def = gunStack != null ? gunStack.Def : null;
             var b = new WeaponBuild
             {
                 Spread = 1f, Recoil = 1f, Noise = 1f, Range = 1f, Zoom = 0f, AdsSpread = 1f, DamageMult = 1f,
                 ReloadMult = 1f, FireRateMult = 1f, JamMult = 1f, MagSize = def != null ? def.MagazineSize : 0,
             };
+            // No definition means we only have the defaults; exit early.
             if (def == null) return b;
+            // Apply base gun stats if definition is present.
             GunStats g = Gun(def.Id);
             if (g != null)
             {
@@ -193,6 +196,7 @@ public static string CaliberOfGun(ItemDef gun)
             ItemExtra x = gunStack.Extra;
             if (x != null)
             {
+                // Process each attached modification, accumulating its effects.
                 for (int i = 0; i < x.Mods.Count; i++)
                 {
                     ModStats m = Mod(x.Mods[i]);

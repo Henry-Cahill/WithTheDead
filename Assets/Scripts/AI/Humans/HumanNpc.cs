@@ -136,6 +136,7 @@ namespace CloneZ
             rng = rng ?? new System.Random(Random.Range(int.MinValue, int.MaxValue));
             HumanLoadout l = HumanLoadouts.Resolve(loadout, faction, rng, out string gunOverride);
             if (string.IsNullOrEmpty(faction)) faction = l.Faction;
+            // Choose a random location on the navmesh near the requested spawn point, ensuring the NPC spawns on valid ground.
             if (NavMesh.SamplePosition(position, out NavMeshHit hit, 6f, NavMesh.AllAreas)) position = hit.position;
 
             var root = new GameObject("Human " + l.Id);
@@ -169,6 +170,7 @@ namespace CloneZ
 
             foreach (Transform t in root.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = CloneZConfig.IgnoreRaycastLayer;
 
+            // Allocate a new NavMeshAgent for pathfinding and configure its movement parameters for human-sized characters.
             var agent = root.AddComponent<NavMeshAgent>();
             agent.radius = 0.35f;
             agent.height = 1.9f;
@@ -186,6 +188,7 @@ namespace CloneZ
             return npc;
         }
 
+        /// <summary>Initialises the NPC's inventory and equips them with a weapon and gear according to the loadout.</summary>
         private void Equip(System.Random rng, string gunOverride)
         {
             HumanLoadout l = Loadout;
@@ -324,6 +327,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Decides the NPC's next behavior based on its state, health, target visibility and environment.</summary>
         private void Decide()
         {
             float since = Time.time - _lastSeenTime;
@@ -331,6 +335,7 @@ namespace CloneZ
 
             if (_target != null && since < 14f)
             {
+                // When the NPC is low on health and not a choir member, decide whether to surrender or flee based on proximity to player and random chance.
                 if (Health01 < 0.3f && Loadout.Faction != Factions.Choir && State != Mode.Flee)
                 {
                     if (_target.IsPlayerControlled && HumanUtil.FlatDistance(_target.transform.position, transform.position) < 14f
@@ -952,6 +957,8 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Builds the list of actions a player can perform on this NPC, depending on its state and inventory.</summary>
+        // Populate the action list with interaction options appropriate to the NPC's current condition (restrained, surrendered, etc.).
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             if (_npc == null) return;

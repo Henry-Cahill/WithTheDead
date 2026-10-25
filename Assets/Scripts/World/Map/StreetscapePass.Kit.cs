@@ -138,24 +138,35 @@ namespace CloneZ
 
             // A crossing is where three or more road arms meet: two pieces meeting end to end (a road changing its name,
             // or its mapped pieces simply joining) are no junction to sign or light.
+            /// <summary>Detects junctions where three or more distinct road arms intersect, recording their arms and ranks.</summary>
             private void FindCrossings()
             {
+                // Prepare a reusable list to track distinct street names at this junction.
                 var names = new List<string>(6);
+                // Examine each junction the map defines.
                 foreach (Junction j in Site.Junctions)
                 {
+                    // Initialise a Crossing record for this junction.
                     var c = new Crossing { At = j.At, Junction = j };
+                    // Reset the street‑name list for this new crossing.
                     names.Clear();
+                    // Iterate over each arm of the junction to collect valid road arms.
                     for (int i = 0; i < j.Arms.Count; i++)
                     {
                         JunctionArm a = j.Arms[i];
+                        // Determine the road's importance; skip non‑roads.
                         int rank = RoadRank(a.Street);
                         if (rank < 0) continue;
+                        // Record this arm and its index for later sign/traffic‑light placement.
                         c.Arms.Add(a);
                         c.ArmIndex.Add(i);
+                        // Track distinct street identifiers so we only accept true junctions (multiple road names).
                         string key = NameKey(a.Street);
                         if (!names.Contains(key)) names.Add(key);
+                        // Keep the highest road rank seen for this crossing (used for signage priority).
                         if (rank > c.TopRank) c.TopRank = rank;
                     }
+                    // After collecting arms, ensure this is a real junction (>=3 arms and >=2 distinct street names).
                     if (c.Arms.Count < 3 || names.Count < 2) continue;
                     Crossings.Add(c);
                 }
@@ -164,11 +175,14 @@ namespace CloneZ
             /// <summary>The crossing nearest <paramref name="p"/> within <paramref name="within"/> metres, or null.</summary>
             public Crossing NearestCrossing(Vector2 p, float within)
             {
+                // Initialise the best candidate as none and set the maximum squared distance we’ll accept.
                 Crossing best = null;
                 float bestD = within * within;
+                // For each known crossing compute squared distance and keep the nearest within the limit.
                 foreach (Crossing c in Crossings)
                 {
                     float d = (c.At - p).sqrMagnitude;
+                    // Skip if this crossing is farther than the current best.
                     if (d >= bestD) continue;
                     bestD = d;
                     best = c;
@@ -329,14 +343,18 @@ namespace CloneZ
         /// far it is.</summary>
         internal static float Nearest(List<Vector2> pts, Vector2 p, out Vector2 on, out Vector2 dir)
         {
+            // Initialise best distance to a huge value; default output point is first vertex.
             float best = float.MaxValue;
             on = pts.Count > 0 ? pts[0] : p;
             dir = Vector2.right;
+            // Scan each segment of the polyline.
             for (int i = 0; i + 1 < pts.Count; i++)
             {
                 Vector2 a = pts[i], ab = pts[i + 1] - a;
                 float len2 = ab.sqrMagnitude;
+                // Skip degenerate zero‑length segments.
                 if (len2 < 1e-6f) continue;
+                // Project point onto segment, clamped to segment extents.
                 float t = Mathf.Clamp01(Vector2.Dot(p - a, ab) / len2);
                 Vector2 q = a + ab * t;
                 float d = (q - p).sqrMagnitude;
@@ -415,10 +433,13 @@ namespace CloneZ
             /// built area, homes and buildings.</summary>
             public void Sum(Vector2 p, float radius, out float commercial, out float built, out int homes, out int count)
             {
+                // Initialise result accumulators for the requested radius.
                 commercial = built = 0f;
                 homes = count = 0;
+                // Determine cell range covering the circle (rounded up to whole cells).
                 int r = Mathf.CeilToInt(radius / Cell);
                 int cx = Mathf.FloorToInt((p.x + _half) / Cell), cz = Mathf.FloorToInt((p.y + _half) / Cell);
+                // Use squared radius with a half‑cell padding to avoid edge cases.
                 float r2 = (radius + Cell * 0.5f) * (radius + Cell * 0.5f);
                 for (int z = cz - r; z <= cz + r; z++)
                 {
@@ -427,6 +448,7 @@ namespace CloneZ
                     {
                         if (x < 0 || x >= _n) continue;
                         var c = new Vector2(-_half + (x + 0.5f) * Cell, -_half + (z + 0.5f) * Cell);
+                        // Skip cells whose centre lies outside the circle.
                         if ((c - p).sqrMagnitude > r2) continue;
                         int i = z * _n + x;
                         commercial += _commercial[i];
@@ -681,6 +703,7 @@ namespace CloneZ
         {
             private const float Cell = 64f;
 
+            /// <summary>Collects geometry for a single wire‑mesh cell: vertices, normals, UVs and triangle indices.</summary>
             private sealed class Bucket
             {
                 public readonly List<Vector3> V = new List<Vector3>(512);
@@ -757,6 +780,7 @@ namespace CloneZ
                 for (int k = 0; k < segs; k++) Add(pts[k], pts[k + 1], 0f, radius, colour, far);
             }
 
+            /// <summary>Gets or creates the bucket for the cell containing point p, separating far scenery.</summary>
             private Bucket BucketAt(Vector3 p, bool far)
             {
                 int x = Mathf.FloorToInt(p.x / Cell), z = Mathf.FloorToInt(p.z / Cell);
@@ -768,20 +792,26 @@ namespace CloneZ
                 return b;
             }
 
+            // Emit meshes for each bucket that actually contains geometry.
             public IEnumerable<string> Emit(Site site)
             {
                 foreach (Bucket b in _order)
                 {
+                    // Signal Unity to step the world if needed; this yields a step name for the batch system.
                     if (site.StepDue) yield return "wires";
+                    // Skip empty buckets – nothing to draw.
                     if (b.V.Count == 0) continue;
                     var mesh = new Mesh { name = "Wires" };
+                    // Register the mesh so it can be cleaned up later.
                     RaidMesh.CreatedMeshes?.Add(mesh);
+                    // Use 32‑bit indices for large meshes.
                     if (b.V.Count > 65000) mesh.indexFormat = IndexFormat.UInt32;
                     mesh.SetVertices(b.V);
                     mesh.SetNormals(b.N);
                     mesh.SetUVs(0, b.Uv);
                     mesh.SetTriangles(b.T, 0, true);
                     var go = new GameObject("Wires");
+                    // Attach to the appropriate parent (far scenery vs overhead).
                     go.transform.SetParent(b.Far ? site.Town.Scenery : site.Town.Overhead, false);
                     go.transform.localPosition = b.Centre;
                     go.AddComponent<MeshFilter>().sharedMesh = mesh;
@@ -791,6 +821,7 @@ namespace CloneZ
                     r.lightProbeUsage = LightProbeUsage.Off;
                     r.reflectionProbeUsage = ReflectionProbeUsage.Off;
                 }
+                // Cleanup temporary buckets for the next frame.
                 _cells.Clear();
                 _order.Clear();
             }

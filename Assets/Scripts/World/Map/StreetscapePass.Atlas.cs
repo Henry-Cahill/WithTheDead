@@ -27,18 +27,24 @@ namespace CloneZ
         /// <summary>A material for an alpha-tested sign atlas (lit, a little glossy, both faces drawn by separate quads).</summary>
         internal static Material CutoutMaterial(Texture2D tex, string name, bool twoSided = false)
         {
+            // Find a lit shader; fall back to the legacy Standard shader if unavailable.
             Shader sh = Shader.Find("Universal Render Pipeline/Lit");
             if (sh == null) sh = Shader.Find("Standard");
             var m = new Material(sh) { name = name, hideFlags = HideFlags.DontUnloadUnusedAsset, enableInstancing = true };
+            // Assign the main texture to whichever slot the shader expects.
             if (m.HasProperty("_BaseMap")) m.SetTexture("_BaseMap", tex);
             if (m.HasProperty("_MainTex")) m.SetTexture("_MainTex", tex);
+            // Ensure the material starts fully opaque (white) and has a moderate smoothness.
             if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", Color.white);
             if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", 0.3f);
             if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", 0f);
+            // Enable alpha‑ clipping so that the sign shape is cut out cleanly.
             if (m.HasProperty("_AlphaClip")) m.SetFloat("_AlphaClip", 1f);
             if (m.HasProperty("_Cutoff")) m.SetFloat("_Cutoff", 0.5f);
             m.EnableKeyword("_ALPHATEST_ON");
+            // For two‑sided signs disable back‑face culling so both sides render.
             if (twoSided && m.HasProperty("_Cull")) m.SetFloat("_Cull", (float)CullMode.Off);
+            // Render after geometry but before transparent objects.
             m.renderQueue = (int)RenderQueue.AlphaTest;
             return m;
         }
@@ -177,19 +183,24 @@ namespace CloneZ
                 if (!back) p.TextCentred("YIELD", x0 + size / 2, y0 + (int)(size * 0.70f), 1, SignRed);
             }
 
+            /// <summary>Draws the “Do Not Enter” circular sign, optionally only its back side.</summary>
             private static void DoNotEnter(Painter p, int x0, int y0, int size, bool back)
             {
                 float c = size * 0.5f, r = size * 0.5f - 1f;
+                // Walk every pixel in the square and test whether it lies inside the circle.
                 for (int y = 0; y < size; y++)
                     for (int x = 0; x < size; x++)
                     {
                         float dx = x + 0.5f - c, dy = y + 0.5f - c;
                         float d = Mathf.Sqrt(dx * dx + dy * dy);
+                        // outside the circle – leave transparent
                         if (d > r) continue;
                         if (back) { p.Set(x0 + x, y0 + y, SignGrey); continue; }
+                        // Horizontal bar across the centre, otherwise white rim or red interior.
                         bool bar = Mathf.Abs(dy) < size * 0.08f && Mathf.Abs(dx) < r * 0.75f;
                         p.Set(x0 + x, y0 + y, bar || d > r - 2f ? SignWhite : SignRed);
                     }
+                // Front side shows the warning text centred in the sign.
                 if (!back)
                 {
                     p.TextCentred("DO NOT", x0 + size / 2, y0 + (int)(size * 0.80f), 1, SignWhite);
@@ -634,6 +645,7 @@ namespace CloneZ
             return s.Length > 22 ? s.Substring(0, 22) : s;
         }
 
+        /// <summary>Abbreviates a street‑type word for compact sign text.</summary>
         private static string Abbreviate(string w)
         {
             switch (w)
@@ -659,6 +671,7 @@ namespace CloneZ
                 case "SQUARE": return "SQ";
                 case "MOUNT": return "MT";
                 case "SAINT": return "ST";
+                // Many common street types have short forms; keep the original word if no abbreviation is defined.
                 default: return w;
             }
         }

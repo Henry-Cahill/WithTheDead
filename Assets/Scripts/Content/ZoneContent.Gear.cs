@@ -14,6 +14,7 @@ namespace CloneZ
         public static readonly string[] BloodBags = { "bloodbag_o_neg", "bloodbag_o_pos", "bloodbag_a_pos", "bloodbag_b_pos", "bloodbag_ab_pos", "bloodbag_a_neg" };
 
         #region Zone gear: bolts, detectors, artifacts
+        /// <summary>Register items related to zone exploration: bolts, detectors, artifacts, and zone tools.</summary>
         private static void RegisterZoneGear(ContentBuilder b)
         {
             ItemDef bolt = Tool(b, "bolt", "Bolts", 0.04f, 30, "Thrown ahead to find the safe path. Anomalies react to them before they react to you.", "Throw");
@@ -47,6 +48,7 @@ namespace CloneZ
         #endregion
 
         #region Medical (limbs, blood, diseases, radiation)
+        /// <summary>Define all medical items and blood bags the survivor can use.</summary>
         private static void RegisterMedical(ContentBuilder b)
         {
             Med(b, "splint", "Splint", 0.2f, 4, "Sets a broken arm or leg so it can take weight again.", "Apply");
@@ -84,6 +86,7 @@ namespace CloneZ
         #endregion
 
         #region Survival, tools and crafting resources
+        /// <summary>Add survival consumables, tools and crafting materials.</summary>
         private static void RegisterSurvival(ContentBuilder b)
         {
             Mat(b, "chemicals", "Chemicals", 0.3f, 20, "Reagents scavenged from labs and garages. Half of every field craft.");
@@ -216,6 +219,7 @@ string[] titles = { "Marksman's Notebook", "Field Medicine Vol. 1", "Engines for
         #endregion
 
         #region Loot
+        /// <summary>Populate loot tables for containers throughout the world.</summary>
         private static void RegisterLoot(ContentBuilder b)
         {
             // Gun lockers and the dead soldiers' corpses carry the military kit.

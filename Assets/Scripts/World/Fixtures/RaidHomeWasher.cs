@@ -41,18 +41,31 @@ namespace CloneZ
         /// the glass (a piece whose pivot is the porthole's middle; it's turned about the porthole's axis while it runs).</summary>
         internal static RaidHomeWasher Create(Transform body, in KitchenFrame f, StorageFixture drum, Renderer suds)
         {
+            // Determine the world position for the control based on the kitchen frame and a dial offset.
             Vector3 point = f.P(FurnitureBuilder.WasherDial + new Vector3(0f, 0.02f, 0.06f));
+            // Create a dedicated GameObject to hold the washer's interactive controls.
             var go = new GameObject("WasherControls");
+            // Parent it to the machine's body so it moves with the fixture.
             go.transform.SetParent(body, false);
+            // Position and orient the controls at the calculated point with no rotation.
             go.transform.SetPositionAndRotation(point, Quaternion.identity);
+            // Add the RaidHomeWasher component which implements the interaction logic.
             var w = go.AddComponent<RaidHomeWasher>();
+            // Cache the body transform for later use in occlusion and positioning.
             w._body = body;
+            // Store reference to the drum storage so we can lock/unlock it during cycles.
             w._drum = drum;
+            // Store the renderer that will display suds when the machine runs.
             w._suds = suds;
+            // Cache the transform of the suds renderer for fast rotation updates.
             w._sudsT = suds != null ? suds.transform : null;
+            // Determine the axis around which the suds rotate based on the kitchen frame orientation.
             w._axis = f.D(Vector3.forward);
+            // Remember the interaction point for the player to approach.
             w._point = point;
+            // Generate a unique save key for persisting the washer's state.
             w._key = KeyFor("washer", f.Origin);
+            // Return the fully-initialized component.
             return w;
         }
 
@@ -115,19 +128,24 @@ into.Add(new InteractAction("Close washing machine", CloseDoor)
                 .DisabledIf(_running, "Can't search while the wash is running"));
         }
 
+        /// <summary>Starts a wash cycle if power, water, and the door are ready.</summary>
         private void StartWash(InteractContext ctx)
         {
+            // Verify power and water are available before attempting to start the machine.
             if (!PowerGrid.HousePowered || !WaterMains.MainsOn)
             {
                 ctx.Notify("The dial turns, and nothing happens.");
                 return;
             }
+            // Ensure the drum door is closed so the player cannot access its contents while the wash runs.
             if (_drum != null && _drum.IsOpen)
             {
                 ctx.Notify("It won't start with the door open.");
                 return;
             }
+            // Begin the wash cycle using the configured duration; this locks the door and shows suds.
             Run(CloneZConfig.WasherCycleSeconds);
+            // Inform the player that the wash has started and that it will be audible to nearby entities.
             ctx.Notify("You turn the dial to REGULAR and pull the knob. A clunk, the rush of water filling the drum \u2014 and it is not quiet. Anything nearby will hear it.");
         }
 
@@ -146,13 +164,19 @@ into.Add(new InteractAction("Close washing machine", CloseDoor)
             if (_suds != null) _suds.enabled = true;
         }
 
+        /// <summary>Stops the wash and resets the machine state.</summary>
         private void Halt()
         {
+            // Reset running flag and clear remaining time.
             _running = false;
             _left = 0f;
+            // Reactivate the drum's container so it can be inspected after the wash stops.
             if (_drum != null) _drum.gameObject.SetActive(true);
+            // Hide the suds visual effect.
             if (_suds != null) _suds.enabled = false;
+            // Reset any suds rotation to its default orientation.
             if (_sudsT != null) _sudsT.rotation = Quaternion.identity;
+            // Emit a door‑close noise to signal the wash has halted.
             MakeNoise(CloneZConfig.WasherDoorNoise);
         }
 
@@ -183,8 +207,10 @@ into.Add(new InteractAction("Close washing machine", CloseDoor)
                 ctx.Notify("The washing machine is silent, only the faint creak of the door remains.");
         }
 
+        /// <summary>Opens the washing machine door to let the player access the drum.</summary>
         private void OpenDoor(InteractContext ctx)
         {
+            // If the drum exists, open its door for player access.
             if (_drum != null)
             {
                 _drum.SetOpen(true, false);

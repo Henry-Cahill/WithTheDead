@@ -31,30 +31,41 @@ namespace CloneZ
         /// <summary>The build the game should load, or null with the reason in <paramref name="why"/>.</summary>
         public static MapBuild OpenCurrent(out string why)
         {
+            // Attempt to open the current world build, handling any errors gracefully
             try
             {
+                // Resolve the root directory of the world store, respecting the CLONEZ_WORLD env variable if set
                 string root = Root;
+                // Build the full file system path to the JSON that declares which build is currently active
                 string currentPath = Path.Combine(root, "world", "current.json");
+                // If the current.json file is missing, we cannot determine the active build – report why and abort
                 if (!File.Exists(currentPath))
                 {
                     why = "there's no " + currentPath + " (is the NAS reachable, and has a build been published?)";
                     return null;
                 }
+                // Parse the current.json file to get the build identifier; this may fail if the JSON is malformed
                 MapCurrent current = JsonUtility.FromJson<MapCurrent>(File.ReadAllText(currentPath));
+                // Ensure the JSON contained a valid build name before proceeding
                 if (current == null || string.IsNullOrEmpty(current.build))
                 {
                     why = currentPath + " doesn't name a build";
                     return null;
                 }
+                // Construct the path to the specific build folder indicated by the current.json entry
                 string folder = Path.Combine(root, "world", "builds", current.build);
+                // Load the manifest that describes the build's metadata (regions, format, attribution, etc.)
                 MapManifest manifest = JsonUtility.FromJson<MapManifest>(File.ReadAllText(Path.Combine(folder, "manifest.json")));
+                // Verify that the manifest's format version is within the range this game knows how to read
                 if (manifest == null || manifest.format < MapBuild.OldestFormat || manifest.format > MapBuild.Format)
                 {
                     why = "build " + current.build + " is format " + (manifest != null ? manifest.format : 0)
                         + "; this game reads formats " + MapBuild.OldestFormat + " to " + MapBuild.Format;
                     return null;
                 }
+                // No error reason – the build opened successfully
                 why = null;
+                // Instantiate a MapBuild object that the rest of the engine can query for regions, places, etc.
                 return new MapBuild(current.build, folder, manifest);
             }
             catch (Exception e)
