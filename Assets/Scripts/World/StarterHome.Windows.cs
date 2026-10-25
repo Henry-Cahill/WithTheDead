@@ -19,38 +19,62 @@ namespace CloneZ
         // room side, curtains on a brass rod (drawn back, or drawn across) — or, in the kitchen, a valance with a roller
         // blind (rolled up, or pulled down). The HomeWindow fixture works them, and screens the opening while the
         // curtains are drawn so nothing sees in (or out).
+        /// <summary>
+        /// Constructs the full window assembly, adding sashes, lintel, brackets, curtains/blinds and interactive parts.
+        /// </summary>
         static partial void WindowFittings(BuildPiece piece, RaidMesh m, Frame f, HomeRoom[] rooms, System.Random rng, bool kitchen)
         {
+            // Determine which side of the window opens to the outside (negative) or interior (positive)
             int outSide = rooms[0] == null ? -1 : rooms[1] == null ? 1 : 0;
+            // Derive the sign for the room‑side direction based on which side is the outside.
             int roomSide = outSide != 0 ? -outSide : 1;
+            // Compute the vertical limits of the clear pane between the sill and head linings.
             float bottom = WindowSill + 0.03f, top = WindowHead - 0.024f;   // the clear opening between the sill and head linings
+            // Mid‑point where the two sashes meet; used for positioning the lock and decorative elements.
             float meet = (bottom + top) * 0.5f;
             Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
 
+            // Create a parent GameObject to hold all window parts for easy hierarchy management.
             var root = new GameObject("Window");
             root.transform.SetParent(piece.transform, false);
+            // Position the root at the window frame's centre with no rotation.
             root.transform.SetPositionAndRotation(f.P(f.Mid, 0f, 0f), Quaternion.identity);
 
             // The upper sash, fixed, and the keeper of the sash lock on its meeting rail.
+            // Compute offsets for outer (wall‑side) and inner (room‑side) tracks based on window orientation.
             float outer = -roomSide * SashTrack, inner = roomSide * SashTrack;
+            // Add the fixed upper sash and a decorative metal bar across the meeting rail.
             WindowSash(m, f, meet - 0.02f, top, outer, false, roomSide);
+            // Add a thin brass decorative strip at the top of the upper sash.
             m.Box(f.P(f.Mid, meet + 0.034f, outer), f.Size(0.04f, 0.008f, 0.03f), brass);
 
             // The lower sash, sliding up in the inner track; the lock's lever rides on it, turned onto the keeper or away.
+            // Build the sliding lower sash which can be raised via the latch lever.
             var lower = new RaidMesh();
+            // Position and construct the lower sash geometry.
             WindowSash(lower, f, bottom, meet + 0.02f, inner, true, roomSide);
+            // Add a decorative metal bar at the bottom of the lower sash.
             lower.Box(f.P(f.Mid, meet + 0.024f, inner), f.Size(0.05f, 0.008f, 0.032f), brass);
             // exterior stone sill – period‑correct overhang below the window opening
+            // Create the stone sill below the opening – a period‑correct overhang.
             float sillDepth = 0.06f;
+            // Height of the stone sill element.
             float sillHeight = 0.020f;
+            // Y position centres the sill half its height below the sill line.
             float sillY = WindowSill - sillHeight * 0.5f;
             // outer (wall‑side) track already stored in variable 'outer'
+            // Add the concrete stone sill box.
             m.Box(f.P(f.Mid, sillY, outer - sillDepth * 0.5f), f.Size(WindowWidth, sillHeight, sillDepth), DecorMaterials.Concrete);
+            // Wood material (pine) used for the apron strip and later lintel.
             Surf wood = DecorPalette.Matte(FurnitureBuilder.Pine); // wood for the strip below
             // wooden apron strip below the stone sill (period‑correct exterior trim)
+            // Add the wooden apron strip below the stone sill to represent period‑correct exterior trim.
             float apronHeight = 0.008f;
+            // Depth of the wooden apron strip.
             float apronDepth = 0.015f;
+            // Compute Y position for the apron strip, just below the stone sill.
             float apronY = sillY - sillHeight*0.5f - apronHeight*0.5f;
+            // Add the wooden apron box using the pine material.
             m.Box(f.P(f.Mid, apronY, outer - sillDepth*0.5f - apronDepth*0.5f), f.Size(WindowWidth, apronHeight, apronDepth), wood);
             // rust‑tinted metal surface for brackets
             // rust‑tinted metal used for the exterior brackets (matches the material used elsewhere)
