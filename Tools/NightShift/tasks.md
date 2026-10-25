@@ -10686,3 +10686,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: class `UpkeepScreen` (line 104).
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
   Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
+- [ ] Add comments explaining the code in Assets/Scripts/Core/CloneZUtil.cs, so a programmer new to CLONE-Z can follow it. Comments only: don't change any code.
+  Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: `LitShader` (line 11), `UnlitShader` (line 23), `MatKey` (line 62).
+  Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
+  Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
