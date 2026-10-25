@@ -181,6 +181,8 @@ private void Turn(InteractContext ctx, bool open)
         }
 
         // How many garden plots the hose reaches, and how many of those are thirsty.
+        /// <summary>Counts garden plots within hose reach and how many need water.</summary>
+        // Compute squared hose range once for efficient distance checks.
         private int PlotsInReach(out int thirsty)
         {
             thirsty = 0;
