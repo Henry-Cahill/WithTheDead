@@ -47,6 +47,7 @@ namespace CloneZ
             return b;
         }
 
+        /// <summary>Populate a full-size house (ranch style) with rooms, doors, windows, and furnishings.</summary>
         private static void Ranch(RaidBuilding b)
         {
             System.Random rng = b.Rng;
@@ -170,6 +171,7 @@ namespace CloneZ
             b.Litter(den, 0.5f);
         }
 
+        /// <summary>Populate a cottage‑size house with a compact layout of rooms and basic furnishings.</summary>
         private static void Cottage(RaidBuilding b)
         {
             System.Random rng = b.Rng;
