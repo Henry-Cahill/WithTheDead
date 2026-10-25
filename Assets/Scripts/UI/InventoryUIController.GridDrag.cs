@@ -325,7 +325,7 @@ namespace CloneZ
                     if (!Holds(_openInventory, _drag.Stack)) return false;
                     _drag.Count = Mathf.Min(_drag.Count, _drag.Stack.Count);
                     return true;
-                // Handle hover over a tab or other UI element.
+                // Validate a dragged ground item.
                 default:
                     return _drag.Ground != null && _drag.Ground.StillThere && _drag.Ground.Count > 0;
             }
