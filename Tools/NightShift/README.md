@@ -1,7 +1,7 @@
 # Night Shift
 
 Local AI coding agents that work through [tasks.md](tasks.md) overnight (and into the day, until you stop them),
-so CLONE-Z gets built while you sleep without spending cloud AI tokens. The models run in Ollama on the DGX Spark
+so WithTheDead gets built while you sleep without spending cloud AI tokens. The models run in Ollama on the DGX Spark
 (`qwen3.8` and `gpt-oss:120b`),
 [OpenCode](https://opencode.ai) is the agent, and everything runs on your own machines:
 
@@ -69,7 +69,8 @@ fewer are waiting than there are workers plus two. It takes the focus areas in `
 | `perf` | work repeated every frame that could be cached |
 | `features` | a small addition next to an existing action or mechanic |
 | `flavour` | new lines for an existing list of written text |
-| `docs` | missing `/// <summary>` comments (a fixed task; no model needed; see [Documentation workers](#documentation-workers)) |
+| `docs` | missing `/// <summary>` comments on public members (a fixed task; no model needed; see [Documentation workers](#documentation-workers)) |
+| `explain` | code no comment explains: methods with 12 or more lines of code and no comment inside (or 25 in a row without one), and methods and types with no comment above them. The task names them with their lines (a fixed task; no model needed) |
 
 For each task it picks the script that fits the focus and was shown least recently, shows it whole to the local model
 (`NIGHTSHIFT_AUTOPLAN_MODEL`, by default the helpers' model, which runs beside the agents) with
@@ -93,7 +94,7 @@ ones for the second:
   big task: three to six located steps (`Step 1:`, `Step 2:`, ... then `Done when:`) that together give the player one
   visible result. The planner also shows the model the scripts most tied to the target, in outline, and the task may
   change up to two of them and add one new script. It must still name only methods that exist (a few new helpers
-  are fine) and leave alone every script a queued task names. `docs` has no big variant.
+  are fine) and leave alone every script a queued task names. `docs` and `explain` have no big variant.
 - **Workers on a model in `NIGHTSHIFT_SMALL_TASK_MODELS`** (`qwen3.8` by default) take only small tasks. Any task
   written in steps (two `Step N:` lines or more), or longer than eight detail lines or 3,000 characters, is big and
   goes to the other workers, which take the planner's big tasks before its small ones. Tasks you write keep their
@@ -107,30 +108,39 @@ ones for the second:
 ### Documentation workers
 
 `NIGHTSHIFT_DOCS_WORKERS` in [nightshift.env](nightshift.env) names workers (as the log names them, or by host) that
-work through the documentation queue and nothing else: the `docs` focus's tasks, which add missing `/// <summary>`
-comments. `laserengraver` is one. Tasks you write with the planner's wording ("Add a one-sentence `/// <summary>` to
-each public method and property in ...") count as documentation tasks too. While a documentation worker is on duty:
+work through the documentation queue and nothing else: the `docs` and `explain` focuses' tasks, which add comments.
+`laserengraver` is one. Tasks you write with the planner's wording ("Add a one-sentence `/// <summary>` to each public
+method and property in ..." or "Add comments explaining the code in ...") count as documentation tasks too. While a
+documentation worker is on duty:
 
 - it takes only documentation tasks, and the other workers leave those to it;
-- the planner keeps a documentation task waiting for each documentation worker, and its focus rotation skips `docs`,
-  so the rest of the queue goes to the other kinds of work;
-- a script whose earlier documentation passes all landed gets another pass (three at most) once later work has left
-  three or more of its public members without a summary. A pass that found nothing to do or failed isn't repeated.
-  When no script needs one, the planner looks again later, as the night's other work lands.
+- the planner keeps a documentation task waiting for each documentation worker, `docs` and `explain` taking turns (when
+  one finds no script to work on, the other goes instead), and its focus rotation skips both, so the rest of the queue
+  goes to the other kinds of work;
+- a script whose earlier `docs` passes all landed gets another one (three at most) once later work has left three or
+  more of its public members without a summary;
+- an `explain` task names up to four methods to explain inside, the biggest first, and up to eight members and types to
+  give a summary, with their lines. A script gets another `explain` pass while code is left to explain and every
+  earlier pass landed (eight at most), so the next pass takes the methods the last one didn't. Scripts up to 4,000
+  lines get `explain` tasks, as the agent reads only the methods named;
+- a pass that found nothing to do or failed isn't repeated. When no script needs one, the planner looks again later,
+  as the night's other work lands.
 
 When no documentation worker is left on duty, the others take documentation tasks again. A documentation worker uses
 `NIGHTSHIFT_HELPER_MODEL`, like the other helpers.
 
 **Comments only.** `NIGHTSHIFT_DOCS_WORKERS=all` makes every worker, the Spark included, a documentation worker, so
-the night shift writes comments and nothing else: the planner writes only documentation tasks, and every other task,
-yours included, waits in tasks.md for a night without it. When every script that can have a documentation pass has had
-one, the workers wait and the planner looks again from time to time. Set it back to `laserengraver` for the other
-kinds of work.
+the night shift writes comments and nothing else: the planner writes only documentation tasks (`docs` and `explain` in
+turn), and every other task, yours included, waits in tasks.md for a night without it. When every script that can have
+a documentation pass has had one, the workers wait and the planner looks again from time to time. Set it back to
+`laserengraver` for the other kinds of work.
 
 Whoever takes it, a documentation task lands the comment lines it adds and nothing else. Before the compile check, the
 worker changes back everything else the agent changed: code, existing comments, indentation, blank lines, and files it
 added or deleted. A declaration the agent re-indented keeps its old indentation and still gets its new summary, indented
-like it. A summary for a member that already has one is left out too, so no member ends up with two. The log says
+like it, and a comment the agent put at the end of a line of code goes on a line of its own above that line. Left out:
+a summary for a member that already has one, so no member ends up with two, and any comment line inside a string that
+runs over several lines (such as an `@"..."` SQL string), where it would change the string. The log says
 `kept only the comments it added; changed the rest back in: ...` when this happens.
 
 ## Windows helpers
@@ -225,7 +235,7 @@ head of the branch's merged pull request.
    ticks the task off. If two tasks collide, the later one goes back in the queue once to be redone on
    top of the other.
 
-The agent's **memory** is in [memory/](memory). `LESSONS.md` holds hand-written notes on how CLONE-Z is
+The agent's **memory** is in [memory/](memory). `LESSONS.md` holds hand-written notes on how WithTheDead is
 built, plus one-line lessons the agents add after each task. `PROJECT_MAP.md` lists every script and what
 it is for, so the agent finds code without reading the whole project, which saves time per task.
 

@@ -521,6 +521,122 @@ def split_lines(text: str) -> list[str]:
     return re.findall(r"[^\n]*\n|[^\n]+", text)
 
 
+@dataclass(frozen=True)
+class CsLine:
+    """One line of C# source, as scan_cs reads it."""
+    code: str  # its code, with what's inside strings and chars left out and comments taken off
+    comment_at: int | None  # where the // comment that ends it starts, if one does
+    commented: bool  # whether any of it is a comment: //, /// or /* */
+    safe: bool  # whether it starts outside strings and /* */ comments, so that a comment line may go just above it
+
+
+CS_PLAIN = re.compile(r"""[^"'/@$]*\Z""")  # nothing on the line can start a string, a char or a comment
+CS_CODE_STOP = re.compile(r"""["'/@${}]""")
+CS_STRING_STOP = {"s": re.compile(r'[\\"]'), "v": re.compile('"'), "i": re.compile(r'[\\"{}]'), "iv": re.compile('["{}]')}
+CS_OPENERS = (('$@"', "iv"), ('@$"', "iv"), ('@"', "v"), ('$"', "i"), ('"', "s"))
+
+
+def scan_cs(text: str) -> list[CsLine]:
+    """The lines of C# source `text` (as split_lines splits them), each with its code, its comments and whether it
+    starts inside a string or /* */ comment that began on an earlier line. It knows C# 9's strings (regular, verbatim
+    and interpolated, holes and all), chars, comments and preprocessor lines."""
+    out: list[CsLine] = []
+    stack: list[str] = []  # what's open: strings "s", "v" (verbatim), "i", "iv" (interpolated); "h", a hole in one
+    holes: list[int] = []  # the brace depth inside each open hole
+    block = False  # inside a /* */ comment
+    for raw in split_lines(text):
+        line = raw.rstrip("\r\n")
+        safe = not stack and not block
+        if safe and line.lstrip().startswith("#"):  # a preprocessor line: a #region's name may hold an apostrophe
+            out.append(CsLine("", None, False, True))
+            continue
+        if safe and CS_PLAIN.match(line):
+            out.append(CsLine(line, None, False, True))
+            continue
+        code: list[str] = []
+        comment_at, commented, i, n = None, False, 0, len(line)
+        while i < n:
+            if block:
+                commented = True
+                end = line.find("*/", i)
+                if end < 0:
+                    break
+                block, i = False, end + 2
+                continue
+            top = stack[-1] if stack else ""
+            if top in CS_STRING_STOP:  # inside a string only its end, its escapes and its holes matter
+                m = CS_STRING_STOP[top].search(line, i)
+                if not m:
+                    break
+                i, c = m.start(), m.group()
+                nxt = line[i + 1:i + 2]
+                if c == "\\" or (c == '"' and top in ("v", "iv") and nxt == '"'):
+                    i += 2
+                elif c == '"':
+                    stack.pop()
+                    i += 1
+                    if not stack:
+                        code.append('"')
+                elif c == nxt:  # {{ or }}: a brace in the text
+                    i += 2
+                elif c == "{":
+                    stack.append("h")
+                    holes.append(0)
+                    i += 1
+                else:
+                    i += 1
+                continue
+            m = CS_CODE_STOP.search(line, i)
+            if not m:
+                if not top:
+                    code.append(line[i:])
+                break
+            if not top:
+                code.append(line[i:m.start()])
+            i, c = m.start(), m.group()
+            nxt = line[i + 1:i + 2]
+            if c == "/" and not top and nxt in ("/", "*"):
+                commented = True
+                if nxt == "/":
+                    comment_at = i
+                    break
+                block, i = True, i + 2
+                continue
+            opened = next(((o, kind) for o, kind in CS_OPENERS if line.startswith(o, i)), None)
+            if opened:
+                stack.append(opened[1])
+                if not top:
+                    code.append('"')
+                i += len(opened[0])
+                continue
+            if c == "'":
+                end = line.find("'", i + 3) if nxt == "\\" else i + 2 if line[i + 2:i + 3] == "'" else -1
+                if end > 0:
+                    if not top:
+                        code.append("' '")
+                    i = end + 1
+                    continue
+            if top == "h" and c in "{}":
+                if c == "{":
+                    holes[-1] += 1
+                elif holes[-1]:
+                    holes[-1] -= 1
+                else:
+                    stack.pop()
+                    holes.pop()
+                i += 1
+                continue
+            if not top:
+                code.append(c)
+            i += 1
+        # A regular string can't run on past its line, so what's still open of one is broken code: recover from it.
+        while stack and (stack[-1] in ("s", "i") or (stack[-1] == "h" and stack[-2] == "i")):
+            if stack.pop() == "h":
+                holes.pop()
+        out.append(CsLine("".join(code), comment_at, commented, safe))
+    return out
+
+
 def already_documented(lines: list[str], at: int) -> bool:
     """Whether a /// comment is already beside the spot just before lines[at]: above it (blank lines and attributes
     passed over) or below it (blank lines passed over). A summary inserted there would be the member's second."""
@@ -534,23 +650,46 @@ def already_documented(lines: list[str], at: int) -> bool:
             or (below < len(lines) and lines[below].strip().startswith("///")))
 
 
+def code_key(line: str, scanned: CsLine) -> str:
+    """What new_comments_only matches lines on: the line without whitespace, and without the // comment that ends a
+    line of code, so a line the agent only added a comment to still matches."""
+    if scanned.comment_at is not None and scanned.code.strip():
+        line = line[:scanned.comment_at]
+    return "".join(line.split())
+
+
 def new_comments_only(old: str, new: str) -> str:
-    """`old` plus the comment lines `new` inserts between its lines, and nothing else `new` changes: code, existing
-    comments, blank lines and indentation stay as in `old`. Lines are matched ignoring whitespace, so a declaration the
-    agent re-indented keeps its old indentation and gets its new summary, indented like it. A /// block for a member
-    that has one already is left out (see already_documented), and so is anything after the last line."""
+    """`old` plus the comment lines `new` adds, and nothing else `new` changes: code, existing comments, blank lines and
+    indentation stay as in `old`. Lines are matched on their code, ignoring whitespace, so a declaration the agent
+    re-indented keeps its old indentation and gets its new summary, indented like it, and a comment the agent put at the
+    end of a line of code goes on a line of its own above that line. Left out: comment lines inside a string or /* */
+    comment that runs over several lines (one there would change the string), a /// block for a member that has one
+    already (see already_documented), and anything after the last line."""
     bom = "\ufeff" if old.startswith("\ufeff") else ""
-    a, b = split_lines(old[len(bom):]), split_lines(new.removeprefix("\ufeff"))
+    old, new = old[len(bom):], new.removeprefix("\ufeff")
+    a, b, sa, sb = split_lines(old), split_lines(new), scan_cs(old), scan_cs(new)
     eol = "\r\n" if "\r\n" in old else "\n"
     out: list[str] = []
-    matcher = difflib.SequenceMatcher(None, ["".join(l.split()) for l in a], ["".join(l.split()) for l in b],
-                                      autojunk=False)
+
+    def indent(line: str) -> str:
+        return line[:len(line) - len(line.lstrip())]
+
+    matcher = difflib.SequenceMatcher(None, [code_key(l, s) for l, s in zip(a, sa)],
+                                      [code_key(l, s) for l, s in zip(b, sb)], autojunk=False)
     for op, i1, i2, j1, j2 in matcher.get_opcodes():
+        if op == "equal":
+            for i, j in zip(range(i1, i2), range(j1, j2)):
+                ending = b[j][sb[j].comment_at:].strip() if sb[j].comment_at is not None and sb[j].code.strip() else ""
+                if ending and sa[i].safe and sa[i].comment_at is None \
+                        and not (ending.startswith("///") and already_documented(a, i)):
+                    out.append(indent(a[i]) + ending + eol)
+                out.append(a[i])
+            continue
         added = [l.strip() for l in b[j1:j2] if l.strip()]
-        if op == "insert" and added and i1 < len(a) and all(l.startswith("//") for l in added) \
+        if op == "insert" and added and i1 < len(a) and sa[i1].safe and all(l.startswith("//") for l in added) \
                 and not (any(l.startswith("///") for l in added) and already_documented(a, i1)):
             below = next((l for l in a[i1:] if l.strip()), "")
-            out += [below[:len(below) - len(below.lstrip())] + l + eol for l in added]
+            out += [indent(below) + l + eol for l in added]
         out += a[i1:i2]
     return bom + "".join(out)
 
@@ -702,7 +841,7 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
     reverted = revert_protected(repo, base)
     if reverted:
         log("  rolled back protected files: " + ", ".join(reverted[:8]))
-    docs = task.startswith(DOC_TASK_START)  # a documentation task lands the comments it adds and nothing else
+    docs = task.startswith(DOC_STARTS)  # a documentation task lands the comments it adds and nothing else
     if docs:
         put_back = keep_only_new_comments(repo, base)
         if put_back:
@@ -1033,11 +1172,255 @@ def undocumented(text: str) -> int:
     return count
 
 
+EXPLAIN_BODY = 12  # code lines a method needs before its logic is worth explaining inside it
+EXPLAIN_STRETCH = 25  # ...or code lines in a row with no comment among them, in a method with comments elsewhere
+EXPLAIN_SUMMARY = 5  # code lines a method or property needs before it's worth a summary
+EXPLAIN_MAX_LINES = 4000  # an explain task names its methods, so the agent reads only those: long scripts will do
+UNITY_MESSAGES = {"Awake", "Start", "Update", "LateUpdate", "FixedUpdate", "OnEnable", "OnDisable", "OnDestroy", "OnValidate",
+                  "Reset", "OnGUI", "OnTriggerEnter", "OnTriggerExit", "OnTriggerStay", "OnCollisionEnter", "OnCollisionExit",
+                  "OnCollisionStay", "OnApplicationQuit", "OnApplicationPause", "OnApplicationFocus", "OnDrawGizmos",
+                  "OnDrawGizmosSelected", "OnBecameVisible", "OnBecameInvisible", "OnRenderObject"}
+CS_STRUCT = re.compile(r"[{};]")
+CS_TYPE = re.compile(r"\b(class|struct|interface|record|enum)\s+(@?\w+)")
+CS_NAME = re.compile(r"((?:@?\w+\s*\.\s*)*@?\w+|operator\s*\S+)\s*(?:<[^()]*>)?\s*$")  # a method's name, before its (
+CS_PROPERTY_NAME = re.compile(r"((?:@?\w+\s*\.\s*)*@?\w+|this\s*\[[^\]]*\])\s*$")
+CS_MODIFIERS = {"public", "private", "protected", "internal", "static", "virtual", "override", "abstract", "sealed", "async",
+                "extern", "unsafe", "new", "readonly", "partial", "volatile", "const", "ref"}
+CS_CTOR = re.compile(r"\s*(?:(?:public|private|protected|internal|static|extern|unsafe)\s+)*")  # all before a ctor's name
+CS_CODE_CHARS = re.compile(r"[^\s{}()\[\];,]")  # a line with more than brackets and punctuation on it
+
+
+@dataclass
+class CsMember:
+    """A type, method, constructor or property a C# script declares, as find_members reads it."""
+    kind: str  # "type", "method", "ctor" or "property"
+    name: str
+    mods: str  # what the declaration says before the name: modifiers, the return type...
+    top: int  # 0-based line where the declaration starts, attributes included
+    line: int  # 0-based line of the declaration itself
+    keyword: str = ""  # a type's: class, struct, interface, record or enum
+    body: tuple[int, int] | None = None  # 0-based first and last line of its body: inside its braces, or from its =>
+
+
+def skip_attributes(text: str) -> int:
+    """Where a declaration starts in `text`, past the [attributes] and whitespace in front of it."""
+    i = 0
+    while True:
+        while i < len(text) and text[i].isspace():
+            i += 1
+        if not text.startswith("[", i):
+            return i
+        depth = 0
+        while i < len(text):
+            depth += (text[i] == "[") - (text[i] == "]")
+            i += 1
+            if not depth:
+                break
+
+
+def assigns(text: str) -> bool:
+    """Whether `text` has an = outside brackets (not ==, !=, <=, >= or =>): an initializer."""
+    depth = 0
+    for k, c in enumerate(text):
+        if c in "([":
+            depth += 1
+        elif c in ")]":
+            depth -= 1
+        elif c == "=" and not depth and text[k + 1:k + 2] not in ("=", ">") and text[k - 1:k] not in ("=", "!", "<", ">"):
+            return True
+    return False
+
+
+def parameters(decl: str) -> re.Match | None:
+    """The name in front of a method's or constructor's parameter list (a CS_NAME match ending where the list starts),
+    or None for a declaration without one. A tuple type's parentheses don't count, nor does a constraint's new()."""
+    depth = 0
+    for k, c in enumerate(decl):
+        if c == "(":
+            if not depth:
+                name = CS_NAME.search(decl, 0, k)
+                if name and name.group(1) not in CS_MODIFIERS:
+                    return name
+            depth += 1
+        elif c == ")":
+            depth -= 1
+        elif c == "=" and not depth:
+            return None
+    return None
+
+
+def parse_declaration(text: str) -> tuple[str, str, str, str, int] | None:
+    """What the code of a declaration up to its body declares: (kind, name, mods, keyword, where it starts past its
+    attributes), kind being "namespace", "type", "method", "ctor" or "property". None for anything else: a field with
+    an initializer, a delegate, a using."""
+    start = skip_attributes(text)
+    decl = text[start:]
+    if not decl.strip() or re.match(r"\s*(?:using\b|extern\b|=)", decl):
+        return None
+    name = parameters(decl)
+    head = decl[:name.end()] if name else decl
+    if re.search(r"\bnamespace\b", head):
+        return "namespace", "", "", "", start
+    signature = re.split(r"=>|=", head, maxsplit=1)[0]  # a type is named before any initializer or => body
+    typed = CS_TYPE.search(signature)
+    if typed:
+        return "type", typed.group(2), signature[:typed.start()], typed.group(1), start
+    if name:
+        mods = decl[:name.start()]
+        if re.search(r"\bdelegate\b", mods):
+            return None
+        return ("ctor" if CS_CTOR.fullmatch(mods) else "method"), name.group(1), mods, "", start
+    before = decl.split("=>", 1)[0]
+    prop = None if assigns(before) else CS_PROPERTY_NAME.search(before.rstrip())
+    return ("property", prop.group(1), before[:prop.start()], "", start) if prop else None
+
+
+def find_members(scanned: list[CsLine]) -> list[CsMember]:
+    """The types, methods, constructors and properties a scanned C# script declares, nested types' too, in order."""
+    members: list[CsMember] = []
+    # Each open brace: "type" (a namespace's or type's, where declarations follow), "member" (a member's body),
+    # "expression" (in an initializer or => body, which goes on after it) or "block" (inside one of those).
+    scopes: list[str] = []
+    depth = 0  # open braces that aren't a namespace's or a type's
+    header: list[tuple[int, str]] = []  # the code since the last declaration ended, at type level, by line
+    current: CsMember | None = None  # the member whose body is open
+
+    def line_of(offset: int) -> int:
+        for idx, text in header:
+            if offset < len(text):
+                return idx
+            offset -= len(text)
+        return header[-1][0]
+
+    def declared() -> tuple[CsMember | None, str]:
+        text = "".join(t for _, t in header)
+        parsed = parse_declaration(text)
+        if not parsed:
+            return None, text
+        kind, name, mods, keyword, start = parsed
+        top = line_of(len(text) - len(text.lstrip()))
+        line = line_of(start + len(text[start:]) - len(text[start:].lstrip()))
+        return CsMember(kind, name, mods, top, line, keyword), text
+
+    for idx, ln in enumerate(scanned):
+        pos = 0
+        for m in CS_STRUCT.finditer(ln.code):
+            c = m.group()
+            if depth:
+                if c == "{":
+                    scopes.append("block")
+                    depth += 1
+                elif c == "}":
+                    depth -= 1
+                    if scopes.pop() == "member" and current:
+                        current.body = (current.body[0], idx - 1)
+                        current, header = None, []
+                pos = m.end()
+                continue
+            header.append((idx, ln.code[pos:m.start()]))
+            pos = m.end()
+            if c == "}":
+                if scopes:
+                    scopes.pop()
+                header = []
+                continue
+            member, text = declared()
+            if c == ";":
+                if member and member.kind in ("method", "ctor", "property") and "=>" in text:
+                    member.body = (line_of(text.index("=>")), idx)
+                    members.append(member)
+                header = []
+            elif member and member.kind in ("namespace", "type"):
+                if member.kind == "type":
+                    members.append(member)
+                scopes.append("type")
+                header = []
+            elif member and "=>" not in text:
+                member.body = (idx + 1, idx)
+                members.append(member)
+                scopes.append("member")
+                depth += 1
+                current, header = member, []
+            else:  # braces in an initializer or => body: the declaration goes on after them
+                scopes.append("expression")
+                depth += 1
+        if not depth:
+            header.append((idx, ln.code[pos:] + " "))
+    return members
+
+
+def commented_above(scanned: list[CsLine], member: CsMember) -> bool:
+    """Whether a comment sits on the line above a declaration (or above its attributes) or at the end of its line."""
+    return any(at > 0 and scanned[at - 1].commented and not scanned[at - 1].code.strip()
+               for at in (member.top, member.line)) or scanned[member.line].comment_at is not None
+
+
+def body_metrics(scanned: list[CsLine], member: CsMember) -> tuple[int, int, int]:
+    """A member's body: its lines of code, its lines with a comment, and the most code lines in a row without one."""
+    code = comments = run = stretch = 0
+    for ln in scanned[member.body[0]:member.body[1] + 1] if member.body else ():
+        if ln.commented:
+            comments += 1
+            run = 0
+        if CS_CODE_CHARS.search(ln.code):
+            code += 1
+            if not ln.commented:
+                run += 1
+                stretch = max(stretch, run)
+    return code, comments, stretch
+
+
+def inherits_docs(member: CsMember) -> bool:
+    """Whether a member needs no summary of its own: a constructor, an override, an interface's member implemented
+    explicitly, a Unity message or one of the members INHERITS_DOCS names."""
+    return (member.kind == "ctor" or "." in member.name or member.name in INHERITS_DOCS or member.name in UNITY_MESSAGES
+            or bool(re.search(r"\boverride\b", member.mods)))
+
+
+@dataclass(frozen=True)
+class Spot:
+    """Code that no comment explains, as explain_spots finds it."""
+    what: str  # "body": a method whose logic no comment explains; "summary": a member or type with no comment above it
+    name: str  # as a task names it: `Spawn`, or class `Horde`
+    line: int  # 1-based line of its declaration
+    lines: int  # code lines in its body
+
+
+@functools.lru_cache(maxsize=4096)
+def explain_spots(text: str) -> tuple[Spot, ...]:
+    """The code in a C# script that no comment explains, in order: methods (constructors and properties too) with
+    EXPLAIN_BODY lines of code or more and no comment inside, or EXPLAIN_STRETCH in a row without one; and methods of
+    EXPLAIN_SUMMARY lines or more, and types, with no comment above them. Members that inherit their docs need no
+    summary (see inherits_docs), nor does a partial type, which may have one on another of its parts."""
+    scanned = scan_cs(text)
+    spots = []
+    for member in find_members(scanned):
+        above = commented_above(scanned, member)
+        if member.kind == "type":
+            if not above and "partial" not in member.mods.split():
+                spots.append(Spot("summary", f"{member.keyword} `{member.name}`", member.line + 1, 0))
+            continue
+        code, comments, stretch = body_metrics(scanned, member)
+        if code >= EXPLAIN_BODY and (not comments or stretch >= EXPLAIN_STRETCH):
+            spots.append(Spot("body", f"`{member.name}`", member.line + 1, code))
+        elif code >= EXPLAIN_SUMMARY and not above and not inherits_docs(member):
+            spots.append(Spot("summary", f"`{member.name}`", member.line + 1, code))
+    return tuple(spots)
+
+
+def needs_explaining(text: str) -> bool:
+    """Whether a script is worth an explain task: a method whose logic no comment explains, or three members or types
+    with no comment above them."""
+    spots = explain_spots(text)
+    return any(s.what == "body" for s in spots) or sum(s.what == "summary" for s in spots) >= 3
+
+
 @dataclass(frozen=True)
 class Focus:
     label: str  # how the log and the prompt name it
     fits: object  # (script path, script text) -> whether the script is worth showing the planner for this focus
     help: str  # what the planner should look for
+    max_lines: int = PLAN_MAX_LINES  # longer scripts aren't planned for
 
 
 FOCUS = {
@@ -1085,6 +1468,8 @@ FOCUS = {
         "the themes the new ones should cover. Original wording only: no lyrics, quotes or real brands. Existing "
         "entries, ids, order-dependent logic and code must stay as they are."),
     "docs": Focus("documentation", lambda rel, text: undocumented(text) >= 3, ""),  # a fixed task text; no model needed
+    # Comments for code that has none: a fixed task naming the methods and types (see explain_task); no model needed.
+    "explain": Focus("code explanation", lambda rel, text: needs_explaining(text), "", EXPLAIN_MAX_LINES),
 }
 
 # What a big task (a focus written with a trailing "+") should be, on top of the focus's own help. Documentation has no
@@ -1146,11 +1531,62 @@ DOC_AGAIN = " (Pass {n} over this file: most of it has summaries already.)"  # e
 DOC_PASSES = 3  # documentation passes one script gets at most (see plan_candidates)
 EVERY_WORKER = "all"  # NIGHTSHIFT_DOCS_WORKERS=all: every worker takes only documentation tasks
 
+EXPLAIN_TASK = ("Add comments explaining the code in {path}, so a programmer new to CLONE-Z can follow it. Comments only: "
+                "don't change any code.")
+EXPLAIN_BODIES_LINE = (
+    "Explain the logic inside these methods, which no comment explains yet: {listed}. Above each step a reader can't "
+    "follow from the code alone, add a short `//` comment saying what it is for or why it is done that way: what a block "
+    "or loop is for, why a value, limit or order is what it is, what a condition guards against. Say why, not what: "
+    "don't restate the line below, and leave obvious lines alone. Where one of these methods has no comment above it, "
+    "add a one-sentence `/// <summary>` there too.")
+EXPLAIN_SUMMARIES_LINE = ("Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what "
+                          "it is for, in the same voice as the file's other summaries: {listed}.")
+EXPLAIN_DETAILS = (
+    "Never add a second `<summary>` where one exists, and give none to members that override a base member or "
+    "implement an interface, or to Unity messages such as Update: they inherit their docs.",
+    "Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of "
+    "code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.")
+EXPLAIN_TASK_START = EXPLAIN_TASK.split("{path}")[0]
+EXPLAIN_AGAIN = " (Pass {n} over this file: other parts of it have comments already.)"
+EXPLAIN_PASSES = 8  # explain passes one script gets at most: each takes a few methods, the next the ones left
+EXPLAIN_BODIES = 4  # methods one explain task explains inside, at most
+EXPLAIN_BODY_LINES = 250  # ...and their code lines in all, beyond the first method
+EXPLAIN_SUMMARIES = 8  # members and types one explain task gives a summary, at most
+DOC_KINDS = ("docs", "explain")  # the focuses whose tasks add comments and nothing else: documentation tasks
+DOC_STARTS = (DOC_TASK_START, EXPLAIN_TASK_START)  # how their tasks start
+
 
 def is_docs(task: Task) -> bool:
-    """Whether `task` is a documentation task: the docs focus's fixed one (DOC_TASK), whoever queued it. Workers in
-    NIGHTSHIFT_DOCS_WORKERS take only these, and the others leave them to those workers while one is on duty."""
-    return task.key.startswith(DOC_TASK_START)
+    """Whether `task` is a documentation task: one of the docs or explain focus's fixed ones (DOC_TASK, EXPLAIN_TASK),
+    whoever queued it. It lands only the comments it adds. Workers in NIGHTSHIFT_DOCS_WORKERS take only these, and the
+    others leave them to those workers while one is on duty."""
+    return task.key.startswith(DOC_STARTS)
+
+
+def explain_task(path: str, text: str, tasks: list[tuple[str, Task]]) -> Task | None:
+    """The explain focus's task for the script at `path`: comments inside the methods with the most code that no
+    comment explains (EXPLAIN_BODIES at most), and summaries for the members and types with no comment above them
+    (EXPLAIN_SUMMARIES at most), each named with its line. None if nothing in it is left to explain."""
+    spots = explain_spots(text)
+    bodies, lines = [], 0
+    for spot in sorted((s for s in spots if s.what == "body"), key=lambda s: -s.lines):
+        if bodies and (len(bodies) == EXPLAIN_BODIES or lines + spot.lines > EXPLAIN_BODY_LINES):
+            break
+        bodies.append(spot)
+        lines += spot.lines
+    summaries = [s for s in spots if s.what == "summary"][:EXPLAIN_SUMMARIES]
+    if not bodies and not summaries:
+        return None
+    details = []
+    if bodies:
+        details.append(EXPLAIN_BODIES_LINE.format(listed=", ".join(
+            f"{s.name} (line {s.line}, {s.lines} lines of code)" for s in sorted(bodies, key=lambda s: s.line))))
+    if summaries:
+        details.append(EXPLAIN_SUMMARIES_LINE.format(listed=", ".join(f"{s.name} (line {s.line})" for s in summaries)))
+    first = EXPLAIN_TASK.format(path=path)
+    n = 1 + sum(1 for _, task in tasks if task.key.startswith(first))
+    key = first + (EXPLAIN_AGAIN.format(n=n) if n > 1 else "")
+    return Task(key, "\n".join([key, *details, *EXPLAIN_DETAILS]))
 
 PLAN_PROMPT = """You plan work for the CLONE-Z Night Shift: local AI coding agents that each take one task from a queue
 overnight, edit the code of CLONE-Z (a Unity 6 isometric zombie-survival game in C#, everything built from code at
@@ -1251,8 +1687,9 @@ SCRIPT {path} ({lines} lines)
 
 
 def plan_candidates(focus: str, repo: Path, tasks: list[tuple[str, Task]]) -> list[str]:
-    """Scripts worth showing the planner for `focus`: the right kind of code, short enough to read whole, and no
-    unchecked task queued for them yet (two tasks on one script at once would collide when they land)."""
+    """Scripts worth showing the planner for `focus`: the right kind of code, short enough to read whole (or, for an
+    explain task, to find its way around in), and no unchecked task queued for them yet (two tasks on one script at once
+    would collide when they land)."""
     kind, _ = split_focus(focus)
     queued = "\n".join(task.text for mark, task in tasks if mark == " ")
     found = []
@@ -1264,13 +1701,18 @@ def plan_candidates(focus: str, repo: Path, tasks: list[tuple[str, Task]]) -> li
             text = f.read_text(encoding="utf-8-sig", errors="replace")
         except OSError:
             continue
-        if not 30 <= text.count("\n") + 1 <= PLAN_MAX_LINES or not FOCUS[kind].fits(rel, text):
+        if not 30 <= text.count("\n") + 1 <= FOCUS[kind].max_lines or not FOCUS[kind].fits(rel, text):
             continue
         if kind == "docs":
             # Later work adds public members without summaries, so a script gets another pass once every earlier one
             # landed. Not after one that found nothing to document (what's left inherits its docs) or failed.
             passes = [mark for mark, task in tasks if task.key.startswith(DOC_TASK.format(path=rel))]
             if passes and (len(passes) >= DOC_PASSES or any(mark not in "xX" for mark in passes)):
+                continue
+        elif kind == "explain":
+            # Each pass explains a few methods and the next one the rest, as long as every earlier pass landed.
+            passes = [mark for mark, task in tasks if task.key.startswith(EXPLAIN_TASK.format(path=rel))]
+            if passes and (len(passes) >= EXPLAIN_PASSES or any(mark not in "xX" for mark in passes)):
                 continue
         found.append(rel)
     return found
@@ -1581,11 +2023,12 @@ class Planner:
     """Writes the next task into tasks.md when the queue runs low (NIGHTSHIFT_AUTOPLAN). It goes round the focus areas in
     NIGHTSHIFT_AUTOPLAN_FOCUS, shows the local model one script at a time (the one that fits and was shown least
     recently) and queues the task it writes once that checks out: it must name that script, mention only scripts that
-    exist and nothing protected, and not repeat a task already in tasks.md. Documentation tasks need no model. A focus
-    written with a trailing "+" asks for a big task: several located steps, with the scripts tied to the target shown in
-    outline so the steps can reach into them (see BIG_PLAN_PROMPT). Only the workers that take big tasks get those; the
-    coordinator asks for a small one whenever a worker that takes only small tasks would have none waiting, and for a
-    documentation task whenever a documentation worker (NIGHTSHIFT_DOCS_WORKERS) would have none."""
+    exist and nothing protected, and not repeat a task already in tasks.md. Documentation tasks (the docs and explain
+    focuses) need no model. A focus written with a trailing "+" asks for a big task: several located steps, with the
+    scripts tied to the target shown in outline so the steps can reach into them (see BIG_PLAN_PROMPT). Only the workers
+    that take big tasks get those; the coordinator asks for a small one whenever a worker that takes only small tasks
+    would have none waiting, and for a documentation task whenever a documentation worker (NIGHTSHIFT_DOCS_WORKERS)
+    would have none (see plan_docs)."""
 
     def __init__(self, ollama: str, model: str, focus: list[str], repo: Path | None = None, ask=None, on_duty=None,
                  dry_run: bool = False, leave_out=None):
@@ -1644,6 +2087,17 @@ class Planner:
             log(f"planner: nothing for {script} ({focus_label(kind)}): {why}")
         return None
 
+    def plan_docs(self) -> Task | None:
+        """Plans and queues one documentation task, for the documentation workers: the documentation focuses (DOC_KINDS)
+        take turns, and when one finds no script to work on, the next goes instead. None if none of them found one."""
+        turn = int(self.state.get("docs_turn", 0))
+        self.state["docs_turn"] = turn + 1
+        for k in range(len(DOC_KINDS)):
+            task = self.plan_one(tries=1, focus=DOC_KINDS[(turn + k) % len(DOC_KINDS)])
+            if task or not self.on_duty():
+                return task
+        return None
+
     def write_task(self, focus: str, target: str, tasks: list[tuple[str, Task]]) -> tuple[Task | None, str]:
         kind, big = split_focus(focus)
         if kind == "docs":
@@ -1652,6 +2106,9 @@ class Planner:
             key = first + (DOC_AGAIN.format(n=n) if n > 1 else "")
             return Task(key, "\n".join((key,) + DOC_DETAILS)), ""
         source = (self.repo / target).read_text(encoding="utf-8-sig", errors="replace")
+        if kind == "explain":
+            task = explain_task(target, source, tasks)
+            return (task, "") if task else (None, "nothing in it is left to explain")
         existing = [f"[{mark}] {task.key[:220]}" for mark, task in tasks if target in task.text][-15:]
         lessons_path = self.repo / LESSONS_REL
         lessons = lessons_path.read_text(encoding="utf-8")[:PLAN_LESSONS_CHARS] if lessons_path.exists() else ""
@@ -1971,6 +2428,11 @@ class Coordinator:
         """The workers still on duty that take only documentation tasks (NIGHTSHIFT_DOCS_WORKERS)."""
         return [w for w in self.workers if not getattr(w, "retired", False) and getattr(w, "docs", False)]
 
+    def left_out(self) -> set[str]:
+        """The focuses the planner's rotation passes over for now: the documentation ones while documentation workers are
+        on duty, as those get theirs on demand (see wanted and Planner.plan_docs)."""
+        return set(DOC_KINDS) if self.docs_team() else set()
+
     def docs_only(self, worker: Worker) -> bool:
         """Whether NIGHTSHIFT_DOCS_WORKERS names `worker`, by its name, its host or its user@host, or is "all"."""
         target = (worker.target or "").lower()
@@ -2056,7 +2518,7 @@ class Coordinator:
         focus = [f.strip() for f in self.cfg.get("NIGHTSHIFT_AUTOPLAN_FOCUS", "").split(",") if f.strip()]
         # While documentation workers are on duty the rotation skips documentation: they get theirs on demand (wanted).
         self.planner = Planner(ollama, model, focus, on_duty=lambda: self.planning.is_set() and not self.off_duty(),
-                               leave_out=lambda: {"docs"} if self.docs_team() else ())
+                               leave_out=self.left_out)
         self.planning.set()
         docs_team = self.docs_team()
         if docs_team and not any(self.team()):
@@ -2083,7 +2545,7 @@ class Coordinator:
                 continue
             try:
                 if want == "docs":
-                    planned = self.planner.plan_one(focus="docs")
+                    planned = self.planner.plan_docs()
                 else:
                     planned = self.planner.plan_one(small=want == "small")
             except Exception as e:  # Ollama busy or restarting, a script moved by a landing...
@@ -2338,10 +2800,11 @@ class Coordinator:
             log("every worker's model is in NIGHTSHIFT_SMALL_TASK_MODELS, so they take any task and the planner writes "
                 "only small ones")
         if self.docs_team() and not any(self.team()):
-            log("every worker takes only documentation tasks (/// <summary> comments), so the night shift writes "
-                "comments and nothing else; other tasks wait in tasks.md")
+            log("every worker takes only documentation tasks (summaries, and comments explaining the code), so the night "
+                "shift writes comments and nothing else; other tasks wait in tasks.md")
         elif self.docs_team():
-            log(f"documentation tasks (/// <summary> comments) go to {', '.join(w.name for w in self.docs_team())}, "
+            log(f"documentation tasks (summaries, and comments explaining the code) go to "
+                f"{', '.join(w.name for w in self.docs_team())}, "
                 f"which take{'s' if len(self.docs_team()) == 1 else ''} nothing else")
         self.start_planner(ollama)
         threads = [threading.Thread(target=self.worker_loop, args=(w,), daemon=True) for w in self.workers]
