@@ -145,7 +145,7 @@ namespace CloneZ
             // sacks, one container plus one stack object each, which made both the save file and the
             // load time grow with the number of things dropped in the world. They now go straight from
             // GroundItemStore into their own chunk-indexed table in SqliteSaveStore.
-            // Restore barricades placed by the player
+            // Capture barricades placed by the player
             for (int i = 0; i < Barricade.All.Count; i++)
             {
                 Barricade b = Barricade.All[i];

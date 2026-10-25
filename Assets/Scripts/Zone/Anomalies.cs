@@ -228,8 +228,7 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
                      Vector3 chainStart = new Vector3(-0.55f, 1.2f, 0f);
                      Vector3 linkDir = new Vector3(0.35f, 0f, 0f);
                      float linkLen = 0.12f; // not used directly, length set by end point
-                     // Build a short rusted chain of four links between the side pillars
-                     // Place small rusty nails on the sign front for detail
+                     // Add four short rod links between the side pillars
                      for (int i = 0; i < 4; i++)
                      {
                          Vector3 a = chainStart + i * linkDir;

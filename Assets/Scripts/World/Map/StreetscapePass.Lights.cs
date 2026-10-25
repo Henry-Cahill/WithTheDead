@@ -162,7 +162,7 @@ namespace CloneZ
                 foreach (Vector2 l in lights) if ((l - f.Middle).sqrMagnitude < 70f * 70f) near = true;
                 if (near) continue;
                 Vector2 toHome = (home.Middle - f.Middle).normalized;
-                // Position the pole halfway out from the farm building toward the house, offset by half the building size plus a margin.
+                // Position the pole just beyond the farm building toward the nearest house.
                 Vector2 at = f.Middle + toHome * (Mathf.Max(f.Bounds.width, f.Bounds.height) * 0.5f + 4f);
                 // Reserve a small area for the pole so other geometry won't intersect it.
                 if (!ctx.Site.Free(at, 0.5f)) continue;
