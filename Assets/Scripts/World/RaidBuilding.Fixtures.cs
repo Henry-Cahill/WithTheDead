@@ -122,15 +122,21 @@ namespace CloneZ
         public Transform FixtureBody(RaidRoom room, Place p, Vector3 size, bool solid, System.Action<RaidMesh, System.Random> draw,
             string name, bool bake = true)
         {
+            // Compute world position and orientation for the piece
             Vector3 pos = W(p.X, 0f, p.Z);
             float yaw = Yaw(p.Yaw);
+            // Create a new root GameObject for this piece and parent it under the building root
             var go = new GameObject(name);
             go.transform.SetParent(Root, false);
+            // Position it in world space; rotation is handled later by the mesh or collider logic
             go.transform.SetPositionAndRotation(pos, Quaternion.identity);
+            // If a custom draw callback is supplied, generate the piece's mesh in its local frame
             if (draw != null)
             {
                 var m = new RaidMesh();
+                // Set up the mesh frame so that drawing code can work in world coordinates
                 m.SetFrame(pos, yaw);
+                // Remember any outer body being drawn so nested draws can nest correctly
                 Transform outer = CurrentBody;
                 CurrentBody = go.transform;
                 try { draw(m, Rng); }
@@ -138,33 +144,44 @@ namespace CloneZ
                 m.ResetFrame();
                 m.ApplyTo(go, pos);
             }
+            // Add a solid collider if required; the collider handling accounts for piece rotation
             if (solid) BodyCollider(go, size, yaw);
+            // Prevent the piece from being baked into the navmesh when requested (e.g., for small fixtures)
             if (!bake) go.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
+            // Record the piece's footprint for room‑level occupancy checks
             Rect fp = FootRect(pos, yaw, size);
             if (room != null)
             {
                 CheckClear(room, fp, name);
                 room.Furniture.Add(fp);
             }
+            // Apply shared palette colours after all geometry is in place
             DecorPalette.Apply();
             return go.transform;
         }
 
+        /// <summary>Creates the physical collider for a fixture, handling both axis-aligned and rotated pieces.</summary>
         // A body's solid box: on the root when the piece is square to the world, else on a turned child.
         private static void BodyCollider(GameObject go, Vector3 size, float yaw)
         {
+            // Determine how far the yaw deviates from the nearest 90° increment; values near 0° or 90° mean the piece is axis-aligned.
             float k = Mathf.Repeat(yaw, 90f);
+            // If the piece is effectively axis‑aligned, attach a simple BoxCollider directly to the root GameObject.
             if (k < 1f || k > 89f)
             {
                 var bc = go.AddComponent<BoxCollider>();
+                // Center the collider vertically; X/Z centre is at the object's origin.
                 bc.center = new Vector3(0f, size.y * 0.5f, 0f);
+                // Size must be expanded to the object's AABB when rotated, even though yaw is small.
                 bc.size = AabbSize(size, yaw);
                 return;
             }
+            // For pieces rotated off‑axis, create a child GameObject to hold the collider and rotate it to match the piece.
             var turned = new GameObject("Collider");
             turned.transform.SetParent(go.transform, false);
             turned.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
             var c = turned.AddComponent<BoxCollider>();
+            // Center and size are axis‑aligned because the child already carries the rotation.
             c.center = new Vector3(0f, size.y * 0.5f, 0f);
             c.size = size;
         }
