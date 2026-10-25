@@ -19,6 +19,7 @@ namespace CloneZ
     /// </summary>
     public static class Broadcasts
     {
+        /// <summary>Defines a schedule block for a station, including day range, hour range, and lines.</summary>
         private sealed class Programme
         {
             public int FromDay, ToDay;       // inclusive
@@ -27,6 +28,7 @@ namespace CloneZ
             public string[] Lines;
         }
 
+        /// <summary>Defines a station entry, including its display name, title, colours, and schedule.</summary>
         private sealed class Station
         {
             public string Name;      // "Channel 4", "91.3 FM"
@@ -362,6 +364,7 @@ Days(1, 2,
         }
 
         // Strips a line's condition, returning false when the condition doesn't hold right now.
+        /// <summary>Determines whether a broadcast line applies given current water/power state.</summary>
         private static bool Applies(string raw, out string text)
         {
             text = raw;
