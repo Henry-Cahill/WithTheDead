@@ -257,6 +257,7 @@ namespace CloneZ
             private readonly List<(Vector2 a, Vector2 b)> _segs = new List<(Vector2 a, Vector2 b)>();
             private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
 
+            /// <summary>Adds a driveway segment from a to b.</summary>
             public void Add(Vector2 a, Vector2 b)
             {
                 int i = _segs.Count;
@@ -273,6 +274,7 @@ namespace CloneZ
             }
 
             // Within reach of a driveway's line.
+            /// <summary>Checks whether point p lies within reach of any driveway segment.</summary>
             public bool On(Vector2 p)
             {
                 if (!_cells.TryGetValue(Key(Mathf.FloorToInt(p.x / Cell), Mathf.FloorToInt(p.y / Cell)), out List<int> list)) return false;
@@ -337,6 +339,7 @@ namespace CloneZ
             private readonly List<(Vector2 a, Vector2 b, float half)> _runs = new List<(Vector2 a, Vector2 b, float half)>();
             private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
 
+            /// <summary>Adds a run segment from a to b with half‑width padding.</summary>
             public void Add(Vector2 a, Vector2 b, float half)
             {
                 int i = _runs.Count;
@@ -352,6 +355,7 @@ namespace CloneZ
                     }
             }
 
+            /// <summary>Tests whether the segment a‑b (with optional padding) crosses any recorded runs.</summary>
             public bool Crosses(Vector2 a, Vector2 b, float pad)
             {
                 pad = Mathf.Max(0f, pad);

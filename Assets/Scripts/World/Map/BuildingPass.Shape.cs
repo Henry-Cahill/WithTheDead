@@ -36,13 +36,19 @@ namespace CloneZ
             /// <summary>The share of the footprint the blocks cover.</summary>
             public float Covered;
 
+            /// <summary>The total length of the footprint (twice the half-length).</summary>
             public float Length => HalfL * 2f;
+            /// <summary>The total width of the footprint (twice the half-width).</summary>
             public float Width => HalfW * 2f;
+            /// <summary>The aspect ratio of the footprint (half‑length divided by half‑width, with a floor to avoid extreme values).</summary>
             public float Aspect => HalfL / Mathf.Max(0.25f, HalfW);
             /// <summary>The yaw (degrees) that turns a box's local x onto U (and its local z onto V).</summary>
             public float Yaw => -Mathf.Atan2(U.y, U.x) * Mathf.Rad2Deg;
+            /// <summary>Converts given local (u,v) coordinates to world space.</summary>
             public Vector2 World(float u, float v) => O + U * u + V * v;
+            /// <summary>Converts  the  provided  world‑space vector into local (u,v) frame coordinates.</summary>
             public Vector2 World(Vector2 uv) => O + U * uv.x + V * uv.y;
+            /// <summary>Converts the given world‑space point into local (u,v) frame coordinates.</summary>
             public Vector2 Local(Vector2 p)
             {
                 Vector2 d = p - O;

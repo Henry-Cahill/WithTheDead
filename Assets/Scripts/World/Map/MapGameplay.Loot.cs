@@ -30,10 +30,13 @@ namespace CloneZ
 
             public Profile(string purpose) { Purpose = purpose; }
 
+            /// <summary>True if this profile defines an else pool.</summary>
             public bool HasElse => _else != null;
 
+            /// <summary>Adds a single room with the given container pool to the profile.</summary>
             public Profile Room(string room, params ContainerType[] pool) => Rooms(new[] { room }, pool);
 
+            /// <summary>Adds the given rooms with the specified container pool to the profile.</summary>
             public Profile Rooms(string[] rooms, params ContainerType[] pool)
             {
                 _last.Clear();
@@ -66,15 +69,18 @@ namespace CloneZ
                 return this;
             }
 
+            /// <summary>Sets the stock factor for this profile, scaling loot quantity.</summary>
             public Profile Stocked(float stock)
             {
                 Stock = stock;
                 return this;
             }
 
+            /// <summary>Tries to get the container pool for the specified room and richness level.</summary>
             public bool TryGet(string room, bool rich, out ContainerType[] pool)
                 => (rich ? _rich : _plain).TryGetValue(room, out pool);
 
+            /// <summary>Returns the default container pool when no specific room matches, based on richness.</summary>
             public ContainerType[] Default(bool rich) => (rich ? _elseRich : _else) ?? NoContainers;
 
             private static ContainerType[] Join(ContainerType[] a, ContainerType[] b)
@@ -89,6 +95,7 @@ namespace CloneZ
         private static Dictionary<string, Profile> s_Profiles;
         private static Profile s_Generic;
 
+        /// <summary>Returns a new profile for the given purpose and registers it.</summary>
         private static Profile P(string purpose)
         {
             var p = new Profile(purpose);
@@ -98,6 +105,7 @@ namespace CloneZ
 
         // Every purpose's rooms. A pool's first entry is the room's signature container (the kitchen's fridge, the
         // bathroom's medicine cabinet, the armoury's gun locker); repeats weigh more.
+        /// <summary>Defines the loot profiles for every purpose.</summary>
         private static void DefineProfiles()
         {
             s_Profiles = new Dictionary<string, Profile>();
@@ -649,6 +657,7 @@ namespace CloneZ
 
         // A fractional count made whole, rounded up as often as its fraction says (from the building's id, so the same
         // every build).
+        /// <summary>Computes a deterministic whole number from a fractional count using the building's ID as seed.</summary>
         private static int Dither(float value, long id)
         {
             if (value <= 0f) return 0;

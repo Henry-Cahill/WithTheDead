@@ -109,6 +109,7 @@ namespace CloneZ
 
         // The square's areas (and a fixed map's scenery ring's, a band at a time), made into one partition and filled;
         // the water and the parking lots taken, so nothing stands on them.
+        /// <summary>Divides the square's ground into owners' partitions and fills their ground, handling water and parking.</summary>
         private static void Partition(Ground g)
         {
             g.Owners = Collect(g.Site, g.Square);
@@ -133,6 +134,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Collects owners whose patches intersect the given domain and prepares them for partitioning.</summary>
         private static List<Owner> Collect(Site site, Rect domain)
         {
             var owners = new List<Owner>();
@@ -154,6 +156,7 @@ namespace CloneZ
             return owners;
         }
 
+        /// <summary>Compares two owners for sorting: first by tier, then by descending area, then by id.</summary>
         private static int ByPriority(Owner a, Owner b)
         {
             if (a.Tier != b.Tier) return a.Tier.CompareTo(b.Tier);
@@ -162,6 +165,7 @@ namespace CloneZ
         }
 
         // Square metres of the area as mapped (decimetre corners, added exactly), or of what's at hand without them.
+        /// <summary>Computes the area of a patch from decimetre coordinates or, if unavailable, from fallback vertices.</summary>
         private static double AreaOf(int[] dm, List<Vector2> fallback)
         {
             if (dm == null || dm.Length < 6) return Mathf.Abs(MapGeometry.SignedArea(fallback));
