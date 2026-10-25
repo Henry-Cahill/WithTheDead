@@ -163,7 +163,7 @@ namespace CloneZ
             if (e.dragging || _dragEndFrame == Time.frameCount) return;   // the release that ended a drag isn't a click
             switch (r.Element)
             {
-                // Handle hover over an inventory tile.
+                // Handle a click on an inventory tile.
                 case GridElement.Tile:
                 {
                     // Double-click — or Ctrl+click — sends the whole stack to the other window.
