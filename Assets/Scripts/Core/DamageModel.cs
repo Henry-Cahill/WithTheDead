@@ -20,6 +20,7 @@ namespace CloneZ
     /// </summary>
     public enum BodyZone { Head, Thorax, Stomach, LeftArm, RightArm, LeftLeg, RightLeg }
 
+    /// <summary>Utility methods and definitions for body zones.</summary>
     public static class BodyZones
     {
         public const int Count = 7;
@@ -109,6 +110,7 @@ namespace CloneZ
             Chemical += o.Chemical; Psi += o.Psi; Explosion += o.Explosion;
         }
 
+        /// <summary>Adds a flat resistance amount for the specified damage kind.</summary>
         public void Add(DamageKind kind, float amount)
         {
             switch (kind)
@@ -154,24 +156,38 @@ namespace CloneZ
         /// <see cref="DamageScale"/>.</summary>
         public bool HpScale;
 
+        /// <summary>Initializes a basic DamageInfo with required fields.</summary>
         public DamageInfo(float amount, DamageKind kind, Vector3 hitPoint, Vector3 hitDir, GameObject source)
         {
             Amount = amount;
             Kind = kind;
             HitPoint = hitPoint;
             HitDirection = hitDir;
+            // By default a hit is not a headshot; set later when zone is known.
             IsHeadshot = false;
+            // Hits are assumed to come from the side, not behind; may be overridden later.
             FromBehind = false;
+            // No knockback by default; some weapons will set a value later.
             Knockback = 0f;
+            // The source GameObject is stored for potential attribution or effects.
             Source = source;
+            // Default to torso; real zone will be set by the weapon or hit detection.
             Zone = BodyZone.Thorax;
+            // Zone is unknown until the damage system determines where the hit landed.
             ZoneKnown = false;
+            // Zero penetration means no armor check (e.g., melee or environmental hit).
             Penetration = 0f;
+            // No armor durability loss unless a bullet or similar penetrates.
             ArmorDamage = 0f;
+            // Base bleed chance is zero; specific weapons may modify this later.
             BleedChance = 0f;
+            // Base fracture chance is zero; specific weapons may modify this later.
             FractureChance = 0f;
+            // WeaponId left null until the damage originates from a known weapon.
             WeaponId = null;
+            // Max ulong signals no specific player (environment or AI) dealt the damage.
             AttackerClientId = ulong.MaxValue;
+            // Default to arena scale; HpScale toggles when damage is already in HP units.
             HpScale = false;
         }
 
