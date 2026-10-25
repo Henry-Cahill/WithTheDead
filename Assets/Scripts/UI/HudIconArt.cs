@@ -45,6 +45,7 @@ namespace CloneZ
         /// <summary>How big to bake an icon (and how it is sliced).</summary>
         public static HudIconSpec Spec(HudIcon id)
         {
+            // Choose appropriate texture size and slicing based on icon category
             switch (id)
             {
                 case HudIcon.White: return new HudIconSpec(4, 4, 4f, 0, 0, false);
@@ -84,6 +85,7 @@ namespace CloneZ
         /// <summary>Draws one icon onto a raster sized by <see cref="Spec"/>.</summary>
         public static void Draw(HudIcon id, HudRaster r)
         {
+            // Dispatch to the appropriate drawing routine based on the icon type
             switch (id)
             {
                 case HudIcon.White: r.Box(-1f, -1f, 5f, 5f, 0f); break;
@@ -142,6 +144,7 @@ namespace CloneZ
         }
 
         #region Hand slots
+        /// <summary>Draws the long‑gun hand‑slot silhouette.</summary>
         private static void LongGun(HudRaster r)
         {
             r.SetTransform(30f);
@@ -151,6 +154,7 @@ namespace CloneZ
             r.ResetTransform();
         }
 
+        /// <summary>Draws the pistol hand‑slot silhouette.</summary>
         private static void Pistol(HudRaster r)
         {
             r.SetTransform(8f);
@@ -162,6 +166,7 @@ namespace CloneZ
             r.ResetTransform();
         }
 
+        /// <summary>Draws the blade hand‑slot silhouette.</summary>
         private static void Blade(HudRaster r)
         {
             r.SetTransform(40f);
@@ -179,6 +184,7 @@ namespace CloneZ
             r.ResetTransform();
         }
 
+        /// <summary>Draws the axe hand‑slot silhouette.</summary>
         private static void Axe(HudRaster r)
         {
             r.SetTransform(-38f);
@@ -188,6 +194,7 @@ namespace CloneZ
             r.ResetTransform();
         }
 
+        /// <summary>Draws the hammer hand‑slot silhouette.</summary>
         private static void Hammer(HudRaster r)
         {
             r.SetTransform(-40f);
@@ -206,6 +213,7 @@ namespace CloneZ
             r.Path(3.2f, false, 12.5f, 30f, 22f, 31.5f, 31f, 30f, 36f, 25.5f);             // thumb
         }
 
+        /// <summary>Draws the flashlight hand‑slot silhouette.</summary>
         private static void Flashlight(HudRaster r)
         {
             r.SetTransform(35f);
@@ -216,6 +224,7 @@ namespace CloneZ
             r.ResetTransform();
         }
 
+        /// <summary>Draws the goggles hand‑slot silhouette.</summary>
         private static void Goggles(HudRaster r)
         {
             r.Ring(20f, 29f, 11f, 3.6f);
