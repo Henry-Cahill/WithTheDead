@@ -128,19 +128,33 @@ namespace CloneZ
         /// doorway's wall segment) a working raid door.</summary>
         internal static RaidDoor Attach(GameObject root, in Setup s, in Raid r)
         {
+            // Create the door instance using the generic Attach helper.
             RaidDoor d = Attach<RaidDoor>(root, null, s);
+            // Initialise health, ensuring a minimum of 1 HP.
             d._maxHealth = d._health = Mathf.Max(1f, r.Health);
+            // Record the doorway's wall line for geometry calculations.
             d._line = r.Line;
+            // Store the midpoint along the wall line.
             d._mid = r.Mid;
+            // Clamp the door width to a sensible minimum to avoid zero‑size doors.
             d._width = Mathf.Max(0.2f, r.Width);
+            // Determine swing direction: positive values swing one way, negatives the opposite.
             d._swing = r.Swing >= 0 ? 1 : -1;
+            // Keep the building footprint for dead path‑finding logic.
             d._building = r.Building;
+            // Set hinge positions, defaulting to an empty array if none provided.
             d._hinges = r.Hinges ?? new Vector3[0];
+            // Set reach vectors for each leaf, defaulting to empty.
             d._reaches = r.Reaches ?? new Vector3[0];
+            // Set leaf rotation angles, defaulting to empty.
             d._angles = r.Angles ?? new float[0];
+            // Assign the wood colour used for splinter effects.
             d._wood = r.Wood;
+            // Store the random seed for deterministic wreck geometry.
             d._seed = r.Seed;
+            // Build the UI label for the broken state using the door's noun.
             d._brokenLabel = "Close the " + d.Noun;
+            // Return the fully configured raid door instance.
             return d;
         }
 
@@ -407,6 +421,7 @@ namespace CloneZ
             MakeNoise(CloneZConfig.RaidDoorKickNoise);
         }
 
+        /// <summary>Reinforces a damaged door, increasing its health and max health within limits.</summary>
         private void ReinforceDoor(InteractContext ctx)
         {
             // Cap the reinforcement so a door can’t become over‑tough.
