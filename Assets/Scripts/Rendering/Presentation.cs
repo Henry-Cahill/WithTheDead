@@ -231,10 +231,17 @@ namespace CloneZ
 
         private void Update()
         {
+            /// <summary>
+            /// Updates the gas mask overlay each frame based on player state and environment.
+            /// </summary>
             bool mask = _gear != null && _gear.HasGasMask && _stats != null && !_stats.IsDead;
+            // Determine if the player is viewing from first‑person; the visor is only visible in that view.
             bool inside = mask && ViewState.FirstPersonLike;
+            // Show the visor canvas only when inside first‑person view.
             _canvas.enabled = inside;
+            // When the mask is equipped but the view is not first‑person, show the filter UI instead of the visor.
             bool shown = mask && !inside;
+            // Compute filter percentage for UI when shown.
             int pct = shown ? Mathf.RoundToInt(_gear.FilterCharge01 * 100f) : -1;
             if (shown != _filterShown || pct != _filterPct)
             {
@@ -242,15 +249,19 @@ namespace CloneZ
                 _filterPct = pct;
                 _filter.text = shown ? "Mask filter " + pct + "%" : "";
             }
+            // If no mask is worn, clear condensation and skip further updates.
             if (!mask) { _condensation = 0f; return; }
 
+            // Increase condensation over time, faster when sprinting or in the cold.
             float exertion = _stats.Exertion == Exertion.Sprinting ? 1f : _stats.Exertion == Exertion.Walking ? 0.3f : 0.1f;
             _condensation = Mathf.Clamp01(_condensation + Time.deltaTime * (0.004f + exertion * 0.01f + _stats.ColdStrength * 0.012f));
+            // Player can wipe the visor to clear condensation.
             if (GameInput.Pressed(GameAction.WipeVisor))
             {
                 _condensation = 0f;
                 Sfx.PlayUI(SfxIds.VisorWipe, 0.6f);
             }
+            // Update crack opacity based on mask condition and fog opacity based on condensation.
             float damage = _clothing != null ? 1f - _clothing.GetCondition01(ClothingSlot.Mask) : 0f;
             _cracks.color = new Color(1f, 1f, 1f, Mathf.Clamp01(damage * 1.3f));
             _fog.color = new Color(1f, 1f, 1f, _condensation * 0.85f);
@@ -258,6 +269,9 @@ namespace CloneZ
         }
 
         // A spider-web of cracks from a couple of impact points.
+        /// <summary>
+        /// Generates a texture representing spider‑web cracks for the gas‑mask visor.
+        /// </summary>
         private static Texture2D CrackTexture()
         {
             if (s_Cracks != null) return s_Cracks;
