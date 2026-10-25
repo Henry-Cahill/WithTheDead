@@ -178,7 +178,7 @@ namespace CloneZ
                     Ellipsoid(trim, head, top, new Vector3(0.011f, 0.007f, 0.011f), tilt, 8, 4);
                     if (_s.Headwear == HeadwearStyle.Cap)
                         Ellipsoid(hat, head, new Vector3(0f, 1.742f, 0.105f), new Vector3(0.080f, 0.008f, 0.070f), Quaternion.Euler(8f, 0f, 0f), 16, 6);
-                    // No bottom clothing – just skin
+                    // Add the brim to the back of a backward-facing cap.
                     else
                         Ellipsoid(hat, head, new Vector3(0f, 1.695f, -0.162f), new Vector3(0.080f, 0.008f, 0.066f), Quaternion.Euler(-12f, 0f, 0f), 16, 6);
                     break;
