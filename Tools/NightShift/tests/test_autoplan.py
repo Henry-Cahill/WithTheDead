@@ -79,6 +79,79 @@ BULB = """namespace CloneZ
 """
 
 
+def lines_of_code(n: int) -> list:
+    return [f"            _count += {i};" for i in range(n)]
+
+
+# Code no comment explains, beside code that is explained or needs no summary of its own.
+EXPLAIN = "\n".join([
+    "using System;", "using UnityEngine;", "", "namespace CloneZ", "{",
+    "    /// <summary>A horde.</summary>",
+    "    public class Horde : MonoBehaviour, IComparable",
+    "    {",
+    "        private int _count;",
+    "        private readonly Func<int, int> _twice = x => { return x * 2; };",
+    '        private const string Sql = @"SELECT {',
+    '            } FROM horde";',
+    "        /// <summary>How big it is.</summary>",
+    "        public int Size { get; private set; } = 3;", "",
+    "        /// <summary>Spawns the horde.</summary>",
+    "        public void Spawn(int n)", "        {", '            var open = "{";', *lines_of_code(13), "        }", "",
+    "        private void Retarget()", "        {", *lines_of_code(6), "        }", "",
+    "        private (int, int) Pair(int a)", "        {", *lines_of_code(13), "        }", "",
+    "        /// <summary>Marches on.</summary>",
+    "        private void March()", "        {", "            // Set up.", *lines_of_code(26), "        }", "",
+    "        // Wanders about.",
+    "        private void Wander()", "        {", *lines_of_code(7), "            // Halfway.", *lines_of_code(7),
+    "        }", "",
+    "        public override string ToString()", "        {", *lines_of_code(6), '            return "";', "        }", "",
+    "        void Update()", "        {", *lines_of_code(6), "        }", "",
+    "        public Horde(int n)", "        {", *lines_of_code(6), "        }", "",
+    "        int IComparable.CompareTo(object o)", "        {", *lines_of_code(6), "            return 0;", "        }", "",
+    "        public static Horde operator +(Horde a, Horde b)", "        {", *lines_of_code(6), "            return a;",
+    "        }", "",
+    "        private string Label =>", "            _count > 10", '                ? "a horde"',
+    "                : _count > 1", '                    ? "a pack"', '                    : "a straggler";', "",
+    '        private string Text(int i) => $"{i} {(i > 1 ? "zombies" : "zombie")}";', "",
+    "        [SerializeField]", "        // The speed.",
+    "        private float Speed()", "        {", *lines_of_code(6), "            return 1f;", "        }", "",
+    "        private class Inner", "        {", "        }",
+    "    }", "",
+    "    public partial class Horde2", "    {", "    }", "",
+    "    public enum Mood { Calm, Angry }", "",
+    "    struct Pack", "    {", "    }",
+    "}", ""])
+
+TRICKY = """namespace CloneZ
+{
+    public class Pool<T> where T : class, new()
+    {
+        public event Action Changed { add { } remove { } }
+        public void AfterEvent() { }
+        public List<int> Items { get; } = new List<int> { 1, 2 };
+        public void AfterInitializer() { }
+        public void Go() => Run(() => { Step(); });
+        public T Get<U>() where U : struct { return null; }
+        public static implicit operator int(Pool<T> p) => 0;
+        public int this[int i] { get { return i; } }
+    }
+}
+"""
+
+
+def methods_of(sizes, comment_above: bool = True) -> str:
+    """A script whose class has one method per size, each with that many lines of code and no comment inside."""
+    lines = ["namespace CloneZ", "{", "    /// <summary>A test.</summary>", "    public class T", "    {"]
+    for i, size in enumerate(sizes):
+        lines += [f"        /// <summary>M{i}.</summary>"] if comment_above else [""]
+        lines += [f"        private void M{i}()", "        {", *lines_of_code(size), "        }"]
+    return "\n".join(lines + ["    }", "}", ""])
+
+
+def line_with(text: str, needle: str) -> int:
+    return next(i for i, line in enumerate(text.splitlines(), 1) if needle in line)
+
+
 class PlannerTest(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp(prefix="nightshift-autoplan-"))
@@ -343,6 +416,8 @@ class PlannerTest(unittest.TestCase):
         self.assertEqual(("docs", False), ns.split_focus("docs+"))  # documentation is fixed text: no big variant
         self.assertIn("fixes+", ns.focus_names())
         self.assertNotIn("docs+", ns.focus_names())
+        self.assertIn("explain", ns.focus_names())
+        self.assertNotIn("explain+", ns.focus_names())
         self.assertEqual("bug-fix (big)", ns.focus_label("fixes+"))
         planner, _ = self.planner([], ["graphics+", "bogus", "docs+", "fixes"])
         self.assertEqual(["graphics+", "docs", "fixes"], planner.focus)
@@ -694,14 +769,16 @@ class PlannerTest(unittest.TestCase):
 
             def plan_one(self, small=False, focus=None):
                 asked.append(focus or ("small" if small else "any"))
-                if focus == "docs":
-                    return None  # every script is documented: the loop looks again later, without holding up the rest
                 self.planned += 1
                 key = f"Planned task {self.planned} for Assets/Scripts/World/A{self.planned}.cs"
                 ns.append_planned(ns.Task(key, key), "### Auto-planned test")
                 if self.planned > 10:
                     coord.planning.clear()  # runaway: fail below rather than hang
                 return ns.Task(key, key)
+
+            def plan_docs(self):
+                asked.append("docs")
+                return None  # every script is documented: the loop looks again later, without holding up the rest
 
         coord.planner = FakePlanner()
         coord.planning.set()
@@ -746,6 +823,109 @@ class PlannerTest(unittest.TestCase):
             self.assertEqual([], ns.plan_candidates("docs", self.repo, landed + [(mark, second)]))
         third = ns.Task(first + ns.DOC_AGAIN.format(n=3), "")
         self.assertEqual([], ns.plan_candidates("docs", self.repo, landed + [("x", second), ("x", third)]))  # 3 at most
+
+    # --- code no comment explains (the explain focus) ---------------------------------------------------------
+
+    def test_find_members_reads_tricky_declarations(self):
+        members = ns.find_members(ns.scan_cs(TRICKY))
+        self.assertEqual([("type", "Pool"), ("property", "Changed"), ("method", "AfterEvent"), ("property", "Items"),
+                          ("method", "AfterInitializer"), ("method", "Go"), ("method", "Get"), ("method", "operator int"),
+                          ("property", "this[int i]")], [(m.kind, m.name) for m in members])
+        go = members[5]
+        self.assertEqual((go.line, go.line), go.body)  # a => body, braces and all
+
+    def test_explain_spots_find_code_no_comment_explains(self):
+        at = lambda needle: line_with(EXPLAIN, needle)
+        # Not: anything with a comment inside (Wander) or a summary of its own, short methods, the constructor, overrides,
+        # explicit interface members, Unity messages, a partial type, or the strings and lambdas that hold braces.
+        self.assertEqual([ns.Spot("body", "`Spawn`", at("void Spawn"), 14),
+                          ns.Spot("summary", "`Retarget`", at("void Retarget"), 6),
+                          ns.Spot("body", "`Pair`", at("Pair(int a)"), 13),
+                          ns.Spot("body", "`March`", at("void March"), 26),  # a comment at the top, then 26 lines without
+                          ns.Spot("summary", "`operator +`", at("operator +"), 7),
+                          ns.Spot("summary", "`Label`", at("string Label"), 6),
+                          ns.Spot("summary", "class `Inner`", at("class Inner"), 0),
+                          ns.Spot("summary", "enum `Mood`", at("enum Mood"), 0),
+                          ns.Spot("summary", "struct `Pack`", at("struct Pack"), 0)], list(ns.explain_spots(EXPLAIN)))
+        self.assertTrue(ns.needs_explaining(EXPLAIN))
+        self.assertFalse(ns.needs_explaining(DOCS))  # short members only, and one class with no comment
+
+    def test_explain_tasks_need_no_model_and_name_what_to_explain(self):
+        horde = self.script("Assets/Scripts/World/Horde.cs", EXPLAIN)
+        at = lambda needle: line_with(EXPLAIN, needle)
+        planner, asked = self.planner([], ["explain"])
+        task = planner.plan_one()
+        self.assertEqual(ns.EXPLAIN_TASK.format(path=horde), task.key)
+        self.assertEqual([], asked)
+        self.assertTrue(ns.is_docs(task))
+        self.assertFalse(ns.is_big(task))
+        details = task.text.split("\n")[1:]
+        self.assertIn(f"`Spawn` (line {at('void Spawn')}, 14 lines of code), `Pair` (line {at('Pair(int a)')}, 13 lines of "
+                      f"code), `March` (line {at('void March')}, 26 lines of code).", details[0])
+        self.assertIn(f"`Retarget` (line {at('void Retarget')}), `operator +` (line {at('operator +')}), `Label` (line "
+                      f"{at('string Label')}), class `Inner` (line {at('class Inner')}), enum `Mood` (line "
+                      f"{at('enum Mood')}), struct `Pack` (line {at('struct Pack')}).", details[1])
+        self.assertEqual(list(ns.EXPLAIN_DETAILS), details[2:])
+        self.assertIsNone(planner.plan_one())  # one is waiting for that script already
+
+    def test_explain_tasks_take_the_biggest_methods_first(self):
+        text = methods_of([20, 60, 15, 40, 30, 12, 50])
+        task = ns.explain_task("Assets/Scripts/T.cs", text, [])
+        # The four biggest, in the order they come in the script; the rest wait for the next pass.
+        self.assertEqual(["M1", "M3", "M4", "M6"], re.findall(r"`(M\d)`", task.text))
+        self.assertEqual(["M1"], re.findall(r"`(M\d)`", ns.explain_task("Assets/Scripts/T.cs", methods_of([20, 300, 40]), [])
+                                            .text))  # one method past the budget goes alone
+        crowded = ns.explain_task("Assets/Scripts/T.cs", methods_of([20] * 6 + [6] * 12, comment_above=False), [])
+        self.assertFalse(ns.is_big(crowded))
+        self.assertEqual(ns.EXPLAIN_BODIES + ns.EXPLAIN_SUMMARIES, len(re.findall(r"`(M\d+)`", crowded.text)))
+        self.assertIsNone(ns.explain_task("Assets/Scripts/T.cs", methods_of([8, 8]), []))  # nothing left to explain
+
+    def test_explain_candidates_reach_longer_scripts(self):
+        horde = self.script("Assets/Scripts/World/Horde.cs", EXPLAIN)
+        foo = self.script("Assets/Scripts/Core/Foo.cs", DOCS)
+        long = self.script("Assets/Scripts/World/Long.cs", methods_of([20] * 70))  # past PLAN_MAX_LINES
+        self.script("Assets/Scripts/World/Huge.cs", methods_of([20] * 170))  # past EXPLAIN_MAX_LINES
+        self.script("Assets/Scripts/World/Told.cs", methods_of([8] * 10))  # explained enough
+        tasks = ns.read_tasks()
+        self.assertEqual([horde, long], ns.plan_candidates("explain", self.repo, tasks))
+        self.assertEqual([foo], ns.plan_candidates("docs", self.repo, tasks))
+
+    def test_a_script_gets_more_explain_passes_while_its_passes_land(self):
+        horde = self.script("Assets/Scripts/World/Horde.cs", EXPLAIN)
+        first = ns.EXPLAIN_TASK.format(path=horde)
+        landed = [("x", ns.Task(first, first))]
+        self.assertEqual([horde], ns.plan_candidates("explain", self.repo, landed))  # code is left to explain
+        planner, _ = self.planner([], ["explain"])
+        second, _ = planner.write_task("explain", horde, landed)
+        self.assertEqual(first + ns.EXPLAIN_AGAIN.format(n=2), second.key)
+        self.assertTrue(ns.is_docs(second))
+        for mark in "~!":  # a pass that found nothing to do, or failed, isn't repeated
+            self.assertEqual([], ns.plan_candidates("explain", self.repo, landed + [(mark, second)]))
+        more = [("x", ns.Task(first + ns.EXPLAIN_AGAIN.format(n=n), "")) for n in range(2, ns.EXPLAIN_PASSES + 1)]
+        self.assertEqual([], ns.plan_candidates("explain", self.repo, landed + more))  # EXPLAIN_PASSES at most
+
+    def test_plan_docs_takes_turns_and_falls_back(self):
+        foo = self.script("Assets/Scripts/Core/Foo.cs", DOCS)  # public members without summaries
+        horde = self.script("Assets/Scripts/World/Horde.cs", EXPLAIN)  # code no comment explains
+        planner, asked = self.planner([], ["graphics"])
+        self.assertEqual(ns.DOC_TASK.format(path=foo), planner.plan_docs().key)
+        self.assertEqual(ns.EXPLAIN_TASK.format(path=horde), planner.plan_docs().key)
+        ns.TASKS.write_text(QUEUE, encoding="utf-8")
+        (self.repo / foo).unlink()
+        self.assertEqual(ns.EXPLAIN_TASK.format(path=horde), planner.plan_docs().key)  # docs' turn, but nothing to document
+        self.assertIsNone(planner.plan_docs())  # both kinds have nothing left
+        self.assertEqual([], asked)
+
+    def test_documentation_workers_take_explain_tasks_and_the_rotation_leaves_them_out(self):
+        coord, helper, spark, docs = self.docs_team()
+        horde = self.script("Assets/Scripts/World/Horde.cs", EXPLAIN)
+        task = ns.explain_task(horde, EXPLAIN, [])
+        ns.append_planned(task, "### Auto-planned test")
+        self.assertIsNone(coord.claim(helper))
+        self.assertEqual(task.key, coord.claim(docs).key)
+        self.assertEqual({"docs", "explain"}, coord.left_out())
+        docs.retired = True
+        self.assertEqual(set(), coord.left_out())
 
 
 class WindowsWorkerTest(unittest.TestCase):
