@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    /// <summary>Possible weather conditions used by the simulation.</summary>
     public enum Weather { Clear, Cloudy, Overcast, Fog, Rain, Storm }
 
     /// <summary>
@@ -116,6 +117,7 @@ namespace CloneZ
             ApplyStormFlash(dt);
         }
 
+        /// <summary>Sets target intensities for the given weather state.</summary>
         private void SetWeather(Weather w)
         {
             Current = w;
@@ -180,6 +182,7 @@ namespace CloneZ
             return r < 0.5f ? a : (r < 0.8f ? b : c);
         }
 
+        /// <summary>Applies fog settings to Unity's RenderSettings based on intensity.</summary>
         private void ApplyFog()
         {
             float fog = Mathf.Max(FogIntensity, PrecipitationIntensity * 0.35f);   // falling snow thickens the murk like rain
@@ -217,48 +220,78 @@ namespace CloneZ
         }
 
         #region Rain effect
+        /// <summary>Initialises the rain particle system used for precipitation effects.</summary>
         private void BuildRain()
         {
+            // Create a child GameObject to hold the rain particle system
             var go = new GameObject("Rain");
+            // Parent the rain object to the WeatherSystem so it follows world transforms
             go.transform.SetParent(transform);
+            // Add a ParticleSystem component that will emit the rain droplets
             _rain = go.AddComponent<ParticleSystem>();
+            // Ensure the system starts stopped and cleared before configuring it
             _rain.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
+            // Configure main module: looping, lifetime, speed, size, colour and capacity
             var main = _rain.main;
+            // Enable looping so the rain never stops on its own
             main.loop = true;
+            // Lifetime of each droplet particle, matching the height of the volume box
             main.startLifetime = 1.1f;
+            // Speed zero so particles stay static relative to the volume; velocity later moves them
             main.startSpeed = 0f;
+            // Visual size of each rain drop sprite
             main.startSize = 0.06f;
+            // Slight blue tint and transparency for a realistic rain look
             main.startColor = new Color(0.72f, 0.80f, 0.92f, 0.35f);
+            // Limit total particles for performance; excess are culled automatically
             main.maxParticles = 2500;
+            // Use world space so rain volume is independent of the particle system's transform
             main.simulationSpace = ParticleSystemSimulationSpace.World;
+            // No gravity; we manually set velocity for a consistent fall speed
             main.gravityModifier = 0f;
 
+            // Set up emission module; start with zero rate and control it later
             var emission = _rain.emission;
+            // will be driven by intensity each frame
             emission.rateOverTime = 0f;
+            // keep reference for fast updates in ApplyRain
             _rainEmission = emission;
 
+            // Configure the shape of the emission volume as a wide shallow box around the player
             var shape = _rain.shape;
             shape.shapeType = ParticleSystemShapeType.Box;
+            // Width and depth cover a large area; height is thin because particles are generated at top
             shape.scale = new Vector3(44f, 1f, 44f);
+            // Position the box above the player so rain appears to fall from the sky
             shape.position = new Vector3(0f, 13f, 0f);
 
+            // Velocity over lifetime adds a downward and slight horizontal drift to particles
             var vel = _rain.velocityOverLifetime;
+            // must enable before setting curves
             vel.enabled = true;
             vel.space = ParticleSystemSimulationSpace.World;
+            // Negative Y makes particles fall; X adds slight sideways motion for realism
             vel.y = new ParticleSystem.MinMaxCurve(-28f);
             vel.x = new ParticleSystem.MinMaxCurve(-3.5f);
 
+            // Configure renderer for stretched billboard particles to look like rain streaks
             var renderer = go.GetComponent<ParticleSystemRenderer>();
             renderer.renderMode = ParticleSystemRenderMode.Stretch;
+            // LengthScale stretches the particle along its velocity for a streak effect
             renderer.lengthScale = 3.2f;
+            // VelocityScale adjusts how much the streak length changes with speed
             renderer.velocityScale = 0.06f;
+            // Assign the custom rain material for proper blending and colour
             renderer.material = RainMaterial();
+            // Align particles to view direction so streaks face the camera correctly
             renderer.alignment = ParticleSystemRenderSpace.View;
 
+            // Start the particle system now that it's fully configured
             _rain.Play();
         }
 
+        /// <summary>Creates and returns the material used for rain particles.</summary>
         private static Material RainMaterial()
         {
             // Sprites/Default is always available and respects the particle's vertex alpha.
@@ -272,6 +305,7 @@ namespace CloneZ
             return m;
         }
 
+        /// <summary>Updates rain particle emission and positions based on camera view and intensity.</summary>
         private void ApplyRain()
         {
             if (_rain == null) return;
@@ -301,6 +335,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Runs a short lightning flash coroutine during storms.</summary>
         private System.Collections.IEnumerator Flash()
         {
             Color ambient = RenderSettings.ambientLight;

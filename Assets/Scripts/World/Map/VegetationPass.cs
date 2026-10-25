@@ -142,6 +142,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Orchestrates the full vegetation generation for a site, sequencing all planting steps.</summary>
         internal static IEnumerable<string> Build(Site site)
         {
             NaturePlan plan = NaturePlan.For(site);
@@ -149,27 +150,43 @@ namespace CloneZ
             yield return "nature plan";
             if (!plan.Lite)
             {
+                // Plan driveways to reserve road space before vegetation is placed
                 VehiclePass.PlanDriveways(site, plan);
                 yield return "driveway plan";
             }
+            // Initialise planting state for this site
             var p = new Planting(site, plan);
             int before = p.Count;
+            // Plant trees that were explicitly mapped in the source data
             foreach (string step in MappedTrees(p)) yield return step;
+            // Plant tree rows that follow linear features like roads or fences
             foreach (string step in TreeRows(p)) yield return step;
+            // Record diagnostics for the mapped phase
             Diag(p, "mapped", ref before);
             yield return "mapped trees";
+            // Plant trees in residential yards
             foreach (string step in Yards(p)) yield return step;
+            // Record diagnostics for the yards phase
             Diag(p, "yards", ref before);
+            // Plant trees in ground areas and other land types
             foreach (string step in Grounds(p)) yield return step;
+            // Add cemetery trees after grounds are done
             CemeteryTrees(p);
+            // Record diagnostics for the grounds phase
             Diag(p, "grounds", ref before);
             yield return "grounds trees";
+            // Plant trees along streets and sidewalks
             foreach (string step in StreetTrees(p)) yield return step;
+            // Record diagnostics for the street trees phase
             Diag(p, "street", ref before);
             yield return "street trees";
+            // Populate vegetation along creeks and rivers
             foreach (string step in Creeks(p)) yield return step;
+            // Plant fence rows and other linear vegetation along roads
             foreach (string step in RoadRows(p)) yield return step;
+            // Add fence rows around field edges
             foreach (string step in FieldEdges(p)) yield return step;
+            // Record diagnostics for the rows phase
             Diag(p, "rows", ref before);
             yield return "fence rows";
             foreach (string step in Sweep(p)) yield return step;
@@ -356,12 +373,16 @@ namespace CloneZ
 
         #region The country: creeks, roadside and field fence rows
         // Sycamores, maples and hackberries along both banks of the creeks and rivers, every eight metres or so.
+        /// <summary>Populate trees and shrubs along creeks and rivers, respecting urban density and water proximity.</summary>
         private static IEnumerable<string> Creeks(Planting p)
         {
             foreach (Line l in p.Site.Area.Lines)
             {
+                // Skip non‑creek lines like railways or tunnels
                 if (l.IsRailway || l.Data.tunnel) continue;
+                // Determine half‑width of the waterway, clamped to reasonable bounds
                 float half = Mathf.Clamp(l.Data.width, 1f, 60f) * 0.5f;
+                // Sample stations along the creek at 8‑metre intervals
                 p.Plan.Stations(l.Pts, 8f, p.Stations);
                 foreach (NaturePlan.Station s in p.Stations)
                 {

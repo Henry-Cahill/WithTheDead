@@ -137,15 +137,19 @@ namespace CloneZ
         }
 
         // A farmyard's dusk-to-dawn light: one pole between a barn and the house nearest it.
+        // Iterate over all farm‑related buildings to place a single pole between each barn/silo and its nearest house.
         private static void Farms(Ctx ctx)
         {
+            // Collect positions of already placed farm lights to avoid clustering.
             var lights = new List<Vector2>();
             foreach (Footprint f in ctx.Site.Area.Buildings)
             {
                 string k = f.Data.kind;
+                // Skip structures that aren't farms or are outside the current map area.
                 if (k != "barn" && k != "silo" && k != "farm_auxiliary" || !ctx.Inside(f.Middle)) continue;
                 Footprint home = null;
                 float best = 80f * 80f;
+                // Find the closest house or trailer to anchor the farm light pole.
                 foreach (Footprint h in ctx.Site.Area.Buildings)
                 {
                     if (h.Data.kind != "house" && h.Data.kind != "trailer") continue;
@@ -154,11 +158,15 @@ namespace CloneZ
                 }
                 if (home == null) continue;
                 bool near = false;
+                // Avoid placing another farm light if one is already nearby (within 70 m).
                 foreach (Vector2 l in lights) if ((l - f.Middle).sqrMagnitude < 70f * 70f) near = true;
                 if (near) continue;
                 Vector2 toHome = (home.Middle - f.Middle).normalized;
+                // Position the pole just beyond the farm building toward the nearest house.
                 Vector2 at = f.Middle + toHome * (Mathf.Max(f.Bounds.width, f.Bounds.height) * 0.5f + 4f);
+                // Reserve a small area for the pole so other geometry won't intersect it.
                 if (!ctx.Site.Free(at, 0.5f)) continue;
+                // Record the placement and create the lamp geometry.
                 lights.Add(f.Middle);
                 ctx.Site.Take(at, 0.5f);
                 Add(ctx, LampKind.Farm, at, -toHome, MapStyle.Hash(f.Data.id, SaltFarm), 0.45f);
@@ -174,6 +182,7 @@ namespace CloneZ
             return false;
         }
 
+        /// <summary>Creates a LampPlan and registers it for later processing.</summary>
         private static void Add(Ctx ctx, LampKind kind, Vector2 at, Vector2 reach, long key, float litChance)
         {
             LampPlan lamp = Lamp(ctx, kind, at, reach, key, litChance);
@@ -183,6 +192,7 @@ namespace CloneZ
             if (ctx.Inside(at)) ctx.Site.Take(at, 0.45f);
         }
 
+        /// <summary>Creates a LampPlan with lighting parameters and determines if it should be lit.</summary>
         private static LampPlan Lamp(Ctx ctx, LampKind kind, Vector2 at, Vector2 reach, long key, float litChance)
         {
             bool lit = ctx.Inside(at) && MapStyle.Unit(key, SaltLit) < litChance;
@@ -241,6 +251,7 @@ namespace CloneZ
             foreach (string step in AttachAll(ctx)) yield return step;
         }
 
+        // Render a single lamp according to its type and lighting state.
         private static void Draw(Ctx ctx, LampPlan lamp, float h)
         {
             Vector2 at = lamp.At;
@@ -315,10 +326,12 @@ namespace CloneZ
 
         // Every burning lamp made a StreetLamp. In an editor build the first few get lights of their own, spread over the
         // site: the lamp nearest each 64 m cell's middle first, then each cell's next, nearest the site's middle first.
+        // Order and attach burning lamps, assigning lights to a limited subset for the editor.
         private static IEnumerable<string> AttachAll(Ctx ctx)
         {
             List<Burning> burning = ctx.Burning;
             var order = new List<(int rank, float d, long key, int i)>(burning.Count);
+            // Group burning lamps by map cell to spread lights evenly across the site.
             var perCell = new Dictionary<long, List<int>>();
             for (int i = 0; i < burning.Count; i++)
             {
@@ -331,15 +344,18 @@ namespace CloneZ
             {
                 List<int> list = kv.Value;
                 var middle = new Vector2((Mathf.Floor(burning[list[0]].Foot.x / 64f) + 0.5f) * 64f, (Mathf.Floor(burning[list[0]].Foot.y / 64f) + 0.5f) * 64f);
+                // Sort lamps in each cell by distance to the cell centre to prioritize central ones.
                 list.Sort((a, b) =>
                 {
                     int c = (burning[a].Foot - middle).sqrMagnitude.CompareTo((burning[b].Foot - middle).sqrMagnitude);
                     return c != 0 ? c : burning[a].Lamp.Key.CompareTo(burning[b].Lamp.Key);
                 });
                 for (int r = 0; r < list.Count; r++)
+                    // Combine per‑cell ordering into a global order, ranking by cell rank then distance.
                     order.Add((r, burning[list[r]].Foot.sqrMagnitude, burning[list[r]].Lamp.Key, list[r]));
             }
             order.Sort((a, b) => a.rank != b.rank ? a.rank.CompareTo(b.rank) : a.d != b.d ? a.d.CompareTo(b.d) : a.key.CompareTo(b.key));
+            // Determine how many lamps should get actual light objects in the editor build.
             int lights = EditorLights(ctx);
             for (int k = 0; k < order.Count; k++)
             {
@@ -351,6 +367,7 @@ namespace CloneZ
 
         /// <summary>Makes a burning lamp a <see cref="StreetLamp"/>: its lens glowing under the head (where the arm ends, or
         /// the globe's middle) and the spot light it shines with.</summary>
+        // Create a StreetLamp from a burning lamp, optionally adding a light source for editor preview.
         private static void Attach(Ctx ctx, Burning b, bool light)
         {
             LampPlan lamp = b.Lamp;

@@ -61,6 +61,7 @@ namespace CloneZ
         /// <summary>Gets the transform for a specific bone.</summary>
         public Transform Bone(HumanBone bone) => Bones[(int)bone];
 
+        /// <summary>Constructs the bone hierarchy, grip transform and body renderer the first time the rig is needed.</summary>
         private void EnsureBuilt()
         {
             if (Bones != null) return;
@@ -113,26 +114,35 @@ namespace CloneZ
             EnsureBuilt();
             Look = look;
 
+            // Resolve shape‑specific body proportions from the look's shape definition.
             HumanoidProportions p = HumanoidProportions.For(look.Shape.Build);
+            // If the underlying shape changed, rebuild the skeleton pose and update grip offset.
             if (p != Proportions)
             {
+                // Store the new proportions, reset all bones to the bind pose, and resize the hand grip.
                 Proportions = p;
                 ResetPose();
                 GripR.localPosition = GripOffset * p.Hand;
             }
 
+            // Acquire (or reuse) the mesh matching the new shape and release any previously held mesh.
             HumanoidMesh next = HumanoidMeshFactory.Acquire(look.Shape);
             HumanoidMeshFactory.Release(_mesh);
             _mesh = next;
+            // Assign the newly acquired mesh to the body renderer.
             Body.sharedMesh = next.Mesh;
 
+            // Ensure the material array matches the number of mesh slots; allocate if needed.
             if (_materials == null || _materials.Length != next.Slots.Length) _materials = new Material[next.Slots.Length];
+            // Populate each material slot with a colour+gloss combination from the look.
             for (int i = 0; i < next.Slots.Length; i++)
             {
                 HumanoidSlot slot = next.Slots[i];
                 _materials[i] = CloneZUtil.Mat(look.ColorOf(slot), look.GlossOf(slot));
             }
+            // Apply the prepared material array to the renderer.
             Body.sharedMaterials = _materials;
+            // Scale the whole rig uniformly, clamping to a minimum size to avoid degenerate meshes.
             transform.localScale = Vector3.one * Mathf.Max(0.1f, look.Scale);
         }
 

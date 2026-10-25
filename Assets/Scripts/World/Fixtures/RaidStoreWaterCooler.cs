@@ -45,9 +45,13 @@ namespace CloneZ
         /// comes out, <paramref name="water"/> the jug's water (scaled to the level from its base).</summary>
         internal static RaidStoreWaterCooler Create(Transform body, Vector3 taps, Renderer water, int seed)
         {
+            // Create a separate GameObject to host the water cooler fixture.
             var go = new GameObject("Fixture_WaterCooler");
+            // Parent the fixture to the cooler body and keep local transform unchanged.
             go.transform.SetParent(body, false);
+            // Position the fixture exactly where the taps are; no rotation needed.
             go.transform.SetPositionAndRotation(taps, Quaternion.identity);
+            // Add this component to the fixture so it becomes an interactable water point.
             var c = go.AddComponent<RaidStoreWaterCooler>();
             c._body = body;
             c._taps = taps;

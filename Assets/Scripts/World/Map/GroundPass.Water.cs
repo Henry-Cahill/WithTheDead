@@ -77,22 +77,36 @@ namespace CloneZ
         // From its own outline and name (so every piece of it agrees): flowing water (a river's name, or drawn out like
         // one: a circle's length is twice its mean width, a river piece's many times it) wide enough runs open; still
         // water freezes over unless it's as big as a reservoir.
+        /// <summary>Compute a WaterLook describing a water body's characteristics based on its shape and name.</summary>
         private static WaterLook LookOf(Owner o)
         {
+            // If this Owner's look has already been computed, reuse it to avoid work
             if (o.LookDone) return o.Look;
+            // Mark that we are computing the look so we don't recurse
             o.LookDone = true;
+            // Get the polygon points for this water body, using the stored outline if available
             List<Vector2> pts = DataOutline(o.Patch.Data.pts, o.Patch.Pts);
             double perimeter = 0.0;
+            // Sum edge lengths to get perimeter for shape analysis
             for (int i = 0, j = pts.Count - 1; i < pts.Count; j = i++) perimeter += Vector2.Distance(pts[i], pts[j]);
+            // Approximate mean width: area divided by half‑perimeter (circle formula), guard against tiny perimeter
             float width = perimeter > 1.0 ? (float)(2.0 * o.FullArea / perimeter) : 0f;
+            // Extract extents of the polygon to infer overall length
             Box(pts, out _, out _, out Vector2 half);
+            // Full length across the longest axis (horizontal diameter of bounding box)
             float length = half.x * 2f;
+            // Determine water type by matching common name keywords (case‑insensitive)
             string name = o.Patch.Data.name ?? "";
+            // Still water names indicate lakes, ponds or reservoirs (no flow)
             bool still = Named(name, "lake") || Named(name, "pond") || Named(name, "reservoir");
+            // Flowing water names indicate rivers, creeks etc.
             bool flowing = Named(name, "river") || Named(name, "creek") || Named(name, "fork") || Named(name, "branch")
                 || Named(name, "canal") || Named(name, "run");
+            // Initialise WaterLook: width from geometry, shelf width clamped to reasonable limits
             var look = new WaterLook { Width = width, Shelf = Mathf.Clamp(width * 0.2f, 3f, 40f) };
+            // Heuristic: a river if not still and either named as flowing or geometrically long and narrow
             look.River = !still && (flowing || (length >= width * 4.5f && width > 4f));
+            // Open water if river is sufficiently wide, otherwise only large lakes count as open
             look.Open = look.River ? width >= 30f : width >= 150f;
             o.Look = look;
             return look;
@@ -287,9 +301,12 @@ namespace CloneZ
 
         // Plates of drift ice coming down an open river, on a 9 m lattice fixed to the world, in loose rafts where a slow
         // noise says so, with brash between them; kept off the shelves (as wide as they can reach).
+        /// <summary>Generate ice floes and rafts on open water when conditions allow.</summary>
         private static void Floes(Ground g, Owner o, in WaterLook look, List<Owner> owners, Rect domain, OutdoorBatches into)
         {
+            // Lattice cell size used to space potential floe positions evenly
             const float cell = 9f;
+            // Convert water bounds from map‑local to world coordinates
             Rect b = o.Bounds;
             Vector2 w0 = g.World(b.min), w1 = g.World(b.max);
             int i0 = Mathf.FloorToInt(w0.x / cell), i1 = Mathf.FloorToInt(w1.x / cell);
@@ -478,11 +495,14 @@ namespace CloneZ
         // Unit normals along a line, averaged over k points either side (offset far out, a jagged shore's mitres would
         // cross each other), easing back to the plain ones where the line runs off the domain's border, so the next
         // chunk's carry on from the same.
+        /// <summary>Smooth the normals of a shoreline, easing near the map edges to match neighboring chunks.</summary>
         private static void SmoothNormals(List<Vector2> pts, List<Vector2> into, int k, Rect domain)
         {
+            // Compute raw normals first; these are the unsmoothed directions at each point
             Normals(pts, into);
             int n = pts.Count;
             var raw = new Vector2[n];
+            // Normalise each raw vector, falling back to zero for degenerate cases
             for (int i = 0; i < n; i++) raw[i] = into[i].sqrMagnitude > 1e-8f ? into[i].normalized : Vector2.zero;
             bool startCut = OnEdge(pts[0], domain), endCut = OnEdge(pts[n - 1], domain);
             for (int i = 0; i < n; i++)
@@ -536,11 +556,13 @@ namespace CloneZ
         /// their cigar heads.</summary>
         private static void ReedClump(OutdoorBatches into, Vector2 at, System.Random rng, float size)
         {
+            // Convert the ground position to world space at water level (y=0) for mesh placement
             Vector3 c = To3(at, 0f);
             RaidMesh m = into.Solid(c);
             int blades = rng.Next(6, 11);
             for (int k = 0; k < blades; k++)
             {
+                // Random yaw gives each blade a different orientation around the vertical axis, and lean determines tilt
                 float yaw = MapStyle.Range(rng, 0f, Mathf.PI * 2f), lean = MapStyle.Range(rng, 0.05f, 0.35f);
                 float h = size * MapStyle.Range(rng, 0.55f, 1.15f);
                 Vector3 baseAt = c + new Vector3(MapStyle.Range(rng, -0.25f, 0.25f), 0f, MapStyle.Range(rng, -0.25f, 0.25f)) * size;

@@ -98,32 +98,46 @@ namespace CloneZ
             return best;
         }
 
+        /// <summary>Provides the list of actions the player can perform on the TV depending on its state and proximity.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Determine if the player is close enough to reach the TV's knobs.
             bool near = KnobsInReach(ctx);
+            // If the TV is currently off, only the turn‑on action is relevant.
             if (!IsOn)
             {
+                // Offer the turn‑on action, but disable it when the player is too far or the house lacks power.
                 into.Add(new InteractAction("Turn on the TV", TurnOn)
                     .DisabledIf(!near, TooFar)
                     .DisabledIf(!PowerGrid.HousePowered, PowerGrid.NoPowerReason));
+                // No other actions make sense while the TV is off.
                 return;
             }
+            // The TV is on – provide the primary “watch” action which also handles the idle timeout.
             into.Add(PassTime("Watch TV", "Watching TV", "The TV is off"));
+            // Allow the player to turn the TV off, but only when within reach.
             into.Add(new InteractAction("Turn off the TV", TurnOff).DisabledIf(!near, TooFar));
+            // Change channel action, gated by reach.
             into.Add(new InteractAction("Change the channel", ChangeChannel).DisabledIf(!near, TooFar));
+            // Volume up action, with checks for maximum volume and reach.
             into.Add(new InteractAction("Turn the volume up", c => Louder(c, 1))
                 .DisabledIf(AtLoudest, "It won't go any louder")
                 .DisabledIf(!near, TooFar));
+            // Volume down action, with checks for minimum volume and reach.
             into.Add(new InteractAction("Turn the volume down", c => Louder(c, -1))
                 .DisabledIf(AtQuietest, "It's down as low as it goes")
                 .DisabledIf(!near, TooFar));
+            // Adjust the rabbit‑ear antenna, reachable only when near.
             into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));
+            // Simple info actions – all require the player to be near the TV.
             into.Add(new InteractAction("Check volume", ctx => ctx.Notify("Volume: " + VolumeWord)).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check channel", ctx => ctx.Notify("Channel: " + Describe(Station))).DisabledIf(!near, TooFar));
+            // Give the set a thump – a cosmetic interaction that also calms panic when appropriate.
             into.Add(new InteractAction("Give the set a thump", Thump).DisabledIf(!near, TooFar));
         }
 
+        /// <summary>Turns the TV on, checking power and notifying the player.</summary>
         private void TurnOn(InteractContext ctx)
         {
             if (!PowerGrid.HousePowered)
@@ -162,6 +176,7 @@ namespace CloneZ
 
         private void CheckSignal(InteractContext ctx) { ctx.Notify(_onAir ? "The channel is clear." : "No signal – just snow."); }
 
+        /// <summary>Gives the TV a thump, briefly dimming the picture and possibly calming panic.</summary>
         private void Thump(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.TvThumpNoise);

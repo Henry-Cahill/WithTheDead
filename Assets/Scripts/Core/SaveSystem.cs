@@ -135,6 +135,7 @@ namespace CloneZ
                 if (gm.Player != null) data.Player = CapturePlayer(gm.Player);
             }
 
+            // Capture all loot containers in the world
             for (int i = 0; i < LootContainer.All.Count; i++)
             {
                 LootContainer c = LootContainer.All[i];
@@ -144,6 +145,7 @@ namespace CloneZ
             // sacks, one container plus one stack object each, which made both the save file and the
             // load time grow with the number of things dropped in the world. They now go straight from
             // GroundItemStore into their own chunk-indexed table in SqliteSaveStore.
+            // Capture barricades placed by the player
             for (int i = 0; i < Barricade.All.Count; i++)
             {
                 Barricade b = Barricade.All[i];
@@ -158,6 +160,7 @@ namespace CloneZ
                         PerPlank = b.PerPlankHealth,
                     });
             }
+            // Capture all built house pieces (walls, roofs, etc.)
             for (int i = 0; i < BuildPiece.All.Count; i++)
             {
                 BuildPiece p = BuildPiece.All[i];
@@ -173,6 +176,7 @@ namespace CloneZ
                     });
             }
             data.HasPrebuiltFlags = true;
+            // Capture the state of each farm plot
             for (int i = 0; i < FarmPlot.All.Count; i++)
             {
                 FarmPlot f = FarmPlot.All[i];
@@ -188,6 +192,7 @@ namespace CloneZ
                     LastHours = f.LastHours,
                 });
             }
+            // Capture all water sources (wells, taps, etc.)
             for (int i = 0; i < WaterSource.All.Count; i++)
             {
                 WaterSource w = WaterSource.All[i];
@@ -203,16 +208,19 @@ namespace CloneZ
             // Pre-placed props the survivor may have torn down (bed / stove / cover). Capturing the
             // survivors means a demolished one simply isn't written, so it stays gone on reload.
             data.HasWorldProps = true;
+            // Capture sleep spot props (beds)
             for (int i = 0; i < SleepSpot.All.Count; i++)
             {
                 SleepSpot s = SleepSpot.All[i];
                 if (s != null) data.Props.Add(new PropSave { Kind = PropSave.KindBed, Position = s.transform.position });
             }
+            // Capture cooking station props (stoves)
             for (int i = 0; i < CookingStation.All.Count; i++)
             {
                 CookingStation s = CookingStation.All[i];
                 if (s != null) data.Props.Add(new PropSave { Kind = PropSave.KindStove, Position = s.transform.position });
             }
+            // Capture generic cover props (e.g., tarps)
             for (int i = 0; i < Cover.All.Count; i++)
             {
                 Cover cv = Cover.All[i];
@@ -221,6 +229,7 @@ namespace CloneZ
 
             // The starter home's furniture; like the props, anything dismantled simply isn't written.
             data.HasFurniture = true;
+            // Capture installed home furniture pieces
             for (int i = 0; i < HomeFurniture.All.Count; i++)
             {
                 HomeFurniture f = HomeFurniture.All[i];
@@ -236,6 +245,7 @@ namespace CloneZ
             return data;
         }
 
+        /// <summary>Captures the survivor's full state for saving.</summary>
         private static PlayerSave CapturePlayer(PlayerStats p)
         {
             GameObject go = p.gameObject;
@@ -395,6 +405,7 @@ var save = new ContainerSave
                 bool prebuilt = data.HasPrebuiltFlags ? h.Prebuilt : StarterHome.IsBlueprintSlot(type, h.Position);
                 BuildPiece.SpawnRestored(world, type, h.Position, h.Yaw, h.Health, h.MaxHealth, prebuilt);
             }
+            // Recreate containers that are not part of fixtures
             for (int i = 0; i < data.Containers.Count; i++)
             {
                 ContainerSave c = data.Containers[i];
@@ -421,23 +432,27 @@ var save = new ContainerSave
                     LootContainer.SpawnSaved(world, c.Kind, c.Position, c.Yaw, c.Searched, c.Lifetime, c.Items);
                 }
             }
+            // Restore barricades placed by the player
             for (int i = 0; i < data.Barricades.Count; i++)
             {
                 BarricadeSave b = data.Barricades[i];
                 Barricade.SpawnRestored(world, b.Position, b.Forward, b.Planks, b.Health, b.MaxHealth, b.PerPlank);
             }
+            // Restore farm plots and their crops
             for (int i = 0; i < data.Farm.Count; i++)
             {
                 FarmPlotSave f = data.Farm[i];
                 FarmPlot plot = FarmPlot.Spawn(world, f.Position);
                 plot.Restore(f.CropId, (FarmPlot.PlotState)f.State, f.Water, f.Growth, f.Health, f.LastHours);
             }
+            // Restore water sources (wells, taps)
             for (int i = 0; i < data.Water.Count; i++)
             {
                 WaterSourceSave w = data.Water[i];
                 WaterSource src = WaterSource.Spawn(world, w.Position, (WaterSourceKind)w.Kind);
                 src.Restore(w.Water);
             }
+            // Recreate world props like beds, stoves, and covers
             for (int i = 0; i < data.Props.Count; i++)
             {
                 PropSave p = data.Props[i];
@@ -448,6 +463,7 @@ var save = new ContainerSave
                     case PropSave.KindCover: Cover.Spawn(world, p.Position, p.Size); break;
                 }
             }
+            // Restore home furniture pieces (chairs, tables, etc.)
             for (int i = 0; i < data.Furniture.Count; i++)
             {
                 FurnitureSave f = data.Furniture[i];
