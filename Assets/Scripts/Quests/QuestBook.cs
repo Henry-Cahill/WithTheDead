@@ -43,8 +43,10 @@ namespace CloneZ
         private static readonly System.Text.StringBuilder _summarySb = new System.Text.StringBuilder();
         public static IEnumerable<QuestDef> All => s_Defs.Values;
 
+        /// <summary>Initialises the static quest catalogue.</summary>
         static QuestBook()
         {
+            // Set up shorthand trader constants for readability.
             const string bar = TraderCatalog.Barkeep, fence = TraderCatalog.Fence, inst = TraderCatalog.Institute,
                 gun = TraderCatalog.Gunsmith, med = TraderCatalog.Medic, guide = TraderCatalog.Guide;
 
@@ -133,36 +135,49 @@ namespace CloneZ
         }
 
         // A contract is rebuilt from its id, so only progress needs saving.
+        /// <summary>Generates a contract quest definition from its identifier.</summary>
         private static QuestDef Contract(string id)
         {
+            // Split the contract id into its parts: prefix, day, and index.
             string[] p = id.Split('_');
+            // Validate format and parse day and contract number; abort if malformed.
             if (p.Length < 3 || !int.TryParse(p[1], out int day) || !int.TryParse(p[2], out int n)) return null;
+            // Seed a deterministic RNG per day/contract to ensure the same contract each day.
             var rng = new System.Random(day * 131 + n * 7);
+            // Choose a zone for the contract; first contract always avoids 'kestrel'.
             string[] zones = { "kestrel", "mirelock", "spillway" };
+            // Randomly pick a zone, ensuring the first contract (n==0) is not kestrel.
             string zone = zones[rng.Next(n == 0 ? 1 : 3)];
             ZoneDef z = ZoneCatalog.Get(zone);
+            // Initialise the quest definition with repeatable flag and base reputation reward.
             var d = new QuestDef { Id = id, Repeatable = true, RewardRep = 0.02f };
+            // Randomly decide which type of contract to create (kill, fetch, visit, etc.).
             int kind = rng.Next(5);
             switch (kind)
             {
+                // Contract type 0: Kill a number of zombies in the chosen zone.
                 case 0:
                     d.Giver = TraderCatalog.Gunsmith; d.Title = "Contract: Cull";
                     d.Objectives.Add(new QuestObjective { Kind = ObjectiveKind.Kill, Target = "kind:Zombie", Count = 8 + rng.Next(10), Zone = zone, Text = "Kill the dead in " + z.Name });
                     break;
+                // Contract type 1: Hand in mutant parts found during the raid.
                 case 1:
                     d.Giver = TraderCatalog.Institute; d.Title = "Contract: Specimens";
                     d.Objectives.Add(new QuestObjective { Kind = ObjectiveKind.Fetch, Target = "mutantpart", Count = 2 + rng.Next(3), Text = "Hand in mutant parts (found in raid)" });
                     break;
+                // Contract type 2: Visit a randomly chosen landmark.
                 case 2:
                     d.Giver = TraderCatalog.Institute; d.Title = "Contract: Field Survey";
                     string[] marks = { "crashed_helicopter", "quarantine_tent", "drowned_chapel", "hunters_hide", "cooling_tower" };
                     string m = marks[rng.Next(marks.Length)];
                     d.Objectives.Add(new QuestObjective { Kind = ObjectiveKind.Visit, Target = m, Count = 1, Text = "Visit the " + HumanUtil.Pretty(m) });
                     break;
+                // Contract type 3: Eliminate a few fence‑affiliated scavengers.
                 case 3:
                     d.Giver = TraderCatalog.Fence; d.Title = "Contract: Debt Collection";
                     d.Objectives.Add(new QuestObjective { Kind = ObjectiveKind.Kill, Target = "faction:scavs", Count = 2 + rng.Next(3), Text = "Kill scavengers who owe the Fence" });
                     break;
+                // Default contract: Simple extraction from the chosen zone.
                 default:
                     d.Giver = TraderCatalog.Barkeep; d.Title = "Contract: Out and Back";
                     d.Objectives.Add(new QuestObjective { Kind = ObjectiveKind.Extract, Target = zone, Count = 1, Text = "Extract from " + z.Name });
@@ -343,9 +358,12 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Wires quest event handlers into the global GameEvents system.</summary>
         internal static void Wire()
         {
+            // Forward quest progress keys to the Apply method.
             GameEvents.QuestProgress += Apply;
+            // Hook into actor kill events to award kill‑related quest progress.
             GameEvents.ActorKilled += k =>
             {
                 if (k.Killer == null || k.Killer != Actor.LocalPlayer || k.Victim == null) return;
@@ -357,11 +375,14 @@ namespace CloneZ
                 if (cr != null) GameEvents.RaiseQuestProgress("kill:creature:" + cr.Def.Id, 1f);
                 Progression.AddXp(v.Kind == ActorKind.Zombie ? 10f : v.Kind == ActorKind.Human ? 80f : cr != null ? cr.Def.Xp : 20f);
             };
+            // When a location is visited, update location‑visit quests.
             GameEvents.LocationVisited += id => { GameEvents.RaiseQuestProgress("visit:" + id, 1f); Progression.AddXp(60f, "found " + HumanUtil.Pretty(id)); };
+            // React to emission state changes to credit survival quests.
             GameEvents.EmissionStateChanged += active =>
             {
                 if (!active && Actor.LocalPlayer != null && Actor.LocalPlayer.IsAlive) GameEvents.RaiseQuestProgress("survive_emission", 1f);
             };
+            // Handle raid end: award extraction quests and special sunken‑star quest.
             GameEvents.RaidEnded += (outcome, exit) =>
             {
                 if (outcome != RaidOutcome.Extracted) return;
@@ -372,7 +393,9 @@ namespace CloneZ
                         if (s.Def != null && s.Def.Id == "art_sunkenstar") GameEvents.RaiseQuestProgress("extractwith:art_sunkenstar", 1f);
                 Progression.AddXp(300f + ZoneCatalog.Current.Depth * 200f, "extracted");
             };
+            // Grant XP for learning artifact properties.
             GameEvents.ArtifactPropertyLearned += (a, p) => Progression.AddXp(40f, "learned an artifact property");
+            // Grant a small XP reward whenever an item is crafted.
             GameEvents.ItemCrafted += (id, n) => Progression.AddXp(10f);
         }
         #endregion
@@ -395,8 +418,11 @@ namespace CloneZ
     {
         protected override string Title => string.IsNullOrEmpty(Arg) ? "Notice board — jobs and contracts" : "Work for " + TraderCatalog.Get(Arg).Name;
 
+        /// <summary>Builds the UI for the quests screen, showing jobs and contracts.</summary>
+        /// <summary>Builds the UI for the quests screen, showing jobs and contracts.</summary>
         protected override void BuildContent()
         {
+            // Create two column layouts: one for jobs, one for daily contracts.
             CharacterProfile c = Character;
             RectTransform[] cols = HubUI.Columns(Body, 16f, 1.2f, 1f);
             HubUI.Card(cols[0]);
