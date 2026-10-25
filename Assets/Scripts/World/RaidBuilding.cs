@@ -133,15 +133,18 @@ namespace CloneZ
             public GameObject Object;
         }
 
+        /// <summary>Creates a building using quarter‑turn rotations and optional mirroring.</summary>
         public RaidBuilding(RaidTown town, string name, Vector2 center, int turns, bool mirror, float width, float depth)
         {
             Town = town;
             Name = name;
             Center = center;
+            // Normalize turn count to 0‑3 representing quarter‑turns.
             Turns = ((turns % 4) + 4) % 4;
             Mirror = mirror;
             HalfW = width * 0.5f;
             HalfD = depth * 0.5f;
+            // Seed random stream from town's RNG so building‑specific randomness is repeatable.
             Rng = new System.Random(town.Rng.Next());
             Root = new GameObject("Bldg_" + name).transform;
             Root.SetParent(town.World, false);
@@ -311,10 +314,13 @@ namespace CloneZ
             CreateColliders();
         }
 
+        /// <summary>Collects wall edge spans from rooms and merges them into continuous runs.</summary>
         private void DeriveRuns()
         {
+            // Collect horizontal (x‑aligned) and vertical (z‑aligned) wall edge spans from all rooms.
             var hz = new Dictionary<int, List<Vector2>>();
             var vx = new Dictionary<int, List<Vector2>>();
+            // Add each room's wall edges to the appropriate horizontal or vertical map.
             foreach (RaidRoom r in Rooms)
             {
                 AddEdge(hz, r.World.yMin, r.World.xMin, r.World.xMax);
@@ -333,8 +339,10 @@ namespace CloneZ
             list.Add(new Vector2(Mathf.Min(a, b), Mathf.Max(a, b)));
         }
 
+        /// <summary>Merge overlapping edge intervals into wall runs (continuous wall segments).</summary>
         private void Merge(Dictionary<int, List<Vector2>> map, bool alongX)
         {
+            // For each coordinate bucket (grouped by wall line), merge overlapping spans into a single run.
             foreach (KeyValuePair<int, List<Vector2>> kv in map)
             {
                 List<Vector2> list = kv.Value;
@@ -343,18 +351,23 @@ namespace CloneZ
                 for (int i = 1; i <= list.Count; i++)
                 {
                     if (i < list.Count && list[i].x <= b + 0.01f) { b = Mathf.Max(b, list[i].y); continue; }
+                    // Emit a wall run that covers the merged span.
                     _runs.Add(new WallRun { AlongX = alongX, Coord = kv.Key / 20f, A = a, B = b });
                     if (i < list.Count) { a = list[i].x; b = list[i].y; }
                 }
             }
         }
 
+        /// <summary>Match pending opening requests to wall runs, validate placement, and create Opening objects.</summary>
         private void ResolveOpenings()
         {
+            // Process each pending opening request (door/window) queued during authoring.
             foreach (var po in _pendingOpenings)
             {
                 WallRun run = null;
                 float pos = 0f;
+                // Find the wall run that aligns with the opening point (within tolerance) and lies within the wall span.
+                // Iterate each wall run to generate wall pieces (segments) based on openings.
                 foreach (WallRun r in _runs)
                 {
                     float across = r.AlongX ? po.p.y : po.p.x;
@@ -369,6 +382,7 @@ namespace CloneZ
                 if (min > max) { Town.Warn(Name + ": wall too short for an opening at " + po.p); continue; }
                 o.Pos = Mathf.Clamp(o.Pos, min, max);
                 bool clash = false;
+                // Check against existing openings on this wall run for overlap.
                 foreach (Opening other in run.Openings)
                     if (o.A < other.B + 0.3f && o.B > other.A - 0.3f) clash = true;
                 if (clash) { Town.Warn(Name + ": overlapping openings at " + po.p); continue; }
@@ -381,18 +395,23 @@ namespace CloneZ
         private float RunStart(WallRun r) => r.AlongX ? r.A - Half : r.A + Half;
         private float RunEnd(WallRun r) => r.AlongX ? r.B + Half : r.B - Half;
 
+        /// <summary>Create wall pieces (segments) between openings and fill remaining wall spans.</summary>
         private void BuildPieces()
         {
             foreach (WallRun r in _runs)
             {
+                // Sort openings along the run to process them left‑to‑right.
                 r.Openings.Sort((p, q) => p.Pos.CompareTo(q.Pos));
                 float cursor = RunStart(r), end = RunEnd(r);
                 foreach (Opening o in r.Openings)
                 {
+                    // If there is a gap before this opening, create a solid wall piece.
                     if (o.A > cursor + 0.01f) _pieces.Add(new WallPiece { Run = r, S = cursor, E = o.A });
+                    // Create a wall piece that contains this opening.
                     _pieces.Add(new WallPiece { Run = r, S = o.A, E = o.B, Opening = o });
                     cursor = o.B;
                 }
+                // Add trailing wall piece after the last opening, if any length remains.
                 if (end > cursor + 0.01f) _pieces.Add(new WallPiece { Run = r, S = cursor, E = end });
             }
             foreach (WallPiece p in _pieces) DrawPiece(p);
@@ -830,6 +849,7 @@ namespace CloneZ
                     Vector3 b = RunPoint(r, o.B + 0.3f, 0f, side * (Half + 1.3f));
                     Rect zone = Rect.MinMaxRect(Mathf.Min(a.x, b.x), Mathf.Min(a.z, b.z), Mathf.Max(a.x, b.x), Mathf.Max(a.z, b.z));
                     RaidRoom room = RoomAt(RunPoint(r, o.Pos, 0f, side * 0.6f));
+                    // Skip this attempt if the target room does not exist.
                     if (room == null) continue;
                     room.Reserved.Add(zone);
                     o.Zones.Add(zone);
@@ -867,12 +887,15 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Place door leaf meshes for each door opening flagged as having leaves.</summary>
         private void PlaceLeaves(Opening o)
         {
+            // Identify the two adjacent rooms on either side of the doorway (if any).
             WallRun r = o.Run;
             RaidRoom plus = RoomAt(RunPoint(r, o.Pos, 0f, 0.6f)), minus = RoomAt(RunPoint(r, o.Pos, 0f, -0.6f));
             // An outer door swings in; between two rooms, into the smaller one (a bedroom or a bathroom off the living room,
             // an office off the hall) when its swing is clear.
+            // Choose which side the door swings into based on room sizes and random tie‑break.
             int first;
             if (plus == null) first = -1;
             else if (minus == null) first = 1;
@@ -882,26 +905,32 @@ namespace CloneZ
                 first = Mathf.Abs(ap - am) < 0.5f ? (Rng.NextDouble() < 0.5 ? -1 : 1) : (ap < am ? 1 : -1);
             }
             // A pair of leaves fills the doorway (raid doorways are 1.5 m or more), each hinged at its jamb.
+            // Compute width of each leaf panel, accounting for clearance gaps.
             float leafW = (o.Width - 2f * LeafClear - LeafMeet) * 0.5f;
             float leanPick = 5f + (float)Rng.NextDouble() * 25f;
             var rects = new Rect[2];
             var leans = new float[2];
             Vector3 along = r.AlongX ? Vector3.right : Vector3.forward;
 
+            // Try up to four leaf placement attempts (two sides, with/without lean).
             for (int attempt = 0; attempt < 4; attempt++)
             {
+                // Select which side to attempt first based on earlier swing direction.
                 int side = (attempt & 1) == 0 ? first : -first;
                 RaidRoom room = side > 0 ? plus : minus;
                 if (room == null) continue;
+                // Desired leaf lean angle for this attempt (first two attempts try random lean, later attempts try straight).
                 float leanWanted = attempt < 2 ? leanPick : 0f;
 
                 // The room's clear extent along this wall bounds how far a leaf may lean.
+                // Clamp leaf swing within the unobstructed wall segment of the chosen room.
                 float ra = r.A, rb = r.B;
                 RoomsOnSide(r, side, _sideRooms);
                 foreach (var sr in _sideRooms)
                     if (o.Pos > sr.a && o.Pos < sr.b) { ra = sr.a; rb = sr.b; }
                 Vector3 n = RunNormal(r, side);
 
+                // Validate that both leaves fit without intersecting furniture or reserved zones.
                 bool clear = true;
                 for (int i = 0; i < 2 && clear; i++)
                 {
@@ -922,10 +951,12 @@ namespace CloneZ
                 }
                 if (!clear) continue;
 
+                // Reserve the leaf footprints in the room's furniture list.
                 room.Furniture.Add(rects[0]);
                 room.Furniture.Add(rects[1]);
                 int swing = side;
                 float leanA = leans[0], leanB = leans[1];
+                // Defer actual leaf mesh creation until after geometry is built.
                 Later(() => HangDoor(o, swing, leafW, leanA, leanB));
                 return;
             }
