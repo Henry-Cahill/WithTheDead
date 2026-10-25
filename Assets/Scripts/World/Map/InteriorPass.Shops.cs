@@ -95,6 +95,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Creates a salon area with counters, seats and waiting chairs.</summary>
         private static void Salon(RoomCtx c)
         {
             RaidBuilding b = c.B;
@@ -105,6 +106,7 @@ namespace CloneZ
             for (int k = 0; k < 3; k++)
             {
                 if (!c.Wall(side, 0.9f, 0.5f, 0.95f, 0.2f + 0.3f * k, out RaidBuilding.Place counter)) break;
+                // Build the counter geometry: a base box, a mirrored back panel, and three decorative cylinders.
                 b.Furnish(c.R, counter, new Vector3(0.9f, 1.9f, 0.5f), true, (m, r) =>
                 {
                     m.Box(new Vector3(0f, 0.42f, 0f), new Vector3(0.9f, 0.84f, 0.45f), DecorPalette.Matte(new Color(0.82f, 0.80f, 0.74f)));
@@ -112,9 +114,11 @@ namespace CloneZ
                     for (int j = 0; j < 3; j++)
                         m.Cylinder(new Vector3(-0.3f + j * 0.15f, 0.84f, 0f), 0.03f, 0.12f + 0.05f * j, 8, DecorPalette.Gloss(new Color(0.3f + 0.2f * j, 0.4f, 0.6f)));
                 }, "salon counter");
+                // After each counter, place a chair offset from the wall for the customer to sit.
                 Vector2 front = c.OnWall(side, side == 0 || side == 2 ? counter.X : counter.Z, 0.5f + 0.55f);
                 if (c.Floor(0.55f, 0.55f, RoomCtx.YawOf(side) + 180f, front, 0.02f, out RaidBuilding.Place chair)) b.OfficeChairSeat(c.R, chair, seat);
             }
+            // Add a row of waiting chairs against any wall that has enough space, using generic wood chairs.
             for (int k = 0; k < 3; k++)
                 if (c.AnyWall(c.Sides(false), 0.45f, 0.45f, 0.9f, -1f, out RaidBuilding.Place wait, out _)) b.WoodChairSeat(c.R, wait, FurnitureBuilder.Pine, "Waiting chair");
             MoreLoot(c, 2, order);
@@ -223,15 +227,22 @@ namespace CloneZ
 
         // A sorting case `w` long (front +Z): a ledge on a cupboard base, and over it pigeonholes in a 6-high grid with
         // letters left in some.
+        /// <summary>Creates a sorting case of width `w` with pigeonholes and optional letter placeholders.</summary>
         private static void SortingCase(RaidMesh m, System.Random r, float w)
         {
             Surf wood = DecorPalette.Matte(new Color(0.55f, 0.50f, 0.42f)), back = DecorPalette.Matte(new Color(0.34f, 0.31f, 0.27f));
             Surf paper = DecorPalette.Matte(new Color(0.92f, 0.90f, 0.84f));
+            // Determine how many columns of pigeonholes fit based on the requested width.
             int cols = Mathf.Max(4, Mathf.RoundToInt(w / 0.25f));
+            // Base back panel of the case.
             m.Box(new Vector3(0f, 0.43f, 0f), new Vector3(w, 0.86f, 0.42f), back);
+            // Shelf where pigeonholes sit.
             m.Box(new Vector3(0f, 0.875f, 0.02f), new Vector3(w, 0.03f, 0.45f), wood);
+            // Upper back panel closing the case.
             m.Box(new Vector3(0f, 1.34f, -0.19f), new Vector3(w, 0.9f, 0.03f), back);
+            // Add vertical dividers between columns.
             for (int k = 0; k <= cols; k++) m.Box(new Vector3(-w * 0.5f + w * k / cols, 1.34f, -0.07f), new Vector3(0.015f, 0.9f, 0.25f), wood);
+            // Add horizontal dividers between rows.
             for (int k = 0; k <= 6; k++) m.Box(new Vector3(0f, 0.89f + k * 0.15f, -0.07f), new Vector3(w, 0.015f, 0.25f), wood);
             for (int row = 0; row < 6; row++)
                 for (int col = 0; col < cols; col++)
@@ -268,13 +279,16 @@ namespace CloneZ
 
         #region The raid town's shop fittings
         // The checkout counter with its cash register: the till's drawer, and the register stock under the counter.
+        /// <summary>Adds a checkout counter with cash drawer and register storage.</summary>
         private static void Checkout(RoomCtx c, RaidBuilding.Place p, float len)
         {
             RaidBuilding b = c.B;
             c.TakeLoot();
             float rx = 0f;
+            // Build the physical counter body and capture its length for drawer placement.
             Transform t = b.FixtureBody(c.R, p, new Vector3(len, 1.4f, 0.72f), true, (m, r) => rx = FurnitureBuilder.MartCounterBody(m, r, len), "Checkout counter");
             KitchenFrame f = b.FrameOf(p);
+            // Create a random generator for the drawer to give variation in its appearance.
             var dr = new System.Random(b.Rng.Next());
             FixturePart drawer = KitchenParts.Drawer(t, "CashDrawer", f, m => FurnitureBuilder.MartTillDrawer(m, dr, rx),
                 new Vector3(rx, FurnitureBuilder.MartTillY, FurnitureBuilder.MartTillFront), new Vector3(0f, 0f, CloneZConfig.RaidTillTravel));
@@ -292,16 +306,20 @@ namespace CloneZ
 
         // A double-sided gondola: its stock searchable while the room's loot budget lasts (one face stocked, the other picked
         // over), else plain shelving.
+        /// <summary>Creates a double‑sided gondola shelf, stocked on one side if resources allow.</summary>
         private static void Gondola(RoomCtx c, RaidBuilding.Place p, float len, bool frontStocked)
         {
             RaidBuilding b = c.B;
+            // If no loot budget left, just place plain shelving without interactive storage.
             if (!c.TakeLoot())
             {
                 b.Furnish(c.R, p, new Vector3(len, 1.5f, 0.9f), true, (m, r) => FurnitureBuilder.Gondola(m, r, len), "Store shelves");
                 return;
             }
             Transform t = b.FixtureBody(c.R, p, new Vector3(len, 1.5f, 0.9f), true, (m, r) => FurnitureBuilder.Gondola(m, r, len), "Store shelves");
+            // Choose the loot type for the stocked side: use the first pool entry if available, otherwise default to pantry items.
             ContainerType loot = c.Pool != null && c.Pool.Length > 0 ? c.Pool[0] : ContainerType.Pantry;
+            // Determine which side of the gondola gets the searchable stock (front if stocked, back otherwise).
             int side = frontStocked ? 0 : 1;
             StorageOptions o = RaidBuilding.MainStock(loot, "shelves");
             o.ContainerName = "Store shelves";
