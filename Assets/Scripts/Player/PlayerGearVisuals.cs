@@ -173,12 +173,16 @@ private Material _torchLEDMat; // base (off) material for the LED
         }
 
         // The rig is built by PlayerAvatar (added after the gear), so it is looked up lazily.
+        /// <summary>Ensures the player rig is available; rebuilds cached geometry when the avatar's rig changes.</summary>
         private bool EnsureRig()
         {
+            // If we already have a rig cached, verify its proportions haven't changed.
             if (_rig != null)
             {
                 if (_rig.Proportions != _p)
                 {
+                    // Rig proportions changed (e.g., player body scale changed), so clear all geometry and rebuild.
+                    // First-time rig acquisition; clear any leftover geometry and initialise helpers.
                     ClearAll();
                     _p = _rig.Proportions;
                     _torso = new PlayerGearTorso(_p);
@@ -186,6 +190,7 @@ private Material _torchLEDMat; // base (off) material for the LED
                 }
                 return true;
             }
+            // Not yet cached; probe periodically to avoid expensive lookups each frame.
             if (Time.frameCount < _nextRigProbe) return false;
             _nextRigProbe = Time.frameCount + 15;
             if (_avatar == null) _avatar = GetComponent<PlayerAvatar>();
@@ -200,13 +205,17 @@ private Material _torchLEDMat; // base (off) material for the LED
         }
 
         // Rebuilds only the pieces whose item changed (a new top re-fits everything worn over it).
+        /// <summary>Rebuilds only the gear pieces whose underlying item definitions changed.</summary>
         private void Refresh()
         {
+            // Reset dirty flag now we are handling changes.
             _dirty = false;
+            // Cache reference to current clothing state.
             PlayerClothing c = _clothing;
 
             ItemDef top = Worn(c, ClothingSlot.Torso);
             bool refit = false;
+            // If top item changed, recompute its inflation for correct gear sizing.
             if (!_torsoKnown || top != _torsoDef)
             {
                 float inflate = TopInflate(top);
@@ -225,11 +234,16 @@ private Material _torchLEDMat; // base (off) material for the LED
 
             bool backChanged = back != _back.Def || refit;
             if (backChanged) BuildBackpack(back);
+            // Update chest rig if its definition changed or a top re-fit is needed.
             if (rig != _chestRig.Def || refit) BuildChestRig(rig);
+            // Rebuild thigh bag only when the specific item changed.
             if (thigh != _thigh.Def) BuildThighBag(thigh);
             bool maskChanged = mask != _mask.Def;
+            // Update gas mask when mask item changes.
             if (maskChanged) BuildGasMask(mask);
+            // Rebuild goggles when eyes item or mask changes.
             if (eyes != _goggles.Def || maskChanged) BuildGoggles(eyes);
+            // Update flashlight visibility based on whether it's carried or backpack changed.
             if (torch != _torchShown || backChanged) BuildFlashlight(torch);
         }
 
@@ -282,14 +296,17 @@ private Material _torchLEDMat; // base (off) material for the LED
             _torch.SetActive(active);
         }
 
+        /// <summary>Removes all generated gear objects and resets internal tracking flags.</summary>
         private void ClearAll()
         {
+            // Delete all geometry and reset cached definitions.
             _back.Clear();
             _chestRig.Clear();
             _thigh.Clear();
             _goggles.Clear();
             _mask.Clear();
             _torch.Clear();
+            // Reset state so future rig changes will trigger a full rebuild.
             _torsoKnown = false;
             _torchShown = false;
             _nvgHinge = null;
