@@ -122,6 +122,60 @@ class NewCommentsOnlyTest(unittest.TestCase):
         self.assertEqual(old.replace("        public void A", "        /// <summary>Does A.</summary>\r\n        public void A"),
                          ns.new_comments_only(old, new))
 
+    def test_no_comment_goes_inside_a_string_that_runs_over_several_lines(self):
+        old = 'const string Sql = @"\nSELECT * FROM loot\nWHERE kind = 1;\n";\nint x;\n'
+        new = ('const string Sql = @"\n// Everything from the loot table.\nSELECT * FROM loot\n// Only crates.\nWHERE kind = 1;\n'
+               '";\n// The x.\nint x;\n')
+        self.assertEqual(old.replace("int x;", "// The x.\nint x;"), ns.new_comments_only(old, new))
+        inside = "var s = $@\"{a}\n{b}\";\n"  # a verbatim interpolated string, holes and all
+        self.assertEqual(inside, ns.new_comments_only(inside, inside.replace("{b}", "// b\n{b}")))
+
+    def test_a_comment_at_the_end_of_a_line_of_code_goes_above_it(self):
+        old = '    var url = "http://x";\n    Go(url);\n'
+        new = '    var url = "http://x"; // the mirror\n    Go(url);   // off it goes\n'
+        self.assertEqual('    // the mirror\n    var url = "http://x";\n    // off it goes\n    Go(url);\n',
+                         ns.new_comments_only(old, new))
+        # Not when the line already ends in a comment (that would be rewording it), nor inside a string.
+        commented = "    Go(); // go\n"
+        self.assertEqual(commented, ns.new_comments_only(commented, "    Go(); // go, and fast\n"))
+        verbatim = 'var s = @"\nend"; Go();\n'
+        self.assertEqual(verbatim, ns.new_comments_only(verbatim, 'var s = @"\nend"; Go(); // go\n'))
+        # Nor a second summary at the end of a declaration that has one.
+        documented = "    /// <summary>A.</summary>\n    public void A() { }\n"
+        self.assertEqual(documented, ns.new_comments_only(documented, documented.replace("{ }", "{ } /// <summary>B.</summary>")))
+
+
+class ScanTest(unittest.TestCase):
+    def scan(self, text: str) -> list:
+        return ns.scan_cs(text)
+
+    def test_comments_are_found_outside_strings_and_chars_only(self):
+        line = 'var s = "a // b \\" c" + @"d "" // e" + \'"\' + \'\\\'\' + $"{f}"; // the end'
+        scanned = self.scan(line)[0]
+        self.assertEqual(line.index("// the end"), scanned.comment_at)
+        self.assertEqual("var s = \"\" + \"\" + ' ' + ' ' + \"\"; ", scanned.code)
+        self.assertTrue(scanned.commented)
+        self.assertIsNone(self.scan('var u = "http://x";')[0].comment_at)
+
+    def test_braces_in_strings_and_holes_are_not_code(self):
+        line = 'var s = $"{(a ? "{" : "}")} {{x}} {b}"; if (c) { d(); }'
+        self.assertEqual('var s = ""; if (c) { d(); }', self.scan(line)[0].code)
+
+    def test_strings_and_comments_that_run_over_several_lines(self):
+        text = ("var s = @\"one\n\"\"two\"\" // three\nfour\"; // five\n/* six\nseven */ int x;\n"
+                "var t = $@\"{a\n}\";\nint y; // eight\n")
+        scanned = self.scan(text)
+        self.assertEqual([True, False, False, True, False, True, False, True], [s.safe for s in scanned])
+        self.assertEqual([None, None, 7, None, None, None, None, 7], [s.comment_at for s in scanned])
+        self.assertEqual(['var s = "', "", '"; ', "", " int x;", 'var t = "', '";', "int y; "], [s.code for s in scanned])
+        self.assertEqual([False, False, True, True, True, False, False, True], [s.commented for s in scanned])
+
+    def test_preprocessor_lines_are_left_alone(self):
+        scanned = self.scan("#region The player's stuff\nint x; // y\n#endregion\n")
+        self.assertEqual(["", "int x; ", ""], [s.code for s in scanned])
+        self.assertTrue(all(s.safe for s in scanned))
+        self.assertEqual(7, scanned[1].comment_at)
+
 
 class DocsTaskTest(unittest.TestCase):
     """do_task in a scratch checkout, with a fake agent and a compile check that always passes."""
@@ -184,6 +238,13 @@ class DocsTaskTest(unittest.TestCase):
         self.assertIn("kept only the comments it added", log)
         for path in ("Assets/Scripts/Bar.cs", "Assets/Scripts/New.cs", "Assets/Notes.txt"):
             self.assertIn(path, log)
+
+    def test_an_explain_task_lands_only_its_comments_too(self):
+        res, log = self.run_task(ns.EXPLAIN_TASK.format(path="Assets/Scripts/Foo.cs"))
+        self.assertEqual("ok", res.status)
+        self.assertEqual(["Assets/Scripts/Foo.cs"], res.files)
+        self.assertEqual(FOO_DOCUMENTED, self.sh("show", f"{res.sha}:Assets/Scripts/Foo.cs"))
+        self.assertIn("kept only the comments it added", log)
 
     def test_other_tasks_keep_every_change(self):
         res, log = self.run_task("Tidy up Assets/Scripts/Foo.cs")
