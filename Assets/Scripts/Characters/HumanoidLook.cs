@@ -235,7 +235,7 @@ if (Shape.Headwear == HeadwearStyle.Mask)
             }
         }
 
-        /// <summary>Clone Z — the survivor the player controls: an athletic adult with warm tan skin and short dark-brown hair. The outfit comes from whatever is worn (see <see cref="Wear"/>). Creates the default survivor look with athletic build, short hair, and default colours. The look is then dressed with empty slots (no clothing).</summary>
+        /// <summary>The survivor the player controls: an athletic adult with warm tan skin and short dark-brown hair. The outfit comes from whatever is worn (see <see cref="Wear"/>). Creates the default survivor look with athletic build, short hair, and default colours. The look is then dressed with empty slots (no clothing).</summary>
                 public static HumanoidLook Survivor()
         {
             var look = new HumanoidLook();

@@ -38,7 +38,7 @@ namespace CloneZ
         }
 
         private readonly HudContext _ctx;
-        private readonly bool _raid;
+        private readonly bool _raid, _hub;
         private StatusIcon _battery, _water, _food, _temp, _health;
         private Image _badge;
         private Text _modeLabel;
@@ -61,6 +61,7 @@ namespace CloneZ
         {
             _ctx = ctx;
             _raid = GameSession.IsExtraction;
+            _hub = GameSession.IsHub;
             BuildIcons(iconsRoot);
             BuildBox(boxRoot);
             BuildPanel(boxRoot);
@@ -126,7 +127,9 @@ namespace CloneZ
                 new Vector2(-Margin, BoxBottom), new Vector2(BoxWidth, BoxHeight), out _);
             _modeLabel = HudUI.Label(box, "Mode", 14, TextAnchor.MiddleLeft, HudUI.Amber, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(10f, 0f), new Vector2(170f, 20f), FontStyle.Bold);
-            _modeLabel.text = _raid ? "EXTRACTION MODE" : "WAVE 0  \u00b7  KILLS 0";
+            // In the hub, where you are (wave and kill counts mean nothing at the bar).
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            _modeLabel.text = _raid ? "EXTRACTION MODE" : _hub ? HubCatalog.Get(c != null ? c.Hub : HubCatalog.Kettle).Name.ToUpperInvariant() : "WAVE 0  \u00b7  KILLS 0";
             TinyButton(box, "+", new Vector2(-6f, 0f), 20f);
             TinyButton(box, _raid ? "Exits" : "Stats", new Vector2(-30f, 0f), 44f);
         }
@@ -220,7 +223,7 @@ namespace CloneZ
 
         private void UpdateModeLabel()
         {
-            if (_raid) return;
+            if (_raid || _hub) return;
             GameManager gm = GameManager.Instance;
             if (gm == null || (gm.Wave == _shownWave && gm.ZombieKills == _shownKills)) return;
             _shownWave = gm.Wave;

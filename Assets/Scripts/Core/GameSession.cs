@@ -42,6 +42,12 @@ namespace CloneZ
         public static bool IsWaveSurvival => Mode == GameMode.WaveSurvival;
         /// <summary>True when the session is the hub, between raids.</summary>
         public static bool IsHub => Mode == GameMode.Hub;
+        /// <summary>Set while the hub stands in the town a raid will start in (the Kettle in Bardstown, until the survivor
+        /// walks out of its door, see <see cref="KettleLobby"/>): the world round the bar is already the raid's.</summary>
+        public static bool HubInRaidTown;
+        /// <summary>True when the world is a raid's: in a raid, or round the hub standing in a raid's town. What's rolled
+        /// for it (loot found in raid, the Central Economy's caps, the night's weather) is the raid's.</summary>
+        public static bool IsRaidWorld => IsExtraction || HubInRaidTown;
         /// <summary>True when the raid is a free scav run in random gear; the character's stash stays safe.</summary>
         public static bool IsScavRun => IsExtraction && Raid == RaidKind.Scav;
         /// <summary>True when the raid is the persistent open zone, with no dawn deadline.</summary>
@@ -52,8 +58,9 @@ namespace CloneZ
         /// touches the character's health, kit, marks or diseases.</summary>
         public static bool IsBorrowedBody => IsScavRun || IsMonsterRun;
 
-        /// <summary>The survivor's name, shown on the inventory ("Clone Z's Inventory") and the HUD.</summary>
-        public static string SurvivorName = "Clone Z";
+        /// <summary>The survivor's name, shown on the inventory ("Dale Mattingly's Inventory") and the HUD: the character's,
+        /// else a random one (rolled afresh for each new wave-survival run and kept in its save).</summary>
+        public static string SurvivorName = SurvivorNames.Roll();
 
         /// <summary>Seed for the current raid's loot, spawns and anomalies (changes every raid).</summary>
         public static int RaidSeed;

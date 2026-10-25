@@ -1,9 +1,9 @@
-# CLONE-Z world
+# WithTheDead world
 
-CLONE-Z's raid map is being rebuilt from a real place: the state of Kentucky, from OpenStreetMap's streets, buildings
+WithTheDead's raid map is being rebuilt from a real place: the state of Kentucky, from OpenStreetMap's streets, buildings
 and land use, organised the way survival games like Project Zomboid organise a world (256 m cells, buildings with
 rooms on floors, zones). Only the structure is borrowed. The content comes from OpenStreetMap (© OpenStreetMap
-contributors, ODbL), and CLONE-Z's own art and rules turn it into the game. Data from other games, including the map
+contributors, ODbL), and WithTheDead's own art and rules turn it into the game. Data from other games, including the map
 scrape in `Tools/MapScraper`, is never used. The whole state shares one flat grid in metres: Kentucky's official
 statewide projection (Kentucky Single Zone, EPSG:3088), so streets and buildings keep their true shapes.
 

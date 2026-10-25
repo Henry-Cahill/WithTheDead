@@ -38,7 +38,7 @@ namespace CloneZ.EditorTools
                 try
                 {
                     Directory.CreateDirectory(outDir);
-                    File.WriteAllText(Path.Combine(outDir, "report.md"), "# CLONE-Z interiors harness\n\nFailed to start: " + e + "\n");
+                    File.WriteAllText(Path.Combine(outDir, "report.md"), "# WithTheDead interiors harness\n\nFailed to start: " + e + "\n");
                 }
                 catch (Exception) { }
             }

@@ -3,7 +3,7 @@
 Every night-shift agent reads this first. When an agent learns something a future night would need, it
 appends one short bullet at the end. Keep each bullet to a line or two.
 
-## How CLONE-Z is put together
+## How WithTheDead is put together
 - Everything is built from code at runtime: `GameBootstrapper` (Assets/Scripts/Bootstrap) creates the world, the player, the camera, the NavMesh and the UI when Play starts. There are almost no prefabs or hand-built scenes; never edit `.unity` scenes.
 - New features plug in through `IGameModule` (Core/GameModules.cs): a class with a parameterless constructor, an `Order` and `Init()`, found by reflection at boot. Use it to register item actions, subscribe to `GameEvents` / `WorldHooks` or add HUD widgets, instead of editing `GameBootstrapper`.
 - Per-player systems are MonoBehaviours added to the player root in `GameBootstrapper` (the block of `root.AddComponent<Player...>()` lines, each with a short comment). Add a line there only for a new per-player component.

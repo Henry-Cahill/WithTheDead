@@ -3,7 +3,7 @@ using UnityEngine;
 namespace CloneZ
 {
     /// <summary>
-    /// Clone Z's body. Builds the survivor's <see cref="HumanoidRig"/> on the player and drives its
+    /// The survivor's body. Builds the survivor's <see cref="HumanoidRig"/> on the player and drives its
     /// <see cref="HumanoidAnimator"/> from the gameplay components: walking, sneaking and sprinting
     /// from the real ground speed; swings, shoves, shots and reloads from <see cref="PlayerCombat"/>;
     /// the clothes from <see cref="PlayerClothing"/>; the weapon in hand from the inventory (or the

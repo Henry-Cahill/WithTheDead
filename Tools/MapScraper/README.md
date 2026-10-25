@@ -1,9 +1,9 @@
-# CLONE-Z map scraper (zomboidmap.com)
+# WithTheDead map scraper (zomboidmap.com)
 
 Mirrors the Project Zomboid **Build 42** map data served by [zomboidmap.com](https://zomboidmap.com)
 for a region (Louisville by default). It then builds exports from that data that the site
 only computes in the browser. The result is an offline copy of the map for reference while
-building CLONE-Z.
+building WithTheDead.
 
 ```
 tiles.zomboidmap.com ──► out/raw/            exact mirror: data files, room interiors, every floor's tiles
@@ -133,4 +133,4 @@ backs off (up to a 15-minute cool-down) when requests fail. Please keep the defa
 the output for personal reference. The map art and data come from Project Zomboid by The Indie Stone.
 
 The game's own map files live in `ref/media/maps/` (Louisville is part of `Muldraugh, KY`). They
-are the authoritative source if CLONE-Z ever needs every sprite on every square.
+are the authoritative source if WithTheDead ever needs every sprite on every square.

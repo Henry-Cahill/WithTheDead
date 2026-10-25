@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WTD · Stream control</title>
+<!--
+  Controls the WithTheDead stream on the headless OBS through obs-websocket (v5, OBS 28+), the same connection obs-web
+  uses: goes live on Twitch and ends the stream, shows or hides the Windows screen (the "Windows Screen" RTMP-listener
+  source in MainStream; the BRB card shows while it's hidden), puts the Twitch stream key into OBS and runs Twitch's
+  private bandwidth test. It also sets the levels of the computer's sound and the headset mic on OBS on this PC
+  (ws://127.0.0.1:4455), which mixes them into the feed. Open this file in a browser; add #ws://host:port to the
+  address to point it at another OBS. The key goes from this page to OBS and nowhere else.
+-->
+<style>
+  :root { --bg:#070b14; --panel:#0f1729; --line:#22324f; --text:#dfe7f0; --dim:#8fa1bb; --red:#db3d33; --ok:#4cc38a; --warn:#e8a33d; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.45 "Segoe UI", system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  main { max-width:760px; margin:32px auto; padding:0 20px; }
+  h1 { font:700 26px/1.2 "Segoe UI", system-ui, sans-serif; margin:0 0 4px; }
+  h1 b { color:var(--red); }
+  .sub { color:var(--dim); margin:0 0 24px; }
+  section { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:16px; }
+  h2 { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--dim); margin:0 0 12px; }
+  label { display:block; font-size:13px; color:var(--dim); margin:10px 0 4px; }
+  input, select { width:100%; padding:9px 11px; border-radius:7px; border:1px solid var(--line); background:#0a1120; color:var(--text); font:inherit; }
+  input[type=checkbox] { width:auto; margin-right:6px; }
+  .row { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+  .row > div { flex:1 1 200px; }
+  .row > .fit { flex:0 0 auto; }
+  button { padding:9px 16px; border:0; border-radius:7px; background:var(--red); color:#fff; font:600 14px "Segoe UI", system-ui, sans-serif; cursor:pointer; }
+  button.ghost { background:transparent; border:1px solid var(--line); color:var(--text); }
+  button:disabled { opacity:.45; cursor:default; }
+  dl { display:grid; grid-template-columns:150px 1fr; gap:6px 12px; margin:0; }
+  dt { color:var(--dim); }
+  dd { margin:0; }
+  .ok { color:var(--ok); } .bad { color:var(--red); } .warn { color:var(--warn); }
+  .note { font-size:13px; color:var(--dim); margin:10px 0 0; }
+  .banner { border:1px solid var(--warn); color:var(--warn); border-radius:8px; padding:10px 12px; margin-top:12px; font-size:13px; }
+  #testOut { font-size:14px; margin-top:10px; min-height:1.4em; }
+  .state { font-size:20px; font-weight:700; }
+  .bigbtn { padding:14px 26px; font-size:16px; min-width:190px; }
+  .bigbtn.hide { background:transparent; border:2px solid var(--red); color:var(--text); }
+  .strips { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin-top:14px; }
+  .strip { border:1px solid var(--line); border-radius:8px; padding:12px 14px; background:#0a1120; }
+  .strip-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+  .strip-top .db { font:600 14px Consolas, monospace; }
+  .meter { position:relative; height:10px; border-radius:5px; overflow:hidden;
+    background:linear-gradient(90deg, #2fbf71 0 66.7%, #e8c33d 66.7% 85%, #db3d33 85% 100%); }
+  .meter .cover { position:absolute; top:0; right:0; bottom:0; width:100%; background:#1a2438; }
+  .strip.muted .meter, .strip.off .meter { opacity:.35; }
+  .strip input[type=range] { width:100%; margin:12px 0 6px; padding:0; border:0; background:none; accent-color:var(--red); }
+  .strip-foot { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .strip-foot .dev { font-size:12px; color:var(--dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  button.is-muted { border-color:var(--red); color:var(--red); }
+  kbd { border:1px solid var(--line); border-radius:4px; padding:0 5px; color:var(--text); }
+  #log { font:12px/1.5 Consolas, monospace; color:var(--dim); white-space:pre-wrap; max-height:160px; overflow:auto; }
+  a { color:#8fb4ff; }
+  code { color:var(--text); }
+</style>
+</head>
+<body>
+<main>
+  <h1><b>WTD</b> · Stream control</h1>
+  <p class="sub">Go live, show or hide your Windows screen, set your computer and headset levels, and set up the Twitch key for the WithTheDead stream.</p>
+
+  <section>
+    <h2>1 · Connect to OBS</h2>
+    <div class="row">
+      <div><label for="url">WebSocket address</label><input id="url" spellcheck="false" value="ws://192.168.1.202:4455"></div>
+      <div><label for="pw">Password (if enabled)</label><input id="pw" type="password" autocomplete="off"></div>
+      <div class="fit"><button id="connect">Connect</button></div>
+    </div>
+    <label><input type="checkbox" id="remember">Remember the password on this PC</label>
+    <div id="authWarn" class="banner" hidden>This OBS WebSocket has no password, so anyone on your network can read the
+      stream key from it, and start or stop the stream. Turn on authentication: in OBS under <b>Tools → WebSocket Server
+      Settings</b>, or on a headless OBS with <code>"auth_required": true</code> and a <code>"server_password"</code> in
+      <code>~/.config/obs-studio/plugin_config/obs-websocket/config.json</code> (restart OBS after). Then enter the
+      password here and in obs-web.</div>
+  </section>
+
+  <section>
+    <h2>2 · Go live</h2>
+    <div class="row" style="align-items:center">
+      <div><div id="liveState" class="state">not connected</div><p class="note" id="liveInfo"></p></div>
+      <div class="fit"><button id="liveToggle" class="bigbtn" disabled>Go live</button></div>
+    </div>
+    <p class="note">Starts or ends the WithTheDead stream on Twitch from the OBS on 192.168.1.202. It asks first either
+      way, and tells you what viewers will see.</p>
+  </section>
+
+  <section>
+    <h2>3 · Windows screen</h2>
+    <div class="row" style="align-items:center">
+      <div><div id="screenState" class="state">not connected</div><p class="note" id="screenFeed"></p></div>
+      <div class="fit"><button id="screenToggle" class="bigbtn" disabled>Show screen</button></div>
+    </div>
+    <p class="note"><button id="resync" class="ghost" disabled>Re-sync picture &amp; sound</button>
+      If sound and picture drift apart (say, after this PC sleeps), this reconnects the feed from this PC. Viewers see
+      the BRB card for about 10 seconds; the Twitch stream keeps going. It works through section 4's connection.</p>
+    <p class="note">Puts your main Windows display, with its sound, on the stream or takes it off. While it's hidden,
+      viewers see the Be-right-back card. Shortcut: <kbd>S</kbd> on this page. The picture comes from OBS on this PC,
+      which has to be open and streaming to <code>rtmp://192.168.1.202:1935/live</code> (it starts that way at login).</p>
+  </section>
+
+  <section>
+    <h2>4 · Audio</h2>
+    <div class="row">
+      <div><label for="pcPw">Password for OBS on this PC</label><input id="pcPw" type="password" autocomplete="off"></div>
+      <div class="fit"><button id="pcConnect" class="ghost">Connect</button></div>
+    </div>
+    <label><input type="checkbox" id="pcRemember">Remember it on this PC</label>
+    <p class="note" id="pcState">Not connected to OBS on this PC.</p>
+    <div id="strips" class="strips"></div>
+    <p class="note">Your computer's sound and your headset mic are mixed by OBS on this PC (<code>ws://127.0.0.1:4455</code>)
+      before they go to the stream, so their levels are set there. Double-click a slider for 0 dB. Its password is in
+      that OBS under <b>Tools → WebSocket Server Settings → Show Connect Info</b>. Hiding the Windows screen mutes both.</p>
+  </section>
+
+  <section>
+    <h2>5 · Status</h2>
+    <dl id="status"><dt>OBS</dt><dd>not connected</dd></dl>
+    <p class="note"><button id="refresh" class="ghost" disabled>Refresh</button></p>
+  </section>
+
+  <section>
+    <h2>6 · Twitch stream key</h2>
+    <p class="note" style="margin-top:0">Copy your <b>Primary Stream key</b> from
+      <a href="https://dashboard.twitch.tv/settings/stream" target="_blank" rel="noopener noreferrer">Twitch Creator Dashboard → Settings → Stream</a>.
+      Anyone with the key can stream to the channel, so never show it on stream.</p>
+    <div class="row">
+      <div><label for="key">Stream key</label><input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="live_…"></div>
+      <div class="fit" style="flex-basis:210px"><label for="server">Ingest server</label>
+        <select id="server"><option value="auto">Auto (recommended)</option></select></div>
+    </div>
+    <label><input type="checkbox" id="show">Show key</label>
+    <p class="note"><button id="save" disabled>Save to OBS</button></p>
+  </section>
+
+  <section>
+    <h2>7 · Bandwidth test (not public)</h2>
+    <p class="note" style="margin-top:0">Streams to Twitch for 15 seconds with <code>?bandwidthtest=true</code> on the key:
+      Twitch takes the video but never shows it, so nobody sees the channel go live. It proves the key and the
+      connection work and shows the bitrate that gets through.</p>
+    <p class="note"><button id="test" class="ghost" disabled>Run 15-second test</button></p>
+    <div id="testOut"></div>
+  </section>
+
+  <section>
+    <h2>Log</h2>
+    <div id="log"></div>
+  </section>
+</main>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const TEST_FLAG = "?bandwidthtest=true";
+const TEST_SECONDS = 15;
+const state = { connected: false, streaming: false, twitch: false, keySet: false, testing: false };
+let busy = false;
+const SCREEN_SCENE = "MainStream", SCREEN_SOURCE = "Windows Screen";
+const PW_KEY = "wtd-obs-password", PC_PW_KEY = "wtd-pc-obs-password", PC_URL = "ws://127.0.0.1:4455";
+const winScreen = { id: null, visible: false, cursor: null, receiving: false };
+const live = { bytes: null, t: 0, kbps: 0 };
+// The computer's sound and the headset mic: OBS on this PC's special audio inputs, mixed there into the feed.
+const STRIPS = [
+  { key: "desktop", special: "desktop1", label: "Computer sound", device: "Windows default output" },
+  { key: "mic", special: "mic1", label: "Headset mic", device: "Windows default mic" },
+];
+const audio = {};
+
+function remembered(key, value) {
+  try {
+    if (value === undefined) return localStorage.getItem(key);
+    if (value) localStorage.setItem(key, value); else localStorage.removeItem(key);
+  } catch (e) { /* storage may be off for file:// pages */ }
+  return null;
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function log(msg) {
+  $("log").textContent = new Date().toLocaleTimeString() + "  " + msg + "\n" + $("log").textContent;
+}
+
+async function sha256b64(s) {
+  const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return btoa(String.fromCharCode(...new Uint8Array(d)));
+}
+
+// One obs-websocket v5 connection: the Hello/Identify handshake (with the password when OBS asks for one), requests
+// matched to their responses, and events for the subscriptions it was made with.
+class Link {
+  constructor(eventSubscriptions = 0) {
+    this.events = eventSubscriptions;
+    this.ws = null;
+    this.nextId = 1;
+    this.pending = new Map();
+    this.identified = false;
+  }
+
+  get up() { return this.identified && !!this.ws && this.ws.readyState === WebSocket.OPEN; }
+
+  open(url, password, on = {}) {
+    this.close();
+    let sock;
+    try { sock = new WebSocket(url, "obswebsocket.json"); } catch (e) { if (on.error) on.error(e.message); return; }
+    this.ws = sock;
+    sock.onmessage = async ev => {
+      const m = JSON.parse(ev.data);
+      if (m.op === 0) {                                   // Hello
+        const auth = m.d.authentication;
+        if (on.hello) on.hello(!!auth);
+        const d = { rpcVersion: 1, eventSubscriptions: this.events };
+        if (auth) {
+          if (!password) { this.close(); if (on.needPassword) on.needPassword(); return; }
+          d.authentication = await sha256b64(await sha256b64(password + auth.salt) + auth.challenge);
+        }
+        sock.send(JSON.stringify({ op: 1, d }));
+      } else if (m.op === 2) {                            // Identified
+        this.identified = true;
+        if (on.up) on.up();
+      } else if (m.op === 5) {                            // Event
+        if (on.event) on.event(m.d.eventType, m.d.eventData || {});
+      } else if (m.op === 7) {                            // RequestResponse
+        const p = this.pending.get(m.d.requestId);
+        if (!p) return;
+        this.pending.delete(m.d.requestId);
+        const s = m.d.requestStatus;
+        if (s.result) p.resolve(m.d.responseData || {});
+        else p.reject(new Error(s.comment || "OBS error " + s.code));
+      }
+    };
+    sock.onerror = () => { if (on.error) on.error(); };
+    sock.onclose = ev => {
+      if (this.ws !== sock) return;
+      this.drop();
+      if (on.down) on.down(ev.code, ev.reason);
+    };
+  }
+
+  drop() {
+    this.ws = null;
+    this.identified = false;
+    for (const p of this.pending.values()) p.reject(new Error("connection closed"));
+    this.pending.clear();
+  }
+
+  close() {
+    const sock = this.ws;
+    this.drop();
+    if (sock) { sock.onclose = null; sock.close(); }
+  }
+
+  call(requestType, requestData = {}) {
+    return new Promise((resolve, reject) => {
+      if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return reject(new Error("not connected to OBS"));
+      const requestId = String(this.nextId++);
+      this.pending.set(requestId, { resolve, reject });
+      this.ws.send(JSON.stringify({ op: 6, d: { requestType, requestId, requestData } }));
+    });
+  }
+}
+
+const obs = new Link();                    // the stream's OBS, on the Linux box
+const pcObs = new Link((1 << 3) | (1 << 16)); // OBS on this PC: input changes, and live audio levels
+const call = (requestType, requestData) => obs.call(requestType, requestData);
+
+function connect() {
+  setConnected(false);
+  const url = $("url").value.trim();
+  try { history.replaceState(null, "", "#" + url); } catch (e) { /* file:// may refuse; harmless */ }
+  log("Connecting to " + url + "…");
+  obs.open(url, $("pw").value, {
+    hello: auth => { $("authWarn").hidden = auth; },
+    needPassword: () => log("This OBS needs its WebSocket password: enter it and press Connect."),
+    error: msg => log(msg ? "Bad address: " + msg : "Couldn't reach OBS at " + url + "."),
+    up: async () => {
+      log("Connected to OBS.");
+      setConnected(true);
+      if ($("remember").checked && $("pw").value) remembered(PW_KEY, $("pw").value);
+      try { await cleanUpTestFlag(); await refresh(); await refreshScreen(); await refreshLive(); } catch (e) { log("Error: " + e.message); }
+    },
+    down: (code, reason) => {
+      setConnected(false);
+      log(code === 4009 ? "Wrong WebSocket password." : "Disconnected from OBS" + (reason ? ": " + reason : "."));
+    },
+  });
+}
+
+function row(label, value, cls) {
+  const dt = document.createElement("dt");
+  dt.textContent = label;
+  const dd = document.createElement("dd");
+  dd.textContent = value;
+  if (cls) dd.className = cls;
+  return [dt, dd];
+}
+
+function setConnected(on) {
+  state.connected = on;
+  if (!on) {
+    $("status").replaceChildren(...row("OBS", "not connected"));
+    winScreen.id = winScreen.cursor = null;
+    live.bytes = null;
+    for (const id of ["screenState", "liveState"]) {
+      $(id).textContent = "not connected";
+      $(id).className = "state";
+    }
+    $("screenFeed").textContent = $("liveInfo").textContent = "";
+  }
+  updateButtons();
+}
+
+function updateButtons() {
+  const ready = state.connected && !busy;
+  $("refresh").disabled = !ready;
+  $("save").disabled = !ready || state.streaming;
+  $("test").disabled = !ready || state.streaming || !state.twitch || !state.keySet;
+  $("screenToggle").disabled = !ready || winScreen.id === null;
+  $("liveToggle").disabled = !ready;
+  $("resync").disabled = busy || !pcObs.up;
+}
+
+// The screen's state on the stream, and whether its feed is arriving: OBS calls a network listener "playing" even
+// while it waits, but its media cursor only moves while video comes in.
+async function refreshScreen() {
+  let id;
+  try {
+    id = (await call("GetSceneItemId", { sceneName: SCREEN_SCENE, sourceName: SCREEN_SOURCE })).sceneItemId;
+  } catch (e) {
+    winScreen.id = null;
+    $("screenState").textContent = "Not set up";
+    $("screenState").className = "state warn";
+    $("screenFeed").textContent = "OBS has no \"" + SCREEN_SOURCE + "\" source in " + SCREEN_SCENE + ".";
+    updateButtons();
+    return;
+  }
+  const [item, media] = await Promise.all([
+    call("GetSceneItemEnabled", { sceneName: SCREEN_SCENE, sceneItemId: id }),
+    call("GetMediaInputStatus", { inputName: SCREEN_SOURCE })]);
+  const cursor = media.mediaCursor || 0;
+  const receiving = cursor > 0 && cursor !== winScreen.cursor;
+  Object.assign(winScreen, { id, visible: item.sceneItemEnabled, cursor, receiving });
+  $("screenState").textContent = winScreen.visible ? "● On stream" : "Hidden: viewers see the BRB card";
+  $("screenState").className = "state " + (winScreen.visible ? "bad" : "ok");
+  $("screenFeed").textContent = receiving ? "Feed from this PC: receiving"
+    : "Feed from this PC: waiting (is OBS open and streaming on this PC?)";
+  $("screenFeed").className = receiving ? "note" : "note warn";
+  $("screenToggle").textContent = winScreen.visible ? "Hide screen" : "Show screen";
+  $("screenToggle").classList.toggle("hide", winScreen.visible);
+  updateButtons();
+}
+
+async function toggleScreen() {
+  if (winScreen.id === null || busy) return;
+  const show = !winScreen.visible;
+  busy = true;
+  updateButtons();
+  try {
+    // The sound goes before the picture when hiding, and follows it when showing.
+    if (!show) await call("SetInputMute", { inputName: SCREEN_SOURCE, inputMuted: true });
+    await call("SetSceneItemEnabled", { sceneName: SCREEN_SCENE, sceneItemId: winScreen.id, sceneItemEnabled: show });
+    if (show) await call("SetInputMute", { inputName: SCREEN_SOURCE, inputMuted: false });
+    log(show ? "Windows screen is on the stream." : "Windows screen hidden; the BRB card is showing.");
+  } catch (e) {
+    log("Couldn't switch the screen: " + e.message);
+  } finally {
+    busy = false;
+    await refreshScreen().catch(() => {});
+  }
+}
+
+// What's going out to Twitch right now; the bitrate comes from the bytes sent between two polls.
+async function refreshLive() {
+  const st = await call("GetStreamStatus");
+  const now = performance.now();
+  if (!st.outputActive) live.kbps = 0;
+  else if (live.bytes !== null && now > live.t && st.outputBytes >= live.bytes) {
+    live.kbps = Math.round((st.outputBytes - live.bytes) * 8 / (now - live.t));
+  }
+  live.bytes = st.outputActive ? st.outputBytes : null;
+  live.t = now;
+  state.streaming = st.outputActive;
+  const dropped = st.outputTotalFrames ? 100 * st.outputSkippedFrames / st.outputTotalFrames : 0;
+  $("liveState").textContent = !st.outputActive ? "Off air" : st.outputReconnecting ? "● Reconnecting…"
+    : (state.testing ? "Bandwidth test (private) " : "● LIVE ") + String(st.outputTimecode || "").split(".")[0];
+  $("liveState").className = "state " + (!st.outputActive ? "" : st.outputReconnecting || state.testing ? "warn" : "bad");
+  $("liveInfo").textContent = !st.outputActive ? "Not streaming to Twitch." : live.kbps + " kbps · " +
+    dropped.toFixed(1) + "% frames dropped · congestion " + Math.round(100 * (st.outputCongestion || 0)) + "%";
+  $("liveToggle").textContent = st.outputActive ? "End stream" : "Go live";
+  $("liveToggle").classList.toggle("hide", st.outputActive);
+  updateButtons();
+}
+
+async function toggleLive() {
+  if (busy || !state.connected) return;
+  busy = true;
+  updateButtons();
+  try {
+    if ((await call("GetStreamStatus")).outputActive) {
+      if (!confirm("End the stream on Twitch now?")) return;
+      await call("StopStream");
+      log("Stream ended.");
+      return;
+    }
+    // Going live: to Twitch and in public (no leftover test flag), saying first what viewers will see.
+    const svc = await call("GetStreamServiceSettings");
+    const ss = svc.streamServiceSettings || {};
+    if (svc.streamServiceType !== "rtmp_common" || ss.service !== "Twitch" || !ss.key) {
+      log("Save the Twitch stream key first (section 6).");
+      return;
+    }
+    if (ss.key.endsWith(TEST_FLAG)) await setTwitch(ss.key.slice(0, -TEST_FLAG.length), ss.server);
+    await refreshScreen().catch(() => {});
+    const sees = winScreen.id === null ? "the MainStream scene"
+      : !winScreen.visible ? "the Be-right-back card (your screen is hidden)"
+      : winScreen.receiving ? "your Windows screen, with its sound"
+      : "the Be-right-back card (your screen is on, but its feed from this PC isn't arriving)";
+    if (!confirm("Go live on Twitch now?\n\nViewers will see " + sees + ".")) return;
+    await call("StartStream");
+    log("Going live…");
+    for (let i = 1; i <= 15; i++) {
+      await sleep(1000);
+      const st = await call("GetStreamStatus");
+      if (st.outputActive && !st.outputReconnecting && st.outputBytes > 0) {
+        log("You're live on Twitch.");
+        return;
+      }
+      if (!st.outputActive && i >= 4) break;
+      $("liveState").textContent = "Connecting… " + i + "s";
+      $("liveState").className = "state warn";
+    }
+    await call("StopStream").catch(() => {});
+    log("Twitch didn't take the stream. Check the key (section 6) and that the OBS box can reach the internet.");
+  } catch (e) {
+    log("Couldn't switch the stream: " + e.message);
+  } finally {
+    busy = false;
+    await Promise.all([refresh(), refreshLive()]).catch(() => {});
+  }
+}
+
+async function param(category, name) {
+  return (await call("GetProfileParameter", { parameterCategory: category, parameterName: name })).parameterValue;
+}
+
+// Shows what OBS will stream to, and with what; never any part of the key.
+async function refresh() {
+  const [v, prof, svc, st, vid] = await Promise.all([call("GetVersion"), call("GetProfileList"),
+    call("GetStreamServiceSettings"), call("GetStreamStatus"), call("GetVideoSettings")]);
+  const ss = svc.streamServiceSettings || {};
+  const key = ss.key || "";
+  const testing = key.endsWith(TEST_FLAG);
+  state.testing = testing;
+  state.streaming = st.outputActive;
+  state.twitch = svc.streamServiceType === "rtmp_common" && ss.service === "Twitch";
+  state.keySet = key.length > 0;
+  const mode = (await param("Output", "Mode")) || "Simple";
+  const simple = mode === "Simple";
+  const encoder = simple ? await param("SimpleOutput", "StreamEncoder") : await param("AdvOut", "Encoder");
+  const kbps = simple ? await param("SimpleOutput", "VBitrate") : null;
+  const fps = vid.fpsDenominator ? Math.round(100 * vid.fpsNumerator / vid.fpsDenominator) / 100 : "?";
+  const rows = [
+    row("OBS", v.obsVersion + " on " + v.platformDescription),
+    row("Profile", prof.currentProfileName),
+    row("Service", state.twitch ? "Twitch" : (ss.service || svc.streamServiceType || "none"), state.twitch ? "ok" : "bad"),
+    row("Server", ss.server === "auto" ? "Auto" : (ss.server || "none")),
+    row("Stream key", !state.keySet ? "not set" : testing ? "set (bandwidth-test flag on)" : "set",
+      !state.keySet ? "bad" : testing ? "warn" : "ok"),
+    row("Streaming", !st.outputActive ? "off" : st.outputReconnecting ? "reconnecting" :
+      (testing ? "bandwidth test " : "LIVE ") + String(st.outputTimecode || "").split(".")[0], st.outputActive ? "warn" : ""),
+    row("Video out", vid.outputWidth + "×" + vid.outputHeight + " at " + fps + " fps"),
+    row("Encoder", mode + " output, " + encoder + (kbps ? ", " + kbps + " kbps" : "")),
+  ];
+  $("status").replaceChildren(...rows.flat());
+  updateButtons();
+}
+
+function setTwitch(key, server) {
+  return call("SetStreamServiceSettings", {
+    streamServiceType: "rtmp_common",
+    streamServiceSettings: { service: "Twitch", server: server || "auto", key },
+  });
+}
+
+// A test that never finished (the page closed mid-test) leaves the flag on the key, and every stream after it
+// would be a private test. Take it off while nothing is streaming.
+async function cleanUpTestFlag() {
+  const [svc, st] = await Promise.all([call("GetStreamServiceSettings"), call("GetStreamStatus")]);
+  const ss = svc.streamServiceSettings || {};
+  if (!st.outputActive && ss.service === "Twitch" && (ss.key || "").endsWith(TEST_FLAG)) {
+    await setTwitch(ss.key.slice(0, -TEST_FLAG.length), ss.server);
+    log("Took a leftover bandwidth-test flag off the stream key.");
+  }
+}
+
+async function save() {
+  const key = $("key").value.trim();
+  if (!key) return log("Paste the stream key first.");
+  if (!/^live_[A-Za-z0-9_]+$/.test(key) &&
+      !confirm("That doesn't look like a Twitch stream key (they start with live_). Save it anyway?")) return;
+  busy = true;
+  updateButtons();
+  try {
+    await setTwitch(key, $("server").value);
+    $("key").value = "";
+    $("show").checked = false;
+    $("key").type = "password";
+    log("Saved: OBS now streams to Twitch (" + $("server").selectedOptions[0].text + ").");
+  } catch (e) {
+    log("Couldn't save: " + e.message);
+  } finally {
+    busy = false;
+    await refresh().catch(e => log("Error: " + e.message));
+  }
+}
+
+async function bandwidthTest() {
+  const out = $("testOut");
+  out.className = "";
+  out.textContent = "Starting…";
+  busy = true;
+  updateButtons();
+  let key, server, started = false, connected = false, failed = false, samples = [], last = null;
+  try {
+    const ss = (await call("GetStreamServiceSettings")).streamServiceSettings || {};
+    key = (ss.key || "").replace(TEST_FLAG, "");
+    server = ss.server;
+    await setTwitch(key + TEST_FLAG, server);
+    await call("StartStream");
+    started = true;
+    log("Bandwidth test started (Twitch keeps it private).");
+    let lastBytes = null;
+    for (let t = 1; t <= TEST_SECONDS; t++) {
+      await sleep(1000);
+      const st = await call("GetStreamStatus");
+      if (!st.outputActive || st.outputReconnecting) {
+        if (connected || t >= 8) { failed = true; break; }   // dropped, or never came up
+        out.textContent = "Connecting… " + t + "s";
+        continue;
+      }
+      connected = true;
+      if (lastBytes !== null) samples.push((st.outputBytes - lastBytes) * 8 / 1000);
+      lastBytes = st.outputBytes;
+      last = st;
+      const dropped = st.outputTotalFrames ? 100 * st.outputSkippedFrames / st.outputTotalFrames : 0;
+      out.textContent = t + "s · " + Math.round(samples[samples.length - 1] || 0) + " kbps · " + dropped.toFixed(1) +
+        "% frames dropped · congestion " + Math.round(100 * (st.outputCongestion || 0)) + "%";
+    }
+  } catch (e) {
+    failed = true;
+    log("Test failed: " + e.message);
+  } finally {
+    if (started) {
+      await call("StopStream").catch(() => {});
+      for (let i = 0; i < 20; i++) {
+        const st = await call("GetStreamStatus").catch(() => null);
+        if (!st || !st.outputActive) break;
+        await sleep(500);
+      }
+    }
+    if (key !== undefined) await setTwitch(key, server).catch(e => log("Couldn't take the test flag off: " + e.message));
+    busy = false;
+    await refresh().catch(() => {});
+  }
+  if (failed || !connected) {
+    out.className = "bad";
+    out.textContent = "✗ Twitch didn't take the stream. Copy the key from the dashboard again and save it, and check " +
+      "that the OBS machine can reach the internet.";
+    log("Bandwidth test failed.");
+    return;
+  }
+  const avg = samples.length ? Math.round(samples.reduce((a, b) => a + b, 0) / samples.length) : 0;
+  const dropped = last && last.outputTotalFrames ? 100 * last.outputSkippedFrames / last.outputTotalFrames : 0;
+  out.className = dropped > 1 ? "warn" : "ok";
+  out.textContent = "✓ Twitch took the stream: about " + avg + " kbps, " + dropped.toFixed(1) + "% frames dropped. " +
+    (dropped > 1 ? "Some frames were dropped: try a lower bitrate in OBS before going live." : "The key works; you're ready to go live.");
+  log("Bandwidth test passed: ~" + avg + " kbps, " + dropped.toFixed(1) + "% dropped.");
+}
+
+// --- Audio: the computer's sound and the headset mic, on OBS on this PC ------------------------------------------------
+
+const DB_MIN = -60, DB_MAX = 20;
+
+function buildStrips() {
+  $("strips").replaceChildren(...STRIPS.map(s => {
+    const el = document.createElement("div");
+    el.className = "strip off";
+    el.id = "strip-" + s.key;
+    el.innerHTML = '<div class="strip-top"><b></b><span class="db" id="db-' + s.key + '">–</span></div>' +
+      '<div class="meter"><div class="cover" id="lvl-' + s.key + '"></div></div>' +
+      '<input type="range" id="vol-' + s.key + '" min="' + DB_MIN + '" max="' + DB_MAX + '" step="0.5" value="0" disabled title="Double-click for 0 dB">' +
+      '<div class="strip-foot"><span class="dev" id="dev-' + s.key + '"></span><button class="ghost" id="mute-' + s.key + '" disabled>Mute</button></div>';
+    el.querySelector("b").textContent = s.label;
+    return el;
+  }));
+  for (const s of STRIPS) {
+    const slider = $("vol-" + s.key);
+    slider.oninput = () => setVolume(s.key, Number(slider.value));
+    slider.onpointerdown = () => { if (audio[s.key]) audio[s.key].dragging = true; };
+    slider.onpointerup = slider.onchange = () => { if (audio[s.key]) audio[s.key].dragging = false; };
+    slider.ondblclick = () => { slider.value = 0; setVolume(s.key, 0); };
+    $("mute-" + s.key).onclick = () => toggleMute(s.key);
+  }
+}
+
+function keyFor(inputName) {
+  return STRIPS.map(s => s.key).find(k => audio[k] && audio[k].input === inputName);
+}
+
+function showStrip(key) {
+  const a = audio[key];
+  const on = !!a && !!a.input && pcObs.up;
+  $("strip-" + key).classList.toggle("off", !on);
+  $("strip-" + key).classList.toggle("muted", on && a.muted);
+  $("vol-" + key).disabled = $("mute-" + key).disabled = !on;
+  if (!on) return;
+  if (!a.dragging) $("vol-" + key).value = a.db;
+  $("db-" + key).textContent = a.db <= DB_MIN ? "−∞ dB" : (a.db > 0 ? "+" : a.db < 0 ? "−" : "") + Math.abs(a.db).toFixed(1) + " dB";
+  $("mute-" + key).textContent = a.muted ? "Unmute" : "Mute";
+  $("mute-" + key).classList.toggle("is-muted", a.muted);
+}
+
+function setPcState(msg) {
+  $("pcState").textContent = msg;
+  $("pcState").hidden = !msg;
+}
+
+function pcConnect() {
+  setPcState("Connecting to OBS on this PC…");
+  pcObs.open(PC_URL, $("pcPw").value, {
+    needPassword: () => setPcState("Enter the password for OBS on this PC, then press Connect."),
+    error: () => setPcState("Couldn't reach OBS on this PC. Is it running?"),
+    up: async () => {
+      if ($("pcRemember").checked && $("pcPw").value) remembered(PC_PW_KEY, $("pcPw").value);
+      updateButtons();
+      try {
+        await loadStrips();
+        setPcState("");
+        log("Connected to OBS on this PC.");
+      } catch (e) { setPcState("Error: " + e.message); }
+    },
+    down: code => {
+      STRIPS.forEach(s => showStrip(s.key));
+      updateButtons();
+      setPcState(code === 4009 ? "Wrong password for OBS on this PC." : "Not connected to OBS on this PC.");
+    },
+    event: pcEvent,
+  });
+}
+
+async function loadStrips() {
+  const special = await pcObs.call("GetSpecialInputs");
+  for (const s of STRIPS) {
+    const input = special[s.special] || null;
+    const a = audio[s.key] = { input, db: 0, muted: false, level: 0, shown: DB_MIN, dragging: false, timer: null, want: 0 };
+    if (!input) {
+      $("dev-" + s.key).textContent = "not set up in OBS on this PC";
+      showStrip(s.key);
+      continue;
+    }
+    const [vol, mute, settings, items] = await Promise.all([
+      pcObs.call("GetInputVolume", { inputName: input }),
+      pcObs.call("GetInputMute", { inputName: input }),
+      pcObs.call("GetInputSettings", { inputName: input }),
+      pcObs.call("GetInputPropertiesListPropertyItems", { inputName: input, propertyName: "device_id" }).catch(() => ({ propertyItems: [] }))]);
+    a.db = Math.max(DB_MIN, Math.min(DB_MAX, vol.inputVolumeDb));
+    a.muted = mute.inputMuted;
+    const dev = (settings.inputSettings || {}).device_id || "default";
+    const item = (items.propertyItems || []).find(i => i.itemValue === dev);
+    $("dev-" + s.key).textContent = dev === "default" ? s.device : item ? item.itemName : dev;
+    showStrip(s.key);
+  }
+}
+
+// While dragging, a slider sends at most every 40 ms, always ending on its last value.
+function setVolume(key, db) {
+  const a = audio[key];
+  if (!a || !a.input || !pcObs.up) return;
+  a.db = a.want = db;
+  showStrip(key);
+  if (a.timer) return;
+  a.timer = setTimeout(async () => {
+    a.timer = null;
+    try {
+      await pcObs.call("SetInputVolume", { inputName: a.input, inputVolumeDb: a.want <= DB_MIN ? -100 : a.want });
+    } catch (e) { log("Couldn't set the volume: " + e.message); }
+  }, 40);
+}
+
+async function toggleMute(key) {
+  const a = audio[key];
+  if (!a || !a.input || !pcObs.up) return;
+  // Set, not flip: OBS's InputMuteStateChanged event can arrive before this request's response.
+  const muted = !a.muted;
+  try {
+    await pcObs.call("SetInputMute", { inputName: a.input, inputMuted: muted });
+    a.muted = muted;
+    showStrip(key);
+    log(STRIPS.find(s => s.key === key).label + (muted ? " muted." : " on."));
+  } catch (e) { log("Couldn't switch it: " + e.message); }
+}
+
+// Restarts this PC's send to the stream OBS, which re-times the feed there: OBS keeps its audio as late as the worst
+// it has seen, so after a stall (this PC sleeping, a network hiccup) sound can run ahead of the picture until then.
+async function resync() {
+  if (!pcObs.up || busy) return;
+  if (!confirm("Re-sync your screen feed?\n\nViewers see the Be-right-back card for about 10 seconds while it reconnects. " +
+      "The Twitch stream keeps going.")) return;
+  busy = true;
+  updateButtons();
+  try {
+    if ((await pcObs.call("GetStreamStatus")).outputActive) {
+      await pcObs.call("StopStream");
+      for (let i = 0; i < 20 && (await pcObs.call("GetStreamStatus")).outputActive; i++) await sleep(250);
+      await sleep(1500);
+    }
+    await pcObs.call("StartStream");
+    log("Re-syncing the screen feed; it's back in about 10 seconds.");
+  } catch (e) {
+    log("Couldn't re-sync: " + e.message);
+  } finally {
+    busy = false;
+    updateButtons();
+  }
+}
+
+function pcEvent(type, d) {
+  if (type === "InputVolumeMeters") {
+    for (const i of d.inputs || []) {
+      const key = keyFor(i.inputName);
+      if (key) audio[key].level = Math.max(0, ...(i.inputLevelsMul || []).map(ch => ch[1] || 0));
+    }
+    return;
+  }
+  const key = keyFor(d.inputName);
+  if (!key) return;
+  if (type === "InputVolumeChanged") {
+    if (audio[key].dragging || audio[key].timer) return;
+    audio[key].db = Math.max(DB_MIN, Math.min(DB_MAX, d.inputVolumeDb));
+  } else if (type === "InputMuteStateChanged") {
+    audio[key].muted = d.inputMuted;
+  } else {
+    return;
+  }
+  showStrip(key);
+}
+
+// Peak meters over -60..0 dB, falling back at about 70 dB/s.
+function drawMeters() {
+  for (const s of STRIPS) {
+    const a = audio[s.key], cover = $("lvl-" + s.key);
+    let pct = 0;
+    if (a && a.input && pcObs.up) {
+      const db = a.level > 0 ? Math.max(DB_MIN, 20 * Math.log10(a.level)) : DB_MIN;
+      a.shown = Math.max(db, a.shown - 1.2);
+      pct = Math.min(100, (a.shown - DB_MIN) / -DB_MIN * 100);
+    }
+    if (cover) cover.style.width = (100 - pct) + "%";
+  }
+  requestAnimationFrame(drawMeters);
+}
+
+$("connect").onclick = connect;
+$("refresh").onclick = () => Promise.all([refresh(), refreshScreen(), refreshLive()]).catch(e => log("Error: " + e.message));
+$("save").onclick = save;
+$("test").onclick = bandwidthTest;
+$("screenToggle").onclick = toggleScreen;
+$("liveToggle").onclick = toggleLive;
+$("remember").onchange = () => { if (!$("remember").checked) remembered(PW_KEY, ""); };
+$("show").onchange = () => { $("key").type = $("show").checked ? "text" : "password"; };
+$("key").onkeydown = e => { if (e.key === "Enter" && !$("save").disabled) save(); };
+$("pw").onkeydown = e => { if (e.key === "Enter") connect(); };
+document.addEventListener("keydown", e => {
+  if (e.key.toLowerCase() !== "s" || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+  if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+  if (!$("screenToggle").disabled) { e.preventDefault(); toggleScreen(); }
+});
+setInterval(() => { if (state.connected && !busy) Promise.all([refreshScreen(), refreshLive()]).catch(() => {}); }, 2000);
+const savedPw = remembered(PW_KEY);
+if (savedPw) { $("pw").value = savedPw; $("remember").checked = true; }
+const fromHash = decodeURIComponent(location.hash.slice(1));
+if (/^wss?:\/\//.test(fromHash)) $("url").value = fromHash;
+connect();
+$("pcConnect").onclick = pcConnect;
+$("resync").onclick = resync;
+$("pcPw").onkeydown = e => { if (e.key === "Enter") pcConnect(); };
+$("pcRemember").onchange = () => { if (!$("pcRemember").checked) remembered(PC_PW_KEY, ""); };
+buildStrips();
+requestAnimationFrame(drawMeters);
+const savedPcPw = remembered(PC_PW_KEY);
+if (savedPcPw) { $("pcPw").value = savedPcPw; $("pcRemember").checked = true; }
+pcConnect();
+</script>
+</body>
+</html>

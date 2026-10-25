@@ -42,7 +42,7 @@ namespace CloneZ
             "  version INTEGER, savedAtUtc TEXT," +
             "  day INTEGER, hour REAL, weather INTEGER, rain REAL, fog REAL, cloud REAL," +
             "  mainsOn INTEGER, shutoffDay INTEGER, kills INTEGER, wave INTEGER, timeSurvived REAL," +
-            "  powerOn INTEGER, powerShutoffDay INTEGER, breakerOn INTEGER);" +
+            "  powerOn INTEGER, powerShutoffDay INTEGER, breakerOn INTEGER, survivorName TEXT);" +
 
             "CREATE TABLE player (" +
             "  id INTEGER PRIMARY KEY CHECK (id = 0)," +
@@ -159,13 +159,13 @@ namespace CloneZ
         private static void WriteMeta(SqliteConnection db, SaveData d)
         {
             using (var st = db.Prepare(
-                "INSERT INTO meta (id,version,savedAtUtc,day,hour,weather,rain,fog,cloud,mainsOn,shutoffDay,kills,wave,timeSurvived,powerOn,powerShutoffDay,breakerOn)" +
-                " VALUES (0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"))
+                "INSERT INTO meta (id,version,savedAtUtc,day,hour,weather,rain,fog,cloud,mainsOn,shutoffDay,kills,wave,timeSurvived,powerOn,powerShutoffDay,breakerOn,survivorName)" +
+                " VALUES (0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"))
             {
                 st.Bind(1, d.Version).Bind(2, d.SavedAtUtc).Bind(3, d.Day).Bind(4, d.Hour)
                   .Bind(5, d.Weather).Bind(6, d.Rain).Bind(7, d.Fog).Bind(8, d.Cloud)
                   .Bind(9, d.MainsOn).Bind(10, d.ShutoffDay).Bind(11, d.Kills).Bind(12, d.Wave).Bind(13, d.TimeSurvived)
-                  .Bind(14, d.PowerOn).Bind(15, d.PowerShutoffDay).Bind(16, d.BreakerOn);
+                  .Bind(14, d.PowerOn).Bind(15, d.PowerShutoffDay).Bind(16, d.BreakerOn).Bind(17, d.SurvivorName);
                 st.Step();
             }
         }
@@ -484,6 +484,10 @@ namespace CloneZ
                         d.PowerShutoffDay = st.GetInt(1);
                         d.BreakerOn = st.GetBool(2);
                     }
+            // So did the survivor's name: an older save keeps the one rolled for the session.
+            if (ColumnExists(db, "meta", "survivorName"))
+                using (var st = db.Prepare("SELECT survivorName FROM meta WHERE id=0;"))
+                    if (st.Step()) d.SurvivorName = st.GetString(0);
             return true;
         }
 

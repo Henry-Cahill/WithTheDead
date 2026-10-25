@@ -186,8 +186,9 @@ namespace CloneZ
 
         private System.Collections.IEnumerator FallbackStart()
         {
-            // Wait until the local player object is present.
-            while (Actor.LocalPlayer == null)
+            // Wait until the local player object is present (and, in the Kettle's lobby in the town, out of the door: the
+            // zone's events belong to the raid, not to the bar).
+            while (Actor.LocalPlayer == null || GameSession.IsHub)
                 yield return null;
 
             // Then wait an additional 4 seconds before starting events.

@@ -19,7 +19,7 @@ namespace CloneZ
         private ParticleSystem _smoke; // visual smoke
         private string _key;
 
-        public override string DisplayName => "Fireplace";
+        public override string DisplayName => "Woodstove";
         public override Vector3 InteractPoint => transform.position + Vector3.up * 0.9f;
         public override string SaveKey => _key;
 
@@ -78,15 +78,15 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             if (_isLit)
-                into.Add(new InteractAction("Extinguish", c => SetLit(false)));
+                into.Add(new InteractAction("Let the fire die down", c => SetLit(false)));
             else
-                into.Add(new InteractAction("Light fireplace", c => SetLit(true)));
+                into.Add(new InteractAction("Light the woodstove", c => SetLit(true)));
 
             // Inspect fire action
             into.Add(new InteractAction("Inspect fire", c =>
             {
                 int minutes = Mathf.CeilToInt(_fuelSeconds / 60f);
-                c.Notify(_isLit ? $"The fire will keep burning for about {minutes} minute{(minutes == 1 ? "" : "s")}." : "The fireplace is dark.");
+                c.Notify(_isLit ? $"The fire will keep burning for about {minutes} minute{(minutes == 1 ? "" : "s")}." : "The woodstove is cold.");
             }));
         }
 

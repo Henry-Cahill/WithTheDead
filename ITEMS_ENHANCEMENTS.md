@@ -1,4 +1,4 @@
-# CLONE-Z — Item System Enhancements
+# WithTheDead — Item System Enhancements
 
 A verbose, Project Zomboid–grounded catalogue of candidate enhancements to the item
 system. Each entry lists the gameplay purpose, PZ grounding, the concrete data model,

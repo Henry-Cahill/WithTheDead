@@ -161,7 +161,7 @@ namespace CloneZ
             if (Sandboxed) return;
             RaidKit old = RaidLoadout.LoadLegacyFile();
             if (old == null || old.IsEmpty) return;
-            CharacterProfile c = NewCharacter("Clone Z", "drifter", new List<string>(), Factions.Freehold, "O+", false);
+            CharacterProfile c = NewCharacter(SurvivorNames.Roll(), "drifter", new List<string>(), Factions.Freehold, "O+", false);
             c.Kit = old;
             s_Account.Characters.Add(c);
             s_Account.ActiveIndex = 0;

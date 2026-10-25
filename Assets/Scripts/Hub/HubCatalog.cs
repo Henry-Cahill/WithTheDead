@@ -19,8 +19,8 @@ namespace CloneZ
 
         public static readonly List<HubDef> All = new List<HubDef>
         {
-            new HubDef { Id = Kettle, Name = "The Rusty Kettle", MinLevel = 1, PassageCost = 0, TravelCost = 150, Faction = Factions.Freehold, NearestZone = "intro",
-                Blurb = "A bar in the last village before the cordon. Smoke, bad vodka, the best gossip in the region." },
+            new HubDef { Id = Kettle, Name = "The Rusty Kettle", MinLevel = 1, PassageCost = 0, TravelCost = 150, Faction = Factions.Freehold, NearestZone = ZoneCatalog.FeaturedZone,
+                Blurb = "A roadhouse on the edge of Bardstown, Kentucky: woodsmoke, cheap bourbon and the best gossip in Nelson County. Its front door opens onto the town." },
             new HubDef { Id = NorthCamp, Name = "North Camp", MinLevel = 6, PassageCost = 2500, TravelCost = 400, Faction = Factions.Freehold, NearestZone = "intro",
                 Blurb = "A Freehold camp in an old sawmill at the edge of the woods. Closer to the fog, further from the law." },
             new HubDef { Id = Dam, Name = "The Dam Bunker", MinLevel = 12, PassageCost = 6000, TravelCost = 900, Faction = Factions.Vanguard, NearestZone = "intro",

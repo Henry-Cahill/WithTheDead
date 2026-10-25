@@ -499,7 +499,7 @@ Keyboard kbEsc = Keyboard.current;
             RefreshInfo();
         }
 
-        // "Clone Z · Day 3 · 8:02 PM · 40°F outside · Dec 17, 1993", refreshed a few times a second while open.
+        // "Dale Mattingly · Day 3 · 8:02 PM · 40°F outside · Dec 17, 1993", refreshed a few times a second while open.
         private void RefreshInfo()
         {
             _sb.Length = 0;

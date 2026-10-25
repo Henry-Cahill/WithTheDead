@@ -94,7 +94,7 @@ namespace CloneZ
                 try
                 {
                     Directory.CreateDirectory(_out);
-                    _md.Append("# CLONE-Z interiors harness\n\n");
+                    _md.Append("# WithTheDead interiors harness\n\n");
                     if (!Stage("setup", Setup)) code = ExitNoWorld;
                     else
                     {

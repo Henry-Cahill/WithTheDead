@@ -101,7 +101,7 @@ namespace CloneZ
             f._opt = options ?? new StorageOptions();
             float emptyChance = f._opt.EmptyChance;
             int maxStacks = f._opt.MaxStacks;
-            if (GameSession.IsExtraction && f._opt.RaidBoost && !f._opt.StartEmpty)
+            if (GameSession.IsRaidWorld && f._opt.RaidBoost && !f._opt.StartEmpty)
             {
                 emptyChance *= CloneZConfig.RaidStorageEmptyScale;
                 if (maxStacks >= 0 && maxStacks < int.MaxValue - CloneZConfig.RaidStorageExtraStacks) maxStacks += CloneZConfig.RaidStorageExtraStacks;

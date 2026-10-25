@@ -63,7 +63,7 @@ namespace CloneZ
 
         /// <summary>The loot gate runs on every peer (they all roll the same seeded loot, so it must agree); restocks
         /// and expiry are the server's.</summary>
-        public static bool GateOn => SandboxSettings.Current.CentralEconomy && GameSession.IsExtraction;
+        public static bool GateOn => SandboxSettings.Current.CentralEconomy && GameSession.IsRaidWorld;
         /// <summary>Whether the central economy is active on the server (GateOn and this instance is the server).</summary>
         public static bool Active => GateOn && NetAuthority.IsServer;
 
@@ -153,7 +153,7 @@ namespace CloneZ
             };
         }
 
-        private static float Scale => GameSession.IsExtraction ? Mathf.Max(0.2f, ZoneCatalog.Current.LootMultiplier * SandboxSettings.Current.LootAbundance) : 1f;
+        private static float Scale => GameSession.IsRaidWorld ? Mathf.Max(0.2f, ZoneCatalog.Current.LootMultiplier * SandboxSettings.Current.LootAbundance) : 1f;
         /// <summary>Calculate the nominal max count for an item ID, scaling with loot multipliers.</summary>
         public static int NominalOf(string id) { EconomyRule r = RuleFor(id); return r.Nominal < 0 ? int.MaxValue : Mathf.CeilToInt(r.Nominal * Scale); }
         /// <summary>Calculate the minimum required count for an item ID, scaling with loot multipliers.</summary>
@@ -175,12 +175,21 @@ namespace CloneZ
                 float life = r.Lifetime > 0f ? r.Lifetime : 3600f;
                 s_Dropped.Add(new Dropped { Id = def.Id, At = at, Expires = Time.time + life });
             };
-            // Loot is rolled while the map is built, so the tally restarts when a raid ends (not when the next begins).
-            GameEvents.RaidEnded += (o, exit) => { s_Counts.Clear(); s_RestockedAt.Clear(); s_Dropped.Clear(); };
+            // Loot is rolled while the map is built, so the tally restarts when a raid ends (not when the next begins), and
+            // whenever a world is thrown away without one (the town round the hub, left by another way in).
+            GameEvents.RaidEnded += (o, exit) => ForgetWorld();
             WorldHooks.RaidStarted += (w, m, z) =>
             {
                 if (UnityEngine.Object.FindAnyObjectByType<EconomyTicker>() == null) new GameObject("[CentralEconomy]").AddComponent<EconomyTicker>();
             };
+        }
+
+        /// <summary>Forgets the tally of the last world's loot (its raid ended, or a new world is about to be built).</summary>
+        internal static void ForgetWorld()
+        {
+            s_Counts.Clear();
+            s_RestockedAt.Clear();
+            s_Dropped.Clear();
         }
 
         /// <summary>Counts what the Zone's containers hold right now (stacks per item).</summary>
