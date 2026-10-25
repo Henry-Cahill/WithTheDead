@@ -24,7 +24,7 @@ namespace CloneZ
         {
             "You spin the dial through a few numbers for luck. Click, click, click. The handle was never locked.",
             "The dial turns smooth and heavy. Somebody left this open in a hurry, and you're not complaining.",
-"You try a birthday, then 1-2-3-4. Nothing \u2014 not that it matters: the bolts are already drawn back.",
+            "You try a birthday, then 1-2-3-4. Nothing \u2014 not that it matters: the bolts are already drawn back.",
             "The dial spins with a faint whir; a half‑written note beside it reads “Set to 12‑03‑87 for the generator.”",
             "A scrawl in faded ballpoint ink says “Emergency: keep dial on 4‑7‑1 during storms.”",
             "The metal clicks as you turn it, and a torn Post‑It clings: “Do not twist past 9— lock will jam.”",
@@ -325,11 +325,11 @@ namespace CloneZ
             "A calendar window stuck on March, days after the 12th are blank, the cursor awaiting a new appointment.",
             "An email client listing inbox items, the last subject line reads “Re: …” with no message body displayed.",
             "A command‑line console paused at line 42, the prompt flashing, waiting for a keystroke.",
-"A half‑filled spreadsheet shows fuel allocations, column A shows numbers, column B a sum formula left dangling, the cursor hovers.",
-"A weather widget displays a bitter‑cold forecast for Kentucky, with snow‑depth predictions flickering.",
-"A personal e‑mail draft reads “Hey Mom, …” but stops before the signature, the cursor pulsing.",
-"An urgent supply request list titled “MEDICAL RESTOCK” lists bandages, IV bags and an unfinished line.",
-"A government bulletin scrolls: “County emergency shelter capacity at 78 %…”, the text pauses briefly before the next line.",
+            "A half‑filled spreadsheet shows fuel allocations, column A shows numbers, column B a sum formula left dangling, the cursor hovers.",
+            "A weather widget displays a bitter‑cold forecast for Kentucky, with snow‑depth predictions flickering.",
+            "A personal e‑mail draft reads “Hey Mom, …” but stops before the signature, the cursor pulsing.",
+            "An urgent supply request list titled “MEDICAL RESTOCK” lists bandages, IV bags and an unfinished line.",
+            "A government bulletin scrolls: “County emergency shelter capacity at 78 %…”, the text pauses briefly before the next line.",
         };
 
         private static System.Action<InteractContext> s_CivicReadScreen;

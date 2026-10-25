@@ -47,7 +47,7 @@ namespace CloneZ
 
             Vector3 along = r.AlongX ? Vector3.right : Vector3.forward;
             Vector3 into = RunNormal(r, swing);
-            float across = swing * (Half - LeafInset), leafH = DoorHeight - LeafFoot - 0.03f;
+            float across = swing * (Half - LeafInset), leafH = ShellDoorHeight - LeafFoot - 0.03f;
             var leaves = new FixturePart[2];
             var hinges = new Vector3[2];
             var reaches = new Vector3[2];
@@ -75,9 +75,9 @@ namespace CloneZ
                 Leaves = leaves,
                 Point = RunPoint(r, o.Pos, DoorKnobHeight, 0f),
                 Normal = RunNormal(r, 1),
-                Leaf = new Bounds(RunPoint(r, o.Pos, DoorHeight * 0.5f, 0f), RunSize(r, o.Width, DoorHeight, Half * 2f)),
+                Leaf = new Bounds(RunPoint(r, o.Pos, ShellDoorHeight * 0.5f, 0f), RunSize(r, o.Width, ShellDoorHeight, Half * 2f)),
                 Gap = new Bounds(RunPoint(r, o.Pos, WallH * 0.5f, 0f), RunSize(r, o.Width, WallH, Half * 2f)),
-                Block = new Bounds(RunPoint(r, o.Pos, (0.25f + DoorHeight) * 0.5f, 0f), RunSize(r, o.Width - 0.1f, DoorHeight - 0.25f, Half * 2f + 0.1f)),
+                Block = new Bounds(RunPoint(r, o.Pos, (0.25f + ShellDoorHeight) * 0.5f, 0f), RunSize(r, o.Width - 0.1f, ShellDoorHeight - 0.25f, Half * 2f + 0.1f)),
                 LockSide = policy.LockSide,
                 LockFrom = policy.LockFrom,
                 Deadbolt = policy.Deadbolt,

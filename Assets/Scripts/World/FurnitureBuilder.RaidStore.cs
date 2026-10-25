@@ -33,31 +33,7 @@ namespace CloneZ
                 m.Box(new Vector3(0f, y + 0.08f, 0.307f), new Vector3(0.2f, 0.03f, 0.006f), M(c * 0.6f));
             }
             m.Box(new Vector3(0f, 0.97f, 0f), new Vector3(0.86f, 0.14f, 0.58f), M(c));
-            // Copier lid hinge pins – two tiny chrome cylinders on the back edge of the lid
-            for (int i = 0; i < 2; i++)
-            {
-                float x = (i == 0 ? -0.02f : 0.02f);
-                m.Cylinder(new Vector3(x, 1.045f, -0.28f), 0.01f, 0.05f, 6, Mt(Chrome));
-            }
-
-            // Front kick‑plate – thin black strip protecting the bottom front edge
-            m.Box(new Vector3(0f, 0.09f, 0.31f), new Vector3(0.86f, 0.015f, 0.02f), M(Black));
-
-            // Wear scuff – a narrow darkened strip on the top, random X offset for variety
-            float scuffX = R(rng, -0.1f, 0.1f);
-            m.Box(new Vector3(scuffX, 1.045f, 0f), new Vector3(0.6f, 0.006f, 0.58f), M(new Color(0.18f, 0.18f, 0.20f)));
-
-            // CLONE‑Z sticker – thin paper label on the lid front
-            Color stickerCol = V(new Color(0.92f, 0.90f, 0.80f), rng, 0.03f);
-            float stickerYaw = R(rng, -2f, 2f);
-            m.Box(new Vector3(0f, 1.07f, 0.33f), new Vector3(0.12f, 0.004f, 0.001f), Yaw(stickerYaw), M(stickerCol));
-
-            // Small foot brace – tiny chrome cylinder under the left‑front corner
-            m.Cylinder(new Vector3(-0.38f, 0.025f, 0.28f), 0.008f, 0.04f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 1.0405f, -0.02f), new Vector3(0.62f, 0.002f, 0.42f), Gs(new Color(0.14f, 0.18f, 0.2f)));
-            // Thin random‑thickness snow‑dust layer on top of the copier cabinet
-            float snowThick = R(rng, 0.002f, 0.006f);
-            m.Box(new Vector3(0f, 1.045f + snowThick/2f, 0f), new Vector3(0.86f, snowThick, 0.58f), M(DecorProps.SnowWhite));
             m.FlatUV(new Vector3(-0.1f, 1.0435f, -0.04f), 0.21f, 0.28f, 90f + R(rng, -6f, 6f), DecorMaterials.Paper(rng.Next(3)), new Rect(0f, 0f, 1f, 1f));
             // The output tray on the left, a sheet or two in it.
             m.Box(new Vector3(-0.49f, 0.73f, 0f), new Vector3(0.08f, 0.02f, 0.4f), M(c * 0.8f));
@@ -68,18 +44,12 @@ namespace CloneZ
                 m.Box(new Vector3(0.2f + i * 0.04f, 1.047f, 0.3f), new Vector3(0.025f, 0.008f, 0.02f), M(new Color(0.3f, 0.3f, 0.32f)));
             m.Box(new Vector3(0.36f, 1.035f, 0.32f), new Vector3(0.05f, 0.026f, 0.004f), M(Black));
             m.Box(new Vector3(0.22f, 1.03f, 0.321f), new Vector3(0.05f, 0.02f, 0.004f), Gl(new Color(0.2f, 0.62f, 0.32f)));
-            // Small "COPY" paper label on the control panel
-            Color labelCol = V(new Color(0.92f, 0.90f, 0.80f), rng, 0.03f);
-            float labelYaw = R(rng, -3f, 3f);
-            m.Box(new Vector3(0.28f, 1.035f, 0.33f), new Vector3(0.07f, 0.005f, 0.001f), Yaw(labelYaw), M(labelCol));
         }
 
         /// <summary>The copier's lid (drawn shut), hinged at its back edge (<see cref="OfficeCopierLidHinge"/>).</summary>
         public static void OfficeCopierLid(RaidMesh m)
         {
             m.Box(new Vector3(0f, 1.056f, -0.02f), new Vector3(0.8f, 0.03f, 0.52f), M(new Color(0.25f, 0.25f, 0.27f)));
-            // Chrome latch knob on the front edge of the lid
-            m.Box(new Vector3(0.35f, 1.07f, -0.03f), new Vector3(0.02f, 0.02f, 0.005f), Mt(Chrome));
             m.Box(new Vector3(0f, 1.075f, 0.22f), new Vector3(0.24f, 0.012f, 0.03f), M(new Color(0.16f, 0.16f, 0.17f)));
         }
 
@@ -104,9 +74,6 @@ namespace CloneZ
             m.Box(new Vector3(-0.04f, 0.785f, 0.175f), new Vector3(0.03f, 0.03f, 0.03f), G(new Color(0.18f, 0.32f, 0.70f)));
             m.Box(new Vector3(0.04f, 0.785f, 0.175f), new Vector3(0.03f, 0.03f, 0.03f), G(new Color(0.72f, 0.14f, 0.10f)));
             m.Box(new Vector3(0f, 0.706f, 0.18f), new Vector3(0.14f, 0.012f, 0.05f), Mt(new Color(0.45f, 0.45f, 0.46f)));
-            // Add chrome tap-knobs above the taps
-            m.Cylinder(new Vector3(-0.04f, 0.795f, 0.185f), 0.005f, 0.015f, 6, Mt(Chrome));
-            m.Cylinder(new Vector3(0.04f, 0.795f, 0.185f), 0.005f, 0.015f, 6, Mt(Chrome));
             m.Cylinder(new Vector3(0.195f, 0.48f, 0.02f), 0.035f, 0.24f, 8, M(new Color(0.9f, 0.9f, 0.88f)));
             m.Cylinder(new Vector3(0f, 0.93f, 0f), 0.08f, 0.02f, 10, M(c * 0.8f));
             m.Cylinder(new Vector3(0f, OfficeJugBase, 0f), 0.13f, OfficeJugHeight, 10, BathGlass, Quaternion.identity, 0.6f);
@@ -136,14 +103,6 @@ namespace CloneZ
             m.Box(new Vector3(0.33f, 0.66f, 0.383f), new Vector3(0.05f, 0.09f, 0.008f), Mt(Chrome));
             m.Box(new Vector3(0.33f, 0.66f, 0.388f), new Vector3(0.006f, 0.04f, 0.004f), M(Black));
             m.Box(new Vector3(-0.1f, 0.3f, 0.37f), new Vector3(0.5f, 0.16f, 0.02f), M(Black));
-            int rivetCount = rng.Next(4, 7); // 4‑6 rivets for variation
-            for (int i = 0; i < rivetCount; i++)
-            {
-                // position on the top rim (y ≈ top of body, small inset)
-                float x = -0.4f + i * (0.8f / (rivetCount - 1f));
-                // small chrome rivet head
-                m.Cylinder(new Vector3(x, 1.85f, 0.37f), 0.01f, 0.02f, 6, Mt(Chrome));
-            }
             m.Box(new Vector3(-0.1f, 0.37f, 0.382f), new Vector3(0.4f, 0.02f, 0.012f), Mt(Chrome));
         }
 
@@ -190,40 +149,10 @@ namespace CloneZ
             Color shell = V(new Color(0.78f, 0.76f, 0.70f), rng, 0.03f);
             m.Cylinder(Vector3.zero, 0.28f, 1.5f, 12, G(shell));
             m.Cylinder(new Vector3(0f, 1.5f, 0f), 0.22f, 0.05f, 12, G(shell * 0.9f));
-            // Add four small chrome bolt heads around the top rim for detail
-            for (int i = 0; i < 4; i++)
-            {
-                float a = R(rng, 0f, Mathf.PI * 2f);
-                Vector3 pos = new Vector3(Mathf.Cos(a) * 0.24f, 1.5f, Mathf.Sin(a) * 0.24f);
-                m.Cylinder(pos, 0.01f, 0.02f, 6, Mt(Chrome));
-            }
-            // ---- Temperature‑gauge panel (front‑upper‑right of the heater) ----
-            // Gauge face – thin matte disc, 0.12 m diameter, 0.004 m thick
-            m.Box(new Vector3(0.0f, 0.72f, 0.34f), new Vector3(0.12f, 0.004f, 0.12f), M(new Color(0.2f, 0.2f, 0.22f)));
-            // Small glass cover over the face, slightly larger, clear (BathGlass)
-            m.Box(new Vector3(0.0f, 0.724f, 0.34f), new Vector3(0.13f, 0.002f, 0.13f), BathGlass);
-            // Needle – thin black box, 0.02 m long, 0.004 m thick, 0.002 m wide, pivoted around centre
-            m.Box(new Vector3(0.03f, 0.726f, 0.34f), new Vector3(0.02f, 0.004f, 0.002f), M(new Color(0.05f, 0.05f, 0.07f)));
-            // Pressure‑relief knob (chrome) – tiny cylinder on the side of the gauge
-            m.Cylinder(new Vector3(0.07f, 0.71f, 0.345f), 0.008f, 0.02f, 6, Mt(Chrome));
-            // Brass name‑plate – thin rectangle, 0.06 m × 0.015 m × 0.002 m
-            m.Box(new Vector3(-0.07f, 0.73f, 0.34f), new Vector3(0.06f, 0.015f, 0.002f), Mt(Brass));
-            // Random rust patches (up to two) on the front panel
-            int rustPatches = rng.Next(0, 3);
-            for (int i = 0; i < rustPatches; i++)
-            {
-                float rx = R(rng, -0.2f, 0.2f);
-                float ry = R(rng, 0.4f, 0.9f);
-                m.Box(new Vector3(rx, ry, 0.31f), new Vector3(0.04f, 0.02f, 0.001f), M(new Color(0.55f, 0.33f, 0.28f)));
-            }
-            // Wear scrape – dark thin strip
-            m.Box(new Vector3(0f, 0.68f, 0.30f), new Vector3(0.5f, 0.002f, 0.02f), M(new Color(0.12f, 0.12f, 0.13f)));
-
             Surf copper = Mt(new Color(0.5f, 0.35f, 0.2f));
             m.Cylinder(new Vector3(0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
             m.Cylinder(new Vector3(-0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
             m.Cylinder(new Vector3(0f, 1.55f, -0.1f), 0.05f, 1.2f, 8, Mt(new Color(0.46f, 0.47f, 0.48f)));
-            m.Cylinder(new Vector3(0.07f, 1.58f, 0.06f), 0.015f, 0.04f, 6, Mt(Brass));
             m.Box(new Vector3(0f, 0.42f, 0.3f), new Vector3(0.13f, 0.12f, 0.08f), M(new Color(0.12f, 0.12f, 0.13f)));
             m.Cylinder(new Vector3(0f, 0.44f, 0.34f), 0.03f, 0.03f, 8, M(new Color(0.62f, 0.12f, 0.1f)), Quaternion.Euler(90f, 0f, 0f));
             m.Box(new Vector3(0.08f, 0.38f, 0.3f), new Vector3(0.02f, 0.04f, 0.06f), M(Black));
@@ -461,7 +390,8 @@ namespace CloneZ
             // The rubbish under the right-hand lid: a dark heap of bags just below the rim.
             m.Box(new Vector3(0.47f, 1.153f, 0f), new Vector3(0.86f, 0.004f, 1.04f), M(new Color(0.06f, 0.06f, 0.07f)));
             for (int i = 0; i < 3; i++)
-                m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);
+                m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)),
+                    G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);
         }
 
         /// <summary>The dumpster's right-hand lid (drawn shut), hinged along its back edge (<see cref="TownDumpsterHinge"/>).</summary>
@@ -469,18 +399,7 @@ namespace CloneZ
         {
             m.Box(new Vector3(0.47f, 1.18f, 0f), new Vector3(0.92f, 0.04f, 1.12f), M(new Color(0.12f, 0.12f, 0.12f)));
             m.Box(new Vector3(0.47f, 1.18f, 0.575f), new Vector3(0.3f, 0.03f, 0.03f), M(new Color(0.09f, 0.09f, 0.09f)));
-            // Hinge pins – two small chrome cylinders on the back (negative‑Z) edge of the lid
-            m.Cylinder(new Vector3(0.47f - 0.02f, 1.20f, -0.56f), 0.01f, 0.05f, 6, Mt(Chrome));
-            m.Cylinder(new Vector3(0.47f + 0.02f, 1.20f, -0.56f), 0.01f, 0.05f, 6, Mt(Chrome));
-            // Chrome latch knob on the front edge of the lid
-            m.Cylinder(new Vector3(0.47f, 1.20f, 0.56f), 0.015f, 0.03f, 6, Mt(Chrome));
-            // Wear stripe – thin dark strip around the bottom edge
-            m.Box(new Vector3(0.47f, 1.155f, 0f), new Vector3(0.90f, 0.004f, 1.12f), M(new Color(0.12f, 0.12f, 0.13f)));
-            // Rust patches – small brownish spots on the side panels
-            m.Box(new Vector3(0.47f - 0.45f, 1.18f, -0.30f), new Vector3(0.06f, 0.02f, 0.001f), M(new Color(0.55f, 0.33f, 0.28f)));
-            m.Box(new Vector3(0.47f + 0.45f, 1.18f, 0.30f), new Vector3(0.06f, 0.02f, 0.001f), M(new Color(0.55f, 0.33f, 0.28f)));
-            // Cross‑strap – thin metal bar across the lid centre
-            m.Box(new Vector3(0.47f, 1.20f, 0f), new Vector3(0.80f, 0.008f, 0.02f), Mt(Chrome));        }
+        }
 
         /// <summary>The guard booth's sliding hatch, its radio on the ledge under it, and where the survivor reaches for each.</summary>
         internal static readonly Vector3 TownBoothHatchReach = new Vector3(-0.25f, 1.35f, 0.95f);
@@ -503,25 +422,6 @@ namespace CloneZ
             m.Box(new Vector3(0f, 1.115f, 0.9f), new Vector3(1.2f, 0.03f, 0.28f), M(wall * 0.9f));
             m.Box(new Vector3(-0.3f, 1.135f, 0.98f), new Vector3(0.5f, 0.012f, 0.1f), M(DecorProps.SnowShade));
             m.Box(new Vector3(-0.25f, 1.55f, 0.762f), new Vector3(0.58f, 0.66f, 0.016f), M(wall * 0.7f));
-// ---- Guard‑booth door panel ----
-// Door colour slightly darker than the wall.
-Color doorCol = wall * 0.9f;
-m.Box(new Vector3(0f, 0.55f, 0.78f), new Vector3(1.5f, 1.0f, 0.04f), M(doorCol));
-// Guard‑booth door hinges (chrome)
-m.Box(new Vector3(-0.73f, 0.55f, 0.78f), new Vector3(0.02f, 0.9f, 0.02f), Mt(Chrome));
-m.Box(new Vector3(0.73f, 0.55f, 0.78f), new Vector3(0.02f, 0.9f, 0.02f), Mt(Chrome));
-// Chrome latch knob on the front edge of the door
-m.Cylinder(new Vector3(0f, 0.6f, 0.80f), 0.015f, 0.025f, 6, Mt(Chrome), Quaternion.identity);
-// Brass lock plate above the latch
-m.Box(new Vector3(0f, 0.75f, 0.795f), new Vector3(0.2f, 0.04f, 0.008f), M(Brass));
-// Rust weathering patches on the door
-int rustCount = rng.Next(0, 3);
-for (int i = 0; i < rustCount; i++) {
-    float rx = R(rng, -0.6f, 0.6f);
-    m.Box(new Vector3(rx, 0.4f + i * 0.2f, 0.78f), new Vector3(0.04f, 0.02f, 0.001f), M(new Color(0.55f, 0.33f, 0.28f)));
-}
-// "SAFE" paper sign above the door
-m.Box(new Vector3(0f, 1.2f, 0.79f), new Vector3(0.3f, 0.1f, 0.001f), M(Paper));
             // The booth radio, out on the ledge under the eaves (its lit dial is laid over it while it plays).
             TownFieldRadio(m, rng, TownBoothRadio, 0f);
         }

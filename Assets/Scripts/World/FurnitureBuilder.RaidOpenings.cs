@@ -58,16 +58,8 @@ namespace CloneZ
             m.Box(l.P(mid, y0 + bottom * 0.5f, across), l.Size(w - 0.09f, bottom, lower ? depth : depth + 0.005f), frame);
             float glass = h - top - bottom;
             m.Box(l.P(mid, y0 + bottom + glass * 0.5f, across), l.Size(0.03f, glass, 0.03f), frame);
-            // Add tiny brass pull‑knobs on the top rail of each sash (both left and right sides)
-            Surf brass = Mt(Brass);
-            float knobY = y1 - top * 0.5f - 0.01f; // a few centimetres below the top rail
-            float knobDepth = across + roomSide * (depth * 0.5f + 0.008f);
-            // Left knob
-            m.Box(l.P(s0 + 0.0225f, knobY, knobDepth), new Vector3(0.012f, 0.025f, 0.008f), brass);
-            // Right knob
-            m.Box(l.P(s1 - 0.0225f, knobY, knobDepth), new Vector3(0.012f, 0.025f, 0.008f), brass);
             if (!lower) return;
-            // Existing brass lifts on the lower sash's bottom rail
+            Surf brass = Mt(Brass);
             for (int e = -1; e <= 1; e += 2)
                 m.Box(l.P(mid + e * w * 0.25f, y0 + 0.03f, across + roomSide * (depth * 0.5f + 0.008f)), l.Size(0.05f, 0.015f, 0.016f), brass);
         }
@@ -125,30 +117,6 @@ namespace CloneZ
                 Quaternion q = face * Quaternion.Euler(0f, 0f, R(rng, -7f, 7f));
                 Vector3 c = l.P(mid, y, outside * off);
                 m.Box(c, new Vector3(w + 0.3f, 0.16f, 0.03f), q, plank);
-            // Top wooden trim (thin strip along the top edge)
-            m.Box(c + q * new Vector3(0f, 0.076f, 0f), new Vector3(w + 0.3f, 0.008f, 0.032f), q, plank);
-            // Bottom wooden trim
-            m.Box(c + q * new Vector3(0f, -0.076f, 0f), new Vector3(w + 0.3f, 0.008f, 0.032f), q, plank);
-            // Brass corner caps
-            float halfW = (w + 0.3f) * 0.5f;
-            float halfH = 0.16f * 0.5f;
-            for (int sx = -1; sx <= 1; sx += 2)
-                for (int sy = -1; sy <= 1; sy += 2)
-                    m.Box(c + q * new Vector3(sx * halfW, sy * halfH, 0f), new Vector3(0.018f, 0.018f, 0.018f), q, Mt(Brass));
-            // Dark‑steel strap
-            m.Box(c, new Vector3(w + 0.28f, 0.004f, 0.008f), q, Mt(DarkSteel));
-            // Weathered paint patch
-            float offX = R(rng, -0.2f, 0.2f);
-            float offY = R(rng, -0.04f, 0.04f);
-            Vector3 patchPos = c + q * new Vector3(offX, offY, 0f);
-            m.Box(patchPos, new Vector3(0.20f, 0.06f, 0.032f), q, M(PlankWood * 0.85f));
-            // Brass screw‑head
-            Vector3 screwPos = c + q * new Vector3(-halfW + 0.02f, -halfH + 0.02f, 0f);
-            m.Box(screwPos, new Vector3(0.008f, 0.008f, 0.004f), q, Mt(Brass));
-                // Dark‑steel brackets near lower corners of the board for a weathered look
-                for (int e = -1; e <= 1; e += 2)
-                    m.Box(c + q * new Vector3(e * (w * 0.5f - 0.02f), -0.07f, 0f), new Vector3(0.012f, 0.012f, 0.006f), q, nail);
-                // Existing nails (small fasteners)
                 for (int e = -1; e <= 1; e += 2)
                     m.Box(c + q * new Vector3(e * (w * 0.5f + 0.06f), 0f, 0.016f), new Vector3(0.014f, 0.014f, 0.006f), q, nail);
             }
@@ -168,34 +136,8 @@ namespace CloneZ
             {
                 RaidMesh m = pass == 0 ? open : drawn;
                 m.Box(l.P((r0 + r1) * 0.5f, rodY, rodOff), l.Size(r1 - r0, 0.024f, 0.024f), brass);
-                // Central brass knob (adjustable height)
-                m.CylinderX(l.P((r0 + r1) * 0.5f, rodY + 0.015f, rodOff), 0.006f, 0.02f, 10, brass, 0f);
-                // Hook dimensions for finial hooks
-                float hookDepth = side * (face + 0.075f + 0.025f);
-                float hookLen = 0.04f;
-                float hookRad = 0.006f;
                 m.Ellipsoid(l.P(r0, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
-                // Left brass eyelet for tie‑back
-                float leftEyePos = r0 + 0.12f; // offset a little inward from finial
-                m.CylinderX(l.P(leftEyePos, rodY, rodOff), 0.004f, 0.008f, 10, brass, 0f);
-                // Left fabric tie‑back strip
-                Vector3 leftStripPos = l.P(leftEyePos, rodY - 0.02f, rodOff + side * (face + 0.045f));
-                m.Box(leftStripPos, new Vector3(0.04f, 0.008f, 0.004f), M(fabric * 0.75f));
-                // Left eyelet washer
-                m.Box(l.P(leftEyePos, rodY - 0.004f, rodOff), new Vector3(0.008f, 0.001f, 0.008f), brass);
-                // Right brass eyelet for tie‑back
-                float rightEyePos = r1 - 0.12f;
-                m.CylinderX(l.P(rightEyePos, rodY, rodOff), 0.004f, 0.008f, 10, brass, 0f);
-                // Right fabric tie‑back strip
-                Vector3 rightStripPos = l.P(rightEyePos, rodY - 0.02f, rodOff + side * (face + 0.045f));
-                m.Box(rightStripPos, new Vector3(0.04f, 0.008f, 0.004f), M(fabric * 0.75f));
-                // Right eyelet washer
-                m.Box(l.P(rightEyePos, rodY - 0.004f, rodOff), new Vector3(0.008f, 0.001f, 0.008f), brass);
-                // Add short brass hook extending outward from left finial
-                m.CylinderX(l.P(r0, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
                 m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
-                // Add short brass hook extending outward from right finial
-                m.CylinderX(l.P(r1, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
             }
 
             float top = rodY - 0.015f, bottom = sill + 0.06f, h = top - bottom;
@@ -230,7 +172,6 @@ namespace CloneZ
         {
             float a = side * across, rollY = head - 0.05f, roll = cloth ? 0.028f : 0.022f;
             Surf stuff = M(fabric), bar = M(cloth ? fabric * 0.7f : Pine), cord = M(cloth ? new Color(0.55f, 0.50f, 0.38f) : fabric * 0.6f);
-Surf brass = Mt(Brass);
             for (int pass = 0; pass < 2; pass++)
                 (pass == 0 ? up : down).CylinderX(l.P(mid, rollY, a), roll, w, 10, stuff, l.Yaw);
 
@@ -253,15 +194,6 @@ Surf brass = Mt(Brass);
             float upBar = rollY - roll - 0.016f;
             up.Box(l.P(mid, upBar, a), l.Size(w, 0.018f, 0.014f), bar);
             up.Box(l.P(mid, upBar - 0.07f, a), l.Size(0.005f, 0.13f, 0.005f), cord);
-            // Small brass knob on the cord attachment point
-            up.Box(l.P(mid, upBar - 0.07f, a), new Vector3(0.018f, 0.004f, 0.018f), brass);
-            // Short brass pull‑hook at the bottom of the cord
-            float upBottomY = upBar - 0.07f - 0.13f;
-            up.Cylinder(l.P(mid, upBottomY, a), 0.004f, 0.02f, 10, brass, Quaternion.identity);
-            // Decorative brass cap on top of the up‑bar
-            up.Box(l.P(mid, upBar, a), new Vector3(0.02f, 0.008f, 0.02f), brass);
-            // Subtle dark‑steel wear strip above the cap
-            up.Box(l.P(mid, upBar + 0.009f, a), new Vector3(0.04f, 0.002f, 0.004f), Mt(DarkSteel));
             up.Ellipsoid(l.P(mid, upBar - 0.145f, a), new Vector3(0.02f, 0.028f, 0.02f), bar, 6, 4);
 
             // Pulled down: the cloth over the glazing, the bar at its foot, the cord and knob just clear of the sill.
@@ -269,15 +201,6 @@ Surf brass = Mt(Brass);
             down.Box(l.P(mid, (rollY + downBar) * 0.5f, a), l.Size(w, rollY - downBar, 0.005f), stuff);
             down.Box(l.P(mid, downBar, a), l.Size(w, 0.018f, 0.014f), bar);
             down.Box(l.P(mid, downBar - 0.045f, a), l.Size(0.005f, 0.07f, 0.005f), cord);
-            // Small brass knob on the down‑bar cord attachment point
-            down.Box(l.P(mid, downBar - 0.045f, a), new Vector3(0.018f, 0.004f, 0.018f), brass);
-            // Short brass pull‑hook at the bottom of the down‑bar cord
-            float downBottomY = downBar - 0.045f - 0.13f;
-            down.Cylinder(l.P(mid, downBottomY, a), 0.004f, 0.02f, 10, brass, Quaternion.identity);
-            // Decorative brass cap on top of the down‑bar
-            down.Box(l.P(mid, downBar, a), new Vector3(0.02f, 0.008f, 0.02f), brass);
-            // Subtle dark‑steel wear strip above the cap
-            down.Box(l.P(mid, downBar + 0.009f, a), new Vector3(0.04f, 0.002f, 0.004f), Mt(DarkSteel));
             down.Ellipsoid(l.P(mid, downBar - 0.085f, a), new Vector3(0.02f, 0.028f, 0.02f), bar, 6, 4);
         }
 
@@ -291,37 +214,8 @@ Surf brass = Mt(Brass);
             {
                 float c = mid + e * (w * 0.5f + 0.07f + sw * 0.5f);
                 m.Box(l.P(c, cy, side * (face + 0.02f)), l.Size(sw, sh, 0.03f), panel);
-                // Brass hinge near top‑outer edge of the panel
-                m.Box(l.P(c, cy + sh * 0.5f - 0.02f, side * (face + 0.04f)), l.Size(0.018f, 0.04f, 0.008f), Mt(Brass));
-                // Brass latch near lower‑outer edge of the panel
-                m.Box(l.P(c, sill + 0.12f, side * (face + 0.045f)), l.Size(0.032f, 0.064f, 0.008f), Mt(Brass));
                 for (float y = sill + 0.04f; y < head + 0.03f; y += 0.075f)
                     m.Box(l.P(c, y, side * (face + 0.038f)), l.Size(sw - 0.06f, 0.024f, 0.012f), slat);
-                // ← NEW: metal corner brackets at top‑outer corners of each panel
-                // left‑top bracket
-                m.Box(l.P(c - sw * 0.5f + 0.02f, cy + sh * 0.5f - 0.015f, side * (face + 0.03f)),
-                    new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
-                // right‑top bracket
-                m.Box(l.P(c + sw * 0.5f - 0.02f, cy + sh * 0.5f - 0.015f, side * (face + 0.03f)),
-                    new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
-            }
-            // ← NEW: thin dark‑steel chain linking the two shutters
-            {
-                float chainZ = side * (face + 0.04f); // a little in front of the panels
-                float chainY = cy; // vertically centred
-                float chainLen = w + 0.14f + sw; // distance between panel centres
-                m.CylinderX(l.P(mid, chainY, chainZ), 0.004f, chainLen, 10, Mt(DarkSteel), 0f);
-            }
-            // ← NEW: deterministic rust patches (no RNG – offset based on geometry)
-            {
-                Color rustCol = new Color(0.55f, 0.30f, 0.20f);
-                Surf rust = M(rustCol);
-                float rustZ = side * (face + 0.025f);
-                float rustY = cy + 0.03f; // slightly above centre
-                // left panel rust
-                m.Ellipsoid(l.P(mid - w * 0.25f, rustY, rustZ), new Vector3(0.02f, 0.02f, 0.004f), rust, 4, 2);
-                // right panel rust
-                m.Ellipsoid(l.P(mid + w * 0.25f, rustY, rustZ), new Vector3(0.02f, 0.02f, 0.004f), rust, 4, 2);
             }
         }
 
@@ -349,19 +243,6 @@ Surf brass = Mt(Brass);
                 float along = mid - w * 0.5f + (i + 0.5f) * w / 4f;
                 m.Ellipsoid(l.P(along, sill - 0.045f, across), l.Size(w / 4f + 0.08f, 0.07f, 0.17f), snow, 6, 3);
             }
-            // Tiny dark‑steel corner brackets at the planter’s top edges.
-            {
-                float size = R(rng, 0.018f, 0.022f);
-                Vector3 dim = new Vector3(size, size, size);
-                // Front‑left
-                m.Box(l.P(mid - w * 0.5f + 0.04f, sill - 0.05f, across + 0.04f), dim, Mt(DarkSteel));
-                // Front‑right
-                m.Box(l.P(mid + w * 0.5f - 0.04f, sill - 0.05f, across + 0.04f), dim, Mt(DarkSteel));
-                // Back‑left
-                m.Box(l.P(mid - w * 0.5f + 0.04f, sill - 0.05f, across - 0.04f), dim, Mt(DarkSteel));
-                // Back‑right
-                m.Box(l.P(mid + w * 0.5f - 0.04f, sill - 0.05f, across - 0.04f), dim, Mt(DarkSteel));
-            }
         }
         #endregion
 
@@ -380,56 +261,13 @@ Surf brass = Mt(Brass);
                 Quaternion q = Quaternion.Euler(R(rng, -5f, 5f), R(rng, 0f, 180f), R(rng, -5f, 5f));
                 m.Box(l.P(along, 0.032f + thick * 0.4f, across), new Vector3(len, thick * 0.8f, thick), q, M(V(Chance(rng, 0.6) ? raw : wood, rng, 0.12f)));
             }
-            // half‑width of the door opening – used for frame placement
-            float halfW = width * 0.5f;
-            // left wooden jamb (weathered timber)
-            m.Box(l.P(mid - halfW - 0.01f, 0.65f, side * 0.02f),
-                new Vector3(0.02f, 1.30f, 0.02f), M(wood));
-            // bottom wooden trim on left jamb
-            m.Box(l.P(mid - halfW - 0.01f, 0.03f, side * 0.02f),
-                new Vector3(0.02f, 0.06f, 0.02f), M(wood));
-            // right wooden jamb
-            m.Box(l.P(mid + halfW + 0.01f, 0.65f, side * 0.02f),
-                new Vector3(0.02f, 1.30f, 0.02f), M(wood));
-            // bottom wooden trim on right jamb
-            m.Box(l.P(mid + halfW + 0.01f, 0.03f, side * 0.02f),
-                new Vector3(0.02f, 0.06f, 0.02f), M(wood));
-            // top lintel, slightly wider than the opening
-            m.Box(l.P(mid, 1.32f, side * 0.02f),
-                new Vector3(width + 0.04f, 0.04f, 0.02f), M(wood));
-            // dark‑steel hinge (period‑correct hardware)
-            m.Box(l.P(mid - halfW + 0.04f, 1.20f, side * 0.045f),
-                new Vector3(0.01f, 0.04f, 0.008f), Mt(DarkSteel));
-            // left‑top iron corner cap
-            m.Box(l.P(mid - halfW - 0.01f, 1.30f, side * (0.02f + 0.009f)),
-                new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
-            // right‑top iron corner cap
-            m.Box(l.P(mid + halfW + 0.01f, 1.30f, side * (0.02f + 0.009f)),
-                new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
-            // door kick‑plate (metal strip across the bottom)
-            m.Box(l.P(mid, 0.04f, side * 0.02f),
-                new Vector3(width, 0.02f, 0.01f), Mt(DarkSteel));
-            // wear strip above kick‑plate
-            m.Box(l.P(mid, 0.062f, side * 0.02f),
-                new Vector3(width, 0.004f, 0.008f), Mt(DarkSteel));
-            // brass wear emboss on lever handle
-            m.Box(l.P(mid + halfW - 0.07f, 0.90f, side * (0.045f + 0.006f)),
-                new Vector3(0.008f, 0.004f, 0.002f), Mt(Brass));
-            // brass lever handle
-            m.CylinderX(l.P(mid + halfW - 0.07f, 0.90f, side * 0.045f),
-                0.006f, 0.12f, 10, Mt(Brass), 0f);
-            // brass lock cylinder (keyhole)
-            m.CylinderX(l.P(mid - halfW + 0.07f, 0.90f, side * 0.045f),
-                0.004f, 0.02f, 10, Mt(Brass), 0f);
-            // brass strike‑plate (moved after handle/lock)
-            m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));
             // A couple of bigger chunks of the frame and the lock's strike plate.
             for (int i = 0; i < 2; i++)
             {
                 Quaternion q = Quaternion.Euler(0f, R(rng, 0f, 180f), 0f);
                 m.Box(l.P(mid + R(rng, -0.4f, 0.4f) * width, 0.05f, side * R(rng, 0.3f, 0.9f)), new Vector3(R(rng, 0.25f, 0.5f), 0.03f, 0.06f), q, M(V(wood, rng, 0.1f)));
             }
-            // strike plate moved below
+            m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));
         }
 
         /// <summary>One band of a roll-up door's steel curtain, <paramref name="len"/> wide between heights <paramref name="y0"/>

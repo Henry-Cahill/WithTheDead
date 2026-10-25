@@ -32,9 +32,6 @@ namespace CloneZ
             m.Box(new Vector3(0.22f, 0.47f, 0.16f), new Vector3(0.43f, 0.78f, 0.02f), G(c * 0.97f));
             m.Box(new Vector3(-0.04f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
             m.Box(new Vector3(0.04f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
-            // Chrome hinge pins on the side frames
-            m.Box(new Vector3(-0.45f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
-            m.Box(new Vector3(0.45f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
             Color red = new Color(0.72f, 0.12f, 0.10f);
             m.Box(new Vector3(-0.22f, 0.62f, 0.172f), new Vector3(0.14f, 0.04f, 0.004f), M(red));
             m.Box(new Vector3(-0.22f, 0.62f, 0.172f), new Vector3(0.04f, 0.14f, 0.004f), M(red));
@@ -64,16 +61,6 @@ namespace CloneZ
                 float y = s < 0 || Chance(rng, 0.5) ? 0.8f : 0.6f;
                 m.Box(new Vector3(s * 0.46f, y, -0.1f), new Vector3(0.025f, 0.025f, 1.1f), Mt(white));
                 m.Box(new Vector3(s * 0.46f, y - 0.12f, -0.1f), new Vector3(0.025f, 0.025f, 1.1f), Mt(white));
-            }
-            // metal end‑caps on the side‑rails (tiny chrome squares)
-            float railHalfLength = 0.55f; // half of the rail length (1.1 m)
-            foreach (float side in new[] { -1f, 1f })
-            {
-                float y = side < 0 || Chance(rng, 0.5f) ? 0.8f : 0.6f;
-                // front end (positive Z)
-                m.Box(new Vector3(side * 0.46f, y, -0.1f + railHalfLength), new Vector3(0.03f, 0.03f, 0.02f), Mt(Chrome));
-                // rear end (negative Z)
-                m.Box(new Vector3(side * 0.46f, y, -0.1f - railHalfLength), new Vector3(0.03f, 0.03f, 0.02f), Mt(Chrome));
             }
             if (Chance(rng, 0.5))
                 m.Box(new Vector3(0.1f, 0.69f, 0.55f), new Vector3(0.7f, 0.05f, 0.8f), Yaw(R(rng, -10f, 10f)), M(V(new Color(0.55f, 0.62f, 0.66f), rng)));
@@ -133,15 +120,8 @@ namespace CloneZ
         public static void MetalShelf(RaidMesh m, System.Random rng, float w, float d, float h, int levels, int stockKind, Color frame)
         {
             Color f = V(frame, rng, 0.05f);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.02f), h * 0.5f, (i < 2 ? -1f : 1f) * (d * 0.5f - 0.02f)), new Vector3(0.04f, h, 0.04f), M(f));
-                // Add subtle chrome rivets to each corner post
-                float rivFraction = 0.2f + (float)rng.NextDouble() * 0.6f;
-                Vector3 postPos = new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.02f), h * 0.5f, (i < 2 ? -1f : 1f) * (d * 0.5f - 0.02f));
-                Vector3 rivPos = postPos + new Vector3(0f, -h * 0.5f + rivFraction * h, 0f);
-                m.Cylinder(rivPos, 0.005f, 0.004f, 6, Mt(Chrome));
-                m.Cylinder(rivPos, 0.005f, 0.004f, 6, Mt(Chrome));
-            }
             for (int l = 0; l < levels; l++)
             {
                 float y = 0.08f + l * (h - 0.12f) / Mathf.Max(1, levels - 1);
@@ -211,7 +191,6 @@ namespace CloneZ
             m.Box(new Vector3(rx, 1.08f, -0.05f), new Vector3(0.4f, 0.16f, 0.4f), M(new Color(0.18f, 0.18f, 0.2f)));
             m.Box(new Vector3(rx, 1.2f, 0.1f), new Vector3(0.36f, 0.12f, 0.12f), Quaternion.Euler(30f, 0f, 0f), M(new Color(0.24f, 0.24f, 0.26f)));
             m.Box(new Vector3(rx, 1.32f, -0.15f), new Vector3(0.2f, 0.1f, 0.04f), M(new Color(0.15f, 0.15f, 0.16f)));
-            m.Box(new Vector3(rx, 1.35f, -0.127f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));
             m.Box(new Vector3(rx, 1.32f, -0.128f), new Vector3(0.16f, 0.05f, 0.004f), Gl(new Color(0.2f, 0.6f, 0.4f)));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(R(rng, 0f, len * 0.4f), 1.0f + i * 0.02f, R(rng, -0.2f, 0.2f)), new Vector3(0.2f, 0.015f, 0.28f), Yaw(R(rng, -30f, 30f)), M(V(new Color(0.7f, 0.5f, 0.3f), rng, 0.3f)));
@@ -222,31 +201,9 @@ namespace CloneZ
         {
             Color top = V(new Color(0.48f, 0.34f, 0.20f), rng, 0.06f);
             Color legs = new Color(0.20f, 0.24f, 0.30f);
-            // rivet pattern on the tabletop – small chrome cylinders in a grid
-            int rivetRows = 3 + rng.Next(2); // 3‑4 rows
-            int rivetCols = 5 + rng.Next(3); // 5‑7 columns
-            float startX = -0.85f + 0.1f;
-            float startZ = -0.35f + 0.1f;
-            float spacingX = 0.3f;
-            float spacingZ = 0.2f;
-            for (int r = 0; r < rivetRows; r++)
-            {
-                for (int c = 0; c < rivetCols; c++)
-                {
-                    float x = startX + c * spacingX + (float)rng.NextDouble() * 0.02f - 0.01f;
-                    float z = startZ + r * spacingZ + (float)rng.NextDouble() * 0.02f - 0.01f;
-                    // thin cylinder as rivet, protruding slightly above the top surface
-                    m.Cylinder(new Vector3(x, 0.91f, z), 0.003f, 0.01f, 6, Mt(Chrome), Quaternion.identity);
-                }
-            }
+            m.Box(new Vector3(0f, 0.88f, 0f), new Vector3(1.8f, 0.07f, 0.75f), M(top));
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3(i % 2 == 0 ? -0.85f : 0.85f, 0.43f, i < 2 ? -0.32f : 0.32f), new Vector3(0.05f, 0.86f, 0.05f), M(legs));
-            // leg‑caps – tiny chrome squares at the foot of each leg
-            for (int i = 0; i < 4; i++)
-            {
-                Vector3 legPos = new Vector3(i % 2 == 0 ? -0.85f : 0.85f, 0.43f, i < 2 ? -0.32f : 0.32f);
-                m.Box(legPos + new Vector3(0f, 0.01f, 0f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Chrome));
-            }
             m.Box(new Vector3(0f, 0.18f, 0f), new Vector3(1.7f, 0.03f, 0.66f), M(top * 0.8f));
             m.Box(new Vector3(0f, 1.42f, -0.35f), new Vector3(1.8f, 0.95f, 0.03f), M(new Color(0.55f, 0.42f, 0.28f)));
             for (int i = 0; i < 9; i++)
@@ -255,24 +212,7 @@ namespace CloneZ
                 float hh = R(rng, 0.12f, 0.3f);
                 m.Box(new Vector3(x, R(rng, 1.25f, 1.6f), -0.32f), new Vector3(R(rng, 0.03f, 0.06f), hh, 0.03f), Quaternion.Euler(0f, 0f, R(rng, -20f, 20f)), Mt(new Color(0.35f, 0.36f, 0.38f)));
             }
-            // pull‑handle on the drawer front (chrome cylinder)
-            // (original drawer front remains)
-            Vector3 handlePos = new Vector3(0.75f, 0.98f, 0.38f) + new Vector3((float)rng.NextDouble()*0.004f-0.002f, 0f, (float)rng.NextDouble()*0.004f-0.002f);
-            m.Cylinder(handlePos, 0.005f, 0.04f, 6, Mt(Chrome), Quaternion.Euler(0f,0f,90f));
-            // small wall‑sign attached to the back of the bench (matte wood with chrome border)
-            Surf signMat = DecorPalette.Matte(new Color(0.38f,0.34f,0.30f));
-            Vector3 signPos = new Vector3(0f, 0.95f, -0.38f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.01f-0.005f, 0f);
-            m.Box(signPos, new Vector3(0.3f,0.12f,0.02f), signMat);
-            // random wear scratch on the top surface (thin dark rectangle)
-            if (Chance(rng,0.4))
-            {
-                float sx = R(rng, -0.75f, 0.75f);
-                float sz = R(rng, -0.35f, 0.35f);
-                float w = 0.02f + (float)rng.NextDouble()*0.02f;
-                float h = 0.004f + (float)rng.NextDouble()*0.003f;
-                var dark = Mt(new Color(0.15f,0.15f,0.15f));
-                m.Box(new Vector3(sx, 0.891f, sz), new Vector3(w,h,0.001f), dark);
-            }
+            m.Box(new Vector3(0.75f, 0.98f, 0.3f), new Vector3(0.18f, 0.14f, 0.2f), M(new Color(0.2f, 0.28f, 0.42f)));
             m.Box(new Vector3(0.75f, 0.98f, 0.45f), new Vector3(0.04f, 0.04f, 0.16f), Mt(Chrome));
             m.Box(new Vector3(-0.5f, 0.96f, 0.0f), new Vector3(0.5f, 0.1f, 0.22f), G(new Color(0.65f, 0.12f, 0.1f)));
             m.Box(new Vector3(-0.5f, 1.03f, 0.0f), new Vector3(0.3f, 0.03f, 0.03f), M(Black));
@@ -317,25 +257,6 @@ namespace CloneZ
             m.Box(at + q * new Vector3(0f, 0.25f, 0.087f), new Vector3(0.3f, 0.025f, 0.006f), q * Quaternion.Euler(0f, 0f, -50f), M(c * 0.8f));
             m.Box(at + q * new Vector3(0f, 0.5f, 0f), new Vector3(0.2f, 0.03f, 0.04f), q, M(c * 0.7f));
             m.Box(at + q * new Vector3(0.13f, 0.5f, 0f), new Vector3(0.05f, 0.05f, 0.05f), q, M(c * 0.6f));
-            // pull‑handle on the front lip of the can
-            Vector3 handlePos = at + q * new Vector3(0f, 0.58f, 0.095f) + new Vector3((float)rng.NextDouble() * 0.004f - 0.002f, 0f, 0f);
-            m.Cylinder(handlePos, 0.006f, 0.012f, 8, Mt(Chrome));
-            // recessed cap (slightly indented)
-            Vector3 capPos = at + q * new Vector3(0f, 0.57f, 0f);
-            m.Cylinder(capPos, 0.09f, 0.008f, 12, M(c * 0.9f));
-            // small rust patch (randomised position & size)
-            float rustW = 0.04f + (float)rng.NextDouble() * 0.02f;
-            float rustH = 0.02f + (float)rng.NextDouble() * 0.01f;
-            Vector3 rustPos = at + q * new Vector3(0.12f, 0.22f, -0.08f) + new Vector3((float)rng.NextDouble() * 0.01f - 0.005f, (float)rng.NextDouble() * 0.005f - 0.0025f, 0f);
-            Color rustCol = new Color(0.55f, 0.28f, 0.13f) * (0.9f + (float)rng.NextDouble() * 0.2f);
-            m.Box(rustPos, new Vector3(rustW, rustH, 0.004f), M(rustCol));
-            // thin darker stripe along the side seam
-            Vector3 seamPos = at + q * new Vector3(0f, 0.24f, -0.085f);
-            m.Box(seamPos, new Vector3(0.34f, 0.46f, 0.002f), M(c * 0.8f));
-            // front label (random variant)
-            int labelKind = rng.Next(0, 4);
-            Vector3 labelPos = at + q * new Vector3(0f, 0.38f, 0.09f) + new Vector3((float)rng.NextDouble() * 0.006f - 0.003f, 0f, 0f);
-            m.Quad(labelPos, new Vector3(0.12f, 0f, 0f), new Vector3(0f, 0.06f, 0f), DecorMaterials.Poster(labelKind));
         }
 
         /// <summary>A soft-drink vending machine with a glowing panel (0.9 × 0.8 × 1.85).</summary>
@@ -344,29 +265,6 @@ namespace CloneZ
             Color body = Chance(rng, 0.5) ? new Color(0.62f, 0.10f, 0.10f) : new Color(0.12f, 0.24f, 0.48f);
             m.Box(new Vector3(0f, 0.925f, -0.02f), new Vector3(0.9f, 1.85f, 0.76f), G(body));
             m.Box(new Vector3(-0.1f, 1.1f, 0.365f), new Vector3(0.6f, 1.2f, 0.01f), lit ? Gl(new Color(0.85f, 0.82f, 0.75f)) : M(new Color(0.6f, 0.58f, 0.55f)));
-            // Coin slot – thin black rectangle with slight random offset
-            Vector3 slotPos = new Vector3(-0.14f + (float)rng.NextDouble()*0.02f, 1.02f + (float)rng.NextDouble()*0.04f, 0.37f);
-            m.Box(slotPos, new Vector3(0.04f, 0.02f, 0.004f), M(Black));
-            // Paper‑receipt slot – light‑grey slit with random hue shift
-            Vector3 receiptPos = new Vector3(0.12f + (float)rng.NextDouble()*0.01f, 1.14f + (float)rng.NextDouble()*0.02f, 0.37f);
-            m.Box(receiptPos, new Vector3(0.08f, 0.004f, 0.006f), M(new Color(0.55f, 0.55f, 0.58f)));
-            // Chrome knob for the service door
-            Vector3 knobPos = new Vector3(0.28f + (float)rng.NextDouble()*0.005f, 1.10f, 0.36f);
-            m.Cylinder(knobPos, 0.01f, 0.004f, 8, Mt(Chrome));
-            // Button panel – three chrome push‑buttons with random offsets
-            for (int i = 0; i < 3; i++)
-            {
-                float y = 1.06f + i * 0.03f + (float)rng.NextDouble()*0.005f;
-                Vector3 btnPos = new Vector3(-0.2f + (float)rng.NextDouble()*0.01f, y, 0.37f);
-                m.Box(btnPos, new Vector3(0.018f, 0.008f, 0.004f), Mt(Chrome));
-            }
-            // LED status display – subtle emissive green strip
-            Vector3 dispPos = new Vector3(-0.05f + (float)rng.NextDouble()*0.02f, 1.12f, 0.368f);
-            m.Box(dispPos, new Vector3(0.12f, 0.015f, 0.002f), Gl(new Color(0.25f, 0.30f, 0.12f)));
-            // Brand label – small poster quad with random variant
-            int labelKind = rng.Next(0, 5);
-            Vector3 labelPos = new Vector3(0f + (float)rng.NextDouble()*0.01f, 1.04f, 0.369f);
-            m.Quad(labelPos, new Vector3(0.18f, 0f, 0f), new Vector3(0f, 0.12f, 0f), DecorMaterials.Poster(labelKind));
             m.Box(new Vector3(0.33f, 1.1f, 0.37f), new Vector3(0.14f, 0.8f, 0.02f), M(new Color(0.2f, 0.2f, 0.22f)));
             for (int i = 0; i < 6; i++) m.Box(new Vector3(0.33f, 0.8f + i * 0.11f, 0.385f), new Vector3(0.08f, 0.06f, 0.02f), M(new Color(0.8f, 0.8f, 0.76f)));
             m.Box(new Vector3(-0.1f, 0.3f, 0.37f), new Vector3(0.5f, 0.16f, 0.02f), M(Black));
@@ -388,10 +286,8 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.97f, 0f), new Vector3(0.86f, 0.14f, 0.58f), M(c));
             m.Box(new Vector3(0f, 1.05f, -0.02f), new Vector3(0.8f, 0.03f, 0.52f), M(new Color(0.25f, 0.25f, 0.27f)));
             m.Box(new Vector3(-0.5f, 0.75f, 0f), new Vector3(0.14f, 0.02f, 0.36f), M(Paper));
-    m.Box(new Vector3(0.3f, 1.0f, 0.3f), new Vector3(0.2f, 0.05f, 0.03f), Gl(new Color(0.2f, 0.5f, 0.3f)));
-    Vector3 btnPos = new Vector3(0f, 1.0f, 0.31f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.01f-0.005f, 0f);
-    m.Box(btnPos, new Vector3(0.02f, 0.02f, 0.004f), Mt(Chrome));
-}
+            m.Box(new Vector3(0.3f, 1.0f, 0.3f), new Vector3(0.2f, 0.05f, 0.03f), Gl(new Color(0.2f, 0.5f, 0.3f)));
+        }
 
         /// <summary>A dead pot plant: clay pot, dry soil and drooping brown stalks.</summary>
         public static void DeadPlant(RaidMesh m, System.Random rng, Vector3 at)
@@ -415,36 +311,8 @@ namespace CloneZ
         {
             Color w = new Color(0.86f, 0.86f, 0.84f);
             m.Box(new Vector3(0f, 0.6f, -0.24f), new Vector3(0.44f, 0.36f, 0.18f), G(w));
-            // thin rubber gasket – sits just below the tank
-            m.Box(new Vector3(0f, 0.58f, -0.24f), new Vector3(0.44f, 0.02f, 0.18f), M(Color.black));
             m.Cylinder(new Vector3(0f, 0f, 0.02f), 0.15f, 0.3f, 10, G(w), Quaternion.identity, 1.25f);
-            Vector3 handlePos = new Vector3(0.12f, 0.45f, 0.04f) + new Vector3((float)rng.NextDouble() * 0.01f - 0.005f, (float)rng.NextDouble() * 0.02f - 0.01f, 0f);
-            Vector3 handleSize = new Vector3(0.02f, 0.04f, 0.01f);
-            Quaternion handleRot = Quaternion.Euler(0f, (float)rng.NextDouble() * 10f - 5f, 0f);
-            m.Box(handlePos, handleSize, handleRot, Mt(Chrome));
-            // left bracket for paper roll holder
-            Vector3 leftBracket = new Vector3(-0.18f, 0.55f, -0.30f) + new Vector3((float)rng.NextDouble()*0.004f-0.002f,
-                (float)rng.NextDouble()*0.008f-0.004f,
-                (float)rng.NextDouble()*0.004f-0.002f);
-            m.Box(leftBracket, new Vector3(0.02f, 0.20f, 0.01f), Mt(Chrome));
-            // right bracket for paper roll holder
-            Vector3 rightBracket = new Vector3(0.18f, 0.55f, -0.30f) + new Vector3((float)rng.NextDouble()*0.004f-0.002f,
-                (float)rng.NextDouble()*0.008f-0.004f,
-                (float)rng.NextDouble()*0.004f-0.002f);
-            m.Box(rightBracket, new Vector3(0.02f, 0.20f, 0.01f), Mt(Chrome));
-            // cardboard roll – light‑grey cylinder
-            Vector3 rollPos = new Vector3(0f, 0.58f, -0.32f);
-            m.Cylinder(rollPos, 0.03f, 0.12f, 8, M(new Color(0.78f, 0.78f, 0.76f)));
-                        // flush button plate – centred on front edge of tank
-            Vector3 btnPos = new Vector3(0f, 0.44f, -0.04f) + new Vector3((float)rng.NextDouble()*0.004f-0.002f,
-                (float)rng.NextDouble()*0.006f-0.003f,
-                0f);
-            // optional slight yaw for visual variation
-            Quaternion btnRot = Quaternion.Euler(0f, (float)rng.NextDouble()*6f-3f, 0f);
-            m.Box(btnPos, new Vector3(0.06f, 0.018f, 0.004f), btnRot, Mt(Chrome));
-            // tiny knob on the button
-            Vector3 knobPos = btnPos + new Vector3(0f, 0.01f, 0f);
-            m.Cylinder(knobPos, 0.006f, 0.003f, 6, Mt(Chrome));
+            m.Ellipsoid(new Vector3(0f, 0.38f, 0.06f), new Vector3(0.38f, 0.08f, 0.46f), G(w), 10, 4);
             m.Ellipsoid(new Vector3(0f, 0.41f, 0.06f), new Vector3(0.24f, 0.02f, 0.3f), M(new Color(0.3f, 0.32f, 0.3f)), 8, 3);
         }
 
@@ -457,12 +325,6 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.885f, -0.04f), new Vector3(0.4f, 0.004f, 0.28f), G(new Color(0.55f, 0.58f, 0.58f)));
             m.Box(new Vector3(0f, 0.95f, -0.22f), new Vector3(0.03f, 0.12f, 0.03f), Mt(Chrome));
             m.Box(new Vector3(0f, 1.45f, -0.25f), new Vector3(0.5f, 0.6f, 0.06f), Gs(new Color(0.42f, 0.46f, 0.48f)));
-            // Chrome faucet with tiny red (hot) and blue (cold) lever handles
-            Vector3 fp = new Vector3(-0.20f, 0.84f, -0.02f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.02f-0.01f, 0f);
-            Vector3 fs = new Vector3(0.04f, 0.02f, 0.02f);
-            m.Box(fp, fs, Mt(Chrome));
-            m.Box(fp + new Vector3(0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));
-            m.Box(fp + new Vector3(-0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));
         }
 
         /// <summary>A white bath tub (0.75 × 1.6, length along X).</summary>
@@ -472,10 +334,6 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.27f, 0f), new Vector3(1.6f, 0.54f, 0.75f), G(w));
             m.Box(new Vector3(0f, 0.545f, 0f), new Vector3(1.44f, 0.004f, 0.58f), G(new Color(0.6f, 0.62f, 0.6f)));
             m.Box(new Vector3(-0.7f, 0.66f, 0f), new Vector3(0.04f, 0.12f, 0.04f), Mt(Chrome));
-            // Chrome faucet with hot (red) and cold (blue) levers
-            m.Box(new Vector3(-0.6f, 0.66f, 0.35f), new Vector3(0.06f, 0.02f, 0.03f), Mt(Chrome));
-            m.Box(new Vector3(-0.58f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));
-            m.Box(new Vector3(-0.62f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));
         }
         #endregion
     }

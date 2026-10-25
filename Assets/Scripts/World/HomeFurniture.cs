@@ -32,7 +32,6 @@ namespace CloneZ
     {
         public static readonly List<HomeFurniture> All = new List<HomeFurniture>();
 
-        /// <summary>The kind of furniture this instance represents.</summary>
         public HomeFurnitureKind Kind { get; private set; }
         /// <summary>Facing in degrees (0 = front toward +Z). The root stays unrotated; the mesh is drawn turned.</summary>
         public float Yaw { get; private set; }
@@ -206,37 +205,9 @@ namespace CloneZ
                 case HomeFurnitureKind.Counter:
                     FurnitureBuilder.KitchenCounter(m, rng, 1.2f, CabinetPaint, Worktop, false);
                     break;
-case HomeFurnitureKind.Table:
-{
-    FurnitureBuilder.Table(m, rng, 1.0f, 0.8f, FurnitureBuilder.Pine);
-    // 1️⃣ fabric runner – thin strip across the centre of the tabletop
-    // colour chosen from the existing Fabrics palette
-    Color runnerColor = Fabrics[rng.Next(Fabrics.Length)];
-    Vector3 runnerPos = new Vector3(0f, 0.79f, 0f); // just above the top
-    Vector3 runnerSize = new Vector3(0.90f, 0.015f, 0.60f);
-    m.Box(runnerPos, runnerSize, DecorPalette.Matte(runnerColor));
-    // 2️⃣ tiny metal vase – cylinder at table centre
-    Vector3 vasePos = new Vector3(0f, 0.80f, 0f);
-    m.Cylinder(vasePos, 0.02f, 0.08f, 8,
-        DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)), Quaternion.identity, 1f, false);
-    // 3️⃣ candlestick – small cylinder offset left/right
-    bool leftCandle = rng.Next(2) == 0;
-    Vector3 candPos = new Vector3(leftCandle ? -0.25f : 0.25f, 0.80f, -0.15f);
-    m.Cylinder(candPos, 0.015f, 0.06f, 6,
-        DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-    // 4️⃣ subtle wear scuff – darkened wood patch near a random edge
-    bool scuffLeft = rng.Next(2) == 0;
-    float scuffX = scuffLeft ? -0.45f : 0.45f;
-    Vector3 scuffPos = new Vector3(scuffX, 0.78f, 0.35f);
-    Vector3 scuffSize = new Vector3(0.12f, 0.02f, 0.04f);
-    m.Box(scuffPos, scuffSize, DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)));
-    // 5️⃣ decorative bowl – tiny ellipsoid near the opposite side
-    Vector3 bowlPos = new Vector3(-scuffX, 0.80f, -0.30f);
-    Vector3 bowlScale = new Vector3(0.07f, 0.025f, 0.07f);
-    m.Ellipsoid(bowlPos, bowlScale,
-        DecorPalette.Matte(new Color(0.85f, 0.78f, 0.70f)), 6, 4);
-    break;
-}
+                case HomeFurnitureKind.Table:
+                    FurnitureBuilder.Table(m, rng, 1.0f, 0.8f, FurnitureBuilder.Pine);
+                    break;
                 case HomeFurnitureKind.Chair:
                     FurnitureBuilder.WoodChair(m, rng, FurnitureBuilder.Pine);
                     break;
@@ -246,94 +217,17 @@ case HomeFurnitureKind.Table:
                     glow = new RaidMesh();
                     glow.SetFrame(p, Yaw);
                     glow.Cylinder(new Vector3(0f, 0.836f, -0.04f), 0.158f, 0.208f, 10, DecorPalette.Glow(LampGlow), Quaternion.identity, 0.65f, false);
-                    // Add a small metal drawer pull knob with left/right variation
-                    bool leftDrawerKnob = rng.Next(2) == 0;
-                    Vector3 knobPosDrawer = new Vector3(leftDrawerKnob ? -0.15f : 0.15f, 0.55f, 0.32f);
-                    Vector3 knobSizeDrawer = new Vector3(0.02f, 0.07f, 0.02f);
-                    m.Box(knobPosDrawer, knobSizeDrawer, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
                     break;
                 }
                 case HomeFurnitureKind.Dresser:
-                {
                     FurnitureBuilder.Dresser(m, rng, FurnitureBuilder.Walnut);
-                    // three drawer pulls – left/right variation per drawer
-                    for (int i = 0; i < 3; i++)
-                    {
-bool leftSide = rng.Next(2) == 0;
-                        float y = 0.27f + i * 0.22f; // drawer centre heights
-                        float x = leftSide ? -0.18f : 0.18f;
-                        Vector3 pullPos = new Vector3(x, y, 0.45f);
-                        Vector3 pullSize = new Vector3(0.02f, 0.07f, 0.02f);
-                        m.Box(pullPos, pullSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    }
-                    // thin metal trim along the top front edge
-                    m.Cylinder(new Vector3(0f, 0.88f, 0.45f), 0.02f, 0.30f, 8,
-                        DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)), Quaternion.identity, 1f, false);
-                    // faint wear scuff – darkened wood patch
-                    bool scuffLeft = rng.Next(2) == 0;
-                    float scuffX = scuffLeft ? -0.10f : 0.10f;
-                    Vector3 scuffPos = new Vector3(scuffX, 0.15f, 0.42f);
-                    Vector3 scuffSize = new Vector3(0.05f, 0.02f, 0.02f);
-                    m.Box(scuffPos, scuffSize, DecorPalette.Matte(new Color(0.55f, 0.48f, 0.38f)));
                     break;
-                }
                 case HomeFurnitureKind.Bookshelf:
                     FurnitureBuilder.Bookshelf(m, rng, FurnitureBuilder.Oak, 1);
-                    // metal brackets – thin vertical supports near the top edges
-                    bool leftBracket = rng.Next(2) == 0;
-                    float bracketX = leftBracket ? -0.42f : 0.42f; // relative to centre
-                    Vector3 bracketPos = new Vector3(bracketX, 0.9f, 0.15f);
-                    Vector3 bracketSize = new Vector3(0.02f, 0.25f, 0.02f);
-                    m.Box(bracketPos, bracketSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // thin top trim – metal strip along the front top edge
-                    Vector3 topTrimPos = new Vector3(0f, 1.79f, 0f);
-                    Vector3 topTrimSize = new Vector3(0.9f, 0.02f, 0.02f);
-                    m.Box(topTrimPos, topTrimSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // back panel – thin wooden board covering the back of the shelf
-                    Vector3 backPanelPos = new Vector3(0f, 0.89f, -0.16f);
-                    Vector3 backPanelSize = new Vector3(0.9f, 1.78f, 0.005f);
-                    m.Box(backPanelPos, backPanelSize, DecorPalette.Matte(FurnitureBuilder.Oak));
-                    // side label – tiny metal plaque near middle height
-                    Vector3 labelPos = new Vector3(-0.44f, 0.6f, 0f);
-                    Vector3 labelSize = new Vector3(0.05f, 0.008f, 0.02f);
-                    m.Box(labelPos, labelSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // wood scuff – darkened patch near bottom left
-                    bool scuffLeftBs = rng.Next(2) == 0;
-                    float scuffXB = scuffLeftBs ? -0.35f : 0.35f;
-                    Vector3 scuffPosBs = new Vector3(scuffXB, 0.07f, 0f);
-                    Vector3 scuffSizeBs = new Vector3(0.08f, 0.02f, 0.02f);
-                    m.Box(scuffPosBs, scuffSizeBs, DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)));
                     break;
                 case HomeFurnitureKind.Armchair:
-                {
-                    // base chair mesh
                     FurnitureBuilder.Sofa(m, rng, 0.95f, Fabrics[rng.Next(Fabrics.Length)]);
-                    // 1️⃣ metal arm‑rest knob – left/right variation
-                    bool armKnobLeft = rng.Next(2) == 0;
-                    Vector3 armKnobPos = new Vector3(armKnobLeft ? -0.35f : 0.35f, 0.75f, 0.10f);
-                    Vector3 armKnobSize = new Vector3(0.02f, 0.04f, 0.02f);
-                    m.Box(armKnobPos, armKnobSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // 2️⃣ fabric tuft button on the backrest centre
-                    Vector3 tuftPos = new Vector3(0f, 0.85f, -0.25f);
-                    m.Cylinder(tuftPos, 0.01f, 0.02f, 6,
-                        DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // 3️⃣ thin wooden top trim along the backrest
-                    Vector3 trimPos = new Vector3(0f, 0.90f, -0.28f);
-                    Vector3 trimSize = new Vector3(0.90f, 0.015f, 0.01f);
-                    m.Box(trimPos, trimSize, DecorPalette.Matte(FurnitureBuilder.Walnut));
-                    // 4️⃣ subtle wear scuff on one side of the seat
-                    bool scuffLeft = rng.Next(2) == 0;
-                    float scuffX = scuffLeft ? -0.20f : 0.20f;
-                    Vector3 scuffPos = new Vector3(scuffX, 0.55f, 0f);
-                    Vector3 scuffSize = new Vector3(0.08f, 0.02f, 0.03f);
-                    m.Box(scuffPos, scuffSize, DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)));
-                    // 5️⃣ small throw‑pillow near the seat centre
-                    Color pillowCol = Fabrics[rng.Next(Fabrics.Length)];
-                    Vector3 pillowPos = new Vector3(0f, 0.57f, 0.05f);
-                    Vector3 pillowScale = new Vector3(0.15f, 0.07f, 0.12f);
-                    m.Ellipsoid(pillowPos, pillowScale, DecorPalette.Matte(pillowCol), 6, 4);
                     break;
-                }
                 case HomeFurnitureKind.FloorLamp:
                 {
                     bulb = m.ToMeshSpace(StandardLamp(m));
@@ -347,73 +241,21 @@ bool leftSide = rng.Next(2) == 0;
                     break;
                 case HomeFurnitureKind.Fridge:
                     FurnitureBuilder.Fridge(m, rng, new Color(0.88f, 0.87f, 0.83f));
-                    // Add a small metal door handle with left/right variation
-bool leftHandle = rng.Next(2) == 0;
-                    Vector3 handlePos = new Vector3(leftHandle ? -0.33f : 0.33f, 0.5f, 0.05f);
-                    Vector3 handleSize = new Vector3(0.02f, 0.12f, 0.02f);
-                    m.Box(handlePos, handleSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
                     break;
                 case HomeFurnitureKind.Toilet:
                     FurnitureBuilder.Toilet(m, rng);
-                    // seat slab – thin white box centred on the front of the bowl
-                    Vector3 seatPos = new Vector3(0f, 0.07f, 0.15f);
-                    Vector3 seatSize = new Vector3(0.35f, 0.02f, 0.25f);
-                    m.Box(seatPos, seatSize, DecorPalette.Matte(new Color(0.93f, 0.93f, 0.95f)));
-                    // lid – possibly opened
-                    bool lidOpen = rng.Next(2) == 0;
-                    float lidY = lidOpen ? 0.12f : 0.07f;
-                    Vector3 lidPos = new Vector3(0f, lidY, 0.15f);
-                    Vector3 lidSize = new Vector3(0.36f, 0.02f, 0.26f);
-                    m.Box(lidPos, lidSize, DecorPalette.Matte(new Color(0.95f, 0.95f, 0.97f)));
-                    // metal flush lever on back‑right of tank
-                    Vector3 leverPos = new Vector3(-0.08f, 0.45f, -0.28f);
-                    m.Cylinder(leverPos, 0.01f, 0.12f, 6, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // wall‑mounted toilet‑paper holder
-                    Vector3 holderPos = new Vector3(-0.18f, 0.70f, -0.30f);
-                    Vector3 holderSize = new Vector3(0.04f, 0.12f, 0.02f);
-                    m.Box(holderPos, holderSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // random water‑stain on floor near front
-                    bool stainLeft = rng.Next(2) == 0;
-                    float stainX = stainLeft ? -0.12f : 0.12f;
-                    Vector3 stainPos = new Vector3(stainX, 0.001f, 0.20f);
-                    Vector3 stainSize = new Vector3(0.06f, 0.001f, 0.06f);
-                    m.Box(stainPos, stainSize, DecorPalette.Matte(new Color(0.60f, 0.60f, 0.60f)));
                     break;
                 case HomeFurnitureKind.Basin:
-                     FurnitureBuilder.WashBasin(m, rng);
-                     bool left = rng.Next(2) == 0;
-                     Vector3 faucetPos = new Vector3(left ? -0.08f : 0.08f, 0.95f, 0.22f);
-                     m.Cylinder(faucetPos, 0.01f, 0.12f, 8, DecorPalette.Metal(new Color(0.18f,0.18f,0.20f)));
-                      Vector3 basinKnobPos = new Vector3(left ? -0.08f : 0.08f, 1.07f, 0.22f);
-                      Vector3 knobSize = new Vector3(0.02f, 0.03f, 0.01f);
-                      m.Box(basinKnobPos, knobSize, DecorPalette.Metal(new Color(0.18f,0.18f,0.20f)));
-
+                    FurnitureBuilder.WashBasin(m, rng);
                     break;
                 case HomeFurnitureKind.Shower:
                     m.Box(new Vector3(0f, 0.04f, 0f), new Vector3(0.9f, 0.08f, 0.9f), DecorPalette.Gloss(new Color(0.9f, 0.9f, 0.88f)));
-                    // Add visual details: pipe, frosted glass door, towel rack, tiny water drip
-                    bool doorLeft = rng.Next(2) == 0;
-                    // Pipe feeding the showerhead
-                    m.Cylinder(new Vector3(0f, 1.75f, -0.25f), 0.015f, 0.30f, 8, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // Frosted‑glass door (left or right side)
-                    float doorX = doorLeft ? -0.45f : 0.45f;
-                    m.Box(new Vector3(doorX, 0.5f, 0f), new Vector3(0.01f, 1.0f, 0.9f), DecorPalette.Glass(new Color(0.8f, 0.9f, 0.95f, 0.6f)));
-                    // Towel rack on the opposite wall
-                    float rackX = doorLeft ? 0.45f : -0.45f;
-                    m.Cylinder(new Vector3(rackX, 0.9f, 0f), 0.015f, 0.6f, 8, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
-                    // Tiny water drip from the pipe ceiling
-                    m.Ellipsoid(new Vector3(0f, 1.9f, -0.25f), new Vector3(0.01f, 0.01f, 0.01f), DecorPalette.Glass(new Color(0.66f, 0.82f, 0.90f, 0.45f)), 6, 4);
                     break;
-case HomeFurnitureKind.Tv:
-                     m.Box(new Vector3(0f, 0.2f, -0.02f), new Vector3(0.46f, 0.4f, 0.32f), DecorPalette.Matte(new Color(0.12f, 0.12f, 0.13f)));
-                     // short power‑cord hanging from the back
-                     m.Cylinder(new Vector3(0f, 0.05f, -0.18f), 0.01f, 0.12f, 6, DecorPalette.Matte(new Color(0.08f, 0.08f, 0.08f)));
-                     break;
+                case HomeFurnitureKind.Tv:
+                    m.Box(new Vector3(0f, 0.2f, -0.02f), new Vector3(0.46f, 0.4f, 0.32f), DecorPalette.Matte(new Color(0.12f, 0.12f, 0.13f)));
+                    break;
                 case HomeFurnitureKind.Radio:
                     m.Box(new Vector3(0f, 0.09f, 0f), new Vector3(0.32f, 0.18f, 0.14f), DecorPalette.Matte(new Color(0.30f, 0.20f, 0.12f)));
-bool leftKnob = rng.Next(2) == 0;
-Vector3 knobPos = new Vector3(leftKnob ? -0.04f : 0.04f, 0.11f, 0.07f);
-m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f, 0.20f)), Quaternion.Euler(90f, 0f, 0f), 1f, false);
                     break;
                 default:
                     FurnitureBuilder.BoxStack(m, rng, Vector3.zero, 0f, 2 + rng.Next(2));
@@ -455,7 +297,6 @@ m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f,
         #endregion
 
         #region IDemolishable
-        /// <summary>Human‑readable name used when demolishing this piece of furniture.</summary>
         public string DemolishName => Kind switch
         {
             HomeFurnitureKind.Counter => "kitchen counter",
@@ -476,7 +317,6 @@ m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f,
             _ => "boxes",
         };
 
-        /// <summary>Returns whether the furniture can be safely demolished and, if not, why.</summary>
         public bool CanDemolish(out string reason)
         {
             // Whatever is kept in its drawers or cupboards would be lost with it.
@@ -489,7 +329,6 @@ m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f,
             return true;
         }
 
-        /// <summary>Outputs the amount of planks and nails that can be salvaged from this furniture.</summary>
         public void GetSalvage(out int planks, out int nails)
         {
             switch (Kind)
@@ -508,10 +347,8 @@ m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f,
             }
         }
 
-        /// <summary>Indicates whether this piece contributes to the navigation mesh.</summary>
         public bool CarvesNavMesh => BakesIntoNavMesh(Kind);   // baked into the navmesh -> removing it needs a rebuild
 
-        /// <summary>Removes the furniture from the world and cleans up its resources.</summary>
         public void Dismantle()
         {
             All.Remove(this);

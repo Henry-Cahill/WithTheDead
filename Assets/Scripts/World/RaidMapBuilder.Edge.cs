@@ -1,385 +1,292 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace CloneZ
 {
-    // The map edge and what lies past it (the exit roads it opens onto are defined in RaidMapBuilder.Town.cs): the
-    // barrier around the clamp line — runs of rusty corrugated sheet, plank fence, wire fence and banked snow, broken
-    // only where the four exit roads leave town and closed at the east and west gaps by a low barrier — then the
-    // never-baked scenery beyond (the snowfields, the pine woods, the frozen river and dock, the truss bridge, the
-    // roads and rails running on out), closing with the survivor's in-room spawn.
+    // The map's edge and what lies past it: the four exits where the roads leave town (the police road block, the Guard
+    // checkpoint, the rail crossing and the dock), the chain-link fence round the rest, the rail line running north–south
+    // past the depot, then the never-baked scenery beyond (the snowfields, the pine woods, the frozen river and the dock to
+    // the west, the truss bridge to the east, the roads and rails running on out), closing with the survivor's spawn.
     public static partial class RaidMapBuilder
     {
-        #region Map edge
-        // A barrier just outside the clamp line (PlayerController keeps the survivor within ±HalfSize):
-        // runs of rusty corrugated sheet, plank fence, wire fence and banked snow, broken only where the
-        // four exit roads leave town (each blocked further out by its own barricade).
-        private static void BuildEdge(RaidTown town)
+        private sealed partial class Builder
         {
-            System.Random rng = town.Rng;
-            for (int side = 0; side < 4; side++)
+            #region Exits
+            // The four roads out; two or three are open each raid.
+            public void Exits()
             {
-                float t = -EdgeLine;
-                while (t < EdgeLine - 0.5f)
+                const float d = ExitReach;
+                List<RaidExit> exits = _town.Info.Exits;
+                exits.Add(new RaidExit { Name = "Road Block", Position = new Vector3(0f, 0f, d), Radius = 4.5f, ExtractSeconds = 8f, Hint = "Police barricade, north end of Main St" });
+                exits.Add(new RaidExit { Name = "Rail Bridge", Position = new Vector3(d, 0f, 0f), Radius = 4.5f, ExtractSeconds = 8f, Hint = "Rail crossing, east end of Depot Rd" });
+                exits.Add(new RaidExit { Name = "Army Checkpoint", Position = new Vector3(0f, 0f, -d), Radius = 4.5f, ExtractSeconds = 8f, Hint = "Guard checkpoint, south end of Main St" });
+                exits.Add(new RaidExit { Name = "Boat Dock", Position = new Vector3(-d, 0f, 0f), Radius = 4.5f, ExtractSeconds = 8f, Hint = "River dock, west end of Depot Rd" });
+
+                int open = 2 + _rng.Next(2);
+                var order = new[] { 0, 1, 2, 3 };
+                for (int i = order.Length - 1; i > 0; i--)
                 {
-                    float len = R(rng, 4f, 7.5f);
-                    float a = t, b = Mathf.Min(EdgeLine, t + len);
-                    t = b;
-                    // Leave the exit road open.
-                    if (b > -6.6f && a < 6.6f)
-                    {
-                        if (a < -6.6f) EdgeSegment(town, side, a, -6.6f, rng);
-                        if (b > 6.6f) EdgeSegment(town, side, 6.6f, b, rng);
-                        continue;
-                    }
-                    EdgeSegment(town, side, a, b, rng);
+                    int j = _rng.Next(i + 1);
+                    (order[i], order[j]) = (order[j], order[i]);
                 }
+                for (int i = 0; i < order.Length; i++) exits[order[i]].Open = i < open;
+
+                // Nothing solid may stand in (or crowd) an exit zone.
+                foreach (RaidExit e in exits) Reserve(Around(e.Position, e.Radius + 2f, e.Radius + 2f));
             }
-            // The east and west gaps get a low barrier at the line (north and south have their barricades).
-            Prop(town, new Vector3(EdgeLine - 0.3f, 0f, 0f), 90f, new Vector3(8f, 0.9f, 0.6f), true, (m, r) =>
+            #endregion
+
+            #region Edge
+            // The fence just outside the clamp line (the survivor is kept within ±Half), broken where the roads leave town,
+            // each road blocked further out by its exit's own barriers; and the rail line through it.
+            public void Edge()
             {
-                Vector3 o = m.FrameOrigin;
-                Quaternion q = m.FrameRotation;
+                float e = EdgeLine, gap = MainSt.Outer + 0.2f;
+                // Counter-clockwise, so the banked snow lies outside.
+                FenceSide(new Vector3(e, 0f, e), new Vector3(-e, 0f, e), gap);
+                FenceSide(new Vector3(-e, 0f, e), new Vector3(-e, 0f, -e), gap);
+                FenceSide(new Vector3(-e, 0f, -e), new Vector3(e, 0f, -e), gap);
+                FenceSide(new Vector3(e, 0f, -e), new Vector3(e, 0f, e), gap);
+                RoadBlock();
+                Checkpoint();
+                RailLine();
+                DockEnd();
+            }
+
+            // One side of the fence, less the road's gap at its middle.
+            private void FenceSide(Vector3 a, Vector3 b, float gap)
+            {
+                Vector3 mid = (a + b) * 0.5f, dir = (b - a).normalized;
+                Fence(a, mid - dir * gap, FenceKind.ChainLink, default);
+                Fence(mid + dir * gap, b, FenceKind.ChainLink, default);
+            }
+
+            // North exit: the police road block across Main St beyond the exit zone, sawhorses on the sidewalks, the cruiser
+            // on the verge and the ROAD CLOSED sign facing town.
+            private void RoadBlock()
+            {
+                float z = EdgeLine - 1.1f;
                 for (int i = -1; i <= 1; i++)
-                {
-                    m.SetFrame(o + q * new Vector3(i * 2.7f, 0f, 0f), q);
-                    DecorProps.JerseyBarrier(m, r, 2.6f, true);
-                }
-            });
-            Prop(town, new Vector3(-EdgeLine + 0.3f, 0f, 0f), 90f, new Vector3(8f, 1.1f, 0.3f), true, (m, r) =>
-            {
-                Surf wood = DecorPalette.Matte(new Color(0.40f, 0.32f, 0.22f));
-                Surf metal = DecorPalette.Metal(new Color(0.45f, 0.42f, 0.38f));
-                for (int i = -4; i <= 4; i++)
-{
-    m.Box(new Vector3(i * 1.0f, 0.55f, 0f), new Vector3(0.12f, 1.1f, 0.12f), wood);
-            // hinge stub on each post (skip interior posts)
-            if (i == -4 || i == 4)
-            {
-                float hx = i * 1.0f + R(r, -0.02f, 0.02f);
-                m.Cylinder(new Vector3(hx, 0.90f, 0f), 0.02f, 0.04f, 6, metal);
+                    Prop(_town, new Vector3(i * 2.7f, 0f, z), 0f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => DecorProps.JerseyBarrier(m, r, 2.6f, false));
+                for (int s = -1; s <= 1; s += 2)
+                    Prop(_town, new Vector3(s * 5.3f, 0f, z - 0.9f), s * 8f, new Vector3(1.6f, 1.05f, 0.5f), true, (m, r) => DecorProps.Sawhorse(m, r, 1.6f));
+                ParkedCar(_town, new Vector3(9.6f, 0f, 66f), 200f, DecorProps.CarKind.Police, new Color(0.10f, 0.12f, 0.16f));
+                Sign(new Vector3(-7.8f, 0f, 66.4f), 180f, "ROAD CLOSED", new Color(0.86f, 0.84f, 0.78f), new Color(0.12f, 0.12f, 0.12f), 0.4f, 1.2f);
             }
-            // subtle paint‑chip detail on each wooden post
-            if (r.NextDouble() < 0.4)
-            {
-                Surf chip = DecorPalette.Matte(new Color(0.34f, 0.28f, 0.22f));
-                float chipX = i * 1.0f + R(r, -0.15f, 0.15f);
-                float chipY = 0.4f + R(r, -0.1f, 0.1f);
-                // small paint chip box on post surface
-                m.Box(new Vector3(chipX, chipY, 0f), new Vector3(0.02f, 0.005f, 0.08f), chip);
-            }
-    // Detailed visual upgrade for the centre post of the wooden low‑barrier – metal cap, rust, rope loop,
-    // paint streaks, and a faded sign to give a lived‑in, winter‑weathered look.
-    if (i == 0)
-    {
-        // 1️⃣ Metal cap on top of the centre post (0.14 m × 0.02 m × 0.14 m)
-        Surf metalCap = DecorPalette.Metal(new Color(0.50f, 0.45f, 0.40f));
-        m.Box(new Vector3(0f, 1.11f, 0f), new Vector3(0.14f, 0.02f, 0.14f), metalCap);
-        // 2️⃣ Small rust patch at the base of the centre post (0.20 m × 0.02 m × 0.02 m)
-        Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));
-        m.Box(new Vector3(0f, 0.01f, 0f), new Vector3(0.20f, 0.02f, 0.02f), rust);
-        Surf centreRope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
-        m.Cylinder(new Vector3(0f, 0.70f, 0f), 0.04f, 0.04f, 6, centreRope);
-        // 4️⃣ Two weathered paint streaks on the lower horizontal beam (each 0.02 m × 0.005 m × 0.08 m)
-        Surf streak = DecorPalette.Matte(new Color(0.35f, 0.28f, 0.20f));
-        // left streak
-        m.Box(new Vector3(-0.30f, 0.96f, 0f), new Vector3(0.02f, 0.005f, 0.08f), streak);
-        // right streak
-        m.Box(new Vector3(0.30f, 0.96f, 0f), new Vector3(0.02f, 0.005f, 0.08f), streak);
-        // 5️⃣ A faded wooden “hand‑sign” hanging from the centre post (0.60 m × 0.80 m × 0.02 m)
-        Surf signWood = DecorPalette.Matte(new Color(0.38f, 0.32f, 0.24f));
-        m.Box(new Vector3(0.35f, 1.25f, 0f), new Vector3(0.60f, 0.80f, 0.02f), signWood);
-    }
-}
-                // top rail connecting the outer posts
-                float railY = 1.20f;
-                m.Box(new Vector3(0f, railY, 0f), new Vector3(8.2f, 0.03f, 0.08f), wood);
-                m.Box(new Vector3(0f, 0.95f, 0f), new Vector3(8.2f, 0.1f, 0.08f), wood);
-                m.Box(new Vector3(0f, 0.55f, 0f), new Vector3(8.2f, 0.1f, 0.08f), wood);
-                // gate panel (closed position)
-                float gateY = 0.90f;
-                float gateHalfWidth = 1.0f;
-                m.Box(new Vector3(0f, gateY, 0f), new Vector3(gateHalfWidth * 2f, 0.02f, 0.08f), Quaternion.Euler(0f, 5f, 0f), wood);
-// latch on the right side of the gate
-        float latchX = gateHalfWidth - 0.05f;
-        m.Cylinder(new Vector3(latchX, gateY + 0.02f, 0f), 0.015f, 0.03f, 6, metal);
-        // additional visual details for the gate
-        Surf gateRope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
-        // left hinge
-        float leftHingeX = -gateHalfWidth + 0.02f;
-        m.Cylinder(new Vector3(leftHingeX, gateY + 0.02f, 0f), 0.012f, 0.04f, 6, metal);
-        // right hinge (next to latch)
-        float rightHingeX = latchX + 0.02f;
-        m.Cylinder(new Vector3(rightHingeX, gateY + 0.02f, 0f), 0.012f, 0.04f, 6, metal);
-        // centre reinforcement bar
-        m.Box(new Vector3(0f, gateY + 0.25f, 0f), new Vector3(0.02f, 0.50f, 0.08f), wood);
-        // tiny chain loop between right hinge and latch
-        m.Cylinder(new Vector3(rightHingeX - 0.005f, gateY + 0.04f, 0f), 0.005f, 0.02f, 6, gateRope);
-        // wooden knocker on far‑right side
-        m.Box(new Vector3(latchX + 0.03f, gateY + 0.12f, 0f), new Vector3(0.06f, 0.02f, 0.02f), wood);
-        // occasional paint‑chip wear on the gate panel
-        if (r.NextDouble() < 0.3)
-        {
-            Surf chip = DecorPalette.Matte(new Color(0.34f, 0.28f, 0.22f));
-            float chipX = R(r, -gateHalfWidth + 0.2f, gateHalfWidth - 0.2f);
-            m.Box(new Vector3(chipX, gateY + 0.01f, 0f), new Vector3(0.04f, 0.004f, 0.08f), chip);
-        }
-        m.Box(new Vector3(0f, 1.03f, 0f), new Vector3(8.0f, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
-            });
-        }
 
-        // One barrier run along a side: 0 = north (z+), 1 = east (x+), 2 = south (z-), 3 = west (x-).
-        private static void EdgeSegment(RaidTown town, int side, float a, float b, System.Random rng)
-        {
-            float len = b - a;
-            if (len < 0.5f) return;
-            float mid = (a + b) * 0.5f;
-            Vector3 c;
-            float yaw;
-            switch (side)
+            // South exit: the Guard checkpoint on Main St — sandbags either side, striped barriers across the road beyond the
+            // zone, the guard booth, an army truck and a floodlight still burning.
+            private void Checkpoint()
             {
-                case 0: c = new Vector3(mid, 0f, EdgeLine); yaw = 180f; break;
-                case 1: c = new Vector3(EdgeLine, 0f, mid); yaw = 270f; break;
-                case 2: c = new Vector3(mid, 0f, -EdgeLine); yaw = 0f; break;
-                default: c = new Vector3(-EdgeLine, 0f, mid); yaw = 90f; break;
-            }
-            int kind = rng.Next(4);
-            RaidMesh m = town.Out.Solid(c);
-            m.SetFrame(c, yaw);
-            float h;
-            switch (kind)
-            {
-                case 0:
+                for (int s = -1; s <= 1; s += 2)
+                    Prop(_town, new Vector3(s * 7.6f, 0f, -59.5f), 90f, new Vector3(4f, 0.8f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 4f, 5));
+                for (int i = -1; i <= 1; i++)
+                    Prop(_town, new Vector3(i * 2.7f, 0f, -EdgeLine + 1.1f), 0f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => DecorProps.JerseyBarrier(m, r, 2.6f, true));
+                GuardBoothProp(_town, new Vector3(9.8f, 0f, -63.5f), 270f);
+                ParkedCar(_town, new Vector3(-10.6f, 0f, -57f), 0f, DecorProps.CarKind.ArmyTruck, Color.white);
+                var tower = new Vector3(8.6f, 0f, -54f);
+                Prop(_town, tower, 0f, new Vector3(0.4f, 5f, 0.4f), true, (m, r) =>
                 {
-                    h = 2.4f;
-                    Surf post = DecorPalette.Matte(new Color(0.30f, 0.24f, 0.18f));
-                    Surf sheet = DecorMaterials.Corrugated(new Color(0.46f, 0.47f, 0.46f));
-                    for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.4f)
-                        m.Box(new Vector3(x, 1.2f, -0.08f), new Vector3(0.12f, 2.4f, 0.12f), post);
-                    for (float x = -len * 0.5f + 0.6f; x < len * 0.5f; x += 1.1f)
+                    Surf steel = DecorPalette.Metal(new Color(0.3f, 0.32f, 0.28f));
+                    m.Box(new Vector3(0f, 0.1f, 0f), new Vector3(0.9f, 0.2f, 0.9f), DecorMaterials.Concrete);
+                    m.Cylinder(new Vector3(0f, 0.2f, 0f), 0.08f, 4.8f, 8, steel);
+                    m.Box(new Vector3(0f, 5.0f, 0f), new Vector3(0.9f, 0.1f, 0.2f), steel);
+                    for (int k = -1; k <= 1; k += 2)
                     {
-                        float sh = R(rng, 2.0f, 2.45f);
-                        m.Box(new Vector3(x, sh * 0.5f, 0f), new Vector3(1.2f, sh, 0.03f), Quaternion.Euler(R(rng, -3f, 3f), 0f, R(rng, -2f, 2f)), sheet);
+                        m.Box(new Vector3(k * 0.32f, 5.15f, 0.05f), new Vector3(0.3f, 0.26f, 0.22f), Quaternion.Euler(25f, 0f, 0f), DecorPalette.Matte(new Color(0.2f, 0.22f, 0.18f)));
+                        m.Box(new Vector3(k * 0.32f, 5.1f, 0.17f), new Vector3(0.24f, 0.2f, 0.01f), Quaternion.Euler(25f, 0f, 0f), DecorPalette.Glow(new Color(0.92f, 0.95f, 1f)));
                     }
-// occasional rust spots on the corrugated sheet
-                Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));
-                    // ice material – very light blue, slightly translucent
-                    Surf ice = DecorPalette.Matte(new Color(0.78f, 0.88f, 1.00f));
-for (float x = -len * 0.5f + 0.3f; x < len * 0.5f; x += R(rng, 2f, 4f))
-{
-    float w = R(rng, 0.2f, 0.4f);
-    // small matte box placed flush on sheet surface to simulate rust stain
-    m.Box(new Vector3(x, 0.01f, 0f), new Vector3(w, 0.02f, 0.02f), rust);
-}
-// ---- NEW: thin frosted‑ice patches on sheet tops ----
-                for (float ix = -len * 0.5f + 0.5f; ix < len * 0.5f; ix += R(rng, 1.5f, 3f))
-                {
-                    float iw = R(rng, 0.3f, 0.6f);
-                    // place a very thin box just above the sheet (sheet height ≈ 2.4 m)
-                    m.Box(new Vector3(ix, 2.42f, 0f), new Vector3(iw, 0.03f, 0.04f), ice);
-                }
-
-                // occasional snow drifts sitting on the corrugated sheet surface
-                for (float sx = -len * 0.5f + 0.8f; sx < len * 0.5f; sx += R(rng, 3f, 5f))
-                {
-                    float sw = R(rng, 0.3f, 0.6f);
-                    m.Box(new Vector3(sx, 2.45f, 0f), new Vector3(sw, 0.05f, 0.3f), DecorMaterials.Snow);
-                }
-
-                // ---- NEW: hanging icicles (thin cylinders) ----
-                for (float cx = -len * 0.5f + 0.7f; cx < len * 0.5f; cx += R(rng, 2f, 4f))
-                {
-                    float ch = R(rng, 0.15f, 0.25f);
-                    // cylinder hanging from the sheet bottom (sheet bottom ≈ 0 m)
-                    m.Cylinder(new Vector3(cx, -ch * 0.5f, 0f), 0.015f, ch, 6, ice);
-                }
-                // end of case 0 block
-                break;
-                }
-                case 1:
-                {
-                    h = 2.0f;
-                    Surf post = DecorPalette.Matte(new Color(0.32f, 0.25f, 0.17f));
-                    for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.2f)
-                        {
-                            m.Box(new Vector3(x, 1.05f, -0.06f), new Vector3(0.12f, 2.1f, 0.12f), post);
-                            // metal cap on top of post
-m.Cylinder(new Vector3(x, 2.6f, -0.06f), 0.04f, 0.05f, 6, DecorPalette.Metal(new Color(0.50f, 0.45f, 0.40f)));
-                             // occasional rust stain above cap (30% chance)
-                             if (rng.NextDouble() < 0.3)
-                             {
-                                 float w = R(rng, 0.05f, 0.08f);
-                                 m.Box(new Vector3(x, 2.62f, -0.06f), new Vector3(w, 0.01f, 0.01f), DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f)));
-                             }
-                             // thin wooden rope‑tie between posts
-Surf gateRope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
-                             m.Box(new Vector3(x, 0.5f, -0.06f), new Vector3(0.04f, 0.4f, 0.04f), gateRope);
-                        }
-                    m.Box(new Vector3(0f, 1.0f, 0f), new Vector3(len, 2.0f, 0.05f), DecorMaterials.Planks(new Color(0.46f, 0.38f, 0.28f)));
-                    m.Box(new Vector3(0f, 2.03f, 0f), new Vector3(len, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
-                    break;
-                }
-                case 2:
-                {
-                    h = 2.2f;
-                    Surf steel = DecorPalette.Metal(new Color(0.48f, 0.50f, 0.52f));
-                    for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.5f)
-                        { m.Cylinder(new Vector3(x, 0f, 0f), 0.04f, 2.2f, 6, steel); if (rng.NextDouble() < 0.4) { Surf bolt = DecorPalette.Metal(new Color(0.55f, 0.53f, 0.48f)); m.Cylinder(new Vector3(x, 2.2f, 0f), 0.015f, 0.06f, 6, bolt); } }
-                    m.Box(new Vector3(0f, 2.15f, 0f), new Vector3(len, 0.05f, 0.05f), steel);
-                    for (int w = 0; w < 8; w++)
-                        m.Box(new Vector3(0f, 0.2f + w * 0.26f, 0f), new Vector3(len, 0.015f, 0.015f), steel);
-                    for (float x = -len * 0.5f; x < len * 0.5f - 0.3f; x += 0.3f)
-                        m.Rod(new Vector3(x, 2.2f, 0f), new Vector3(x + 0.3f, 2.4f, R(rng, -0.12f, 0.12f)), 0.012f, steel);
-                    break;
-                }
-                default:
-                {
-                    h = 1.9f;
-                    for (float x = -len * 0.5f; x < len * 0.5f; x += R(rng, 1.4f, 2.2f))
-                        m.Ellipsoid(new Vector3(x, 0f, R(rng, -0.2f, 0.4f)), new Vector3(R(rng, 2.2f, 3.2f), R(rng, 3.0f, 4.4f), R(rng, 1.4f, 2.0f)),
-                            Quaternion.Euler(0f, R(rng, -20f, 20f), 0f), DecorPalette.Matte(rng.NextDouble() < 0.5 ? DecorProps.SnowWhite : DecorProps.SnowShade), 8, 4);
-                    break;
-                }
+                });
+                _town.Light(_town.World, tower + new Vector3(0f, 4.9f, 0.6f), new Color(0.88f, 0.92f, 1f), 16f, 2.4f, false, true);
+                Sign(new Vector3(-7.2f, 0f, -52.4f), 0f, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Color(0.88f, 0.86f, 0.74f), 0.42f, 1.3f);
             }
-            m.ResetFrame();
-            town.PropCollider(c + Vector3.up * 1.25f, new Vector3(len, Mathf.Max(2.5f, h), 0.5f), yaw);
-        }
-        #endregion
 
-        #region Scenery past the edge
-        // Never baked, never collided with: the snowfields, pine woods, the frozen river and dock to the
-        // west, the bridge to the east, and the roads running on out of town.
-        private static void BuildScenery(RaidTown town)
-        {
-            System.Random rng = town.Rng;
-            const float far = 130f;
-            Surf snow = DecorMaterials.Snow;
-            RaidMesh g = new RaidMesh();
-            g.Box(new Vector3(0f, -0.5f, (GroundHalf + far) * 0.5f), new Vector3(far * 2f, 1f, far - GroundHalf), snow);
-            g.Box(new Vector3(0f, -0.5f, -(GroundHalf + far) * 0.5f), new Vector3(far * 2f, 1f, far - GroundHalf), snow);
-            g.Box(new Vector3((GroundHalf + far) * 0.5f, -0.5f, 0f), new Vector3(far - GroundHalf, 1f, GroundHalf * 2f), snow);
-            // West: a snowy bank, then the frozen river.
-            g.Box(new Vector3(-GroundHalf - 1.6f, -0.5f, 0f), new Vector3(3.2f, 1f, GroundHalf * 2f), snow);
-            g.Box(new Vector3(-(GroundHalf + 3.2f + far) * 0.5f, -0.8f, 0f), new Vector3(far - GroundHalf - 3.2f, 1f, GroundHalf * 2f), DecorPalette.Glass(new Color(0.26f, 0.31f, 0.36f)));
-            g.Emit("FarGround", town.Scenery, Vector3.zero, UnityEngine.Rendering.ShadowCastingMode.Off);
-
-            // The roads run on out of town.
-            Surf asphalt = DecorMaterials.Asphalt;
-            for (float z = GroundHalf; z < far; z += 12f)
+            // The rail line on its ballast past the depot and over Depot Rd at the Rail Bridge exit (the ballast and sleepers
+            // stop at the road, the rails run on across it), a crossbuck either side of the road, and striped barriers
+            // across the road at the fence.
+            private void RailLine()
             {
-                var p = new Vector3(0f, 0.012f, z + 6f);
-                town.Far.Flat(p).Flat(p, 8f, 12f, 0f, asphalt);
-                var q = new Vector3(0f, 0.012f, -z - 6f);
-                town.Far.Flat(q).Flat(q, 8f, 12f, 0f, asphalt);
+                Surf sleeper = DecorMaterials.Planks(new Color(0.30f, 0.22f, 0.15f));
+                Surf rail = DecorPalette.Metal(new Color(0.36f, 0.30f, 0.26f));
+                float road = DepotRd.Outer + 0.2f;
+                for (float z = -GroundHalf; z < GroundHalf - 0.1f; z += 10f)
+                {
+                    float z1 = Mathf.Min(GroundHalf, z + 10f);
+                    if (z < -road) Pave(Rect.MinMaxRect(RailX - 1.9f, z, RailX + 1.9f, Mathf.Min(z1, -road)), 0.02f, DecorMaterials.Gravel);
+                    if (z1 > road) Pave(Rect.MinMaxRect(RailX - 1.9f, Mathf.Max(z, road), RailX + 1.9f, z1), 0.02f, DecorMaterials.Gravel);
+                    RaidMesh m = _town.Out.Solid(new Vector3(RailX, 0f, (z + z1) * 0.5f));
+                    for (int k = -1; k <= 1; k += 2)
+                        m.Box(new Vector3(RailX + k * 0.72f, 0.09f, (z + z1) * 0.5f), new Vector3(0.08f, 0.14f, z1 - z), rail);
+                    for (float s = z + 0.3f; s < z1; s += 0.65f)
+                        if (Mathf.Abs(s) > road) m.Box(new Vector3(RailX, 0.045f, s), new Vector3(2.5f, 0.09f, 0.22f), sleeper);
+                }
+                Reserve(Rect.MinMaxRect(RailX - 2.2f, -GroundHalf, RailX + 2.2f, GroundHalf));
+                for (int s = -1; s <= 1; s += 2)
+                    Prop(_town, new Vector3(RailX - 4.6f, 0f, s * (road + 0.7f)), s > 0 ? 180f : 0f, new Vector3(0.3f, 3f, 0.3f), true, (m, r) => Crossbuck(m));
+                for (int i = -1; i <= 1; i++)
+                    Prop(_town, new Vector3(EdgeLine - 0.4f, 0f, i * 2.7f), 90f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => DecorProps.JerseyBarrier(m, r, 2.6f, true));
             }
-            for (float x = GroundHalf; x < far; x += 12f)
+
+            // West exit: Depot Rd runs down to the boat dock: a timber barrier across the road at the fence, the dock's first
+            // planks inside it, and the dock's sign.
+            private void DockEnd()
             {
-                var p = new Vector3(x + 6f, 0.012f, 0f);
-                town.Far.Flat(p).Flat(p, 12f, 8f, 0f, asphalt);
+                float len = DepotRd.HalfWidth * 2f + 0.4f;
+                Prop(_town, new Vector3(-EdgeLine + 0.4f, 0f, 0f), 90f, new Vector3(len, 1.1f, 0.3f), true, (m, r) =>
+                {
+                    Surf wood = DecorPalette.Matte(new Color(0.40f, 0.32f, 0.22f));
+                    for (int i = 0; i <= 3; i++) m.Box(new Vector3(-len * 0.5f + len * i / 3f, 0.55f, 0f), new Vector3(0.14f, 1.1f, 0.14f), wood);
+                    m.Box(new Vector3(0f, 0.95f, 0f), new Vector3(len, 0.14f, 0.08f), wood);
+                    m.Box(new Vector3(0f, 0.55f, 0f), new Vector3(len, 0.14f, 0.08f), wood);
+                    m.Box(new Vector3(0f, 1.04f, 0f), new Vector3(len - 0.1f, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
+                });
+                Sign(new Vector3(-65f, 0f, -DepotRd.Outer - 1.2f), 0f, "BOAT DOCK", new Color(0.16f, 0.24f, 0.30f), new Color(0.86f, 0.86f, 0.80f), 0.4f, 1.2f);
+                RaidMesh d = _town.Out.Solid(new Vector3(-68f, 0f, 0f));
+                Surf plank = DecorMaterials.Planks(new Color(0.42f, 0.34f, 0.24f));
+                for (float x = -EdgeLine + 0.15f; x < -65f; x += 0.35f) d.Box(new Vector3(x, 0.05f, 0f), new Vector3(0.3f, 0.06f, 3.0f), plank);
             }
-            // Rails north and south.
-            for (float z = GroundHalf; z < far; z += 10f)
+
+            private static void Crossbuck(RaidMesh m)
+            {
+                m.Cylinder(Vector3.zero, 0.06f, 3.0f, 8, DecorPalette.Metal(new Color(0.6f, 0.6f, 0.6f)));
+                Surf board = DecorPalette.Matte(new Color(0.86f, 0.86f, 0.82f));
+                m.Box(new Vector3(0f, 2.6f, 0.06f), new Vector3(1.2f, 0.2f, 0.03f), Quaternion.Euler(0f, 0f, 35f), board);
+                m.Box(new Vector3(0f, 2.6f, 0.06f), new Vector3(1.2f, 0.2f, 0.03f), Quaternion.Euler(0f, 0f, -35f), board);
+                Surf hood = DecorPalette.Matte(new Color(0.12f, 0.12f, 0.12f));
+                Surf lens = DecorPalette.Glass(new Color(0.35f, 0.06f, 0.05f));
                 for (int s = -1; s <= 1; s += 2)
                 {
-                    var p = new Vector3(66f, 0f, s * (z + 5f));
-                    RaidMesh m = town.Far.Solid(p);
-                    m.Box(p + new Vector3(0f, 0.02f, 0f), new Vector3(3.8f, 0.04f, 10f), DecorMaterials.Gravel);
-                    m.Box(p + new Vector3(-0.72f, 0.09f, 0f), new Vector3(0.08f, 0.14f, 10f), DecorPalette.Metal(new Color(0.36f, 0.30f, 0.26f)));
-                    m.Box(p + new Vector3(0.72f, 0.09f, 0f), new Vector3(0.08f, 0.14f, 10f), DecorPalette.Metal(new Color(0.36f, 0.30f, 0.26f)));
+                    m.Box(new Vector3(s * 0.2f, 2.0f, 0.08f), new Vector3(0.22f, 0.22f, 0.12f), hood);
+                    m.Box(new Vector3(s * 0.2f, 2.0f, 0.141f), new Vector3(0.14f, 0.14f, 0.01f), lens);
                 }
-
-            // East: a steel truss bridge carries Depot Rd away.
-            Surf steel = DecorPalette.Metal(new Color(0.26f, 0.28f, 0.30f));
-            for (int s = -1; s <= 1; s += 2)
-            {
-                float z = s * 4.6f;
-                var c = new Vector3(90f, 0f, z);
-                RaidMesh m = town.Far.Solid(c);
-                m.Box(new Vector3(90f, 0.35f, z), new Vector3(34f, 0.5f, 0.4f), steel);
-                m.Box(new Vector3(90f, 5.0f, z), new Vector3(30f, 0.4f, 0.4f), steel);
-                for (float x = 74f; x <= 106f; x += 4f)
-                {
-                    m.Box(new Vector3(x, 2.7f, z), new Vector3(0.3f, 4.6f, 0.3f), steel);
-                    if (x < 106f) m.Rod(new Vector3(x, 0.5f, z), new Vector3(x + 4f, 4.9f, z), 0.22f, steel);
-                }
-                m.Box(new Vector3(90f, 5.25f, z), new Vector3(29f, 0.06f, 0.35f), DecorPalette.Matte(DecorProps.SnowWhite));
             }
-            for (float x = 76f; x < 106f; x += 6f)
-                town.Far.Solid(new Vector3(x, 0f, 0f)).Box(new Vector3(x, 5.0f, 0f), new Vector3(0.3f, 0.3f, 9.2f), steel);
+            #endregion
 
-            // West: the dock running out onto the ice, and a rowboat frozen in.
-            Surf plank = DecorMaterials.Planks(new Color(0.42f, 0.34f, 0.24f));
-            RaidMesh dock = town.Far.Solid(new Vector3(-80f, 0f, 0f));
-            for (float x = -GroundHalf; x > -86f; x -= 0.35f)
-                dock.Box(new Vector3(x, 0.05f, 0f), new Vector3(0.3f, 0.06f, 3.0f), plank);
-            for (float x = -72f; x > -86f; x -= 3f)
+            #region Scenery past the edge
+            // Never baked, never collided with: the snowfields, the frozen river and the dock to the west, the truss bridge to
+            // the east, the roads and rails running on out of town, and the pine woods all round.
+            public void Scenery()
+            {
+                const float far = 130f;
+                Surf snow = DecorMaterials.Snow;
+                var g = new RaidMesh();
+                g.Box(new Vector3(0f, -0.5f, (GroundHalf + far) * 0.5f), new Vector3(far * 2f, 1f, far - GroundHalf), snow);
+                g.Box(new Vector3(0f, -0.5f, -(GroundHalf + far) * 0.5f), new Vector3(far * 2f, 1f, far - GroundHalf), snow);
+                g.Box(new Vector3((GroundHalf + far) * 0.5f, -0.5f, 0f), new Vector3(far - GroundHalf, 1f, GroundHalf * 2f), snow);
+                // West: a snowy bank, then the frozen river.
+                g.Box(new Vector3(-GroundHalf - 1.6f, -0.5f, 0f), new Vector3(3.2f, 1f, GroundHalf * 2f), snow);
+                g.Box(new Vector3(-(GroundHalf + 3.2f + far) * 0.5f, -0.8f, 0f), new Vector3(far - GroundHalf - 3.2f, 1f, GroundHalf * 2f),
+                    DecorPalette.Glass(new Color(0.26f, 0.31f, 0.36f)));
+                g.Emit("FarGround", _town.Scenery, Vector3.zero, ShadowCastingMode.Off);
+
+                // The roads run on out of town.
+                Surf asphalt = DecorMaterials.DryAsphalt;
+                for (float t = GroundHalf; t < far; t += 12f)
+                {
+                    foreach (Vector3 p in new[] { new Vector3(0f, RoadY, t + 6f), new Vector3(0f, RoadY, -t - 6f) })
+                        _town.Far.Flat(p).Flat(p, MainSt.HalfWidth * 2f, 12f, 0f, asphalt);
+                    var q = new Vector3(t + 6f, RoadY, 0f);
+                    _town.Far.Flat(q).Flat(q, 12f, DepotRd.HalfWidth * 2f, 0f, asphalt);
+                }
+                // The rails north and south.
+                Surf rail = DecorPalette.Metal(new Color(0.36f, 0.30f, 0.26f));
+                for (float t = GroundHalf; t < far; t += 10f)
+                    for (int s = -1; s <= 1; s += 2)
+                    {
+                        var p = new Vector3(RailX, 0f, s * (t + 5f));
+                        RaidMesh m = _town.Far.Solid(p);
+                        m.Box(p + new Vector3(0f, 0.02f, 0f), new Vector3(3.8f, 0.04f, 10f), DecorMaterials.Gravel);
+                        for (int k = -1; k <= 1; k += 2) m.Box(p + new Vector3(k * 0.72f, 0.09f, 0f), new Vector3(0.08f, 0.14f, 10f), rail);
+                    }
+
+                // East: the steel truss bridge carrying Depot Rd away.
+                Surf steel = DecorPalette.Metal(new Color(0.26f, 0.28f, 0.30f));
                 for (int s = -1; s <= 1; s += 2)
-                    dock.Cylinder(new Vector3(x, -0.8f, s * 1.55f), 0.12f, 1.3f, 6, DecorPalette.Matte(new Color(0.30f, 0.24f, 0.17f)));
-            dock.SetFrame(new Vector3(-79f, -0.35f, 4.2f), 70f);
-            dock.Box(new Vector3(0f, 0.25f, 0f), new Vector3(1.3f, 0.5f, 3.6f), DecorPalette.Matte(new Color(0.24f, 0.32f, 0.30f)));
-            dock.Box(new Vector3(0f, 0.48f, 0f), new Vector3(1.1f, 0.06f, 3.3f), DecorPalette.Matte(DecorProps.SnowWhite));
-            dock.ResetFrame();
-
-            // Pine woods and a few bare trees all round.
-            int pines = 0;
-            for (int attempt = 0; attempt < 600 && pines < 110; attempt++)
-            {
-                var p = new Vector3(R(rng, -far + 10f, far - 10f), 0f, R(rng, -far + 10f, far - 10f));
-                if (Mathf.Abs(p.x) < 74f && Mathf.Abs(p.z) < 74f) continue;
-                if (p.x < -74f) continue;                                 // the river
-                if (Mathf.Abs(p.x) < 8f || Mathf.Abs(p.z) < 8f) continue;  // the roads out
-                if (Mathf.Abs(p.x - 66f) < 4f) continue;                   // the rails
-                RaidMesh m = town.Far.Solid(p);
-                m.SetFrame(p, R(rng, 0f, 360f));
-                if (rng.NextDouble() < 0.8) DecorProps.Pine(m, rng, R(rng, 7f, 13f));
-                else DecorProps.BareTree(m, rng, R(rng, 5f, 8f));
-                m.ResetFrame();
-                pines++;
-            }
-        }
-        #endregion
-
-        #region Survivor spawn
-        // The survivor starts in one of the reference-photo rooms (the Guard post's operations room or
-        // the county office floor), standing clear of the furniture, at least 35 m from every exit.
-        private static void PickSpawn(RaidTown town)
-        {
-            var valid = new System.Collections.Generic.List<int>();
-            for (int i = 0; i < town.SpawnCandidates.Count; i++)
-            {
-                Vector3 p = town.SpawnCandidates[i].pos;
-                bool ok = true;
-                foreach (RaidExit e in town.Info.Exits)
                 {
-                    Vector3 d = e.Position - p;
-                    d.y = 0f;
-                    if (d.magnitude < 35f) ok = false;
+                    float z = s * 4.6f;
+                    RaidMesh m = _town.Far.Solid(new Vector3(90f, 0f, z));
+                    m.Box(new Vector3(90f, 0.35f, z), new Vector3(34f, 0.5f, 0.4f), steel);
+                    m.Box(new Vector3(90f, 5.0f, z), new Vector3(30f, 0.4f, 0.4f), steel);
+                    for (float x = 74f; x <= 106f; x += 4f)
+                    {
+                        m.Box(new Vector3(x, 2.7f, z), new Vector3(0.3f, 4.6f, 0.3f), steel);
+                        if (x < 106f) m.Rod(new Vector3(x, 0.5f, z), new Vector3(x + 4f, 4.9f, z), 0.22f, steel);
+                    }
+                    m.Box(new Vector3(90f, 5.25f, z), new Vector3(29f, 0.06f, 0.35f), DecorPalette.Matte(DecorProps.SnowWhite));
                 }
-                if (ok) valid.Add(i);
+                for (float x = 76f; x < 106f; x += 6f)
+                    _town.Far.Solid(new Vector3(x, 0f, 0f)).Box(new Vector3(x, 5.0f, 0f), new Vector3(0.3f, 0.3f, 9.2f), steel);
+
+                // West: the dock running out onto the ice, and a rowboat frozen in.
+                Surf plank = DecorMaterials.Planks(new Color(0.42f, 0.34f, 0.24f));
+                RaidMesh dock = _town.Far.Solid(new Vector3(-80f, 0f, 0f));
+                for (float x = -GroundHalf; x > -86f; x -= 0.35f)
+                    dock.Box(new Vector3(x, 0.05f, 0f), new Vector3(0.3f, 0.06f, 3.0f), plank);
+                for (float x = -72f; x > -86f; x -= 3f)
+                    for (int s = -1; s <= 1; s += 2)
+                        dock.Cylinder(new Vector3(x, -0.8f, s * 1.55f), 0.12f, 1.3f, 6, DecorPalette.Matte(new Color(0.30f, 0.24f, 0.17f)));
+                dock.SetFrame(new Vector3(-79f, -0.35f, 4.2f), 70f);
+                dock.Box(new Vector3(0f, 0.25f, 0f), new Vector3(1.3f, 0.5f, 3.6f), DecorPalette.Matte(new Color(0.24f, 0.32f, 0.30f)));
+                dock.Box(new Vector3(0f, 0.48f, 0f), new Vector3(1.1f, 0.06f, 3.3f), DecorPalette.Matte(DecorProps.SnowWhite));
+                dock.ResetFrame();
+
+                // Pine woods, and a few bare trees, all round.
+                int pines = 0;
+                for (int attempt = 0; attempt < 600 && pines < 110; attempt++)
+                {
+                    var p = new Vector3(R(_rng, -far + 10f, far - 10f), 0f, R(_rng, -far + 10f, far - 10f));
+                    if (Mathf.Abs(p.x) < 74f && Mathf.Abs(p.z) < 74f) continue;
+                    if (p.x < -74f) continue;                                 // the river
+                    if (Mathf.Abs(p.x) < 8f || Mathf.Abs(p.z) < 8f) continue;  // the roads out
+                    if (Mathf.Abs(p.x - RailX) < 4f) continue;                 // the rails
+                    RaidMesh m = _town.Far.Solid(p);
+                    m.SetFrame(p, R(_rng, 0f, 360f));
+                    if (Chance(_rng, 0.8)) DecorProps.Pine(m, _rng, R(_rng, 7f, 13f));
+                    else DecorProps.BareTree(m, _rng, R(_rng, 5f, 8f));
+                    m.ResetFrame();
+                    pines++;
+                }
             }
-            if (town.SpawnCandidates.Count == 0)
+            #endregion
+
+            #region Survivor spawn
+            // The survivor starts in one of the reference-photo rooms (the Guard post's operations room or the county office
+            // floor), clear of the furniture, at least 35 m from every exit.
+            public void Spawn()
             {
-                town.Warn("no spawn candidates; starting on Main St");
-                town.Info.PlayerSpawn = new Vector3(-6f, 0.6f, 20f);
-                return;
+                RaidMapInfo info = _town.Info;
+                var valid = new List<int>();
+                for (int i = 0; i < _town.SpawnCandidates.Count; i++)
+                {
+                    Vector3 p = _town.SpawnCandidates[i].pos;
+                    bool ok = true;
+                    foreach (RaidExit e in info.Exits)
+                    {
+                        Vector3 d = e.Position - p;
+                        d.y = 0f;
+                        if (d.magnitude < 35f) ok = false;
+                    }
+                    if (ok) valid.Add(i);
+                }
+                if (valid.Count == 0)
+                {
+                    _town.Warn(_town.SpawnCandidates.Count == 0 ? "no spawn candidates; starting on Main St" : "no spawn far enough from the exits; starting on Main St");
+                    info.PlayerSpawn = MainSt.At(20f, -(MainSt.Outer - 1f), 0.6f);
+                    info.PlayerSpawnYaw = 0f;
+                    return;
+                }
+                var c = _town.SpawnCandidates[valid[_rng.Next(valid.Count)]];
+                foreach (Rect f in c.room.Furniture)
+                {
+                    float dx = Mathf.Max(f.xMin - c.pos.x, 0f, c.pos.x - f.xMax);
+                    float dz = Mathf.Max(f.yMin - c.pos.z, 0f, c.pos.z - f.yMax);
+                    if (dx * dx + dz * dz < 1f) _town.Warn("spawn point in " + c.room.Name + " is within 1 m of furniture");
+                }
+                info.PlayerSpawn = new Vector3(c.pos.x, 0.6f, c.pos.z);
+                info.PlayerSpawnYaw = c.yaw;
             }
-            if (valid.Count == 0)
-            {
-                town.Warn("no valid spawn far enough from exits; using default");
-                town.Info.PlayerSpawn = new Vector3(-6f, 0.6f, 20f);
-                town.Info.PlayerSpawnYaw = 0f;
-                return;
-            }
-            int pick = valid[town.Rng.Next(valid.Count)];
-            var c = town.SpawnCandidates[pick];
-            foreach (Rect f in c.room.Furniture)
-            {
-                float dx = Mathf.Max(f.xMin - c.pos.x, 0f, c.pos.x - f.xMax);
-                float dz = Mathf.Max(f.yMin - c.pos.z, 0f, c.pos.z - f.yMax);
-                if (dx * dx + dz * dz < 1f) town.Warn("spawn point in " + c.room.Name + " is within 1 m of furniture");
-            }
-            town.Info.PlayerSpawn = new Vector3(c.pos.x, 0.6f, c.pos.z);
-            town.Info.PlayerSpawnYaw = c.yaw;
+            #endregion
         }
-        #endregion
     }
 }

@@ -108,20 +108,15 @@ namespace CloneZ
             var lower = new RaidMesh();
             FurnitureBuilder.OpeningSash(lower, l, o.Pos, sashW, SashBottom, SashMeet + 0.02f, inner, true, roomSide, SashPaint);
             lower.Box(l.P(o.Pos, SashMeet + 0.024f, inner), l.Size(0.05f, 0.008f, 0.032f), brass);
-            // Small brass pull‑handle on the interior side of the lower sash
 
             if (!glazed) lower.Box(l.P(o.Pos, SashMeet + 0.042f, 0f), l.Size(0.02f, 0.008f, 0.06f), brass);
             FixturePart sash = FixturePart.Slide(root.transform, "LowerSash", lower, l.P(o.Pos, SashBottom, inner), Vector3.up * SashLift)
                 .WithSpeed(CloneZConfig.WindowSashSeconds);
-            // Small brass pull‑handle on the interior side of the lower sash
-            WindowBox(sash.transform, "PullHandle", l.P(o.Pos + 0.025f, SashBottom + 0.12f, inner), new Vector3(0.018f, 0.018f, 0.006f), brass);
             Renderer latchShut = null, latchOpen = null;
             if (glazed)
             {
                 latchShut = WindowBox(sash.transform, "LatchShut", l.P(o.Pos, SashMeet + 0.042f, 0f), l.Size(0.02f, 0.008f, 0.06f), brass);
                 latchOpen = WindowBox(sash.transform, "LatchOpen", l.P(o.Pos + 0.03f, SashMeet + 0.032f, inner), l.Size(0.06f, 0.008f, 0.02f), brass);
-            // tiny brass latch knob on the lever
-            WindowBox(latchOpen.transform, "LatchKnob", l.P(o.Pos + 0.03f, SashMeet + 0.038f, inner + 0.011f), new Vector3(0.012f, 0.012f, 0.005f), brass);
             }
 
             // Each sash's glazing: glass, or the shards left in the frame. The lower one rides on its sash.

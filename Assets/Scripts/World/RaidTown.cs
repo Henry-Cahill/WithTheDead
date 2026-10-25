@@ -70,10 +70,10 @@ namespace CloneZ
             Far = new OutdoorBatches(Scenery, 60f, info.HalfSize + 60f);
         }
 
-        /// <summary>Records a warning message to be reported later.</summary>
-    public void Warn(string message) => _warnings.Add(message);
-        /// <summary>Read‑only list of warning messages recorded during town build.</summary>
-    public IReadOnlyList<string> Warnings => _warnings;
+        /// <summary>Records a layout note, reported (as one warning) once the map is built.</summary>
+        public void Warn(string message) => _warnings.Add(message);
+        /// <summary>The layout notes recorded so far.</summary>
+        public IReadOnlyList<string> Warnings => _warnings;
 
         /// <summary>A room / desk / street light (counted).</summary>
         public void Light(Transform parent, Vector3 pos, Color color, float range, float intensity, bool flicker, bool shadows)

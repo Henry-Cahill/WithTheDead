@@ -228,7 +228,7 @@ namespace CloneZ
         /// <paramref name="stocked"/>, else a few cans at most.</summary>
         private static void DrinksCoolerAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, bool lit, bool stocked)
         {
-            Transform t = b.FixtureBody(room, p, Sz(0.9f, 2.0f, 0.75f), true, (m, r) => { FurnitureBuilder.MartCoolerBody(m, r, lit); if (b.Rng.NextDouble() < 0.5) m.Box(new Vector3(0f, 1.07f, 0.97f), new Vector3(0.03f, 0.02f, 0.02f), DecorPalette.Matte(new Color(0.20f, 0.23f, 0.21f))); }, "Drinks cooler");
+            Transform t = b.FixtureBody(room, p, Sz(0.9f, 2.0f, 0.75f), true, (m, r) => FurnitureBuilder.MartCoolerBody(m, r, lit), "Drinks cooler");
             KitchenFrame f = b.FrameOf(p);
             FixturePart door = KitchenParts.Door(t, "CoolerDoor", f, FurnitureBuilder.MartCoolerDoor, FurnitureBuilder.MartCoolerHinge,
                 Vector3.right, Vector3.forward, CloneZConfig.RaidMartCoolerDoorAngle);
@@ -247,11 +247,7 @@ namespace CloneZ
         private static void SafeAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p)
         {
             Color steel = new Color(0.20f, 0.23f, 0.21f);
-            Transform t = b.FixtureBody(room, p, Sz(0.8f, 1.9f, 0.6f), true, (m, r) => {
-                steel = FurnitureBuilder.MartSafeBody(m, r);
-                if (b.Rng.NextDouble() < 0.5)
-                    m.Box(new Vector3(0.25f, 0.9f, 0.31f), new Vector3(0.10f, 0.30f, 0.02f), DecorPalette.Matte(steel));
-            }, "Safe");
+            Transform t = b.FixtureBody(room, p, Sz(0.8f, 1.9f, 0.6f), true, (m, r) => steel = FurnitureBuilder.MartSafeBody(m, r), "Safe");
             KitchenFrame f = b.FrameOf(p);
             FixturePart door = KitchenParts.Door(t, "SafeDoor", f, m => FurnitureBuilder.MartSafeDoor(m, steel), FurnitureBuilder.MartSafeHinge,
                 Vector3.right, Vector3.forward, CloneZConfig.RaidSafeDoorAngle);

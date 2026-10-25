@@ -77,40 +77,13 @@ namespace CloneZ
                 m.Box(new Vector3(sx - 0.295f, 0.968f, 0.02f), new Vector3(0.03f, 0.016f, 0.44f), Mt(steel));
                 m.Box(new Vector3(sx + 0.295f, 0.968f, 0.02f), new Vector3(0.03f, 0.016f, 0.44f), Mt(steel));
                 m.Box(new Vector3(sx, 0.963f, 0.03f), new Vector3(0.06f, 0.004f, 0.06f), M(Black));
-// Gooseneck faucet and two taps.
-                 m.Cylinder(new Vector3(sx, 0.96f, -0.27f), 0.018f, 0.3f, 6, Mt(Chrome));
-                 m.Box(new Vector3(sx, 1.25f, -0.17f), new Vector3(0.03f, 0.03f, 0.22f), Mt(Chrome));
-                 m.Box(new Vector3(sx, 1.22f, -0.07f), new Vector3(0.025f, 0.06f, 0.025f), Mt(Chrome));
-                 m.Box(new Vector3(sx - 0.12f, 1.0f, -0.27f), new Vector3(0.05f, 0.04f, 0.05f), Mt(Chrome));
-                 m.Box(new Vector3(sx + 0.12f, 1.0f, -0.27f), new Vector3(0.05f, 0.04f, 0.05f), Mt(Chrome));
-                 // Backsplash – thin glass panel above the countertop front edge
-                 // positioned relative to the top front of the counter (center at y = 0.945 m, z = 0.33 m)
-                 m.Box(new Vector3(0f, 0.945f, 0.33f), new Vector3(len + 0.02f, 0.008f, 0.02f), G(new Color(0.90f,0.93f,0.95f)));
-                 // Left faucet knob
-                 m.Cylinder(new Vector3(sx - 0.01f, 0.97f, -0.24f), 0.008f, 0.02f, 6, Mt(Chrome));
-                 // Right faucet knob
-                 m.Cylinder(new Vector3(sx + 0.01f, 0.97f, -0.24f), 0.008f, 0.02f, 6, Mt(Chrome));
-                 // Towel‑rack – three parallel bars
-                 float rackX = sx - 0.12f;
-                 float rackZ = -0.25f;
-                 float rackY = 1.05f;
-                 float barLength = 0.18f;
-                 float barHeight = 0.008f;
-                 float barDepth = 0.004f;
-                 float barSpacing = 0.04f;
-                 for (int i = 0; i < 3; i++)
-                 {
-                     m.Box(new Vector3(rackX, rackY + i * barSpacing, rackZ), new Vector3(barLength, barHeight, barDepth), Mt(Chrome));
-                 }
-                 // Waste‑bin – simple cylinder with a lid
-                 float binX = len * 0.45f;
-                 float binY = 0.07f;
-                 float binZ = 0.2f;
-                 m.Cylinder(new Vector3(binX, binY, binZ), 0.07f, 0.07f, 12, Mt(Chrome)); // body
-                 m.Box(new Vector3(binX, binY + 0.07f, binZ), new Vector3(0.14f, 0.008f, 0.02f), Mt(Chrome)); // lid
-                 // Subtle wear line on front edge
-                 m.Box(new Vector3(0f, 0.938f, 0.33f), new Vector3(len, 0.001f, 0.001f), M(new Color(0.45f,0.38f,0.30f)));
-                 if (Chance(rng, 0.6)) m.Cylinder(new Vector3(sx + 0.1f, 0.965f, 0.05f), 0.045f, 0.1f, 8, G(new Color(0.75f, 0.74f, 0.70f)));
+                // Gooseneck faucet and two taps.
+                m.Cylinder(new Vector3(sx, 0.96f, -0.27f), 0.018f, 0.3f, 6, Mt(Chrome));
+                m.Box(new Vector3(sx, 1.25f, -0.17f), new Vector3(0.03f, 0.03f, 0.22f), Mt(Chrome));
+                m.Box(new Vector3(sx, 1.22f, -0.07f), new Vector3(0.025f, 0.06f, 0.025f), Mt(Chrome));
+                m.Box(new Vector3(sx - 0.12f, 1.0f, -0.27f), new Vector3(0.05f, 0.04f, 0.05f), Mt(Chrome));
+                m.Box(new Vector3(sx + 0.12f, 1.0f, -0.27f), new Vector3(0.05f, 0.04f, 0.05f), Mt(Chrome));
+                if (Chance(rng, 0.6)) m.Cylinder(new Vector3(sx + 0.1f, 0.965f, 0.05f), 0.045f, 0.1f, 8, G(new Color(0.75f, 0.74f, 0.70f)));
             }
         }
 
@@ -136,10 +109,6 @@ namespace CloneZ
                 Color nc = paper ? Paper : new Color(R(rng, 0.2f, 0.8f), R(rng, 0.2f, 0.6f), R(rng, 0.1f, 0.5f));
                 m.Box(new Vector3(x, y, 0.327f), paper ? new Vector3(0.1f, 0.13f, 0.004f) : new Vector3(0.04f, 0.04f, 0.012f), Yaw(0f) * Quaternion.Euler(0f, 0f, R(rng, -12f, 12f)), M(nc));
             }
-            // Add a small metal pull‑handle to the fridge door for period‑correct grip.
-            float hx = R(rng, -0.15f, 0.15f);
-            float hy = R(rng, 0.9f, 1.2f);
-            m.Box(new Vector3(hx, hy, 0.31f), new Vector3(0.02f, 0.07f, 0.005f), Mt(Chrome));
         }
 
         /// <summary>A bank of tall steel lockers (0.5 m each, 0.5 deep, 1.85 high) with vents, handles
@@ -172,37 +141,6 @@ namespace CloneZ
                     continue;
                 }
                 m.Box(new Vector3(x, 0.96f, 0.215f), new Vector3(0.46f, 1.68f, 0.02f), M(c));
-                // Chrome frame strips around door
-                m.Box(new Vector3(x, 0.96f + 1.68f - 0.008f, 0.215f), new Vector3(0.46f + 0.012f, 0.016f, 0.004f), Mt(Chrome)); // top
-                m.Box(new Vector3(x, 0.96f + 0.008f, 0.215f), new Vector3(0.46f + 0.012f, 0.016f, 0.004f), Mt(Chrome)); // bottom
-                m.Box(new Vector3(x - 0.23f - 0.008f, 0.96f + 0.84f, 0.215f), new Vector3(0.016f, 1.68f + 0.012f, 0.004f), Mt(Chrome)); // left
-                m.Box(new Vector3(x + 0.23f + 0.008f, 0.96f + 0.84f, 0.215f), new Vector3(0.016f, 1.68f + 0.012f, 0.004f), Mt(Chrome)); // right
-
-                // Low‑profile kick‑plate at base of door
-                m.Box(new Vector3(x, 0.96f + 0.008f, 0.225f), new Vector3(0.46f, 0.016f, 0.006f), M(dark));
-
-                // Subtle seal line along top edge
-                m.Box(new Vector3(x, 0.96f + 1.68f - 0.004f, 0.225f), new Vector3(0.46f, 0.002f, 0.006f), M(dark));
-
-                // Small paper label near top‑right
-                m.Box(new Vector3(x + 0.15f, 0.96f + 1.5f, 0.225f), new Vector3(0.12f, 0.02f, 0.002f), M(Paper));
-
-                // Wear‑scratch line near bottom‑center
-                Color wear = V(c, rng, 0.07f);
-                m.Box(new Vector3(x, 0.96f + 0.1f, 0.225f), new Vector3(0.18f, 0.001f, 0.006f), M(wear));
-
-                // Add a small metal pull‑handle on the front of each locker door for visual grip.
-                m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
-                // Add a small metal pull-handle on the front of each locker door for visual grip.
-                m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
-                // Add a thin metal hinge‑plate to the locker door for period‑correct detail.
-                m.Box(new Vector3(x - 0.025f, 1.25f, 0.235f), new Vector3(0.004f, 0.12f, 0.006f), Mt(Chrome));
-                // Add tiny black rivet details on the locker door front for industrial wear.
-                for (int r = 0; r < 3; r++)
-                {
-                    if (Chance(rng, 0.6))
-                        m.Box(new Vector3(x + R(rng, -0.015f, 0.015f), 1.26f + R(rng, -0.01f, 0.01f), 0.245f), new Vector3(0.004f, 0.004f, 0.001f), M(Black));
-                }
                 for (int v = 0; v < 4; v++)
                 {
                     m.Box(new Vector3(x, 1.52f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
@@ -229,31 +167,12 @@ namespace CloneZ
             Color c = V(new Color(0.20f, 0.23f, 0.21f), rng, 0.05f);
             m.Box(new Vector3(0f, 0.95f, -0.02f), new Vector3(0.8f, 1.9f, 0.56f), M(c));
             m.Box(new Vector3(0f, 0.95f, 0.27f), new Vector3(0.72f, 1.8f, 0.04f), G(c * 1.15f));
-            // thin chrome hinge‑plate on left side of safe front
-            m.Box(new Vector3(-0.36f, 1.2f, 0.285f), new Vector3(0.004f, 0.5f, 0.008f), Mt(Chrome));
             m.Box(new Vector3(0f, 1.8f, 0.3f), new Vector3(0.5f, 0.05f, 0.01f), M(Brass));
-            // Period‑correct metal number‑plate label on the safe front
-            m.Box(new Vector3(0f, 1.74f, 0.31f), new Vector3(0.08f, 0.02f, 0.005f), Mt(Chrome));
             m.Cylinder(new Vector3(0.12f, 1.05f, 0.29f), 0.09f, 0.03f, 10, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
-            // chrome ring encircling the dial
-            m.Cylinder(new Vector3(0.12f, 1.05f, 0.29f), 0.095f, 0.005f, 12, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
-            m.Box(new Vector3(0.12f, 1.07f, 0.29f), new Vector3(0.02f, 0.02f, 0.005f), Gl(WarmGlow));
-            // subtle wear line on safe front panel
-            m.Box(new Vector3(0f, 0.96f, 0.285f), new Vector3(0.68f, 0.002f, 0.001f), M(new Color(0.05f, 0.04f, 0.03f)));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(0.12f, 1.05f, 0.33f), new Vector3(0.24f, 0.02f, 0.02f), Quaternion.Euler(0f, 0f, i * 60f), Mt(Chrome));
-            // embossed number plates around dial (matte black)
-            float[] angles = { -60f, 0f, 60f };
-            foreach (float a in angles)
-            {
-                Quaternion rot = Quaternion.Euler(0f, 0f, a);
-                Vector3 offset = rot * new Vector3(0.09f, 0f, 0f);
-                m.Box(new Vector3(0.12f, 1.07f, 0.29f) + offset, new Vector3(0.012f, 0.004f, 0.001f), Mt(Chrome));
-            }
             m.Cylinder(new Vector3(-0.12f, 1.25f, 0.29f), 0.05f, 0.03f, 10, M(Black), Quaternion.Euler(90f, 0f, 0f));
             m.Box(new Vector3(-0.33f, 0.95f, 0.3f), new Vector3(0.04f, 1.6f, 0.03f), M(c * 0.7f));
-            // lock hasp on right side of safe front
-            m.Box(new Vector3(0.34f, 1.2f, 0.285f), new Vector3(0.01f, 0.22f, 0.005f), Mt(Chrome));
         }
 
         /// <summary>A wooden office desk (width along X, 0.76 high) with a drawer pedestal on one side,
@@ -264,55 +183,18 @@ namespace CloneZ
             Color top = c * 1.08f;
             float side = pedestalRight ? 1f : -1f;
             m.Box(new Vector3(0f, 0.74f, 0f), new Vector3(w, 0.04f, d), G(top));
-            // lamp base
-            float lx = side * (w * 0.35f);
-            float lz = 0f;
-            float topY = 0.74f + 0.02f;
-            m.Box(new Vector3(lx, topY + 0.01f, lz), new Vector3(0.04f, 0.02f, 0.04f), Mt(Chrome));
-            // lamp pole
-            m.Cylinder(new Vector3(lx, topY + 0.03f, lz), 0.008f, 0.12f, 6, Mt(Chrome));
-            // lamp shade (dark metal)
-            m.Box(new Vector3(lx, topY + 0.16f, lz), new Vector3(0.10f, 0.07f, 0.10f), M(new Color(0.15f, 0.15f, 0.15f)));
-            // paper stack – sheet 1
-            m.Box(new Vector3(lx + 0.02f, topY + 0.02f, lz + 0.02f), new Vector3(0.12f, 0.01f, 0.08f), M(Paper));
-            // paper stack – sheet 2 (slightly offset upward)
-            m.Box(new Vector3(lx + 0.015f, topY + 0.033f, lz + 0.015f), new Vector3(0.11f, 0.011f, 0.07f), M(Paper));
-            // paper stack – sheet 3 (topmost)
-            m.Box(new Vector3(lx + 0.01f, topY + 0.046f, lz + 0.01f), new Vector3(0.10f, 0.012f, 0.06f), M(Paper));
-            // CRT monitor stand and screen
-            m.Box(new Vector3(0f, 0.86f, 0f), new Vector3(0.04f, 0.20f, 0.04f), Mt(Chrome));
-            m.Box(new Vector3(0f, 0.97f, 0f), new Vector3(0.32f, 0.24f, 0.02f), G(new Color(0.08f, 0.09f, 0.11f)));
-            // Keyboard base
-            m.Box(new Vector3(-0.2f, 0.77f, -0.2f), new Vector3(0.35f, 0.02f, 0.15f), M(Black));
-            // Keyboard keys
-            for (int row = 0; row < 3; row++)
-            {
-                for (int col = 0; col < 6; col++)
-                {
-                    float kx = -0.2f + 0.05f * col;
-                    float kz = -0.2f + 0.04f * row;
-                    m.Box(new Vector3(kx, 0.785f, kz), new Vector3(0.015f, 0.015f, 0.005f), M(Black));
-                }
-            }
-            // Coffee mug
-            m.Cylinder(new Vector3(0.25f, 0.78f, 0.15f), 0.03f, 0.07f, 12, Mt(Chrome));
-            m.Box(new Vector3(0.28f, 0.805f, 0.15f), new Vector3(0.005f, 0.02f, 0.015f), Mt(Chrome));
             float px = side * (w * 0.5f - 0.22f);
             m.Box(new Vector3(px, 0.36f, -0.01f), new Vector3(0.42f, 0.72f, d - 0.06f), M(c));
             for (int i = 0; i < 3; i++)
             {
                 float y = 0.6f - i * 0.23f;
                 m.Box(new Vector3(px, y, d * 0.5f - 0.025f), new Vector3(0.38f, 0.2f, 0.02f), M(c * 1.12f));
-                // metal pull‑handle (Chrome) centered on drawer front
-                m.Box(new Vector3(px, y, d * 0.5f - 0.015f + 0.001f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));
                 m.Box(new Vector3(px, y + 0.03f, d * 0.5f - 0.005f), new Vector3(0.1f, 0.018f, 0.02f), Mt(Brass));
             }
             m.Box(new Vector3(-side * (w * 0.5f - 0.03f), 0.36f, -0.01f), new Vector3(0.04f, 0.72f, d - 0.06f), M(c));
             m.Box(new Vector3(-side * 0.21f, 0.5f, -d * 0.5f + 0.05f), new Vector3(w - 0.5f, 0.42f, 0.02f), M(c * 0.9f));
             // A shallow centre drawer under the top.
             m.Box(new Vector3(-side * 0.21f, 0.68f, d * 0.5f - 0.03f), new Vector3(w - 0.6f, 0.06f, 0.02f), M(c * 1.1f));
-            // centre drawer pull‑handle
-            m.Box(new Vector3(-side * 0.21f, 0.71f, d * 0.5f - 0.015f + 0.001f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));
         }
 
         /// <summary>An olive field radio (green "ammo box" radio from the photo) with dials, a handle and
@@ -322,32 +204,15 @@ namespace CloneZ
             Quaternion q = Yaw(yaw);
             Color c = V(new Color(0.26f, 0.32f, 0.18f), rng, 0.05f);
             m.Box(at + q * new Vector3(0f, 0.11f, 0f), new Vector3(0.38f, 0.22f, 0.24f), q, M(c));
-            // rubber foot – subtle anti‑slip pad
-            m.Box(at + q * new Vector3(0f, 0.005f, 0f), new Vector3(0.34f, 0.01f, 0.02f), q, M(Black));
-                        // three‑bar chrome speaker grille on the front panel
-            float grilleZ = 0.121f; // same Z as front panel
-            float grilleY = 0.18f; // roughly mid‑height of panel
-            float barHeight = 0.12f;
-            float barWidth = 0.004f;
-            float barDepth = 0.006f;
-            float barSpacing = 0.08f;
-            for (int i = -1; i <= 1; i++)
-            {
-                float offsetX = i * barSpacing;
-                m.Box(at + q * new Vector3(offsetX, grilleY, grilleZ), new Vector3(barWidth, barHeight, barDepth), q, Mt(Chrome));
-            }
+            m.Box(at + q * new Vector3(0f, 0.12f, 0.121f), new Vector3(0.32f, 0.16f, 0.004f), q, M(new Color(0.12f, 0.13f, 0.12f)));
             m.Box(at + q * new Vector3(-0.07f, 0.16f, 0.125f), new Vector3(0.12f, 0.04f, 0.004f), q, Gl(new Color(0.55f, 0.45f, 0.20f)));
             for (int i = 0; i < 3; i++)
                 m.Cylinder(at + q * new Vector3(0.04f + i * 0.045f, 0.09f, 0.123f), 0.015f, 0.025f, 6, M(Black), q * Quaternion.Euler(90f, 0f, 0f));
-                        // power‑switch lever (metal)
-            m.Box(at + q * new Vector3(-0.13f, 0.22f, 0f), new Vector3(0.008f, 0.04f, 0.012f), q, Mt(Chrome));
+            m.Box(at + q * new Vector3(-0.12f, 0.25f, 0f), new Vector3(0.02f, 0.06f, 0.02f), q, M(c * 0.7f));
             m.Box(at + q * new Vector3(0.12f, 0.25f, 0f), new Vector3(0.02f, 0.06f, 0.02f), q, M(c * 0.7f));
-                        // red LED – subtle warm glow
-            m.Box(at + q * new Vector3(0f, 0.265f, 0.123f), new Vector3(0.008f, 0.008f, 0.002f), q, Gl(WarmGlow));
-                        // antenna base (metal)
-            m.Cylinder(at + q * new Vector3(0.15f, 0.22f, -0.08f), 0.01f, 0.015f, 6, Mt(Chrome), q * Quaternion.Euler(90f, 0f, 0f));
-                        // decorative wear line (darkened strip)
-            m.Box(at + q * new Vector3(-0.15f, 0.07f, 0.025f), new Vector3(0.24f, 0.002f, 0.001f), q, M(new Color(0.05f, 0.04f, 0.03f)));
+            m.Box(at + q * new Vector3(0f, 0.28f, 0f), new Vector3(0.26f, 0.02f, 0.025f), q, M(c * 0.7f));
+            m.Rod(at + q * new Vector3(0.15f, 0.22f, -0.08f), at + q * new Vector3(0.2f, 0.85f, -0.16f), 0.008f, M(Black));
+            m.Box(at + q * new Vector3(-0.3f, 0.06f, 0.02f), new Vector3(0.12f, 0.04f, 0.2f), q, M(new Color(0.1f, 0.1f, 0.1f)));
         }
 
         /// <summary>An olive ammo can with a stencilled band and latch handle, on y = at.y.</summary>
@@ -357,16 +222,8 @@ namespace CloneZ
             Color c = V(Olive, rng, 0.06f);
             m.Box(at + q * new Vector3(0f, 0.09f, 0f), new Vector3(0.3f, 0.18f, 0.15f), q, M(c));
             m.Box(at + q * new Vector3(0f, 0.185f, 0f), new Vector3(0.31f, 0.012f, 0.16f), q, M(c * 0.8f));
-            // Thin stencilled metal band around middle of ammo can.
-            float bandY = 0.14f; // middle height relative to base
-            m.Box(at + q * new Vector3(0f, bandY, 0f), new Vector3(0.31f, 0.004f, 0.16f), q, Mt(Chrome));
             m.Box(at + q * new Vector3(0f, 0.2f, 0f), new Vector3(0.12f, 0.015f, 0.02f), q, M(c * 0.6f));
             m.Box(at + q * new Vector3(0f, 0.1f, 0.077f), new Vector3(0.2f, 0.03f, 0.004f), q, M(new Color(0.75f, 0.66f, 0.30f)));
-            // Add a small period‑correct metal latch‑handle on the front of the ammo can.
-            float lx = R(rng, -0.01f, 0.01f);
-            m.Box(at + q * new Vector3(lx, 0.22f, 0.075f), new Vector3(0.02f, 0.04f, 0.005f), q, Mt(Chrome));
-            // Tiny rivet detail on the latch for extra realism.
-            m.Box(at + q * new Vector3(lx, 0.235f, 0.077f), new Vector3(0.003f, 0.003f, 0.001f), q, M(Black));
         }
         #endregion
     }

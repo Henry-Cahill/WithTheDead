@@ -88,14 +88,6 @@ namespace CloneZ
             m.Box(new Vector3(-0.1f, 0.125f, 0.232f), new Vector3(0.14f, 0.02f, 0.004f), Gl(new Color(0.2f, 0.6f, 0.3f)));
             // The remote, left on the end of the stand beside the set.
             m.Box(new Vector3(0.42f, 0.506f, 0.08f), new Vector3(0.05f, 0.012f, 0.16f), Yaw(R(rng, -25f, 25f)), M(new Color(0.12f, 0.12f, 0.13f)));
-            // tiny chrome buttons on the remote surface (random slight offset for wear)
-            for (int i = 0; i < 3; i++)
-            {
-                float offX = R(rng, -0.015f, 0.015f);
-                float offZ = R(rng, -0.06f, 0.06f);
-                // place a small chrome button cylinder slightly above the remote top
-                m.Cylinder(new Vector3(0.42f + offX, 0.512f, 0.08f + offZ), 0.003f, 0.006f, 6, M(Chrome));
-            }
         }
 
         /// <summary>A 1993 console TV (0.68 × 0.56 × 0.5, front +Z) with rabbit ears, standing on a TV stand's top (0.5 up):
@@ -105,17 +97,6 @@ namespace CloneZ
         {
             Color tv = Chance(rng, 0.5) ? new Color(0.12f, 0.12f, 0.13f) : new Color(0.36f, 0.24f, 0.14f);
             m.Box(new Vector3(0f, 0.78f, -0.04f), new Vector3(0.68f, 0.56f, 0.5f), M(tv));
-            // left side wooden trim (1 cm thick, 2 cm deep, full height)
-            m.Box(new Vector3(-0.34f + 0.005f, 0.78f, -0.04f + 0.01f), new Vector3(0.01f, 0.56f, 0.02f), M(tv));
-            // right side wooden trim
-            m.Box(new Vector3( 0.34f - 0.005f, 0.78f, -0.04f + 0.01f), new Vector3(0.01f, 0.56f, 0.02f), M(tv));
-
-            // speaker grill (chrome mesh)
-            var grillSurf = Mt(Chrome);
-            m.Quad(new Vector3(0f, 0.82f, -0.285f), new Vector3(0.1f, 0f, 0f), new Vector3(0f, 0.03f, 0f), grillSurf);
-
-            // power button (small chrome cylinder)
-            m.Cylinder(new Vector3(0.31f, 0.80f, -0.04f + 0.015f), 0.003f, 0.006f, 6, Mt(Chrome));
             var centre = new Vector3(-0.07f, 0.79f, 0.22f);
             screen = new Vector2(0.48f, 0.38f);
             m.Box(new Vector3(centre.x, centre.y, 0.215f), new Vector3(screen.x, screen.y, 0.01f), Gs(ScreenOff));
@@ -125,15 +106,6 @@ namespace CloneZ
             m.Ellipsoid(new Vector3(0f, 1.08f, -0.1f), new Vector3(0.12f, 0.05f, 0.1f), M(Black), 6, 3);
             m.Rod(new Vector3(0f, 1.1f, -0.1f), new Vector3(-0.28f, 1.55f, -0.16f), 0.008f, Mt(Chrome));
             m.Rod(new Vector3(0f, 1.1f, -0.1f), new Vector3(0.3f, 1.52f, -0.12f), 0.008f, Mt(Chrome));
-            // brand logo (tiny sign decal)
-            Surf logoSurf = DecorMaterials.Sign("CLONE‑Z", new Color(0.75f,0.70f,0.55f), new Color(0.10f,0.08f,0.05f), out float logoAspect);
-            float logoH = 0.04f;
-            float logoW = logoH * logoAspect;
-            m.Upright(centre + new Vector3(0f, 0.05f, 0.02f), Vector3.forward, logoW, logoH, logoSurf, new Rect(0f,0f,1f,1f));
-            // rabbit‑ear antenna – left ear
-            m.Cylinder(new Vector3(-0.02f, 1.34f, -0.04f), 0.004f, 0.12f, 6, Mt(Chrome), Quaternion.Euler(0f,0f,-30f));
-            // rabbit‑ear antenna – right ear
-            m.Cylinder(new Vector3( 0.02f, 1.34f, -0.04f), 0.004f, 0.12f, 6, Mt(Chrome), Quaternion.Euler(0f,0f, 30f));
             return centre;
         }
         #endregion
@@ -150,20 +122,9 @@ namespace CloneZ
         /// shoebox on the floor. Returns the wood colour for the doors.</summary>
         public static Color WardrobeBody(RaidMesh m, System.Random rng, Color wood)
         {
-            if (WardrobeCloths == null || WardrobeCloths.Length == 0)
-                return wood; // early-out – nothing to draw, but no crash
             Color c = V(wood, rng, 0.06f);
             Surf body = M(c), inside = M(c * 0.45f);
             m.Box(new Vector3(0f, 0.05f, -0.02f), new Vector3(0.98f, 0.1f, 0.54f), M(c * 0.7f));
-            // subtle brass rivet strip on the top of the wardrobe carcass
-            int rivetCount = 6 + rng.Next(3); // 6–8 rivets
-            for (int i = 0; i < rivetCount; i++)
-            {
-                float x = R(rng, -0.45f, 0.45f);
-                float z = R(rng, -0.02f, 0.02f);
-                // small brass cylinder representing a rivet
-                m.Cylinder(new Vector3(x, 1.95f, z), 0.004f, 0.008f, 8, Mt(Brass));
-            }
             m.Box(new Vector3(-0.49f, 1.0f, -0.03f), new Vector3(0.02f, 1.8f, 0.54f), body);
             m.Box(new Vector3(0.49f, 1.0f, -0.03f), new Vector3(0.02f, 1.8f, 0.54f), body);
             m.Box(new Vector3(0f, 1.0f, -0.29f), new Vector3(0.96f, 1.8f, 0.02f), inside);
@@ -205,34 +166,6 @@ namespace CloneZ
             m.Box(new Vector3(cx, 1.35f, WardrobeFront + 0.003f), new Vector3(w - 0.12f, 0.6f, 0.01f), M(wood * 0.94f));
             m.Box(new Vector3(cx, 0.6f, WardrobeFront + 0.003f), new Vector3(w - 0.12f, 0.6f, 0.01f), M(wood * 0.94f));
             m.Box(new Vector3(s * 0.04f, 1.0f, WardrobeFront + 0.01f), new Vector3(0.02f, 0.08f, 0.03f), Mt(Brass));
-            // top wood trim (1 cm high, spans the door width)
-            m.Box(new Vector3(cx, WardrobeDoorY1 - 0.005f, WardrobeFront - 0.009f), new Vector3(w, 0.01f, 0.02f), M(wood * 0.9f));
-            // bottom wood trim (1 cm high)
-            m.Box(new Vector3(cx, WardrobeDoorY0 + 0.005f, WardrobeFront - 0.009f), new Vector3(w, 0.01f, 0.02f), M(wood * 0.9f));
-            // side edge bevel (2 cm wide, 1 cm deep)
-            m.Box(new Vector3(s * (x0 + 0.005f), (WardrobeDoorY0 + WardrobeDoorY1) * 0.5f, WardrobeFront - 0.008f), new Vector3(0.02f, WardrobeDoorY1 - WardrobeDoorY0, 0.01f), M(wood * 0.85f));
-            // brass pull handle (horizontal)
-            m.CylinderX(new Vector3(cx, (WardrobeDoorY0 + WardrobeDoorY1) * 0.5f, WardrobeFront + 0.015f), 0.006f, 0.12f, 8, Mt(Brass));
-            // key-hole (black metal)
-            m.Cylinder(new Vector3(cx + w * 0.22f, WardrobeDoorY0 + 0.25f, WardrobeFront - 0.015f), 0.003f, 0.01f, 6, M(Black));
-            // wear scar (thin dark quad)
-            var scarSurf = M(wood * 0.5f);
-            m.Quad(new Vector3(cx - w * 0.3f, WardrobeDoorY0 + 0.12f, WardrobeFront - 0.008f), new Vector3(0.35f, 0f, 0f), new Vector3(0f, 0f, 0.001f), scarSurf);
-            // Hinge pins
-            if (left)
-            {
-                var topPin = new Vector3(x0 - 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);
-                var botPin = new Vector3(x0 - 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);
-                m.Cylinder(topPin, 0.005f, 0.02f, 8, Mt(Brass));
-                m.Cylinder(botPin, 0.005f, 0.02f, 8, Mt(Brass));
-            }
-            else
-            {
-                var topPin = new Vector3(x1 + 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);
-                var botPin = new Vector3(x1 + 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);
-                m.Cylinder(topPin, 0.005f, 0.02f, 8, Mt(Brass));
-                m.Cylinder(botPin, 0.005f, 0.02f, 8, Mt(Brass));
-            }
         }
         #endregion
 
@@ -254,15 +187,7 @@ namespace CloneZ
             Surf e = G(enamel), dark = M(new Color(0.05f, 0.05f, 0.06f));
             Quaternion facing = Quaternion.Euler(90f, 0f, 0f);
             m.Box(new Vector3(0f, 0.03f, 0f), new Vector3(0.56f, 0.06f, 0.54f), M(new Color(0.16f, 0.16f, 0.17f)));
-            // water‑inlet pipe on cabinet side
-            m.Cylinder(new Vector3(0.32f, 0.06f, 0.15f), 0.02f, 0.12f, 8, Mt(Brass));
-            // rust stain on the pipe housing
-            var rustSurf = M(new Color(0.45f, 0.35f, 0.30f));
-            m.Quad(new Vector3(0.38f, 0.07f, 0.2f), new Vector3(0.06f, 0f, 0f), new Vector3(0f, 0.04f, 0f), rustSurf);
             m.Box(new Vector3(0f, 0.455f, -0.005f), new Vector3(0.6f, 0.79f, 0.59f), e);
-            // weathered paint chip
-            var chipSurf = M(enamel * 0.45f);
-            m.Quad(new Vector3(0f, 0.55f, 0.295f), new Vector3(0.08f, 0f, 0f), new Vector3(0f, 0.04f, 0f), chipSurf);
             m.Box(new Vector3(0f, 0.86f, -0.005f), new Vector3(0.6f, 0.02f, 0.59f), G(enamel * 0.97f));
             m.Box(new Vector3(0f, 0.08f, 0.292f), new Vector3(0.54f, 0.008f, 0.004f), M(enamel * 0.8f));
 
@@ -273,16 +198,12 @@ namespace CloneZ
             m.Box(new Vector3(-0.08f, 0.9f, WasherDial.z + 0.001f), new Vector3(0.22f, 0.03f, 0.004f), M(new Color(0.25f, 0.30f, 0.38f)));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(-0.2f + i * 0.04f, 0.9f, WasherDial.z + 0.003f), new Vector3(0.025f, 0.018f, 0.008f), M(new Color(0.75f, 0.74f, 0.70f)));
-            // faint green LED indicating power
-            var ledPos = new Vector3(0.12f, 0.92f, WasherDial.z);
-            m.Ellipsoid(ledPos, new Vector3(0.006f, 0.006f, 0.006f), Gl(new Color(0.2f, 0.8f, 0.2f)), 6, 3);
             m.Cylinder(WasherDial, 0.035f, 0.025f, 14, M(new Color(0.72f, 0.72f, 0.70f)), facing);
             m.Box(WasherDial + new Vector3(0f, 0.014f, 0.026f), new Vector3(0.006f, 0.028f, 0.003f), M(Black));
 
             // The drum: its grey rubber seal, the dark inside, and the last load lying in the bottom of it.
             Vector3 p = WasherPorthole;
             m.Cylinder(p, WasherMouth + 0.03f, 0.004f, 20, M(new Color(0.30f, 0.31f, 0.32f)), facing);
-            m.Cylinder(WasherPorthole, WasherMouth + 0.032f, 0.002f, 20, M(new Color(0.15f, 0.15f, 0.16f)), facing);
             m.Cylinder(p + new Vector3(0f, 0f, 0.004f), WasherMouth, 0.002f, 20, dark, facing);
             m.Cylinder(p + new Vector3(0f, 0f, 0.006f), WasherMouth * 0.55f, 0.001f, 16, Mt(new Color(0.30f, 0.31f, 0.32f)), facing);
             for (int i = 0, n = rng.Next(4); i < n; i++)
@@ -307,9 +228,6 @@ namespace CloneZ
                 m.Box(p + q * new Vector3(0f, WasherRing, 0f), new Vector3(piece, 0.045f, 0.03f), q, chrome);
             }
             m.Cylinder(p + new Vector3(0f, 0f, -0.006f), WasherRing - 0.02f, 0.03f, 20, BathGlass, Quaternion.Euler(90f, 0f, 0f), 0.85f);
-            // tiny chrome latch on the door
-            var latchPos = WasherPorthole + new Vector3(0f, 0f, WasherRing + 0.025f);
-            m.Cylinder(latchPos, 0.004f, 0.012f, 8, Mt(Chrome));
             m.Box(p + new Vector3(WasherRing + 0.02f, 0f, 0.008f), new Vector3(0.03f, 0.09f, 0.02f), M(new Color(0.70f, 0.70f, 0.68f)));
         }
 
@@ -382,30 +300,9 @@ namespace CloneZ
 
             // On the back rim: a bottle of bubble bath and a scrubbing brush; on the floor in front, the bath mat.
             Color bottle = V(Chance(rng, 0.5) ? new Color(0.30f, 0.52f, 0.74f) : new Color(0.82f, 0.44f, 0.58f), rng, 0.1f);
-var b = new Vector3(-end * 0.55f, h, -hz + wallZ * 0.5f);
-                     m.Cylinder(b, 0.03f, 0.15f, 10, G(bottle));
-                     m.Cylinder(b + new Vector3(0f, 0.15f, 0f), 0.012f, 0.025f, 8, G(new Color(0.92f, 0.92f, 0.90f)));
-
-                     // chrome towel‑bar (horizontal rod) along back wall
-                     m.CylinderX(new Vector3(-end * 0.45f, h - 0.15f, -hz + wallZ * 0.5f), 0.01f, 0.48f, 12, chrome);
-                     // tiny hooks at each end of the bar
-                     m.Cylinder(new Vector3(-end * 0.70f, h - 0.15f, -hz + wallZ * 0.5f), 0.003f, 0.02f, 6, chrome);
-                     m.Cylinder(new Vector3(-end * 0.20f, h - 0.15f, -hz + wallZ * 0.5f), 0.003f, 0.02f, 6, chrome);
-
-                     // ceramic soap dish (box base + chrome lip)
-                     m.Box(new Vector3(-end * 0.55f, h - 0.12f, -hz + wallZ * 0.30f), new Vector3(0.09f, 0.018f, 0.045f), M(new Color(0.86f, 0.84f, 0.80f)));
-                     m.Cylinder(new Vector3(-end * 0.55f, h - 0.10f, -hz + wallZ * 0.30f), 0.006f, 0.008f, 6, chrome);
-
-                     // rust spot on the front edge
-                     var rustSurf = M(new Color(0.45f, 0.35f, 0.30f));
-                     m.Quad(new Vector3(0f, BathFloorY + 0.015f, -hz + wallZ * 0.5f), new Vector3(0.20f, 0f, 0f), new Vector3(0f, 0.02f, 0f), rustSurf);
-
-                     // pipe stub and tiny water droplet
-                     m.Cylinder(new Vector3(0f, BathFloorY + 0.08f, -hz + wallZ * 0.5f), 0.015f, 0.10f, 8, chrome);
-                     m.Ellipsoid(new Vector3(0f, BathFloorY + 0.14f, -hz + wallZ * 0.5f), new Vector3(0.01f, 0.02f, 0.01f), G(new Color(0.78f, 0.86f, 0.94f)), 6, 3);
-
-                     // worn edge‑tile strip
-                     m.Box(new Vector3(0f, BathFloorY + 0.02f, -hz + wallZ * 0.5f), new Vector3(BathLength - 0.02f, 0.005f, 0.01f), M(new Color(0.70f, 0.66f, 0.62f)));
+            var b = new Vector3(-end * 0.55f, h, -hz + wallZ * 0.5f);
+            m.Cylinder(b, 0.03f, 0.15f, 10, G(bottle));
+            m.Cylinder(b + new Vector3(0f, 0.15f, 0f), 0.012f, 0.025f, 8, G(new Color(0.92f, 0.92f, 0.90f)));
             if (Chance(rng, 0.7))
             {
                 var brush = new Vector3(-end * 0.3f, h + 0.012f, -hz + wallZ * 0.5f);
@@ -472,34 +369,6 @@ var b = new Vector3(-end * 0.55f, h, -hz + wallZ * 0.5f);
             m.Box(new Vector3(0f, 1.11f, 0f), new Vector3(0.18f, 0.03f, 0.34f), cedar);
             Surf box = Mt(new Color(0.18f, 0.20f, 0.24f));
             m.Box(new Vector3(0f, 1.2f, 0f), new Vector3(0.22f, 0.16f, 0.48f), box);
-            // front mail slot (vertical slit)
-            var slotSurf = M(new Color(0.12f, 0.12f, 0.13f));
-            m.Quad(new Vector3(0f, 1.28f, 0.24f - 0.001f),
-                new Vector3(0.18f, 0f, 0f), // half‑width (full width 0.36 m)
-                new Vector3(0f, 0.25f, 0.001f), // half‑height (full height 0.5 m)
-                slotSurf);
-            // brass latch plate on right edge
-            var latchPos = new Vector3(0.115f, 1.28f, 0f); // box extends to +0.11 m, offset 5 mm outwards
-            m.Cylinder(latchPos, 0.006f, 0.015f, 8, Mt(Brass));
-            // rust spot on front face
-            var rustSurf = M(new Color(0.45f, 0.35f, 0.30f));
-            m.Quad(new Vector3(0.06f, 1.18f, 0.24f - 0.001f),
-                new Vector3(0.06f, 0f, 0f), // half‑width 0.12 m
-                new Vector3(0f, 0.04f, 0.001f), // half‑height 0.08 m
-                rustSurf);
-            // paint‑chip on post
-            var chipSurf = M(new Color(0.30f, 0.22f, 0.15f));
-            m.Quad(new Vector3(0f, 0.68f, 0f),
-                new Vector3(0.02f, 0f, 0f), // half‑width 0.04 m
-                new Vector3(0f, 0.03f, 0.001f), // half‑height 0.06 m
-                chipSurf);
-            // tiny “MAIL” sign on front
-            Surf mailSurf = DecorMaterials.Sign("MAIL", new Color(0.86f,0.85f,0.80f),
-                new Color(0.12f,0.12f,0.15f), out float mailAspect);
-            float mailH = 0.07f; // 7 cm tall
-            float mailW = mailH * mailAspect;
-            m.Upright(new Vector3(0f, 1.32f, 0.24f - 0.004f),
-                Vector3.forward, mailW, mailH, mailSurf, new Rect(0f,0f,1f,1f));
             m.CylinderX(new Vector3(0f, 1.28f, 0f), 0.11f, 0.48f, 10, box, 90f);
             Surf dark = M(new Color(0.04f, 0.04f, 0.05f));
             m.Box(new Vector3(0f, 1.205f, -0.241f), new Vector3(0.19f, 0.15f, 0.002f), dark);
@@ -584,7 +453,6 @@ var b = new Vector3(-end * 0.55f, h, -hz + wallZ * 0.5f);
             m.Rod(elbow, elbow - Vector3.up * 0.045f, 0.022f, brass, 8);
             Vector3 coupling = elbow - Vector3.up * 0.075f;
             m.Cylinder(coupling, 0.017f, 0.03f, 8, brass);
-            m.Cylinder(coupling + Vector3.up * 0.018f, 0.018f, 0.004f, 12, brass);
             m.Rod(coupling, at + new Vector3(0.12f, 0.52f, 0f), 0.03f, hose, 6);
             m.Cylinder(body + Vector3.up * 0.018f, 0.005f, 0.016f, 6, brass);
             return coupling;

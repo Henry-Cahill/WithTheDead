@@ -226,19 +226,6 @@ namespace CloneZ
             // The seat's hinges, the lever's rose on the cistern's side, and the cold feed from the wall with its stop tap.
             for (int s = -1; s <= 1; s += 2)
                 m.Box(new Vector3(s * 0.075f, 0.398f, -0.15f), new Vector3(0.03f, 0.014f, 0.034f), chrome);
-                // ---- Toilet‑paper holder (chrome) ----
-                // Base rod attached to the wall just left of the seat hinge
-                Vector3 holderBase = ToiletSeatHinge + new Vector3(-0.07f, 0.02f, -0.03f);
-                m.Cylinder(holderBase, 0.006f, 0.12f, 8, Mt(Chrome));
-                // End brackets (short vertical stubs)
-                Vector3 leftBracket = holderBase + new Vector3(-0.06f, 0f, 0f);
-                Vector3 rightBracket = holderBase + new Vector3( 0.06f, 0f, 0f);
-                m.Cylinder(leftBracket, 0.008f, 0.015f, 8, Mt(Chrome));
-                m.Cylinder(rightBracket, 0.008f, 0.015f, 8, Mt(Chrome));
-                // Paper roll (thin roll on the rod)
-                Vector3 rollCenter = holderBase + new Vector3(0f, 0f, 0.06f);
-                m.Cylinder(rollCenter, 0.018f, 0.04f, 10, M(new Color(0.93f, 0.92f, 0.88f))); // paper core
-                m.Box(rollCenter + new Vector3(0f, 0.02f, 0f), new Vector3(0.045f, 0.03f, 0.02f), M(new Color(0.80f, 0.78f, 0.75f))); // outer tube
             m.Cylinder(new Vector3(cx, 0.70f, -0.225f), 0.022f, 0.006f, 12, chrome, Quaternion.Euler(0f, 0f, -90f));
             var feed0 = new Vector3(-0.15f, y0 + 0.01f, -0.31f);
             var feed1 = new Vector3(-0.15f, 0.2f, -0.31f);
@@ -253,7 +240,6 @@ namespace CloneZ
         public static void ToiletSeat(RaidMesh m)
         {
             Surf seat = G(BathSeatWhite);
-            Surf chrome = Mt(Chrome);
             var outTop = new BathRing(0.415f, 0.18f, 0.235f, 0.10f);
             var inTop = new BathRing(0.415f, 0.115f, 0.155f, 0.11f);
             var outBottom = new BathRing(0.393f, 0.176f, 0.231f, 0.10f);
@@ -262,38 +248,8 @@ namespace CloneZ
             BathBand(m, outBottom, inBottom, 24, seat, BathFacing.Down);
             BathBand(m, outBottom, outTop, 24, seat, BathFacing.Out);
             BathBand(m, inBottom, inTop, 24, seat, BathFacing.In);
-
-            // Chrome hinge pins
-            float pinR = 0.006f;
-            float pinH = 0.03f;
-            Vector3 leftPin = ToiletSeatHinge + new Vector3(-0.025f, 0f, 0f);
-            Vector3 rightPin = ToiletSeatHinge + new Vector3(0.025f, 0f, 0f);
-            m.Cylinder(leftPin, pinR, pinH, 8, chrome, Quaternion.identity);
-            m.Cylinder(rightPin, pinR, pinH, 8, chrome, Quaternion.identity);
-
-            // Toilet paper roll with chrome end‑cap
-            Vector3 tpPos = new Vector3(-0.13f, 0.45f, 0.22f);
-            m.Cylinder(tpPos, 0.018f, 0.07f, 10, M(new Color(0.93f, 0.92f, 0.88f)));
-            m.Cylinder(tpPos + new Vector3(0f, 0.07f, 0f), 0.02f, 0.004f, 8, chrome, Quaternion.identity);
-
-            // Front‑edge wear rib
-            Vector3 wearPos = new Vector3(0f, 0.415f - 0.001f, 0.2f);
-            m.Box(wearPos, new Vector3(0.28f, 0.002f, 0.01f), M(new Color(0.50f, 0.50f, 0.48f)));
-
-            // Rubber cover over hinge line
-            float coverR = 0.022f;
-            float coverH = 0.004f;
-            m.Cylinder(ToiletSeatHinge, coverR, coverH, 8, M(new Color(0.07f, 0.07f, 0.07f)));
-
-            // Side buffers and decorative seam lines
             for (int s = -1; s <= 1; s += 2)
-            {
-                // Existing buffer box
                 m.Box(new Vector3(s * 0.12f, 0.3915f, 0.2f), new Vector3(0.025f, 0.003f, 0.035f), M(new Color(0.75f, 0.75f, 0.73f)));
-                // New seam line (thin dark box) 0.015 m in front of the buffer.
-                Vector3 seamPos = new Vector3(s * 0.12f, 0.393f, 0.215f);
-                m.Box(seamPos, new Vector3(0.015f, 0.002f, 0.004f), M(new Color(0.45f, 0.45f, 0.44f)));
-            }
         }
 
         /// <summary>The toilet lid: a shallow oval cover over the seat, hinged on the same line.</summary>
@@ -318,7 +274,6 @@ namespace CloneZ
             m.Box(new Vector3(0.204f, 0.70f, -0.225f), new Vector3(0.016f, 0.016f, 0.016f), chrome);
             m.Box(new Vector3(0.209f, 0.70f, -0.185f), new Vector3(0.008f, 0.012f, 0.07f), chrome);
             m.Box(new Vector3(0.209f, 0.70f, -0.148f), new Vector3(0.011f, 0.02f, 0.016f), chrome);
-            m.Cylinder(ToiletLeverPivot, 0.008f, 0.004f, 12, chrome);
         }
 
         /// <summary>A full cistern's water: a sheet round <see cref="ToiletCisternWater"/>.</summary>
@@ -357,51 +312,16 @@ namespace CloneZ
             m.Cylinder(new Vector3(0f, 0.772f, 0.035f), 0.022f, 0.002f, 12, chrome);
             m.Cylinder(new Vector3(0f, 0.7735f, 0.035f), 0.011f, 0.001f, 10, M(new Color(0.12f, 0.12f, 0.13f)));
 
-// The mixer: a chrome pillar on the back deck, its spout reaching out over the bowl.
-                     var tap = new Vector3(0f, 0.86f, -0.165f);
-                     m.Cylinder(tap, 0.026f, 0.008f, 14, chrome);
-                     // Chrome escutcheon disc for period‑correct detail
-                     m.Cylinder(tap + new Vector3(0f, -0.004f, 0f), 0.03f, 0.002f, 12, chrome);
-                     m.Cylinder(tap, 0.019f, 0.10f, 14, chrome);
-                     m.Rod(new Vector3(0f, 0.935f, -0.158f), new Vector3(0f, 0.935f, -0.05f), 0.02f, chrome, 10);
-                     m.Cylinder(BasinSpout, 0.012f, 0.022f, 10, chrome);
-                     // --- Period‑correct faucet detail ---
-                     // Lever arm – thin cylinder projecting forward from the tap pillar
-                     float leverAngle = (float)(rng.NextDouble() * 10.0 - 5.0); // –5°…+5° random tilt
-                     Quaternion leverRot = Quaternion.Euler(0f, leverAngle, 0f);
-                     Vector3 leverBase = tap + new Vector3(0f, 0.015f, 0f);
-                     m.Cylinder(leverBase, 0.008f, 0.025f, 12, chrome, leverRot);
-                     // Handle – small box at lever tip
-                     Vector3 handlePos = leverBase + leverRot * new Vector3(0f, 0f, -0.025f);
-                     m.Box(handlePos, new Vector3(0.018f, 0.006f, 0.004f), chrome);
-                     // Knob – tiny cylinder centred on handle front face
-                     Vector3 knobPos = handlePos + leverRot * new Vector3(0f, 0f, -0.004f);
-                     m.Cylinder(knobPos, 0.006f, 0.003f, 8, chrome, leverRot);
-                     // Spout washer – thin chrome ring
-                     m.Cylinder(BasinSpout, 0.014f, 0.001f, 12, chrome);
-                     // Spout cap – small ellipsoid as the polished tip
-                     Vector3 capPos = BasinSpout + new Vector3(0f, 0f, 0.004f);
-                     m.Ellipsoid(capPos, new Vector3(0.006f, 0.006f, 0.006f), chrome, 6, 4);
-                     // Wear dent – dark box inset in the rim edge
-                     Vector3 dentPos = new Vector3(0f, 0.86f, -0.18f);
-                     m.Box(dentPos, new Vector3(0.12f, 0.003f, 0.01f), M(new Color(0.30f, 0.30f, 0.35f)));
-                     // Wall‑mounted towel hook – thin chrome cylinder + tip
-                     Vector3 hookBase = new Vector3(-0.22f, 0.85f, -0.165f);
-                     Vector3 hookDir = Vector3.left;
-                     m.Cylinder(hookBase, 0.006f, 0.09f, 8, Mt(Chrome), Quaternion.LookRotation(hookDir, Vector3.up));
-                     m.Ellipsoid(hookBase + hookDir * 0.045f, new Vector3(0.008f, 0.008f, 0.008f), Mt(Chrome), 6, 4);
+            // The mixer: a chrome pillar on the back deck, its spout reaching out over the bowl.
+            var tap = new Vector3(0f, 0.86f, -0.165f);
+            m.Cylinder(tap, 0.026f, 0.008f, 14, chrome);
+            m.Cylinder(tap, 0.019f, 0.10f, 14, chrome);
+            m.Rod(new Vector3(0f, 0.935f, -0.158f), new Vector3(0f, 0.935f, -0.05f), 0.02f, chrome, 10);
+            m.Cylinder(BasinSpout, 0.012f, 0.022f, 10, chrome);
 
             // A bar of soap on one side of the tap, a tumbler of toothbrushes on the other.
             Color[] soaps = { new Color(0.90f, 0.72f, 0.70f), new Color(0.74f, 0.86f, 0.70f), new Color(0.92f, 0.88f, 0.70f) };
             m.Ellipsoid(new Vector3(-0.175f, 0.872f, -0.165f), new Vector3(0.075f, 0.026f, 0.048f), G(soaps[rng.Next(soaps.Length)]), 10, 4);
-            // Small chrome‑rimmed soap dish on the left side of the tap
-            var dishPos = new Vector3(-0.19f, 0.86f, -0.155f);
-            // Body: shallow rectangular box in china colour
-            m.Box(dishPos, new Vector3(0.03f, 0.005f, 0.02f), G(BathChina));
-            // Rim: thin chrome cylinder around the box
-            m.Cylinder(dishPos, 0.017f, 0.005f, 12, Mt(Chrome));
-            // Optional tiny ellipsoid soap bar inside the dish, same china colour, slightly above the top
-            m.Ellipsoid(new Vector3(dishPos.x, dishPos.y + 0.0025f + 0.002f, dishPos.z), new Vector3(0.008f, 0.008f, 0.008f), G(BathChina), 10, 4);
             var cup = new Vector3(0.175f, 0.86f, -0.165f);
             m.Cylinder(cup, 0.027f, 0.085f, 12, G(V(new Color(0.56f, 0.74f, 0.80f), rng, 0.1f)), Quaternion.identity, 1.12f);
             Color[] brushes = { new Color(0.80f, 0.20f, 0.18f), new Color(0.20f, 0.42f, 0.78f), new Color(0.24f, 0.62f, 0.34f) };
@@ -498,20 +418,7 @@ namespace CloneZ
             m.Box(new Vector3(-half + lip * 0.5f, rimH * 0.5f, 0f), new Vector3(lip, rimH, half * 2f - lip * 2f), tray);
             m.Box(new Vector3(half - lip * 0.5f, rimH * 0.5f, 0f), new Vector3(lip, rimH, half * 2f - lip * 2f), tray);
             m.Flat(new Vector3(0f, 0.015f, 0f), half * 2f - lip * 2f, half * 2f - lip * 2f, 0f, mosaic);
-            // Floor drain body (chrome)
-            m.Cylinder(new Vector3(0f, 0.023f, 0f), 0.042f, 0.008f, 12, chrome);
-            // Rubber seal around drain
-            m.Cylinder(new Vector3(0f, 0.021f, 0f), 0.045f, 0.002f, 8, M(new Color(0.07f,0.07f,0.07f)));
-            // Drain rivets (chrome)
-            for (int i = 0; i < 4; i++)
-            {
-                float ang = i * Mathf.PI * 0.5f;
-                Vector3 pos = new Vector3(Mathf.Cos(ang) * 0.045f, 0.027f, Mathf.Sin(ang) * 0.045f);
-                m.Cylinder(pos, 0.004f, 0.003f, 8, chrome);
-            }
-            // Subtle wear ring around drain
-            m.Cylinder(new Vector3(0f, 0.025f, 0f), 0.15f, 0.001f, 12, M(new Color(0.30f,0.30f,0.32f)));
-            // Small decorative strip (existing detail)
+            m.Cylinder(new Vector3(0f, 0.015f, 0f), 0.045f, 0.003f, 14, chrome);
             for (int i = -1; i <= 1; i++)
                 m.Box(new Vector3(i * 0.014f, 0.0185f, 0f), new Vector3(0.006f, 0.001f, 0.05f), M(new Color(0.15f, 0.15f, 0.16f)));
 
@@ -547,23 +454,10 @@ namespace CloneZ
 
             // The mixer's chrome plate beside the riser.
             m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.42f), 0.06f, 0.008f, 16, chrome, Quaternion.Euler(90f, 0f, 0f));
-            float rivetR = 0.004f; float rivetH = 0.006f; float plateR = 0.06f - 0.005f;
-            Vector3 pc = new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.42f);
-            m.Cylinder(pc + new Vector3( plateR, 0f, 0f), rivetR, rivetH, 8, chrome); // right
-            m.Cylinder(pc + new Vector3(-plateR, 0f, 0f), rivetR, rivetH, 8, chrome); // left
-            m.Cylinder(pc + new Vector3(0f, plateR, 0f), rivetR, rivetH, 8, chrome); // top
-            m.Cylinder(pc + new Vector3(0f, -plateR, 0f), rivetR, rivetH, 8, chrome); // bottom
 
-            // Wall‑mounted soap dish (left of shower mixer)
-            Vector3 dishPos = new Vector3(ShowerLeverPivot.x - 0.12f, 0.02f, ShowerLeverPivot.z + 0.03f);
-            // Dish body: shallow rectangular box in china colour
-            m.Box(dishPos, new Vector3(0.03f, 0.005f, 0.02f), G(BathChina));
-            // Chrome rim: thin cylinder around the box
-            m.Cylinder(dishPos, 0.017f, 0.005f, 12, chrome);
-            // Tiny soap bar placeholder
-            m.Ellipsoid(dishPos + new Vector3(0f, 0.0025f + 0.002f, 0f), new Vector3(0.008f, 0.008f, 0.008f), chrome, 6, 4);
-
+            // A wire corner shelf of bottles, by the back wall.
             var shelf = new Vector3(0.36f, 1.28f, -0.36f);
+            m.Box(shelf, new Vector3(0.11f, 0.008f, 0.11f), chrome);
             Color[] bottles = { new Color(0.20f, 0.50f, 0.66f), new Color(0.84f, 0.52f, 0.20f), new Color(0.56f, 0.30f, 0.56f), new Color(0.30f, 0.60f, 0.36f) };
             m.Cylinder(shelf + new Vector3(0.02f, 0.004f, -0.02f), 0.024f, 0.17f, 10, G(bottles[rng.Next(bottles.Length)]));
             m.Cylinder(shelf + new Vector3(0.02f, 0.174f, -0.02f), 0.011f, 0.022f, 8, G(new Color(0.92f, 0.92f, 0.90f)));
@@ -578,42 +472,9 @@ namespace CloneZ
             const float y0 = 0.065f, y1 = 1.948f, z = 0.44f;
             float h = y1 - y0, ym = (y0 + y1) * 0.5f;
             m.Box(new Vector3(-0.205f, ym, z), new Vector3(0.426f, h, 0.008f), glass);
-            // Thin matte‑black rubber gasket strips on each side of the shower door
-            m.Box(new Vector3(-0.210f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
-            m.Box(new Vector3(0.013f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
-
-            // Chrome side stiles (existing)
             m.Box(new Vector3(-0.424f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
             m.Box(new Vector3(0.014f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
-            // Bottom sweep (existing)
             m.Box(new Vector3(-0.205f, y0 + 0.006f, z), new Vector3(0.426f, 0.012f, 0.014f), chrome);
-
-            // --- New visual‑detail pass ---
-            // Chrome bar‑handles on each stile
-            m.Cylinder(new Vector3(-0.418f, ym, z + 0.009f), 0.006f, 0.08f, 8, chrome, Quaternion.identity); // left handle
-            m.Cylinder(new Vector3(0.008f, ym, z + 0.009f), 0.006f, 0.08f, 8, chrome, Quaternion.identity); // right handle
-
-            // Chrome latch plate and knob at top of door
-            m.Box(new Vector3(-0.205f, y1 - 0.025f, z + 0.009f), new Vector3(0.12f, 0.006f, 0.002f), chrome);
-            m.Cylinder(new Vector3(-0.205f, y1 - 0.015f, z + 0.011f), 0.008f, 0.004f, 8, chrome, Quaternion.identity);
-
-            // Rivets on stiles (two per stile)
-            // left stile rivets
-            m.Cylinder(new Vector3(-0.424f + 0.006f, y0 + 0.22f, z), 0.003f, 0.002f, 8, chrome);
-            m.Cylinder(new Vector3(-0.424f + 0.006f, y1 - 0.22f, z), 0.003f, 0.002f, 8, chrome);
-            // right stile rivets
-            m.Cylinder(new Vector3(0.014f - 0.006f, y0 + 0.22f, z), 0.003f, 0.002f, 8, chrome);
-            m.Cylinder(new Vector3(0.014f - 0.006f, y1 - 0.22f, z), 0.003f, 0.002f, 8, chrome);
-
-            // Subtle wear streak on glass pane
-            m.Box(new Vector3(-0.205f, ym, z + 0.0095f), new Vector3(0.20f, 0.010f, 0.001f), M(new Color(0.10f, 0.10f, 0.10f)));
-
-            // Tiny chrome pull‑knob on inner edge of door
-            m.Cylinder(new Vector3(-0.205f, ym, z - 0.004f), 0.004f, 0.008f, 8, chrome, Quaternion.Euler(90f,0f,0f));
-
-            // Accent line along bottom sweep (just above existing sweep)
-            m.Box(new Vector3(-0.205f, y0 + 0.003f, z), new Vector3(0.426f, 0.002f, 0.004f), chrome);
-
             for (int s = -1; s <= 1; s += 2)
             {
                 m.Box(new Vector3(-0.04f, 1.05f, z + s * 0.024f), new Vector3(0.014f, 0.24f, 0.012f), chrome);
@@ -630,20 +491,6 @@ namespace CloneZ
             Surf chrome = Mt(Chrome);
             m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.412f), 0.022f, 0.026f, 12, chrome, Quaternion.Euler(90f, 0f, 0f));
             m.Box(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y - 0.045f, -0.392f), new Vector3(0.018f, 0.085f, 0.014f), chrome);
-            // Base plate (thin cylinder) under the boss
-            m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y - 0.022f, -0.412f), 0.022f, 0.004f, 12, chrome);
-            // Left rivet
-            m.Cylinder(new Vector3(ShowerLeverPivot.x - 0.015f, ShowerLeverPivot.y - 0.022f, -0.412f), 0.002f, 0.003f, 8, chrome);
-            // Right rivet
-            m.Cylinder(new Vector3(ShowerLeverPivot.x + 0.015f, ShowerLeverPivot.y - 0.022f, -0.412f), 0.002f, 0.003f, 8, chrome);
-            // Lever arm (horizontal cylinder)
-            m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y + 0.022f, -0.412f), 0.004f, 0.07f, 12, chrome, Quaternion.Euler(90f, 0f, 0f));
-            // Handle cap at the arm’s tip
-            m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y + 0.022f, -0.342f), 0.006f, 0.008f, 8, chrome, Quaternion.Euler(90f, 0f, 0f));
-            // Knob on the front of the cap
-            m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y + 0.022f, -0.338f), 0.003f, 0.004f, 8, chrome, Quaternion.Euler(90f, 0f, 0f));
-            // Dark wear dent on the arm front
-            m.Box(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y + 0.022f, -0.38f), new Vector3(0.012f, 0.004f, 0.002f), M(new Color(0.30f, 0.30f, 0.35f)));
         }
 
         /// <summary>One look of the running shower: a cone of thin streaks from the rose to the tray, some breaking into
@@ -686,16 +533,8 @@ namespace CloneZ
             m.Box(mid + right * (w * 0.5f - t * 0.5f), new Vector3(t, h - t * 2f, d), q, white);
             m.Box(mid - right * (w * 0.5f - t * 0.5f), new Vector3(t, h - t * 2f, d), q, white);
             Surf shelf = Gs(new Color(0.62f, 0.72f, 0.74f));
-for (int i = -1; i <= 1; i += 2)
-                     m.Box(back + normal * (d * 0.45f) + up * (i * h / 6f), new Vector3(w - t * 2f, 0.006f, d * 0.75f), q, shelf);
-
-                 // Small chrome towel hook on the cabinet body
-                 // Position the base of the shaft
-                 Vector3 hookBase = back + normal * (d * 0.45f) + up * (h * 0.4f) + right * (w * 0.45f - 0.02f);
-                 // Shaft: thin cylinder pointing toward the wall (negative right direction)
-                 m.Cylinder(hookBase, 0.006f, 0.09f, 8, Mt(Chrome), Quaternion.LookRotation(-right, up));
-                 // Tip: tiny ellipsoid at the end of the shaft
-                 m.Ellipsoid(hookBase + (-right) * 0.045f, new Vector3(0.008f, 0.008f, 0.008f), Mt(Chrome), 6, 4);
+            for (int i = -1; i <= 1; i += 2)
+                m.Box(back + normal * (d * 0.45f) + up * (i * h / 6f), new Vector3(w - t * 2f, 0.006f, d * 0.75f), q, shelf);
         }
 
         /// <summary>The mirror cabinet's door: a white board faced with a mirror, its back on <paramref name="front"/> (the
@@ -706,16 +545,6 @@ for (int i = -1; i <= 1; i += 2)
             const float t = 0.016f;
             m.Box(front + normal * (t * 0.5f), new Vector3(w, h, t), q, G(BathCabinetWhite));
             m.Box(front + normal * (t + 0.0015f), new Vector3(w - 0.024f, h - 0.024f, 0.003f), q, Mt(BathMirror));
-            // Thin chrome frame around mirror pane (≈2 mm thick)
-            Surf chrome = Mt(Chrome);
-            // Top frame
-            m.Box(front + normal * (t + 0.0015f) + Vector3.up * ((h - 0.024f) * 0.5f - 0.001f), new Vector3(w - 0.024f, 0.002f, 0.003f), q, chrome);
-            // Bottom frame
-            m.Box(front + normal * (t + 0.0015f) - Vector3.up * ((h - 0.024f) * 0.5f - 0.001f), new Vector3(w - 0.024f, 0.002f, 0.003f), q, chrome);
-            // Left frame
-            m.Box(front + normal * (t + 0.0015f) - hingeSide * ((w - 0.024f) * 0.5f - 0.001f), new Vector3(0.002f, h - 0.028f, 0.003f), q, chrome);
-            // Right frame
-            m.Box(front + normal * (t + 0.0015f) + hingeSide * ((w - 0.024f) * 0.5f - 0.001f), new Vector3(0.002f, h - 0.028f, 0.003f), q, chrome);
             m.Box(front + normal * (t + 0.006f) - hingeSide * (w * 0.5f - 0.016f), new Vector3(0.008f, 0.07f, 0.008f), q, Mt(Chrome));
         }
 

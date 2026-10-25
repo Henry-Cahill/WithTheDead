@@ -30,7 +30,6 @@ namespace CloneZ
                 m.Box(new Vector3(sx - 0.14f, 0.945f, 0.03f), new Vector3(0.26f, 0.004f, 0.34f), G(new Color(0.22f, 0.23f, 0.24f)));
                 m.Box(new Vector3(sx + 0.14f, 0.945f, 0.03f), new Vector3(0.26f, 0.004f, 0.34f), G(new Color(0.22f, 0.23f, 0.24f)));
                 m.Cylinder(new Vector3(sx, 0.94f, -0.25f), 0.016f, 0.22f, 6, Mt(Chrome));
-                m.Box(new Vector3(sx, 0.97f, -0.25f), new Vector3(0.02f, 0.01f, 0.02f), Yaw(R(rng, -15f, 15f)), Mt(Brass));
                 m.Box(new Vector3(sx, 1.16f, -0.17f), new Vector3(0.025f, 0.025f, 0.18f), Mt(Chrome));
             }
             // Clutter: a kettle, jars, a dish rack, a stack of plates.
@@ -60,9 +59,6 @@ namespace CloneZ
                 float x = -len * 0.5f + dw * (i + 0.5f);
                 m.Box(new Vector3(x, 1.82f, 0.345f), new Vector3(dw - 0.04f, 0.64f, 0.02f), M(c * 1.08f));
                 m.Box(new Vector3(x + dw * 0.32f * (i % 2 == 0 ? 1f : -1f), 1.58f, 0.36f), new Vector3(0.02f, 0.08f, 0.02f), Mt(Brass));
-                // Tiny brass hinges on each side of the upper‑cabinet door
-                m.Box(new Vector3(x - dw * 0.5f + 0.02f, 1.78f, 0.345f), new Vector3(0.02f, 0.04f, 0.02f), Mt(Brass));
-                m.Box(new Vector3(x + dw * 0.5f - 0.02f, 1.78f, 0.345f), new Vector3(0.02f, 0.04f, 0.02f), Mt(Brass));
             }
         }
 
@@ -77,8 +73,6 @@ namespace CloneZ
                 float x = i % 2 == 0 ? -0.18f : 0.18f, z = i < 2 ? -0.13f : 0.13f;
                 m.Cylinder(new Vector3(x, 0.93f, z), 0.1f, 0.012f, 10, M(Black));
                 m.Cylinder(new Vector3(x, 0.94f, z), 0.06f, 0.01f, 8, M(new Color(0.3f, 0.3f, 0.3f)));
-                // Tiny brass control knob on each burner
-                m.Cylinder(new Vector3(x, 0.945f, z), 0.015f, 0.01f, 6, Mt(Brass), Yaw(R(rng, -10f, 10f)));
             }
             m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), G(c));
             for (int i = 0; i < 4; i++)
@@ -99,33 +93,9 @@ namespace CloneZ
         {
             Color c = V(wood, rng, 0.06f);
             m.Box(new Vector3(0f, 0.735f, 0f), new Vector3(w, 0.04f, d), G(c));
-            // thin wooden runner (front‑edge trim)
-            m.Box(new Vector3(0f, 0.735f + 0.021f, d * 0.45f), new Vector3(w - 0.04f, 0.005f, 0.02f), M(c * 0.85f));
             m.Box(new Vector3(0f, 0.68f, 0f), new Vector3(w - 0.12f, 0.08f, d - 0.12f), M(c * 0.85f));
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.06f), 0.36f, (i < 2 ? -1f : 1f) * (d * 0.5f - 0.06f)), new Vector3(0.05f, 0.72f, 0.05f), M(c * 0.8f));
-            // brass candle holder base
-            Vector3 candPos = new Vector3(-w * 0.2f + R(rng, -0.02f, 0.02f), 0.735f + 0.025f, d * 0.2f + R(rng, -0.02f, 0.02f));
-            m.Cylinder(candPos, 0.02f, 0.05f, 6, Mt(Brass));
-            // tiny emissive flame (visible only when lit)
-            m.Box(candPos + new Vector3(0f, 0.05f, 0f), new Vector3(0.01f, 0.015f, 0.01f), Gl(new Color(1f, 0.94f, 0.65f)));
-            // glass vase (simple translucent look using a light colour)
-            Vector3 vasePos = new Vector3(w * 0.15f + R(rng, -0.02f, 0.02f), 0.735f + 0.025f, -d * 0.1f + R(rng, -0.02f, 0.02f));
-            m.Cylinder(vasePos, 0.03f, 0.12f, 8, M(new Color(0.93f, 0.96f, 0.98f)));
-            // plate inside vase (flat disc)
-            m.Box(vasePos + new Vector3(0f, 0.12f, 0f), new Vector3(0.12f, 0.002f, 0.12f), G(new Color(0.92f, 0.92f, 0.90f)));
-            // cloth napkin (simple red‑brown pattern)
-            Vector3 napPos = new Vector3(-w * 0.2f + R(rng, -0.02f, 0.02f), 0.735f + 0.027f, d * 0.15f + R(rng, -0.02f, 0.02f));
-            m.Box(napPos, new Vector3(0.15f, 0.001f, 0.08f), G(new Color(0.78f, 0.22f, 0.22f)));
-            // occasional pair of metal shakers (left = salt, right = pepper)
-            if (Chance(rng, 0.3f))
-            {
-                Vector3 basePos = new Vector3(R(rng, -w * 0.3f, w * 0.3f), 0.745f, R(rng, -d * 0.3f, d * 0.3f));
-                // salt shaker
-                m.Cylinder(basePos, 0.01f, 0.03f, 6, Mt(Brass));
-                // pepper shaker (slightly offset)
-                m.Cylinder(basePos + new Vector3(0.02f, 0f, 0f), 0.01f, 0.03f, 6, Mt(Brass));
-            }
             int items = rng.Next(0, 4);
             for (int i = 0; i < items; i++)
             {
@@ -147,45 +117,7 @@ namespace CloneZ
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.08f), 0.03f, (i < 2 ? -1f : 1f) * 0.34f), new Vector3(0.05f, 0.06f, 0.05f), M(Walnut));
             m.Box(new Vector3(0f, 0.25f, -0.02f), new Vector3(w, 0.38f, 0.82f), M(c * 0.9f));
-            // Seat stitching: centre seam and side seams
-            float seatTopY = 0.25f + 0.38f * 0.5f + 0.001f; // just above seat surface
-            // centre seam
-            m.Box(new Vector3(0f, seatTopY, 0f), new Vector3(w, 0.002f, 0.01f), M(c * 0.6f));
-            // left side seam
-            m.Box(new Vector3(-w * 0.5f + 0.06f, seatTopY, 0f), new Vector3(0.01f, 0.002f, 0.8f), M(c * 0.6f));
-            // right side seam
-            m.Box(new Vector3(w * 0.5f - 0.06f, seatTopY, 0f), new Vector3(0.01f, 0.002f, 0.8f), M(c * 0.6f));
             m.Box(new Vector3(0f, 0.62f, -0.32f), new Vector3(w - 0.36f, 0.5f, 0.2f), Quaternion.Euler(-10f, 0f, 0f), M(c));
-// Occasional decorative pillow on seat
-// Optional draped blanket over one side of the seat (30% chance)
-// Stray rope hanging from back cushion (20% chance)
-if (Chance(rng, 0.2f))
-{
-    Vector3 ropeBase = new Vector3(0f, 0.62f + 0.5f, -0.32f + 0.10f);
-    m.Cylinder(ropeBase, 0.005f, 0.25f, 6, G(new Color(0.50f, 0.45f, 0.40f)), Quaternion.identity);
-}
-
-// occasional decorative pillow(s) on the seat
-if (Chance(rng, 0.4f))
-{
-    int pillowCount = w > 1.4f ? 2 : 1;
-    for (int i = 0; i < pillowCount; i++)
-    {
-        float px = R(rng, -w * 0.25f, w * 0.25f);
-        // pillow base – a small soft box
-        m.Box(new Vector3(px, 0.26f, -0.02f), new Vector3(0.12f, 0.018f, 0.12f), M(V(c, rng, 0.05f)));
-        // pillow top – a thin lighter‑tint lid to suggest stuffing
-        m.Box(new Vector3(px, 0.278f, -0.02f), new Vector3(0.12f, 0.004f, 0.12f), G(new Color(0.92f, 0.90f, 0.85f)));
-    }
-}
-
-// draped blanket over the left side of the seat (30% chance)
-if (Chance(rng, 0.3f))
-{
-    // blanket folded and hanging off the side – a thin, slightly crumpled box
-    m.Box(new Vector3(-w * 0.5f + 0.08f, 0.26f, 0.22f), new Vector3(0.06f, 0.001f, 0.18f),
-          G(V(c, rng, 0.07f)));
-}
             int n = w > 1.6f ? 3 : (w > 1.1f ? 2 : 1);
             float cw = (w - 0.4f) / n;
             for (int i = 0; i < n; i++)
@@ -197,19 +129,9 @@ if (Chance(rng, 0.3f))
             {
                 m.Box(new Vector3(s * (w * 0.5f - 0.1f), 0.42f, -0.02f), new Vector3(0.2f, 0.5f, 0.82f), M(c * 0.95f));
                 m.CylinderX(new Vector3(s * (w * 0.5f - 0.1f), 0.66f, -0.02f), 0.11f, 0.82f, 8, M(c * 0.95f), 90f);
-                float armCapY = 0.66f + 0.11f + 0.02f; // just above the arm radius
-                m.Box(new Vector3(s * (w * 0.5f - 0.1f), armCapY, -0.02f), new Vector3(0.04f, 0.02f, 0.04f), M(c * 0.85f));
-                // tiny brass rivets centred on each arm‑cap
-                m.Box(new Vector3(s * (w * 0.5f - 0.1f), armCapY + 0.015f, -0.02f), new Vector3(0.008f, 0.008f, 0.002f), Mt(Brass));
-
             }
-            // thin back‑cushion accent – a softer panel behind the main back cushion
-            m.Box(new Vector3(0f, 0.74f, -0.46f), new Vector3(w - 0.4f, 0.06f, 0.04f), M(c * 0.9f));
-            // occasional light scratch on the seat fabric (10% chance)
-            if (Chance(rng, 0.1f))
-            {
-                m.Box(new Vector3(0f, 0.25f + 0.001f, 0f), new Vector3(w * 0.4f, 0.001f, 0.002f), G(new Color(0.12f, 0.10f, 0.09f)));
-            }
+            if (Chance(rng, 0.6))
+                m.Box(new Vector3(R(rng, -w * 0.3f, w * 0.3f), 0.68f, -0.08f), new Vector3(0.4f, 0.36f, 0.12f), Quaternion.Euler(-20f, R(rng, -20f, 20f), R(rng, -10f, 10f)), M(V(new Color(0.6f, 0.5f, 0.3f), rng, 0.2f)));
         }
 
         /// <summary>A 1993 tube TV with rabbit ears on a low wooden stand with a VCR.</summary>
@@ -298,15 +220,6 @@ if (Chance(rng, 0.3f))
             m.Box(new Vector3(0f, 0.05f, -0.02f), new Vector3(0.98f, 0.1f, 0.54f), M(c * 0.7f));
             m.Box(new Vector3(0f, 1.0f, -0.03f), new Vector3(1.0f, 1.8f, 0.54f), M(c));
             m.Box(new Vector3(0f, 1.93f, -0.02f), new Vector3(1.06f, 0.07f, 0.6f), M(c * 0.85f));
-            // thin wooden trim capping the wardrobe top (adds a worn‑look)
-            m.Box(new Vector3(0f, 1.93f + 0.07f, 0f), new Vector3(0.98f, 0.02f, 0.54f), M(c * 0.95f));
-            // left side wooden frame strip
-            m.Box(new Vector3(-0.49f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.54f), M(c * 0.95f));
-            // right side wooden frame strip
-            m.Box(new Vector3(0.49f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.54f), M(c * 0.95f));
-            // occasional brass plaque centered on the top trim
-            if (Chance(rng, 0.3))
-                m.Box(new Vector3(0f, 1.93f + 0.07f + 0.01f, 0f), new Vector3(0.10f, 0.004f, 0.04f), Mt(Brass));
             bool ajar = Chance(rng, 0.35);
             for (int s = -1; s <= 1; s += 2)
             {
@@ -322,8 +235,7 @@ if (Chance(rng, 0.3f))
                 m.Box(new Vector3(s * 0.25f, 1.0f, 0.255f), new Vector3(0.48f, 1.74f, 0.02f), M(c * 1.06f));
                 m.Box(new Vector3(s * 0.25f, 1.35f, 0.268f), new Vector3(0.36f, 0.6f, 0.01f), M(c * 0.94f));
                 m.Box(new Vector3(s * 0.25f, 0.6f, 0.268f), new Vector3(0.36f, 0.6f, 0.01f), M(c * 0.94f));
-                // brass pull handle (horizontal bar) centred on each door
-                            m.Box(new Vector3(s * 0.25f, 1.2f, 0.30f), new Vector3(0.12f, 0.015f, 0.01f), Mt(Brass));
+                m.Box(new Vector3(s * 0.04f, 1.0f, 0.275f), new Vector3(0.02f, 0.08f, 0.03f), Mt(Brass));
             }
         }
 
@@ -350,24 +262,9 @@ if (Chance(rng, 0.3f))
             m.Box(new Vector3(0f, 0.3f, -0.02f), new Vector3(0.45f, 0.6f, 0.4f), M(c));
             m.Box(new Vector3(0f, 0.4f, 0.185f), new Vector3(0.39f, 0.16f, 0.02f), M(c * 1.1f));
             m.Box(new Vector3(0f, 0.4f, 0.2f), new Vector3(0.04f, 0.03f, 0.02f), Mt(Brass));
-            // side‑mounted metal switch
-            m.Box(new Vector3(0.18f, 0.34f, -0.03f), new Vector3(0.02f, 0.04f, 0.006f), Mt(Brass));
-            // fabric rib at the front edge of the shade
-            m.Box(new Vector3(0f, 0.47f, -0.06f), new Vector3(0.38f, 0.004f, 0.004f), G(new Color(0.6f, 0.5f, 0.35f)));
-            // brass rivet centred on the shade top
-            m.Box(new Vector3(0f, 0.48f, -0.04f), new Vector3(0.008f, 0.008f, 0.001f), Mt(Brass));
-            // worn line on the wood surface
-            m.Box(new Vector3(0f, 0.31f, -0.05f), new Vector3(0.36f, 0.001f, 0.01f), G(new Color(0.12f, 0.10f, 0.09f)));
             m.Cylinder(new Vector3(0f, 0.6f, -0.04f), 0.07f, 0.04f, 8, G(new Color(0.6f, 0.5f, 0.35f)));
             m.Cylinder(new Vector3(0f, 0.64f, -0.04f), 0.02f, 0.22f, 6, Mt(Brass));
-            // main bulb body (unchanged)
             m.Cylinder(new Vector3(0f, 0.84f, -0.04f), 0.15f, 0.2f, 10, lit ? Gl(new Color(0.95f, 0.78f, 0.52f)) : M(new Color(0.78f, 0.70f, 0.55f)), Quaternion.identity, 0.65f, false);
-            // tiny emissive spot at the centre of the bulb (visible only when lit)
-            if (lit)
-                m.Box(new Vector3(0f, 0.84f, -0.04f), new Vector3(0.03f, 0.03f, 0.03f), Gl(new Color(1f, 0.93f, 0.65f)));
-            // occasional carved label on the wooden side
-            if (Chance(rng, 0.3f))
-                m.Box(new Vector3(-0.22f, 0.38f, -0.02f), new Vector3(0.04f, 0.008f, 0.001f), G(new Color(0.25f, 0.22f, 0.18f)));
             return new Vector3(0f, 0.9f, -0.04f);
         }
 
@@ -378,35 +275,6 @@ if (Chance(rng, 0.3f))
             m.Box(new Vector3(-0.44f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.32f), M(c));
             m.Box(new Vector3(0.44f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.32f), M(c));
             m.Box(new Vector3(0f, 0.9f, -0.15f), new Vector3(0.88f, 1.8f, 0.02f), M(c * 0.7f));
-            // thin wooden strip capping the top edge (adds a worn‑look)
-            m.Box(new Vector3(0f, 0.9f + 1.8f, 0f), new Vector3(0.88f, 0.02f, 0.32f), M(c * 0.95f));
-            // top‑left corner cap
-            m.Box(new Vector3(-0.44f + 0.01f, 0.9f + 1.8f + 0.01f, -0.16f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
-            // top‑right corner cap
-            m.Box(new Vector3( 0.44f - 0.01f, 0.9f + 1.8f + 0.01f, -0.16f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
-            // bottom‑left corner cap
-            m.Box(new Vector3(-0.44f + 0.01f, 0.9f + 0.02f + 0.01f, -0.16f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
-            // bottom‑right corner cap
-            m.Box(new Vector3( 0.44f - 0.01f, 0.9f + 0.02f + 0.01f, -0.16f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
-            // occasional side brass plaque centered on the right side board
-            if (Chance(rng, 0.3))
-            {
-                m.Box(new Vector3(0.44f + 0.011f, 0.9f + 0.9f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));
-            }
-            // hanging leather cords on each side of the top trim
-            // left‑hand cord
-            m.Cylinder(new Vector3(-0.34f, 0.9f + 1.8f + 0.03f, -0.12f), 0.005f, 0.06f, 6, G(new Color(0.42f, 0.37f, 0.33f)), Yaw(R(rng, -8f, 8f)));
-            // right‑hand cord
-            m.Cylinder(new Vector3( 0.34f, 0.9f + 1.8f + 0.03f, -0.12f), 0.005f, 0.06f, 6, G(new Color(0.42f, 0.37f, 0.33f)), Yaw(R(rng, -8f, 8f)));
-            // subtle wear scratches near bottom edge
-            // left‑side scratch
-            m.Box(new Vector3(-0.2f + R(rng, -0.02f, 0.02f), 0.9f + 0.02f + 0.005f, -0.14f + R(rng, -0.01f, 0.01f)), new Vector3(0.15f, 0.002f, 0.004f), G(new Color(0.15f, 0.13f, 0.11f)));
-            // right‑side scratch
-            m.Box(new Vector3( 0.2f + R(rng, -0.02f, 0.02f), 0.9f + 0.02f + 0.005f, -0.14f + R(rng, -0.01f, 0.01f)), new Vector3(0.15f, 0.002f, 0.004f), G(new Color(0.15f, 0.13f, 0.11f)));
-
-            // occasional brass plaque centered on the trim
-            if (Chance(rng, 0.4))
-                m.Box(new Vector3(0f, 0.9f + 1.8f + 0.01f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));
             for (int s = 0; s < 5; s++)
             {
                 float y = 0.9f + 0.05f + s * 0.43f;

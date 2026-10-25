@@ -21,17 +21,9 @@ namespace CloneZ
             Color c = V(wood, rng, 0.06f);
             m.Box(new Vector3(0f, 0.41f, -0.03f), new Vector3(1.0f, 0.78f, 0.44f), M(c));
             m.Box(new Vector3(0f, 0.81f, -0.01f), new Vector3(1.04f, 0.03f, 0.5f), G(c * 1.05f));
-            // Small brass corner brackets on the top of the dresser
-            if (rng.NextDouble() < 0.75) m.Box(new Vector3(-0.5f, 0.825f, -0.24f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
-            if (rng.NextDouble() < 0.75) m.Box(new Vector3(0.5f, 0.825f, -0.24f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
-            if (rng.NextDouble() < 0.75) m.Box(new Vector3(-0.5f, 0.825f, 0.24f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
-            if (rng.NextDouble() < 0.75) m.Box(new Vector3(0.5f, 0.825f, 0.24f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
             m.Box(new Vector3(0f, 0.012f, 0.16f), new Vector3(0.98f, 0.024f, 0.06f), M(c * 0.8f));
             for (int row = 0; row < 3; row++)
                 m.Box(new Vector3(0f, DresserDrawerY(row), 0.1915f), new Vector3(0.92f, 0.19f, 0.003f), M(LivingBay));
-
-            // Tiny brass name‑plate on the right‑hand side of the dresser top
-            if (rng.NextDouble() < 0.5) m.Box(new Vector3(0.45f, 0.825f, 0.18f), new Vector3(0.06f, 0.015f, 0.015f), Mt(Brass));
 
             int items = rng.Next(1, 3);
             for (int i = 0; i < items; i++)
@@ -74,20 +66,8 @@ namespace CloneZ
         {
             float y = DresserDrawerY(row);
             m.Box(new Vector3(0f, y, 0.205f), new Vector3(0.94f, 0.2f, 0.02f), M(wood * 1.1f));
-            // Leather pull strap
-            m.Box(new Vector3(0f, y + 0.05f, 0.207f), new Vector3(0.04f, 0.08f, 0.002f), M(new Color(0.45f, 0.30f, 0.20f)));
-            // Small brass lock plate
-            m.Box(new Vector3(0.20f, y + 0.12f, 0.208f), new Vector3(0.06f, 0.04f, 0.003f), Mt(Brass));
-            // Brass shackle
-            m.Cylinder(new Vector3(0.23f, y + 0.14f, 0.207f), 0.005f, 0.02f, 6, Mt(Brass));
-            // Interior bottom rail
-            m.Box(new Vector3(0f, y - 0.082f, 0.195f), new Vector3(0.92f, 0.004f, 0.36f), M(wood * 0.95f));
-            // Subtle wear notch
-            m.Box(new Vector3(0f, y + 0.08f, 0.215f), new Vector3(0.94f, 0.002f, 0.001f), M(new Color(0.10f, 0.07f, 0.05f)));
-
             m.Box(new Vector3(-0.25f, y, 0.222f), new Vector3(0.04f, 0.04f, 0.016f), Mt(Brass));
             m.Box(new Vector3(0.25f, y, 0.222f), new Vector3(0.04f, 0.04f, 0.016f), Mt(Brass));
-            m.Box(new Vector3(0f, y + 0.1f, 0.215f), new Vector3(0.94f, 0.008f, 0.004f), Mt(Brass));
             LivingDrawerBox(m, new Vector3(0f, y - 0.085f, 0.195f), 0.9f, 0.15f, 0.36f, wood);
         }
 
@@ -121,8 +101,6 @@ namespace CloneZ
             m.Cylinder(new Vector3(0f, 0.6f, -0.04f), 0.07f, 0.04f, 8, G(new Color(0.6f, 0.5f, 0.35f)));
             m.Cylinder(new Vector3(0f, 0.64f, -0.04f), 0.02f, 0.22f, 6, Mt(Brass));
             m.Cylinder(new Vector3(0f, 0.84f, -0.04f), 0.15f, 0.2f, 10, M(new Color(0.78f, 0.70f, 0.55f)), Quaternion.identity, 0.65f, false);
-            // Tiny brass switch knob on the shade
-            m.Cylinder(new Vector3(0.07f, 0.84f, -0.04f), 0.01f, 0.03f, 6, Mt(Brass));
             return new Vector3(0f, 0.9f, -0.04f);
         }
 
@@ -162,18 +140,6 @@ namespace CloneZ
                 m.CylinderX(new Vector3(s * 0.375f, 0.62f, -0.02f), 0.1f, 0.82f, 8, M(c * 0.95f), 90f);
             }
             m.Box(new Vector3(0f, 0.925f, -0.355f), new Vector3(0.34f, 0.012f, 0.16f), Quaternion.Euler(-10f, 0f, 0f), M(new Color(0.92f, 0.90f, 0.84f)));
-            // Thin walnut trim rail around the seat perimeter
-            m.Box(new Vector3(0f, 0.245f, 0f), new Vector3(0.94f, 0.01f, 0.78f), M(Walnut));
-            // Brass button tuft at seat centre
-            m.Cylinder(new Vector3(0f, 0.255f, 0f), 0.015f, 0.018f, 8, Mt(Brass));
-            // Left arm rolled cap
-            m.Cylinder(new Vector3(-0.375f, 0.62f, 0f), 0.08f, 0.018f, 8, M(c * 0.95f));
-            // Right arm rolled cap
-            m.Cylinder(new Vector3(0.375f, 0.62f, 0f), 0.08f, 0.018f, 8, M(c * 0.95f));
-            // Leather‑tone strap on the back of the chair
-            m.Box(new Vector3(-0.22f, 0.62f, -0.31f), new Vector3(0.04f, 0.15f, 0.005f), M(new Color(0.52f, 0.34f, 0.26f)));
-            // Subtle wear notch on backrest
-            m.Box(new Vector3(0f, 0.71f, -0.31f), new Vector3(0.59f, 0.02f, 0.02f), M(new Color(0.10f, 0.10f, 0.10f)));
         }
 
         /// <summary>A small portable CRT television (0.44 wide, 0.4 deep, 0.4 high to its handle, rabbit ears above;
@@ -190,43 +156,6 @@ namespace CloneZ
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * 0.17f, 0.008f, (i < 2 ? -0.02f : 0.12f)), new Vector3(0.04f, 0.016f, 0.04f), M(black));
             m.Box(new Vector3(0f, 0.19f, 0.06f), new Vector3(0.44f, 0.34f, 0.22f), wood ? M(cab) : G(cab));
-            // Brass rivets on the top edge of the cabinet
-            float topY = 0.19f + 0.34f * 0.5f; // Y of top surface
-            float rivetZ = 0.06f; // centered on front/back
-            for (int i = -1; i <= 1; i++) {
-                if (rng.NextDouble() < 0.9) {
-                    m.Box(new Vector3(i * 0.14f, topY + 0.004f, rivetZ), new Vector3(0.008f, 0.008f, 0.008f), Mt(Brass));
-                }
-            }
-            // Brass volume knob (left side)
-            if (rng.NextDouble() < 0.8) {
-                Vector3 knobPos = new Vector3(-0.22f + 0.03f, 0.19f + 0.08f, 0.06f);
-                m.Cylinder(knobPos, 0.012f, 0.025f, 8, Mt(Brass));
-            }
-            // Brass power button (right‑lower front)
-            if (rng.NextDouble() < 0.7) {
-                Vector3 btnPos = new Vector3(0.22f - 0.025f, 0.19f - 0.12f, 0.06f + 0.11f);
-                m.Box(btnPos, new Vector3(0.015f, 0.008f, 0.004f), Mt(Brass));
-            }
-            // Speaker grille (right side)
-            if (rng.NextDouble() < 0.75) {
-                float grilleX = 0.22f - 0.008f;
-                float grilleYBase = 0.19f;
-                float grilleZBase = 0.06f;
-                for (int col = -1; col <= 1; col++) {
-                    for (int row = -1; row <= 2; row++) {
-                        if (rng.NextDouble() < 0.9) {
-                            Vector3 cell = new Vector3(grilleX, grilleYBase + row * 0.04f, grilleZBase + col * 0.03f);
-                            m.Box(cell, new Vector3(0.002f, 0.03f, 0.004f), M(new Color(0.05f, 0.05f, 0.06f)));
-                        }
-                    }
-                }
-            }
-            // Chrome label plate (top front)
-            if (rng.NextDouble() < 0.6) {
-                Vector3 labelPos = new Vector3(0f, 0.19f + 0.14f, 0.06f + 0.11f);
-                m.Box(labelPos, new Vector3(0.08f, 0.012f, 0.004f), Mt(Chrome));
-            }
             m.Box(new Vector3(0f, 0.18f, -0.10f), new Vector3(0.36f, 0.27f, 0.10f), G(cab * 0.92f));
             m.Box(new Vector3(0f, 0.17f, -0.18f), new Vector3(0.22f, 0.17f, 0.06f), G(cab * 0.85f));
             m.Box(new Vector3(0f, 0.19f, 0.171f), new Vector3(0.42f, 0.32f, 0.004f), M(face));
@@ -310,35 +239,8 @@ namespace CloneZ
             Color c = V(wood, rng, 0.06f);
             m.Box(new Vector3(0f, 0.2f, 0f), new Vector3(w, 0.22f, l), M(c));
             m.Box(new Vector3(0f, 0.55f, -l * 0.5f + 0.03f), new Vector3(w + 0.06f, 1.1f, 0.06f), M(c * 1.05f));
-            // Tiny brass corner caps on the headboard corners
-            m.Box(new Vector3((w + 0.06f) * 0.5f - 0.01f, 1.09f, -l * 0.5f + 0.05f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // front‑right
-            m.Box(new Vector3(-(w + 0.06f) * 0.5f + 0.01f, 1.09f, -l * 0.5f + 0.05f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // front‑left
-            m.Box(new Vector3((w + 0.06f) * 0.5f - 0.01f, 1.09f, -l * 0.5f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // back‑right
-            m.Box(new Vector3(-(w + 0.06f) * 0.5f + 0.01f, 1.09f, -l * 0.5f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // back‑left
             m.Box(new Vector3(0f, 1.08f, -l * 0.5f + 0.03f), new Vector3(w + 0.1f, 0.06f, 0.09f), M(c * 0.9f));
             m.Box(new Vector3(0f, 0.3f, l * 0.5f - 0.025f), new Vector3(w + 0.06f, 0.6f, 0.05f), M(c * 1.05f));
-            // Thin wooden trim rail on footboard front top edge
-            m.Box(
-                new Vector3(0f, 0.3f + 0.6f * 0.5f + 0.005f, l * 0.5f - 0.025f), // centre just above the footboard top
-                new Vector3(w + 0.08f, 0.01f, 0.02f), // width = bed width + margin, thin height, shallow depth
-                M(c * 0.9f));
-            // Brass footboard corner caps (front‑right and front‑left)
-            float footZ = l * 0.5f - 0.025f;
-            float capY = 0.3f + 0.6f * 0.5f; // centre of footboard height
-            float capX = (w + 0.06f) * 0.5f - 0.01f;
-            m.Box(new Vector3( capX, capY, footZ), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // front‑right
-            m.Box(new Vector3(-capX, capY, footZ), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // front‑left
-            // Leather pull strap on footboard front
-            m.Box(
-                new Vector3(0f, 0.07f, footZ), // low on the footboard
-                new Vector3(0.04f, 0.08f, 0.002f), // thin strap
-                M(new Color(0.45f, 0.30f, 0.20f)));
-            // Wear notch on footboard right side
-            m.Box(
-                new Vector3(capX - 0.015f, 0.45f, footZ), // a bit inset from the brass cap, mid‑height
-                new Vector3(0.02f, 0.003f, 0.001f), // thin dark line
-                M(new Color(0.10f, 0.07f, 0.05f)));
-
             m.Box(new Vector3(0f, 0.41f, -0.01f), new Vector3(w - 0.06f, 0.2f, l - 0.1f), M(BedSheet));
             int pillows = w > 1.2f ? 2 : 1;
             for (int i = 0; i < pillows; i++)
