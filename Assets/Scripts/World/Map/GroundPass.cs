@@ -70,30 +70,44 @@ namespace CloneZ
 
         private const float FarSnowY = -0.02f;   // the fixed map's snowfield past its scenery
 
+        /// <summary>Builds all ground-related layers for a site, yielding step identifiers for progress tracking.</summary>
         internal static IEnumerable<string> Build(Site site)
         {
+            // Initialise per‑site ground data.
             var g = new Ground(site);
+            // Replace any previous entry for this site and store the new ground object.
             s_Sites.Remove(site);
             s_Sites.Add(site, g);
+            // Warm up any cached resources needed for ground rendering.
             Warm();
+            // Ensure shared geometry (e.g., meshes) is prepared.
             MakeAll();
+            // Create the base walkable snow and distant snowfield.
             BaseSnow(site);
+            // Partition the site into owners (areas) for later processing.
             Partition(g);
             yield return "ground";
+            // Add water features.
             foreach (string step in Water(g)) yield return step;
             yield return "water";
+            // Add field patterns (rows, crops, etc.).
             foreach (string step in Fields(g)) yield return step;
             yield return "fields";
+            // For full‑detail sites, generate the ground mask used by later passes.
             if (!g.Lite)
             {
                 g.Mask();
                 yield return "ground mask";
             }
+            // Add lot outlines and related geometry.
             foreach (string step in Lots(g)) yield return step;
             yield return "lots";
+            // For full‑detail sites, draw the detailed ground surface.
             if (!g.Lite)
                 foreach (string step in Grounds(g)) yield return step;
+            // Apply the snow tone overlay.
             Tone(g);
+            // Release temporary data structures.
             g.Release();
             yield return "snow tone";
         }
@@ -294,6 +308,7 @@ namespace CloneZ
 
             private int Cell(float v) => Mathf.FloorToInt(v + Half);
 
+            /// <summary>Computes a boolean mask of cells that later passes will occupy (streets, railways, barriers, footprints), used for prop placement checks.</summary>
             private void BuildMask()
             {
                 _n = Mathf.CeilToInt(Half * 2f) + 1;
@@ -347,6 +362,7 @@ namespace CloneZ
                 }
             }
 
+            /// <summary>Calculates the horizontal interval (lo, hi) of a disc intersecting the current row at height zc.</summary>
             private static void Disc(Vector2 c, float zc, float r, ref float lo, ref float hi)
             {
                 float dz = zc - c.y, w2 = r * r - dz * dz;
@@ -359,8 +375,10 @@ namespace CloneZ
             // Narrows [lo, hi] to the x where min <= k (x - ax) + c <= max.
             private static void Clamp(float k, float c, float min, float max, float ax, ref float lo, ref float hi)
             {
+                // Skip calculations when k is effectively zero; treat the inequality as a constant check.
                 if (Mathf.Abs(k) < 1e-6f)
                 {
+                    // If the constant term c is outside the allowed range, the interval becomes empty.
                     if (c < min || c > max)
                     {
                         lo = float.MaxValue;
@@ -375,6 +393,7 @@ namespace CloneZ
                     x0 = x1;
                     x1 = t;
                 }
+                // Intersect the new bounds with the existing interval.
                 lo = Mathf.Max(lo, x0);
                 hi = Mathf.Min(hi, x1);
             }
@@ -434,6 +453,7 @@ namespace CloneZ
             // Region metres + shift = site-local metres. A chunk's areas all come from its own region, whose corner lies
             // a whole number of chunks and a half from the chunk's middle, so any one point both in the data and in the
             // chunk (a node, a building's corner, a corner of the area itself) gives the shift exactly.
+            /// <summary>Determines the site‑local coordinate shift aligning chunk data with the global map, based on known points.</summary>
             private bool Shift(Owner o, out Vector2 shift)
             {
                 if (!_shiftTried)
