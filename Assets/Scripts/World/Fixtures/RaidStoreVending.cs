@@ -64,6 +64,7 @@ namespace CloneZ
         /// window whole and broken in. <paramref name="lit"/>: it's plugged in and glowing.</summary>
         internal static RaidStoreVending Create(Transform body, Vector3 panel, Vector3 tray, Renderer glass, Renderer smashed, bool lit, int seed)
         {
+            // Instantiate a container GameObject for the vending fixture
             var go = new GameObject("Fixture_Vending");
             go.transform.SetParent(body, false);
             go.transform.SetPositionAndRotation(panel, Quaternion.identity);
@@ -80,18 +81,23 @@ namespace CloneZ
             v._stock = LootContainer.SpawnFixture(go.transform, panel, ContainerType.Pantry, "Vending machine", key + "/stock", seed,
                 startEmpty: true, searchTime: CloneZConfig.RaidVendingSearchSeconds);
             int stacks = CloneZConfig.RaidVendingStockMin + rng.Next(CloneZConfig.RaidVendingStockMax - CloneZConfig.RaidVendingStockMin + 1);
+            // Populate the stock with a random number of snack items
             for (int i = 0; i < stacks; i++)
             {
                 ItemDef def = ItemDatabase.Get(Snacks[rng.Next(Snacks.Length)]);
                 if (def != null) v._stock.Contents.Add(def, 1 + rng.Next(2), enforceWeight: false);
             }
+            // Ensure there is at least some loot if the random selection left the container empty
             if (v._stock.IsEmpty) ItemDatabase.RollLoot(ContainerType.Pantry, rng, v._stock.Contents);
             v._stock.Searched = false;
             v._stock.Owner = v;
+            // Hide the stock container until the glass is broken, so it can't be accessed directly
             v._stock.gameObject.SetActive(false);
 
+            // Initialise the delivery tray container and hide it behind intact glass
             v._tray = LootContainer.SpawnFixture(go.transform, tray, ContainerType.Pantry, "Delivery tray", key + "/tray", seed + 1,
                 startEmpty: true, searchTime: 0f);
+            // Record this object as the tray's owner for later interactions
             v._tray.Owner = v;
             v.ShowBroken(false);
             return v;
@@ -99,20 +105,28 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Determine if the delivery tray contains any items to reach into
             bool tray = _tray != null && !_tray.IsEmpty;
             if (tray) into.Add(new InteractAction("Reach into the delivery tray", c => Open(c, _tray)));
+            // If the machine hasn't been smashed, expose actions for an intact machine
             if (!_broken)
             {
                 into.Add(new InteractAction("Thump the machine", Thump)
                     .Timed(CloneZConfig.RaidVendingThumpSeconds, "Thumping the machine", HumanoidActivity.Use));
+                // Let the player smash the glass, exposing the interior for scavenging
                 into.Add(new InteractAction("Smash the glass", Smash)
                     .Timed(CloneZConfig.RaidVendingSmashSeconds, "Smashing the glass", HumanoidActivity.Use));
                 into.Add(new InteractAction("Press a button", PressButton));
+                // Toggle power on or off, changing the machine’s lit state
                 into.Add(new InteractAction("Toggle power", TogglePower));
+                // Show detailed info about the machine’s current state
                 into.Add(new InteractAction("Inspect the machine", Inspect));
+                // Let the player listen for any faint whirring noises
                 into.Add(new InteractAction("Listen to the machine", Listen));
+                // Check whether the stock still contains any items
                 into.Add(new InteractAction("Check the machine", CheckStock));
             }
+            // When broken, expose actions for searching the interior or scavenging wreckage
             else
             {
                 into.Add(new InteractAction(_stock != null && _stock.Searched ? "Look inside the machine" : "Search the machine", c => Open(c, _stock)));
@@ -127,12 +141,17 @@ namespace CloneZ
             if (c != null && ctx.Interactor != null) ctx.Interactor.SearchOrOpen(c);
         }
 
+        /// <summary>Handles the player thumping the machine, possibly dislodging a snack onto the tray.</summary>
         private void Thump(InteractContext ctx)
         {
+            // Scale the noise radius: louder if the machine is powered on
             float noiseRadius = CloneZConfig.RaidVendingThumpNoise * (_lit ? LitThumpNoiseMultiplier : 1f);
+            // Emit the thump noise so nearby zombies can hear it
             MakeNoise(noiseRadius);
+            // Choose a random snack from stock with a chance to drop; otherwise no item is selected
             ItemStack loose = _stock != null && !_stock.IsEmpty && Random.value < CloneZConfig.RaidVendingThumpChance
                 ? _stock.Contents.Stacks[Random.Range(0, _stock.Contents.Stacks.Count)] : null;
+            // If nothing drops, show a miss message (cycling through flavored "nothing" lines)
             if (loose == null)
             {
                 ctx.Notify(_stock == null || _stock.IsEmpty
@@ -140,11 +159,14 @@ namespace CloneZ
                     : Misses[_missed++ % Misses.Length]);
                 return;
             }
+            // Resolve a readable name for the dropped item (fallback to "something")
             string name = loose.Def != null && !string.IsNullOrEmpty(loose.Def.DisplayName) ? loose.Def.DisplayName : "something";
+            // Transfer the item from stock to the tray and inform the player
             if (_stock.Contents.TransferTo(_tray.Contents, loose, 1, enforceWeight: false) > 0)
                 ctx.Notify("Something gives with a clunk and drops into the tray: " + name + ".");
         }
 
+        /// <summary>Breaks the glass, exposing the machine's interior for scavenging.</summary>
         private void Smash(InteractContext ctx)
         {
             _broken = true;
@@ -174,6 +196,7 @@ namespace CloneZ
             else ctx.Notify("The vending machine looks empty.");
         }
 
+        /// <summary>Gathers a random scrap part from the broken vending machine.</summary>
         private void Scavenge(InteractContext ctx)
         {
             // pick a random scrap definition
@@ -196,6 +219,7 @@ namespace CloneZ
             _lit = !_lit;
             ctx.Notify(_lit ? "You wrestle the cord back into the outlet; a faint glow returns to the panel." : "You yank the cord out; the machine goes dark.");
         }
+        /// <summary>Provides a brief description of the machine's current state.</summary>
         private void Inspect(InteractContext ctx)
         {
             if (_broken)
