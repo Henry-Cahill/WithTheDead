@@ -97,19 +97,11 @@ namespace CloneZ
 
             // Kitchen: along the front wall the fridge, a counter with the radio on it and the wall cupboards over it, the sink
             // under the window and the gas range; the dining table and three chairs in the middle of the floor.
-            RaidBuilding.Place fridge = b.S(kitchen, 0.78f, 0.70f);
-            b.HomePiece(kitchen, fridge, HomeFurnitureKind.Fridge);
-            float offX = -0.30f + (float)rng.NextDouble() * 0.04f; // slight random left‑right variation
-            float offY = 0.45f + (float)rng.NextDouble() * 0.02f; // slight random height variation
-            b.Static.Box(b.W(fridge.X + offX, offY, fridge.Z + 0.34f), new Vector3(0.02f, 0.10f, 0.02f), DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f))); // metal handle
+            b.HomePiece(kitchen, b.S(kitchen, 0.78f, 0.70f), HomeFurnitureKind.Fridge);
             RaidBuilding.Place counter = b.S(kitchen, 1.77f, 0.63f);
             b.HomePiece(kitchen, counter, HomeFurnitureKind.Counter);
             b.HomePiece(kitchen, b.OffsetPlace(counter, -0.25f, -0.075f), HomeFurnitureKind.Radio);
             b.UpperCabinets(kitchen, 'S', 1.72f, 1.1f, FurnitureBuilder.HomeCabinetPaint);
-            // Added small metal knob primitive box on upper cabinets
-            float knobX = -1.1f * 0.5f + (float)rng.NextDouble() * 1.1f;
-            // Place knob on front face of cabinets (south wall), at same height as existing knobs
-            b.Static.Box(b.W(knobX, 1.58f, 0.36f), new Vector3(0.02f, 0.08f, 0.02f), DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
             b.HouseSink(kitchen, b.S(kitchen, 3.0f, 0.63f));
             b.HouseStove(kitchen, b.S(kitchen, 4.05f, 0.62f));
             b.HomePiece(kitchen, new RaidBuilding.Place(2.7f, -2.6f, 0f), HomeFurnitureKind.Table);

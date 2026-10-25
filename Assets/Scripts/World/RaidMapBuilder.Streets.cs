@@ -3,403 +3,171 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    // The streets as the plan has them: asphalt carriageways, concrete sidewalks with a kerb along the road, broken where
+    // streets meet and dropped where a drive or a lot opens onto the street; zebra crossings and stop lines at the
+    // crossroads, a stop line where each residential street meets Main St, a double yellow centre line down the arterials,
+    // and a barricade where each residential street ends. Everything lies flat on the snow, each layer a few millimetres
+    // over the one beneath it.
     public static partial class RaidMapBuilder
     {
-        private static readonly Color Kerb = new Color(0.62f, 0.62f, 0.60f);
-        private static readonly Color LineYellow = new Color(0.62f, 0.52f, 0.22f);
-        private static readonly Color LineWhite = new Color(0.72f, 0.72f, 0.70f);
-        private static readonly Color PackedSnow = new Color(0.50f, 0.53f, 0.58f);
-        private static readonly Color WetTrack = new Color(0.11f, 0.11f, 0.12f);
-        private static readonly Color FenceWood = new Color(0.45f, 0.30f, 0.20f);
+        private static readonly Color KerbStone = new Color(0.68f, 0.68f, 0.66f);
+        private static readonly Color LineYellow = new Color(0.80f, 0.64f, 0.20f);
+        private static readonly Color LineWhite = new Color(0.86f, 0.86f, 0.84f);
 
-        private struct RoadSpec
+        // Surface heights over the snow (the ground's top is y = 0).
+        private const float RoadY = 0.010f, LotY = 0.012f, PathY = 0.014f, MarkY = 0.016f, PlazaY = 0.018f, WalkY = 0.022f, KerbY = 0.026f;
+        private const float KerbWidth = 0.2f;
+
+        /// <summary>A stretch along a street; a kerb runs across an end that a crossing carriageway cut.</summary>
+        private struct Span
         {
-            public bool AlongX;
-            public float Coord, From, To, Width;
+            public float A, B;
+            public bool KerbA, KerbB;
         }
 
-        private static readonly List<RoadSpec> s_Roads = new List<RoadSpec>();
-
-        private static void BuildStreets(RaidTown town)
+        /// <summary>Removes <paramref name="a"/>..<paramref name="b"/> from every span it overlaps; the new ends get a kerb if
+        /// <paramref name="kerb"/>.</summary>
+        private static void Cut(List<Span> spans, float a, float b, bool kerb)
         {
-            s_Roads.Clear();
-            // Main Street (north–south) and Depot Road (east–west) cross at the centre of town.
-            Road(town, false, 0f, -GroundHalf, GroundHalf, 8f, -6.5f, 6.5f, true);
-            Road(town, true, 0f, -GroundHalf, GroundHalf, 8f, -6.5f, 6.5f, false);
-            for (int sx = -1; sx <= 1; sx += 2)
-                for (int sz = -1; sz <= 1; sz += 2)
-                    Paved(town, Rect.MinMaxRect(sx > 0 ? 4f : -6.5f, sz > 0 ? 4f : -6.5f, sx > 0 ? 6.5f : -4f, sz > 0 ? 6.5f : -4f), 0.025f, DecorMaterials.Concrete);
-
-            // The crossing: faded zebra stripes on all four approaches.
-            for (int arm = 0; arm < 4; arm++)
+            for (int i = spans.Count - 1; i >= 0; i--)
             {
-                for (int i = 0; i < 6; i++)
-                {
-                    float t = -3.2f + i * 1.28f;
-                    Vector3 p;
-                    float w, d;
-                    switch (arm)
-                    {
-                        case 0: p = new Vector3(t, 0.02f, 5.4f); w = 0.6f; d = 1.8f; break;
-                        case 1: p = new Vector3(t, 0.02f, -5.4f); w = 0.6f; d = 1.8f; break;
-                        case 2: p = new Vector3(5.4f, 0.02f, t); w = 1.8f; d = 0.6f; break;
-                        default: p = new Vector3(-5.4f, 0.02f, t); w = 1.8f; d = 0.6f; break;
-                    }
-                    if (town.Rng.NextDouble() < 0.25) continue;
-                    town.Out.Flat(p).Flat(p, w, d, 0f, DecorPalette.Matte(LineWhite * 0.9f));
-                }
+                Span s = spans[i];
+                if (b <= s.A || a >= s.B) continue;
+                spans.RemoveAt(i);
+                if (b < s.B) spans.Insert(i, new Span { A = b, B = s.B, KerbA = kerb, KerbB = s.KerbB });
+                if (s.A < a) spans.Insert(i, new Span { A = s.A, B = a, KerbA = s.KerbA, KerbB = kerb });
             }
         }
 
-        /// <summary>An axis-aligned street: asphalt, a faded double centre line, kerbs, sidewalks, banks of
-        /// plowed snow and tyre tracks. Kerbs, sidewalks and lines skip the crossing between
-        /// <paramref name="skipA"/> and <paramref name="skipB"/>; the asphalt skips it too unless
-        /// <paramref name="ownsCrossing"/>.</summary>
-        private static void Road(RaidTown town, bool alongX, float coord, float from, float to, float width,
-            float skipA, float skipB, bool ownsCrossing)
+        private sealed partial class Builder
         {
-            s_Roads.Add(new RoadSpec { AlongX = alongX, Coord = coord, From = from, To = to, Width = width });
-            System.Random rng = town.Rng;
-            float hw = width * 0.5f;
-            Surf asphalt = DecorMaterials.Asphalt;
-            Surf concrete = DecorMaterials.Concrete;
+            /// <summary>Where a drive or a lot opens onto a street: the kerb is dropped along that stretch of the sidewalk.</summary>
+            private readonly List<(Street street, int side, float a, float b)> _kerbGaps = new List<(Street, int, float, float)>();
 
-            for (float a = from; a < to - 0.01f; a += 10f)
+            private void DropKerb(Street street, int side, float a, float b) => _kerbGaps.Add((street, side, Mathf.Min(a, b), Mathf.Max(a, b)));
+
+            public void Streets()
             {
-                float b = Mathf.Min(to, a + 10f);
-                if (!ownsCrossing && b > -hw && a < hw)
+                foreach (Street s in AllStreets) Carriageway(s);
+                foreach (Street s in AllStreets)
                 {
-                    // Draw full‑width asphalt up to the crossing start
-                    if (a < -hw) Slab(town, alongX, coord, a, -hw, -hw, hw, 0.012f, asphalt);
-                    // Draw full‑width asphalt after the crossing end
-                    if (b > hw) Slab(town, alongX, coord, hw, b, -hw, hw, 0.012f, asphalt);
-                    // Split the crossing segment across the road centre
-                    float crossA = Mathf.Max(a, -hw);
-                    float crossB = Mathf.Min(b, hw);
-                    if (crossB > crossA)
-                    {
-                        Slab(town, alongX, coord, crossA, crossB, -hw, 0f, 0.012f, asphalt);
-                        Slab(town, alongX, coord, crossA, crossB, 0f, hw, 0.012f, asphalt);
-                    }
-                    continue;
+                    Sidewalk(s, +1);
+                    Sidewalk(s, -1);
                 }
-                Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);
-                // Occasionally add a dark oil‑spill patch (~5 % chance per segment)
-                if (rng.NextDouble() < 0.05)
-                {
-                    float spillSize = R(rng, 0.2f, 0.4f); // radius ≈ 0.2–0.4 m
-                    float spillPos = R(rng, a, b);
-                    Vector3 center = alongX ? new Vector3(spillPos, 0.015f, coord) : new Vector3(coord, 0.015f, spillPos);
-                    // dark matte surface to look like a thin oil film on the road
-                    town.Out.Flat(center).FlatBlob(center, spillSize, spillSize, R(rng, 0f, 360f), 0.015f, rng, DecorPalette.Matte(new Color(0.05f, 0.05f, 0.07f)));
-                }
-                // Occasionally draw faint edge‑line markings on each side of the lane (25 % chance)
-                if (rng.NextDouble() < 0.25)
-                {
-                    float edge = hw - 0.06f; // 6 cm inset from the kerb
-                    Strip(town, alongX, coord - edge, a, b, 0.04f, 0.006f,
-                        DecorPalette.Matte(LineWhite * 0.7f));
-                    Strip(town, alongX, coord + edge, a, b, 0.04f, 0.006f,
-                        DecorPalette.Matte(LineWhite * 0.7f));
-                }
-// Add subtle road‑crack details with a 30 % chance (1‑3 short dark strips)
-                    if (rng.NextDouble() < 0.3)
-                    {
-                        int crackCount = rng.Next(1, 4); // 1 to 3 cracks
-                        for (int ci = 0; ci < crackCount; ci++)
-                        {
-                            float cStart = R(rng, a, b - 0.5f);
-                            float cLen = R(rng, 0.4f, 1.2f);
-                            float off = R(rng, -hw + 0.2f, hw - 0.2f);
-                            float across = coord + off;
-                            Strip(town, alongX, across, cStart, Mathf.Min(b, cStart + cLen), 0.02f, 0.001f,
-                                DecorPalette.Matte(new Color(0.15f, 0.15f, 0.15f)));
+                Crossroads();
+                foreach (Street s in AllStreets) if (s.Arterial) CentreLine(s);
+                DeadEnd(ElmSt);
+                DeadEnd(OakSt);
+                Junction(ElmSt);
+                Junction(OakSt);
             }
 
-                    }
-                    // Add occasional potholes with a 15 % chance per segment
-                    if (rng.NextDouble() < 0.15)
-                    {
-                        float pLen = R(rng, 0.5f, 1.5f);
-                        float pStart = R(rng, a, b - pLen);
-                        float off = R(rng, -hw + 0.3f, hw - 0.3f);
-                        float across = coord + off;
-                        // Darker strip to simulate a pothole depression
-                        Strip(town, alongX, across, pStart, pStart + pLen, 0.12f, 0.001f,
-                            DecorPalette.Matte(new Color(0.1f, 0.1f, 0.1f)));
-                    }
-            }
-
-            for (int side = -1; side <= 1; side += 2)
+            /// <summary>Lays one flat rectangle in 10 m pieces along the street (each in its own outdoor chunk).</summary>
+            private void Lay(Street s, float a, float b, float c0, float c1, float y, in Surf surf)
             {
-                for (float a = from; a < to - 0.01f; a += 10f)
+                for (float t = a; t < b - 0.01f; t += 10f)
                 {
-                    float b = Mathf.Min(to, a + 10f);
-                    if (b > skipA && a < skipB)
-                    {
-                        if (a < skipA) SidewalkRun(town, alongX, coord, side, hw, a, skipA, concrete, rng);
-                        if (b > skipB) SidewalkRun(town, alongX, coord, side, hw, skipB, b, concrete, rng);
-                        continue;
-                    }
-                    SidewalkRun(town, alongX, coord, side, hw, a, b, concrete, rng);
+                    Rect r = s.Band(t, Mathf.Min(b, t + 10f), c0, c1);
+                    var c = new Vector3(r.center.x, y, r.center.y);
+                    _town.Out.Flat(c).Flat(c, r.width, r.height, 0f, surf);
                 }
             }
 
-            // Faded double yellow centre line, broken up by wear.
-            for (float a = from + 1f; a < to - 2f; a += 4.5f)
+            // The asphalt, less where a higher-ranked street's carriageway already lies.
+            private void Carriageway(Street s)
             {
-                if (a + 3f > skipA - 2f && a < skipB + 2f) continue;
-                if (rng.NextDouble() < 0.3) continue;
-                float len = R(rng, 1.5f, 3f);
-                Surf yellow = DecorPalette.Matte(LineYellow * R(rng, 0.8f, 1.05f));
-                for (int k = -1; k <= 1; k += 2)
-                    Strip(town, alongX, coord + k * 0.14f, a, a + len, 0.1f, 0.016f, yellow);
+                var spans = new List<Span> { new Span { A = s.From, B = s.To } };
+                foreach (Street o in AllStreets)
+                    if (o.Rank > s.Rank && s.CrossedBy(o, -s.HalfWidth, s.HalfWidth))
+                        Cut(spans, o.Coord - o.HalfWidth, o.Coord + o.HalfWidth, false);
+                foreach (Span sp in spans) Lay(s, sp.A, sp.B, -s.HalfWidth, s.HalfWidth, RoadY, DecorMaterials.DryAsphalt);
             }
 
-            // Tyre tracks down each lane: packed pale ruts or wet dark ones, wobbling a little.
-            for (int lane = -1; lane <= 1; lane += 2)
+            // One side's sidewalk: the concrete, and the kerb along the road except where a drive or a lot opens onto it. A
+            // crossing street of lower rank cuts it only for its carriageway (a kerb runs across the cut ends); one of higher
+            // rank cuts it for its whole width, sidewalks and all, which carry on through.
+            private void Sidewalk(Street s, int side)
             {
-                float laneC = coord + lane * hw * 0.5f;
-                Color c = rng.NextDouble() < 0.5 ? PackedSnow : WetTrack;
-                for (float a = from + 0.5f; a < to - 1f; a += R(rng, 3f, 7f))
+                float inner = side * s.HalfWidth, outer = side * s.Outer, kerbEdge = side * (s.HalfWidth + KerbWidth);
+                var runs = new List<Span> { new Span { A = s.From, B = s.To } };
+                foreach (Street o in AllStreets)
                 {
-                    float len = R(rng, 2f, 6f);
-                    float wob = R(rng, -0.25f, 0.25f);
-                    Surf track = DecorPalette.Matte(c * R(rng, 0.9f, 1.1f));
+                    if (!s.CrossedBy(o, inner, outer)) continue;
+                    if (o.Rank < s.Rank) Cut(runs, o.Coord - o.HalfWidth, o.Coord + o.HalfWidth, true);
+                    else Cut(runs, o.Coord - o.Outer, o.Coord + o.Outer, false);
+                }
+                Surf kerb = DecorPalette.Matte(KerbStone);
+                foreach (Span run in runs)
+                {
+                    Lay(s, run.A, run.B, inner, outer, WalkY, DecorMaterials.Concrete);
+                    var kerbs = new List<Span> { new Span { A = run.A, B = run.B } };
+                    foreach (var g in _kerbGaps)
+                        if (g.street == s && g.side == side) Cut(kerbs, g.a, g.b, false);
+                    foreach (Span k in kerbs) Lay(s, k.A, k.B, inner, kerbEdge, KerbY, kerb);
+                    if (run.KerbA) Lay(s, run.A, run.A + KerbWidth, inner, outer, KerbY, kerb);
+                    if (run.KerbB) Lay(s, run.B - KerbWidth, run.B, inner, outer, KerbY, kerb);
+                }
+            }
+
+            // The double yellow line down an arterial, clear of the crossroads and its crossings.
+            private void CentreLine(Street s)
+            {
+                Surf yellow = DecorPalette.Matte(LineYellow);
+                float clear = DepotRd.Outer + 1.4f;
+                var spans = new List<Span> { new Span { A = s.From, B = s.To } };
+                Cut(spans, -clear, clear, false);
+                foreach (Span sp in spans)
                     for (int k = -1; k <= 1; k += 2)
-                        Strip(town, alongX, laneC + wob + k * 0.78f, a, Mathf.Min(to - 0.5f, a + len), 0.24f, 0.015f, track);
-                }
+                        Lay(s, sp.A, sp.B, k * 0.08f, k * 0.2f, MarkY, yellow);
             }
-        }
 
-        private static void SidewalkRun(RaidTown town, bool alongX, float coord, int side, float hw, float a, float b, in Surf concrete, System.Random rng)
-        {
-            Slab(town, alongX, coord, a, b, side > 0 ? hw : -hw - 0.25f, side > 0 ? hw + 0.25f : -hw, 0.05f, DecorPalette.Matte(Kerb));
-            // ----- Snow‑fence along the road‑side of the sidewalk -----
-            float fenceAcross = coord + (side > 0 ? hw + 0.12f : -hw - 0.12f);
-            for (float fp = a + 0.4f; fp < b - 0.4f; fp += R(rng, 0.7f, 1.0f))
+            // Main St and Depot Rd cross: a zebra crossing over each of the four arms, in line with the sidewalks either side,
+            // and a stop line across the lane coming in to it (traffic keeps to the right).
+            private void Crossroads()
             {
-                // vertical post (box)
-                Vector3 postCenter = alongX ? new Vector3(fp, 0.35f, fenceAcross) : new Vector3(fenceAcross, 0.35f, fp);
-                town.Out.Solid(postCenter).Box(postCenter, new Vector3(0.05f, 0.70f, 0.05f), DecorPalette.Matte(FenceWood));
-                // horizontal cross‑bar (box)
-                Vector3 barCenter = alongX ? new Vector3(fp, 0.65f, fenceAcross) : new Vector3(fenceAcross, 0.65f, fp);
-                Vector3 barSize = alongX ? new Vector3(0.30f, 0.02f, 0.05f) : new Vector3(0.05f, 0.02f, 0.30f);
-                town.Out.Solid(barCenter).Box(barCenter, barSize, DecorPalette.Matte(FenceWood));
-                // top cap (small box)
-                Vector3 capCenter = alongX ? new Vector3(fp, 0.78f, fenceAcross) : new Vector3(fenceAcross, 0.78f, fp);
-                town.Out.Solid(capCenter).Box(capCenter, new Vector3(0.07f, 0.02f, 0.07f), DecorPalette.Matte(FenceWood));
-                // occasional lantern (metal pole + glowing lantern)
-                if (rng.NextDouble() < 0.2)
+                Surf white = DecorPalette.Matte(LineWhite);
+                Street[] pair = { MainSt, DepotRd };
+                foreach (Street arm in pair)
                 {
-                    // metal pole (cylinder)
-                    Vector3 poleBase = alongX ? new Vector3(fp, 0.78f, fenceAcross) : new Vector3(fenceAcross, 0.78f, fp);
-                    town.Out.Solid(poleBase).Cylinder(poleBase, 0.02f, 0.40f, 8,
-                        DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
-                    // small metal foot plate at the bottom of the pole
-                    Vector3 footCenter = poleBase + new Vector3(0f, -0.01f, 0f);
-                    town.Out.Solid(footCenter).Cylinder(footCenter, 0.04f, 0.02f, 12,
-                        DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
-                    // three rivet studs on the pole
-                    for (int i = 0; i < 3; i++)
+                    Street across = arm == MainSt ? DepotRd : MainSt;
+                    float c0 = across.HalfWidth + 0.3f, c1 = across.Outer - 0.3f;
+                    int stripes = Mathf.FloorToInt((arm.HalfWidth * 2f - 0.5f) / 0.95f);
+                    float first = -(stripes - 1) * 0.95f * 0.5f;
+                    for (int end = -1; end <= 1; end += 2)
                     {
-                        float height = 0.15f + i * 0.10f;
-                        float angle = (float)rng.NextDouble() * Mathf.PI * 2f;
-                        Vector3 offset = new Vector3(Mathf.Cos(angle) * 0.018f, height, Mathf.Sin(angle) * 0.018f);
-                        Vector3 rivetPos = poleBase + offset;
-                        town.Out.Solid(rivetPos).Cylinder(rivetPos, 0.006f, 0.008f, 6,
-                            DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+                        float a = end > 0 ? c0 : -c1, b = end > 0 ? c1 : -c0;
+                        for (int i = 0; i < stripes; i++)
+                        {
+                            float x = first + i * 0.95f;
+                            Lay(arm, a, b, x - 0.225f, x + 0.225f, MarkY, white);
+                        }
+                        // The lane coming in toward the crossroads keeps to the right: on Main St the west half from the north
+                        // and the east half from the south; on Depot Rd the north half from the east, the south from the west.
+                        float stop = end * (c1 + 0.9f);
+                        int lane = arm == MainSt ? -end : end;
+                        Lay(arm, stop - 0.2f, stop + 0.2f, lane * 0.25f, lane * (arm.HalfWidth - 0.15f), MarkY, white);
                     }
-                    // lantern – 50 % chance of glass‑dome style, otherwise simple box (preserve old look)
-                    Vector3 lanternCenter = alongX ? new Vector3(fp, 1.25f, fenceAcross) : new Vector3(fenceAcross, 1.25f, fp);
-                    if (rng.NextDouble() < 0.5)
-                    {
-                        // glass dome
-                        Vector3 domeCenter = lanternCenter;
-                        town.Out.Solid(domeCenter).Sphere(domeCenter, 0.09f,
-                            DecorPalette.Glass(new Color(0.80f, 0.90f, 1.00f, 0.5f)));
-                        // inner candle – small emissive box
-                        Vector3 candleCenter = lanternCenter + new Vector3(0f, -0.04f, 0f);
-                        town.Out.Solid(candleCenter).Box(candleCenter,
-                            new Vector3(0.04f, 0.06f, 0.04f),
-                            DecorPalette.Glow(new Color(1.0f, 0.90f, 0.60f)));
-                        // thin metal rim around dome
-                        town.Out.Solid(domeCenter).Cylinder(domeCenter, 0.095f, 0.004f, 12,
-                            DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
-                    }
-                    else
-                    {
-                        // fallback to original simple lantern box (preserve legacy appearance)
-                        town.Out.Solid(lanternCenter).Box(lanternCenter,
-                            new Vector3(0.12f, 0.12f, 0.12f),
-                            DecorPalette.Glow(new Color(1.0f, 0.85f, 0.60f)));
-                    }
-                    // thin rope (cylinder) from the post cap to the lantern
-                    Vector3 ropeStart = capCenter;
-                    Vector3 ropeEnd = lanternCenter;
-                    Vector3 ropeMid = (ropeStart + ropeEnd) * 0.5f;
-                    float ropeLen = Vector3.Distance(ropeStart, ropeEnd);
-                    // The Cylinder overload aligns to world up, so we use the centred version with height = ropeLen
-                    town.Out.Solid(ropeMid).Cylinder(ropeMid, 0.008f, ropeLen, 8,
-                        DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
-
                 }
             }
-            // NEW: occasional mailbox (≈15 % chance per sidewalk segment)
-            if (b - a >= 0.6f && rng.NextDouble() < 0.15)
-            {
-                float mailPos = R(rng, a + 0.25f, b - 0.25f);
-                float mailAcross = coord + (side > 0 ? hw + 0.35f : -hw - 0.35f);
-                CreateMailbox(town, alongX, mailPos, mailAcross);
-            }
-            if (rng.NextDouble() < 0.2)
-            {
-                float rustStart = R(rng, a, b - R(rng, 0.2f, 0.4f));
-                float rustLen = R(rng, 0.2f, 0.4f);
-                float across = coord + (side > 0 ? hw + 0.125f : -hw - 0.125f);
-                // Slightly elevated, thin rectangle to simulate rust stain
-                Slab(town, alongX, coord, rustStart, rustStart + rustLen,
-                    side > 0 ? hw + 0.02f : -hw - 0.27f,
-                    side > 0 ? hw + 0.07f : -hw - 0.22f,
-                    0.051f,
-                    DecorPalette.Matte(new Color(0.55f, 0.35f, 0.20f)));
-            }
-            // Add subtle metal edging strip along the kerb (30 % chance)
-            if (rng.NextDouble() < 0.3)
-            {
-                float across = coord + (side > 0 ? hw + 0.125f : -hw - 0.125f);
-                Strip(town, alongX, across, a, b, 0.02f, 0.06f, DecorPalette.Matte(new Color(0.20f, 0.20f, 0.20f)));
-            }
-            float s0 = side > 0 ? hw + 0.25f : -hw - 2.5f, s1 = side > 0 ? hw + 2.5f : -hw - 0.25f;
-            Slab(town, alongX, coord, a, b, s0, s1, 0.025f, concrete);
-            // Occasionally add a small translucent ice patch on the sidewalk (20% chance)
-            if (rng.NextDouble() < 0.2)
-            {
-                float iceSize = R(rng, 0.15f, 0.3f);
-                float icePos = R(rng, a, b);
-                Vector3 iceCenter = alongX ? new Vector3(icePos, 0.03f, coord + (s0 + s1) * 0.5f) : new Vector3(coord + (s0 + s1) * 0.5f, 0.03f, icePos);
-                // Use a light bluish glass material to look like ice; size controls radius X and Z
-                town.Out.Flat(iceCenter).FlatBlob(iceCenter, iceSize, iceSize, R(rng, 0f, 360f), 0.2f, rng, DecorPalette.Glass(new Color(0.7f, 0.85f, 1f)));
-            }
-            if (rng.NextDouble() < 0.6)
-            {
-                float t = R(rng, a, b);
-                Vector3 p = alongX ? new Vector3(t, 0.03f, coord + (s0 + s1) * 0.5f) : new Vector3(coord + (s0 + s1) * 0.5f, 0.03f, t);
-                town.Out.Flat(p).FlatBlob(p, R(rng, 0.6f, 1.6f), R(rng, 0.5f, 1.1f), R(rng, 0f, 360f), 0.4f, rng, DecorPalette.Matte(DecorProps.SnowShade));
-            }
-        }
 
-        /// <summary>Creates a period‑correct wooden mailbox (post, box, metal latch, tiny flag) on a sidewalk.</summary>
-        private static void CreateMailbox(RaidTown town, bool alongX, float posAlong, float across)
-        {
-            // post – 0.05 m × 0.75 m × 0.05 m
-            Vector3 postCenter = alongX
-                ? new Vector3(posAlong, 0.38f, across) // y = half height
-                : new Vector3(across, 0.38f, posAlong);
-            town.Out.Solid(postCenter).Box(postCenter,
-                new Vector3(0.05f, 0.75f, 0.05f),
-                DecorPalette.Matte(FenceWood));
-
-            // mailbox body – 0.30 m × 0.20 m × 0.15 m, placed 0.05 m in front of post
-            Vector3 bodyOffset = alongX ? new Vector3(0f, 0.20f, 0.08f) : new Vector3(0.08f, 0.20f, 0f);
-            Vector3 bodyCenter = postCenter + bodyOffset;
-            town.Out.Solid(bodyCenter).Box(bodyCenter,
-                new Vector3(0.30f, 0.20f, 0.15f),
-                DecorPalette.Matte(FenceWood));
-
-            // metal latch – thin cylinder on front edge of box
-            Vector3 latchPos = bodyCenter + (alongX ? new Vector3(0f, 0.10f, 0.08f) : new Vector3(0.08f, 0.10f, 0f));
-            town.Out.Solid(latchPos).Cylinder(latchPos, 0.015f, 0.02f, 12,
-                DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
-
-            // door flap – thin box at front of mailbox body, hinged on left side
-            Vector3 flapSize = new Vector3(0.12f, 0.18f, 0.02f);
-            Vector3 flapOffset = alongX ? new Vector3(0f, 0.09f, 0.09f) : new Vector3(0.09f, 0.09f, 0f);
-            // pivot is not required; we only need the visual piece
-            Vector3 flapCenter = bodyCenter + flapOffset;
-            town.Out.Solid(flapCenter).Box(flapCenter, flapSize, DecorPalette.Matte(FenceWood));
-
-            // metal knob on right side of flap
-            Vector3 knobPos = flapCenter + (alongX ? new Vector3(0.055f, 0f, 0f) : new Vector3(0f, 0f, 0.055f));
-            town.Out.Solid(knobPos).Cylinder(knobPos, 0.008f, 0.014f, 6,
-                DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
-
-            // hinge pins on left edge of flap (bottom and top)
-            for (int i = 0; i < 2; i++)
+            // Where a residential street meets Main St: a stop line across its eastbound (south) lane.
+            private void Junction(Street lane)
             {
-                float v = (i == 0 ? 0.04f : 0.14f); // bottom / top offset from centre height
-                Vector3 hingePos = flapCenter + (alongX ? new Vector3(-0.06f, v - 0.09f, 0f) : new Vector3(0f, v - 0.09f, -0.06f));
-                town.Out.Solid(hingePos).Cylinder(hingePos, 0.006f, 0.012f, 8,
-                    DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+                float x = -MainSt.Outer - 0.8f;
+                Lay(lane, x - 0.2f, x + 0.2f, -lane.HalfWidth + 0.15f, -0.25f, MarkY, DecorPalette.Matte(LineWhite));
             }
 
-            // small flag pole – thin cylinder on top right of box (height reduced by snow cap later)
-            Vector3 flagPoleBase = bodyCenter + (alongX ? new Vector3(0.15f, 0.20f, 0f) : new Vector3(0f, 0.20f, 0.15f));
-            // snow cap thickness (random 0.02‑0.05 m)
-            float snowHeight = 0.02f + 0.03f * (float)town.Rng.NextDouble();
-            // adjust flag pole height
-            town.Out.Solid(flagPoleBase).Cylinder(flagPoleBase, 0.008f, 0.30f - snowHeight, 8,
-                DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
-
-            // flag – tiny box at pole top (faded red‑brown cloth)
-            Vector3 flagCenter = flagPoleBase + (alongX ? new Vector3(0f, 0.30f - snowHeight, 0f) : new Vector3(0f, 0.30f - snowHeight, 0f));
-            town.Out.Solid(flagCenter).Box(flagCenter,
-                new Vector3(0.12f, 0.02f, 0.02f),
-                DecorPalette.Matte(new Color(0.68f, 0.48f, 0.30f)));
-
-            // snow cap over mailbox
-            Vector3 capSize = new Vector3(0.34f, snowHeight, 0.18f);
-            Vector3 capCenter = postCenter + new Vector3(0f, 0.38f + 0.375f + snowHeight * 0.5f, 0f);
-            town.Out.Solid(capCenter).Box(capCenter, capSize, DecorPalette.Matte(new Color(0.90f, 0.92f, 0.95f)));
-        }
-
-
-
-
-        /// <summary>A flat rectangle laid along a road: <paramref name="a"/>..<paramref name="b"/> along it,
-        /// <paramref name="c0"/>..<paramref name="c1"/> across (relative to the road's centre line).</summary>
-        private static void Slab(RaidTown town, bool alongX, float coord, float a, float b, float c0, float c1, float y, in Surf s)
-        {
-            Vector3 center = alongX
-                ? new Vector3((a + b) * 0.5f, y, coord + (c0 + c1) * 0.5f)
-                : new Vector3(coord + (c0 + c1) * 0.5f, y, (a + b) * 0.5f);
-            float len = b - a, wid = c1 - c0;
-            if (alongX) town.Out.Flat(center).Flat(center, len, wid, 0f, s);
-            else town.Out.Flat(center).Flat(center, wid, len, 0f, s);
-        }
-
-        private static void Strip(RaidTown town, bool alongX, float across, float a, float b, float width, float y, in Surf s)
-        {
-            if (b <= a) return;
-            Vector3 c = alongX ? new Vector3((a + b) * 0.5f, y, across) : new Vector3(across, y, (a + b) * 0.5f);
-            if (alongX) town.Out.Flat(c).Flat(c, b - a, width, 0f, s);
-            else town.Out.Flat(c).Flat(c, width, b - a, 0f, s);
-        }
-
-        /// <summary>A flat paved patch (driveway, lot, path, forecourt) at height <paramref name="y"/>.</summary>
-        private static void Paved(RaidTown town, Rect r, float y, in Surf s)
-        {
-            for (float x = r.xMin; x < r.xMax - 0.01f; x += 12f)
-                for (float z = r.yMin; z < r.yMax - 0.01f; z += 12f)
-                {
-                    float x1 = Mathf.Min(r.xMax, x + 12f), z1 = Mathf.Min(r.yMax, z + 12f);
-                    var c = new Vector3((x + x1) * 0.5f, y, (z + z1) * 0.5f);
-                    town.Out.Flat(c).Flat(c, x1 - x, z1 - z, 0f, s);
-                }
-        }
-
-        /// <summary>True when the XZ rect overlaps a street or its sidewalks.</summary>
-        private static bool OnRoad(Rect r)
-        {
-            foreach (RoadSpec rd in s_Roads)
+            // The dead end of a residential street: a kerb across its end, a barricade just short of it, and the snow the plows
+            // pushed up beyond.
+            private void DeadEnd(Street lane)
             {
-                float hw = rd.Width * 0.5f + 2.6f;
-                Rect road = rd.AlongX
-                    ? Rect.MinMaxRect(rd.From, rd.Coord - hw, rd.To, rd.Coord + hw)
-                    : Rect.MinMaxRect(rd.Coord - hw, rd.From, rd.Coord + hw, rd.To);
-                if (road.Overlaps(r)) return true;
+                Lay(lane, lane.From - KerbWidth, lane.From, -lane.HalfWidth, lane.HalfWidth, KerbY, DecorPalette.Matte(KerbStone));
+                float len = lane.HalfWidth * 2f - 0.6f;
+                Prop(_town, lane.At(lane.From + 0.6f, 0f), 90f, new Vector3(len, 1.3f, 0.3f), true, (m, r) => DecorProps.Barricade(m, len));
+                Vector3 heap = lane.At(lane.From - 2.6f, R(_rng, -1f, 1f));
+                Prop(_town, heap, R(_rng, 0f, 180f), new Vector3(3.2f, 1.3f, 2.4f), true,
+                    (m, r) => DecorProps.SnowPile(m, r, Vector3.zero, 4.2f, 3.2f, 1.3f, 0f));
             }
-            return false;
         }
     }
 }

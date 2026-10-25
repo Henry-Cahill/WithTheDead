@@ -52,7 +52,7 @@ namespace CloneZ
             root.transform.SetPositionAndRotation(RunPoint(r, o.Pos, 0f, 0f), Quaternion.identity);
             root.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
 
-            float top = DoorHeight + 0.1f, band = top / RollUpBands, len = o.Width + 0.08f;
+            float top = ShellDoorHeight + 0.1f, band = top / RollUpBands, len = o.Width + 0.08f;
             var bands = new FixturePart[RollUpBands];
             for (int k = 0; k < RollUpBands; k++)
             {
@@ -69,9 +69,9 @@ namespace CloneZ
                 Name = "Roll-up door",
                 Bands = bands,
                 Point = RunPoint(r, o.Pos, 1.0f, 0f),
-                Solid = new Bounds(RunPoint(r, o.Pos, DoorHeight * 0.5f, 0f), RunSize(r, o.Width, DoorHeight, Half * 2f)),
+                Solid = new Bounds(RunPoint(r, o.Pos, ShellDoorHeight * 0.5f, 0f), RunSize(r, o.Width, ShellDoorHeight, Half * 2f)),
                 Gap = new Bounds(RunPoint(r, o.Pos, WallH * 0.5f, 0f), RunSize(r, o.Width, WallH, Half * 2f)),
-                Block = new Bounds(RunPoint(r, o.Pos, (0.25f + DoorHeight) * 0.5f, inside * 0.05f), RunSize(r, o.Width - 0.1f, DoorHeight - 0.25f, Half * 2f + 0.3f)),
+                Block = new Bounds(RunPoint(r, o.Pos, (0.25f + ShellDoorHeight) * 0.5f, inside * 0.05f), RunSize(r, o.Width - 0.1f, ShellDoorHeight - 0.25f, Half * 2f + 0.3f)),
                 Open = Rng.NextDouble() < CloneZConfig.RollUpOpenChance,
             };
             RollUpShutter.Attach(root, setup);

@@ -89,16 +89,6 @@ namespace CloneZ
             float cx = (x0 + x1) * 0.5f, cy = (y0 + y1) * 0.5f, w = x1 - x0, h = y1 - y0;
             m.Box(new Vector3(cx, cy, zFront - 0.01f), new Vector3(w, h, 0.02f), M(t.Door));
             m.Box(new Vector3(cx, cy, zFront + 0.0015f), new Vector3(w - 0.08f, h - 0.09f, 0.003f), M(t.Door * 0.95f));
-            // Thin chrome edge strip around the painted panel for realism
-            float edgeThickness = 0.001f;
-            // Top edge
-            m.Box(new Vector3(cx, cy + (h - 0.09f) / 2f - edgeThickness / 2f, zFront + 0.0015f), new Vector3(w - 0.08f, edgeThickness, 0.003f), Mt(Chrome));
-            // Bottom edge
-            m.Box(new Vector3(cx, cy - (h - 0.09f) / 2f + edgeThickness / 2f, zFront + 0.0015f), new Vector3(w - 0.08f, edgeThickness, 0.003f), Mt(Chrome));
-            // Left edge
-            m.Box(new Vector3(cx - (w - 0.08f) / 2f + edgeThickness / 2f, cy, zFront + 0.0015f), new Vector3(edgeThickness, h - 0.09f, 0.003f), Mt(Chrome));
-            // Right edge
-            m.Box(new Vector3(cx + (w - 0.08f) / 2f - edgeThickness / 2f, cy, zFront + 0.0015f), new Vector3(edgeThickness, h - 0.09f, 0.003f), Mt(Chrome));
             Quaternion outward = Quaternion.Euler(90f, 0f, 0f);
             m.Cylinder(new Vector3(knobX, knobY, zFront), 0.008f, 0.02f, 6, Mt(Brass), outward);
             m.Cylinder(new Vector3(knobX, knobY, zFront + 0.016f), 0.015f, 0.01f, 8, Mt(Brass), outward);
@@ -145,12 +135,9 @@ namespace CloneZ
 
             // The stainless deck with its ribbed drainer, and the bowl let into it.
             KitchenSlabAround(m, -0.52f, 0.52f, -0.21f, 0.25f, bx0, bx1, bz0, bz1, 0.94f, SinkDeckY, Mt(Steel));
-for (int i = 0; i < 7; i++)
-                 m.Box(new Vector3(-0.47f + i * 0.068f, SinkDeckY + 0.0015f, 0.02f), new Vector3(0.012f, 0.003f, 0.36f), Mt(Steel * 1.06f));
-             // Occasionally add a subtle oil stain on the stainless‑steel deck
-             if (Chance(rng, 0.25f))
-                 m.Box(new Vector3(0f, SinkDeckY + 0.001f, 0f), new Vector3(0.08f, 0.004f, 0.02f), Mt(Steel * 0.8f));
-             Surf bowl = Mt(Steel * 0.82f);
+            for (int i = 0; i < 7; i++)
+                m.Box(new Vector3(-0.47f + i * 0.068f, SinkDeckY + 0.0015f, 0.02f), new Vector3(0.012f, 0.003f, 0.36f), Mt(Steel * 1.06f));
+            Surf bowl = Mt(Steel * 0.82f);
             float wallY = (SinkDeckY + SinkBowlBottom - 0.006f) * 0.5f, wallH = SinkDeckY - SinkBowlBottom + 0.006f;
             m.Box(new Vector3(bx0 + 0.003f, wallY, SinkBowlZ), new Vector3(0.006f, wallH, SinkBowlD), bowl);
             m.Box(new Vector3(bx1 - 0.003f, wallY, SinkBowlZ), new Vector3(0.006f, wallH, SinkBowlD), bowl);
@@ -169,13 +156,6 @@ for (int i = 0; i < 7; i++)
             m.Box(new Vector3(SinkSpout.x, SinkSpout.y + 0.015f, SinkSpout.z), new Vector3(0.026f, 0.03f, 0.026f), chrome);
             Vector3 hot = new Vector3(SinkColdTap.x - 0.2f, SinkColdTap.y, SinkColdTap.z);
             m.Cylinder(new Vector3(hot.x, SinkDeckY, hot.z), 0.018f, 0.036f, 8, chrome);
-            // Subtle rust spot on the hot tap (occasional)
-            if (Chance(rng, 0.15f))
-            {
-                Color rust = new Color(0.55f, 0.30f, 0.10f);
-                // small rust patch on the side of the tap
-                m.Box(new Vector3(hot.x + 0.015f, SinkDeckY + 0.018f, hot.z), new Vector3(0.004f, 0.004f, 0.004f), M(rust));
-            }
             m.Cylinder(new Vector3(SinkColdTap.x, SinkDeckY, SinkColdTap.z), 0.018f, 0.036f, 8, chrome);
             KitchenTapHead(m, hot, TapHotRed);
 
@@ -313,57 +293,6 @@ for (int i = 0; i < 7; i++)
             m.Box(new Vector3(0f, 0.8075f, -0.02f), new Vector3(0.016f, 0.124f, 0.56f), inside);           // between the drawers
             m.Box(new Vector3(0f, 0.8075f, 0.262f), new Vector3(0.016f, 0.124f, 0.02f), cab);
             KitchenWorktop(m, t, len);
-
-            // Add a small wooden chalkboard sign on the worktop with a faint chalk scribble.
-            // The board uses the sign material with a dark wood background and light chalk text.
-            {
-                const float boardHeight = 0.04f; // thin board
-                const string boardText = "Today's specials";
-                // Dark wood colour for the board background
-                Color boardBg = new Color(0.22f, 0.18f, 0.15f);
-                // Chalk colour for the text (off‑white, slightly faded)
-                Color boardFg = new Color(0.9f, 0.9f, 0.85f);
-                Surf boardSurf = DecorMaterials.Sign(boardText, boardBg, boardFg, out float aspect);
-                // Width based on aspect ratio of the sign texture
-                float boardWidth = boardHeight * aspect;
-                // Position the board near the front of the counter, on the worktop surface.
-                // CounterFront constant defines the front face Z position.
-                var boardPos = new Vector3(-0.4f, 0.94f, CounterFront - 0.02f);
-                // Create the thin board box (back side) – colour matches the background.
-                m.Box(boardPos, new Vector3(boardWidth, boardHeight, 0.01f), M(boardBg));
-                // Upright the sign texture on the front face.
-                m.Upright(boardPos + new Vector3(0f, boardHeight * 0.5f, 0.005f), Vector3.forward, boardWidth, boardHeight, boardSurf, new Rect(0f, 0f, 1f, 1f));
-            }
-            // Materials for the new counter items
-            Surf glass = Gs(new Color(0.92f, 0.94f, 0.97f)); // clear glass for spice jars
-            Surf copper = Mt(new Color(0.72f, 0.42f, 0.24f)); // copper for the pot
-            Surf rag = M(new Color(0.78f, 0.71f, 0.57f)); // worn kitchen‑cloth colour
-            // Three spice‑jar cylinders (radius 0.035 m, height 0.08 m) on the left side of the top.
-            for (int i = 0; i < 3; i++)
-            {
-                float x = -0.45f + i * 0.07f;
-                Color tint = new Color(
-                    0.92f + R(rng, -0.02f, 0.02f),
-                    0.94f + R(rng, -0.02f, 0.02f),
-                    0.97f + R(rng, -0.02f, 0.02f));
-                Surf jarSurf = Gs(tint);
-                m.Cylinder(new Vector3(x, 0.94f, -0.18f), 0.035f, 0.08f, 12, jarSurf);
-            }
-            // Copper pot (a short cylinder) near the right edge of the counter.
-            m.Cylinder(new Vector3(0.42f, 0.94f, 0.20f), 0.05f, 0.06f, 12, copper);
-            // Folded rag: a thin rectangular slab (0.12 m × 0.08 m × 0.005 m)
-            m.Box(new Vector3(-0.55f, 0.94f, -0.12f), new Vector3(0.12f, 0.005f, 0.08f), rag);
-            // Vintage kitchen timer centered on the worktop.
-            float timerY = 0.94f;
-            Surf timerSurf = Mt(Chrome * 0.85f);
-            // Timer base
-            m.Box(new Vector3(0f, timerY, 0f), new Vector3(0.07f, 0.008f, 0.07f), timerSurf);
-            // Timer dial (thin disc)
-            m.Cylinder(new Vector3(0f, timerY + 0.004f, 0f), 0.032f, 0.002f, 12, timerSurf);
-            // Two hands – a longer minute hand and a shorter hour hand
-            m.Box(new Vector3(0f, timerY + 0.005f, 0f), new Vector3(0.004f, 0.001f, 0.025f), timerSurf);
-            m.Box(new Vector3(0f, timerY + 0.0055f, 0f), new Vector3(0.004f, 0.001f, 0.015f), timerSurf);
-
 
             // A crock of wooden spoons at the far end, beyond the radio.
             Surf wood = M(new Color(0.55f, 0.38f, 0.20f));
@@ -592,10 +521,6 @@ for (int i = 0; i < 7; i++)
 
             // The back-guard with the burner knobs' bezels; the control strip with the oven's.
             m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), body);
-            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome);
-            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome);
-            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome);
-            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome);
             Quaternion outward = Quaternion.Euler(90f, 0f, 0f);
             for (int i = 0; i < 4; i++)
                 m.Cylinder(new Vector3(StoveKnobX[i], StoveKnobY, StoveKnobZ - 0.004f), 0.03f, 0.004f, 12, chrome, outward);
@@ -622,19 +547,7 @@ for (int i = 0; i < 7; i++)
             const float y0 = StoveDoorHingeY, y1 = 0.775f, z1 = StoveDoorFront, z0 = z1 - 0.035f;
             float cy = (y0 + y1) * 0.5f;
             Surf chrome = Mt(Chrome);
-            // Main enamel panel
             m.Box(new Vector3(0f, cy, (z0 + z1) * 0.5f), new Vector3(0.66f, y1 - y0, z1 - z0), G(enamel * 0.98f));
-            // Thin chrome frame around panel
-            const float edge = 0.004f; // 4 mm thick trim
-            // top edge
-            m.Box(new Vector3(0f, y1 - edge * 0.5f, (z0 + z1) * 0.5f), new Vector3(0.66f, edge, z1 - z0), chrome);
-            // bottom edge
-            m.Box(new Vector3(0f, y0 + edge * 0.5f, (z0 + z1) * 0.5f), new Vector3(0.66f, edge, z1 - z0), chrome);
-            // left edge
-            m.Box(new Vector3(-0.33f + edge * 0.5f, cy, (z0 + z1) * 0.5f), new Vector3(edge, y1 - y0, z1 - z0), chrome);
-            // right edge
-            m.Box(new Vector3(0.33f - edge * 0.5f, cy, (z0 + z1) * 0.5f), new Vector3(edge, y1 - y0, z1 - z0), chrome);
-            // Existing details
             m.Box(new Vector3(0f, 0.52f, z1 + 0.0005f), new Vector3(0.42f, 0.22f, 0.002f), Gs(new Color(0.05f, 0.05f, 0.06f)));
             m.Box(new Vector3(0f, 0.632f, z1 + 0.002f), new Vector3(0.44f, 0.01f, 0.004f), chrome);
             m.Box(new Vector3(0f, 0.408f, z1 + 0.002f), new Vector3(0.44f, 0.01f, 0.004f), chrome);
@@ -643,35 +556,6 @@ for (int i = 0; i < 7; i++)
             m.Box(new Vector3(0f, 0.72f, z1 + 0.028f), new Vector3(0.52f, 0.022f, 0.022f), chrome);
             m.Box(new Vector3(-0.22f, 0.72f, z1 + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), chrome);
             m.Box(new Vector3(0.22f, 0.72f, z1 + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), chrome);
-            // Curved chrome handle (4 cm down from top edge)
-            Quaternion outward = Quaternion.Euler(90f, 0f, 0f);
-            float handleY = y1 - 0.04f;
-            float handleZ = z0 + 0.025f;
-            float handleR = 0.012f;
-            float handleLen = 0.10f;
-            m.Cylinder(new Vector3(0f, handleY, handleZ), handleR, handleLen, 12, chrome, outward);
-            // Brass latch knob (lower‑right quadrant, 6 cm above bottom)
-            Surf brass = Mt(Brass);
-            float knobY = y0 + 0.06f;
-            float knobZ = z0 + 0.018f;
-            float knobR = 0.009f;
-            float knobH = 0.018f;
-            m.Cylinder(new Vector3(0.25f, knobY, knobZ), knobR, knobH, 10, brass);
-            // Top‑vent grill – three horizontal chrome bars, 2 cm below top edge
-            float grillY = y1 - 0.02f;
-            float grillZ = z0 + 0.015f;
-            float grillW = 0.56f; // door width minus 5 cm each side
-            float grillH = 0.003f; // 3 mm thick bar
-            for (int i = 0; i < 3; i++)
-            {
-                float offsetX = -0.28f + i * 0.28f;
-                m.Box(new Vector3(offsetX, grillY, grillZ), new Vector3(grillH, grillH, grillW), chrome);
-            }
-            // Subtle scorch‑mark near lower‑left corner
-            float scorchY = y0 + 0.04f;
-            float scorchZ = z0 + 0.022f;
-            m.Box(new Vector3(-0.20f, scorchY, scorchZ), new Vector3(0.06f, 0.004f, 0.03f), Mt(new Color(0.15f, 0.10f, 0.08f)));
-            // Inner dark liner
             m.Box(new Vector3(0f, cy, z0 - 0.003f), new Vector3(0.56f, 0.46f, 0.006f), M(OvenDark));
         }
 
@@ -783,43 +667,6 @@ for (int i = 0; i < 7; i++)
             m.Box(new Vector3(0.30f, hy, z1 + 0.025f), new Vector3(0.035f, hl, 0.03f), chrome);
             m.Box(new Vector3(0.30f, hy - hl * 0.4f, z1 + 0.006f), new Vector3(0.02f, 0.02f, 0.014f), chrome);
             m.Box(new Vector3(0.30f, hy + hl * 0.4f, z1 + 0.006f), new Vector3(0.02f, 0.02f, 0.014f), chrome);
-
-            // Helper to place a small cylindrical magnet on the door front.
-            void AddMagnet(Vector3 at, Color col)
-            {
-                // a thin chrome disc, tinted to the magnet’s colour
-                var mat = Mt(Chrome * 0.7f + col * 0.3f);
-                m.Cylinder(at, 0.018f, 0.002f, 12, mat); // disc face
-                // tiny raised edge to catch light
-                m.Cylinder(at + new Vector3(0f, 0.001f, 0f), 0.018f, 0.0005f, 12, Mt(Chrome));
-            }
-
-            // Add 2‑4 random fridge magnets.
-            int magCount = 2 + rng.Next(3);
-
-            // Worn hinge strip – thin, slightly dulled chrome along the left edge (hinge side).
-            float hingeX = -0.36f + 0.003f;
-            m.Box(new Vector3(hingeX, cy, z1 + 0.001f), new Vector3(0.006f, h, 0.004f), Mt(Chrome * 0.6f));
-
-            // Subtle surface scratches on the door front.
-            int scratchCount = rng.Next(3); // 0‑2 scratches
-            for (int i = 0; i < scratchCount; i++)
-            {
-                float sx = R(rng, -0.3f, 0.3f);
-                float sy = R(rng, y0 + 0.1f, y1 - 0.1f);
-                float length = R(rng, 0.02f, 0.06f);
-                float angle = R(rng, -15f, 15f);
-                var dark = Mt(new Color(0.2f, 0.2f, 0.2f));
-                // thin cylinder as scratch
-                m.Cylinder(new Vector3(sx, sy, z1 + 0.002f), 0.001f, length, 6, dark, Quaternion.Euler(0f, angle, 0f));
-            }
-            for (int i = 0; i < magCount; i++)
-            {
-                float mx = R(rng, -0.25f, 0.25f);
-                float my = R(rng, y0 + 0.2f, y1 - 0.15f);
-                Color col = new Color(R(rng, 0.4f, 0.9f), R(rng, 0.4f, 0.9f), R(rng, 0.4f, 0.9f));
-                AddMagnet(new Vector3(mx, my, z1 + 0.003f), col);
-            }
 
             Surf liner = M(freezer ? FreezerFrost : FridgeLinerWhite), gasket = M(new Color(0.50f, 0.50f, 0.52f));
             m.Box(new Vector3(0f, cy, z0 - 0.002f), new Vector3(0.62f, h - 0.08f, 0.004f), liner);

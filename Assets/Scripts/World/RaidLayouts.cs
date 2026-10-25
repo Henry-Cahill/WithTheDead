@@ -56,38 +56,6 @@ namespace CloneZ
         private static void OfficeDesk(RaidBuilding b, RaidMesh m, System.Random r, float w, Color wood, bool screenOn, int lamp, bool lampShadows)
         {
             FurnitureBuilder.Desk(m, r, w, 0.75f, wood, r.NextDouble() < 0.5);
-            // --------‑ Office‑desk hardware & wear ----------
-            // Material definitions for desk details
-            var woodMat = DecorPalette.Matte(wood); // wood surface
-            var metalMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f)); // brushed steel
-            var brassMat = DecorPalette.Metal(new Color(0.80f, 0.55f, 0.30f)); // aged brass for label
-            // ---- extra hardware & wear ----
-            var wearMat = DecorPalette.Matte(new Color(0.28f, 0.20f, 0.12f)); // darker wear streak
-            // Drawer handles – two small metal cylinders on each drawer front
-            m.Cylinder(new Vector3(-w*0.5f + 0.09f + R(r, -0.005f, 0.005f), 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
-            m.Cylinder(new Vector3( w*0.5f - 0.09f + R(r, -0.005f, 0.005f), 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
-            // Leg caps – small rounded caps on the four legs
-            m.Cylinder(new Vector3(-w*0.5f + 0.04f, 0.03f, -0.11f), 0.008f, 0.015f, 8, metalMat);
-            m.Cylinder(new Vector3( w*0.5f - 0.04f, 0.03f, -0.11f), 0.008f, 0.015f, 8, metalMat);
-            m.Cylinder(new Vector3(-w*0.5f + 0.04f, 0.03f,  0.11f), 0.008f, 0.015f, 8, metalMat);
-            m.Cylinder(new Vector3( w*0.5f - 0.04f, 0.03f,  0.11f), 0.008f, 0.015f, 8, metalMat);
-            // Corner brackets – thin metal boxes reinforcing each leg
-            m.Box(new Vector3(-w*0.5f + 0.04f, 0.08f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
-            m.Box(new Vector3( w*0.5f - 0.04f, 0.08f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
-            m.Box(new Vector3(-w*0.5f + 0.04f, 0.08f,  0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
-            m.Box(new Vector3( w*0.5f - 0.04f, 0.08f,  0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
-            // Worn front edge strip – darkened wood strip
-            if (Chance(r, 0.7))
-                m.Box(new Vector3(0f, 0.74f, -0.11f), Sz(w - 0.02f, 0.015f, 0.003f), wearMat);
-            // Brass label plate – aged brass rectangle
-            if (Chance(r, 0.5))
-                m.Box(new Vector3(0f, 0.77f, -0.09f), Sz(0.12f, 0.008f, 0.001f), brassMat);
-            // Optional dust puff – flat grey cylinder on top surface
-            if (Chance(r, 0.4))
-            {
-                var dustMat = DecorPalette.Matte(new Color(0.45f,0.44f,0.40f));
-                m.Cylinder(new Vector3(0f, 0.78f, 0f), 0.08f, 0.001f, 8, dustMat);
-            }
             FurnitureBuilder.CrtMonitor(m, r, new Vector3(0.1f, 0.76f, -0.1f), R(r, -12f, 12f), screenOn);
             FurnitureBuilder.Keyboard(m, r, new Vector3(0.08f, 0.76f, 0.2f), R(r, -6f, 6f));
             DeskClutter(m, r, w);
@@ -112,45 +80,6 @@ namespace CloneZ
                 FurnitureBuilder.CrtMonitorBody(m, r, crt, crtYaw);
                 FurnitureBuilder.Keyboard(m, r, new Vector3(0.08f, 0.76f, 0.2f), R(r, -6f, 6f));
                 DeskClutter(m, r, w);
-                // Material definitions for desk details
-                var woodMat = DecorPalette.Matte(wood);
-                var metalMat = DecorPalette.Metal(new Color(0.25f,0.25f,0.25f));
-                var brassMat = DecorPalette.Metal(new Color(0.80f,0.55f,0.30f));
-                var wearMat = DecorPalette.Matte(new Color(0.28f,0.20f,0.12f));
-            // Drawer handles – two small metal cylinders on each drawer front
-            m.Cylinder(new Vector3(-w*0.5f + 0.09f, 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
-            m.Cylinder(new Vector3( w*0.5f - 0.09f, 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
-            // Corner brackets – thin metal boxes at each leg
-            m.Box(new Vector3(-w*0.5f + 0.04f, 0.03f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
-            m.Box(new Vector3( w*0.5f - 0.04f, 0.03f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
-            m.Box(new Vector3(-w*0.5f + 0.04f, 0.03f,  0.09f), Sz(0.02f, 0.06f, 0.02f), metalMat);
-            m.Box(new Vector3( w*0.5f - 0.04f, 0.03f,  0.09f), Sz(0.02f, 0.06f, 0.02f), metalMat);
-            // Leg caps – tiny metal cylinders on each leg end
-            m.Cylinder(new Vector3(-w*0.5f + 0.04f, 0.03f, -0.11f), 0.008f, 0.015f, 8, metalMat);
-            m.Cylinder(new Vector3( w*0.5f - 0.04f, 0.03f, -0.11f), 0.008f, 0.015f, 8, metalMat);
-            m.Cylinder(new Vector3(-w*0.5f + 0.04f, 0.03f,  0.11f), 0.008f, 0.015f, 8, metalMat);
-            m.Cylinder(new Vector3( w*0.5f - 0.04f, 0.03f,  0.11f), 0.008f, 0.015f, 8, metalMat);
-            // Worn front edge strip – darkened wood strip
-            m.Box(new Vector3(0f, 0.75f, -0.11f), Sz(w - 0.02f, 0.015f, 0.003f), wearMat);
-            // Front reinforcement strap – thin metal strip under the desk front
-            m.Box(new Vector3(0f, 0.745f, -0.11f), Sz(w - 0.04f, 0.005f, 0.01f), metalMat);
-            // Rust‑tinted label plate – aged brass rectangle
-            m.Box(new Vector3(0f, 0.77f, -0.09f), Sz(0.12f, 0.008f, 0.001f), brassMat);
-            // Random ink blot – thin dark patch on the top surface
-            if (Chance(r, 0.45)) {
-                float blotW = R(r, 0.08f, 0.18f);
-                float blotD = R(r, 0.02f, 0.06f);
-                float blotX = R(r, -w*0.5f + 0.15f, w*0.5f - 0.15f);
-                m.Box(new Vector3(blotX, 0.78f, blotD/2f - 0.1f), Sz(blotW, 0.001f, blotD), DecorPalette.Matte(new Color(0.12f, 0.08f, 0.05f)));
-            }
-            // Optional dust puff – flat grey cylinder
-            var dustMat = DecorPalette.Matte(new Color(0.45f,0.44f,0.40f));
-            m.Cylinder(new Vector3(0f, 0.78f, 0f), 0.08f, 0.001f, 8, dustMat);
-            // Cable clamp – small metal cylinder near the CRT
-            if (Chance(r, 0.5)) {
-                Vector3 clampPos = new Vector3(0.12f + R(r, -0.02f, 0.02f), 0.74f, -0.08f + R(r, -0.02f, 0.02f));
-                m.Cylinder(clampPos, 0.004f, 0.015f, 8, metalMat);
-            }
                 if (lamp > 0)
                     b.DeskLamp(m, r, new Vector3(-w * 0.5f + 0.2f, 0.76f, -0.18f), R(r, 15f, 40f), r.NextDouble() < 0.5 ? GreenShade : BlackShade, lamp == 2, lampShadows);
             });
@@ -306,100 +235,11 @@ namespace CloneZ
         private static void WeaponRack(RaidMesh m, System.Random r)
         {
             Surf wood = DecorPalette.Matte(new Color(0.32f, 0.22f, 0.12f));
-var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
             m.Box(new Vector3(-0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
-// backboard – thin plywood behind the rack (adds depth and a surface for grime)
-         var boardMat = DecorPalette.Matte(new Color(0.34f, 0.24f, 0.14f));
-         m.Box(new Vector3(0f, 0.8f, -0.15f), Sz(1.92f, 1.62f, 0.02f), boardMat);
-
-         // thin snow layer on the upper backboard (winter detail)
-         if (Chance(r, 0.5f))
-         {
-             float snowW = R(r, 0.4f, 1.0f); // random width (metres)
-             float snowD = R(r, 0.08f, 0.18f); // random depth (metres)
-             float snowH = 0.005f; // thin height (metres)
-             var snowMat = DecorPalette.Matte(new Color(0.90f, 0.90f, 0.95f));
-             // position snow slightly forward of backboard surface
-             m.Box(new Vector3(0f, 0.8f, -0.15f - snowD/2f), Sz(snowW, snowH, snowD), snowMat);
-         }
-        // front strap – reinforces the rack, anchored to the posts
-        var strapMat = DecorPalette.Metal(new Color(0.28f, 0.28f, 0.26f));
-        m.Box(new Vector3(0f, 0.95f, -0.045f), Sz(1.84f, 0.03f, 0.01f), strapMat);
-        // latch hinge pin
-        m.Cylinder(new Vector3(-0.85f, 0.71f, -0.045f), 0.006f, 0.024f, 8, boltMat);
-        // latch body (metal plate)
-        m.Box(new Vector3(-0.84f, 0.71f, -0.06f), Sz(0.04f, 0.02f, 0.004f), boltMat);
-        // latch hook (a thin cylinder protruding)
-        m.Cylinder(new Vector3(-0.80f, 0.71f, -0.06f), 0.003f, 0.015f, 8, boltMat);
-        // paint chip – random brownish patch on front face
-        if (Chance(r, 0.35f))
-        {
-            float chipW = R(r, 0.04f, 0.09f);
-            float chipH = 0.001f;
-            float chipD = 0.015f;
-            var chipMat = DecorPalette.Matte(new Color(0.28f, 0.20f, 0.12f));
-            m.Box(
-                new Vector3(R(r, -0.9f, 0.9f), 0.92f, R(r, -0.07f, 0.07f)),
-                Sz(chipW, chipH, chipD),
-                chipMat);
-        }
-                Vector3 chipPosLeft = new Vector3(-0.95f + (float)r.NextDouble()*0.02f - 0.01f, R(r, 0.4f, 1.2f), R(r, -0.05f, 0.05f));
-                m.Box(chipPosLeft, Sz(0.02f, 0.01f, 0.005f), wood);
             m.Box(new Vector3(0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
-                Vector3 chipPosRight = new Vector3(0.95f + (float)r.NextDouble()*0.02f - 0.01f, R(r, 0.4f, 1.2f), R(r, -0.05f, 0.05f));
-                m.Box(chipPosRight, Sz(0.02f, 0.01f, 0.005f), wood);
             m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);
-            // thin weathered grime patches on the lower shelf
-            if (Chance(r, 0.4f))
-            {
-                int patches = r.Next(1, 4);
-                for (int i = 0; i < patches; i++)
-                {
-                    float patchWidth = R(r, 0.2f, 0.5f);
-                    float patchDepth = 0.02f;
-                    float patchHeight = 0.001f;
-                    m.Box(
-                        new Vector3(R(r, -0.9f, 0.9f), 0.27f, R(r, -0.13f, 0.13f)),
-                        Sz(patchWidth, patchHeight, patchDepth),
-                        DecorPalette.Matte(new Color(0.20f, 0.18f, 0.14f)));
-                }
-            }
-            // mounting bolts (reuse existing boltMat)
-
-            float boltRadius = 0.015f; float boltHeight = 0.02f;
-            Vector3[] boltPos = { new Vector3(-0.95f, 0.41f, 0.05f), new Vector3(-0.95f, 0.41f, -0.05f), new Vector3(0.95f, 0.41f, 0.05f), new Vector3(0.95f, 0.41f, -0.05f) };
-            foreach (var p in boltPos) m.Cylinder(p, boltRadius, boltHeight, 8, boltMat);
-            // period‑correct mounting nails on the bottom of the wooden frame
-            float nailRadius = 0.006f; float nailHeight = 0.012f;
-            Vector3[] nailPos = { new Vector3(-0.95f, 0.02f, -0.1f), new Vector3(-0.95f, 0.02f, 0.1f), new Vector3(0.95f, 0.02f, -0.1f), new Vector3(0.95f, 0.02f, 0.1f) };
-            foreach (var p in nailPos) m.Cylinder(p, nailRadius, nailHeight, 8, boltMat);
             m.Box(new Vector3(0f, 1.3f, -0.08f), Sz(1.9f, 0.06f, 0.12f), wood);
-            m.Box(new Vector3(0f, 1.31f, -0.08f), Sz(1.9f, 0.002f, 0.3f), DecorPalette.Matte(new Color(0.90f, 0.90f, 0.95f)));
-            var bracketMat = DecorPalette.Metal(new Color(0.30f, 0.30f, 0.28f));
-            m.Box(new Vector3(-0.95f, 1.33f, -0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);
-            m.Box(new Vector3(-0.95f, 1.33f, 0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);
-            m.Box(new Vector3( 0.95f, 1.33f, -0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);
-            m.Box(new Vector3( 0.95f, 1.33f, 0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);
-            // rivets on the vertical posts
-            for (int side = 0; side < 2; side++)
-            {
-                float x = side == 0 ? -0.95f : 0.95f;
-                for (int i = 0; i < 3; i++)
-                {
-                    float y = 0.85f + i * 0.08f;
-                    m.Cylinder(new Vector3(x, y, 0f), 0.005f, 0.01f, 8, boltMat);
-                }
-            }
-            var plateMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
-            m.Box(new Vector3(-0.95f, 0.8f, 0.06f), Sz(0.02f, 0.1f, 0.001f), plateMat);
-            m.Box(new Vector3( 0.95f, 0.8f, 0.06f), Sz(0.02f, 0.1f, 0.001f), plateMat);
-                    // front label plate (rust‑tinted metal)
-        var labelMat = DecorPalette.Metal(new Color(0.30f, 0.35f, 0.25f));
-        m.Box(new Vector3(0f, 0.77f, 0.07f), Sz(0.25f, 0.015f, 0.002f), labelMat);
-        // dust puff – flat gray cylinder on the top shelf
-        var dustMat = DecorPalette.Matte(new Color(0.45f, 0.44f, 0.40f));
-        m.Cylinder(new Vector3(0f, 1.31f, -0.02f), 0.1f, 0.002f, 8, dustMat);
-        int guns = r.Next(2, 6);
+            int guns = r.Next(2, 6);
             for (int i = 0; i < guns; i++)
             {
                 float x = -0.75f + i * 0.37f;

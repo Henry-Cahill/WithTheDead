@@ -1,467 +1,496 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneZ
 {
+    // The buildings raised where the plan puts them, and their lots: the office's plaza and staff lot, the food mart's
+    // forecourt under its canopy, the depot's yard, the Guard post's parade ground and motor pool, the quarantine compound,
+    // the clinic's lot, Veterans Park, and the houses' yards with their walks, drives and fences.
     public static partial class RaidMapBuilder
     {
-        #region Exits
-        // Four ways out on the map edges; two or three are open each raid.
-        private static void DefineExits(RaidTown town)
+        private sealed partial class Builder
         {
-            const float d = 63f;
-            town.Info.Exits.Add(new RaidExit { Name = "Road Block", Position = new Vector3(0f, 0f, d), Radius = 4.5f, ExtractSeconds = 8f, Hint = "Police barricade, north end of Main St" });
-            town.Info.Exits.Add(new RaidExit { Name = "Rail Bridge", Position = new Vector3(d, 0f, 0f), Radius = 4.5f, ExtractSeconds = 8f, Hint = "Rail crossing, east end of Depot Rd" });
-            town.Info.Exits.Add(new RaidExit { Name = "Army Checkpoint", Position = new Vector3(0f, 0f, -d), Radius = 4.5f, ExtractSeconds = 8f, Hint = "Guard checkpoint, south end of Main St" });
-            town.Info.Exits.Add(new RaidExit { Name = "Boat Dock", Position = new Vector3(-d, 0f, 0f), Radius = 4.5f, ExtractSeconds = 8f, Hint = "River dock, west end of Depot Rd" });
+            private RaidBuilding _office, _mart, _depot, _post, _tent, _clinic;
+            private readonly RaidBuilding[] _houses = new RaidBuilding[HouseLots.Length];
 
-            int open = 2 + town.Rng.Next(2);
-            var order = new int[] { 0, 1, 2, 3 };
-            for (int i = order.Length - 1; i > 0; i--)
+            public void Buildings()
             {
-                int j = town.Rng.Next(i + 1);
-                (order[i], order[j]) = (order[j], order[i]);
-            }
-            for (int i = 0; i < order.Length; i++) town.Info.Exits[order[i]].Open = i < open;
-
-            // Nothing solid may stand in (or crowd) an exit zone.
-            foreach (RaidExit e in town.Info.Exits) town.Keepout.Add(Around(e.Position, e.Radius + 2f, e.Radius + 2f));
-        }
-        #endregion
-
-        #region Buildings
-        private static void BuildTown(RaidTown town)
-        {
-            RaidBuilding army = RaidLayouts.ArmyPost(town, new Vector2(22f, -24f), 1);
-            RaidBuilding office = RaidLayouts.Office(town, new Vector2(19f, 16f), 0);
-            RaidBuilding gas = RaidLayouts.GasStation(town, new Vector2(18f, 46f), 1);
-            RaidBuilding depot = RaidLayouts.Warehouse(town, new Vector2(50f, 42f), 0);
-            RaidBuilding clinic = RaidLayouts.Clinic(town, new Vector2(-22f, -18f), 2);
-            RaidBuilding tent = RaidLayouts.QuarantineTent(town, new Vector2(-24f, -40f), 2);
-            RaidBuilding houseA = RaidLayouts.House(town, "House_Elm", new Vector2(-20f, 16f), 0, false, false);
-            RaidBuilding houseB = RaidLayouts.House(town, "House_Oak", new Vector2(-38f, 16f), 0, true, false);
-            RaidBuilding houseC = RaidLayouts.House(town, "Cottage_North", new Vector2(-19f, 38f), 3, false, true);
-            RaidBuilding houseD = RaidLayouts.House(town, "House_East", new Vector2(44f, -16f), 2, town.Rng.NextDouble() < 0.5, false);
-            RaidBuilding houseE = RaidLayouts.House(town, "Cottage_West", new Vector2(-50f, -16f), 2, true, true);
-            RaidBuilding[] all = { army, office, gas, depot, clinic, tent, houseA, houseB, houseC, houseD, houseE };
-            foreach (RaidBuilding b in all)
-            {
-                town.Buildings.Add(b);
-                town.Keepout.Add(Grow(b.Footprint, 1.2f));
-                b.ExteriorDoorZones(town.Keepout);
-            }
-
-            DressArmyPost(town, army);
-            DressOffice(town, office);
-            DressGasStation(town, gas);
-            DressDepot(town, depot);
-            DressClinic(town, clinic, tent);
-            DressHouse(town, houseA, -3.0f, 4.5f);
-            DressHouse(town, houseB, -3.0f, 4.5f);
-            DressHouse(town, houseC, -1.5f, 8.0f);
-            DressHouse(town, houseD, -3.0f, 4.5f);
-            DressHouse(town, houseE, -1.5f, 5.0f);
-        }
-
-        /// <summary>Draws a prop into the outdoor mesh at a world placement, with an optional collider
-        /// (<paramref name="size"/>.y = 0 for none), and keeps the spot clear of later props.</summary>
-        private static void Prop(RaidTown town, Vector3 pos, float yaw, Vector3 size, bool solid, System.Action<RaidMesh, System.Random> draw)
-        {
-            RaidMesh m = town.Out.Solid(pos);
-            m.SetFrame(pos, yaw);
-            draw(m, town.Rng);
-            m.ResetFrame();
-            if (solid) town.PropCollider(pos + Vector3.up * (size.y * 0.5f), size, yaw);
-            float r = Mathf.Max(size.x, size.z) * 0.5f;
-            town.Keepout.Add(Around(pos, r, r));
-        }
-
-        /// <summary>A wrecked car (with its collider) at a world placement, its glovebox and trunk to search
-        /// (<see cref="WreckStorage"/>).</summary>
-        private static void Wreck(RaidTown town, Vector3 pos, float yaw, DecorProps.CarKind kind, Color paint)
-        {
-            RaidMesh m = town.Out.Solid(pos);
-            m.SetFrame(pos, yaw);
-            DecorProps.Car(m, town.Rng, kind, paint, out Vector3 size);
-            m.ResetFrame();
-            town.PropCollider(pos + Vector3.up * (size.y * 0.5f), new Vector3(size.x, size.y, size.z), yaw);
-            float r = Mathf.Max(size.x, size.z) * 0.5f;
-            town.Keepout.Add(Around(pos, r, r));
-            WreckStorage(town, pos, yaw, kind, size);
-        }
-
-        private static readonly Color[] CarPaints =
-        {
-            new Color(0.48f, 0.10f, 0.09f), new Color(0.18f, 0.26f, 0.42f), new Color(0.62f, 0.58f, 0.46f),
-            new Color(0.30f, 0.22f, 0.14f), new Color(0.22f, 0.32f, 0.26f), new Color(0.55f, 0.55f, 0.56f),
-        };
-
-        private static Color Paint(RaidTown town) => CarPaints[town.Rng.Next(CarPaints.Length)];
-
-        private static void DressArmyPost(RaidTown town, RaidBuilding b)
-        {
-            // Front yard on Main St: a gravel lot, sandbag walls either side of the door, a flagpole,
-            // and the unit's truck.
-            Paved(town, Rect.MinMaxRect(6.5f, -33f, 14.6f, -15f), 0.014f, DecorMaterials.Gravel);
-            town.Keepout.Add(Rect.MinMaxRect(6.5f, -33f, 14.6f, -15f));
-            Prop(town, new Vector3(12.6f, 0f, -23.4f), 90f, new Vector3(2.4f, 0.7f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 2.4f, 4));
-            Prop(town, new Vector3(12.6f, 0f, -17.6f), 90f, new Vector3(2.4f, 0.7f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 2.4f, 4));
-            Prop(town, new Vector3(9.5f, 0f, -16.5f), 0f, new Vector3(0.4f, 7f, 0.4f), true, (m, r) =>
-            {
-                m.Box(new Vector3(0f, 0.15f, 0f), new Vector3(0.8f, 0.3f, 0.8f), DecorMaterials.Concrete);
-                m.Cylinder(new Vector3(0f, 0.3f, 0f), 0.06f, 7f, 8, DecorPalette.Metal(new Color(0.6f, 0.6f, 0.6f)), Quaternion.identity, 0.6f);
-                m.Box(new Vector3(0.55f, 6.2f, 0f), new Vector3(1.1f, 0.65f, 0.02f), Quaternion.Euler(0f, 0f, -8f), DecorPalette.Matte(new Color(0.40f, 0.12f, 0.12f)));
-                m.Box(new Vector3(0.3f, 6.37f, 0.012f), new Vector3(0.5f, 0.3f, 0.01f), Quaternion.Euler(0f, 0f, -8f), DecorPalette.Matte(new Color(0.14f, 0.18f, 0.34f)));
-            });
-            Wreck(town, new Vector3(9.6f, 0f, -29.8f), 4f, DecorProps.CarKind.ArmyTruck, Color.white);
-            DumpsterProp(town, new Vector3(31.5f, 0f, -20f), 90f);
-            for (int i = 0; i < 3; i++) DecorProps.TrashBag(town.Out.Solid(new Vector3(31.5f, 0f, -22f)), town.Rng, new Vector3(R(town.Rng, 30.8f, 32.4f), 0f, R(town.Rng, -22.6f, -21.4f)));
-            TrashBagsProp(town, new Vector3(31.6f, 0f, -22f));
-            Vector3 sign = new Vector3(7.6f, 0f, -26.5f);
-            Prop(town, sign, 270f, new Vector3(2.2f, 2f, 0.2f), true, (m, r) => DecorProps.PostSign(m, r, "ARMORY", new Color(0.20f, 0.26f, 0.16f), new Color(0.86f, 0.84f, 0.74f), 0.5f, 1.2f));
-        }
-
-        private static void DressOffice(RaidTown town, RaidBuilding b)
-        {
-            // Parking lot to the east with two dead cars, a walk to the front door and a dumpster out back.
-            Paved(town, Rect.MinMaxRect(30.5f, 6.5f, 38f, 24f), 0.014f, DecorMaterials.Asphalt);
-            town.Keepout.Add(Rect.MinMaxRect(30.5f, 6.5f, 38f, 24f));
-            for (int i = 0; i < 5; i++)
-            {
-                var p = new Vector3(34.2f, 0.018f, 9f + i * 3f);
-                town.Out.Flat(p).Flat(p, 7f, 0.1f, 0f, DecorPalette.Matte(LineWhite * 0.75f));
-            }
-            Wreck(town, new Vector3(34.4f, 0f, 13.5f), 88f, DecorProps.CarKind.Sedan, Paint(town));
-            Wreck(town, new Vector3(34.0f, 0f, 19.6f), 95f, DecorProps.CarKind.Wagon, Paint(town));
-            Paved(town, Rect.MinMaxRect(24.6f, 6.5f, 26.4f, 8.9f), 0.028f, DecorMaterials.Concrete);
-            DumpsterProp(town, new Vector3(13f, 0f, 25f), 0f);
-            for (int i = 0; i < 4; i++) DecorProps.TrashBag(town.Out.Solid(new Vector3(13f, 0f, 26.5f)), town.Rng, new Vector3(R(town.Rng, 11.5f, 15f), 0f, R(town.Rng, 26.2f, 27.2f)));
-            TrashBagsProp(town, new Vector3(13.2f, 0f, 26.7f));
-        }
-
-        private static void DressGasStation(RaidTown town, RaidBuilding b)
-        {
-            // Forecourt between the store and Main St: concrete apron, two pump islands, the canopy on
-            // four pillars (its roof shows only from inside views), a price sign and a dead car.
-            Rect apron = Rect.MinMaxRect(6.6f, 38f, 13f, 54f);
-            Paved(town, apron, 0.03f, DecorMaterials.Concrete);
-            town.Keepout.Add(apron);
-            Vector3[] pumps = { new Vector3(9.4f, 0f, 43f), new Vector3(9.4f, 0f, 49f) };
-            foreach (Vector3 p in pumps) PumpProp(town, p, 0f);
-            float[] px = { 7.4f, 11.4f };
-            float[] pz = { 40.5f, 51.5f };
-            Surf pillar = DecorPalette.Matte(new Color(0.78f, 0.78f, 0.76f));
-            foreach (float x in px)
-                foreach (float z in pz)
+                _office = Raise(RaidLayouts.Office(_town, OfficeAt, OfficeTurns));
+                _mart = Raise(RaidLayouts.GasStation(_town, MartAt, MartTurns));
+                _depot = Raise(RaidLayouts.Warehouse(_town, DepotAt, DepotTurns));
+                _post = Raise(RaidLayouts.ArmyPost(_town, PostAt, PostTurns));
+                _tent = Raise(RaidLayouts.QuarantineTent(_town, TentAt, TentTurns));
+                _clinic = Raise(RaidLayouts.Clinic(_town, ClinicAt, ClinicTurns));
+                for (int i = 0; i < HouseLots.Length; i++)
                 {
-                    var p = new Vector3(x, 0f, z);
-                    Prop(town, p, 0f, new Vector3(0.35f, 4.2f, 0.35f), true, (m, r) =>
+                    HouseLot lot = HouseLots[i];
+                    _houses[i] = Raise(RaidLayouts.House(_town, lot.Name, lot.Center, lot.Turns, lot.Mirror, lot.Small));
+                }
+
+                Office();
+                FoodMart();
+                Depot();
+                GuardPost();
+                Quarantine();
+                Clinic();
+                Park();
+                for (int i = 0; i < HouseLots.Length; i++) House(HouseLots[i], _houses[i]);
+                Yards(ElmSt, +1);
+                Yards(ElmSt, -1);
+                Yards(OakSt, +1);
+                Yards(OakSt, -1);
+            }
+
+            private RaidBuilding Raise(RaidBuilding b)
+            {
+                _town.Buildings.Add(b);
+                Reserve(Grow(b.Footprint, 1.2f));
+                b.ExteriorDoorZones(_town.Keepout);
+                return b;
+            }
+
+            // The outside doors on one side of a building (0 south, 1 west, 2 north, 3 east), each as the middle of its
+            // doorway on the wall's outer face.
+            private static List<Vector3> Doors(RaidBuilding b, int side)
+            {
+                var zones = new List<Rect>();
+                b.ExteriorDoorZones(zones);
+                Rect f = b.Footprint;
+                var doors = new List<Vector3>();
+                foreach (Rect z in zones)
+                {
+                    Vector2 c = z.center;
+                    int s = c.y < f.yMin ? 0 : c.x < f.xMin ? 1 : c.y > f.yMax ? 2 : c.x > f.xMax ? 3 : -1;
+                    if (s != side) continue;
+                    doors.Add(s == 0 ? new Vector3(c.x, 0f, f.yMin) : s == 2 ? new Vector3(c.x, 0f, f.yMax)
+                        : s == 1 ? new Vector3(f.xMin, 0f, c.y) : new Vector3(f.xMax, 0f, c.y));
+                }
+                return doors;
+            }
+
+            /// <summary>A walk <paramref name="width"/> m wide from a door on side <paramref name="side"/> of its building
+            /// straight out to <paramref name="to"/> (a z for a north or south door, an x for an east or west one).</summary>
+            private void Walk(Vector3 door, int side, float to, in Surf surf, float width = 1.4f)
+            {
+                float h = width * 0.5f;
+                Rect r = side == 0 || side == 2
+                    ? Rect.MinMaxRect(door.x - h, Mathf.Min(door.z, to), door.x + h, Mathf.Max(door.z, to))
+                    : Rect.MinMaxRect(Mathf.Min(door.x, to), door.z - h, Mathf.Max(door.x, to), door.z + h);
+                Pave(r, PathY, surf);
+            }
+
+            /// <summary>Painted bays along one edge of a lot: <paramref name="count"/> bays <paramref name="width"/> m wide
+            /// from <paramref name="start"/> along the edge, <paramref name="depth"/> m deep in from it. Returns each bay's
+            /// middle.</summary>
+            private List<Vector3> Bays(Vector3 start, Vector3 along, Vector3 inward, int count, float width, float depth)
+            {
+                Surf white = DecorPalette.Matte(LineWhite);
+                var middles = new List<Vector3>();
+                for (int i = 0; i <= count; i++)
+                {
+                    Vector3 c = start + along * (i * width) + inward * (depth * 0.5f);
+                    c.y = MarkY;
+                    float yaw = Mathf.Atan2(inward.x, inward.z) * Mathf.Rad2Deg;
+                    _town.Out.Flat(c).Flat(c, 0.1f, depth - 0.2f, yaw, white);
+                    if (i < count) middles.Add(start + along * ((i + 0.5f) * width) + inward * (depth * 0.5f));
+                }
+                return middles;
+            }
+
+            /// <summary>Two or three bags slumped round <paramref name="at"/>, to tear open and go through.</summary>
+            private void Bags(Vector3 at)
+            {
+                int n = 2 + _rng.Next(2);
+                for (int i = 0; i < n; i++)
+                {
+                    Vector3 p = at + new Vector3(R(_rng, -0.5f, 0.5f), 0f, R(_rng, -0.35f, 0.35f));
+                    DecorProps.TrashBag(_town.Out.Solid(p), _rng, p);
+                }
+                TrashBagsProp(_town, at);
+                Reserve(Around(at, 0.8f, 0.6f));
+            }
+
+            private void Heap(Vector3 at, float w, float d, float h)
+                => Prop(_town, at, R(_rng, 0f, 180f), new Vector3(w * 0.8f, h, d * 0.8f), true, (m, r) => DecorProps.SnowPile(m, r, Vector3.zero, w, d, h, 0f));
+
+            private void Sign(Vector3 at, float yaw, string text, Color bg, Color fg, float height, float bottom)
+                => Prop(_town, at, yaw, new Vector3(height * 6f, bottom + height, 0.3f), true, (m, r) => DecorProps.PostSign(m, r, text, bg, fg, height, bottom));
+
+            private void Flagpole(Vector3 at, float height)
+                => Prop(_town, at, 0f, new Vector3(0.5f, height, 0.5f), true, (m, r) => DecorProps.Flagpole(m, height));
+
+            /// <summary>A tree with its collider: a bare maple, or a spruce (smaller in the yards, taller in the woods by the
+            /// fence when <paramref name="tall"/>).</summary>
+            private void Tree(Vector3 at, bool pine, bool tall = false)
+            {
+                float h = pine ? (tall ? R(_rng, 7f, 10f) : R(_rng, 5f, 7f)) : R(_rng, 5f, 7.5f);
+                Prop(_town, at, R(_rng, 0f, 360f), new Vector3(0.6f, 3f, 0.6f), true, (m, r) =>
+                {
+                    if (pine) DecorProps.Pine(m, r, h);
+                    else DecorProps.BareTree(m, r, h);
+                });
+            }
+
+            #region Civic lots
+            // The county office: a concrete plaza from Depot Rd to its glass front doors with the flag and the county's sign,
+            // a walk from Main St to its side door, the staff lot to the east, the dumpster out back.
+            private void Office()
+            {
+                RaidBuilding b = _office;
+                Rect f = b.Footprint;
+                Surf concrete = DecorMaterials.Concrete;
+                foreach (Vector3 d in Doors(b, 0))
+                {
+                    Pave(Rect.MinMaxRect(d.x - 3.4f, DepotRd.Outer, d.x + 3.4f, f.yMin), PathY, concrete);
+                    Flagpole(new Vector3(d.x - 4.6f, 0f, DepotRd.Outer + 2f), 8f);
+                }
+                Sign(new Vector3(f.xMin + 4.5f, 0f, DepotRd.Outer + 1.6f), 180f, "COUNTY OFFICES", new Color(0.14f, 0.20f, 0.32f), new Color(0.88f, 0.86f, 0.78f), 0.4f, 0.9f);
+                foreach (Vector3 d in Doors(b, 1)) Walk(d, 1, MainSt.Outer, concrete);
+                foreach (Vector3 d in Doors(b, 2))
+                {
+                    Pave(Rect.MinMaxRect(d.x - 1.2f, f.yMax, d.x + 1.2f, f.yMax + 1.6f), PathY, concrete);
+                    DumpsterProp(_town, new Vector3(d.x - 4.4f, 0f, f.yMax + 1.6f), 0f);
+                    Bags(new Vector3(d.x - 7f, 0f, f.yMax + 1.5f));
+                }
+
+                // The staff lot: one row of bays along its east side, the entrance off Depot Rd, a heap of plowed snow.
+                Rect lot = Rect.MinMaxRect(f.xMax + 1.9f, DepotRd.Outer, f.xMax + 16.4f, f.yMax);
+                Pave(lot, LotY, DecorMaterials.DryAsphalt);
+                Reserve(lot);
+                DropKerb(DepotRd, +1, lot.xMin + 1f, lot.xMin + 8f);
+                List<Vector3> bays = Bays(new Vector3(lot.xMax - 0.2f, 0f, lot.yMin + 1.4f), Vector3.forward, Vector3.left, 6, 2.7f, 5f);
+                ParkIn(bays, 2, 90f);
+                Heap(new Vector3(lot.xMin + 1.4f, 0f, lot.yMax - 1.2f), 2.6f, 2.2f, 1.0f);
+            }
+
+            /// <summary>Parks <paramref name="cars"/> cars in different bays, nose in (<paramref name="yaw"/> faces the bay's
+            /// end).</summary>
+            private void ParkIn(List<Vector3> bays, int cars, float yaw)
+            {
+                var free = new List<Vector3>(bays);
+                for (int i = 0; i < cars && free.Count > 0; i++)
+                {
+                    int k = _rng.Next(free.Count);
+                    ParkedCar(_town, free[k], yaw + R(_rng, -2f, 2f), FamilyCar(_rng), Paint(_rng));
+                    free.RemoveAt(k);
+                }
+            }
+
+            // The gas-station food mart: the forecourt between Main St and the shop with two pump islands under the canopy
+            // (its roof shows only from inside views), the price sign, a pickup at a pump, the dumpster round the back.
+            private void FoodMart()
+            {
+                RaidBuilding b = _mart;
+                Rect f = b.Footprint;
+                Rect court = Rect.MinMaxRect(MainSt.Outer, f.yMin - 4.4f, f.xMin, f.yMax + 4.4f);
+                Pave(court, LotY, DecorMaterials.Concrete);
+                Reserve(court);
+                DropKerb(MainSt, +1, court.yMin + 1f, court.yMin + 7.5f);
+                DropKerb(MainSt, +1, court.yMax - 7.5f, court.yMax - 1f);
+
+                float islandX = (court.xMin + court.xMax) * 0.5f + 0.4f;
+                float midZ = (f.yMin + f.yMax) * 0.5f;
+                foreach (float dz in new[] { -3f, 3f }) PumpProp(_town, new Vector3(islandX, 0f, midZ + dz), 0f);
+                Canopy(Rect.MinMaxRect(islandX - 2.4f, midZ - 6.5f, islandX + 2.4f, midZ + 6.5f));
+                ParkedCar(_town, new Vector3(islandX - 2.1f, 0f, midZ + 3f), 180f + R(_rng, -2f, 2f), DecorProps.CarKind.Pickup, Paint(_rng));
+                Prop(_town, new Vector3(court.xMin + 0.8f, 0f, court.yMin + 0.9f), 270f, new Vector3(1.6f, 3.1f, 0.3f), true,
+                    (m, r) => DecorProps.PostSign(m, r, "GAS 1.09", new Color(0.86f, 0.84f, 0.78f), new Color(0.62f, 0.10f, 0.08f), 0.5f, 2.6f));
+
+                foreach (Vector3 d in Doors(b, 3))
+                {
+                    Pave(Rect.MinMaxRect(f.xMax, d.z - 1.2f, f.xMax + 1.6f, d.z + 1.2f), PathY, DecorMaterials.Concrete);
+                    DumpsterProp(_town, new Vector3(f.xMax + 1.8f, 0f, d.z - 6.5f), 90f);
+                    Bags(new Vector3(f.xMax + 1.7f, 0f, d.z - 3.9f));
+                }
+            }
+
+            // The canopy over the pumps: four pillars on hazard-striped feet, the roof under the overhead root with a thin
+            // collider (so the shoulder camera stays below it), and its lamps, one or two still lit.
+            private void Canopy(Rect r)
+            {
+                Surf pillar = DecorPalette.Matte(new Color(0.80f, 0.80f, 0.78f));
+                for (int i = 0; i < 4; i++)
+                {
+                    var p = new Vector3(i % 2 == 0 ? r.xMin + 0.4f : r.xMax - 0.4f, 0f, i < 2 ? r.yMin + 0.4f : r.yMax - 0.4f);
+                    Prop(_town, p, 0f, new Vector3(0.35f, 4.2f, 0.35f), true, (m, rr) =>
                     {
                         m.Box(new Vector3(0f, 2.1f, 0f), new Vector3(0.32f, 4.2f, 0.32f), pillar);
                         m.Box(new Vector3(0f, 0.3f, 0f), new Vector3(0.4f, 0.6f, 0.4f), DecorMaterials.Hazard);
-                        m.Cylinder(new Vector3(0f, 1.5f, 0.18f), 0.015f, 0.25f, 12, DecorPalette.Metal(new Color(0.40f, 0.35f, 0.33f)), Quaternion.Euler(0f, (float)(r.NextDouble()*10.0 - 5.0), 0f), 1f);
-                        // Tiny rust‑stained bolt detail on the pillar
-                        m.Cylinder(new Vector3(0.12f, 2.0f, 0f), 0.01f, 0.015f, 6, DecorPalette.Metal(new Color(0.5f, 0.4f, 0.3f)), Quaternion.identity, 1f);
-                        // 1️⃣ nozzle – small metal cylinder protruding forward
-                        m.Cylinder(new Vector3(0f, 4.2f + 0.05f, 0.15f), 0.04f, 0.08f, 12,
-                            DecorPalette.Metal(new Color(0.45f, 0.44f, 0.42f)),
-                            Quaternion.Euler(0f, 0f, 0f), 1f);
-                        // 2️⃣ gauge plate – thin rectangular metal piece
-                        m.Box(new Vector3(0.07f, 4.0f, 0.07f), new Vector3(0.12f, 0.02f, 0.04f),
-                            DecorPalette.Metal(new Color(0.43f, 0.43f, 0.40f)));
-                        // 3️⃣ rust streak – long thin dark box on side
-                        m.Box(new Vector3(0.12f, 3.5f, 0f), new Vector3(0.02f, 0.30f, 0.005f),
-                            DecorPalette.Matte(new Color(0.35f, 0.20f, 0.10f)));
-                        // 4️⃣ tiny glow emitter on nozzle tip
-                        m.Cylinder(new Vector3(0f, 4.2f + 0.09f, 0.15f), 0.015f, 0.01f, 6,
-                            DecorPalette.Glow(new Color(1f, 0.55f, 0.20f)), Quaternion.identity, 1f);
                     });
                 }
-            // Canopy roof: under the overhead root with a thin collider so the shoulder camera stays below.
-            var roof = new RaidMesh();
-            Vector3 rc = new Vector3(9.4f, 4.35f, 46f);
-            roof.Box(rc, new Vector3(6.4f, 0.3f, 13.4f), DecorPalette.Matte(new Color(0.80f, 0.80f, 0.78f)));
-            roof.Box(rc + new Vector3(0f, -0.1f, 0f), new Vector3(6.5f, 0.12f, 13.5f), DecorPalette.Matte(new Color(0.66f, 0.12f, 0.10f)));
-            roof.Box(rc + new Vector3(0f, 0.2f, 0f), new Vector3(6.1f, 0.08f, 13.1f), DecorPalette.Matte(DecorProps.SnowWhite));
-            for (int i = 0; i < 4; i++)
-            {
-                bool lit = town.Rng.NextDouble() < 0.4;
-                Vector3 lp = new Vector3(9.4f, 4.19f, 41f + i * 3.4f);
-                roof.Box(lp, new Vector3(0.5f, 0.02f, 1.0f), lit ? DecorPalette.Glow(new Color(0.95f, 0.92f, 0.82f)) : DecorPalette.Matte(new Color(0.5f, 0.5f, 0.48f)));
-                if (lit) town.Light(b.Root, lp - Vector3.up * 0.16f, new Color(0.92f, 0.94f, 1f), 9f, 1.8f, town.Rng.NextDouble() < 0.3, true);
-            }
-            GameObject canopy = roof.Emit("Canopy", town.Overhead, rc);
-            if (canopy != null) CeilingVisibility.Register(canopy.GetComponent<MeshRenderer>());
-            town.OverheadCollider(rc, new Vector3(6.4f, 0.3f, 13.4f), Quaternion.identity);
-
-            Wreck(town, new Vector3(7.0f, 0f, 46f), 2f, DecorProps.CarKind.Pickup, Paint(town));
-            Prop(town, new Vector3(5.4f, 0f, 36.5f), 270f, new Vector3(2.4f, 3.2f, 0.3f), true, (m, r) => {
-                // Base price sign
-                DecorProps.PostSign(m, r, "GAS 1.09", new Color(0.86f, 0.84f, 0.78f), new Color(0.62f, 0.10f, 0.08f), 0.5f, 2.6f);
-                // Add subtle metal rivets at the four corners of the sign board
-                // Rough approximation of sign width based on aspect ~1.5
-                float signHeight = 0.5f;
-                float signBottom = 2.6f;
-                float signAspect = 1.5f;
-                float signWidth = signHeight * signAspect;
-                float rivetRadius = 0.02f;
-                Color rivetColor = new Color(0.6f, 0.6f, 0.6f);
-                // Top‑left
-                m.Cylinder(new Vector3(-signWidth * 0.5f + rivetRadius, signBottom + signHeight - rivetRadius, 0.01f), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
-                // Top‑right
-                m.Cylinder(new Vector3(signWidth * 0.5f - rivetRadius, signBottom + signHeight - rivetRadius, 0.01f), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
-                // Bottom‑left
-                m.Cylinder(new Vector3(-signWidth * 0.5f + rivetRadius, signBottom + rivetRadius, 0.01f), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
-                // Bottom‑right
-                m.Cylinder(new Vector3(signWidth * 0.5f - rivetRadius, signBottom + rivetRadius, 0.01f), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
-            });
-            DumpsterProp(town, new Vector3(25f, 0f, 43f), 90f);
-        }
-
-        private static void DressDepot(RaidTown town, RaidBuilding b)
-        {
-            // The depot yard: a wide lot off Depot Rd with a box truck, a dead car and stacked pallets.
-            Paved(town, Rect.MinMaxRect(38.5f, 6.5f, 62f, 32.8f), 0.014f, DecorMaterials.Asphalt);
-            town.Keepout.Add(Rect.MinMaxRect(38.5f, 6.5f, 62f, 32.8f));
-            Wreck(town, new Vector3(56f, 0f, 22f), 0f, DecorProps.CarKind.ArmyTruck, Color.white);
-            Wreck(town, new Vector3(42f, 0f, 17f), 170f, DecorProps.CarKind.Pickup, Paint(town));
-            DumpsterProp(town, new Vector3(40f, 0f, 31f), 0f);
-            Prop(town, new Vector3(60.5f, 0f, 30f), 0f, new Vector3(1.2f, 1.2f, 1.0f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, 0f, true));
-            Prop(town, new Vector3(60.5f, 0f, 27.8f), 0f, new Vector3(1.2f, 1.2f, 1.0f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, 90f, true));
-            Prop(town, new Vector3(48f, 0f, 29f), 0f, new Vector3(2.4f, 1.4f, 2.0f), true, (m, r) => DecorProps.SnowPile(m, r, Vector3.zero, 2.6f, 2.2f, 1.2f, 20f));
-        }
-
-        private static void DressClinic(RaidTown town, RaidBuilding clinic, RaidBuilding tent)
-        {
-            DumpsterProp(town, new Vector3(-33.6f, 0f, -14f), 90f);
-            Wreck(town, new Vector3(-10f, 0f, -16f), 182f, DecorProps.CarKind.Sedan, new Color(0.82f, 0.82f, 0.80f));
-
-            // The quarantine site behind the clinic: a toxic cloud centred on the tent, warning barrels and
-            // a hazard sign at its edge, sandbags at the flap and a generator.
-            Vector3 c = new Vector3(-24f, 0f, -40f);
-            ToxicZone.Spawn(town.Scenery, c, 12f);
-            Prop(town, new Vector3(-24f, 0f, -26.8f), 0f, new Vector3(0.7f, 2f, 0.3f), true, (m, r) => DecorProps.HazardSign(m, r));
-            Vector3[] barrels =
-            {
-                new Vector3(-28.5f, 0f, -27.6f), new Vector3(-29.2f, 0f, -28.1f), new Vector3(-19.4f, 0f, -27.7f),
-                new Vector3(-13.6f, 0f, -36f), new Vector3(-34.2f, 0f, -40f), new Vector3(-34.6f, 0f, -40.7f),
-            };
-            foreach (Vector3 p in barrels)
-                Prop(town, p, 0f, new Vector3(0.6f, 0.9f, 0.6f), true, (m, r) => { FurnitureBuilder.Barrel(m, r, Vector3.zero, new Color(0.66f, 0.54f, 0.12f), true); m.Cylinder(Vector3.zero + new Vector3(0f, 0.44f, 0f), 0.298f, 0.018f, 12, DecorPalette.Metal(new Color(0.55f, 0.45f, 0.20f))); });
-            // Caution tape strung between stakes across the approach.
-            Surf tape = DecorMaterials.Hazard;
-            float[] stakes = { -31f, -27f, -21f, -17f };
-            for (int i = 0; i < stakes.Length; i++)
-            {
-                var p = new Vector3(stakes[i], 0f, -28.5f + (i % 2) * 0.3f);
-                RaidMesh m = town.Out.Solid(p);
-                m.Box(p + new Vector3(0f, 0.55f, 0f), new Vector3(0.06f, 1.1f, 0.06f), DecorPalette.Matte(new Color(0.55f, 0.45f, 0.30f)));
-                if (i < stakes.Length - 1 && i != 1)
+                var roof = new RaidMesh();
+                var rc = new Vector3(r.center.x, 4.35f, r.center.y);
+                var size = new Vector3(r.width, 0.3f, r.height);
+                roof.Box(rc, size, DecorPalette.Matte(new Color(0.82f, 0.82f, 0.80f)));
+                roof.Box(rc + new Vector3(0f, -0.1f, 0f), size + new Vector3(0.1f, -0.18f, 0.1f), DecorPalette.Matte(new Color(0.66f, 0.12f, 0.10f)));
+                roof.Box(rc + new Vector3(0f, 0.2f, 0f), size - new Vector3(0.3f, 0.22f, 0.3f), DecorPalette.Matte(DecorProps.SnowWhite));
+                int lamps = 3, lit = 1 + _rng.Next(2);
+                for (int i = 0; i < lamps; i++)
                 {
-                    var q = new Vector3(stakes[i + 1], 0f, -28.5f + ((i + 1) % 2) * 0.3f);
-                    m.Rod(p + Vector3.up * 0.95f, q + Vector3.up * 0.9f, 0.06f, tape);
+                    bool on = i < lit;
+                    var lp = new Vector3(rc.x, 4.19f, r.yMin + r.height * (i + 0.5f) / lamps);
+                    roof.Box(lp, new Vector3(0.5f, 0.02f, 1.0f), on ? DecorPalette.Glow(new Color(0.95f, 0.92f, 0.82f)) : DecorPalette.Matte(new Color(0.5f, 0.5f, 0.48f)));
+                    if (on) _town.Light(_mart.Root, lp - Vector3.up * 0.16f, new Color(0.92f, 0.94f, 1f), 9f, 1.6f, false, i == 0);
+                }
+                GameObject canopy = roof.Emit("Canopy", _town.Overhead, rc);
+                if (canopy != null) CeilingVisibility.Register(canopy.GetComponent<MeshRenderer>());
+                _town.OverheadCollider(rc, size, Quaternion.identity);
+            }
+
+            // The depot: its yard before the loading doors, the drive down to Depot Rd, a pickup, pallets waiting by the rail
+            // line, the dumpster and the plowed snow.
+            private void Depot()
+            {
+                RaidBuilding b = _depot;
+                Rect f = b.Footprint;
+                Rect yard = Rect.MinMaxRect(f.xMin - 3.9f, f.yMin - 13.4f, RailX - 2.4f, f.yMin);
+                Pave(yard, LotY, DecorMaterials.DryAsphalt);
+                Reserve(yard);
+                Rect drive = Rect.MinMaxRect(f.center.x - 3f, DepotRd.Outer, f.center.x + 5f, yard.yMin);
+                Pave(drive, LotY, DecorMaterials.DryAsphalt);
+                Reserve(drive);
+                DropKerb(DepotRd, +1, drive.xMin, drive.xMax);
+                ParkedCar(_town, new Vector3(f.xMin + 2f, 0f, yard.yMin + 5f), R(_rng, -2f, 2f), DecorProps.CarKind.Pickup, Paint(_rng));
+                for (int i = 0; i < 2; i++)
+                {
+                    var p = new Vector3(yard.xMax - 1.2f, 0f, yard.yMin + 2f + i * 2.2f);
+                    float yaw = i * 90f;
+                    Prop(_town, p, 0f, new Vector3(1.2f, 1.2f, 1.0f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, yaw, true));
+                }
+                DumpsterProp(_town, new Vector3(yard.xMin + 1.6f, 0f, f.yMin - 2f), 0f);
+                Heap(new Vector3(yard.xMin + 1.3f, 0f, yard.yMin + 1.3f), 2.6f, 2.2f, 1.2f);
+            }
+
+            // The National Guard post: the gravel parade ground off Main St with the flag, sandbags either side of the door,
+            // the unit's truck and its sign; the motor pool behind with two more trucks and the fuel drums; the dumpster.
+            private void GuardPost()
+            {
+                RaidBuilding b = _post;
+                Rect f = b.Footprint;
+                Rect yard = Rect.MinMaxRect(MainSt.Outer, f.yMin - 2.4f, f.xMin, f.yMax + 1.9f);
+                Pave(yard, LotY, DecorMaterials.Gravel);
+                DropKerb(MainSt, +1, yard.yMin + 0.6f, yard.yMin + 5.6f);
+                foreach (Vector3 d in Doors(b, 1))
+                    for (int s = -1; s <= 1; s += 2)
+                        Prop(_town, new Vector3(d.x - 1.2f, 0f, d.z + s * 2.9f), 90f, new Vector3(2.4f, 0.7f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 2.4f, 4));
+                Flagpole(new Vector3(yard.xMin + 2.6f, 0f, yard.yMax - 1.6f), 7f);
+                Sign(new Vector3(yard.xMin + 0.9f, 0f, yard.center.y - 1.5f), 270f, "NATIONAL GUARD", new Color(0.20f, 0.26f, 0.16f), new Color(0.88f, 0.86f, 0.74f), 0.42f, 1.2f);
+                ParkedCar(_town, new Vector3(yard.xMin + 3.6f, 0f, yard.yMin + 3.6f), R(_rng, -2f, 2f), DecorProps.CarKind.ArmyTruck, Color.white);
+                Reserve(yard);
+                foreach (Vector3 d in Doors(b, 3)) Pave(Rect.MinMaxRect(f.xMax, d.z - 1.2f, f.xMax + 1.6f, d.z + 1.2f), PathY, DecorMaterials.Concrete);
+                DumpsterProp(_town, new Vector3(f.xMax + 2f, 0f, f.yMin + 3.5f), 90f);
+
+                // The motor pool south of the post, its gate on Main St; a gravel path to the post's side door.
+                Rect pool = Rect.MinMaxRect(MainSt.Outer, f.yMin - 16.4f, f.xMax + 2.9f, f.yMin - 3.9f);
+                Pave(pool, LotY, DecorMaterials.Gravel);
+                DropKerb(MainSt, +1, pool.yMin + 1f, pool.yMax - 1f);
+                foreach (Vector3 d in Doors(b, 0)) Walk(d, 0, pool.yMax, DecorMaterials.Gravel, 1.6f);
+                for (int i = 0; i < 2; i++)
+                    ParkedCar(_town, new Vector3(pool.center.x - 2f, 0f, pool.yMax - 3.4f - i * 4.6f), 90f + R(_rng, -1.5f, 1.5f), DecorProps.CarKind.ArmyTruck, Color.white);
+                Color olive = new Color(0.28f, 0.31f, 0.20f);
+                for (int i = 0; i < 3; i++)
+                    Prop(_town, new Vector3(pool.xMax - 3.2f + i * 0.8f, 0f, pool.yMin + 0.9f), 0f, new Vector3(0.62f, 0.9f, 0.62f), true,
+                        (m, r) => FurnitureBuilder.Barrel(m, r, Vector3.zero, olive, true));
+                Reserve(pool);
+            }
+
+            // The quarantine compound behind the Guard post: a chain-link fence with its gate facing the post, the tent in the
+            // middle of the toxic cloud, sandbags at the flap, the generator, a row of drums and the warning lamp at the gate.
+            private void Quarantine()
+            {
+                Rect c = Compound;
+                Vector3 flap = Doors(_tent, 1).Count > 0 ? Doors(_tent, 1)[0] : new Vector3(TentAt.x - 4.6f, 0f, TentAt.y);
+                float gate0 = flap.z - 2.5f, gate1 = flap.z + 2.5f;
+                // Counter-clockwise, so each run's snow banks up outside the compound.
+                Fence(new Vector3(c.xMin, 0f, c.yMax), new Vector3(c.xMin, 0f, gate1), FenceKind.ChainLink, default);
+                Fence(new Vector3(c.xMin, 0f, gate0), new Vector3(c.xMin, 0f, c.yMin), FenceKind.ChainLink, default);
+                Fence(new Vector3(c.xMin, 0f, c.yMin), new Vector3(c.xMax, 0f, c.yMin), FenceKind.ChainLink, default);
+                Fence(new Vector3(c.xMax, 0f, c.yMin), new Vector3(c.xMax, 0f, c.yMax), FenceKind.ChainLink, default);
+                Fence(new Vector3(c.xMax, 0f, c.yMax), new Vector3(c.xMin, 0f, c.yMax), FenceKind.ChainLink, default);
+                Reserve(Rect.MinMaxRect(c.xMin - 3f, gate0, c.xMin + 1f, gate1));
+                Reserve(Rect.MinMaxRect(c.xMin, gate0, flap.x, gate1));
+
+                ToxicZone.Spawn(_town.Scenery, new Vector3(TentAt.x, 0f, TentAt.y), 12f);
+                for (int s = -1; s <= 1; s += 2)
+                {
+                    Prop(_town, new Vector3(c.xMin - 1f, 0f, flap.z + s * 3.6f), 270f, new Vector3(0.7f, 2f, 0.3f), true, (m, r) => DecorProps.HazardSign(m, r));
+                    Prop(_town, new Vector3(flap.x - 2.2f, 0f, flap.z + s * 2.4f), 90f, new Vector3(1.8f, 0.7f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 1.8f, 4));
+                }
+                GeneratorProp(_town, new Vector3(c.xMin + 4f, 0f, c.yMin + 3f), 0f);
+                Color hazard = new Color(0.66f, 0.54f, 0.12f);
+                for (int i = 0; i < 4; i++)
+                    Prop(_town, new Vector3(c.xMax - 9f + i * 0.8f, 0f, c.yMin + 1.1f), 0f, new Vector3(0.62f, 0.9f, 0.62f), true,
+                        (m, r) => FurnitureBuilder.Barrel(m, r, Vector3.zero, hazard, true));
+
+                // A caged warning lamp on a post by the gate, burning red-orange.
+                var lamp = new Vector3(c.xMin - 1f, 0f, gate1 + 0.6f);
+                Prop(_town, lamp, 0f, new Vector3(0.2f, 2.4f, 0.2f), true, (m, r) =>
+                {
+                    Surf post = DecorPalette.Metal(new Color(0.30f, 0.32f, 0.28f));
+                    m.Box(new Vector3(0f, 1.2f, 0f), new Vector3(0.08f, 2.4f, 0.08f), post);
+                    m.Box(new Vector3(0f, 2.42f, 0.12f), new Vector3(0.05f, 0.05f, 0.3f), post);
+                    m.Box(new Vector3(0f, 2.48f, 0.24f), new Vector3(0.2f, 0.06f, 0.2f), DecorPalette.Matte(new Color(0.15f, 0.15f, 0.14f)));
+                    m.Box(new Vector3(0f, 2.36f, 0.24f), new Vector3(0.14f, 0.14f, 0.14f), DecorPalette.Glow(new Color(1f, 0.45f, 0.25f)));
+                });
+                _town.Light(_tent.Root, lamp + new Vector3(0f, 2.3f, 0.24f), new Color(1f, 0.45f, 0.25f), 6f, 1.4f, true, false);
+            }
+
+            // The clinic: the walk from Depot Rd to its front door and its sign; the patients' lot behind, off Oak St, with
+            // the back door's path, the dumpster and the plowed snow.
+            private void Clinic()
+            {
+                RaidBuilding b = _clinic;
+                Rect f = b.Footprint;
+                foreach (Vector3 d in Doors(b, 2)) Walk(d, 2, -DepotRd.Outer, DecorMaterials.Concrete, 1.8f);
+                Sign(new Vector3(f.xMin + 3.5f, 0f, -DepotRd.Outer - 1.4f), 0f, "CLINIC", new Color(0.86f, 0.86f, 0.82f), new Color(0.12f, 0.36f, 0.22f), 0.45f, 0.9f);
+
+                Rect lot = Rect.MinMaxRect(f.xMin, OakSt.Coord + OakSt.Outer, f.xMax, f.yMin - 1.6f);
+                Pave(lot, LotY, DecorMaterials.DryAsphalt);
+                Reserve(lot);
+                DropKerb(OakSt, +1, lot.center.x - 3.5f, lot.center.x + 3.5f);
+                List<Vector3> bays = Bays(new Vector3(lot.xMin + 1.2f, 0f, lot.yMax - 0.2f), Vector3.right, Vector3.back, 5, 2.7f, 5f);
+                ParkIn(bays, 2, 0f);
+                foreach (Vector3 d in Doors(b, 0)) Walk(d, 0, lot.yMax, DecorMaterials.Concrete);
+                DumpsterProp(_town, new Vector3(lot.xMax - 1.7f, 0f, lot.yMax - 2.2f), 90f);
+                Heap(new Vector3(lot.xMin + 1.3f, 0f, lot.yMin + 1.3f), 2.6f, 2.2f, 1.1f);
+            }
+
+            // Veterans Park on the crossroads' north-west corner: a cross of paths meeting at a plaza round the war memorial,
+            // benches facing it, a tree in each quarter, two lamps and the park's sign.
+            private void Park()
+            {
+                Rect p = ParkLot;
+                var mid = new Vector3(p.center.x, 0f, p.center.y);
+                Surf concrete = DecorMaterials.Concrete;
+                Pave(Rect.MinMaxRect(p.xMin, mid.z - 0.8f, p.xMax, mid.z + 0.8f), PathY, concrete);
+                Pave(Rect.MinMaxRect(mid.x - 0.8f, p.yMin, mid.x + 0.8f, p.yMax), PathY, concrete);
+                Pave(Around(mid, 3.5f, 3.5f), PlazaY, concrete);
+                Prop(_town, mid, 180f, new Vector3(2.6f, 5.4f, 2.6f), true, (m, r) => DecorProps.Obelisk(m));
+                Reserve(Around(mid, 3.6f, 3.6f));
+                for (int i = 0; i < 4; i++)
+                {
+                    float sx = i % 2 == 0 ? -1f : 1f, sz = i < 2 ? -1f : 1f;
+                    var at = mid + new Vector3(sx * 4.7f, 0f, sz * 4.7f);
+                    float yaw = Mathf.Atan2(-sx, -sz) * Mathf.Rad2Deg;
+                    Prop(_town, at, yaw, new Vector3(1.8f, 0.9f, 0.6f), true, (m, r) => DecorProps.Bench(m));
+                    if (i == 0 || i == 3)
+                        Prop(_town, at + Quaternion.Euler(0f, yaw, 0f) * new Vector3(1.4f, 0f, 0f), 0f, new Vector3(0.5f, 1f, 0.5f), true, (m, r) => DecorProps.LitterBin(m));
+                    Tree(new Vector3(mid.x + sx * (p.width * 0.28f), 0f, mid.z + sz * (p.height * 0.3f)), i == 1 || i == 2);
+                }
+                ParkLamp(new Vector3(mid.x - 1.6f, 0f, p.yMin + 2.2f));
+                ParkLamp(new Vector3(mid.x + 1.6f, 0f, p.yMax - 2.2f));
+                Sign(new Vector3(p.xMax - 3.2f, 0f, p.yMin + 1.4f), 180f, "VETERANS PARK", new Color(0.18f, 0.28f, 0.20f), new Color(0.88f, 0.86f, 0.74f), 0.36f, 0.6f);
+            }
+
+            private void ParkLamp(Vector3 at)
+            {
+                bool lit = Chance(_rng, 0.6);
+                RaidMesh m = _town.Out.Solid(at);
+                m.SetFrame(at, 0f);
+                Vector3 globe = m.ToMeshSpace(DecorProps.ParkLamp(m, lit));
+                m.ResetFrame();
+                _town.PropCollider(at + Vector3.up * 1.9f, new Vector3(0.3f, 3.8f, 0.3f), 0f);
+                Reserve(Around(at, 0.5f, 0.5f));
+                if (lit) _town.Light(_town.World, globe, new Color(1f, 0.82f, 0.58f), 9f, 1.5f, false, false);
+            }
+            #endregion
+
+            #region Houses
+            // A house's front yard, fitted like the starter home's: the front walk out to the sidewalk, the mailbox by it with
+            // the house's post in it, the welcome mat on the step, the number by the door and the outside tap on the side wall
+            // (all of them working); the drive along the kitchen side, most with the family car on it; a tree in the yard.
+            private void House(in HouseLot lot, RaidBuilding b)
+            {
+                float doorLx = lot.Small ? -1.5f : -3f;
+                Vector3 door = b.W(doorLx, 0f, -b.HalfD - RaidBuilding.Half);
+                Pave(Rect.MinMaxRect(door.x - 0.7f, Mathf.Min(door.z, lot.SidewalkZ), door.x + 0.7f, Mathf.Max(door.z, lot.SidewalkZ)), PathY, DecorMaterials.Concrete);
+                Vector3 box = b.W(doorLx + 1.3f, 0f, -b.HalfD - RaidBuilding.Half - Setback + 0.7f);
+                Reserve(Around(box, 0.3f, 0.3f));
+                b.YardMailbox(box, RaidHomeLiving.Post(_rng));
+                b.FrontDoormat(doorLx);
+                b.HouseNumber(doorLx, HouseNumberOf(lot));
+                b.OutsideTap(b.HalfD > 4.75f ? 0.6f : 0.3f);   // on the side wall, between its two windows
+
+                Rect drive = Rect.MinMaxRect(lot.DriveX - DriveHalf, Mathf.Min(lot.SidewalkZ, lot.Center.y), lot.DriveX + DriveHalf, Mathf.Max(lot.SidewalkZ, lot.Center.y));
+                Pave(drive, LotY, DecorMaterials.DryAsphalt);
+                DropKerb(lot.Street, lot.Side, drive.xMin, drive.xMax);
+                if (Chance(_rng, 0.7))
+                    ParkedCar(_town, new Vector3(lot.DriveX, 0f, lot.FrontZ + lot.Side * 0.6f), (lot.Side > 0 ? 0f : 180f) + R(_rng, -2f, 2f), FamilyCar(_rng), Paint(_rng));
+                Reserve(drive);
+
+                if (Chance(_rng, 0.6))
+                {
+                    Vector3 t = b.W(-b.HalfW + 1.2f, 0f, -b.HalfD - RaidBuilding.Half - Setback * 0.5f);
+                    if (Free(Around(t, 0.8f, 0.8f))) Tree(t, false);
                 }
             }
-            Prop(town, new Vector3(-28.5f, 0f, -35f), 90f, new Vector3(1.8f, 0.7f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 1.8f, 4));
-            Prop(town, new Vector3(-19.5f, 0f, -35f), 90f, new Vector3(1.8f, 0.7f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 1.8f, 4));
-            GeneratorProp(town, new Vector3(-19.4f, 0f, -42f), 0f);
-            for (int i = 0; i < 5; i++)
-            {
-                var p = new Vector3(R(town.Rng, -32f, -16f), 0f, R(town.Rng, -50f, -30f));
-                if (town.Blocked(Around(p, 0.4f, 0.4f))) continue;
-                DecorProps.TrashBag(town.Out.Solid(p), town.Rng, p);
-            }
-            // A caged warning lamp on a post by the flap, burning red-orange.
-            Vector3 lampPost = new Vector3(-22.4f, 0f, -34.2f);
-            Prop(town, lampPost, 0f, new Vector3(0.2f, 2.4f, 0.2f), true, (m, r) =>
-            {
-                m.Box(new Vector3(0f, 1.2f, 0f), new Vector3(0.08f, 2.4f, 0.08f), DecorPalette.Metal(new Color(0.3f, 0.32f, 0.28f)));
-                m.Box(new Vector3(0f, 2.42f, 0.12f), new Vector3(0.05f, 0.05f, 0.3f), DecorPalette.Metal(new Color(0.3f, 0.32f, 0.28f)));
-                m.Box(new Vector3(0f, 2.48f, 0.24f), new Vector3(0.2f, 0.06f, 0.2f), DecorPalette.Matte(new Color(0.15f, 0.15f, 0.14f)));
-                // Add subtle weathered metal cap atop the post
-                m.Cylinder(new Vector3(0f, 2.45f, 0f), 0.03f, 0.02f, 8, DecorPalette.Metal(new Color(0.45f, 0.45f, 0.44f)));
-            });
-            town.Light(tent.Root, lampPost + new Vector3(0f, 2.3f, 0.24f), new Color(1f, 0.45f, 0.25f), 6f, 1.4f, true, false);
-        }
 
-        /// <summary>A house's front yard, fitted like the starter home's: the front walk out to the sidewalk, the mailbox by it
-        /// with the house's last post in it, the welcome mat on the step, the number by the door and the outside tap on the
-        /// side wall — all of them working — and maybe a car in the drive.</summary>
-        private static void DressHouse(RaidTown town, RaidBuilding b, float doorLx, float yard)
-        {
-            Vector3 door = b.W(doorLx, 0f, -b.HalfD - 0.1f);
-            Vector3 dir = b.Dir(0f, -1f);
-            Vector3 end = door + dir * yard;
-            bool alongX = Mathf.Abs(dir.x) > 0.5f;
-            Rect walk = Rect.MinMaxRect(Mathf.Min(door.x, end.x), Mathf.Min(door.z, end.z), Mathf.Max(door.x, end.x), Mathf.Max(door.z, end.z));
-            walk = alongX ? Rect.MinMaxRect(walk.xMin, walk.yMin - 0.6f, walk.xMax, walk.yMax + 0.6f)
-                          : Rect.MinMaxRect(walk.xMin - 0.6f, walk.yMin, walk.xMax + 0.6f, walk.yMax);
-            Paved(town, walk, 0.028f, DecorMaterials.Concrete);
-
-            Vector3 side = b.Dir(1f, 0f);
-            Vector3 box = end - dir * 0.7f + side * 1.3f;
-            // Always reserve mailbox space to prevent later props from intersecting, even if the mailbox cannot be placed due to blockage.
-            town.Keepout.Add(Around(box, 0.3f, 0.3f));
-            if (!town.Blocked(Around(box, 0.3f, 0.3f)))
+            // The lots along one side of a residential street: the bounds between neighbours, a picket fence along the front
+            // of some (gapped for the walk and the drive), and the backyards fenced off from each other and from Depot Rd.
+            private void Yards(Street street, int side)
             {
-                b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));
-                // Add a small mailbox flag on ~40% of mailboxes
-                if (town.Rng.NextDouble() < 0.4)
+                List<int> row = Row(street, side);
+                if (row.Count == 0) return;
+                var bounds = new float[row.Count + 1];
+                for (int i = 0; i <= row.Count; i++)
                 {
-                    var m = town.Out.Solid(box);
-                    // metal pole at the top front of the mailbox
-                    m.Cylinder(box + new Vector3(0f, 0.15f, 0f), 0.02f, 0.3f, 6,
-                        DecorPalette.Metal(new Color(0.5f, 0.5f, 0.5f)), Quaternion.identity, 1f);
-                    // red‑brown cloth flag attached to the pole
-                    m.Box(box + new Vector3(0f, 0.30f, 0f), new Vector3(0.15f, 0.1f, 0.02f),
-                        DecorPalette.Matte(new Color(0.6f, 0.1f, 0.1f)));
+                    if (i == 0) bounds[i] = WestOf(HouseLots[row[0]]) - 2.5f;
+                    else if (i == row.Count) bounds[i] = EastOf(HouseLots[row[i - 1]]) + 2.5f;
+                    else bounds[i] = (EastOf(HouseLots[row[i - 1]]) + WestOf(HouseLots[row[i]])) * 0.5f;
+                }
+                float limit = RowLimitEast(street, side);
+                // A corner lot on Main St keeps its side yard open to the sidewalk (no fence along the main road).
+                bool openToMain = bounds[row.Count] >= limit && limit >= -MainSt.Outer - 0.31f;
+                bounds[row.Count] = Mathf.Min(bounds[row.Count], limit);
+
+                // Behind the backs: Depot Rd (a board fence along its sidewalk) or the map's own fence.
+                bool onDepotRd = (side > 0) == (street.Coord < 0f);
+                float rear = onDepotRd ? Mathf.Sign(street.Coord) * (DepotRd.Outer + 0.8f) : side * (EdgeLine - 1.2f);
+                float backLine = side > 0 ? float.MinValue : float.MaxValue;
+                foreach (int i in row) backLine = side > 0 ? Mathf.Max(backLine, HouseLots[i].BackZ) : Mathf.Min(backLine, HouseLots[i].BackZ);
+                backLine += side * 0.8f;
+
+                Color boards = new Color(0.50f, 0.40f, 0.30f);
+                if (onDepotRd) Fence(new Vector3(bounds[0], 0f, rear), new Vector3(bounds[row.Count], 0f, rear), FenceKind.Privacy, boards);
+                for (int i = 0; i <= row.Count; i++)
+                    if (!(i == row.Count && openToMain)) Fence(new Vector3(bounds[i], 0f, backLine), new Vector3(bounds[i], 0f, rear), FenceKind.Privacy, boards);
+
+                for (int k = 0; k < row.Count; k++)
+                {
+                    HouseLot lot = HouseLots[row[k]];
+                    if (!Chance(_rng, 0.5)) continue;
+                    Color paint = Chance(_rng, 0.6) ? new Color(0.88f, 0.88f, 0.84f) : new Color(0.56f, 0.46f, 0.34f);
+                    float z = lot.SidewalkZ + side * 0.35f;
+                    Vector3 door = _houses[row[k]].W(lot.Small ? -1.5f : -3f, 0f, 0f);
+                    var runs = new List<Span> { new Span { A = bounds[k] + 0.3f, B = bounds[k + 1] - 0.3f } };
+                    Cut(runs, door.x - 0.9f, door.x + 0.9f, false);
+                    Cut(runs, lot.DriveX - DriveHalf - 0.2f, lot.DriveX + DriveHalf + 0.2f, false);
+                    foreach (Span r in runs)
+                        if (r.B - r.A > 0.6f) Fence(new Vector3(side > 0 ? r.B : r.A, 0f, z), new Vector3(side > 0 ? r.A : r.B, 0f, z), FenceKind.Picket, paint);
+                }
+
+                // A tree in most backyards: mostly bare maples, the odd small spruce.
+                for (int k = 0; k < row.Count; k++)
+                {
+                    if (!Chance(_rng, 0.65)) continue;
+                    float x = Mathf.Lerp(bounds[k], bounds[k + 1], R(_rng, 0.3f, 0.7f));
+                    float z = Mathf.Lerp(backLine, rear, R(_rng, 0.35f, 0.65f));
+                    var t = new Vector3(x, 0f, z);
+                    if (Free(Around(t, 0.8f, 0.8f))) Tree(t, Chance(_rng, 0.25));
                 }
             }
-            b.FrontDoormat(doorLx);
 
-        // Colour palette for flower heads on potted plants.
-        Color[] flowerCols = {
-            new Color(0.90f, 0.20f, 0.20f), // red
-            new Color(0.20f, 0.70f, 0.20f), // green
-            new Color(0.90f, 0.80f, 0.20f), // yellow
-            new Color(0.20f, 0.20f, 0.90f)  // blue
-        };
+            private static float WestOf(in HouseLot lot) => lot.X - lot.HalfW - RaidBuilding.Half - (lot.DriveEast ? 0f : 1f + DriveHalf * 2f);
+            private static float EastOf(in HouseLot lot) => lot.X + lot.HalfW + RaidBuilding.Half + (lot.DriveEast ? 1f + DriveHalf * 2f : 0f);
 
-        // Small potted‑plant on the front walk, a bit forward of the door.
-        Vector3 plantPos = door + dir * 0.45f;
-        town.Keepout.Add(Around(plantPos, 0.18f, 0.18f));
-        var potMesh = town.Out.Solid(plantPos);
-        // Rust‑tinted metal pot
-        potMesh.Cylinder(plantPos + new Vector3(0f, 0.06f, 0f), 0.07f, 0.10f, 8,
-            DecorPalette.Metal(new Color(0.55f, 0.45f, 0.38f)), Quaternion.identity, 1f);
-        // Dark brown soil inside the pot
-        potMesh.Cylinder(plantPos + new Vector3(0f, 0.13f, 0f), 0.065f, 0.02f, 6,
-            DecorPalette.Matte(new Color(0.30f, 0.22f, 0.12f)), Quaternion.identity, 1f);
-        // Stem
-        potMesh.Cylinder(plantPos + new Vector3(0f, 0.16f, 0f), 0.01f, 0.15f, 6,
-            DecorPalette.Matte(new Color(0.10f, 0.40f, 0.10f)), Quaternion.identity, 1f);
-        // Flower head with random colour
-        Color flowerCol = flowerCols[town.Rng.Next(flowerCols.Length)];
-        potMesh.Cylinder(plantPos + new Vector3(0f, 0.31f, 0f), 0.03f, 0.02f, 6,
-            DecorPalette.Matte(flowerCol), Quaternion.identity, 1f);
-// ---- front‑door hardware detail ----
-{
-    // the door centre is already stored in the local variable 'door'
-    var m = town.Out.Solid(door);
-    float doorZ = -b.HalfD - 0.1f;
-    Quaternion rotation = Quaternion.Euler(0f, b.Yaw(0f), 0f);
-    // 1. brass‑coloured knob – cylinder 0.02 m radius, 0.01 m height, centred 0.9 m up, 0.1 m right of centre
-    m.Cylinder(b.W(doorLx + 0.10f, 0.90f, doorZ), 0.02f, 0.01f, 12,
-        DecorPalette.Metal(new Color(0.70f, 0.55f, 0.35f)), rotation * Quaternion.Euler(0f, 0f, b.Mirror ? -90f : 90f), 1f);
-    // 2. small latch plate – box 0.03 m × 0.02 m × 0.01 m, left of knob, a little lower
-    m.Box(b.W(doorLx - 0.08f, 0.85f, doorZ), new Vector3(0.03f, 0.02f, 0.01f), rotation,
-        DecorPalette.Matte(new Color(0.80f, 0.60f, 0.30f)));
-    // 3. wooden door edge trim – thin box 0.02 m thick, runs the full height (1.9 m) and width (0.8 m)
-    m.Box(b.W(doorLx, 0.95f, doorZ - 0.02f), new Vector3(0.80f, 1.90f, 0.02f), rotation,
-        DecorPalette.Matte(new Color(0.55f, 0.38f, 0.22f)));
-    // 4. peephole – tiny cylinder 0.015 m radius, 0.005 m depth, centred 1.1 m up, centred horizontally
-    m.Cylinder(b.W(doorLx, 1.10f, doorZ + 0.015f), 0.015f, 0.005f, 8,
-        DecorPalette.Metal(new Color(0.30f, 0.30f, 0.30f)), rotation, 1f);
-    // 5. rust spot – very small cylinder 0.01 m radius, 0.004 m height, bottom‑right of knob
-    m.Cylinder(b.W(doorLx + 0.07f, 0.78f, doorZ), 0.01f, 0.004f, 6,
-        DecorPalette.Metal(new Color(0.55f, 0.35f, 0.20f)), rotation, 1f);
-    // 6. subtle wear – two thin, dark quads (very flat boxes) to suggest paint chips
-    m.Box(b.W(doorLx - 0.12f, 0.62f, doorZ + 0.001f), new Vector3(0.05f, 0.01f, 0.001f), rotation,
-        DecorPalette.Matte(new Color(0.30f, 0.25f, 0.22f)));
-    m.Box(b.W(doorLx + 0.12f, 0.55f, doorZ + 0.001f), new Vector3(0.04f, 0.008f, 0.001f), rotation,
-        DecorPalette.Matte(new Color(0.30f, 0.25f, 0.22f)));
-
-    // 7. left hinge – thin metal cylinder, 0.015 m radius, 0.08 m height, 0.03 m from door centre, 1.0 m up
-    float hingeOffsetX = -0.38f; // offset from door centre (approx. left edge)
-    float hingeHeight = 1.00f;
-    m.Cylinder(b.W(doorLx + hingeOffsetX, hingeHeight, doorZ),
-        0.015f, 0.08f, 12,
-        DecorPalette.Metal(new Color(0.65f, 0.60f, 0.55f)),
-        rotation * Quaternion.Euler(0f, 0f, b.Mirror ? -90f : 90f), 1f);
-
-    // 8. right hinge – same as left but mirrored to the opposite side
-    float hingeOffsetX_R = 0.38f;
-    m.Cylinder(b.W(doorLx + hingeOffsetX_R, hingeHeight, doorZ),
-        0.015f, 0.08f, 12,
-        DecorPalette.Metal(new Color(0.65f, 0.60f, 0.55f)),
-        rotation * Quaternion.Euler(0f, 0f, b.Mirror ? 90f : -90f), 1f);
-
-    // 9. strike‑plate – thin metal rectangle framing the knob, 0.06 m tall, 0.04 m deep, 0.12 m wide
-    Vector3 platePos = b.W(doorLx + 0.10f, 0.90f, doorZ);
-    m.Box(platePos + new Vector3(0f, 0f, 0.025f),
-        new Vector3(0.12f, 0.06f, 0.04f),
-        rotation,
-        DecorPalette.Metal(new Color(0.68f, 0.58f, 0.45f)));
-
-    // 10. door‑bell – small square button, 0.04 m side, 0.006 m thick, 0.20 m right of knob, 1.12 m up
-    Vector3 bellPos = b.W(doorLx + 0.25f, 1.12f, doorZ);
-    m.Box(bellPos + new Vector3(0f, 0f, 0.02f),
-        new Vector3(0.04f, 0.006f, 0.04f),
-        rotation,
-        DecorPalette.Matte(new Color(0.30f, 0.30f, 0.28f)));
-
-    // 11. optional tiny rust spot on right hinge (≈30 % chance)
-    if (town.Rng.NextDouble() < 0.30)
-    {
-        m.Cylinder(b.W(doorLx + hingeOffsetX_R, hingeHeight + 0.04f, doorZ),
-            0.008f, 0.015f, 6,
-            DecorPalette.Metal(new Color(0.55f, 0.30f, 0.15f)),
-            rotation, 1f);
-    }
-}
-            b.HouseNumber(doorLx, (3 + town.Rng.Next(60)).ToString());
-            // ---- outdoor‑tap hardware detail ----
+            // How far east a row's last lot may run: to Main St's sidewalk, or short of the park or the clinic on the corner.
+            private float RowLimitEast(Street street, int side)
             {
-                float tapOffset = b.HalfD > 4.75f ? 0.6f : 0.3f;
-                Vector3 sideDir = b.Dir(1f, 0f);
-                Vector3 tapPos = door + sideDir * (b.HalfW - tapOffset);
-                DecorExtensions.AddOutdoorTap(town, tapPos, b.HalfD > 4.75f);
+                if (street == ElmSt && side < 0) return ParkLot.xMin - 0.6f;
+                if (street == OakSt && side > 0) return _clinic.Footprint.xMin - 0.6f;
+                return -MainSt.Outer - 0.3f;
             }
-
-            // A driveway beside the house with a dead car on it (about half the houses).
-            if (town.Rng.NextDouble() < 0.6)
-            {
-                Vector3 car = b.W(b.HalfW + 3.2f, 0f, -b.HalfD + 1.2f);
-                Rect cr = alongX ? Around(car, 2.4f, 1.6f) : Around(car, 1.6f, 2.4f);
-                if (!town.Blocked(cr) && !OnRoad(cr))
-                {
-                    Rect drive = Around(car, 1.6f, 1.6f);
-                    Vector3 kerb = car + dir * (yard + 1.2f);
-                    drive = Rect.MinMaxRect(Mathf.Min(drive.xMin, kerb.x - 1.5f), Mathf.Min(drive.yMin, kerb.z - 1.5f), Mathf.Max(drive.xMax, kerb.x + 1.5f), Mathf.Max(drive.yMax, kerb.z + 1.5f));
-                    if (alongX) drive = Rect.MinMaxRect(drive.xMin, car.z - 1.5f, drive.xMax, car.z + 1.5f);
-                    else drive = Rect.MinMaxRect(car.x - 1.5f, drive.yMin, car.x + 1.5f, drive.yMax);
-                    Paved(town, drive, 0.016f, DecorMaterials.Asphalt);
-                    Wreck(town, car, b.Yaw(R(town.Rng, -6f, 6f) + (town.Rng.NextDouble() < 0.5 ? 0f : 180f)),
-                        town.Rng.NextDouble() < 0.5 ? DecorProps.CarKind.Sedan : DecorProps.CarKind.Wagon, Paint(town));
-                    // Add a small driveway lamp post with a faint orange‑yellow glow beside the car
-                    Vector3 lampPos = car + (alongX ? new Vector3(0f, 0f, 1.5f) : new Vector3(1.5f, 0f, 0f));
-                    Prop(town, lampPos, 0f, new Vector3(0.15f, 2.0f, 0.15f), true, (m, r) =>
-                    {
-                        // 1️⃣ metal pole – same as before
-                        m.Box(new Vector3(0f, 1.0f, 0f), new Vector3(0.07f, 2.0f, 0.07f),
-                        DecorPalette.Metal(new Color(0.35f, 0.33f, 0.30f)));
-                        // 2️⃣ base plate at ground level (cylinder, radius 0.09 m, height 0.02 m)
-                        m.Cylinder(new Vector3(0f, 0.01f, 0f), 0.09f, 0.02f, 12,
-                        DecorPalette.Metal(new Color(0.40f, 0.38f, 0.35f)));
-                        // 3️⃣ rusted bolt on the base plate (tiny cylinder, radius 0.012 m, height 0.025 m)
-                        m.Cylinder(new Vector3(0.05f, 0.03f, 0f), 0.012f, 0.025f, 6,
-                        DecorPalette.Metal(new Color(0.55f, 0.30f, 0.15f)));
-                        // 4️⃣ horizontal cross‑bar midway up the pole (thin box, 0.12 m × 0.02 m × 0.02 m)
-                        m.Box(new Vector3(0f, 1.6f, 0f), new Vector3(0.12f, 0.02f, 0.02f),
-                        DecorPalette.Metal(new Color(0.45f, 0.44f, 0.42f)));
-                        // 5️⃣ hanging glass lantern (cylinder, radius 0.04 m, height 0.06 m) – slight orange‑yellow glow
-                        m.Cylinder(new Vector3(0f, 1.85f, 0f), 0.04f, 0.06f, 12,
-                        DecorPalette.Glow(new Color(1f, 0.55f, 0.20f)));
-                        // 6️⃣ subtle rust streak on the pole (flat box, 0.02 m × 0.005 m × 0.5 m)
-                        m.Box(new Vector3(0f, 1.2f, -0.04f), new Vector3(0.02f, 0.005f, 0.5f),
-                        DecorPalette.Matte(new Color(0.35f, 0.20f, 0.10f)));
-                        // 7️⃣ original glass shade (kept, now sits just below the lantern)
-                        m.Box(new Vector3(0f, 2.1f, 0f), new Vector3(0.12f, 0.05f, 0.12f),
-                        DecorPalette.Matte(new Color(0.15f, 0.14f, 0.13f)));
-                    });
-                    town.Light(b.Root, lampPos + new Vector3(0f, 2.2f, 0f), new Color(1f, 0.55f, 0.2f), 5f, 1.2f, true, false);
-                }
-            }
+            #endregion
         }
-        #endregion
     }
 }

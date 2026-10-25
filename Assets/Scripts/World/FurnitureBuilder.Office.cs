@@ -15,21 +15,6 @@ namespace CloneZ
             m.Box(at + q * new Vector3(0f, 0.015f, -0.02f), new Vector3(0.24f, 0.03f, 0.22f), q, M(c * 0.9f));
             m.Box(at + q * new Vector3(0f, 0.05f, -0.02f), new Vector3(0.1f, 0.05f, 0.1f), q, M(c * 0.85f));
             m.Box(at + q * new Vector3(0f, 0.26f, 0.02f), new Vector3(0.4f, 0.36f, 0.1f), q, M(c));
-            // metal grill frame (chrome)
-            m.Box(at + q * new Vector3(0f, 0.32f, 0.07f), new Vector3(0.34f, 0.02f, 0.002f), q, Mt(Chrome));
-            // vertical grill slats (chrome)
-            float[] slatX = { -0.12f, -0.06f, 0f, 0.06f, 0.12f };
-            foreach (float sx in slatX)
-                m.Box(at + q * new Vector3(sx, 0.32f, 0.07f), new Vector3(0.004f, 0.018f, 0.001f), q, Mt(Chrome));
-            // rubber foot pad (dark grey, non‑reflective)
-            m.Cylinder(at + q * new Vector3(0f, 0.00f, -0.02f), 0.04f, 0.005f, 12, M(new Color(0.12f,0.12f,0.13f)));
-            // power cord (black PVC)
-            Vector3 cordBase = at + q * new Vector3(0f, 0.015f, -0.15f);
-            m.Cylinder(cordBase, 0.005f, 0.30f, 8, M(Black));
-            // plug at cord end
-            Vector3 plugPos = cordBase + new Vector3(0f, -0.30f, 0f);
-            m.Box(plugPos, new Vector3(0.02f, 0.01f, 0.015f), M(Black));
-            m.Box(at + q * new Vector3(-0.15f, 0.30f, 0.07f), new Vector3(0.01f, 0.005f, 0.004f), q, Mt(Chrome));
             m.Box(at + q * new Vector3(0f, 0.25f, -0.13f), new Vector3(0.32f, 0.29f, 0.18f), q, M(c * 0.93f));
             m.Box(at + q * new Vector3(0f, 0.24f, -0.25f), new Vector3(0.2f, 0.18f, 0.08f), q, M(c * 0.88f));
             m.Box(at + q * new Vector3(0f, 0.27f, 0.072f), new Vector3(0.32f, 0.26f, 0.006f), q, on ? Gl(ScreenOn) : Gs(ScreenOff));
@@ -51,14 +36,8 @@ namespace CloneZ
             Quaternion q = Yaw(yaw);
             Color arm = new Color(0.16f, 0.16f, 0.17f);
             m.Cylinder(at, 0.075f, 0.03f, 10, M(shade * 0.7f));
-            // tiny chrome toggle switch on the base
-            m.Box(at + new Vector3(0f, 0.018f, 0f), new Vector3(0.016f, 0.004f, 0.008f), Mt(Chrome));
-            Vector3 screwPos = at + new Vector3(R(rng, -0.002f, 0.002f), 0.03f, R(rng, -0.002f, 0.002f));
-            m.Cylinder(screwPos, 0.008f, 0.004f, 6, Mt(Chrome));
             Vector3 j0 = at + new Vector3(0f, 0.03f, 0f);
             Vector3 j1 = at + q * new Vector3(0f, 0.36f, -0.1f);
-            // chrome knob at the arm joint
-            m.Cylinder(j1, 0.006f, 0.014f, 8, Mt(Chrome));
             Vector3 j2 = at + q * new Vector3(0f, 0.44f, 0.22f);
             m.Rod(j0, j1, 0.018f, M(arm));
             m.Rod(j0 + q * new Vector3(0.025f, 0f, 0f), j1 + q * new Vector3(0.025f, 0f, 0f), 0.006f, Mt(Chrome));
@@ -70,9 +49,6 @@ namespace CloneZ
             Vector3 axis = tilt * Vector3.up;
             Vector3 mouth = j2 + axis * 0.15f;
             m.Cylinder(mouth, 0.08f, 0.15f, 10, G(shade), tilt * Quaternion.Euler(180f, 0f, 0f), 0.4f, false);
-            // tiny greenish emissive lens on the shade front
-            Vector3 lensPos = mouth + (tilt * Vector3.up) * 0.08f; // front of the shade
-            m.Cylinder(lensPos, 0.02f, 0.001f, 12, Gl(new Color(0.2f, 0.6f, 0.2f)), tilt);
             m.Cylinder(j2 - axis * 0.01f, 0.034f, 0.012f, 8, G(shade * 0.8f), tilt);
             m.Ellipsoid(mouth - axis * 0.045f, new Vector3(0.06f, 0.06f, 0.06f), lit ? Gl(WarmGlow) : M(new Color(0.55f, 0.55f, 0.5f)), 6, 4);
             return mouth;
@@ -88,10 +64,6 @@ namespace CloneZ
                 var dir = new Vector3(Mathf.Sin(a), 0f, Mathf.Cos(a));
                 m.Rod(dir * 0.13f + Vector3.up * (h - 0.02f), dir * 0.21f, 0.022f, Mt(Chrome));
             }
-            // Small chrome foot‑ring around the padded seat
-            // radius matches the stool seat, thin band placed just below it
-            Vector3 ringPos = new Vector3(0f, h - 0.025f, 0f);
-            m.Cylinder(ringPos, 0.165f, 0.004f, 12, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
             float ry = h * 0.4f, rr = 0.165f;
             for (int i = 0; i < 4; i++)
             {
@@ -115,48 +87,9 @@ namespace CloneZ
                 m.Ellipsoid(dir * 0.3f + Vector3.up * 0.03f, new Vector3(0.05f, 0.05f, 0.05f), M(b), 6, 3);
             }
             m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));
-            // metal foot‑ring under seat – width matches seat, thin height
-            m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(0.48f, 0.004f, 0.46f), Mt(Chrome));
-            // vertical lumbar‑support bar on the back‑rest
-            m.Box(new Vector3(0f, 0.52f, -0.15f), new Vector3(0.02f, 0.12f, 0.02f), Mt(Chrome));
-            // caster wheels – rubber tire with a tiny chrome hub
-            Vector3[] wheelOffsets = new Vector3[] {
-                new Vector3( 0.05f, 0f, 0.05f),
-                new Vector3(-0.05f, 0f, 0.05f),
-                new Vector3( 0.05f, 0f,-0.05f),
-                new Vector3(-0.05f, 0f,-0.05f)
-            };
-            foreach (var baseOff in wheelOffsets) {
-                Vector3 jitter = new Vector3(R(rng, -0.005f, 0.005f), 0f, R(rng, -0.005f, 0.005f));
-                Vector3 pos = baseOff + jitter;
-                // rubber tire
-                m.Cylinder(pos, 0.03f, 0.015f, 8, M(new Color(0.12f, 0.12f, 0.13f)));
-                // tiny chrome hub (centered on same position, slightly thinner)
-                m.Cylinder(pos, 0.012f, 0.004f, 6, Mt(Chrome));
-            }
-            m.Cylinder(new Vector3(0f, 0.43f, 0f), 0.012f, 0.008f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 0.46f, 0.02f), new Vector3(0.48f, 0.08f, 0.46f), M(f));
-            // subtle stitching – two thin raised lines across the seat
-            m.Box(new Vector3(0f, 0.46f + 0.02f, 0.02f), new Vector3(0.48f, 0.001f, 0.46f),
-                M(V(f, rng, 0.02f)));
-            m.Box(new Vector3(0f, 0.46f - 0.02f, 0.02f), new Vector3(0.48f, 0.001f, 0.46f),
-                M(V(f, rng, 0.02f)));
-            // four rivet heads at seat corners
-            float hx = 0.24f; // half seat width
-            float dz = 0.23f; // half seat depth
-            Vector3[] rivetPos = {
-                new Vector3(-hx, 0.46f, -dz),
-                new Vector3( hx, 0.46f, -dz),
-                new Vector3(-hx, 0.46f,  dz),
-                new Vector3( hx, 0.46f,  dz)
-            };
-            foreach (var p in rivetPos)
-                m.Cylinder(p, 0.003f, 0.01f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 0.48f, -0.2f), new Vector3(0.06f, 0.18f, 0.04f), M(b));
-            // low‑profile metal brace on backrest
-            m.Rod(new Vector3(-0.22f, 0.78f, -0.25f),
-                new Vector3( 0.22f, 0.78f, -0.25f),
-                0.004f, Mt(Chrome));
+            m.Box(new Vector3(0f, 0.78f, -0.25f), new Vector3(0.44f, 0.46f, 0.07f), Quaternion.Euler(-8f, 0f, 0f), M(f));
         }
 
         /// <summary>A plain wooden kitchen / school chair.</summary>
@@ -182,16 +115,7 @@ namespace CloneZ
             Color c = V(body, rng, 0.05f);
             float h = drawers * 0.33f + 0.05f;
             m.Box(new Vector3(0f, h * 0.5f, -0.02f), new Vector3(0.46f, h, 0.58f), M(c * 0.92f));
-            if (Chance(rng, 0.25f))
-            {
-                float rx = R(rng, -0.15f, 0.15f);
-                float ry = R(rng, 0.2f, h - 0.2f);
-                Vector3 rustPos = new Vector3(rx, ry, -0.04f);
-                Vector3 rustSize = new Vector3(0.08f, 0.04f, 0.004f);
-                m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f)));
-            }
-            // Guard against zero‑drawer cabinets – rng.Next(0) would throw.
-            int open = (drawers > 0 && Chance(rng, 0.4)) ? rng.Next(drawers) : -1;
+            int open = Chance(rng, 0.4) ? rng.Next(drawers) : -1;
             for (int i = 0; i < drawers; i++)
             {
                 float y = 0.05f + i * 0.33f + 0.165f;
@@ -209,34 +133,7 @@ namespace CloneZ
                      }
                 }
                 m.Box(new Vector3(0f, y, 0.275f + pull), new Vector3(0.43f, 0.3f, 0.02f), M(c));
-                // Small chrome handle on the drawer front
-                // Adjusted length to make room for lock bar
-                m.Rod(new Vector3(-0.06f, y + 0.15f, 0.295f + pull), new Vector3(0.06f, y + 0.15f, 0.295f + pull), 0.004f, Mt(Chrome));
                 m.Box(new Vector3(0f, y + 0.02f, 0.29f + pull), new Vector3(0.14f, 0.03f, 0.025f), Mt(Chrome));
-                // ----- metal lock bar ----- (only top drawer)
-                if (i == drawers - 1) {
-                    Vector3 lockPos = new Vector3(-0.12f, y + 0.15f, 0.295f + pull);
-                    m.Box(lockPos, new Vector3(0.035f, 0.015f, 0.004f), Mt(Chrome));
-                    Vector3 knobPos = lockPos + new Vector3(0f, 0.008f, 0.002f);
-                    m.Cylinder(knobPos, 0.004f, 0.008f, 6, Mt(Chrome), Quaternion.Euler(90f,0f,0f));
-                    // occasional rust streak near lock (10% chance)
-                    if (Chance(rng, 0.1f)) {
-                        Vector3 rustPos = lockPos + new Vector3(0.01f, 0.005f, 0f);
-                        Vector3 rustSize = new Vector3(0.02f, 0.003f, 0.001f);
-                        m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f)));
-                }
-                }
-                // ----- subtle dent / wear patch on the top edge -----
-                if (i == drawers - 1) {
-                    float dentX = R(rng, -0.01f, 0.01f);
-                    float dentZ = R(rng, -0.01f, 0.01f);
-                    Vector3 dentPos = new Vector3(dentX, h - 0.01f, dentZ);
-                    Color dentCol = DecorPalette.Vary(c, 0.05f, rng); // 5% brighter
-                    m.Box(dentPos, new Vector3(0.06f, 0.01f, 0.008f), M(dentCol));
-                }
-                // ----- metal label plate (paper‑tinted) -----
-                Vector3 platePos = new Vector3(0f, y + 0.20f, 0.295f + pull);
-                m.Box(platePos, new Vector3(0.18f, 0.02f, 0.001f), M(Paper));
                 m.Box(new Vector3(0f, y + 0.09f, 0.287f + pull), new Vector3(0.09f, 0.04f, 0.004f), M(Paper));
             }
         }
@@ -250,8 +147,6 @@ namespace CloneZ
             m.Cylinder(at + new Vector3(0f, 0.28f, 0f), 0.298f, 0.035f, 12, G(c * 0.85f));
             m.Cylinder(at + new Vector3(0f, 0.58f, 0f), 0.298f, 0.035f, 12, G(c * 0.85f));
             m.Cylinder(at + new Vector3(0f, 0.86f, 0f), 0.296f, 0.03f, 12, G(c * 0.75f));
-            // Subtle worn metal band around the barrel
-            m.Cylinder(at + new Vector3(0f, 0.44f, 0f), 0.298f, 0.018f, 12, DecorPalette.Metal(new Color(0.45f, 0.44f, 0.43f)));
             m.Cylinder(at + new Vector3(0f, 0.88f, 0f), 0.26f, 0.006f, 12, M(c * 0.6f));
             m.Cylinder(at + new Vector3(0.14f, 0.88f, 0.05f), 0.03f, 0.015f, 6, M(c * 0.5f));
             if (hazard) m.Cylinder(at + new Vector3(0f, 0.36f, 0f), 0.297f, 0.2f, 12, DecorMaterials.Hazard, Quaternion.identity, 1f, false);
@@ -273,58 +168,6 @@ namespace CloneZ
             Surf body = military ? M(wood) : DecorMaterials.Planks(wood);
             Vector3 c = at + new Vector3(0f, size.y * 0.5f, 0f);
             m.Box(c, size, q, body);
-            // ----- metal nail corners -----
-            Vector3[] cornerSigns = new Vector3[]
-            {
-                new Vector3(-1f, 1f, -1f), // left‑back
-                new Vector3( 1f, 1f, -1f), // right‑back
-                new Vector3(-1f, 1f,  1f), // left‑front
-                new Vector3( 1f, 1f,  1f)  // right‑front
-            };
-            foreach (var s in cornerSigns)
-            {
-                // nail shank (chrome, 2 mm radius, 15 mm tall)
-                Vector3 shankBase = c + q * new Vector3(
-                    s.x * (size.x * 0.5f - 0.005f),
-                    size.y * 0.5f - 0.015f,
-                    s.z * (size.z * 0.5f - 0.005f));
-                m.Cylinder(shankBase, 0.002f, 0.015f, 6, Mt(Chrome));
-                // nail head (chrome, 4 mm radius, 2 mm thick)
-                Vector3 headPos = shankBase + new Vector3(0f, 0.015f, 0f);
-                m.Cylinder(headPos, 0.004f, 0.002f, 6, Mt(Chrome));
-            }
-
-            // ----- metal nail mid‑edges (long sides) -----
-            bool longSideX = size.x >= size.z;
-            float edgeOffsetX = longSideX ? (size.x * 0.5f - 0.005f) : (size.z * 0.5f - 0.005f);
-            float edgeOffsetZ = longSideX ? (size.z * 0.5f - 0.005f) : (size.x * 0.5f - 0.005f);
-            Vector3[] midEdgeSigns = new Vector3[]
-            {
-                new Vector3(-1f, 1f, 0f), // left centre
-                new Vector3( 1f, 1f, 0f)  // right centre
-            };
-            foreach (var s in midEdgeSigns)
-            {
-                Vector3 shankBase = c + q * new Vector3(
-                    s.x * edgeOffsetX,
-                    size.y * 0.5f - 0.015f,
-                    s.z * edgeOffsetZ);
-                m.Cylinder(shankBase, 0.002f, 0.015f, 6, Mt(Chrome));
-                Vector3 headPos = shankBase + new Vector3(0f, 0.015f, 0f);
-                m.Cylinder(headPos, 0.004f, 0.002f, 6, Mt(Chrome));
-            }
-
-            // ----- occasional rust streak near a random corner nail -----
-            if (Chance(rng, 0.12f))
-            {
-                // use first corner as reference
-                Vector3 rustPos = c + q * new Vector3(
-                    -1f * (size.x * 0.5f - 0.03f),
-                    size.y * 0.5f - 0.02f,
-                    -1f * (size.z * 0.5f - 0.01f));
-                Vector3 rustSize = new Vector3(0.02f, 0.003f, 0.001f);
-                m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f)));
-            }
             Color bat = wood * 0.78f;
             float t = 0.045f;
             for (int sx = -1; sx <= 1; sx += 2)
@@ -332,9 +175,6 @@ namespace CloneZ
                     m.Box(c + q * new Vector3(sx * (size.x * 0.5f - t * 0.4f), 0f, sz * (size.z * 0.5f - t * 0.4f)), new Vector3(t, size.y + 0.005f, t), q, M(bat));
             m.Box(c + q * new Vector3(0f, size.y * 0.5f - t * 0.4f, size.z * 0.5f - t * 0.4f), new Vector3(size.x, t, t), q, M(bat));
             m.Box(c + q * new Vector3(0f, size.y * 0.5f - t * 0.4f, -size.z * 0.5f + t * 0.4f), new Vector3(size.x, t, t), q, M(bat));
-            // Subtle metal strap on the front face of the crate
-            m.Box(c + q * new Vector3(0f, size.y * 0.5f, size.z * 0.5f - 0.015f), new Vector3(size.x * 0.8f, 0.02f, 0.018f), q, DecorPalette.Metal(new Color(0.45f, 0.44f, 0.43f)));
-
             if (military)
             {
                 m.Box(c + q * new Vector3(0f, size.y * 0.1f, size.z * 0.5f + 0.003f), new Vector3(size.x * 0.6f, size.y * 0.14f, 0.004f), q, M(new Color(0.80f, 0.74f, 0.50f)));

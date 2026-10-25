@@ -220,23 +220,11 @@ namespace CloneZ
         {
             Transform t = b.FixtureBody(room, p, Sz(0.9f, 1.85f, 0.8f), true, (m, r) => FurnitureBuilder.OfficeVendingBody(m, r), "Vending machine");
             KitchenFrame f = b.FrameOf(p);
-            // Coin slot detail with slight random horizontal offset
-            float xOff = (float)(b.Rng.NextDouble() * 0.02 - 0.01);
-            KitchenParts.PieceAt(t, "CoinSlot", f, new Vector3(xOff, 0.6f, 0.41f), (m) => { m.Box(Vector3.zero, new Vector3(0.08f, 0.02f, 0.02f), DecorPalette.Metal(FurnitureBuilder.Chrome)); });
-            // Small metal logo plate above the coin slot, random horizontal jitter
-            float logoX = (float)(b.Rng.NextDouble() * 0.04 - 0.02);
-            Vector3 logoPos = new Vector3(logoX, 1.4f, 0.41f);
-            KitchenParts.PieceAt(t, "VendingLogo", f, logoPos,
-                m => { m.Box(Vector3.zero, new Vector3(0.10f, 0.02f, 0.001f), DecorPalette.Metal(FurnitureBuilder.Chrome)); });
             int seed = b.Rng.Next();
             var wr = new System.Random(seed);
             var at = new Vector3(-0.1f, 1.1f, 0.37f);
             MeshRenderer glass = KitchenParts.PieceInFrame(t, "VendingGlass", f, at, m => FurnitureBuilder.OfficeVendingWindow(m, wr, lit, false));
             MeshRenderer smashed = KitchenParts.PieceInFrame(t, "VendingSmashed", f, at, m => FurnitureBuilder.OfficeVendingWindow(m, wr, lit, true));
-            // Subtle status LED near the top front of the vending machine
-            float ledX = (float)(b.Rng.NextDouble() * 0.02 - 0.01);
-            Vector3 ledPos = new Vector3(ledX, 1.7f, 0.42f);
-            KitchenParts.PieceAt(t, "VendingLED", f, ledPos, m => { m.Box(Vector3.zero, new Vector3(0.04f, 0.02f, 0.001f), DecorPalette.Glow(new Color(0.95f, 0.18f, 0.12f))); });
             RaidStoreVending.Create(t, f.P(FurnitureBuilder.OfficeVendingPanel), f.P(FurnitureBuilder.OfficeVendingTray), glass, smashed, lit, seed);
         }
 

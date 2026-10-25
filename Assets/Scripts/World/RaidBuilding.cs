@@ -31,7 +31,6 @@ namespace CloneZ
         /// <summary>The floor area inside the walls (world).</summary>
         public Rect Inner => Rect.MinMaxRect(World.xMin + 0.1f, World.yMin + 0.1f, World.xMax - 0.1f, World.yMax - 0.1f);
 
-        /// <summary>Returns true if the given rectangle overlaps any furniture or, optionally, reserved zones.</summary>
         public bool Overlaps(Rect r, bool includeReserved)
         {
             for (int i = 0; i < Furniture.Count; i++) if (Furniture[i].Overlaps(r)) return true;
@@ -58,6 +57,9 @@ namespace CloneZ
     internal sealed partial class RaidBuilding
     {
         public const float DoorHeight = 2.2f;
+        /// <summary>The clear height of the doorways in a shell this class raises (the procedural town's): tall enough that the
+        /// NavMesh bake (a 2 m agent on 1/6 m voxels) always fits through, whichever way the voxels round.</summary>
+        public const float ShellDoorHeight = 2.4f;
         public const float SillHeight = 0.9f;
         public const float HeadHeight = 2.05f;
         public const float Half = 0.1f;   // half the wall thickness
@@ -73,17 +75,14 @@ namespace CloneZ
         public float WallH = 2.8f;
         /// <summary>What the building is (set by its layout).</summary>
         public RaidBuildingKind Kind = RaidBuildingKind.House;
-        /// <summary>The building's exterior style (e.g., siding, brick).</summary>
         public ExteriorStyle Exterior = ExteriorStyle.Siding;
         public Color ExteriorColor = new Color(0.78f, 0.76f, 0.68f);
         public Color DoorWood = new Color(0.42f, 0.27f, 0.15f);
         public Color Casing = new Color(0.36f, 0.24f, 0.14f);
         public Color WallCore = new Color(0.20f, 0.19f, 0.18f);
         /// <summary>False for buildings that draw their own roof (the tent).</summary>
-        /// <summary>Whether the building uses a flat ceiling (true for most, false for tents).</summary>
         public bool FlatCeilings = true;
         /// <summary>False to leave doorways unframed (tent flaps).</summary>
-        /// <summary>Whether doorframes are drawn (false for tent flaps).</summary>
         public bool DoorFrames = true;
 
         public readonly List<RaidRoom> Rooms = new List<RaidRoom>();
@@ -99,7 +98,6 @@ namespace CloneZ
         public readonly RaidMesh Ceil = new RaidMesh();
 
         public Transform Root;
-        // Holds the root object for all generated wall colliders.
         private GameObject _colliders;
         private bool _shellBuilt;
 
@@ -194,7 +192,6 @@ namespace CloneZ
 
         #region Frame
         /// <summary>A local (x, z) point in world XZ.</summary>
-        /// <summary>Convert local (x, z) coordinates to a world-space point.</summary>
         public Vector2 P(float lx, float lz)
         {
             if (_free) return new Vector2(Center.x + lx * _freeCos + lz * _freeSin, Center.y - lx * _freeSin + lz * _freeCos);
@@ -208,8 +205,6 @@ namespace CloneZ
             }
         }
 
-        /// <summary>World position from a local XZ point and a Y height.</summary>
-        /// <summary>World position from a local XZ point and a Y height.</summary>
         public Vector3 W(float lx, float y, float lz)
         {
             Vector2 p = P(lx, lz);
@@ -217,20 +212,15 @@ namespace CloneZ
         }
 
         /// <summary>A local yaw (degrees; 0 faces local +Z) in world terms.</summary>
-        /// <summary>Local yaw (degrees; 0 faces local +Z) converted to world space, accounting for mirroring and rotation.</summary>
-        /// <summary>Local yaw (degrees; 0 faces local +Z) converted to world space, accounting for mirroring and rotation.</summary>
         public float Yaw(float localYaw) => (Mirror ? -localYaw : localYaw) + (_free ? _freeYaw : Turns * 90f);
 
         /// <summary>A local horizontal direction in world terms.</summary>
-        /// <summary>Local horizontal direction in world terms.</summary>
         public Vector3 Dir(float lx, float lz)
         {
             Vector2 a = P(lx, lz) - P(0f, 0f);
             return new Vector3(a.x, 0f, a.y);
         }
 
-        /// <summary>Convert local wall coordinates to a world-space rectangle.</summary>
-        /// <summary>Convert local wall coordinates to a world-space rectangle.</summary>
         public Rect RectW(float x0, float z0, float x1, float z1)
         {
             Vector2 a = P(x0, z0), b = P(x1, z1);
@@ -238,15 +228,11 @@ namespace CloneZ
         }
 
         /// <summary>The building's footprint in world XZ (outer wall faces).</summary>
-        /// <summary>The building's footprint in world XZ (outer wall faces).</summary>
         public Rect Footprint => RectW(-HalfW - Half, -HalfD - Half, HalfW + Half, HalfD + Half);
         #endregion
 
         #region Authoring
         /// <summary>Adds a room (local rect on wall centre lines).</summary>
-        /// <summary>Factory method for a RaidRoom with given parameters.</summary>
-        /// <summary>Adds a new room to the building and returns it.</summary>
-        /// <summary>Adds a room (local rect on wall centre lines) and returns it.</summary>
         public RaidRoom Room(string name, float x0, float z0, float x1, float z1, WallDesign design, FloorKind floor)
         {
             var r = new RaidRoom
@@ -263,25 +249,19 @@ namespace CloneZ
 
         /// <summary>A doorway centred on local (lx, lz), which must lie on a wall line. Doorways are at
         /// least 1.5 m wide so the navmesh stays connected through them.</summary>
-        /// <summary>Creates a door opening centered at the given local coordinates.</summary>
-        /// <summary>Creates a door opening centered at the given local coordinates.</summary>
-        /// <summary>Creates a door opening centered at the given local coordinates.</summary>
         public void Door(float lx, float lz, float width = 1.5f, bool leaf = true, bool glass = false)
         {
             AddOpening(lx, lz, OpeningKind.Door, Mathf.Max(1.5f, width), o => { o.Leaf = leaf; o.Glass = glass; });
         }
 
-        /// <summary>A window centred on local (lx, lz) on a wall line.</summary>
-        /// <summary>Creates a window opening centered at the given local coordinates.</summary>
-        /// <summary>Creates a window opening centered at the given local coordinates.</summary>
-        /// <summary>Creates a window opening centered at the given local coordinates.</summary>
+        /// <summary>A window centred on local (lx, lz) on a wall line: most still glazed, a few smashed or boarded over.</summary>
         public void Window(float lx, float lz, float width = 1.2f)
         {
             AddOpening(lx, lz, OpeningKind.Window, width, o =>
             {
                 double r = Rng.NextDouble();
-                o.Boarded = r < 0.22;
-                o.Intact = !o.Boarded && r < 0.55;
+                o.Boarded = r < 0.08;
+                o.Intact = !o.Boarded && r < 0.86;
             });
         }
 
@@ -295,9 +275,6 @@ namespace CloneZ
         #region Shell
         /// <summary>Derives the walls from the rooms, cuts the openings and builds floors, ceilings
         /// and wall segments. Call once all rooms and openings are declared, before furnishing.</summary>
-        /// <summary>Derives walls, openings, floors, ceilings, and pieces after all rooms and openings are declared.</summary>
-        /// <summary>Derives walls, openings, floors, ceilings, and pieces after all rooms and openings are declared.</summary>
-        /// <summary>Derives walls, openings, floors, ceilings, and pieces after all rooms and openings are declared.</summary>
         public void BuildShell()
         {
             if (_shellBuilt) return;
@@ -307,8 +284,6 @@ namespace CloneZ
             BuildPieces();
             BuildFloorsAndCeilings();
             ReserveDoorways();
-            // NEW: create colliders for the wall pieces just built
-            CreateColliders();
         }
 
         private void DeriveRuns()
@@ -435,7 +410,7 @@ namespace CloneZ
             float y0a = 0f, y1a = WallH, y0b = -1f, y1b = -1f;
             if (p.Opening != null)
             {
-                if (p.Opening.Kind == OpeningKind.Door) { y0a = DoorHeight; }
+                if (p.Opening.Kind == OpeningKind.Door) { y0a = ShellDoorHeight; }
                 else { y1a = SillHeight; y0b = HeadHeight; y1b = WallH; }
             }
             AddBand(p, mid, len, y0a, y1a, core);
@@ -493,17 +468,6 @@ namespace CloneZ
                     if (!r.AlongX && Mathf.Abs(a - RunStart(r)) < 0.01f) a -= Half * 2f;
                     if (!r.AlongX && Mathf.Abs(b - RunEnd(r)) < 0.01f) b += Half * 2f;
                     p.Mesh.Upright(RunPoint(r, (a + b) * 0.5f, (y0 + y1) * 0.5f, side * (Half + 0.004f)), n, b - a, y1 - y0, DecorMaterials.WallExterior(Exterior, ExteriorColor));
-            // Add subtle weather‑worn paint‑chip detail (~10% chance per wall segment)
-            if (Rng.NextDouble() < 0.1)
-            {
-                float off = (float)(Rng.NextDouble() * (b - a) * 0.8 - (b - a) * 0.4f);
-                var chipSurf = DecorPalette.Matte(new Color(0.85f, 0.80f, 0.70f));
-                // Chip protrudes slightly outward beyond the exterior face
-                p.Mesh.Box(
-                    RunPoint(r, (a + b) * 0.5f + off, (y0 + y1) * 0.5f, side * (Half + 0.006f)),
-                    RunSize(r, 0.06f, 0.06f, 0.008f),
-                    chipSurf);
-            }
                 }
                 if (i < covered.Count) cursor = Mathf.Max(cursor, covered[i].y);
             }
@@ -516,134 +480,16 @@ namespace CloneZ
             Surf wood = DecorPalette.Matte(Casing);
             float w = o.Width;
             // Jamb and head linings cover the cut ends of the wall.
-            p.Mesh.Box(RunPoint(r, o.A + 0.012f, DoorHeight * 0.5f, 0f), RunSize(r, 0.024f, DoorHeight, Half * 2f + 0.01f), wood);
-            p.Mesh.Box(RunPoint(r, o.B - 0.012f, DoorHeight * 0.5f, 0f), RunSize(r, 0.024f, DoorHeight, Half * 2f + 0.01f), wood);
-            p.Mesh.Box(RunPoint(r, o.Pos, DoorHeight - 0.012f, 0f), RunSize(r, w, 0.024f, Half * 2f + 0.01f), wood);
+            p.Mesh.Box(RunPoint(r, o.A + 0.012f, ShellDoorHeight * 0.5f, 0f), RunSize(r, 0.024f, ShellDoorHeight, Half * 2f + 0.01f), wood);
+            p.Mesh.Box(RunPoint(r, o.B - 0.012f, ShellDoorHeight * 0.5f, 0f), RunSize(r, 0.024f, ShellDoorHeight, Half * 2f + 0.01f), wood);
+            p.Mesh.Box(RunPoint(r, o.Pos, ShellDoorHeight - 0.012f, 0f), RunSize(r, w, 0.024f, Half * 2f + 0.01f), wood);
             // Casings on both faces.
             for (int side = -1; side <= 1; side += 2)
             {
                 float off = side * (Half + 0.012f);
-                p.Mesh.Box(RunPoint(r, o.A - 0.035f, (DoorHeight + 0.07f) * 0.5f, off), RunSize(r, 0.07f, DoorHeight + 0.07f, 0.024f), wood);
-                p.Mesh.Box(RunPoint(r, o.B + 0.035f, (DoorHeight + 0.07f) * 0.5f, off), RunSize(r, 0.07f, DoorHeight + 0.07f, 0.024f), wood);
-                p.Mesh.Box(RunPoint(r, o.Pos, DoorHeight + 0.035f, off), RunSize(r, w + 0.14f, 0.07f, 0.024f), wood);
-            }
-            // Possibly add a house‑number plaque on the exterior side of the door frame (≈20% of doors)
-            int extSide = OutsideSide(r, o.Pos);
-            if (extSide != 0 && Rng.NextDouble() < 0.2)
-            {
-                var plaqueSurf = DecorPalette.Matte(new Color(0.92f, 0.86f, 0.78f));
-                Vector3 plaquePos = RunPoint(r, o.Pos, DoorHeight * 0.68f, extSide * (Half + 0.022f));
-                p.Mesh.Box(plaquePos, RunSize(r, 0.12f, 0.018f, 0.008f), plaqueSurf);
-            }
-            // Add subtle door handle on interior side (random slight X offset) and occasional rust spot
-            for (int side = -1; side <= 1; side += 2)
-            {
-                // Determine handle position and apply small random X offset
-                float handleY = DoorHeight * 0.5f;
-                float offX = (float)(Rng.NextDouble() - 0.5) * 0.02f;
-                Vector3 handlePos = RunPoint(r, o.Pos, handleY, side * (Half + 0.025f));
-                handlePos.x += offX;
-                p.Mesh.Box(handlePos, RunSize(r, 0.04f, 0.015f, 0.015f), wood);
-
-                // Occasionally add a rust spot near the handle (≈15% chance)
-                if (Rng.NextDouble() < 0.15)
-                {
-                    Surf rust = DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f));
-                    // Rust spot slightly larger in X, thin in Y/Z
-                    Vector3 rustPos = RunPoint(r, o.Pos, handleY + 0.02f, side * (Half + 0.03f));
-                    rustPos.x += offX;
-                    p.Mesh.Box(rustPos, RunSize(r, 0.06f, 0.008f, 0.008f), rust);
-                }
-            }
-            // Add subtle metal hinges on exterior side of door frame
-            if (extSide != 0)
-            {
-                var hingeSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
-                // top hinge
-                p.Mesh.Box(RunPoint(r, o.Pos, DoorHeight - 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);
-                // bottom hinge
-                p.Mesh.Box(RunPoint(r, o.Pos, 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);
-            }
-            /* ---------- NEW DETAILS START ---------- */
-            // Knock‑plate: metal plate on exterior side (≈25 % of doors)
-            if (extSide != 0 && Rng.NextDouble() < 0.25)
-            {
-                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
-                // size ≈12 cm × 2 cm × 0.8 cm, placed about 0.45 m above ground on exterior face
-                Vector3 knockPos = RunPoint(r, o.Pos, DoorHeight * 0.45f, extSide * (Half + 0.036f));
-                p.Mesh.Box(knockPos, RunSize(r, 0.12f, 0.02f, 0.008f), metalSurf);
-            }
-            // Lock‑bolt on interior side (≈30 % of doors)
-            if (Rng.NextDouble() < 0.30)
-            {
-                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
-                // bolt runs vertically, 15 cm high, 2 cm wide, centered at handle height (≈50 % of DoorHeight)
-                float boltY = DoorHeight * 0.5f;
-                Vector3 boltPos = RunPoint(r, o.Pos, boltY, -Half - 0.025f); // interior side (negative side)
-                p.Mesh.Box(boltPos, RunSize(r, 0.02f, 0.15f, 0.008f), metalSurf);
-            }
-            // Tiny key‑hole near the lock‑bolt (≈30 % of doors)
-            if (Rng.NextDouble() < 0.30)
-            {
-                var keyholeSurf = DecorPalette.Matte(new Color(0.05f, 0.05f, 0.07f)); // very dark metal
-                // size ≈1 cm × 2 cm × 0.2 cm, placed a few centimetres above the bolt
-                float khY = DoorHeight * 0.55f;
-                Vector3 khPos = RunPoint(r, o.Pos, khY, -Half - 0.025f);
-                p.Mesh.Box(khPos, RunSize(r, 0.01f, 0.02f, 0.002f), keyholeSurf);
-            }
-            // Subtle wear scratches on the vertical jambs (both sides). Up to three per side.
-            int scratchCount = Rng.Next(1, 4); // 1‑3 scratches per side
-            for (int i = 0; i < scratchCount; i++)
-            {
-                // pick side: -1 = left jamb, +1 = right jamb
-                int side = (i % 2 == 0) ? -1 : 1;
-                // random vertical position between floor (0) and DoorHeight
-                float y = (float)Rng.NextDouble() * (DoorHeight - 0.05f) + 0.025f;
-                // random scratch length 5‑12 cm
-                float len = 0.05f + (float)Rng.NextDouble() * 0.07f;
-                // narrow box 0.5 cm thick, 1 cm tall
-                var scratchSurf = DecorPalette.Matte(DoorWood * 0.75f); // darker wood colour
-                Vector3 scratchPos = RunPoint(r,
-                    side < 0 ? o.A + 0.012f : o.B - 0.012f, // near the jamb inner surface
-                    y,
-                    side * (Half + 0.014f));
-                p.Mesh.Box(scratchPos,
-                    new Vector3(0.005f, 0.01f, len), // thickness, height, depth (along wall)
-                    scratchSurf);
-            }
-            /* ---------- NEW DETAILS END ---------- */
-            // ---- Door entry set (step, chain, pull‑cord, mat) ----
-            // Exterior step/threshold (≈5 cm high, 12 cm deep, spans door + 20 cm)
-            if (extSide != 0) {
-                var stepSurf = DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)); // weather‑worn wood
-                Vector3 stepPos = RunPoint(r, o.Pos, 0.025f, extSide * (Half + 0.22f));
-                p.Mesh.Box(stepPos, new Vector3(o.Width + 0.20f, 0.05f, 0.12f), stepSurf);
-            }
-            // Exterior metal chain + hasp (≈15 % of doors)
-            if (extSide != 0 && Rng.NextDouble() < 0.15) {
-                var metalSurf = DecorPalette.Matte(new Color(0.32f, 0.32f, 0.35f)); // dark metal
-                // Hasp plate, centered on handle height, offset outward
-                Vector3 haspPos = RunPoint(r, o.Pos, DoorHeight * 0.55f, extSide * (Half + 0.036f));
-                p.Mesh.Box(haspPos, RunSize(r, 0.06f, 0.015f, 0.008f), metalSurf);
-                // Two thin chain‑link boxes crossing each other
-                float chainY = DoorHeight * 0.55f;
-                Vector3 link1Pos = RunPoint(r, o.Pos, chainY, extSide * (Half + 0.046f));
-                p.Mesh.Box(link1Pos, new Vector3(0.04f, 0.004f, 0.004f), metalSurf);
-                Vector3 link2Pos = RunPoint(r, o.Pos, chainY, extSide * (Half + 0.046f));
-                p.Mesh.Box(link2Pos, new Vector3(0.004f, 0.004f, 0.04f), metalSurf);
-            }
-            // Interior pull‑cord (≈20 % of doors)
-            if (Rng.NextDouble() < 0.20) {
-                var cordSurf = DecorPalette.Matte(new Color(0.55f, 0.45f, 0.35f)); // aged twine colour
-                // Hang from interior top edge, slightly left of handle
-                Vector3 cordPos = RunPoint(r, o.A + 0.08f, DoorHeight - 0.08f, -Half - 0.025f);
-                p.Mesh.Box(cordPos, new Vector3(0.006f, 0.12f, 0.006f), cordSurf);
-            }
-            // Interior door‑mat (≈30 % of doors)
-            if (Rng.NextDouble() < 0.30) {
-                var matSurf = DecorPalette.Matte(new Color(0.70f, 0.62f, 0.55f)); // faded linoleum‑style mat
-                Vector3 matPos = RunPoint(r, o.Pos, 0.01f, -Half - 0.025f);
-                p.Mesh.Box(matPos, new Vector3(o.Width * 0.85f, 0.02f, 0.12f), matSurf);
+                p.Mesh.Box(RunPoint(r, o.A - 0.035f, (ShellDoorHeight + 0.07f) * 0.5f, off), RunSize(r, 0.07f, ShellDoorHeight + 0.07f, 0.024f), wood);
+                p.Mesh.Box(RunPoint(r, o.B + 0.035f, (ShellDoorHeight + 0.07f) * 0.5f, off), RunSize(r, 0.07f, ShellDoorHeight + 0.07f, 0.024f), wood);
+                p.Mesh.Box(RunPoint(r, o.Pos, ShellDoorHeight + 0.035f, off), RunSize(r, w + 0.14f, 0.07f, 0.024f), wood);
             }
         }
 
@@ -670,92 +516,7 @@ namespace CloneZ
             // The upper sash, fixed in the outer track (and, outside a house, its shutters and flower box). What moves or
             // changes — the lower sash, the glass, the lock's lever, the dressing, any boards — is fitted once the segment is
             // an object of its own (FitWindow, RaidBuilding.Windows.cs).
-// Add subtle frost patch on interior window frame (≈12% chance per window).
-            if (Rng.NextDouble() < 0.12) {
-                var frost = DecorPalette.Matte(new Color(0.6f, 0.8f, 1f)); // pale‑blue frost
-                float frostWidth = w * 0.30f; // about 30% of window width
-                float frostHeight = 0.03f;   // 3 cm tall
-                float frostDepth = 0.006f;   // thin patch
-                // Position at eye‑level, centered, interior side (offset 0).
-                p.Mesh.Box(RunPoint(r, o.Pos, cy, 0f), RunSize(r, frostWidth, frostHeight, frostDepth), frost);
-            }
-            // Add occasional icicle on exterior side (≈8% chance per window).
-            int outsideSide = OutsideSide(r, o.Pos);
-            if (outsideSide != 0 && Rng.NextDouble() < 0.08) {
-                var ice = DecorPalette.Matte(new Color(0.85f, 0.90f, 1f)); // pale‑blue ice
-                Vector3 iciclePos = RunPoint(r, o.Pos, HeadHeight - 0.01f, outsideSide * (Half + 0.04f));
-                p.Mesh.Box(iciclePos, RunSize(r, 0.02f, 0.08f, 0.02f), ice);
-            }
             WindowFrame(p);
-            // Exterior shutters (≈20 % chance) on the outside face of the window.
-            // Exterior shutters (≈20 % chance) on the outside face of the window.
-            int extSide = OutsideSide(r, o.Pos);
-            if (extSide != 0 && Rng.NextDouble() < 0.2)
-            {
-                var woodSurf = DecorPalette.Matte(Casing);
-                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f)); // metal for hinges, latch
-                float shutterThick = 0.04f; // 4 cm thick
-                float shutterHeight = HeadHeight - SillHeight; // full window height
-                float halfW = w * 0.48f; // each shutter ~48 % of window width
-                // left shutter
-                Vector3 leftPos = RunPoint(r, o.A + halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick * 0.5f));
-                p.Mesh.Box(leftPos, new Vector3(halfW, shutterHeight, shutterThick), woodSurf);
-                // right shutter
-                Vector3 rightPos = RunPoint(r, o.B - halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick * 0.5f));
-                p.Mesh.Box(rightPos, new Vector3(halfW, shutterHeight, shutterThick), woodSurf);
-
-                // left shutter hinge
-                Vector3 leftHingePos = RunPoint(r, o.A + halfW * 0.5f, HeadHeight - 0.05f, extSide * (Half + shutterThick - 0.01f));
-                p.Mesh.Box(leftHingePos, new Vector3(0.02f, 0.07f, 0.008f), metalSurf);
-                // right shutter hinge
-                Vector3 rightHingePos = RunPoint(r, o.B - halfW * 0.5f, HeadHeight - 0.05f, extSide * (Half + shutterThick - 0.01f));
-                p.Mesh.Box(rightHingePos, new Vector3(0.02f, 0.07f, 0.008f), metalSurf);
-
-                // left shutter latch
-                Vector3 leftLatchPos = RunPoint(r, o.A + halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick - 0.015f));
-                p.Mesh.Box(leftLatchPos, new Vector3(0.04f, 0.015f, 0.008f), metalSurf);
-                // right shutter latch
-                Vector3 rightLatchPos = RunPoint(r, o.B - halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick - 0.015f));
-                p.Mesh.Box(rightLatchPos, new Vector3(0.04f, 0.015f, 0.008f), metalSurf);
-
-                // paint‑chip wear on left shutter (≈10% chance)
-                if (Rng.NextDouble() < 0.10)
-                {
-                    var chipSurf = DecorPalette.Matte(Casing * 1.05f);
-                    Vector3 chipPos = RunPoint(r, o.A + halfW * 0.5f, SillHeight + 0.03f, extSide * (Half + shutterThick + 0.006f));
-                    p.Mesh.Box(chipPos, new Vector3(0.06f, 0.06f, 0.008f), chipSurf);
-                }
-                // paint‑chip wear on right shutter (≈10% chance)
-                if (Rng.NextDouble() < 0.10)
-                {
-                    var chipSurf = DecorPalette.Matte(Casing * 1.05f);
-                    Vector3 chipPos = RunPoint(r, o.B - halfW * 0.5f, SillHeight + 0.03f, extSide * (Half + shutterThick + 0.006f));
-                    p.Mesh.Box(chipPos, new Vector3(0.06f, 0.06f, 0.008f), chipSurf);
-                }
-            }
-            // Interior curtain rod and simple drape (≈30 % chance) on the inner face.
-            if (extSide != 0 && Rng.NextDouble() < 0.3)
-            {
-                var woodSurf = DecorPalette.Matte(Casing);
-                float rodThick = 0.015f; // 1.5 cm
-                float rodHeight = 0.03f; // 3 cm thick bar
-                // rod positioned near top of window opening
-                Vector3 rodPos = RunPoint(r, o.Pos, HeadHeight - 0.02f, -extSide * (Half + rodThick));
-                p.Mesh.Box(rodPos, new Vector3(w - 0.2f, rodHeight, rodThick), woodSurf);
-                var drapeSurf = DecorPalette.Matte(new Color(0.60f, 0.60f, 0.60f));
-                float drapeW = w - 0.22f;
-                float drapeH = (HeadHeight - SillHeight) * 0.6f;
-                Vector3 drapePos = RunPoint(r, o.Pos, SillHeight + drapeH * 0.5f + 0.02f, -extSide * (Half + rodThick + 0.01f));
-                p.Mesh.Box(drapePos, new Vector3(drapeW, drapeH, 0.02f), drapeSurf);
-            }
-            // Small metal latch on the interior side near lower‑left (≈25 % chance).
-            if (extSide != 0 && Rng.NextDouble() < 0.25)
-            {
-                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
-                float latchW = 0.03f, latchH = 0.015f, latchThick = 0.005f;
-                Vector3 latchPos = RunPoint(r, o.A + latchW * 0.5f, SillHeight + 0.05f, -extSide * (Half + latchThick));
-                p.Mesh.Box(latchPos, new Vector3(latchW, latchH, latchThick), metalSurf);
-            }
             int sx = OutsideSide(r, o.Pos);
             if (sx != 0) p.Mesh.Box(RunPoint(r, o.Pos, SillHeight + 0.05f, sx * (Half + 0.04f)), RunSize(r, w + 0.1f, 0.03f, 0.06f), DecorPalette.Matte(DecorProps.SnowWhite));
         }
@@ -817,7 +578,6 @@ namespace CloneZ
         }
 
         /// <summary>Keeps the floor in front of every doorway (both sides) clear of furniture.</summary>
-        /// <summary>Ensures all doorways have clear zones for furniture.</summary>
         private void ReserveDoorways()
         {
             foreach (Opening o in _openings)
@@ -837,24 +597,11 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Creates Unity colliders from the bounds gathered while drawing wall pieces.</summary>
-        private void CreateColliders()
-        {
-            // One parent object to hold all colliders, hidden under the building root.
-            _colliders = new GameObject("Colliders");
-            _colliders.transform.SetParent(Root, false);
-            foreach (var piece in _pieces)
-            {
-                foreach (var b in piece.Colliders)
-                {
-                    var go = new GameObject("WallCollider");
-                    go.transform.SetParent(_colliders.transform, false);
-                    var col = go.AddComponent<BoxCollider>();
-                    col.center = b.center;
-                    col.size = b.size;
-                }
-            }
-        }
+        /// <summary>Hangs the doors once the rooms are furnished, and queues the windows' working parts: a doorway declared
+        /// with a leaf gets a pair of leaves hinged at its jambs (<see cref="HangDoor"/>, a working <see cref="RaidDoor"/>),
+        /// swinging open into whichever room leaves them clear of furniture and other doorways, to rest leaning back near the
+        /// wall beside the gap (never across it). A doorway with no clear swing is left without a door. Every window is
+        /// fitted with its sash, glass and dressing (<see cref="FitWindow"/>), once its segment is an object.</summary>
         private void PlaceAllLeaves()
         {
             foreach (Opening o in _openings)
@@ -932,8 +679,6 @@ namespace CloneZ
         }
 
         /// <summary>The room containing a world point, or null.</summary>
-        /// <summary>Returns the raid room containing the given world point, or null.</summary>
-        /// <summary>The room containing a world point, or null.</summary>
         public RaidRoom RoomAt(Vector3 p)
         {
             foreach (RaidRoom r in Rooms) if (r.World.Contains(new Vector2(p.x, p.z))) return r;
@@ -942,8 +687,6 @@ namespace CloneZ
 
         /// <summary>Adds the ground in front of each outside door (3 m out) to <paramref name="into"/>, so
         /// outdoor props never block a way in.</summary>
-        /// <summary>Adds zones outside each exterior door for props to avoid blocking entry.</summary>
-        /// <summary>Adds zones outside each exterior door for props to avoid blocking entry.</summary>
         public void ExteriorDoorZones(List<Rect> into)
         {
             foreach (Opening o in _openings)

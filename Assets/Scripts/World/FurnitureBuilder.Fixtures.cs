@@ -24,15 +24,6 @@ namespace CloneZ
                 return;
             }
             m.Box(new Vector3(width * 0.5f, height * 0.5f, 0f), new Vector3(width, height, t), M(c));
-            // Brass hinges (period-correct for 1993 rural interior)
-            for (int face = -1; face <= 1; face += 2)
-            {
-                float z = face * (t * 0.5f + 0.004f);
-                // bottom hinge
-                m.Box(new Vector3(0.02f, 0.20f, z), new Vector3(0.04f, 0.03f, 0.008f), Mt(Brass));
-                // top hinge
-                m.Box(new Vector3(0.02f, height - 0.20f, z), new Vector3(0.04f, 0.03f, 0.008f), Mt(Brass));
-            }
             for (int face = -1; face <= 1; face += 2)
             {
                 float z = face * (t * 0.5f + 0.004f);
@@ -44,23 +35,7 @@ namespace CloneZ
                         float py = r == 0 ? 0.15f + ph * 0.5f : height - 0.15f - ph * 0.5f;
                         float px = 0.12f + pw * 0.5f + col * (pw + 0.06f);
                         m.Box(new Vector3(px, py, z), new Vector3(pw, ph, 0.008f), M(c * 0.88f));
-                    // tiny brass screw head on panel surface
-                    float screwDepth = 0.002f;
-                    float screwSize = 0.008f;
-                        float screwZ = z + (face * 0.004f) + (face * screwDepth * 0.5f);
-                        m.Box(new Vector3(px, py, screwZ), new Vector3(screwSize, screwSize, screwDepth), Mt(Brass));
                     }
-                    // Added period‑correct brass knob assembly (1993 rural interior)
-                    // Main knob cylinder
-                    m.Cylinder(new Vector3(width - 0.10f, height * 0.5f, face * (t * 0.5f + 0.001f)), 0.015f, 0.03f, 12, Mt(Brass), Quaternion.identity);
-                    // Smaller knob cap (worn‑metal look)
-                    m.Cylinder(new Vector3(width - 0.10f, height * 0.5f, face * (t * 0.5f + 0.0025f)), 0.008f, 0.018f, 12, M(new Color(0.9f, 0.85f, 0.75f)), Quaternion.identity);
-                    // Knob base plate (thin wood box for decorative mounting)
-                    m.Box(new Vector3(width - 0.12f, height * 0.5f, face * (t * 0.5f + 0.003f)), new Vector3(0.02f, 0.04f, 0.004f), Mt(Brass));
-                    // Latch plate left of the knob
-                    m.Box(new Vector3(width - 0.18f, height * 0.5f, face * (t * 0.5f + 0.001f)), new Vector3(0.03f, 0.06f, 0.006f), Mt(Brass));
-                    // Tiny brass screw fixing the latch plate
-                    m.Box(new Vector3(width - 0.18f, height * 0.5f - 0.02f, face * (t * 0.5f + 0.002f)), new Vector3(0.004f, 0.004f, 0.002f), Mt(Brass));
                 m.Ellipsoid(new Vector3(width - 0.08f, 0.98f, face * (t * 0.5f + 0.035f)), new Vector3(0.055f, 0.055f, 0.05f), Mt(Brass), 6, 4);
             }
         }
@@ -73,38 +48,6 @@ namespace CloneZ
             Color frame = Chance(rng, 0.5) ? new Color(0.16f, 0.12f, 0.08f) : new Color(0.55f, 0.55f, 0.52f);
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up) * Quaternion.Euler(0f, 0f, roll);
             m.Box(at + normal * 0.008f, new Vector3(w + 0.05f, h + 0.05f, 0.016f), q, M(frame));
-            // half‑size helpers for further decorations
-            float halfW = (w + 0.05f) * 0.5f;
-            float halfH = (h + 0.05f) * 0.5f;
-            // brass nail‑head corners on the frame front face
-            Vector3[] nailOffsets = {
-                new Vector3(-halfW + 0.015f, -halfH + 0.015f, 0f), // bottom‑left
-                new Vector3( halfW - 0.015f, -halfH + 0.015f, 0f), // bottom‑right
-                new Vector3(-halfW + 0.015f,  halfH - 0.015f, 0f), // top‑left
-                new Vector3( halfW - 0.015f,  halfH - 0.015f, 0f)  // top‑right
-            };
-            foreach (var off in nailOffsets)
-                m.Box(at + normal * 0.009f + q * off,
-                    new Vector3(0.008f, 0.008f, 0.004f), q, Mt(Brass));
-            // thin hanging wire across the top of the frame
-            float wireLen = w + 0.05f - 0.012f;
-            Vector3 wireCenter = at + normal * 0.009f + q * new Vector3(0f, halfH + 0.008f, 0f);
-            m.Cylinder(wireCenter, 0.004f, wireLen, 12,
-                M(new Color(0.45f, 0.35f, 0.28f)),
-                q * Quaternion.Euler(0f, 0f, 90f));
-            // cloth tag at bottom centre of the frame
-            Vector3 tagPos = at + normal * 0.009f + q * new Vector3(0f, -halfH - 0.008f, 0f);
-            m.Box(tagPos, new Vector3(0.12f, 0.02f, 0.004f), q,
-                M(new Color(0.70f, 0.60f, 0.50f)));
-            // subtle weather‑stain on the frame surface
-            Vector3 stainPos = at + normal * 0.0095f + q *
-                new Vector3(R(rng, -halfW * 0.6f, halfW * 0.6f),
-                            R(rng, -halfH * 0.6f, halfH * 0.6f), 0f);
-            float stainRad = R(rng, 0.02f, 0.04f);
-            m.Blob(stainPos, q * Vector3.right, q * Vector3.up,
-                stainRad, stainRad * 0.6f, 8, 0.0f, rng,
-                M(frame * 0.7f));
-            // poster image
             m.Upright(at + normal * 0.0175f, normal, w, h, DecorMaterials.Poster(kind), new Rect(0f, 0f, 1f, 1f), roll);
         }
 
@@ -114,32 +57,6 @@ namespace CloneZ
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
             m.Cylinder(at, 0.16f, 0.04f, 14, M(new Color(0.15f, 0.15f, 0.16f)), q * Quaternion.Euler(90f, 0f, 0f));
             m.Cylinder(at + normal * 0.041f, 0.14f, 0.002f, 14, M(new Color(0.88f, 0.87f, 0.82f)), q * Quaternion.Euler(90f, 0f, 0f));
-            // tiny brass hub and knob for realistic pivot
-            m.Cylinder(at + normal * 0.045f, 0.012f, 0.003f, 12, Mt(Brass), Quaternion.identity);
-            m.Cylinder(at + normal * 0.0475f, 0.006f, 0.0015f, 12, Mt(Brass), Quaternion.identity);
-// wooden backing disc (0.332 m Ø, 2 mm thick)
-m.Cylinder(at + normal * 0.044f, 0.166f, 0.002f, 12, M(new Color(0.48f, 0.34f, 0.22f)), Quaternion.identity);
-// faint glass pane (slightly smaller than backing)
-m.Cylinder(at + normal * 0.0455f, 0.158f, 0.001f, 12, Gl(new Color(0.95f, 0.95f, 0.97f, 0.25f)), Quaternion.identity);
-// hour tick marks – small boxes spaced every 30°
-for (int i = 0; i < 12; i++)
-{
-    float ang = i * 30f * Mathf.Deg2Rad;
-    Vector3 dir = new Vector3(Mathf.Sin(ang), Mathf.Cos(ang), 0f);
-    Vector3 tickPos = at + normal * 0.0452f + q * (dir * 0.14f);
-    Quaternion tickRot = q * Quaternion.Euler(0f, 0f, i * 30f);
-    m.Box(tickPos, new Vector3(0.008f, 0.02f, 0.001f), tickRot, M(new Color(0.1f, 0.1f, 0.1f)));
-}
-// tiny dust speck on the glass
-Vector3 dustOffset = q * new Vector3(R(rng, -0.12f, 0.12f), R(rng, -0.12f, 0.12f), 0f);
-m.Blob(at + normal * 0.0456f + dustOffset, q * Vector3.right, q * Vector3.up,
-    0.015f, 0.008f, 8, 0f, rng,
-    Gl(new Color(0.55f, 0.48f, 0.42f, 0.35f)));
-// brass mounting bracket (tiny L‑shaped piece)
-Vector3 brPos = at + normal * 0.043f;
-m.Cylinder(brPos, 0.01f, 0.004f, 12, Mt(Brass), Quaternion.identity); // vertical rod
-m.Box(brPos + normal * 0.001f + new Vector3(0f, 0.005f, 0f),
-    new Vector3(0.004f, 0.01f, 0.002f), Quaternion.identity, Mt(Brass));
             float a1 = R(rng, 0f, 360f), a2 = R(rng, 0f, 360f);
             m.Box(at + normal * 0.046f + q * (Quaternion.Euler(0f, 0f, a1) * new Vector3(0f, 0.045f, 0f)), new Vector3(0.012f, 0.09f, 0.004f), q * Quaternion.Euler(0f, 0f, a1), M(Black));
             m.Box(at + normal * 0.047f + q * (Quaternion.Euler(0f, 0f, a2) * new Vector3(0f, 0.06f, 0f)), new Vector3(0.008f, 0.12f, 0.004f), q * Quaternion.Euler(0f, 0f, a2), M(Black));
@@ -166,38 +83,6 @@ m.Box(brPos + normal * 0.001f + new Vector3(0f, 0.005f, 0f),
         {
             Quaternion q = Yaw(yaw);
             m.Box(at + new Vector3(0f, -0.03f, 0f), new Vector3(0.62f, 0.06f, 1.22f), q, M(new Color(0.70f, 0.70f, 0.68f)));
-            // dark‑metal trim (5 mm thick) around the front face
-            float trimT = 0.005f;
-            Vector3 trimSizeH = new Vector3(0.62f, 0.06f, trimT);
-            Vector3 trimSizeV = new Vector3(trimT, 0.06f, 1.22f);
-            Color trimCol = new Color(0.35f, 0.33f, 0.30f); // weathered steel
-            // top & bottom strips
-            m.Box(at + new Vector3(0f, -0.025f, 0f), trimSizeH, q, M(trimCol));
-            m.Box(at + new Vector3(0f, -0.035f, 0f), trimSizeH, q, M(trimCol));
-            // left & right strips
-            m.Box(at + new Vector3(-0.31f, -0.03f, 0f), trimSizeV, q, M(trimCol));
-            m.Box(at + new Vector3( 0.31f, -0.03f, 0f), trimSizeV, q, M(trimCol));
-            // four brass mounting screws, one per corner
-            float screwRad = 0.004f;
-            float screwH = 0.003f;
-            Vector3[] screwPos = {
-                new Vector3(-0.305f, -0.025f, 0.005f), // top‑left
-                new Vector3( 0.305f, -0.025f, 0.005f), // top‑right
-                new Vector3(-0.305f, -0.035f, 0.005f), // bottom‑left
-                new Vector3( 0.305f, -0.035f, 0.005f)  // bottom‑right
-            };
-            foreach (var p in screwPos)
-                m.Cylinder(at + q * p, screwRad, screwH, 12, Mt(Brass), Quaternion.identity);
-            // faux brand label, centred
-            Vector3 labelPos = new Vector3(0f, -0.032f, 0.002f);
-            Vector3 labelSize = new Vector3(0.12f, 0.04f, 0.002f);
-            Color labelCol = new Color(0.78f, 0.71f, 0.55f); // aged brass tint
-            m.Box(at + q * labelPos, labelSize, q, M(labelCol));
-            // fine dust coating, 1 mm thick, slightly darker than panel colour
-            float dustT = 0.001f;
-            Vector3 dustSize = new Vector3(0.62f, 0.06f, 1.22f);
-            Color dustCol = new Color(0.60f, 0.58f, 0.53f, 0.25f); // low‑alpha grey‑brown
-            m.Box(at + new Vector3(0f, -0.0305f, 0f), dustSize, q, Gl(dustCol));
             m.Box(at + new Vector3(0f, -0.062f, 0f), new Vector3(0.52f, 0.004f, 1.1f), q, lit ? Gl(new Color(1f, 0.93f, 0.78f)) : M(new Color(0.55f, 0.56f, 0.55f)));
         }
 
@@ -243,61 +128,6 @@ m.Box(brPos + normal * 0.001f + new Vector3(0f, 0.005f, 0f),
         /// <summary>The lit bulb of a <see cref="ShopLamp"/> hung <paramref name="drop"/> below <paramref name="ceiling"/>.</summary>
         public static void ShopLampGlow(RaidMesh m, Vector3 ceiling, float drop)
             => m.Ellipsoid(ceiling - Vector3.up * (drop + 0.13f), new Vector3(0.098f, 0.098f, 0.098f), Gl(new Color(1f, 0.85f, 0.58f)), 6, 4);
-
-        /// <summary>A simple wall‑mounted toggle switch (single‑pole, single‑throw).
-        /// <paramref name="at"/> is the centre of the switch face on the wall,
-        /// <paramref name="normal"/> points outward from the wall.</summary>
-        public static void WallSwitch(RaidMesh m, System.Random rng, Vector3 at, Vector3 normal)
-        {
-            // 1️⃣ Main plate – thin dark‑steel sheet, slightly recessed
-            // size 0.08 m × 0.12 m × 0.003 m, offset 0.008 m from wall
-            Vector3 platePos = at + normal * 0.008f;
-            Vector3 plateSize = new Vector3(0.08f, 0.12f, 0.003f);
-            Color plateCol = new Color(0.28f, 0.28f, 0.30f); // weathered steel
-            m.Box(platePos, plateSize, Quaternion.identity, M(plateCol));
-
-            // 2️⃣ Two brass mounting screws – top‑left & top‑right of the plate
-            // radius 0.002 m, height 0.004 m
-            float screwRad = 0.002f, screwH = 0.004f;
-            Vector3[] screwOffsets = {
-                new Vector3(-plateSize.x * 0.5f + 0.015f, plateSize.y * 0.5f - 0.01f, 0f), // left
-                new Vector3( plateSize.x * 0.5f - 0.015f, plateSize.y * 0.5f - 0.01f, 0f) // right
-            };
-            foreach (var off in screwOffsets)
-                m.Cylinder(platePos + off, screwRad, screwH, 12, Mt(Brass), Quaternion.identity);
-
-            // 3️⃣ Toggle lever – thin rectangular bar, up or down according to rng
-            // size 0.01 m × 0.04 m × 0.004 m, centred on plate, pivoted about its centre
-            bool up = rng.NextDouble() < 0.5;
-            float angle = up ? 20f : -20f;
-            Vector3 leverPos = platePos + new Vector3(0f, 0f, plateSize.z * 0.5f + 0.002f);
-            Vector3 leverSize = new Vector3(0.01f, 0.04f, 0.004f);
-            Quaternion leverRot = Quaternion.Euler(0f, 0f, angle);
-            m.Box(leverPos, leverSize, leverRot, M(new Color(0.20f, 0.20f, 0.22f)));
-
-            // 4️⃣ Optional wear line – a thin scratched groove across the plate front
-            if (rng.NextDouble() < 0.4)
-            {
-                float ox = R(rng, -plateSize.x * 0.3f, plateSize.x * 0.3f);
-                float oy = R(rng, -plateSize.y * 0.3f, plateSize.y * 0.3f);
-                Vector3 wearPos = platePos + new Vector3(ox, oy, plateSize.z * 0.5f + 0.0015f);
-                Vector3 wearSize = new Vector3(0.07f, 0.001f, 0.001f);
-                m.Box(wearPos, wearSize, Quaternion.identity, M(new Color(0.15f, 0.15f, 0.17f)));
-            }
-
-            // 5️⃣ Small rust spot – dark blob on the plate front
-            if (rng.NextDouble() < 0.3)
-            {
-                Vector3 rustPos = platePos + new Vector3(
-                    R(rng, -plateSize.x * 0.25f, plateSize.x * 0.25f),
-                    R(rng, -plateSize.y * 0.25f, plateSize.y * 0.25f),
-                    plateSize.z * 0.5f + 0.001f);
-                m.Blob(rustPos, Vector3.right, Vector3.up,
-                    R(rng, 0.008f, 0.012f), R(rng, 0.006f, 0.01f),
-                    6, 0f, rng,
-                    M(new Color(0.20f, 0.12f, 0.10f)));
-            }
-        }
         #endregion
 
         #region Overgrowth and grime

@@ -334,19 +334,23 @@ namespace CloneZ
                     Vector3 n = RunNormal(r, side);
                     float off = side * (Half + 0.004f);
 
-                    double vineChance = outside ? 0.3 : (Overgrown.Contains(room) ? 0.75 : 0.12);
-                    if (Rng.NextDouble() < vineChance)
+                    // The town was left tidy: the odd creeper outside, more where a room has been let go. The stems wander up to
+                    // 0.35 m past the patch, so a patch keeps that far in from the ends of its stretch of wall: a creeper never
+                    // hangs across a doorway (it would close the gap to the NavMesh) or a window.
+                    double vineChance = outside ? 0.06 : (Overgrown.Contains(room) ? 0.3 : 0.04);
+                    const float wander = 0.4f;
+                    if (Rng.NextDouble() < vineChance && b - a - 2f * wander >= 0.5f)
                     {
-                        float w = Mathf.Min(b - a - 0.3f, 0.8f + (float)Rng.NextDouble() * 1.3f);
-                        float c = a + 0.15f + w * 0.5f + (float)Rng.NextDouble() * (b - a - 0.3f - w);
+                        float span = b - a - 2f * wander;
+                        float w = Mathf.Min(span, 0.8f + (float)Rng.NextDouble() * 1.3f);
+                        float c = a + wander + w * 0.5f + (float)Rng.NextDouble() * (span - w);
                         bool hang = Rng.NextDouble() < 0.35;
                         float h = WallH * (0.55f + (float)Rng.NextDouble() * 0.4f);
                         float y0 = hang ? WallH - 0.05f - h : 0.02f;
-                        // The stems wander a little past the patch's width.
-                        if (!CoversFitting(r, side, c, w * 0.5f + 0.35f, y0, y0 + h))
+                        if (!CoversFitting(r, side, c, w * 0.5f + wander, y0, y0 + h))
                             FurnitureBuilder.Vines(p.Mesh, Rng, RunPoint(r, c, hang ? WallH - 0.05f : 0.02f, off), n, w, h, hang);
                     }
-                    double stainChance = outside ? 0.3 : 0.4;
+                    double stainChance = outside ? 0.06 : 0.14;
                     if (Rng.NextDouble() < stainChance)
                     {
                         float c = a + 0.4f + (float)Rng.NextDouble() * (b - a - 0.8f);
@@ -368,12 +372,15 @@ namespace CloneZ
         #endregion
 
         #region Litter and clutter
-        /// <summary>Scatters floor litter over a room (about <paramref name="perSqm"/> pieces per m²),
-        /// avoiding furniture footprints.</summary>
+        /// <summary>The share of a derelict room's litter a raid town's rooms get: the town was left in a hurry, but tidy.</summary>
+        private const float LitterShare = 0.3f;
+
+        /// <summary>Scatters floor litter over a room (about <paramref name="perSqm"/> pieces per m² of a derelict room, of
+        /// which the town keeps <see cref="LitterShare"/>), avoiding furniture footprints.</summary>
         public void Litter(RaidRoom room, float perSqm)
         {
             Rect inner = room.Inner;
-            int count = Mathf.RoundToInt(inner.width * inner.height * perSqm);
+            int count = Mathf.RoundToInt(inner.width * inner.height * perSqm * LitterShare);
             for (int i = 0; i < count; i++)
             {
                 // Litter drifts toward the walls and corners.
@@ -442,7 +449,7 @@ namespace CloneZ
             }
         }
 
-        /// <summary>A little snow blown in through an outside door.</summary>
+        /// <summary>A little snow blown in through an outside door, and the concrete step outside it.</summary>
         private void TrackedSnow()
         {
             foreach (Opening o in _openings)
@@ -450,7 +457,7 @@ namespace CloneZ
                 if (o.Kind != OpeningKind.Door) continue;
                 int outside = OutsideSide(o.Run, o.Pos);
                 if (outside == 0) continue;
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     Vector3 p = RunPoint(o.Run, o.Pos + ((float)Rng.NextDouble() - 0.5f) * o.Width, 0.026f, -outside * (Half + 0.2f + (float)Rng.NextDouble() * 0.9f));
                     Flat.FlatBlob(p, 0.15f + (float)Rng.NextDouble() * 0.25f, 0.1f + (float)Rng.NextDouble() * 0.2f, (float)Rng.NextDouble() * 360f, 0.4f, Rng, DecorPalette.Matte(DecorProps.SnowShade));
@@ -463,21 +470,22 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Snow drifted against the outside of the walls (between the doors).</summary>
+        /// <summary>Snow banked against the outside walls that face the weather (north and west), between the doors.</summary>
         private void Drifts()
         {
             foreach (WallPiece p in _pieces)
             {
                 if (p.Opening != null && p.Opening.Kind == OpeningKind.Door) continue;
                 int outside = OutsideSide(p.Run, (p.S + p.E) * 0.5f);
-                if (outside == 0 || Rng.NextDouble() < 0.35) continue;
+                if (outside == 0) continue;
+                Vector3 n = RunNormal(p.Run, outside);
+                if (n.z < 0.5f && n.x > -0.5f) continue;
                 float len = p.E - p.S;
                 float c = (p.S + p.E) * 0.5f;
                 Vector3 face = RunPoint(p.Run, c, 0f, outside * Half);
                 Vector3 along = p.Run.AlongX ? Vector3.right : Vector3.forward;
-                float d = 0.7f + (float)Rng.NextDouble() * 0.5f;
                 RaidMesh m = Town.Out.Solid(face);
-                DecorProps.WallDrift(m, Rng, face, along, RunNormal(p.Run, outside), len * 0.9f, d, 0.18f + (float)Rng.NextDouble() * 0.12f);
+                DecorProps.WallDrift(m, Rng, face, along, n, len * 0.96f, 0.9f, 0.24f);
             }
         }
         #endregion

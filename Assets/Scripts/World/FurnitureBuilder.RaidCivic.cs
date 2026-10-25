@@ -32,8 +32,6 @@ namespace CloneZ
             m.Box(new Vector3(0f, h - 0.01f, -0.02f), new Vector3(0.46f, 0.02f, 0.58f), shell);
             m.Box(new Vector3(0f, FilingPlinth * 0.5f, -0.02f), new Vector3(0.46f, FilingPlinth, 0.58f), M(c * 0.55f));
             m.Box(new Vector3(0f, (h + FilingPlinth) * 0.5f, -0.287f), new Vector3(0.42f, h - FilingPlinth - 0.02f, 0.006f), M(c * 0.3f));
-            // Small metal filing‑cabinet label plate
-            m.Box(new Vector3(0f, h - 0.015f, -0.025f), new Vector3(0.22f, 0.01f, 0.001f), Mt(Chrome));
             for (int i = 1; i < drawers; i++)
                 m.Box(new Vector3(0f, FilingPlinth + i * FilingPitch, 0.255f), new Vector3(0.42f, 0.016f, 0.03f), shell);
             if (Chance(rng, 0.35))
@@ -137,14 +135,11 @@ namespace CloneZ
             float x = LockerX(i, count);
             Color dark = c * 0.45f;
             m.Box(new Vector3(x, LockerDoorY, 0.215f), new Vector3(0.46f, LockerDoorH, 0.02f), M(c));
-for (int v = 0; v < 4; v++)
-        {
-            m.Box(new Vector3(x, 1.52f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
-            m.Box(new Vector3(x, 0.24f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
-        }
-        // Tiny metal locker-number plate at lower front edge
-        m.Box(new Vector3(x, LockerDoorY - LockerDoorH * 0.5f + 0.01f, 0.217f), new Vector3(0.05f, 0.02f, 0.002f), Mt(Chrome));
-            m.Cylinder(new Vector3(x + R(rng, -0.005f, 0.005f), LockerDoorY + LockerDoorH * 0.5f - 0.07f, 0.22f), 0.004f, 0.02f, 8, Mt(Chrome));
+            for (int v = 0; v < 4; v++)
+            {
+                m.Box(new Vector3(x, 1.52f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
+                m.Box(new Vector3(x, 0.24f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
+            }
             m.Box(new Vector3(x + 0.16f, 1.0f, 0.235f), new Vector3(0.035f, 0.13f, 0.025f), Mt(Chrome));
             m.Box(new Vector3(x, 1.74f, 0.228f), new Vector3(0.07f, 0.035f, 0.006f), M(Paper));
             if (Chance(rng, 0.3))
@@ -204,7 +199,6 @@ for (int v = 0; v < 4; v++)
             m.Box(new Vector3(0f, 1.5f, zc + t * 0.5f), new Vector3(0.7f, 0.02f, d - t), M(c * 0.8f));
             for (int i = 0; i < 2; i++)
                 if (Chance(rng, 0.75)) AmmoCan(m, rng, new Vector3(-0.17f + i * 0.34f, 1.51f, -0.04f), 90f + R(rng, -6f, 6f));
-            m.Box(new Vector3(0f, 1.62f, 0.285f), new Vector3(0.18f, 0.03f, 0.004f), Mt(Chrome));
             return c;
         }
 
@@ -306,7 +300,6 @@ for (int v = 0; v < 4; v++)
             Color top = V(new Color(0.48f, 0.34f, 0.20f), rng, 0.06f);
             Color legs = new Color(0.20f, 0.24f, 0.30f);
             m.Box(new Vector3(0f, 0.88f, 0f), new Vector3(1.8f, 0.07f, 0.75f), M(top));
-            m.Box(new Vector3(R(rng, -0.8f, 0.8f), 0.88f + 0.01f, R(rng, -0.25f, 0.25f)), new Vector3(0.4f, 0.02f, 0.3f), M(V(new Color(0.10f, 0.10f, 0.10f), rng, 0.04f)));
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3(i % 2 == 0 ? -0.85f : 0.85f, 0.43f, i < 2 ? -0.32f : 0.32f), new Vector3(0.05f, 0.86f, 0.05f), M(legs));
             m.Box(new Vector3(0f, 0.18f, 0f), new Vector3(1.7f, 0.03f, 0.66f), M(top * 0.8f));
@@ -482,53 +475,6 @@ for (int v = 0; v < 4; v++)
             m.Box(new Vector3(px - 0.2f, 0.36f, pz), new Vector3(0.02f, 0.72f, pd), carcass);
             m.Box(new Vector3(px + 0.2f, 0.36f, pz), new Vector3(0.02f, 0.72f, pd), carcass);
             m.Box(new Vector3(px, 0.36f, pz - pd * 0.5f + 0.01f), new Vector3(0.42f, 0.72f, 0.02f), carcass);
-            // ------------------- new desk accessories -------------------
-            // 1️⃣ Chrome wall‑clock on the left‑hand side of the desk top
-            Vector3 clockPos = new Vector3(px - 0.15f, 0.77f, pz + 0.09f);
-            m.Box(clockPos, new Vector3(0.08f, 0.02f, 0.02f), Mt(Chrome)); // frame
-            m.Box(clockPos + new Vector3(0f, 0.005f, 0.011f), new Vector3(0.06f, 0.01f, 0.001f), Gl(new Color(0.9f,0.85f,0.5f))); // emissive face
-
-            // 2️⃣ Chrome pen‑cup (cylinder) near the right‑hand front edge
-            Vector3 cupPos = new Vector3(px + 0.18f, 0.75f, pz - 0.12f);
-            m.Cylinder(cupPos, 0.01f, 0.06f, 12, Mt(Chrome));
-
-            // 3️⃣ Thin stack of paper sheets (random height)
-            int sheetCount = 2 + rng.Next(3);
-            float sheetBaseY = 0.78f;
-            for (int s = 0; s < sheetCount; s++)
-            {
-                float y = sheetBaseY + s * 0.008f;
-                float sheetW = R(rng, 0.22f, 0.28f);
-                float sheetD = R(rng, 0.18f, 0.24f);
-                m.Box(new Vector3(px, y, pz - 0.05f), new Vector3(w, 0.006f, d), M(Paper));
-            }
-
-            // 4️⃣ Coffee mug (white ceramic) with a wisp of steam
-            Vector3 mugPos = new Vector3(px - 0.07f + R(rng, -0.01f, 0.01f), 0.76f, pz - 0.05f);
-            float mugHeight = R(rng, 0.08f, 0.11f);
-            float mugRadius = 0.03f;
-            m.Cylinder(mugPos, mugRadius, mugHeight, 12, M(new Color(0.95f,0.94f,0.92f)));
-            Vector3 steamPos = mugPos + new Vector3(0f, mugHeight + 0.01f, 0f);
-            m.Cylinder(steamPos, 0.008f, 0.03f, 8, Gl(new Color(0.9f,0.9f,0.85f)));
-
-            // 5️⃣ Occasionally (30% chance) place a tiny potted plant on the far‑right side of the desk
-            if (Chance(rng, 0.3f))
-            {
-                Vector3 potPos = new Vector3(px + 0.22f, 0.79f, pz - 0.08f);
-                // Pot – dark matte cylinder
-                m.Cylinder(potPos, 0.04f, 0.02f, 10, M(new Color(0.20f,0.18f,0.16f)));
-                // Soil – slightly lighter cylinder
-                m.Cylinder(potPos + new Vector3(0f,0.01f,0f), 0.036f, 0.005f, 8, M(new Color(0.30f,0.28f,0.24f)));
-                // Plant – three tapered green ellipsoids
-                for (int p = 0; p < 3; p++)
-                {
-                    float ang = R(rng, -15f, 15f);
-                    Vector3 dir = Yaw(ang) * new Vector3(0.015f,0f,0f);
-                    m.Ellipsoid(potPos + new Vector3(0f,0.015f,0f) + dir, new Vector3(0.01f,0.025f,0.01f), Mt(new Color(0.15f,0.55f,0.18f)), 8, 4);
-                }
-            }
-
-            // ----- original desk geometry continuation -----
             m.Box(new Vector3(px, 0.02f, pz), new Vector3(0.42f, 0.04f, pd), carcass);
             m.Box(new Vector3(px, 0.38f, pz - pd * 0.5f + 0.022f), new Vector3(0.38f, 0.66f, 0.004f), M(c * 0.35f));
             for (int i = 0; i < 2; i++)
@@ -719,28 +665,8 @@ for (int v = 0; v < 4; v++)
             m.Box(new Vector3(sinkX, 1.25f, -0.17f), new Vector3(0.03f, 0.03f, 0.22f), chrome);
             m.Box(new Vector3(sinkX + SteelSpout.x, 1.22f, SteelSpout.z), new Vector3(0.025f, 0.06f, 0.025f), chrome);
             m.Box(new Vector3(sinkX - SteelColdTap.x, 0.98f, SteelColdTap.z), new Vector3(0.04f, 0.04f, 0.04f), chrome);
-            if (Chance(rng, 0.5)) m.Cylinder(new Vector3(sinkX - SteelColdTap.x - 0.07f, SteelDeckY + 0.01f, SteelColdTap.z - 0.05f), 0.03f, 0.12f, 8, M(Paper));
             m.Box(new Vector3(sinkX + SteelColdTap.x, 0.98f, SteelColdTap.z), new Vector3(0.04f, 0.04f, 0.04f), chrome);
             KitchenTapHead(m, new Vector3(sinkX - SteelColdTap.x, SteelColdTap.y, SteelColdTap.z), TapHotRed);
-            // 1️⃣ Pop‑up drain stopper: a small chrome disc that lifts out of the bowl
-            float stopperY = SteelSinkBottom + 0.01f; // just above the bowl bottom
-            m.Cylinder(new Vector3(sinkX, stopperY, SteelSinkZ), 0.02f, 0.005f, 12, Mt(Chrome));
-            // 2️⃣ Drain lever: a tiny chrome lever beside the bowl with a small knob
-            float leverX = sinkX - 0.08f;
-            float leverY = stopperY + 0.02f;
-            float leverZ = SteelSinkZ;
-            m.Box(new Vector3(leverX, leverY, leverZ), new Vector3(0.005f, 0.03f, 0.12f), Mt(Chrome)); // the lever arm
-            m.Box(new Vector3(leverX, leverY + 0.03f, leverZ - 0.015f), new Vector3(0.015f, 0.015f, 0.01f), Mt(Chrome)); // the knob
-            // 3️⃣ Soap dispenser: a small white plastic cylinder with a little label
-            Vector3 soapPos = new Vector3(sinkX + 0.12f, 0.90f, SteelSinkZ + 0.08f);
-            m.Cylinder(soapPos, 0.03f, 0.12f, 12, M(new Color(0.95f, 0.95f, 0.93f)));
-            m.Box(soapPos + new Vector3(0f, 0.065f, 0f), new Vector3(0.025f, 0.005f, 0.03f), Mt(new Color(0.20f, 0.20f, 0.20f)));
-            // 4️⃣ Chrome towel‑bar: a thin horizontal bar where a dry towel can hang
-            Vector3 barPos = new Vector3(sinkX, 0.95f, SteelSinkZ - 0.15f);
-            m.Box(barPos, new Vector3(0.30f, 0.008f, 0.03f), Mt(Chrome));
-            // 5️⃣ Dry towel: a folded paper‑like rectangle clinging to the bar
-            Vector3 towelPos = barPos + new Vector3(0f, 0.015f, 0f);
-            m.Box(towelPos, new Vector3(0.12f, 0.015f, 0.05f), M(Paper));
 
             // Under the bowl: the waste, its trap and the supply pipes.
             Surf pvc = G(new Color(0.84f, 0.84f, 0.80f));
@@ -798,41 +724,6 @@ for (int v = 0; v < 4; v++)
             m.Box(new Vector3(0.18f, 0.84f, 1.017f), new Vector3(0.2f, 0.28f, 0.01f), M(new Color(0.55f, 0.40f, 0.22f)));
             m.Box(new Vector3(0.18f, 0.83f, 1.023f), new Vector3(0.18f, 0.24f, 0.003f), M(Paper));
             m.Box(new Vector3(0.18f, 0.97f, 1.024f), new Vector3(0.07f, 0.03f, 0.008f), Mt(Chrome));
-
-            // --- bedside night‑stand (right side of the bed) ---------------------------------
-            if (Chance(rng, 0.7)) // ~70 % of beds get a night‑stand
-            {
-                // tabletop
-                float nsX = 0.45f; // metres from centre, right side
-                float nsZ = -0.6f; // front‑half of bed
-                m.Box(new Vector3(nsX, 0.35f, nsZ), new Vector3(0.28f, 0.02f, 0.22f), Mt(new Color(0.22f, 0.18f, 0.15f)));
-                // four legs
-                float legH = 0.30f;
-                float legW = 0.02f;
-                foreach (float lx in new[] { -0.13f, 0.13f })
-                    foreach (float lz in new[] { -0.09f, 0.09f })
-                        m.Box(new Vector3(nsX + lx, legH * 0.5f, nsZ + lz), new Vector3(legW, legH, legW), Mt(new Color(0.15f, 0.14f, 0.13f)));
-            }
-            // --- bedside lamp (mounted on the night‑stand) ----------------------------------
-            if (Chance(rng, 0.6)) // only some stands carry the lamp
-            {
-                // lamp base – chrome cylinder
-                Vector3 basePos = new Vector3(0.45f, 0.36f, -0.55f);
-                m.Cylinder(basePos, 0.04f, 0.02f, 12, Mt(Chrome));
-                // pole – thin steel cylinder
-                float poleHeight = 0.55f + R(rng, -0.02f, 0.02f);
-                m.Cylinder(new Vector3(basePos.x, basePos.y + 0.01f, basePos.z), 0.01f, poleHeight, 12, Mt(new Color(0.55f, 0.55f, 0.55f)));
-                // shade – a shallow ellipsoid, slightly tilted for realism
-                Vector3 shadeC = new Vector3(basePos.x, basePos.y + 0.01f + poleHeight + 0.07f, basePos.z);
-                Quaternion shadeRot = Quaternion.Euler(R(rng, -5f, 5f), 0f, 0f);
-                m.Ellipsoid(shadeC, new Vector3(0.09f, 0.06f, 0.09f), shadeRot, Mt(new Color(0.25f, 0.23f, 0.20f)), 8, 4);
-                // bulb – small emissive sphere inside the shade
-                Vector3 bulbPos = shadeC + new Vector3(0f, 0.015f, 0f);
-                m.Sphere(bulbPos, 0.015f, Gl(new Color(1f, 0.95f, 0.80f)));
-                // switch – tiny chrome box on the base side
-                Vector3 swPos = basePos + new Vector3(0.045f, 0.015f, 0f);
-                m.Box(swPos, new Vector3(0.015f, 0.025f, 0.005f), Mt(Chrome));
-            }
         }
 
         /// <summary>The clinic's examination couch (0.7 × 1.9 on a 0.95 × 2.0 footprint, head at -Z): a padded vinyl top on a
@@ -929,18 +820,11 @@ for (int v = 0; v < 4; v++)
             // Bumpers and lights, and the plate on the tail.
             m.Box(new Vector3(0f, CarBodyY + 0.06f, hl - 0.04f), new Vector3(CarWid - 0.02f, 0.14f, 0.1f), Mt(chrome));
             m.Box(new Vector3(0f, CarBodyY + 0.06f, -hl + 0.04f), new Vector3(CarWid - 0.02f, 0.14f, 0.1f), Mt(chrome));
-for (int s = -1; s <= 1; s += 2)
-        {
-            m.Box(new Vector3(s * (hw - 0.22f), CarBodyY + 0.34f, hl - 0.045f), new Vector3(0.32f, 0.14f, 0.02f), Gs(new Color(0.75f, 0.74f, 0.66f)));
-            m.Box(new Vector3(s * (hw - 0.2f), CarBodyY + 0.36f, -hl + 0.045f), new Vector3(0.3f, 0.12f, 0.02f), Gs(new Color(0.5f, 0.08f, 0.06f)));
-        }
-        // rear bumper license plate (metal base)
-        m.Box(new Vector3(0f, CarBodyY + 0.12f, -hl + 0.025f),
-            new Vector3(0.22f, 0.12f, 0.001f), Mt(Chrome));
-        // tiny "numbers" printed on the plate
-        Vector3 numPos = new Vector3(R(rng, -0.08f, 0.08f), CarBodyY + 0.13f,
-            -hl + 0.025f + R(rng, -0.001f, 0.001f));
-        m.Box(numPos, new Vector3(0.16f, 0.03f, 0.001f), M(Black));
+            for (int s = -1; s <= 1; s += 2)
+            {
+                m.Box(new Vector3(s * (hw - 0.22f), CarBodyY + 0.34f, hl - 0.045f), new Vector3(0.32f, 0.14f, 0.02f), Gs(new Color(0.75f, 0.74f, 0.66f)));
+                m.Box(new Vector3(s * (hw - 0.2f), CarBodyY + 0.36f, -hl + 0.045f), new Vector3(0.3f, 0.12f, 0.02f), Gs(new Color(0.5f, 0.08f, 0.06f)));
+            }
             m.Box(new Vector3(0f, CarBodyY + 0.3f, -hl + 0.046f), new Vector3(0.3f, 0.15f, 0.01f), M(new Color(0.86f, 0.84f, 0.74f)));
             m.Box(new Vector3(0f, CarBeltY - 0.06f, -hl + 0.046f), new Vector3(0.1f, 0.04f, 0.012f), Mt(chrome));
 
@@ -996,22 +880,6 @@ for (int s = -1; s <= 1; s += 2)
             m.Box(new Vector3(hw - CarSkin - 0.004f, (lowY + CarBeltY) * 0.5f + 0.04f, zc), new Vector3(0.008f, CarBeltY - lowY - 0.14f, len - 0.08f), M(new Color(0.22f, 0.20f, 0.18f)));
             m.Box(new Vector3(hw - 0.1f, CarBeltY + 0.215f, zc), new Vector3(0.01f, 0.43f, len - 0.06f), Gs(new Color(0.07f, 0.09f, 0.10f)));
             m.Box(new Vector3(hw - 0.1f, CarBeltY + 0.425f, zc), new Vector3(0.03f, 0.03f, len - 0.04f), G(c));
-            // Door exterior pull handle
-            m.Box(new Vector3(hw - CarSkin - 0.03f, CarBeltY - 0.10f, CarDoorZ0 + len * 0.25f), new Vector3(0.02f, 0.06f, 0.03f), Mt(Chrome));
-            // Front‑lower lock plate
-            m.Box(new Vector3(hw - CarSkin * 0.5f, CarBeltY - 0.28f, CarDoorZ0 + 0.02f), new Vector3(0.05f, 0.02f, 0.001f), Mt(Chrome));
-            // Interior pull latch (just inside the skin)
-            m.Box(new Vector3(hw - CarSkin + 0.01f, CarBeltY - 0.10f, CarDoorZ0 + len * 0.25f), new Vector3(0.015f, 0.015f, 0.01f), Mt(Chrome));
-            // Window frame top
-            m.Box(new Vector3(hw - 0.1f, CarBeltY + 0.215f + 0.215f, zc), new Vector3(0.01f, 0.005f, len - 0.06f), Mt(Chrome));
-            // Window frame bottom
-            m.Box(new Vector3(hw - 0.1f, CarBeltY + 0.215f - 0.215f, zc), new Vector3(0.01f, 0.005f, len - 0.06f), Mt(Chrome));
-            // Window frame left side
-            m.Box(new Vector3(hw - 0.1f + 0.005f, CarBeltY + 0.215f, zc - (len - 0.06f) * 0.5f + 0.005f), new Vector3(0.005f, 0.43f, 0.01f), Mt(Chrome));
-            // Window frame right side
-            m.Box(new Vector3(hw - 0.1f - 0.005f, CarBeltY + 0.215f, zc + (len - 0.06f) * 0.5f - 0.005f), new Vector3(0.005f, 0.43f, 0.01f), Mt(Chrome));
-            // Bottom seal (dark matte strip)
-            m.Box(new Vector3(hw - CarSkin * 0.5f, CarBeltY - 0.29f, zc), new Vector3(CarSkin, 0.01f, len), M(new Color(0.20f, 0.20f, 0.20f)));
         }
         #endregion
     }
