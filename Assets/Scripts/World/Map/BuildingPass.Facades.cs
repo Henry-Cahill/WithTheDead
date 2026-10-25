@@ -18,8 +18,10 @@ namespace CloneZ
         /// <summary>The grid textures hold 4 x 4 bays and storeys.</summary>
         private const int GridCells = 4;
 
+        /// <summary>The style of painted window grid used for a building facade.</summary>
         internal enum FacadeStyle { Punched, Ribbon, Band, Curtain, Small }
 
+        /// <summary>Determines which facade style to use based on plan type and window kind.</summary>
         private static FacadeStyle StyleOf(Plan p, WindowKind kind)
         {
             if (p.Curtain) return FacadeStyle.Curtain;
