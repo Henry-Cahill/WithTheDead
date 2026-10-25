@@ -80,10 +80,15 @@ namespace CloneZ
         /// to <paramref name="toDeg"/> (0° = +x; the end may exceed 360).</summary>
         public void Arc(float cx, float cy, float r, float width, float fromDeg, float toDeg)
         {
+            // half stroke width (h) and outer radius including half‑width (e) for the bounding box
             float h = width * 0.5f, e = r + h;
+            // angular sweep amount (difference between end and start angles)
             float sweep = toDeg - fromDeg;
+            // start and end angles in radians for endpoint computation
             double a0 = fromDeg * System.Math.PI / 180.0, a1 = toDeg * System.Math.PI / 180.0;
+            // compute endpoint of start angle for cap
             float ex0 = cx + r * (float)System.Math.Cos(a0), ey0 = cy + r * (float)System.Math.Sin(a0);
+            // compute endpoint of end angle for cap
             float ex1 = cx + r * (float)System.Math.Cos(a1), ey1 = cy + r * (float)System.Math.Sin(a1);
             Fill(cx - e, cy - e, cx + e, cy + e, (x, y) =>
             {
@@ -216,6 +221,7 @@ namespace CloneZ
             minY = Min(minY, cy); maxY = Max(maxY, cy);
         }
 
+        /// <summary>Signed distance from a point to the closest point on a line segment.</summary>
         private static float SegDist(float px, float py, float ax, float ay, float bx, float by)
         {
             float pax = px - ax, pay = py - ay, bax = bx - ax, bay = by - ay;
@@ -242,6 +248,7 @@ namespace CloneZ
             return k0 * (k0 - 1f) / k1;
         }
 
+        /// <summary>Signed distance from a point to the nearest edge of a polygon (even‑odd fill rule).</summary>
         private static float PolyDist(float px, float py, float[] v)
         {
             int n = v.Length / 2;

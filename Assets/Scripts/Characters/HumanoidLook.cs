@@ -7,16 +7,22 @@ namespace CloneZ
     /// height; they differ in breadth, so one set of joint heights serves them all.</summary>
     public enum BodyBuild : byte { Athletic, Average, Slim, Heavy }
 
+    /// <summary>Hair styles for humanoid characters, from bald to long messy hair.</summary>
     public enum HairStyle : byte { Bald, Buzz, Short, Long, Ponytail, Messy }
 
+    /// <summary>Headwear options for humanoid characters, including hats, helmets and masks.</summary>
     public enum HeadwearStyle : byte { None, Cap, CapBackward, Beanie, Helmet, WideBrim, Bandana, Mask, Glasses }
 
+    /// <summary>Top clothing styles, from T‑shirts to coats and dresses.</summary>
     public enum TopStyle : byte { None, TShirt, Tank, LongSleeve, Hoodie, Jacket, Coat, Vest, Dress }
 
+    /// <summary>Bottom clothing styles, from underwear to skirts and pants.</summary>
     public enum BottomStyle : byte { Underwear, Pants, Shorts, SkirtShort, SkirtKnee, SkirtLong }
 
+    /// <summary>Footwear styles ranging from bare feet to shoes, boots and socks.</summary>
     public enum FootwearStyle : byte { Barefoot, Shoes, Boots, Sandals, Socks }
 
+    /// <summary>Handwear options: bare hands, gloves, or fingerless gloves.</summary>
     public enum HandwearStyle : byte { Bare, Gloves, Fingerless }
 
     /// <summary>

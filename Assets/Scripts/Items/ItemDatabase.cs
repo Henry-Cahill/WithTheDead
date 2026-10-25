@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    /// <summary>Categories of items, grouping similar functionality.</summary>
     public enum ItemCategory { Food, Drink, Medical, Weapon, Firearm, Ammo, Material, Clothing, Misc }
 
     /// <summary>Where a piece of clothing is worn. One item per slot at a time. The first five are body
@@ -174,41 +175,61 @@ namespace CloneZ
         /// <summary>Builds the rich-text body shown when the item is hovered in the inventory.</summary>
         public string Tooltip()
         {
+            // Build a StringBuilder with an estimated capacity for the tooltip.
             var sb = new System.Text.StringBuilder(160);
+            // Append the item name in bold, followed by a newline.
             sb.Append("<b>").Append(DisplayName).Append("</b>\n");
+            // Show the item category and weight, styled for readability.
             sb.Append("<size=13><color=#8b93a0>").Append(Category.ToString())
               .Append("    ").Append(Weight.ToString("0.##")).Append(" kg</color></size>");
 
+            // Add hunger restore info if the item provides it.
             if (HungerRestore > 0f) StatLine(sb, "Hunger", "-" + Pct(HungerRestore));
+            // Add thirst restore info when applicable.
             if (ThirstRestore > 0f) StatLine(sb, "Thirst", "-" + Pct(ThirstRestore));
+            // Show health restoration if present.
             if (HealthRestore > 0f) StatLine(sb, "Heals", HealthRestore.ToString("0") + " HP");
+            // Show infection reduction if any.
             if (InfectionReduce > 0f) StatLine(sb, "Cures", InfectionReduce.ToString("0") + " infection");
+            // Indicate spoilage time for perishable items.
             if (Perishable) StatLine(sb, "Keeps", "~" + Mathf.RoundToInt(ShelfLifeHours) + "h before spoiling");
+// If the item can be cooked and a cooked form exists, show cooking info.
 if (Cookable && HasId(CookedId))
             {
                 ItemDef cooked = ItemDatabase.Get(CookedId);
                 StatLine(sb, "Cook", "at a stove → " + (cooked != null ? cooked.DisplayName : CookedId));
             }
+            // Warn about raw consumption hazards.
             if (RawHazard) StatLine(sb, "<color=#e0a53c>Raw</color>", "cook it first \u2014 eating it raw risks illness");
+// Show planting info for seeds that have an associated crop.
 if (IsSeed && HasId(CropId))
             {
                 ItemDef crop = ItemDatabase.Get(CropId);
                 StatLine(sb, "Plant", "sow at a tilled plot → " + (crop != null ? crop.DisplayName : CropId));
             }
+            // Advise the player to fill an empty water container.
             if (IsWaterContainer && !HoldsWater) StatLine(sb, "Empty", "fill at a tap or rain barrel");
+            // Warn about drinking tainted water; suggest boiling first.
             if (WaterTainted) StatLine(sb, "<color=#e0a53c>Tainted</color>", "boil at a stove before drinking");
+            // Show bandage information; distinguish sterile vs improvised.
             if (StopsBleeding) StatLine(sb, "Bandage", SterileBandage ? "Sterile" : "Improvised");
+            // Display disinfecting action.
             if (Disinfects) StatLine(sb, "Disinfects", "wound");
+            // Show antibiotic usage for wound infection.
             if (CuresWoundInfection) StatLine(sb, "Antibiotic", "treats sepsis");
+            // Report pain relief amount.
             if (PainRelief > 0f) StatLine(sb, "Pain relief", Pct(PainRelief));
+            // Indicate that the item calms panic when used.
             if (CalmsPanic) StatLine(sb, "Calms", "panic");
 
+            // Show weapon stats: damage, reach, and attack speed.
             if (IsWeapon)
             {
                 StatLine(sb, "Damage", WeaponDamage.ToString("0.0"));
                 StatLine(sb, "Reach", WeaponRange.ToString("0.0") + " m");
                 StatLine(sb, "Speed", (1f / Mathf.Max(0.01f, SwingCooldown)).ToString("0.0") + " /s");
             }
+            // Show firearm stats: damage (account for pellets), range, magazine size, and ammo type.
             if (IsFirearm)
             {
                 string dmg = PelletsPerShot > 1
@@ -223,34 +244,46 @@ if (IsSeed && HasId(CropId))
                     StatLine(sb, "Ammo", ammo != null ? ammo.DisplayName : AmmoId);
                 }
             }
+            // Label ammunition items.
             if (Category == ItemCategory.Ammo) StatLine(sb, "Type", "Ammunition");
 
+            // Show durability for damageable gear that uses condition rather than charge.
             if (IsDamageable && !UsesCharge) StatLine(sb, "Condition", MaxCondition + " \u00b7 " + DurabilityWord() + (IsClothing ? " (wears when struck)" : " (wears with use)"));
+            // Indicate two‑handed grip requirement.
             if (TwoHanded) StatLine(sb, "Grip", "Two-handed");
+            // Note that the item is sealed and needs a can opener or knife.
             if (IsCanned) StatLine(sb, "<color=#e0a53c>Sealed</color>", "needs a can opener or a knife");
 
+            // Show gear‑specific stats based on its kind.
             switch (Gear)
             {
+                // List container capacity and grid size.
                 case GearKind.Container:
                     StatLine(sb, "Holds", ContainerCapacity.ToString("0.#") + " kg \u00b7 " + GridW + "\u00d7" + GridH + " grid");
                     break;
+                // Show battery life and toggle key for night‑vision gear.
                 case GearKind.NightVision:
                     StatLine(sb, "Battery", Mathf.RoundToInt(ChargeSeconds / 60f) + " min \u00b7 toggle with N");
                     break;
+                // Show battery life and toggle key for flashlight gear.
                 case GearKind.Flashlight:
                     StatLine(sb, "Battery", Mathf.RoundToInt(ChargeSeconds / 60f) + " min \u00b7 toggle with L");
                     break;
+                // Show filter duration for gas‑mask gear.
                 case GearKind.GasMask:
                     StatLine(sb, "Filter", Mathf.RoundToInt(ChargeSeconds / 60f) + " min in toxic gas");
                     break;
+                // Explain battery’s purpose.
                 case GearKind.Battery:
                     StatLine(sb, "Use", "recharges night vision or a flashlight");
                     break;
+                // Explain filter’s purpose.
                 case GearKind.Filter:
                     StatLine(sb, "Use", "swaps a fresh filter into a gas mask");
                     break;
             }
 
+            // Show clothing slot and optional stats like warmth and protection.
             if (IsClothing)
             {
                 StatLine(sb, "Worn on", ClothingSlot.ToString());
@@ -260,8 +293,10 @@ if (IsSeed && HasId(CropId))
                 if (WaterResistance > 0f) StatLine(sb, "Waterproof", Pct(WaterResistance));
             }
 
+            // Append optional flavor description.
             if (!string.IsNullOrEmpty(Description))
                 sb.Append("\n<size=13><color=#9aa0a8><i>").Append(Description).Append("</i></color></size>");
+            // Gather extra lines from registered tooltip providers (e.g., ballistics, artifact info).
             for (int p = 0; p < TooltipProviders.Count; p++)
             {
                 string extra = null;
@@ -272,6 +307,7 @@ if (IsSeed && HasId(CropId))
             return sb.ToString();
         }
 
+        /// <summary>Converts a 0..1 fraction to a percentage string.</summary>
         private static string Pct(float frac01) => Mathf.RoundToInt(frac01 * 100f) + "%";
         private string DurabilityWord()
             => ConditionLossChance >= 24 ? "rugged" : ConditionLossChance >= 12 ? "sturdy" : "fragile";

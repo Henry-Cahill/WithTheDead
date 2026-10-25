@@ -643,7 +643,9 @@ namespace CloneZ
         /// </summary>
         public static float[] Creak(SynthGen g, float seconds, Func<float, float> rateHz, Func<float, float> amp, float[] resHz, float[] resQ, float jitter)
         {
+            // Sample rate of the generator (samples per second).
             int rate = g.Rate;
+            // Determine buffer length based on desired duration and sample rate.
             int n = Math.Max(1, (int)(seconds * rate));
             var src = new float[n];
             float ph = 0f;

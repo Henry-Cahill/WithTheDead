@@ -10,8 +10,10 @@ namespace CloneZ
     // roads meet in the middle and never spill onto either.
     internal static partial class RoadPass
     {
+        /// <summary>Enum describing the type of a cut along a road side: ramp, driveway, mouth (side‑road opening), or walk‑only segment.</summary>
         private enum CutKind { Ramp, Driveway, Mouth, Walk }
 
+        /// <summary>Struct representing a cut segment on a road side with start/end positions and its kind.</summary>
         private struct Cut
         {
             public float S0, S1;
@@ -52,6 +54,7 @@ namespace CloneZ
         }
 
         // Where the walk starts at sample i in a pass: 1.3 m out on a ramp's segments.
+        /// <summary>Computes the start position of the walk segment for the given pass, accounting for ramp offset.</summary>
         private static float WalkFrom(int i, int pass) => pass == 1 ? Mathf.Max(s_WalkIn[i], s_Edge[i] + 1.3f) : s_WalkIn[i];
 
         /// <summary>A verge wider than this is drawn as the snowy ground between two banks, not a kerb-high strip.</summary>
@@ -239,6 +242,7 @@ namespace CloneZ
             else AddCut(c, c.Length - t1, c.Length - t0, CutKind.Walk, -armSide);
         }
 
+        /// <summary>Enumerates side‑generation work for each chain and corner, yielding a description string for progress reporting.</summary>
         private static IEnumerable<string> SidesAndCorners(Net net)
         {
             foreach (Chain c in net.Chains)

@@ -220,6 +220,7 @@ namespace CloneZ
             List<Vector2> p = e.Footprint.Pts;
             int n = p.Count;
             float bestScore = -1f, bestAngle = 0f;
+            // Evaluate each edge of the footprint as a candidate frame direction – longer edges count more.
             for (int i = 0; i < n; i++)
             {
                 Vector2 d = p[(i + 1) % n] - p[i];
@@ -227,6 +228,8 @@ namespace CloneZ
                 if (len < 0.5f) continue;
                 float a = Mod90(Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg);
                 float score = 0f;
+                // Score this edge against all others – favour edges that line up with many long edges
+                // Compute a length‑weighted average of edges that are within a few degrees of the best angle
                 for (int j = 0; j < n; j++)
                 {
                     Vector2 dj = p[(j + 1) % n] - p[j];
@@ -263,6 +266,7 @@ namespace CloneZ
             float best = float.MinValue;
             ex = baseX;
             ez = Perp(baseX);
+            // Test the four possible axis orientations and pick the one that points most outward toward the main door
             for (int k = 0; k < 4; k++)
             {
                 Vector2 x = Turn90(baseX, k), z = Perp(x);
@@ -338,6 +342,7 @@ namespace CloneZ
         }
 
         // -1 outside (or within `margin` of the outline), -2 free inside; a block's index once it's taken.
+        /// <summary>Rasterises the building footprint into a grid of cells marking interior free space and outside margin.</summary>
         private static int[] Rasterise(List<Vector2> local, float margin, float cell, float x0, float z0, int nx, int nz)
         {
             var owner = new int[nx * nz];
@@ -346,6 +351,7 @@ namespace CloneZ
             var b = new List<Vector2>(8);
             var c = new List<Vector2>(8);
             float reach = cell * 0.5f + margin;
+            // For each grid row, gather intervals at three nearby Z positions (center and +/- reach) to model wall thickness and margin
             for (int j = 0; j < nz; j++)
             {
                 float zc = z0 + (j + 0.5f) * cell;
@@ -354,6 +360,7 @@ namespace CloneZ
                 Intervals(local, zc + reach, spans, c);
                 Intersect(a, b);
                 Intersect(a, c);
+                // Determine if each cell lies inside the polygon after applying the margin
                 for (int i = 0; i < nx; i++)
                 {
                     float xa = x0 + i * cell, xb = xa + cell;
@@ -396,6 +403,7 @@ namespace CloneZ
         }
 
         // The biggest rectangle of free cells (-2) at least `min` cells each way (the histogram method).
+        /// <summary>Finds the largest axis‑aligned rectangle of free cells in the rasterised grid meeting a minimum size.</summary>
         private static bool LargestRect(int[] owner, int nx, int nz, int min, out RectInt best)
         {
             best = default;
@@ -404,15 +412,20 @@ namespace CloneZ
             var stack = new int[nx + 1];
             for (int j = 0; j < nz; j++)
             {
+                // Build a histogram of consecutive free cells (-2) for each column up to the current row
                 for (int i = 0; i < nx; i++) h[i] = owner[j * nx + i] == -2 ? h[i] + 1 : 0;
                 int top = 0;
+                // Process the histogram as a stack to find the maximal rectangle ending at this row
                 for (int i = 0; i <= nx; i++)
                 {
                     int cur = i < nx ? h[i] : 0;
                     while (top > 0 && h[stack[top - 1]] >= cur)
                     {
+                        // Compute rectangle dimensions from popped bar and update best if larger than previous best
                         int height = h[stack[--top]];
+                        // Determine left boundary of rectangle based on new stack top
                         int left = top > 0 ? stack[top - 1] + 1 : 0;
+                        // Compute rectangle width from current column index and left boundary
                         int width = i - left;
                         if (height >= min && width >= min && width * height > bestArea)
                         {
@@ -655,6 +668,8 @@ namespace CloneZ
         }
 
         // The wall two rooms share, if any: added to the plan.
+        /// <summary>Adds a wall segment between two rooms if they share a side, and records whether it is open (no wall) based on room openness.</summary>
+        // When a shared wall is found, decide which side is west/east or south/north and store its coordinates
         private static void Shared(InteriorPlan plan, int a, int b)
         {
             Rect ra = plan.Rooms[a].R, rb = plan.Rooms[b].R;

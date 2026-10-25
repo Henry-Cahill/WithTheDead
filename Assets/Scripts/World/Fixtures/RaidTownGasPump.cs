@@ -46,16 +46,23 @@ namespace CloneZ
             return p;
         }
 
+        /// <summary>Populate the list of player actions for this gas pump.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Add the core actions that are always available regardless of state.
             into.Add(new InteractAction(_lifted ? "Hang the nozzle back up" : "Lift the nozzle", ToggleNozzle));
+            // Present flavour text that gives world‑building hints regardless of interaction state.
             into.Add(new InteractAction("Read the dials", c => c.Notify(
                 "Regular, $1.09 9/10 a gallon. The last sale is frozen on the wheels: 11.4 gallons, $12.53. Then nothing.")));
+            // More atmospheric description – the hose smell gives a sense of place.
             into.Add(new InteractAction("Sniff the hose", c => c.Notify(
                 "Gasoline, sharp and sweet. The tanks under the forecourt aren't dry \u2014 just out of reach without the cashier's switch.")));
+            // When the nozzle is lifted we expose additional interactions.
             if (_lifted) {
+                // Basic nozzle manipulation actions – tap for sound, check for a leak.
                 into.Add(new InteractAction("Tap the nozzle", TapNozzle));
                 into.Add(new InteractAction("Check for leak", CheckLeak));
+                // Offer the price‑tag only once; after taking it we switch to an inspection action.
                 if (!_priceTagTaken)
                 {
                     into.Add(new InteractAction("Take the rusted price tag", TakePriceTag));
@@ -64,6 +71,7 @@ namespace CloneZ
                 {
                     into.Add(new InteractAction("Inspect the rusted price tag", c => c.Notify("The rusted price tag reads $1.09 per gallon, a relic of harder times.")));
                 }
+                // Repair action is only offered until the nozzle is fixed; once repaired we enable pumping.
                 if (!_repaired)
                 {
                     into.Add(new InteractAction("Repair the nozzle", RepairNozzle));
@@ -72,6 +80,7 @@ namespace CloneZ
                 {
                     into.Add(new InteractAction("Pump gasoline", PumpFuel));
                 }
+                // Atmospheric, non‑state‑changing actions that add world‑building flavour.
                 into.Add(new InteractAction("Listen to the pump's hum", c => c.Notify("The pump emits a low, mournful hum against the winter wind.")));
                 into.Add(new InteractAction("Feel the cold metal", c => c.Notify("The metal is bitterly cold, frosting your fingertips.")));
                 into.Add(new InteractAction("Observe the frost on the hose", c => c.Notify("A thin layer of frost clings to the hose, glinting in the pale light.")));
@@ -114,6 +123,7 @@ namespace CloneZ
             _repaired = save.C != 0f;
         }
 
+        /// <summary>Toggle the nozzle between lifted and stowed positions.</summary>
         private void ToggleNozzle(InteractContext ctx)
         {
             _lifted = !_lifted;
@@ -123,6 +133,7 @@ namespace CloneZ
                 : "You hang the nozzle back in its cradle with a clunk.");
         }
 
+        /// <summary>Check the nozzle for a leak; only possible when lifted.</summary>
         private void CheckLeak(InteractContext ctx)
         {
             if (!_lifted)
@@ -135,6 +146,7 @@ namespace CloneZ
             ctx.Notify("You inspect the nozzle for a leak. The pump hums but shows no obvious leak.");
         }
 
+        /// <summary>Take the rusted price‑tag item; requires the nozzle to be lifted.</summary>
         private void TakePriceTag(InteractContext ctx)
         {
             if (!_lifted)
@@ -150,6 +162,7 @@ namespace CloneZ
             MakeNoise(CloneZConfig.RaidPumpNoise);
             ctx.Notify("You pry the rusted price tag off the pump and tuck it away.");
         }
+        /// <summary>Repair the nozzle using a wrench if the player has one.</summary>
         private void RepairNozzle(InteractContext ctx)
         {
             // Optional: require a wrench; if not present just proceed.
@@ -164,6 +177,7 @@ namespace CloneZ
             ctx.Notify("Using the wrench you tighten the rusted fittings. The pump sighs as the leak seals.");
         }
 
+        /// <summary>Tap the lifted nozzle to produce a brief sound; does nothing else.</summary>
         private void TapNozzle(InteractContext ctx)
         {
             if (!_lifted)
@@ -175,6 +189,7 @@ namespace CloneZ
             ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");
         }
 
+        /// <summary>Give the player a gasoline item after confirming the item exists.</summary>
         private void PumpFuel(InteractContext ctx)
         {
             var fuelDef = ItemDatabase.Get("gasoline");

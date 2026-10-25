@@ -64,33 +64,43 @@ namespace CloneZ
         public void Tick(bool blocked)
         {
             PlayerInteractor pi = _ctx.Interactor;
+            // Cache reference to main camera for screen projection if not already set.
             if (_cam == null) _cam = Camera.main;
 
+            // Determine if we should show the action menu: only when not blocked, interactor exists, menu is open and target is valid.
             bool menu = !blocked && pi != null && pi.MenuOpen && pi.MenuTarget != null;
+            // Show focus label only if we have a valid focus point and not displaying the menu.
             bool focus = !blocked && !menu && pi != null && pi.HasFocus && !pi.IsBusy && !string.IsNullOrEmpty(pi.FocusName);
 
             if (focus && Place(_focus.rectTransform, pi.FocusPoint + Vector3.up * LabelLift, Vector2.zero, false))
             {
+// Update displayed focus text only when it has changed to avoid unnecessary UI updates.
 if (!string.Equals(_shownFocus, pi.FocusName))
                     {
                         _shownFocus = pi.FocusName;
                         _focus.text = _shownFocus;
                     }
             }
+            // No valid focus point; ensure label is hidden.
             else focus = false;
+            // Sync the enabled state of the focus label with whether we have a focus to show.
             if (_focus.enabled != focus) _focus.enabled = focus;
 
+            // Show or hide the action menu UI based on the computed `menu` flag.
             if (_menu.gameObject.activeSelf != menu) _menu.gameObject.SetActive(menu);
             if (!menu)
             {
+                // When menu is not shown we reset the version tracker so next open will rebuild.
                 _shownVersion = -1;
                 return;
             }
+            // Rebuild the menu if the underlying actions have changed since last frame.
             if (pi.MenuVersion != _shownVersion)
             {
                 _shownVersion = pi.MenuVersion;
                 Rebuild(pi);
             }
+            // Position the menu near its target interaction point, clamped to stay on screen.
             Place(_menu, pi.MenuTarget.InteractPoint, new Vector2(36f, 40f), true);
         }
 
@@ -113,6 +123,7 @@ if (!string.Equals(_shownFocus, pi.FocusName))
             return true;
         }
 
+        /// <summary>Recreates the action menu UI when the available actions have changed.</summary>
         private void Rebuild(PlayerInteractor pi)
         {
             IReadOnlyList<InteractAction> actions = pi.MenuActions;
@@ -136,6 +147,7 @@ if (!string.Equals(_shownFocus, pi.FocusName))
             _menu.sizeDelta = new Vector2(MenuWidth, TitleHeight + actions.Count * RowHeight + Pad);
         }
 
+        /// <summary>Creates a UI row for an interactable action, including button and label.</summary>
         private Row MakeRow(int index)
         {
             RectTransform rt = HudUI.Rect(_menu, "Action" + index, new Vector2(0f, 1f), new Vector2(0f, 1f),

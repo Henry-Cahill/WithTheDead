@@ -116,17 +116,21 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.04f, 0f), new Vector3(len, 0.06f, 0.06f), steel);
         }
 
+        /// <summary>Creates the armory room with a weapon rack and ammunition crates.</summary>
         private static void Armory(RoomCtx c)
         {
             RaidBuilding b = c.B;
+            // Determine wall placement order, preferring walls opposite the entrance.
             int[] order = c.Sides(false);
             LootPiece(c, ContainerType.GunLocker, order);
+            // Place a weapon rack on a suitable wall if space permits.
             if (c.AnyWall(order, 1.2f, 0.4f, 1.6f, -1f, out RaidBuilding.Place rack, out _))
                 b.WeaponRack(c.R, rack, new Vector3(1.2f, 1.6f, 0.4f), (m, r) =>
                 {
                     Surf wood = DecorPalette.Matte(FurnitureBuilder.Walnut), metal = DecorPalette.Metal(new Color(0.16f, 0.16f, 0.17f));
                     m.Box(new Vector3(0f, 0.15f, 0f), new Vector3(1.2f, 0.3f, 0.36f), wood);
                     m.Box(new Vector3(0f, 1.25f, -0.12f), new Vector3(1.2f, 0.08f, 0.12f), wood);
+                    // Randomly add up to five gun slots, each with a 50% chance.
                     for (int i = 0; i < 5; i++)
                     {
                         if (r.NextDouble() < 0.5) continue;
@@ -142,20 +146,27 @@ namespace CloneZ
                     b.SupplyCrate(c.R, crate, new Vector3(0.9f, 0.6f, 0.6f), true, ContainerType.GunLocker, "Ammunition crate", k == 0);
         }
 
+        /// <summary>Builds a church nave with an altar, pulpit, lectern and pews.</summary>
         private static void Nave(RoomCtx c)
         {
             RaidBuilding b = c.B;
             Rect i = c.Inner;
+            // Determine orientation and dimensions based on which side is front.
+            // Determine orientation and dimensions based on which side is front.
             int front = EndFront(c);
+            // Compute back side and whether the room faces the Z axis.
             int back = RoomCtx.Opposite(front);
             bool facingZ = front == 0 || front == 2;
             float width = facingZ ? i.width : i.height, depth = facingZ ? i.height : i.width;
             float mid = facingZ ? i.center.x : i.center.y;
             // The chancel: the altar against the front wall on a step, the pulpit to one side, the lectern to the other.
+            // The chancel size is clamped to a realistic range.
             float chancel = Mathf.Clamp(depth * 0.22f, 2.2f, 4.5f);
+            // Position the stepped floor leading to the altar.
             Vector2 step = c.OnWall(front, mid, chancel * 0.5f);
             Surf carpet = DecorPalette.Matte(new Color(0.42f, 0.08f, 0.10f)), wood = DecorPalette.Gloss(FurnitureBuilder.Walnut);
             float stepW = Mathf.Min(width - 0.4f, 6f);
+            // Create the chancel platform with wood planks and a carpet runner.
             b.Furnish(c.R, new RaidBuilding.Place(step.x, step.y, RoomCtx.YawOf(front)), new Vector3(stepW, 0.15f, chancel), true, (m, r) =>
             {
                 m.Box(new Vector3(0f, 0.075f, 0f), new Vector3(stepW, 0.15f, chancel), wood);
@@ -163,6 +174,7 @@ namespace CloneZ
             }, "chancel");
             c.Taken.Add(c.Foot(front, mid, stepW, chancel));
             Vector2 altar = c.OnWall(front, mid, 0.6f);
+            // Build the altar top with wood, a stone slab, and decorative elements.
             b.Furnish(c.R, new RaidBuilding.Place(altar.x, altar.y, RoomCtx.YawOf(front)), new Vector3(1.8f, 1.15f, 0.8f), true, (m, r) =>
             {
                 m.Box(new Vector3(0f, 0.6f, 0f), new Vector3(1.8f, 0.9f, 0.75f), wood);
@@ -176,6 +188,7 @@ namespace CloneZ
                     m.Cylinder(new Vector3(k * 0.65f, 1.36f, -0.15f), 0.02f, 0.12f, 6, DecorPalette.Matte(new Color(0.94f, 0.92f, 0.86f)));
                 }
             }, "Altar");
+            // If room is wide enough, add a pulpit opposite the altar.
             if (width > 6f)
             {
                 Vector2 pulpit = c.OnWall(front, mid + Mathf.Min(width * 0.5f - 1.2f, stepW * 0.5f - 0.6f), chancel - 0.7f);
@@ -187,6 +200,7 @@ namespace CloneZ
                 }, "Pulpit");
             }
             // Pews in two blocks either side of the aisle, facing the front.
+            // Arrange pews in one or two blocks on either side of the central aisle.
             float aisle = width >= 9f ? 1.6f : 1.2f;
             float pewLen = Mathf.Min(4.2f, (width - aisle) * 0.5f - 0.7f);
             if (pewLen < 1.2f) pewLen = Mathf.Min(4.2f, width - 1.6f);

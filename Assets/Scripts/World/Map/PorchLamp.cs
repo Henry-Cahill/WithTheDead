@@ -37,18 +37,39 @@ namespace CloneZ
         /// <paramref name="phase"/> keeps it from flickering in step with its neighbours.</summary>
         internal static PorchLamp Spawn(Transform parent, Vector3 at, float phase)
         {
+            // Create a new GameObject to host the lamp instance.
+            // Create a new GameObject to host the lamp instance.
             var go = new GameObject("PorchLamp");
+            // Attach the lamp to its parent container without altering local transform.
+            // Attach the lamp to its parent container without altering local transform.
             go.transform.SetParent(parent, false);
+            // Position the lamp in world space at the requested coordinates.
+            // Position the lamp in world space at the requested coordinates.
             go.transform.position = at;
+            // Add a Light component to emit illumination.
+            // Add a Light component to emit illumination.
             var light = go.AddComponent<Light>();
+            // Set the light as a point source to radiate in all directions.
+            // Set the light as a point source to radiate in all directions.
             light.type = LightType.Point;
+            // Choose a warm hue matching a typical porch lamp.
+            // Choose a warm hue matching a typical porch lamp.
             light.color = new Color(1f, 0.82f, 0.56f);
+            // Set a base intensity that will later be modulated for flicker.
+            // Set a base intensity that will later be modulated for flicker.
             light.intensity = 1.8f;
+            // Define the radius within which the lamp can affect nearby objects.
+            // Define the radius within which the lamp can affect nearby objects.
             light.range = 5.5f;
+            // Disable shadows for performance; porch lamps are not meant to cast shadows.
             light.shadows = LightShadows.None;
+            // Add the PorchLamp component to bind behaviour to the GameObject.
             var lamp = go.AddComponent<PorchLamp>();
+            // Cache the Light for fast access during updates.
             lamp._light = light;
+            // Store the original intensity for later flicker modulation.
             lamp._intensity = light.intensity;
+            // Record the per‑lamp phase offset to desynchronize flicker between neighbours.
             lamp._phase = phase;
             return lamp;
         }
@@ -79,6 +100,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Evaluates which porch lamps should be on based on time of day and distance to survivor.</summary>
         private static void Check()
         {
             TimeOfDay day = TimeOfDay.Instance;
@@ -113,6 +135,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Attempts to locate the survivor's position for lamp culling.</summary>
         private static bool TryGetSurvivor(out Vector3 position)
         {
             GameManager gm = GameManager.Instance;

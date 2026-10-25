@@ -38,6 +38,7 @@ namespace CloneZ
         internal const int WallsWhole = 0, WallsNone = 1, WallsStandIn = 2;
 
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        /// <summary>Vertex data for the stand‑in mesh.</summary>
         private struct StandInVertex
         {
             public Vector3 Position, Normal;
@@ -142,6 +143,7 @@ namespace CloneZ
             b.OverlayShown = cut;
         }
 
+        /// <summary>Add a comment describing ShowPart.</summary>
         private static void ShowPart(Building b, int slot, bool on)
         {
             int sub = b.OverlayMap[slot];
@@ -686,6 +688,7 @@ namespace CloneZ
             else if (b < 0) b = v;
         }
 
+        /// <summary>Add a comment for Put.</summary>
         private static void Put(ref int count, ref int p0, ref int p1, ref int p2, ref int p3, int v)
         {
             switch (count++)

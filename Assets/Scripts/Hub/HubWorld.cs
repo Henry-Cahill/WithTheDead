@@ -110,6 +110,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             public string Sign;
         }
 
+        /// <summary>Builds the hub world, assembling geometry, lighting, and interactive elements.</summary>
         public static Result Build(Transform world, HubDef hub)
         {
             Style st = StyleFor(hub);
@@ -136,6 +137,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             return new Result { PlayerSpawn = new Vector3(0f, 0.1f, -6.8f), PlayerYaw = 0f };
         }
 
+        /// <summary>Selects the visual style and lighting parameters for a hub based on its identifier.</summary>
         private static Style StyleFor(HubDef hub)
         {
             switch (hub.Id)
@@ -407,6 +409,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             BuildHeater(world, st);
         }
 
+        /// <summary>Creates point lights and decorative lamps at predefined positions in the hub.</summary>
         private static void BuildLights(Transform world, Style st)
         {
             Vector3[] spots =

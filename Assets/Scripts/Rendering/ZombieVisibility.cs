@@ -190,27 +190,32 @@ namespace CloneZ
         {
             Vector3 root = transform.position;
             Vector3 chest, head;
+            // Determine if this zombie is dead; dead bodies use a fixed low height for visibility checks.
             bool dead = _ai != null && _ai.IsDeadState;
             if (dead)
             {
                 chest = head = root + Vector3.up * CorpseHeight;
             }
+            // Handle crawler posture: lower chest and head positions because the zombie is on the ground.
             else if (_ai != null && _ai.Type == ZombieType.Crawler)
             {
                 chest = root + Vector3.up * CrawlerChestHeight;
                 head = root + Vector3.up * CrawlerHeadHeight;
             }
+            // Default upright zombie posture.
             else
             {
                 chest = root + Vector3.up * ChestHeight;
                 head = root + Vector3.up * HeadHeight;
             }
 
+            // If any visible point passes the sight test, mark as seen and ensure rendering.
             if (CanSee(in sight, chest, head))
             {
                 LastSeenTime = now;
                 SetShown(true);
             }
+            // Hide after a delay when not seen.
             else if (now - LastSeenTime >= HideDelay)
             {
                 SetShown(false);

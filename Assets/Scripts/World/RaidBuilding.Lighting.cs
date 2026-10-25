@@ -235,8 +235,10 @@ namespace CloneZ
         // The spot for a room's switch: beside the main doorway, else beside the room's other doorways in the order they were
         // made (wide openings last), on a side clear of furniture and of the door's open leaf — the main doorway's even when
         // it isn't clear, since its switch works the porch light too. Any doorway's blocked spot beats no switch at all.
+        /// <summary>Find a suitable location for a room's light switch.</summary>
         private bool PickSwitchSpot(RaidRoom room, Opening main, float width, out SwitchSpot spot)
         {
+            // Initialise the output spot variable.
             spot = default;
             bool fallback = false;
             for (int pass = 0; pass < 3; pass++)
@@ -263,6 +265,7 @@ namespace CloneZ
             return fallback;
         }
 
+        /// <summary>Choose the best switch location among the two candidate spots beside a doorway.</summary>
         // The better of the two spots beside a doorway on the room's side — clear before blocked, then the one nearer the door,
         // then the one with more wall to spare — or round the corner when the door leaves no wall beside it.
         private bool BestSwitchBeside(RaidRoom room, Opening o, int side, float width, out SwitchSpot best)
@@ -545,8 +548,15 @@ namespace CloneZ
         private static string PosterNoun(int kind) => kind == 0 ? "poster" : kind == 1 ? "calendar" : kind == 2 ? "picture" : "notice";
 
         // What a poster shows, as it reads in the place it hangs (one of a few, from the building's stream).
+        /// <summary>Get the text shown on a poster, based on its kind and the building type.
+        /// The method picks a random entry from the appropriate array of strings for the current building kind.
+        /// </summary>
+        // Choose the appropriate set of texts for the poster kind, considering the building's specific variant.
         private string PosterText(int kind)
         {
+            // Randomly select one of the pre‑defined text strings for this poster kind.
+            // The arrays (e.g., ArmyPosters, Calendars) are selected based on both the building kind and the poster kind.
+            // This ensures, for example, army‑style posters only appear in army or tent buildings, while calendars vary by building type.
             string[] texts;
             switch (kind)
             {

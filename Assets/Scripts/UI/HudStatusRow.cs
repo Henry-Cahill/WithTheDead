@@ -131,6 +131,8 @@ namespace CloneZ
             TinyButton(box, _raid ? "Exits" : "Stats", new Vector2(-30f, 0f), 44f);
         }
 
+        /// <summary>Creates a tiny button inside the mode box.</summary>
+        // Helper that builds a small button with the given label, position and width.
         private void TinyButton(RectTransform parent, string label, Vector2 pos, float width)
         {
             Image bg = HudUI.Sliced(parent, "Button " + label, HudIcon.PanelFill, new Color(0.34f, 0.36f, 0.40f, 0.95f),

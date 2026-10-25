@@ -166,29 +166,49 @@ namespace CloneZ
 
         // At one town crossroads in a dozen, a pair never cleared up after one ran into the back of the other at the stop
         // line: the first stopped in its lane short of the crosswalk, door open, the second nosed into its tail, slewed.
+        /// <summary>
+        /// Generates a pair of colliding cars at a town crossroads, representing a crash scenario.
+        /// </summary>
         private static void Crashes(Parking c)
         {
+            // Iterate over all crossroads in the map to potentially place a crash.
             NaturePlan plan = c.Plan;
             foreach (Junction j in c.Crossroads)
             {
+                // Skip junctions far from the map centre or in very low‑density (rural) areas.
                 if (!plan.InSquare(j.At, 30f) || plan.Urban(j.At) < 0.04f) continue;
+                // Determine the highest street rank among the arms to filter out tiny or major roads.
                 int rank = 0;
                 foreach (JunctionArm a in j.Arms) rank = Mathf.Max(rank, a.Street.Rank);
+                // Only consider medium‑sized streets (not alleys or highways).
                 if (rank < 3 || rank >= 6) continue;
+                // Deterministic key based on junction position for random selection of crash occurrence.
                 long key = NaturePlan.Combine((long)System.Math.Round(plan.AbsX(j.At.x)), (long)System.Math.Round(plan.AbsZ(j.At.y)));
+                // Probability threshold: skip if this junction is not selected for a crash.
                 if (MapStyle.Unit(key, SaltCrash) >= 0.08f) continue;
+                // Randomly pick which arm of the junction the crash occurs on.
                 int arm = MapStyle.Pick(key, SaltCrash + 1, j.Arms.Count);
                 JunctionArm into = j.Arms[arm];
+                // Ensure the chosen arm leads to a suitable street (not footpaths, and at least a minor road).
                 if (NaturePlan.FootKind(into.Street.Data.kind) || into.Street.Rank < 2) continue;
+                // Need a stop line on this arm to position the first car.
                 if (!RoadPass.StopLine(j, arm, out Vector2 stop, out float _)) continue;
+                // Separate deterministic keys for each of the two vehicles.
                 long keyA = NaturePlan.Combine(key, 1), keyB = NaturePlan.Combine(key, 2);
+                // Choose car models for the two vehicles.
                 CarBody a0 = BodyFor(Where.Street, MapStyle.Unit(keyA, SaltBody)), b0 = BodyFor(Where.Street, MapStyle.Unit(keyB, SaltBody));
                 float lenA = CarKit.Size(a0).z, lenB = CarKit.Size(b0).z;
+                // Position the first car just beyond the stop line, leaving a small gap.
                 Vector2 atA = stop + into.Dir * (0.8f + lenA * 0.5f);
+                // Orient the first car facing opposite to the traffic direction, with a slight random yaw.
                 float yawA = Yaw(-into.Dir) + (MapStyle.Unit(key, SaltCrash + 2) - 0.5f) * 8f;
+                // Place the first car; if placement fails, abort this crash.
                 if (!Park(c, atA, yawA, LookFor(keyA, a0, 0.45f, CarWear.DoorOpen), keyA, Quaternion.identity)) continue;
+                // Lateral offset for the second car to simulate the angle of collision.
                 Vector2 side = new Vector2(-into.Dir.y, into.Dir.x) * ((MapStyle.Unit(key, SaltCrash + 3) - 0.5f) * 0.8f);
+                // Position the second car behind the first, offset by its length plus a small gap.
                 Vector2 atB = atA + into.Dir * ((lenA + lenB) * 0.5f + 0.15f) + side;
+                // Place the second car with crash wear and possible door open state.
                 Park(c, atB, Yaw(-into.Dir) + (MapStyle.Unit(key, SaltCrash + 4) < 0.5f ? 1f : -1f) * (8f + MapStyle.Unit(key, SaltCrash + 5) * 14f),
                     LookFor(keyB, b0, 0.45f, CarWear.Crashed | (MapStyle.Unit(keyB, SaltWear) < 0.5f ? CarWear.DoorOpen : CarWear.None)), keyB, Quaternion.identity);
             }
@@ -252,11 +272,15 @@ namespace CloneZ
         {
             NaturePlan plan = c.Plan;
             List<Vector2> poly = pa.Pts;
+            // Ensure the footprint defines a valid polygon before proceeding.
             if (poly.Count < 3) return;
+            // Verify every vertex is within the map bounds and not cut by the terrain.
             foreach (Vector2 q in poly)
                 if (!plan.InSquare(q, 1f) || plan.CutVertex(q)) return;
+            // Compute the polygon's absolute area; tiny lots are ignored.
             float signed = MapGeometry.SignedArea(poly), area = Mathf.Abs(signed);
             if (area < 50f) return;
+            // Determine how many vehicles this lot should hold based on its size and local business density.
             long id = pa.Data.id;
             int want = Mathf.Clamp(Mathf.RoundToInt(area / 30f * LotFill(plan, id, MapGeometry.Middle(poly))), 0, 8), placed = 0;
             // Its two longest edges, the longest first.
@@ -278,6 +302,7 @@ namespace CloneZ
                     second = i;
                 }
             }
+            // Run two passes: first try the longest edge, then the second longest if needed.
             for (int pass = 0; pass < 2 && placed < want; pass++)
             {
                 int e = pass == 0 ? first : second;
@@ -285,7 +310,9 @@ namespace CloneZ
                 Vector2 a = poly[e], b = poly[(e + 1) % poly.Count];
                 float l = Vector2.Distance(a, b);
                 if (l < 3.5f) continue;
+                // Direction along the edge and inward normal (depends on polygon winding).
                 Vector2 along = (b - a) / l, inward = signed > 0f ? new Vector2(-along.y, along.x) : new Vector2(along.y, -along.x);
+                // Step along the edge placing cars at regular intervals, respecting spacing and lot boundaries.
                 for (int k = 0; 1.7f + k * 2.9f <= l - 1.7f && placed < want; k++)
                 {
                     long key = NaturePlan.Combine(id, e * 64 + k);

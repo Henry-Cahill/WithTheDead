@@ -62,19 +62,31 @@ namespace CloneZ
         // Shows the doors hidden for the facings cut until now, then finds and hides those in the facings in `cut` (bits 0-3).
         private static void Doors(Building b, int cut)
         {
+            // Ensure any doors previously hidden by cut walls are made visible before re‑evaluating
             ShowDoors(b);
+            // If there are no cut walls (cut == 0) or the building lacks edge points, nothing to process
             if (cut == 0 || b.Pts == null) return;
+            // Grab the current list of all interactable objects in the scene
             List<Interactable> all = Interactable.All;
+            // Scan each interactable to find doors that may intersect a cut wall
             for (int i = 0; i < all.Count; i++)
             {
+                // Skip items that aren't HomeDoor instances; also protect against unexpected nulls
                 if (!(all[i] is HomeDoor door) || door == null) continue;
+                // Position where the player can interact with the door (world coordinates)
                 Vector3 p = door.InteractPoint;
+                // Project the 3D point onto the horizontal XZ plane for edge distance calculations
                 var q = new Vector2(p.x, p.z);
+                // Reject doors that lie outside the building's horizontal bounds or vertical limits
                 if (!Near(b.Bounds, q, DoorReach) || p.y < b.Base - 1f || p.y > b.Base + b.ClipTop + 1f) continue;
+                // Determine the nearest wall edge to the door and how far it is from that edge
                 int edge = NearestEdge(b.Pts, q, out float d);
+                // Only consider doors close enough to an edge that is currently cut
                 if (d > DoorReach || (cut & (1 << b.EdgeGroup[edge])) == 0) continue;
+                // Record the door for later hiding; lazily initialise the list on first use
                 (b.DoorObjs ??= new List<HomeDoor>(4)).Add(door);
             }
+            // After collecting relevant doors, hide those that intersect cut walls
             KeepDoorsHidden(b);
         }
 

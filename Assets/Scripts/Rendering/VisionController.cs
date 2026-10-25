@@ -354,6 +354,12 @@ CacheBones();
             _periphery.transform.position = root + Vector3.up * PeripheryHeight;
         }
 
+        /// <summary>Update the sight and periphery lights based on night‑vision state.</summary>
+        // Adjust the line‑of‑sight spot light and peripheral glow based on whether night‑vision is active.
+        // "goggles" is the blend from 0‑1 representing night‑vision intensity.
+        // The range/intensity of the sight light scale with the blend; it's only enabled when bright enough.
+        // The peripheral glow (a low‑intensity downward‑facing light) also scales with the blend.
+        // This method keeps the lights in sync with the current vision state each frame.
         private void UpdateSightLights()
         {
             float goggles = NightVisionBlend;
@@ -393,6 +399,10 @@ CacheBones();
         // shadows skip, so the body neither glows nor blots out the view — yet it is still lit, and still
         // casts shadows, by the sun, the room lights and the peripheral glow. If rendering layers are
         // switched off in the URP asset, fall back to turning the body's shadows off while either shines.
+        /// <summary>Update the survivor's renderers so they render on the correct layer or have shadows disabled when needed.</summary>
+        // Ensure the survivor's renderers are on the dedicated rendering layer when URP rendering layers are enabled.
+        // If rendering layers are disabled, turn off their shadow casting while the sight light or flashlight is on.
+        // The method rescans periodically or when the hierarchy changes, applying or restoring layer/shadow settings.
         private void UpdateSurvivorRenderers(float dt)
         {
             UniversalRenderPipelineAsset urp = _urpAsset;
@@ -460,6 +470,10 @@ CacheBones();
         }
 
         // The sun (moon by night) must light the survivor's rendering layer too.
+        /// <summary>Patch the sun (or moon) light to include the survivor's rendering layer, ensuring it lights the player.</summary>
+        // Add the survivor's rendering layer to the sun (or moon) light so it lights the player.
+        // This is needed because the sun otherwise only lights default layers.
+        // The method also ensures shadow layers include the player when custom shadow layers are used.
         private void PatchSun()
         {
             TimeOfDay clock = _timeOfDay ?? (_timeOfDay = TimeOfDay.Instance);
@@ -491,6 +505,11 @@ CacheBones();
             _sunPatched = false;
         }
 
+        /// <summary>Recalculate the survivor's sight distance and update zombie visibility based on time of day, weather, and night‑vision.</summary>
+        // Update the dynamic sight distance based on day/night cycle, weather, and night‑vision.
+        // It also builds a ZombieVisibility.Sight struct containing all needed parameters for AI visibility checks.
+        // The resulting sight data is fed to ZombieVisibility.TickAll each frame.
+        /// <summary>Update the dynamic sight distance and feed visibility data to zombies.</summary
         private void UpdateSight(float dt)
         {
             WeatherSystem weather = _weather ??= WeatherSystem.Instance;

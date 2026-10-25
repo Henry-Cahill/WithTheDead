@@ -51,50 +51,63 @@ namespace CloneZ
         // collider along it; on the deck, snow the plough pushed against it. Open where a side road joins the bridge, and
         // over whatever passes beneath (the map is flat: a road, path or railway under the bridge crosses at grade, so a
         // wall there would block it), with a post either side of the gap.
+        /// <summary>Builds the concrete parapet walls, caps, posts and associated snow on a bridge deck.</summary>
         private static void Parapet(Net net, Chain c, int side, List<Vector2> under)
         {
             Look look = net.Look;
             ProfileSamples(c, c.From, c.To, 0f, net.Samples2);
             List<Sample> s = net.Samples2;
+            // Iterate over each segment between samples to generate parapet sections, skipping those that intersect a mouth opening.
             for (int i = 0; i + 1 < s.Count; i++)
             {
                 if (InMouth(c, side, (s[i].S + s[i + 1].S) * 0.5f)) continue;
+                // Determine the stretch of bridge not overlapped by any underpass, storing pieces for parapet generation.
                 Outside(s[i].S, s[i + 1].S, under, s_Pieces);
                 foreach (Vector2 piece in s_Pieces)
                 {
+                    // For each non‑overlapping piece, compute its start and end points on the parapet line.
                     Vector2 a = ParapetPoint(c, side, piece.x, s[i], s[i + 1]), b = ParapetPoint(c, side, piece.y, s[i], s[i + 1]);
                     Vector2 dir = b - a;
                     float len = dir.magnitude;
+                    // Skip tiny fragments that would produce invisible geometry.
                     if (len < 0.05f) continue;
                     Vector3 mid = To3((a + b) * 0.5f, ParapetHeight * 0.5f);
                     RaidMesh m = net.Out.Solid(mid);
                     Beam(m, a, b, 0f, ParapetHeight, ParapetThick, look.Parapet);
                     Beam(m, a, b, ParapetHeight, 0.06f, ParapetThick + 0.08f, look.ParapetCap);
                     net.Site.Town.PropCollider(mid, new Vector3(len, ParapetHeight + 0.1f, ParapetThick), -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+                    // Add end posts at the piece boundaries unless the piece already abuts the next sample.
                     if (piece.x > s[i].S + 1e-3f) EndPost(net, a);
                     if (piece.y < s[i + 1].S - 1e-3f) EndPost(net, b);
                 }
             }
+            // Ensure posts at the very start and end of the parapet line.
             if (s.Count >= 2)
             {
                 EndPost(net, ParapetPoint(c, side, s[0].S, s[0], s[1]));
                 EndPost(net, ParapetPoint(c, side, s[s.Count - 1].S, s[s.Count - 2], s[s.Count - 1]));
             }
+            // Early‑out for non‑full maps where snow detail is unnecessary.
             if (!net.Full) return;
+            // Generate a deterministic noise seed based on the bridge side to vary snow patterns.
             int seed = Seed(c.W, side > 0 ? 0xB21 : 0xB22);
+            // Populate sampling points along the bridge to drive snow placement.
             SamplesOf(c, c.From, c.To, 2f, net.Samples);
             Fit(net.Samples.Count);
             for (int i = 0; i < net.Samples.Count; i++)
             {
                 float e = EdgeAt(c, side, net.Samples[i].S);
+                // Compute left/right snow edges using the parapet edge and a noisy offset for variation.
                 s_A[i] = side * (e - 0.25f - 0.45f * Noise(net.Samples[i].P, 3.5f, seed));
                 s_B[i] = side * e;
             }
             for (int i = 0; i + 1 < net.Samples.Count; i++)
             {
                 float sm = (net.Samples[i].S + net.Samples[i + 1].S) * 0.5f;
+                // Keep snow only where the parapet is not under a mouth opening or crossed by another feature.
                 s_Keep[i] = !InMouth(c, side, sm) && !Under(under, sm);
             }
+            // Add snow bands using the pre‑computed edges and a small vertical offset to sit on the parapet.
             Band(net, net.Samples, s_A, s_B, DetailY + 0.001f, DetailY + 0.05f, look.Snow, c.Lift, s_Keep);
         }
 
@@ -117,18 +130,22 @@ namespace CloneZ
             into.Clear();
             MapGeometry.Extent(line.P, out float x0, out float z0, out float x1, out float z1);
             var box = Rect.MinMaxRect(x0 - 1f, z0 - 1f, x1 + 1f, z1 + 1f);
+            // For each chain in the map, find any intersecting features that pass beneath the bridge at grade.
             foreach (Chain o in net.Chains)
             {
                 if (o == self || o.To - o.From < 0.5f) continue;
                 Vector2 first = o.P[0], last = o.P[o.P.Count - 1];
                 for (int k = 0; k + 1 < o.P.Count; k++)
                 {
+                    // Ensure the candidate segment lies within the bridge’s longitudinal bounds and overlaps the search box.
                     if (o.Cum[k + 1] < o.From || o.Cum[k] > o.To || !Overlaps(box, o.P[k], o.P[k + 1])) continue;
                     if (!CrossAt(line, o.P[k], o.P[k + 1], out float s, out float sin, out float v)) continue;
                     Vector2 q = Vector2.Lerp(o.P[k], o.P[k + 1], v);
                     if ((q - first).sqrMagnitude < 1f || (q - last).sqrMagnitude < 1f) continue;
                     float so = Mathf.Lerp(o.Cum[k], o.Cum[k + 1], v);
+                    // Record the half‑width needed for the underpass based on the widest crossing feature.
                     float half = 0f;
+                    // Iterate both sides of the bridge (left/right) to place symmetric guard rails.
                     for (int side = -1; side <= 1; side += 2)
                     {
                         ProfAt(o, side, so, out Prof d);
@@ -139,6 +156,7 @@ namespace CloneZ
             }
             foreach (Way p in net.Ways)
             {
+                // Process path features similarly, ignoring bridges and ensuring sufficient length.
                 if (p.Cls != Cls.Path || p.Bridge || p.P.Count < 2) continue;
                 Vector2 first = p.P[0], last = p.P[p.P.Count - 1];
                 for (int k = 0; k + 1 < p.P.Count; k++)
@@ -146,11 +164,13 @@ namespace CloneZ
                     if (!Overlaps(box, p.P[k], p.P[k + 1]) || !CrossAt(line, p.P[k], p.P[k + 1], out float s, out float sin, out float v)) continue;
                     Vector2 q = Vector2.Lerp(p.P[k], p.P[k + 1], v);
                     if ((q - first).sqrMagnitude < 1f || (q - last).sqrMagnitude < 1f) continue;
+                    // Add a buffered width for paths, clamped to a reasonable range, plus an extra margin.
                     AddUnder(line, s, sin, Mathf.Clamp(p.Half, 0.5f, 2f) + 0.3f, into);
                 }
             }
             foreach (Line l in net.Site.Area.Lines)
             {
+                // Handle railway lines: only consider non‑tunnel tracks with enough points.
                 if (l == selfRail || !l.IsRailway || l.Data.tunnel || l.Pts.Count < 2) continue;
                 Vector2 first = l.Pts[0], last = l.Pts[l.Pts.Count - 1];
                 for (int k = 0; k + 1 < l.Pts.Count; k++)
@@ -158,6 +178,7 @@ namespace CloneZ
                     if (!Overlaps(box, l.Pts[k], l.Pts[k + 1]) || !CrossAt(line, l.Pts[k], l.Pts[k + 1], out float s, out float sin, out float v)) continue;
                     Vector2 q = Vector2.Lerp(l.Pts[k], l.Pts[k + 1], v);
                     if ((q - first).sqrMagnitude < 1f || (q - last).sqrMagnitude < 1f) continue;
+                    // Add a fixed half‑width for railways (including the track gauge plus clearance).
                     AddUnder(line, s, sin, 2.4f, into);
                 }
             }
@@ -242,6 +263,7 @@ namespace CloneZ
 
         // W-beam guard rail on wooden posts, carrying on 8 m from a bridge end beside the approach and flaring away from
         // the road; left out where the bridge ends at a junction's patch it would block.
+        /// <summary>Creates a W-beam guard rail extending from a bridge end along the approach, with posts.</summary>
         private static void GuardRail(Net net, Chain c, bool start)
         {
             Look look = net.Look;
@@ -249,17 +271,21 @@ namespace CloneZ
             if (arm != null)
             {
                 Joint j = start ? c.J0 : c.J1;
+                // Skip guard‑rail creation if the bridge end is attached to a complex joint (more than two arms).
                 if (j != null && j.Arms.Count > 2) return;
             }
+            // Determine the start (or end) position along the bridge chain for the rail.
             float s = start ? c.From : c.To;
             PointOn(c, s, out Vector2 p, out Vector2 d);
             Vector2 back = start ? -d : d;
             for (int side = -1; side <= 1; side += 2)
             {
                 float edge = EdgeAt(c, side, s);
+                // Compute the outward normal for the current side (left/right).
                 Vector2 outward = Left(d) * side;
                 Vector2 a = p + outward * (edge + 0.4f);
                 Vector2 b = a + back * 8f + outward * 0.8f;
+                // If the guard‑rail would intersect a building or pavement, shorten it to avoid clipping.
                 if (InBuilding(net, b, 0.3f) || OnPavement(net, b, c, 0.1f)) b = a + back * 3f + outward * 0.3f;
                 Vector3 mid = To3((a + b) * 0.5f, 0.55f);
                 RaidMesh m = net.Out.Solid(mid);
@@ -286,9 +312,13 @@ namespace CloneZ
                 if (w.Cls > Cls.Trunk || !w.OneWay || w.Link || c.To - c.From < 4f) continue;
                 bool with = ChainRunsWithWay(c);
                 // Both carriageways would find the same gap: the one heading east (or north) builds the barrier.
+                // Determine the heading direction of the carriageway; only the east/north‑facing side builds the median.
                 Vector2 heading = (c.P[c.P.Count - 1] - c.P[0]) * (with ? 1f : -1f);
+                // Skip carriageways that run west or south, ensuring only one side creates the median.
                 if (heading.x < -0.01f || (Mathf.Abs(heading.x) <= 0.01f && heading.y < 0f)) continue;
+                // The median sits on the left side of traffic (side = 1 for right‑hand traffic, -1 otherwise).
                 int side = with ? 1 : -1;   // the median is left of the traffic
+                // Sample points along the carriageway at 4 m intervals for median placement.
                 SamplesOf(c, c.From, c.To, 4f, net.Samples);
                 List<Sample> s = net.Samples;
                 int n = s.Count;
@@ -299,6 +329,7 @@ namespace CloneZ
                     Vector2 nrm = s[i].N * side;
                     float edge = EdgeAt(c, side, s[i].S);
                     float gap = -1f;
+                    // Incrementally test increasing gaps to find the first that fits on pavement.
                     for (float g = 0.6f; g <= 6f; g += 0.4f)
                     {
                         if (!OnPavement(net, s[i].P + nrm * (edge + g), c, 0f, false)) continue;

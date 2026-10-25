@@ -55,6 +55,10 @@ namespace CloneZ
             if (Random.value < 0.3f) Catch(Cholera, "Your gut cramps. Something in that water.");
         }
 
+        // Save the player's disease list when a raid ends, persisting it to the profile
+        /// <summary>
+        /// Called when a raid ends to persist the player's disease list to the profile.
+        /// </summary>
         private void OnRaidEnded(RaidOutcome o, string exit)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -131,42 +135,68 @@ namespace CloneZ
         /// </summary>
         public void TakeVitamins() => _vitaminsUntil = Time.time + 1200f;
 
+        /// <summary>
+        /// Registers disease‑related item actions (tetracycline, charcoal, vitamins).
+        /// </summary>
         internal static void RegisterItems()
         {
+            // Register antibiotic use: cures cholera and optionally treats wound infections.
             ItemActions.RegisterUse("tetracycline", (inv, s) =>
             {
+                // Get the disease component from the inventory holder.
                 var d = inv.GetComponent<PlayerDiseases>();
+                // Attempt to cure cholera; record if any cure succeeded.
                 bool did = d != null && d.Cure(Cholera, "The cramps ease. The antibiotics are working.");
+                // Also try to treat a wound infection if present.
                 var w = inv.GetComponent<PlayerWounds>();
                 if (w != null && w.TreatInfection()) did = true;
+                // If nothing was cured, inform the player and exit early.
                 if (!did) { GameEvents.RaiseToast("You've nothing for antibiotics to treat."); return true; }
+                // Remove one antibiotic item from inventory after successful cure.
                 inv.Inventory.Remove(s, 1);
+                // Play UI sound for taking medicine.
                 Sfx.PlayUI(SfxIds.Eat, 0.5f);
                 return true;
             });
+            // Register charcoal use: reduces stomach sickness severity.
             ItemActions.RegisterUse("charcoal", (inv, s) =>
             {
+                // Get player stats to check for sickness level.
                 var st = inv.GetComponent<PlayerStats>();
+                // If no stats or sickness is low, notify player that charcoal is unnecessary.
                 if (st == null || st.Sickness < 5f) { GameEvents.RaiseToast("Your stomach is fine."); return true; }
+                // Reduce sickness value, clamped to zero.
                 st.Sickness = Mathf.Max(0f, st.Sickness - 50f);
+                // Remove one charcoal item.
                 inv.Inventory.Remove(s, 1);
+                // Notify player that charcoal has settled the stomach.
                 GameEvents.RaiseToast("The charcoal settles your stomach.");
                 return true;
             });
+            // Register vitamins use: starts vitamins timer and can cure a cold.
             ItemActions.RegisterUse("vitamins", (inv, s) =>
             {
+                // Get disease component to apply vitamin effects.
                 var d = inv.GetComponent<PlayerDiseases>();
                 if (d == null) return false;
+                // Start vitamins timer to prevent catching colds.
                 d.TakeVitamins();
+                // Also cure any active cold.
                 d.Cure(Cold, "You feel the cold lifting.");
+                // Consume one vitamins item.
                 inv.Inventory.Remove(s, 1);
+                // Play UI sound for taking vitamins.
                 Sfx.PlayUI(SfxIds.Eat, 0.4f);
+                // Notify player of vitamin effect.
                 GameEvents.RaiseToast("Vitamins: colds keep away for a while.");
                 return true;
             });
         }
     }
 
+    /// <summary>
+    /// The module that registers the disease system and ensures each player gets a PlayerDiseases component.
+    /// </summary>
     public sealed class DiseaseModule : IGameModule
     {
         public int Order => 61;

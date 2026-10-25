@@ -1,0 +1,143 @@
+diff --git a/Assets/Scripts/World/Map/BuildingPass.Materials.cs b/Assets/Scripts/World/Map/BuildingPass.Materials.cs
+index cf66b1c2..7334069b 100644
+--- a/Assets/Scripts/World/Map/BuildingPass.Materials.cs
++++ b/Assets/Scripts/World/Map/BuildingPass.Materials.cs
+@@ -110,6 +110,7 @@ internal enum RoofCover { Shingle, Metal, Membrane, Slate }
+             new Color(0.16f, 0.22f, 0.34f), new Color(0.33f, 0.24f, 0.16f), new Color(0.88f, 0.88f, 0.85f),
+         };
+ 
++        /// <summary>Returns the colour palette array for the given wall kind.</summary>
+         private static Color[] TonesOf(WallKind kind)
+         {
+             switch (kind)
+@@ -126,6 +127,7 @@ private static Color[] TonesOf(WallKind kind)
+             }
+         }
+ 
++        /// <summary>Returns the colour palette array for the given roof cover.</summary>
+         private static Color[] TonesOf(RoofCover cover)
+         {
+             switch (cover)
+@@ -154,6 +156,7 @@ private static int NearestTone(string hex, Color[] tones)
+             return best;
+         }
+ 
++        /// <summary>Parses a "#rrggbb" hex string into a Unity Color.</summary>
+         private static bool TryParseHex(string hex, out Color c)
+         {
+             c = Color.white;
+@@ -193,13 +196,20 @@ private static int HexDigit(char ch)
+         /// <summary>A wall finish, tiled in world metres.</summary>
+         private static Surf WallSurf(WallKind kind, int tone)
+         {
++            // Resolve the colour palette for the requested wall kind.
+             Color[] tones = TonesOf(kind);
++            // Clamp tone index to valid range of the palette.
+             tone = Mathf.Clamp(tone, 0, tones.Length - 1);
++            // Build a unique cache key for this wall kind / tone combination.
+             int key = 1000 + (int)kind * 32 + tone;
++            // Return already‑generated surface if it exists and is still valid.
+             if (s_Surfs.TryGetValue(key, out Surf s) && s.Valid) return s;
++            // Create the texel‑painting function for this wall surface.
+             Texel texel = WallTexel(kind, tone, out string name, out int size);
++            // Paint the texture using the texel function.
+             Texture2D tex = Paint(name, size, texel);
+             float period, smooth = 0.08f;
++            // Choose repeat period (metres per texture repeat) and smoothing based on material.
+             switch (kind)
+             {
+                 case WallKind.Brick: period = BrickPeriod; break;
+@@ -212,6 +222,7 @@ private static Surf WallSurf(WallKind kind, int tone)
+                 case WallKind.Trailer: period = TrailerPeriod; smooth = 0.25f; break;
+                 default: period = ConcretePeriod; break;
+             }
++            // Construct the surface with appropriate material, texture and tiling.
+             s = new Surf(MaterialFor(key, tex, smooth, kind == WallKind.Metal ? 0.25f : 0f), Vector2.zero, 1f / period);
+             s_Surfs[key] = s;
+             return s;
+@@ -320,6 +331,7 @@ private static Texel WallTexel(WallKind kind, int tone, out string name, out int
+             }
+         }
+ 
++        /// <summary>Creates a texel‑painting function for the given roof cover and tone, plus texture name and size.</summary>
+         private static Texel RoofTexel(RoofCover cover, int tone, out string name, out int size)
+         {
+             Color[] tones = TonesOf(cover);
+@@ -337,6 +349,7 @@ private static Texel RoofTexel(RoofCover cover, int tone, out string name, out i
+ 
+         private static Texture2D Paint(Texel texel, string name, int size) => Paint(name, size, texel);
+ 
++        /// <summary>Creates a texture, paints it with the provided texel function, and returns it.</summary>
+         private static Texture2D Paint(string name, int size, Texel texel)
+         {
+             Color32[] px = Painted(name, size, texel);
+@@ -368,6 +381,7 @@ private static Color32[] Painted(string name, int size, Texel texel)
+             return PaintPixels(size, texel);
+         }
+ 
++        /// <summary>Fills an array with painted pixel colours using the texel function.</summary>
+         private static Color32[] PaintPixels(int size, Texel texel)
+         {
+             var px = new Color32[size * size];
+@@ -392,9 +406,11 @@ private static Color32[] PaintPixels(int size, Texel texel)
+         /// The painters are pure functions of their texel's place, so the pixels are the same whichever thread paints them.</summary>
+         private static void PrePaint()
+         {
++            // Only run once per session.
+             if (s_PrePainted) return;
+             s_PrePainted = true;
+             var jobs = new List<(string name, int size, Texel texel)>(96);
++            // Helper to queue wall textures for all tones not already cached.
+             void Wall(WallKind kind)
+             {
+                 for (int tone = 0; tone < TonesOf(kind).Length; tone++)
+@@ -404,6 +420,7 @@ void Wall(WallKind kind)
+                     jobs.Add((name, size, t));
+                 }
+             }
++            // Helper to queue roof textures.
+             void Roof(RoofCover cover)
+             {
+                 for (int tone = 0; tone < TonesOf(cover).Length; tone++)
+@@ -413,6 +430,7 @@ void Roof(RoofCover cover)
+                     jobs.Add((name, size, t));
+                 }
+             }
++            // Queue the most common finishes first to keep early frames fast.
+             Roof(RoofCover.Shingle);
+             Wall(WallKind.Siding);
+             Wall(WallKind.Brick);
+@@ -427,6 +445,7 @@ void Roof(RoofCover cover)
+             Wall(WallKind.Stucco);
+             Roof(RoofCover.Slate);
+             if (jobs.Count == 0) return;
++            // Run painting jobs off the main thread.
+             System.Threading.Tasks.Task.Run(() =>
+             {
+                 try
+@@ -854,20 +873,25 @@ private static bool WarmNext()
+         /// bronze).</summary>
+         private static Surf FacadeSurf(FacadeStyle style, bool lit, bool white)
+         {
++            // Compute a cache key based on style, colour scheme and lit flag.
+             int texKey = (int)style * 2 + (white ? 1 : 0);
+             int key = 4000 + texKey * 2 + (lit ? 1 : 0);
++            // Return cached surface if it already exists.
+             if (s_Fitted.TryGetValue(key, out Surf s) && s.Valid) return s;
++            // Ensure the base grid texture (and its emission counterpart) are available.
+             if (!s_GridTex.TryGetValue(texKey, out Texture2D tex) || tex == null)
+             {
+                 PaintGrid(style, white, out tex, out Texture2D glow);
+                 s_GridTex[texKey] = tex;
+                 s_GridGlow[texKey] = glow;
+             }
++            // Build a lit material for the window grid; adjust smoothness for curtain walls.
+             Material m = NewLit("Bldg_Grid" + style + (white ? "W" : "D") + (lit ? "Lit" : ""), tex, style == FacadeStyle.Curtain ? 0.7f : 0.5f, 0.05f);
+             if (m.HasProperty("_AlphaClip")) m.SetFloat("_AlphaClip", 1f);
+             if (m.HasProperty("_Cutoff")) m.SetFloat("_Cutoff", 0.5f);
+             m.EnableKeyword("_ALPHATEST_ON");
+             m.renderQueue = (int)RenderQueue.AlphaTest;
++            // Attach emission map and glowing effect for lit panes.
+             if (lit)
+             {
+                 m.SetTexture("_EmissionMap", s_GridGlow[texKey]);
