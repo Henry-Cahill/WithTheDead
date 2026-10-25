@@ -74,9 +74,12 @@ namespace CloneZ
         /// and its key from where it stands.</summary>
         internal static ShowerFixture Create(HomeFurniture host)
         {
+            // Determine the world position where the shower fixture should be placed based on the host furniture
             Vector3 point = BathroomFixtures.Point(host, FurnitureBuilder.ShowerReach);
+            // Create a new GameObject to hold the ShowerFixture component and parent it to the host furniture
             var go = new GameObject("ShowerFixture");
             go.transform.SetParent(host.transform, false);
+            // Position the new GameObject at the calculated point with default rotation
             go.transform.SetPositionAndRotation(point, Quaternion.identity);
             var s = go.AddComponent<ShowerFixture>();
             s._host = host;
@@ -86,6 +89,7 @@ namespace CloneZ
             s._middle = BathroomFixtures.Point(host, new Vector3(0f, 1.2f, 0f));
             s._stall = host.GetComponentInChildren<Collider>();
             s._key = KeyFor("shower", host.transform.position);
+            // Return the freshly configured ShowerFixture instance
             return s;
         }
 
@@ -133,21 +137,27 @@ namespace CloneZ
 
         // Belt and braces: the survivor is never left in the stall with its collider stood aside once the shower's over
         // (however the job ended), nor shut inside it with the collider back (a save made mid-shower puts them there).
+        /// <summary>Monitors survivor state and ensures they aren't stranded inside the stall when the shower ends or state changes.</summary>
         private void Watch()
         {
             PlayerInteractor pi = _playerInteractor;
+            // If the survivor is still inside when the shower ends, clean up state and move them out
             if (_inside)
             {
+                // Don't interfere if they're still doing the shower job
                 if (pi != null && pi.JobTarget == this) return;
                 _inside = false;
                 _closeDoorAt = -1f;
+                // Teleport the player to a safe exit spot and restore the stall collider
                 if (pi != null) pi.Context.Teleport(ExitSpot(), _enteredYaw);
                 SetStallSolid(true);
                 _hasEntry = false;
                 return;
             }
+            // Periodically check the survivor's position if they're not currently inside the stall
             if (Time.time < _nextCheck) return;
             _nextCheck = Time.time + 0.5f;
+            // If the survivor is standing inside the stall (e.g., they entered via another path), teleport them out
             if (pi != null && InStall(pi.transform.position)) pi.Context.Teleport(_stepOut);
         }
 
@@ -177,24 +187,32 @@ namespace CloneZ
             if (_sprayB != null && _sprayB.enabled != b) _sprayB.enabled = b;
         }
 
+        /// <summary>Generates the list of interaction actions for the shower, including starting, toggling, and inspecting.</summary>
+        /// <summary>Generates the list of interaction actions for the shower, including starting, toggling, and inspecting.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Main action to take a shower, timed and disabled if water mains are off
             var shower = new InteractAction("Take a shower", FinishShower)
                 .Timed(CloneZConfig.ShowerSeconds, "Showering", HumanoidActivity.Use)
                 .DisabledIf(!WaterMains.MainsOn, "The shower's dry \u2014 the water's been shut off");
             shower.Begin = StepIn;
             shower.Tick = WhileShowering;
             shower.Stopped = AbandonShower;
+            // Add the main shower action to the list
             into.Add(shower);
+            // Add toggle actions based on current state
             into.Add(new InteractAction(_on ? "Turn off the shower" : "Turn on the shower", c => Turn(c, !_on)));
             if (_on && !_inside) into.Add(new InteractAction("Shut off shower", c => { Turn(c, false); SetDoor(false, true); }));
+            // Door open/close action
             into.Add(new InteractAction(_doorOpen ? "Close the shower door" : "Open the shower door", c => SetDoor(!_doorOpen, false)));
+            // Inspection action provides feedback about water state
             into.Add(new InteractAction("Inspect shower", ctx =>
             {
                 if (!WaterMains.MainsOn) ctx.Notify("The water’s shut off.");
                 else if (!Running) ctx.Notify("The shower is off.");
                 else ctx.Notify(Hot ? "Hot water is flowing." : "Cold water is flowing.");
             }));
+            // Heater toggle if water is running
             if (Running)
             {
                 into.Add(new InteractAction(_heaterOn ? "Switch to cold water" : "Switch to hot water",
@@ -273,6 +291,7 @@ if (!WaterMains.MainsOn)
             if (Running) _underWater += dt;
         }
 
+        /// <summary>Finalizes the shower session, applying hot or cold water effects to the survivor's stats.</summary>
         private void FinishShower(InteractContext ctx)
         {
             bool hot = Hot;
