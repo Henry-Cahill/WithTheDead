@@ -21,6 +21,7 @@ namespace CloneZ
         private string _joinAddress = "127.0.0.1";
         private string _port = "7777";
 
+        /// <summary>Initialises the main menu UI with the provided bootstrapper.</summary>
         public void Bind(GameBootstrapper boot)
         {
             _boot = boot;
@@ -43,8 +44,11 @@ namespace CloneZ
 
         private void ShowTitle()
         {
+            // Reset UI state before rebuilding title screen
             ResetCreateState();
+            // Clear previous UI elements to start fresh
             Clear();
+            // Add title text with large font and bold styling
             Text title = UIKit.Label(_panel, "CLONE-Z", 96, new Color(0.85f, 0.22f, 0.2f), TextAnchor.MiddleCenter, FontStyle.Bold);
             UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.86f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1000f, 130f));
             AccountProfile a = ProfileStore.Account;
