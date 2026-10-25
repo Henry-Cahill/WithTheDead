@@ -114,19 +114,24 @@ namespace CloneZ
         }
 
         #region Visuals
+        /// <summary>Construct the visual mesh for this anomaly based on its type.</summary>
         private void BuildVisual(System.Random rng)
         {
+            // Create a child transform to hold generated meshes
             _visual = new GameObject("Visual").transform;
             _visual.SetParent(transform, false);
+            // Helper to build geometry primitives for the visual
             var m = new RaidMesh();
             Vector3 c = transform.position;
             m.SetFrame(c, 0f);
             Color t = Def.Tint;
+            // Build geometry depending on the anomaly’s definition ID
             switch (Def.Id)
             {
                 case "sinkhole":
                     m.FlatBlob(new Vector3(0f, 0.012f, 0f), Radius * 0.95f, Radius * 0.9f, ZoneKit.R(rng, 0f, 360f), 0.15f, rng, ZoneKit.M(new Color(0.22f, 0.21f, 0.2f)));
                     m.FlatBlob(new Vector3(0f, 0.016f, 0f), Radius * 0.45f, Radius * 0.42f, ZoneKit.R(rng, 0f, 360f), 0.2f, rng, ZoneKit.M(new Color(0.13f, 0.12f, 0.12f)));
+                    // Add radial crack-like ellipsoids around the centre
                     for (int i = 0; i < 9; i++)
                     {
                         float ang = i * 40f + ZoneKit.R(rng, -10f, 10f), r = ZoneKit.R(rng, 0.3f, Radius * 0.7f);
@@ -135,6 +140,7 @@ namespace CloneZ
                     }
                     break;
                 case "embermoss":
+                    // Scatter moss patches as ellipsoids in a circular area
                     for (int i = 0; i < 26; i++)
                     {
                         Vector2 o = Random2(rng) * Radius * 0.85f;
@@ -144,6 +150,7 @@ namespace CloneZ
                     m.FlatBlob(new Vector3(0f, 0.01f, 0f), Radius * 0.9f, Radius * 0.9f, 0f, 0.3f, rng, ZoneKit.M(new Color(0.16f, 0.12f, 0.1f)));
                     break;
                 case "staticbloom":
+                    // Create vertical rods with glowing tips to suggest electrical arcs
                     for (int i = 0; i < 7; i++)
                     {
                         Vector2 o = Random2(rng) * Radius * 0.35f;
@@ -170,6 +177,7 @@ namespace CloneZ
                     m.FlatBlob(new Vector3(0.2f, 0.025f, -0.1f), Radius * 0.55f, Radius * 0.5f, ZoneKit.R(rng, 0f, 360f), 0.3f, rng, ZoneKit.G(new Color(0.45f, 0.48f, 0.45f)));
                     break;
                 case "tollgate":
+                    // Build two side pillars and top beam for the gate
                     for (int side = -1; side <= 1; side += 2)
                     {
                         Vector3 b = new Vector3(side * 1.1f, 0f, 0f), top = new Vector3(side * 0.55f, 2.6f, ZoneKit.R(rng, -0.1f, 0.1f));
@@ -220,6 +228,8 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
                      Vector3 chainStart = new Vector3(-0.55f, 1.2f, 0f);
                      Vector3 linkDir = new Vector3(0.35f, 0f, 0f);
                      float linkLen = 0.12f; // not used directly, length set by end point
+                     // Build a short rusted chain of four links between the side pillars
+                     // Place small rusty nails on the sign front for detail
                      for (int i = 0; i < 4; i++)
                      {
                          Vector3 a = chainStart + i * linkDir;
@@ -288,13 +298,20 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
             if (_ps != null) _psRate = _ps.emission.rateOverTime.constant;
         }
 
+        /// <summary>Create a particle system for a spark effect used by some anomalies.</summary>
         private ParticleSystem Particles(Vector3 at, float size, float rate, float speed, Color color, bool glow)
         {
+            // Temporary object to host the particle system for the anomaly effect
             var go = new GameObject("Sparks");
+            // Parent to the visual hierarchy so it moves with the anomaly
             go.transform.SetParent(_visual, false);
+            // Position at the specified offset and tilt downwards to align with the ground
             go.transform.SetPositionAndRotation(at, Quaternion.Euler(-90f, 0f, 0f));
+            // Configure the particle system to loop with a variable lifetime, speed and size
             var ps = go.AddComponent<ParticleSystem>();
+            // Stop any initial emission and clear existing particles
             ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            // Main module: set loop, lifetime range, speed range, size range and colour
             ParticleSystem.MainModule main = ps.main;
             main.loop = true;
             main.startLifetime = new ParticleSystem.MinMaxCurve(0.3f, 1.2f);
@@ -303,15 +320,20 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
             main.startColor = color;
             main.maxParticles = 60;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
+            // Emission module: define how many particles per second are spawned
             ParticleSystem.EmissionModule em = ps.emission;
             em.rateOverTime = rate;
+            // Shape module: emit from a circle matching the anomaly radius
             ParticleSystem.ShapeModule sh = ps.shape;
             sh.shapeType = ParticleSystemShapeType.Circle;
             sh.radius = Radius * 0.6f;
+            // Assign a simple unlit material and disable shadows for performance
             var r = go.GetComponent<ParticleSystemRenderer>();
             r.sharedMaterial = ZoneKit.EmberMaterial();
             r.shadowCastingMode = ShadowCastingMode.Off;
+            // Start the particle system now that it’s fully configured
             ps.Play();
+            // Return the configured particle system for later control
             return ps;
         }
 
@@ -438,6 +460,7 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
         // Embermoss: flares at fast movement within it; creeping is safe.
         private void TickEmbermoss()
         {
+            // Skip processing if the anomaly is cooling down
             if (_cooldown > 0f) return;
             foreach (var kv in _inside)
             {
@@ -450,8 +473,12 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
         }
 
         // Staticbloom: four crackles, then a strike on the nearest thing within reach. Bolts spend the charge.
+        /// <summary>Run the staticbloom timing logic: charge, crackles and final strike.</summary>
+        // Implements the staticbloom’s timing: charging, crackling and striking
+        // Handles staticbloom’s charging, crackling and striking phases
         private void TickStatic(float dt)
         {
+            // Skip processing if the anomaly is cooling down
             if (_cooldown > 0f) return;
             bool anyone = _inside.Count > 0 || NearAnyone(Radius + 3f);
             if (!anyone) { _charge = 0f; _crackles = 0; return; }
@@ -553,6 +580,8 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
             if (_ps != null) _ps.Emit(25);
         }
 
+        /// <summary>Trigger a brief flash of light for visual feedback of an anomaly.</summary>
+        // Add a flash of light when the anomaly strikes or crackles
         private void Flash(float seconds, float intensity)
         {
             if (Def.Id == "greysyrup" || Def.Id == "sinkhole") return;
