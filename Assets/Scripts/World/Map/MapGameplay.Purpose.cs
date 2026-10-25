@@ -153,6 +153,7 @@ namespace CloneZ
             return use.StartsWith("shop:", System.StringComparison.Ordinal) ? Purposes.Shop : null;
         }
 
+        /// <summary>Simple struct storing a name word, its associated purpose, and whether it must match as a whole word.</summary>
         private struct NameWord { public string Word, Purpose; public bool Whole; }
 
         private static NameWord[] s_Words;
@@ -162,18 +163,26 @@ namespace CloneZ
         {
             if (string.IsNullOrEmpty(name)) return null;
             if (s_Words == null)
+            // Lazily initialise the cached word list from the static name‑word table on first use.
             {
                 var words = new List<NameWord>(256);
+                // Pre‑allocate a reasonably sized list to avoid repeated allocations while flattening the static table.
                 foreach (string[] row in s_NameWords)
+                    // Each row maps a purpose to one or more keywords that imply it.
                     for (int k = 1; k < row.Length; k++)
+                    // Walk each keyword, skipping the first element which is the purpose identifier.
                     {
                         bool whole = row[k][0] == '=';
+                        // '=' prefix forces a whole‑word match to avoid false positives like "shop" matching "workshop".
                         words.Add(new NameWord { Purpose = row[0], Whole = whole, Word = whole ? row[k].Substring(1) : row[k] });
                     }
                 s_Words = words.ToArray();
             }
             string lower = name.ToLowerInvariant();
+            // Normalise to lower case once to make the keyword checks case‑insensitive and cheap.
             for (int i = 0; i < s_Words.Length; i++)
+                // Scan the pre‑built word list; return the first purpose whose keyword matches the name.
+                // First‑match wins because the list is ordered from most specific to most generic.
                 if (HasWord(lower, s_Words[i].Word, s_Words[i].Whole)) return s_Words[i].Purpose;
             return null;
         }
@@ -356,6 +365,7 @@ namespace CloneZ
             return info;
         }
 
+        /// <summary>Detects whether a building footprint matches typical farm‑building dimensions (e.g., barns).</summary>
         // A footprint shaped like a farm building: its tightest enclosing rectangle (along one of its own edges) at least 9 m
         // wide (wider than a double-wide), 2.2 times as long, 150 m² or more.
         private static bool BarnShaped(List<Vector2> pts)
