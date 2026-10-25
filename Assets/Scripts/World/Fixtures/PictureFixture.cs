@@ -55,23 +55,37 @@ namespace CloneZ
         internal static PictureFixture Create(Transform host, Vector3 point, Vector3 face, Vector3 normal, float roll, string description,
             string noun = "picture", bool calming = true)
         {
+            // Create a dedicated GameObject to host the fixture component.
             var go = new GameObject("PictureFixture");
+            // Parent it to the wall transform so it moves with the wall.
             go.transform.SetParent(host, false);
+            // Position the GameObject at the wall face; orientation will be applied later via rotation.
             go.transform.SetPositionAndRotation(face, Quaternion.identity);
+            // Attach the PictureFixture script to manage interactions.
             var p = go.AddComponent<PictureFixture>();
+            // Store interaction point on the wall for player prompts.
             p._point = point;
+            // Store the world position of the fixture's centre.
             p._face = face;
+            // Store outward normal to determine player facing checks.
             p._normal = normal;
+            // Clamp initial roll to allowed limits to avoid impossible angles.
             p._roll = p._shownRoll = Mathf.Clamp(roll, -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
+            // Save description shown to player.
             p._description = description;
+            // Customize labels if the fixture represents a specific type of picture.
             if (!string.IsNullOrEmpty(noun) && noun != "picture")
             {
+                // Set display name and action labels based on noun.
                 p._name = char.ToUpperInvariant(noun[0]) + noun.Substring(1);
                 p._lookLabel = "Look at the " + noun;
                 p._straightenLabel = "Straighten the " + noun;
             }
+            // Remember whether this picture provides a calming effect.
             p._calming = calming;
+            // Generate unique save key based on position.
             p._key = KeyFor("picture", point);
+            // Return the initialized fixture.
             return p;
         }
 
@@ -121,6 +135,7 @@ namespace CloneZ
             Look(ctx);
             ctx.Notify("A brief memory of home flits through your mind.");
         }
+        /// <summary>Shows the picture description and possibly calms the player.</summary>
         private void Look(InteractContext ctx)
         {
             ctx.Notify(_description);
@@ -130,6 +145,7 @@ namespace CloneZ
             _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
         }
 
+        /// <summary>Slightly tilts the picture left or right, adding a small random offset.</summary>
         private void Tilt(InteractContext ctx)
         {
             _roll = Mathf.Clamp(_roll + (Random.value < 0.5f ? SmallTilt : -SmallTilt), -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
@@ -141,6 +157,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Resets the picture's roll to level, removing any tilt.</summary>
         private void Straighten(InteractContext ctx)
         {
             _roll = 0f;
@@ -152,6 +169,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Secures the picture, reducing its chance of being knocked askew.</summary>
         private void Secure(InteractContext ctx)
         {
             _secured = true;
