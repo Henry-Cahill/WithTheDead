@@ -409,6 +409,7 @@ namespace CloneZ
         // the corner's radius between the two kerb lines where they meet; each arm cut where the returns beside it are
         // done (a through arm isn't cut: its kerb opens instead); a full junction's paved patch run round them
         // counter-clockwise.
+        /// <summary>Generate kerb returns and pavement patch for a junction.</summary>
         private static void Shape(Net net, Joint j)
         {
             int n = j.Arms.Count;
@@ -668,6 +669,7 @@ namespace CloneZ
         #endregion
 
         #region Chains
+        /// <summary>Create chains of connected road runs for later profiling.</summary>
         private static void MakeChains(Net net)
         {
             foreach (Run start in net.Runs)
@@ -876,6 +878,9 @@ namespace CloneZ
 
         private static bool Same(Vector4 a, Vector4 b) => (a - b).sqrMagnitude < 1e-4f;
 
+        /// <summary>Add a knot (profile sample) to the temporary knot lists.
+        /// Used while building cross‑section profiles for a chain.
+        /// </summary>
         private static void Knot(float s, Vector4 v)
         {
             s_KnotS.Add(s);
@@ -887,6 +892,9 @@ namespace CloneZ
 
         // The chain's cross-section on one side as knots: each part's values, changing linearly over a few metres where
         // two parts meet; across a mouth held at the wider of the two (as the junction's kerb returns took it).
+        /// <summary>Build the cross‑section profile (as knots) for one side of a road chain.
+        /// Handles loops, mouths, and linear transitions between parts.
+        /// </summary>
         private static void BuildProfile(Chain c, int side)
         {
             s_KnotS.Clear();
