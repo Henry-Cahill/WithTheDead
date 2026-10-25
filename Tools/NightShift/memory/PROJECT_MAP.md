@@ -421,7 +421,7 @@ sentence of its summary. Grep the code for details.
 - WaterPoints.cs (164) IWaterPoint, WaterPoints, WaterUse: Anything the survivor can drink from or fill a bottle at: a WaterSource (the kitchen tap, the rain b
 
 ## Assets/Scripts/World/Map
-- BarrierPass.cs (944) BarrierPass, Style, Drives: The mapped barriers (format 2), as Kentucky builds them: plank horse fences, white or creosote-black
+- BarrierPass.cs (948) BarrierPass, Style, Drives: The mapped barriers (format 2), as Kentucky builds them: plank horse fences, white or creosote-black
 - BuildingPass.Context.cs (477) BuildingPass, Context: Towns near the site: site-local x, z and population.
 - BuildingPass.Facades.cs (98) BuildingPass, FacadeStyle: From this many storeys up a building's upper floors get painted windows.
 - BuildingPass.FlatRoofs.cs (526) BuildingPass, Kit: Flat roofs: most of a downtown's and every big building's, and what has to make one read as a roof f
@@ -430,15 +430,15 @@ sentence of its summary. Grep the code for details.
 - BuildingPass.Openings.cs (579) BuildingPass: Doors and windows drawn a stage at a time: a big building's hundreds of windows across a streamed pi
 - BuildingPass.Plan.cs (1170) BuildingPass, Arch, HouseStyle: How one building is built.
 - BuildingPass.Roofs.cs (787) BuildingPass, RoofPart, Axes: One block of a pitched roof.
-- BuildingPass.Shape.cs (295) BuildingPass, Shape: A footprint's frame and blocks.
-- BuildingPass.Shots.cs (589) BuildingShots, Harness, BuildingPass: The exteriors' own picture harness: builds the fixed square round each place asked for (as the map h
+- BuildingPass.Shape.cs (301) BuildingPass, Shape: A footprint's frame and blocks.
+- BuildingPass.Shots.cs (667) BuildingShots, Harness, BuildingPass: The exteriors' own picture harness: builds the fixed square round each place asked for (as the map h
 - BuildingPass.Special.cs (674) BuildingPass: True when this pass built a gas station canopy with pumps within within metres of p (site-local) on 
-- BuildingPass.cs (716) BuildingPass, Job, Seg: The real-world map's buildings, from their mapped footprints.
+- BuildingPass.cs (726) BuildingPass, Job, Seg: The real-world map's buildings, from their mapped footprints.
 - CutawayPass.cs (139) CutawayPass: Emits the per-building shells (BuildingShell) of a Full site as objects the isometric cutaway can hi
 - GroundPass.Fields.cs (199) GroundPass, Crop: What a field grew last summer (from its id): corn half the time, then soybeans or tobacco, then hay.
 - GroundPass.Grounds.cs (817) GroundPass: What stands on the snow in the land use with a purpose (Full detail, inside the square, kept clear o
 - GroundPass.Parking.cs (340) GroundPass: Parking lots after the plough: the asphalt (the fill), the snow shoved off the lot in a ragged white
-- GroundPass.Partition.cs (508) GroundPass, Owner, Trap: A land-use area cut to the square (or to a band of the scenery ring), and the part of it that shows.
+- GroundPass.Partition.cs (512) GroundPass, Owner, Trap: A land-use area cut to the square (or to a band of the scenery ring), and the part of it that shows.
 - GroundPass.Textures.cs (881) GroundPass, Painting, Lattice: Starts painting every ground texture on worker threads (once a session).
 - GroundPass.Tone.cs (171) GroundPass: The snow's tone: one see-through sheet over the ground (a grid of 2.56 m cells on a chunk, 5.12 m on
 - GroundPass.Water.cs (569) GroundPass, WaterLook: What a body of water looks like in January.
@@ -449,9 +449,9 @@ sentence of its summary. Grep the code for details.
 - InteriorPass.Food.cs (215) InteriorPass: Diners, cafés and bars: booths along the windows, tables and chairs on the floor, the counter with i
 - InteriorPass.Homes.cs (597) InteriorPass: The rooms of a home, furnished like the starter home and the raid town's houses with their own worki
 - InteriorPass.Offices.cs (589) InteriorPass: A bank officer's desk: the officer's chair behind it, two for the customers across it.
-- InteriorPass.Plan.cs (748) RoomRole, InteriorUse, InteriorPlan: What a room of a real building is for, finer than RoomKinds (which the loot tables read): it picks t
+- InteriorPass.Plan.cs (756) RoomRole, InteriorUse, InteriorPlan: What a room of a real building is for, finer than RoomKinds (which the loot tables read): it picks t
 - InteriorPass.Programs.cs (705) InteriorPass: What the enterable building e is used as, or InteriorUse.None for a building with nothing to furnish
-- InteriorPass.Rooms.cs (887) InteriorPass, Run, Piece: Partitions along one wall line, merged: from A to B on the rooms' lines, the wall itself from Start 
+- InteriorPass.Rooms.cs (892) InteriorPass, Run, Piece: Partitions along one wall line, merged: from A to B on the rooms' lines, the wall itself from Start 
 - InteriorPass.Shell.cs (280) InteriorPass: The plan's outside walls lined from inside and its windows dressed, into shell's walls: a wall at a 
 - InteriorPass.Shops.cs (348) InteriorPass: Shops: the sales floor (the checkout by the door, gondolas down the middle, shelving round the walls
 - InteriorPass.Trades.cs (191) InteriorPass: Warehouses, workshops, barns and greenhouses: racking in rows with the aisles between, pallets by th
@@ -474,7 +474,7 @@ sentence of its summary. Grep the code for details.
 - MapData.cs (181) MapCurrent, MapManifest, MapRegionEntry: world/current.json: the build the game and the servers load.
 - MapGameplay.Density.cs (394) MapGameplay, CellStat: Households' worth of people whose buildings stand in the cell.
 - MapGameplay.Landmarks.cs (376) MapGameplay, RealLandmark, OpenGround: The prefix of a real landmark's id (published as "landmark:ky.p123": p a point of interest, b a buil
-- MapGameplay.Loot.cs (747) MapGameplay, Profile: One purpose's containers, room by room: the plain pools, and (rich) with the rarer finds a well stoc
+- MapGameplay.Loot.cs (756) MapGameplay, Profile: One purpose's containers, room by room: the plain pools, and (rich) with the rarer finds a well stoc
 - MapGameplay.Purpose.cs (435) MapGameplay, Purposes, NameWord: What a building was for (see PurposeOf(MapBuilding)).
 - MapGameplay.Tally.cs (135) MapGameplay: The last fixed square's loot tally (one line, also logged).
 - MapGameplay.cs (721) MapGameplay, ExitPlan: What the real-world map means for play.
@@ -489,7 +489,7 @@ sentence of its summary. Grep the code for details.
 - RoadPass.Bridges.cs (329) RoadPass, Profile: Heights added along a chain (a raised deck), by arc length; linear between its points.
 - RoadPass.Junctions.cs (1372) RoadPass, KerbLine: An arm's kerb line on one side, out from the junction (and 3 m back past it): its points, and the ar
 - RoadPass.Markings.cs (319) RoadPass, Along: Where a line runs across a chain: about its centre line, a fraction across its lanes, or by one of i
-- RoadPass.Network.cs (732) RoadPass, Cls, Winter: One side of a carriageway, seen along the way it's drawn: offsets in metres from the street's line.
+- RoadPass.Network.cs (742) RoadPass, Cls, Winter: One side of a carriageway, seen along the way it's drawn: offsets in metres from the street's line.
 - RoadPass.Paths.cs (74) RoadPass: Footways, paths, steps and pedestrian streets: a trodden band through the snow (paved, for a pedestr
 - RoadPass.Rail.cs (329) RoadPass: The railways: a ballast bed dusted with snow, wooden ties (some under snow), two steel rails with po
 - RoadPass.Sides.cs (669) RoadPass, CutKind, Cut: A verge wider than this is drawn as the snowy ground between two banks, not a kerb-high strip.
@@ -500,7 +500,7 @@ sentence of its summary. Grep the code for details.
 - SignPass.cs (615) SignPass: Traffic control and road signs the way a Kentucky town had them in 1993: signals hung from a span wi
 - SnowPass.cs (370) SnowPass: The real-world map's lying snow, past what the ground, the roads and the roofs carry: the plough's d
 - StreetLamp.cs (529) StreetLamp, Lens, StreetLampDriver: A street light that still burns: the fixture at the foot of its pole (carrying the pole's collider, 
-- StreetscapePass.Atlas.cs (683) StreetscapePass, SignArt, Painter: A material for an alpha-tested sign atlas (lit, a little glossy, both faces drawn by separate quads)
+- StreetscapePass.Atlas.cs (689) StreetscapePass, SignArt, Painter: A material for an alpha-tested sign atlas (lit, a little glossy, both faces drawn by separate quads)
 - StreetscapePass.Furniture.cs (623) StreetFurniture: The small things along the streets: fire hydrants (mapped, and at the town's corners and along its b
 - StreetscapePass.Kit.cs (800) StreetscapePass, Ctx, Crossing: The streetscape's view of one site while it's built.
 - StreetscapePass.Landmarks.cs (483) Landmarks: What stands out over a Kentucky town: its water tower on its legs with the town's name round the tan
