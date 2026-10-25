@@ -28,35 +28,48 @@ namespace CloneZ
 
         // Every step below may also yield part way through (when the streamed piece's step has used its time slice: see
         // Site.StepDue); what's built never depends on where it yields.
+        /// <summary>Builds the full streetscape for a site, adding power lines, poles, signs, lights, furniture, landmarks, barriers and litter.</summary>
         internal static IEnumerable<string> Build(Site site)
         {
             var ctx = new Ctx(site);
+            // If the site is not fully generated (e.g., streamed piece early), only add essential elements.
             if (!ctx.Full)
             {
+                // Add the concrete power line geometry after the plan step.
                 PowerPass.MappedLines(ctx);
                 Landmarks.Lite(ctx);
                 foreach (string step in BarrierPass.Lite(ctx)) yield return step;
+                // Finish up any remaining work and register the built wires.
                 foreach (string step in ctx.Finish()) yield return step;
                 yield return "landmarks";
                 yield break;
             }
+            // Lay out the main utility lines for streets before adding detailed features.
             foreach (string step in PowerPass.PlanStreetLines(ctx)) yield return step;
             yield return "utility lines";
             PowerPass.MappedLines(ctx);
             yield return "power lines";
+            // Place signal poles and wires for traffic control.
             SignPass.Signals(ctx);
+            // Build the streetlights and plan where each will be placed based on the site layout.
             StreetLights.Plan(ctx);
             foreach (string step in PowerPass.DrawPoles(ctx)) yield return step;
             yield return "utility poles";
+            // Create service drop wires linking power lines to nearby buildings.
             foreach (string step in PowerPass.ServiceDrops(ctx)) yield return step;
+            // Render the street lights after utility poles are in place.
             foreach (string step in StreetLights.Draw(ctx)) yield return step;
             yield return "street lights";
+            // Add road signs (stop, yield, speed limits, etc.).
             foreach (string step in SignPass.Signs(ctx)) yield return step;
             yield return "signs";
+            // Populate the streets with generic furniture like benches, trash cans, vending machines.
             foreach (string step in StreetFurniture.Build(ctx)) yield return step;
             yield return "street furniture";
+            // Place larger landmarks (water towers, memorials) now that major infrastructure exists.
             foreach (string step in Landmarks.Build(ctx)) yield return step;
             yield return "landmarks";
+            // Build fences and walls that bound the map and separate areas.
             foreach (string step in BarrierPass.Build(ctx)) yield return step;
             yield return "fences and walls";
             foreach (string step in Litter(site)) yield return step;
@@ -72,6 +85,7 @@ namespace CloneZ
             foreach (string _ in Litter(site)) { }
         }
 
+        /// <summary>Adds up to five pieces of trash or litter to each park, respecting free space and placement limits.</summary>
         private static IEnumerable<string> Litter(Site site)
         {
             float half = site.Half;
