@@ -17,6 +17,7 @@ namespace CloneZ
     [DisallowMultipleComponent]
     public class ToiletFixture : Interactable, IWaterPoint
     {
+        /// <summary>Interaction phases for the toilet: lid handling, using, and flushing.</summary>
         private enum Step { Lid, Use, Flush }
 
         // Where the water point goes while the cistern's lid is on: far out of anyone's reach.
@@ -224,20 +225,26 @@ namespace CloneZ
         /// <summary>Adds a single interaction step (lid, use, or flush) to the action list.</summary>
         private void AddStep(List<InteractAction> into, Step step)
         {
+            // Choose which interaction step to expose based on the requested Step enum value.
+            // The switch abstracts the conditional logic so callers only need to specify the step.
             switch (step)
             {
                 case Step.Lid:
+                    // Show a lid action; label depends on current lid state, and clicking toggles it.
                     into.Add(new InteractAction(_lidUp ? "Close the lid" : "Lift the lid", c => SetLid(!_lidUp)));
                     break;
                 case Step.Use:
+                    // Build the "use" action with a timed progress bar and a guard that ensures the lid is up first.
                     var use = new InteractAction("Use the toilet", Used)
                         .Timed(CloneZConfig.ToiletUseSeconds, "Using the toilet", HumanoidActivity.Use)
                         .DisabledIf(!_lidUp, "Lift the lid first");
+                    // Hook up callbacks to sit before usage and stand after usage.
                     use.Begin = SitToUse;
                     use.Stopped = StandFromUse;
                     into.Add(use);
                     break;
                 default:
+                    // Flush action is only enabled when enough water is present; otherwise show a reason.
                     into.Add(new InteractAction("Flush the toilet", Flush).DisabledIf(!CanFlush, NoFlushReason));
                     break;
             }
@@ -313,17 +320,24 @@ namespace CloneZ
         /// <summary>Flushes the cistern, plays sound, and notifies the player of the result.</summary>
         private void Flush(InteractContext ctx)
         {
+            // Determine whether the main water supply is on; this influences the notification text.
             bool mains = WaterMains.MainsOn;
+            // Empty the cistern completely; flushing always drains it regardless of level.
             _level = 0f;
+            // Update the visual sheet to reflect the empty cistern.
             ShowLevel();
+            // Reset flags now that flushing has occurred.
             _wantsFlush = false;
             _flushed = true;
+            // If a lever object exists, animate it opening and schedule it to close after a short hold.
             if (_lever != null)
             {
                 _lever.SetOpen(true);
                 _leverBackAt = Time.time + CloneZConfig.ToiletLeverHold;
             }
+            // Emit the flushing sound effect.
             MakeNoise(CloneZConfig.ToiletFlushNoise);
+            // Notify the player; wording differs based on whether the mains are still supplying water.
             ctx.Notify(mains
                 ? "The cistern empties with a roar and a gurgle, then hisses as it fills. Loud, that."
                 : "Down it all goes with a roar, then silence. The cistern doesn't refill. The water's off.");
