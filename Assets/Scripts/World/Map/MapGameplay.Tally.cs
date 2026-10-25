@@ -19,6 +19,7 @@ namespace CloneZ
 
         private const float TallyCell = 16f;
 
+        /// <summary>Calculate and log loot statistics for the final fixed square of the map.</summary>
         private static void TallyLoot(Site site)
         {
             if (site.Chunked || site.Town == null || site.Town.World == null) return;
