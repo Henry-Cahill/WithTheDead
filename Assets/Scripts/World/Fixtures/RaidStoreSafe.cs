@@ -17,6 +17,11 @@ namespace CloneZ
         {
             "You press your ear to the cold steel and turn the dial slowly. Click... click... a faint heavier clunk.",
             "The handle won't budge. Somebody has scratched three numbers into the paint beside it, then scratched them out.",
+            "An icy wind whistles through the broken shopfront, rattling the metal doorframe.",
+            "The distant wail of a siren drifts over the snow, its echo fading like a warning.",
+            "A crackle of static on a forgotten radio mutters, “Stay inside, curfew now.”",
+            "An old farmer’s note, half‑erased, reads: “Don’t trust the night‑shift; the dead watch.”",
+            "The wooden shelf behind the safe creaks under the weight of frozen dust.",
         };
 
         private const float LockpickDialSeconds = CloneZConfig.RaidSafeDialSeconds * 0.5f;
