@@ -8,7 +8,8 @@ namespace CloneZ
     /// the sounds no single system owns. Each part of the soundscape has its own director: footsteps
     /// (<see cref="FootstepAudio"/>), the survivor's body (<see cref="BodyAudio"/>), the dead (<see cref="ZombieVoices"/>),
     /// the world's ambience and weather (<see cref="AmbienceDirector"/>), the fight (<see cref="WeaponAudio"/>) and the
-    /// score (<see cref="MusicDirector"/>); the mixer (<see cref="SfxMixer"/>) plays them all.
+    /// score (<see cref="MusicDirector"/>); the mixer (<see cref="SfxMixer"/>) plays them all, in the space the survivor
+    /// stands in (<see cref="SfxAcoustics"/>).
     /// </summary>
     public sealed class AudioModule : IGameModule
     {
@@ -29,6 +30,7 @@ namespace CloneZ
 #endif
             synth.Prewarm();
             SfxMixer.Ensure();
+            SfxAcoustics.Ensure();
             WorldHooks.PlayerBuilt += p =>
             {
                 if (p == null) return;
