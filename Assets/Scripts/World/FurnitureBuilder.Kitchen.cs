@@ -521,10 +521,31 @@ namespace CloneZ
 
             // The back-guard with the burner knobs' bezels; the control strip with the oven's.
             m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), body);
+            // Five horizontal grill slats inside the back‑guard
+            m.Box(new Vector3(0f, 1.02f, -0.3f), new Vector3(0.7f, 0.002f, 0.058f), Mt(Chrome * 0.85f));
+            m.Box(new Vector3(0f, 1.04f, -0.3f), new Vector3(0.7f, 0.002f, 0.058f), Mt(Chrome * 0.85f));
+            m.Box(new Vector3(0f, 1.06f, -0.3f), new Vector3(0.7f, 0.002f, 0.058f), Mt(Chrome * 0.85f));
+            m.Box(new Vector3(0f, 1.08f, -0.3f), new Vector3(0.7f, 0.002f, 0.058f), Mt(Chrome * 0.85f));
+            m.Box(new Vector3(0f, 1.10f, -0.3f), new Vector3(0.7f, 0.002f, 0.058f), Mt(Chrome * 0.85f));
+            // Edge trim for each slat to suggest recessed frame
+            m.Box(new Vector3(0f, 1.02f, -0.241f), new Vector3(0.7f, 0.004f, 0.001f), body);
+            m.Box(new Vector3(0f, 1.04f, -0.241f), new Vector3(0.7f, 0.004f, 0.001f), body);
+            m.Box(new Vector3(0f, 1.06f, -0.241f), new Vector3(0.7f, 0.004f, 0.001f), body);
+            m.Box(new Vector3(0f, 1.08f, -0.241f), new Vector3(0.7f, 0.004f, 0.001f), body);
+            m.Box(new Vector3(0f, 1.10f, -0.241f), new Vector3(0.7f, 0.004f, 0.001f), body);
             Quaternion outward = Quaternion.Euler(90f, 0f, 0f);
             for (int i = 0; i < 4; i++)
                 m.Cylinder(new Vector3(StoveKnobX[i], StoveKnobY, StoveKnobZ - 0.004f), 0.03f, 0.004f, 12, chrome, outward);
             m.Cylinder(StoveOvenKnob - new Vector3(0f, 0f, 0.004f), 0.03f, 0.004f, 12, chrome, outward);
+            // Analog timer on left side of control strip
+            m.Cylinder(new Vector3(-0.35f, 0.845f, 0.285f), 0.012f, 0.004f, 8, Mt(Chrome), outward);
+            float needleAngle = R(rng, -30f, 30f);
+            m.Box(new Vector3(-0.35f, 0.857f, 0.285f) + new Vector3(0f, 0f, 0.005f), new Vector3(0.001f, 0.008f, 0.01f), needleAngle, M(new Color(0.9f, 0.9f, 0.9f)));
+            // Paper label plate above timer
+            m.Box(new Vector3(-0.35f, 0.86f, 0.29f), new Vector3(0.04f, 0.006f, 0.001f), M(new Color(0.92f, 0.86f, 0.78f)));
+            // Holding screws for the timer
+            m.Cylinder(new Vector3(-0.355f, 0.845f, 0.28f), 0.003f, 0.001f, 6, Mt(Chrome));
+            m.Cylinder(new Vector3(-0.345f, 0.845f, 0.28f), 0.003f, 0.001f, 6, Mt(Chrome));
             m.Cylinder(StoveOvenLamp, 0.009f, 0.004f, 8, M(new Color(0.35f, 0.08f, 0.05f)), outward);
             m.Box(new Vector3(-0.22f, 0.835f, 0.292f), new Vector3(0.1f, 0.025f, 0.004f), chrome);
 
