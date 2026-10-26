@@ -125,8 +125,11 @@ namespace CloneZ
         /// most <paramref name="names"/> of them named (with their ranks when <paramref name="ranks"/>).</summary>
         internal static string LandmarkSummary(int names, bool ranks = false)
         {
+            // Get a mutable copy of all published landmarks.
             var all = new List<RealLandmark>(s_Landmarks.Values);
+            // Sort landmarks: most important first, then by id for deterministic order.
             all.Sort((x, y) => x.Rank != y.Rank ? y.Rank.CompareTo(x.Rank) : string.CompareOrdinal(x.Id, y.Id));
+            // Count how many of the landmarks are pinned on the Zone map.
             int pinned = 0;
             foreach (KeyValuePair<string, Vector3> kv in HumanUtil.Landmarks())
                 if (kv.Key.StartsWith(LandmarkPrefix, System.StringComparison.Ordinal)) pinned++;
@@ -143,6 +146,7 @@ namespace CloneZ
         }
 
         // What makes a landmark of a point of interest's kind: its rank (how much it matters to someone finding their
+        /// <summary>Determine rank and display noun for a POI kind.</summary>
         // way: 10 the courthouse, 4 a named store) and what to call it when it has no name.
         private static int LandmarkRank(string kind, bool named, out string noun)
         {
@@ -185,6 +189,7 @@ namespace CloneZ
         }
 
         // The same for a building by its purpose (a building with no point of interest of its own).
+        /// <summary>Determine rank and display noun for a building purpose.</summary>
         private static int LandmarkRank(string purpose, out string noun)
         {
             noun = null;
@@ -221,20 +226,25 @@ namespace CloneZ
         }
 
         // Publishes the site's landmarks (each once a raid, however often its piece is built), the most important first.
+        /// <summary>Publish a site's landmarks, ordering by importance and respecting limits.</summary>
         private static void Landmarks(Site site)
         {
             object epoch = Epoch(site);
+            // Ensure we have a fresh epoch when the map changes, clearing prior landmarks.
             if (!ReferenceEquals(epoch, s_LandmarkEpoch))
             {
                 ForgetLandmarks();
                 s_LandmarkEpoch = epoch;
             }
+            // Record open ground patches near the start area for helicopter landing spots.
             RecordOpenGround(site);
+            // Analyse the site to gather structural info needed for landmark determination.
             SiteInfo info = Analyse(site);
             var found = new List<RealLandmark>();
             var hosts = new HashSet<Footprint>();
             float own = site.Chunked ? site.Half : site.Half + SceneryReach;
 
+            // Process each point of interest (e.g., courthouse, fire station) as a potential landmark.
             foreach (Spot s in site.Area.Points)
             {
                 bool named = !string.IsNullOrEmpty(s.Data.name);
@@ -250,6 +260,7 @@ namespace CloneZ
                 }
                 Add(found, site, "p", s.Data.id, named ? s.Data.name : null, noun, at, rank, radius);
             }
+            // Process each building footprint that might serve as a landmark (e.g., schools, hospitals).
             foreach (Footprint f in site.Area.Buildings)
             {
                 if (hosts.Contains(f) || !f.Inside(own, 0f)) continue;
@@ -264,6 +275,7 @@ namespace CloneZ
                 Add(found, site, "b", f.Data.id, named ? f.Data.name : null, noun, f.Middle, rank,
                     Mathf.Clamp(Mathf.Sqrt(f.Size) * 0.5f + 9f, 15f, 40f));
             }
+            // Process special nodes like water towers and memorials as landmarks.
             foreach (Node n in site.Area.Nodes)
             {
                 string noun;
@@ -277,6 +289,7 @@ namespace CloneZ
                 }
                 Add(found, site, "n", n.Data.id, string.IsNullOrEmpty(n.Data.name) ? null : n.Data.name, noun, n.At, rank, 15f);
             }
+            // Process larger area features such as cemeteries and parks as landmarks.
             foreach (Patch a in site.Area.Areas)
             {
                 bool named = !string.IsNullOrEmpty(a.Data.name);
