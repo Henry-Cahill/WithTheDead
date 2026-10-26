@@ -231,23 +231,49 @@ namespace CloneZ
         private static void SortingCase(RaidMesh m, System.Random r, float w)
         {
             Surf wood = DecorPalette.Matte(new Color(0.55f, 0.50f, 0.42f)), back = DecorPalette.Matte(new Color(0.34f, 0.31f, 0.27f));
+            Surf steel = DecorPalette.Metal(new Color(0.52f, 0.52f, 0.50f));
             Surf paper = DecorPalette.Matte(new Color(0.92f, 0.90f, 0.84f));
             // Determine how many columns of pigeonholes fit based on the requested width.
             int cols = Mathf.Max(4, Mathf.RoundToInt(w / 0.25f));
             // Base back panel of the case.
             m.Box(new Vector3(0f, 0.43f, 0f), new Vector3(w, 0.86f, 0.42f), back);
+            // The face frame round the base: stiles at the ends, a rail across the top and a sill at the bottom.
+            m.Box(new Vector3(-w * 0.5f + 0.015f, 1.34f, 0.075f), new Vector3(0.03f, 0.9f, 0.04f), wood);
+            m.Box(new Vector3(w * 0.5f - 0.015f, 1.34f, 0.075f), new Vector3(0.03f, 0.9f, 0.04f), wood);
+            m.Box(new Vector3(0f, 1.7725f, 0.075f), new Vector3(w - 0.06f, 0.035f, 0.04f), wood);
+            m.Box(new Vector3(0f, 0.8725f, 0.075f), new Vector3(w - 0.06f, 0.035f, 0.04f), wood);
             // Shelf where pigeonholes sit.
             m.Box(new Vector3(0f, 0.875f, 0.02f), new Vector3(w, 0.03f, 0.45f), wood);
             // Upper back panel closing the case.
             m.Box(new Vector3(0f, 1.34f, -0.19f), new Vector3(w, 0.9f, 0.03f), back);
+            // Closed sides, so the case reads as a fitted unit rather than an open rack.
+            m.Box(new Vector3(-w * 0.5f + 0.015f, 1.34f, -0.075f), new Vector3(0.03f, 0.9f, 0.25f), back);
+            m.Box(new Vector3(w * 0.5f - 0.015f, 1.34f, -0.075f), new Vector3(0.03f, 0.9f, 0.25f), back);
             // Add vertical dividers between columns.
             for (int k = 0; k <= cols; k++) m.Box(new Vector3(-w * 0.5f + w * k / cols, 1.34f, -0.07f), new Vector3(0.015f, 0.9f, 0.25f), wood);
             // Add horizontal dividers between rows.
             for (int k = 0; k <= 6; k++) m.Box(new Vector3(0f, 0.89f + k * 0.15f, -0.07f), new Vector3(w, 0.015f, 0.25f), wood);
+            // Capped top: one board over the whole run, covering the divider tops.
+            m.Box(new Vector3(0f, 1.80f, 0.015f), new Vector3(w, 0.02f, 0.46f), wood);
             for (int row = 0; row < 6; row++)
                 for (int col = 0; col < cols; col++)
                     if (r.NextDouble() < 0.35)
                         m.Box(new Vector3(-w * 0.5f + w * (col + 0.5f) / cols, 0.9f + row * 0.15f + 0.04f, -0.09f), new Vector3(w / cols - 0.05f, 0.07f, 0.17f), paper);
+            // Loose mail left on the ledge, waiting to be sorted.
+            for (int k = 0; k < 3; k++)
+                m.Box(new Vector3(MapStyle.Range(r, -w * 0.35f, w * 0.35f), 0.894f, MapStyle.Range(r, 0.08f, 0.20f)),
+                    new Vector3(MapStyle.Range(r, 0.14f, 0.22f), 0.006f, MapStyle.Range(r, 0.09f, 0.13f)),
+                    Quaternion.Euler(0f, MapStyle.Range(r, -25f, 25f), 0f), paper);
+            // A steel kick plate and a label holder keep the front looking like a working post-office fixture.
+            m.Box(new Vector3(0f, 0.09f, 0.214f), new Vector3(w - 0.06f, 0.18f, 0.012f), steel);
+            m.Box(new Vector3(0f, 0.874f, 0.250f), new Vector3(w - 0.06f, 0.026f, 0.012f), steel);
+            for (int k = 0; k < 4; k++)
+                m.Box(new Vector3((k - 1.5f) * w * 0.2f, 0.876f, 0.258f), new Vector3(Mathf.Min(0.16f, w * 0.12f), 0.018f, 0.004f), paper);
+            // Deterministic wear: scuffs on the kick and the cap edge.
+            m.Box(new Vector3(MapStyle.Range(r, -w * 0.4f, w * 0.4f), MapStyle.Range(r, 0.18f, 0.50f), 0.2115f),
+                new Vector3(MapStyle.Range(r, 0.06f, 0.12f), MapStyle.Range(r, 0.02f, 0.05f), 0.004f), wood);
+            m.Box(new Vector3(MapStyle.Range(r, -w * 0.35f, w * 0.35f), 1.800f, 0.2465f),
+                new Vector3(MapStyle.Range(r, 0.05f, 0.10f), 0.012f, 0.004f), back);
         }
 
         // A canvas mail hamper on its steel frame and casters, some parcels in it.
