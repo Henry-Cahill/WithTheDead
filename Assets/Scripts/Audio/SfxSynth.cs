@@ -138,6 +138,7 @@ namespace CloneZ
         partial void RegisterMusic();
 
         #region Queries
+        /// <summary>True when <paramref name="id"/> has a registered recipe.</summary>
         public bool Has(string id) => id != null && _recipes.ContainsKey(id);
 
         /// <summary>Every registered id, in registration order.</summary>
@@ -146,13 +147,17 @@ namespace CloneZ
             get { foreach (Recipe r in _order) yield return r.Id; }
         }
 
+        /// <summary>How many variations <paramref name="id"/> has, or zero if unknown.</summary>
         public int VariationsOf(string id) => id != null && _recipes.TryGetValue(id, out Recipe r) ? r.Variations : 0;
+        /// <summary>True when <paramref name="id"/> is a seamless loop.</summary>
         public bool IsLoop(string id) => id != null && _recipes.TryGetValue(id, out Recipe r) && r.IsLoop;
         /// <summary>The recipe family (file) that registered <paramref name="id"/>: Weapons, Footsteps, Foley, ...</summary>
         public string FamilyOf(string id) => id != null && _recipes.TryGetValue(id, out Recipe r) ? r.Family : null;
 
+        /// <summary>The routing metadata for <paramref name="id"/>; never null.</summary>
         public SfxMeta Meta(string id) => id != null && _recipes.TryGetValue(id, out Recipe r) ? r.Meta : SfxMeta.Default;
 
+        /// <summary>True when any variation of <paramref name="id"/> is already built or pending.</summary>
         public bool IsReady(string id)
         {
             if (id == null || !_recipes.TryGetValue(id, out Recipe r)) return false;
@@ -175,6 +180,7 @@ namespace CloneZ
         #endregion
 
         #region Clips
+        /// <summary>A clip for <paramref name="id"/>, picking a random variation; renders on-the-spot if nothing is ready and another variation stands in if one exists.</summary>
         public AudioClip Get(string id)
         {
             if (id == null || !_recipes.TryGetValue(id, out Recipe r)) return null;
@@ -195,6 +201,7 @@ namespace CloneZ
             return c;
         }
 
+        /// <summary>The given variation of <paramref name="id"/> (wrapped into range); another variation stands in while it is still being built or renders on-the-spot if needed.</summary>
         public AudioClip Get(string id, int variation)
         {
             if (id == null || !_recipes.TryGetValue(id, out Recipe r)) return null;
@@ -213,6 +220,7 @@ namespace CloneZ
             return c;
         }
 
+        /// <summary>Asks for every variation of <paramref name="id"/> to be built in the background ahead of the queue.</summary>
         public void Request(string id)
         {
             if (id == null || !_recipes.TryGetValue(id, out Recipe r)) return;
