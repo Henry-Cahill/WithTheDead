@@ -64,7 +64,7 @@ namespace CloneZ
                 bool porch = false;
                 // Only read j.Len[…] if a door edge actually exists.
                 if (p.Porch) porch = j.Len[j.DoorEdge] >= 2.6f;
-                if (porch) Porch(j);
+                if (porch) { Porch(j); DrawPorchStep(j); }
                 else if (p.Stoop || p.Arch == Arch.House) Stoop(j);
                 Mark("porch");
                 if (p.Mailbox) WallMailbox(j);
