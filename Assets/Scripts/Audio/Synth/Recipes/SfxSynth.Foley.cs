@@ -10,9 +10,7 @@ namespace CloneZ
     {
         partial void RegisterFoley()
         {
-            // Each variation reads its own stretch of the generator's stream (the generator alone repeats across variations).
-            Recipe Foley(string id, Func<SynthGen, float[]> make, int variations, int rate = HiRate) =>
-                Add(id, g => make(FoleyKit.Own(g)), variations, rate);
+            Recipe Foley(string id, Func<SynthGen, float[]> make, int variations, int rate = HiRate) => Add(id, make, variations, rate);
 
             // ── Doors and gear ──────────────────────────────────────────────────────────────────────
             Foley(SfxIds.DoorOpen, FoleyKit.DoorOpen, 3).Peak(0.7f).Priority(100);
@@ -70,13 +68,6 @@ namespace CloneZ
             private static readonly float[] ZippoR = { 1f, 1.48f, 2.17f, 2.93f, 4.1f }, ZippoA = { 1f, 0.6f, 0.5f, 0.3f, 0.2f };
 
             #region Building blocks
-            /// <summary>Moves the generator on to this variation's own stretch of its stream, so variations differ.</summary>
-            internal static SynthGen Own(SynthGen g)
-            {
-                for (int i = 0, n = g.Variation * 7919; i < n; i++) g.NextUInt();
-                return g;
-            }
-
             private static int At(SynthGen g, float seconds) => (int)(seconds * g.Rate);
 
             /// <summary>A contact transient: a band-limited noise burst at <paramref name="at"/> seconds, peaking at <paramref name="gain"/>.</summary>

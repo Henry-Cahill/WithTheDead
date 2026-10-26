@@ -58,13 +58,6 @@ namespace CloneZ
         {
             private const float TwoPi = Dsp.TwoPi;
 
-            /// <summary>SynthGen doesn't mix the variation into its seed yet: draw a few numbers per variation so each one
-            /// differs (harmless once it does).</summary>
-            internal static void Vary(SynthGen g)
-            {
-                for (int i = 0; i < g.Variation * 31; i++) g.NextUInt();
-            }
-
             #region Scaffolding
             // A stereo bed `seconds` long. The texture is rendered half a second longer and the overhang cross-faded into
             // the head, so noise and filters wrap without a seam; the events are then laid on the exact loop (wrapping
@@ -359,7 +352,6 @@ namespace CloneZ
             // height and a thin whistle riding it.
             internal static StereoBuf Gust(SynthGen g)
             {
-                Vary(g);
                 int rate = g.Rate;
                 float len = g.Range(3.6f, 4.6f), top = g.Range(0.35f, 0.5f);
                 int n = g.N(len);
@@ -1177,7 +1169,6 @@ namespace CloneZ
             // bolt — with echoes of the crack off hills and treelines. Far: only the low, long roll, swelling in.
             internal static float[] Thunder(SynthGen g, bool near)
             {
-                Vary(g);
                 int rate = g.Rate;
                 float len = near ? g.Range(5.6f, 6.6f) : g.Range(6.2f, 7.6f);
                 int n = g.N(len);
@@ -1439,7 +1430,6 @@ namespace CloneZ
 
             internal static float[] Cardinal(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 return Air(Pad(CardinalSong(g, g.Variation % 2), g, 0.6f), g.Rate, 0.18f);
             }
 
@@ -1479,7 +1469,6 @@ namespace CloneZ
 
             internal static float[] WrenSong(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 return Air(Pad(Wren(g), g, 0.6f), g.Rate, 0.18f);
             }
 
@@ -1541,7 +1530,6 @@ namespace CloneZ
 
             internal static float[] ChickadeeSong(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 return Air(Pad(Chickadee(g, g.Variation % 2 == 1), g, 0.6f), g.Rate, 0.18f);
             }
 
@@ -1621,7 +1609,6 @@ namespace CloneZ
 
             internal static float[] JayCall(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 return Air(Pad(Jay(g, g.Variation % 2 == 1), g, 0.6f), g.Rate, 0.2f);
             }
             #endregion
@@ -1672,7 +1659,6 @@ namespace CloneZ
 
             internal static float[] Woodpecker(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 return Air(Pad(Drumming(g, g.Variation % 3), g, 0.7f), g.Rate, 0.25f);
             }
 
@@ -1691,7 +1677,6 @@ namespace CloneZ
 
             internal static float[] BranchCreak(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 return Air(Pad(Lead(Creak(g, g.Variation % 2 == 0), g.Rate), g, 0.6f), g.Rate, 0.25f);
             }
 
@@ -1699,7 +1684,6 @@ namespace CloneZ
             // splintering run; or a limb giving way (1): the crack, the rush of it falling through the branches, the crash.
             internal static float[] TreeCrack(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 int rate = g.Rate;
                 var x = new float[g.N(3.6f)];
                 Dsp.AddBurst(x, g, 0.02f, 1f, 0.0002f, 0.004f, 9000f, 200f);
@@ -1727,7 +1711,6 @@ namespace CloneZ
             // American crow: two to five harsh, nasal caws, each a rough voice bending down at its end.
             internal static float[] Crow(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 int rate = g.Rate;
                 int caws = g.Int(2, 6);
                 var x = new float[g.N(caws * 0.7f + 0.8f)];
@@ -1754,7 +1737,6 @@ namespace CloneZ
             // soft "hoo, h'hoo — hoo — hoo".
             internal static float[] Owl(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 int rate = g.Rate;
                 var x = new float[g.N(4.6f)];
                 float t = 0.04f;
@@ -1819,7 +1801,6 @@ namespace CloneZ
             // up to ~3 kHz that drops sharply at its end. The director chains these for a bird's long run of calls.
             internal static float[] Whippoorwill(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 int rate = g.Rate;
                 float period = g.Range(1.08f, 1.18f), k = g.Range(0.94f, 1.06f);
                 var x = new float[g.N(3f * period + 0.6f)];
@@ -1838,7 +1819,6 @@ namespace CloneZ
             // dark and echoing.
             internal static float[] Coyotes(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 int rate = g.Rate;
                 const float Len = 4f;
                 var x = new float[g.N(Len + 0.9f)];
@@ -1891,7 +1871,6 @@ namespace CloneZ
             // yappy one (2) — barks, some doubled, dark with distance, with dispersed slap-backs off the walls.
             internal static float[] Dogs(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 int rate = g.Rate, type = g.Variation % 3;
                 float f0 = type == 1 ? g.Range(170f, 230f) : type == 2 ? g.Range(480f, 620f) : g.Range(280f, 380f);
                 float size = type == 1 ? 0.85f : type == 2 ? 1.35f : 1.05f;
@@ -1938,7 +1917,6 @@ namespace CloneZ
 
             internal static float[] Tune(SynthGen g)
             {
-                AmbienceKit.Vary(g);
                 var notes = new List<Note>();
                 float loop = g.Variation % 2 == 0 ? Travis(notes, g) : Waltz(notes, g);
                 int rate = g.Rate;
