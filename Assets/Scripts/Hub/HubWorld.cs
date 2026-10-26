@@ -365,14 +365,15 @@ namespace CloneZ
                 m.Box(new Vector3(-sx, y, -HalfZ + WallT * 0.5f + t * 0.5f), new Vector3(sw - WallT * 0.5f, 0.12f, t), st.Trim);
                 m.Box(new Vector3(sx, y, -HalfZ + WallT * 0.5f + t * 0.5f), new Vector3(sw - WallT * 0.5f, 0.12f, t), st.Trim);
             }, Vector3.zero);
-            // The house sign over the back bar (the fitted text needs its own UVs, or the quad shows one texel of it).
+
             Surf sign = DecorMaterials.Sign(st.Sign, new Color(0.12f, 0.08f, 0.05f), new Color(0.95f, 0.75f, 0.35f), out float aspect);
-            Deco(WallOf(world, "Wall_N"), "Sign", m =>
+            var signGo = Deco(WallOf(world, "Wall_N"), "Sign", m =>
             {
                 var at = new Vector3(-2f, 2.82f, HalfZ - WallT * 0.5f - 0.03f);
                 m.Box(at + new Vector3(0f, 0f, 0.012f), new Vector3(0.62f * aspect + 0.12f, 0.74f, 0.03f), st.DarkWood);
                 m.Upright(at - new Vector3(0f, 0f, 0.005f), Vector3.back, 0.62f * aspect, 0.62f, sign, new Rect(0f, 0f, 1f, 1f));
             }, Vector3.zero);
+            signGo.AddComponent<WeatherSign>();
             // The ceiling: shown from the shoulder and first-person views only (the isometric view looks in).
             GameObject ceiling = Deco(overhead, "Ceiling", m =>
             {
