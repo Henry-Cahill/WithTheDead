@@ -12,6 +12,9 @@ namespace CloneZ
     {
         public int Order => 20;
 
+        /// <summary>
+        /// Registers medical item actions for use in the game.
+        /// </summary>
         public void Init()
         {
             ItemActions.RegisterUse("splint", (inv, s) => Treat(inv, s, l => l.Limbs != null && l.Limbs.Splint(), "You set the bone and bind it tight.", "Nothing is broken."));
@@ -30,6 +33,9 @@ namespace CloneZ
             ItemActions.RegisterUse(def => def.Id.StartsWith("bloodbag_") && def.Id != "bloodbag_empty", Transfuse);
         }
 
+        /// <summary>
+        /// Aggregates relevant player components for medical actions.
+        /// </summary>
         private struct Body
         {
             public PlayerStats Stats;
@@ -65,6 +71,9 @@ namespace CloneZ
         }
 
         // Dressings and painkillers: stops a light bleed, takes the edge off, and patches hit points back.
+        /// <summary>
+        /// Applies a field kit to heal wounds, reduce pain, and restore limb health.
+        /// </summary>
         private static bool FieldKit(PlayerInventory inv, ItemStack s)
         {
             Body b = Of(inv);
