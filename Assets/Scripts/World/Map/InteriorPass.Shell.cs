@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static CloneZ.KentuckyMap;
+using System;
 
 namespace CloneZ
 {
@@ -270,6 +271,8 @@ namespace CloneZ
             m.Box(KentuckyMap.To3(at, head + 0.035f), new Vector3(width + 0.14f, 0.07f, 0.024f), yaw, wood);
             m.Box(KentuckyMap.To3(a + d * mid - outward * (t + 0.03f), sill - 0.01f), new Vector3(width + 0.18f, 0.04f, 0.08f), yaw, wood);
             if (room == null) return;
+            // Add extra decorative details to the window opening.
+            WindowExtras(m, a, d, outward, inward, yaw, w, t, fabric, rng);
 
             switch (role)
             {
@@ -299,6 +302,57 @@ namespace CloneZ
             }
         }
 
+        // Adds small decorative elements to a window: wooden sill‑cap, top‑moulding, a brass latch, and a tiny potted‑plant.
+        private static void WindowExtras(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, Vector3 inward,
+            float yaw, WindowSpan w, float t, Color fabric, System.Random rng)
+        {
+            // ---- Common geometry helpers ----
+            float width = w.To - w.From;
+            float sill = Mathf.Max(0.2f, w.Sill);
+            float head = Mathf.Max(sill + 0.3f, w.Head);
+            float mid = (w.From + w.To) * 0.5f;
+            Vector3 basePos = KentuckyMap.To3(a + d * mid - outward * (t + 0.012f), 0f); // centre of the opening, ground‑level
+            // ---- Materials ----
+            var wood = DecorPalette.Matte(Casing); // reuse existing wood colour
+            var metal = DecorPalette.Metal(FurnitureBuilder.Brass); // brass for latch
+            var plantPot = DecorPalette.Matte(new Color(0.42f, 0.30f, 0.22f));
+            var foliage = DecorPalette.Matte(new Color(0.18f, 0.45f, 0.18f));
+            // ---- 1. Wooden sill‑cap (thin lip at the bottom) ----
+            // Positioned just below the glass sill, extending a little beyond the opening.
+            m.Box(
+                KentuckyMap.To3(a + d * mid - outward * (t + 0.014f), sill - 0.01f),
+                new Vector3(width + 0.04f, 0.02f, 0.025f),
+                yaw, wood);
+            // ---- 2. Top moulding (thin trim at the head) ----
+            // Sits just above the upper glass edge.
+            m.Box(
+                KentuckyMap.To3(a + d * mid - outward * (t + 0.014f), head + 0.01f),
+                new Vector3(width + 0.04f, 0.02f, 0.025f),
+                yaw, wood);
+            // ---- 3. Brass latch (small bar with a knob) on the left side ----
+            // Bar: short horizontal piece, centred at 0.4 m above the sill.
+            float latchY = sill + 0.4f;
+            float latchX = -width * 0.5f + 0.08f; // offset from left edge of opening
+            m.Box(
+                KentuckyMap.To3(a + d * (mid + latchX) - outward * (t + 0.012f), latchY),
+                new Vector3(0.12f, 0.015f, 0.018f),
+                yaw, metal);
+            // Knob: tiny cylinder projecting outward.
+            m.CylinderX(
+                KentuckyMap.To3(a + d * (mid + latchX + 0.07f) - outward * (t + 0.016f), latchY),
+                0.008f, 0.02f, 8, metal, yaw);
+            // ---- 4. Tiny potted‑plant on the sill, left side ----
+            // Pot: small squat cylinder.
+            float potY = sill - 0.015f; // sits on the sill‑cap
+            float potX = -width * 0.5f + 0.20f;
+            m.CylinderX(
+                KentuckyMap.To3(a + d * (mid + potX) - outward * (t + 0.015f), potY),
+                0.025f, 0.04f, 8, plantPot, yaw);
+            // Foliage: tiny sphere above the pot.
+            m.Sphere(
+                KentuckyMap.To3(a + d * (mid + potX) - outward * (t + 0.025f), potY + 0.05f),
+                0.04f, foliage);
+        }
         // A pair of curtains on a rod over the casing, drawn back to either side.
         private static void Curtains(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, Vector3 inward, float yaw, float mid, float width,
             float sill, float head, float t, Color fabric, System.Random rng)
@@ -318,5 +372,6 @@ namespace CloneZ
                 m.Box(KentuckyMap.To3(at - outward * 0.025f, bottom + hgt * 0.42f), new Vector3(panel + 0.02f, 0.04f, 0.04f), yaw, DecorPalette.Matte(fabric * 0.7f));
             }
         }
+
     }
 }
