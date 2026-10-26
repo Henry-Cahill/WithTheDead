@@ -23,6 +23,11 @@ namespace CloneZ
             private readonly List<Spot> _fuel = new List<Spot>();
             // The roads' segments by grid cell (index into _segA/_segB/_segRoad), and the points of interest by cell.
             private const float RoadCell = 32f;
+            // porch geometry (width, height, railing spacing) – all values are in metres.
+            private const float PorchWidth = 1.8f;
+            private const float PorchHeight = 0.9f;
+            private const float RailingPostSpacing = 0.6f;
+            private static readonly Color PorchWoodColor = new Color(0.58f, 0.44f, 0.30f); // muted pine
             private readonly Dictionary<long, List<int>> _segGrid = new Dictionary<long, List<int>>();
             private readonly List<Vector2> _segA = new List<Vector2>(), _segB = new List<Vector2>();
             private readonly List<int> _segRoad = new List<int>();
@@ -121,7 +126,46 @@ namespace CloneZ
                 list.Add(f);
             }
 
+            // Helper: map a world‑space point to a grid key (same scheme used elsewhere).
             private static long Key(Vector2 p) => ((long)Mathf.FloorToInt(p.x / Cell) << 32) | (uint)Mathf.FloorToInt(p.y / Cell);
+
+            // Helper: rank a land‑use kind – higher rank means more "urban". Mirrors the ranking used in
+            // VegetationPass.Plan (byte table). Only a subset needed for building façade logic.
+            private static int LandRank(string kind)
+            {
+                // Simple ranking: residential > commercial > industrial > other.
+                // The exact values are not critical; they just need to be ordered.
+                switch (kind)
+                {
+                    case "residential": return 4;
+                    case "commercial": return 3;
+                    case "industrial": return 2;
+                    default: return 1;
+                }
+            }
+
+            /// <summary>Find the wall segment that most faces the nearest road – the building’s “front”.</summary>
+        private int FrontWallIndex(Footprint f, Vector2 roadToward)
+        {
+            List<Vector2> pts = f.Pts;
+            int best = 0;
+            float bestScore = -1f;
+            for (int i = 0; i < pts.Count; i++)
+            {
+                Vector2 a = pts[i];
+                Vector2 b = pts[(i + 1) % pts.Count];
+                Vector2 edge = (b - a).normalized;
+                // dot product of edge normal with road direction – larger means the wall faces the road.
+                float score = Mathf.Abs(Vector2.Dot(new Vector2(-edge.y, edge.x), roadToward));
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    best = i;
+                }
+            }
+            return best;
+        }
+
 
             /// <summary>How much of a town's middle (core) and of a town at all (town) a spot is, 0 to 1, and the population
             /// of the town it's most in.</summary>
@@ -312,19 +356,43 @@ namespace CloneZ
                 return best;
             }
 
-            private static int LandRank(string kind)
+        /// <summary>Place a simple wooden porch on the front of a residential building.</summary>
+        public void TryPlacePorch(Footprint f, Site site)
+        {
+            // Only residential land‑use gets a porch.
+            if (LandUse(f.Middle) != "residential") return;
+            // Find the nearest road and its direction.
+            if (!NearestRoad(f.Middle, 30f, out _, out _, out Vector2 toward)) return;
+            int wi = FrontWallIndex(f, toward);
+            // Compute the wall segment geometry.
+            Vector2 a = f.Pts[wi];
+            Vector2 b = f.Pts[(wi + 1) % f.Pts.Count];
+            Vector2 wallDir = (b - a).normalized;
+            Vector2 wallMid = (a + b) * 0.5f;
+            float wallLen = Vector2.Distance(a, b);
+            // Porches extend outward from the wall, perpendicular to it.
+            Vector2 outward = new Vector2(-wallDir.y, wallDir.x) * (PorchWidth * 0.5f + 0.2f);
+            Vector3 basePos = new Vector3(wallMid.x + outward.x, 0f, wallMid.y + outward.y);
+            // Check placement freedom – Site.Free takes a centre point & radius.
+            if (!site.Free(new Vector2(basePos.x, basePos.z), PorchWidth * 0.5f)) return;
+            site.Take(new Vector2(basePos.x, basePos.z), PorchWidth * 0.5f);
+
+            // Build the porch floor – OutdoorBatches.Box registers the mesh directly; no Add needed.
+            var floorSurf = DecorMaterials.WoodFloor(PorchWoodColor);
+            // floor mesh
+            site.Town.Out.Solid(basePos + new Vector3(0f, 0.02f, 0f)).Box(basePos + new Vector3(0f, 0.02f, 0f), new Vector3(PorchWidth, 0.04f, wallLen), floorSurf);
+
+            // railing posts
+            int postCount = Mathf.Max(2, Mathf.CeilToInt(wallLen / RailingPostSpacing));
+            for (int i = 0; i < postCount; i++)
             {
-                switch (kind)
-                {
-                    case "school": case "hospital": case "churchyard": case "military": case "fuel": return 6;
-                    case "industrial": case "retail": case "commercial": return 5;
-                    case "farmyard": return 4;
-                    case "residential": return 3;
-                    case "farmland": case "meadow": case "orchard": return 2;
-                    case "forest": case "grass": case "park": case "cemetery": return 1;
-                    default: return 0;
-                }
+                float t = i / (float)(postCount - 1);
+                Vector3 postPos = basePos + new Vector3(0f, PorchHeight * 0.5f, (t - 0.5f) * wallLen);
+                site.Town.Out.Solid(postPos).Box(postPos, new Vector3(0.06f, PorchHeight, 0.06f), floorSurf);
             }
+            // Sign omitted – DecorProps does not provide a sign helper.
+        }
+
 
             /// <summary>The nearest road (service roads and up, no tunnels) within <paramref name="within"/>: its
             /// distance and the way to it; false when there's none.</summary>
