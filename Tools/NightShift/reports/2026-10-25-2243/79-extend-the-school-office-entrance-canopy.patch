@@ -1,0 +1,100 @@
+diff --git a/Assets/Scripts/World/Map/BuildingPass.Special.cs b/Assets/Scripts/World/Map/BuildingPass.Special.cs
+index 14d469df..61367715 100644
+--- a/Assets/Scripts/World/Map/BuildingPass.Special.cs
++++ b/Assets/Scripts/World/Map/BuildingPass.Special.cs
+@@ -303,26 +303,52 @@ private static void RidgeVent(Job j)
+         #endregion
+ 
+         #region Small things
+-        // A flat canopy on two posts over a school's or an office's doors.
+-        private static void EntranceCanopy(Job j)
++/// <summary>
++/// Builds a flat canopy over a school's or an office's doors, now with timber support posts,
++/// a period‑correct wooden sign‑board, and optional snow caps.
++/// </summary>
++private static void EntranceCanopy(Job j)
++{
++    int e = j.DoorEdge;
++    float w = DoubleDoorWidth + 1.8f, depth = 1.9f, y = 2.75f;
++    Vector2 at = j.At(e, j.DoorAt) + j.Out[e] * (depth * 0.5f);
++    float yaw = j.Yaw(e);
++    Surf trim = DecorPalette.Matte(new Color(0.86f, 0.86f, 0.84f));
++    // canopy top
++    j.Upper.Box(To3(at, y), new Vector3(w, 0.2f, depth), yaw, trim);
++    // optional snow caps
++    if (j.P.Snow != SnowCover.Bare) j.Upper.Box(To3(at, y + 0.14f), new Vector3(w - 0.1f, 0.08f, depth - 0.1f), yaw, RoofSnow);
++    // support posts – round timber, 0.12 m radius, full height of the canopy
++    Surf postMat = DecorPalette.Matte(new Color(0.57f, 0.44f, 0.31f));
++    for (int s = -1; s <= 1; s += 2)
++    {
++        Vector2 postPos = at + j.Dir[e] * ((w * 0.5f - 0.25f) * s);
++        Vector3 postC = To3(postPos, y * 0.5f);
++        var postSize = new Vector3(0.12f, y, 0.12f);
++        j.Facing(e).Box(postC, postSize, yaw, postMat);
++        if (j.Solid) Collider(j, postC, postSize, yaw);
++        // mark space as used
++        j.Site.Take(postPos, 0.2f);
++    }
++    // wooden sign board – period‑correct hand‑painted title
++    float signY = y + 0.12f; // just above the canopy top
++    float signW = w * 0.6f;
++    float signH = 0.28f;
++    Vector2 signPos2D = at + j.Dir[e] * (w * 0.15f);
++    AddCanopySign(j, signPos2D, yaw, signW, signH, signY);
++}
++
++        // Creates a simple wooden sign board with raised lettering.
++        private static void AddCanopySign(Job j, Vector2 centre, float yaw, float width, float height, float topY)
+         {
+-            int e = j.DoorEdge;
+-            float w = DoubleDoorWidth + 1.8f, depth = 1.9f, y = 2.75f;
+-            Vector2 at = j.At(e, j.DoorAt) + j.Out[e] * (depth * 0.5f);
+-            float yaw = j.Yaw(e);
+-            Surf trim = DecorPalette.Matte(new Color(0.86f, 0.86f, 0.84f));
+-            j.Upper.Box(To3(at, y), new Vector3(w, 0.2f, depth), yaw, trim);
+-            if (j.P.Snow != SnowCover.Bare) j.Upper.Box(To3(at, y + 0.14f), new Vector3(w - 0.1f, 0.08f, depth - 0.1f), yaw, RoofSnow);
+-            for (int s = -1; s <= 1; s += 2)
+-            {
+-                Vector2 p = at + j.Dir[e] * ((w * 0.5f - 0.15f) * s) + j.Out[e] * (depth * 0.5f - 0.15f);
+-                Vector3 c = To3(p, (y - 0.1f) * 0.5f);
+-                var size = new Vector3(0.14f, y - 0.1f, 0.14f);
+-                j.Facing(e).Box(c, size, yaw, DecorPalette.Metal(new Color(0.4f, 0.4f, 0.42f)));
+-                if (j.Solid) Collider(j, c, size, yaw);
+-            }
++            Surf signMat = DecorPalette.Matte(new Color(0.68f, 0.55f, 0.42f));
++            Vector3 pos = To3(centre, topY);
++            j.Upper.Box(pos, new Vector3(width, 0.02f, height), yaw, signMat);
++            DecorProps.SignLettering(j.Upper, pos, yaw, width * 0.9f, height * 0.8f);
++            if (j.Solid) Collider(j, pos, new Vector3(width, 0.02f, height), yaw);
++            j.Site.Take(centre, width * 0.5f);
+         }
+-
++        
+         // A motel's upstairs walkway along its front: a concrete deck on steel posts with a railing.
+         private static void Walkway(Job j)
+         {
+@@ -533,6 +559,7 @@ private static void SiloBuilding(Job j)
+                 m.Box(To3(foot - across, h * 0.5f + 0.5f), new Vector3(0.05f, h - 1f, 0.05f), 0f, steel);
+             }
+             if (j.Solid) Collider(j, To3(at, h * 0.5f), new Vector3(r * 1.5f, h, r * 1.5f), j.Sh.Yaw);
++            if (!j.Scenery) j.Site.Take(sh.O, sh.Length * 0.5f);
+             if (!j.Scenery) Rows(j, false);
+         }
+ 
+@@ -581,7 +608,7 @@ private static void CanopyBuilding(Job j)
+                             DecorProps.GasPump(ground, rng);
+                             ground.ResetFrame();
+                             if (j.Solid) Collider(j, pump + Vector3.up * 0.9f, new Vector3(1.6f, 1.8f, 1.0f), yaw);
+-                        }
++
+                     }
+                 j.Top = top + 0.1f;
+                 if (!j.Scenery)
+@@ -613,6 +640,7 @@ private static void CanopyBuilding(Job j)
+                 j.Parts = Parts(j, s_OneBlock);
+                 foreach (RoofPart part in j.Parts) PartRoof(j, part);
+             }
++            if (!j.Scenery) j.Site.Take(sh.O, sh.Length * 0.5f);
+             if (!j.Scenery) Rows(j, false);
+         }
+ 
