@@ -215,7 +215,7 @@ namespace CloneZ
     /// a small reverb and the loop tools (cross-faded seams, wrapped events, zero-crossing starts). Everything works
     /// on plain float buffers at the buffer's own sample rate.
     /// </summary>
-    internal static class Dsp
+    internal static partial class Dsp
     {
         public const float Pi = 3.14159265f, TwoPi = 6.28318531f;
 
