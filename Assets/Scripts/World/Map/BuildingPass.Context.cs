@@ -133,14 +133,15 @@ namespace CloneZ
             // VegetationPass.Plan (byte table). Only a subset needed for building façade logic.
             private static int LandRank(string kind)
             {
-                // Simple ranking: residential > commercial > industrial > other.
-                // The exact values are not critical; they just need to be ordered.
                 switch (kind)
                 {
-                    case "residential": return 4;
-                    case "commercial": return 3;
-                    case "industrial": return 2;
-                    default: return 1;
+                    case "school": case "hospital": case "churchyard": case "military": case "fuel": return 6;
+                    case "industrial": case "retail": case "commercial": return 5;
+                    case "farmyard": return 4;
+                    case "residential": return 3;
+                    case "farmland": case "meadow": case "orchard": return 2;
+                    case "forest": case "grass": case "park": case "cemetery": return 1;
+                    default: return 0;
                 }
             }
 
