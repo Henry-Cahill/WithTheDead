@@ -224,6 +224,39 @@ namespace CloneZ
             m.Box(at + q * new Vector3(0f, 0.185f, 0f), new Vector3(0.31f, 0.012f, 0.16f), q, M(c * 0.8f));
             m.Box(at + q * new Vector3(0f, 0.2f, 0f), new Vector3(0.12f, 0.015f, 0.02f), q, M(c * 0.6f));
             m.Box(at + q * new Vector3(0f, 0.1f, 0.077f), new Vector3(0.2f, 0.03f, 0.004f), q, M(new Color(0.75f, 0.66f, 0.30f)));
+
+            // 1️⃣ Rubber feet – four tiny pads on the bottom corners.
+            var footSize = new Vector3(0.03f, 0.01f, 0.03f);
+            Color footCol = V(new Color(0.07f, 0.07f, 0.06f), rng, 0.02f);
+            Vector3[] footOffsets = {
+                new Vector3( 0.12f, 0f, 0.07f),
+                new Vector3(-0.12f, 0f, 0.07f),
+                new Vector3( 0.12f, 0f, -0.07f),
+                new Vector3(-0.12f, 0f, -0.07f)
+            };
+            foreach (var off in footOffsets)
+                m.Box(at + q * off, footSize, q, M(footCol));
+
+            // 2️⃣ Reinforcement band – a thin chrome strip around the can.
+            float bandY = 0.15f;
+            float bandHeight = 0.012f;
+            m.Box(at + q * new Vector3(0f, bandY, 0f), new Vector3(0.34f, bandHeight, 0.015f), q, Mt(Chrome));
+
+            // 3️⃣ Bolt heads – four tiny chrome cylinders on the band.
+            Vector3[] boltPos = {
+                new Vector3( 0.15f, bandY, 0f),
+                new Vector3(-0.15f, bandY, 0f),
+                new Vector3( 0f, bandY, 0.15f),
+                new Vector3( 0f, bandY, -0.15f)
+            };
+            foreach (var bp in boltPos)
+                m.Cylinder(at + q * bp, 0.006f, 0.004f, 6, Mt(Chrome), q * Quaternion.Euler(90f, 0f, 0f));
+
+            // 4️⃣ Stencilled number plate – chrome rectangle on the front.
+            m.Box(at + q * new Vector3(0f, bandY + 0.05f, 0.075f), new Vector3(0.10f, 0.012f, 0.001f), q, Mt(Chrome));
+
+            // 5️⃣ Wear line – faint black strip on the rear side.
+            m.Box(at + q * new Vector3(0f, bandY + 0.04f, -0.075f), new Vector3(0.30f, 0.002f, 0.001f), q, M(Black));
         }
         #endregion
     }
