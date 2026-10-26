@@ -8,8 +8,40 @@ namespace CloneZ
     internal static partial class InteriorPass
     {
         private static readonly Color RackOrange = new Color(0.62f, 0.32f, 0.10f), RackBlue = new Color(0.16f, 0.26f, 0.44f);
+        private static readonly Surf Metal = DecorPalette.Matte(new Color(0.70f, 0.70f, 0.70f)); // brushed‑metal look for fixtures
 
-        private static void Warehouse(RoomCtx c)
+        private static void TryPlaceExtinguisher(RoomCtx c)
+        {
+            // try a few random walls; stop after one successful placement
+            for (int i = 0; i < 4; i++)
+            {
+                int side = c.Rng.Next(4);
+                if (!c.AnyWall(new[] { side }, 0.4f, 0.85f, 0.2f, -1f, out RaidBuilding.Place p, out _)) continue;
+                var b = c.B; // building reference
+                b.Furnish(c.R, p, new Vector3(0.2f, 0.7f, 0.15f), true, (m, r) =>
+                {
+                    // red cylinder body
+                    m.Cylinder(new Vector3(0f, 0.35f, 0f), 0.07f, 0.7f, 12, DecorPalette.Matte(new Color(0.55f, 0.10f, 0.10f)));
+                    // metal cap
+                    m.Box(new Vector3(0f, 0.71f, 0f), new Vector3(0.12f, 0.05f, 0.12f), Metal);
+                }, "extinguisher");
+                break;
+            }
+        }
+
+        private static void AddIndustrialLight(RoomCtx c, RaidBuilding.Place p)
+        {
+            // a small metal cage and a glowing bulb (emissive colour is approximated with a bright matte)
+            var light = DecorPalette.Matte(new Color(0.95f, 0.85f, 0.60f));
+            var b = c.B; // building reference
+            b.Furnish(c.R, p, new Vector3(0.3f, 0.1f, 0.3f), true, (m, r) =>
+            {
+                // metal cage
+                m.Box(new Vector3(0f, 0f, 0f), new Vector3(0.28f, 0.18f, 0.28f), Metal);
+                // bulb – a small yellow cube to simulate a filament
+                m.Box(new Vector3(0f, 0.11f, 0f), new Vector3(0.12f, 0.04f, 0.12f), light);
+            }, "industrial light");
+        }        private static void Warehouse(RoomCtx c)
         {
             RaidBuilding b = c.B;
             int door = c.DoorSide >= 0 ? c.DoorSide : 0;
@@ -43,7 +75,20 @@ namespace CloneZ
                     budget--;
                 }
             }
+            // ---- add industrial lighting and safety props ----
+            int lightCount = Mathf.Max(1, Mathf.FloorToInt(c.Area / 30f)); // roughly one light per 30 m²
+            float spacing = (c.Inner.width - 2f) / (lightCount - 1); // leave 1 m margin each side
+            for (int li = 0; li < lightCount; li++)
+            {
+                float x = c.Inner.xMin + 1f + li * spacing;
+                // lights hang from the ceiling, roughly 2.4 m high, centered in the aisle
+                var place = new RaidBuilding.Place(x, c.Inner.center.y, 0f);
+                AddIndustrialLight(c, place);
+            }
+            // place up to two fire extinguishers on random walls
+            for (int e = 0; e < 2; e++) TryPlaceExtinguisher(c);
             // Pallets and stacks of boxes by the door.
+
             for (int k = 0; k < Mathf.Clamp(Mathf.FloorToInt(c.Area / 60f), 1, 6); k++)
             {
                 Vector2 near = c.OnWall(door, (door == 0 || door == 2 ? i.center.x : i.center.y) + MapStyle.Range(c.Rng, -span * 0.4f, span * 0.4f), 2.2f);
