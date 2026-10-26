@@ -65,7 +65,9 @@ namespace CloneZ
         /// <summary>A white enamel range: four burners, a back panel of knobs and an oven door.</summary>
         public static void Stove(RaidMesh m, System.Random rng, Color enamel)
         {
+            // Apply subtle random variation to enamel colour for visual variety
             Color c = V(enamel, rng, 0.04f);
+            // Base of the stove includes the main body and the oven door surface
             m.Box(new Vector3(0f, 0.46f, -0.02f), new Vector3(0.76f, 0.92f, 0.62f), G(c));
             m.Box(new Vector3(0f, 0.925f, 0f), new Vector3(0.74f, 0.01f, 0.6f), M(new Color(0.18f, 0.18f, 0.19f)));
             for (int i = 0; i < 4; i++)
@@ -114,22 +116,29 @@ namespace CloneZ
         public static void Sofa(RaidMesh m, System.Random rng, float w, Color fabric)
         {
             Color c = V(fabric, rng, 0.06f);
+            // Create the four wooden legs at the corners of the sofa
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.08f), 0.03f, (i < 2 ? -1f : 1f) * 0.34f), new Vector3(0.05f, 0.06f, 0.05f), M(Walnut));
+            // Main sofa seat surface
             m.Box(new Vector3(0f, 0.25f, -0.02f), new Vector3(w, 0.38f, 0.82f), M(c * 0.9f));
+            // Backrest with slight tilt for ergonomic support
             m.Box(new Vector3(0f, 0.62f, -0.32f), new Vector3(w - 0.36f, 0.5f, 0.2f), Quaternion.Euler(-10f, 0f, 0f), M(c));
+            // Determine number of seat cushions based on sofa width
             int n = w > 1.6f ? 3 : (w > 1.1f ? 2 : 1);
             float cw = (w - 0.4f) / n;
+            // Position each cushion evenly across the seat
             for (int i = 0; i < n; i++)
             {
                 float x = -w * 0.5f + 0.2f + cw * (i + 0.5f);
                 m.Box(new Vector3(x, 0.5f, 0.07f), new Vector3(cw - 0.02f, 0.14f, 0.6f), Yaw(R(rng, -2f, 2f)), M(V(c, rng, 0.04f)));
             }
+            // Add side armrests and accompanying cylinders for visual detail
             for (int s = -1; s <= 1; s += 2)
             {
                 m.Box(new Vector3(s * (w * 0.5f - 0.1f), 0.42f, -0.02f), new Vector3(0.2f, 0.5f, 0.82f), M(c * 0.95f));
                 m.CylinderX(new Vector3(s * (w * 0.5f - 0.1f), 0.66f, -0.02f), 0.11f, 0.82f, 8, M(c * 0.95f), 90f);
             }
+            // Occasionally place a small decorative item on the sofa
             if (Chance(rng, 0.6))
                 m.Box(new Vector3(R(rng, -w * 0.3f, w * 0.3f), 0.68f, -0.08f), new Vector3(0.4f, 0.36f, 0.12f), Quaternion.Euler(-20f, R(rng, -20f, 20f), R(rng, -10f, 10f)), M(V(new Color(0.6f, 0.5f, 0.3f), rng, 0.2f)));
         }
@@ -176,6 +185,7 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.3f, l * 0.5f - 0.025f), new Vector3(w + 0.06f, 0.6f, 0.05f), M(c * 1.05f));
             m.Box(new Vector3(0f, 0.41f, -0.01f), new Vector3(w - 0.06f, 0.2f, l - 0.1f), M(new Color(0.80f, 0.78f, 0.72f)));
             Color b = V(blanket, rng, 0.08f);
+            // Compute blanket size and position based on bed dimensions
             float bl = l * R(rng, 0.55f, 0.72f);
             float bz = l * 0.5f - 0.06f - bl * 0.5f;
             m.Box(new Vector3(0f, 0.53f, bz), new Vector3(w + 0.02f, 0.06f, bl), Yaw(R(rng, -3f, 3f)), M(b));
