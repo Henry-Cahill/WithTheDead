@@ -545,8 +545,7 @@ namespace CloneZ
         internal static void Furnish(InteriorBuild build, int index)
         {
             RoomCtx c = Context(build, index);
-            if (c.Inner.width < 0.8f || c.Inner.height < 0.8f)             // Do not return here – allow the caller to place another decor piece
-            switch (c.P.Role)
+if (c.Inner.width >= 0.8f && c.Inner.height >= 0.8f) switch (c.P.Role)
             {
                 case RoomRole.Living: Living(c); break;
                 case RoomRole.Dining: Dining(c); break;
