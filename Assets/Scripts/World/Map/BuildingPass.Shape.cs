@@ -11,7 +11,7 @@ namespace CloneZ
     // corners) and L, T and U shapes; the rest get a roof on their bounding rectangle or a flat one.
     internal static partial class BuildingPass
     {
-        private const int MaxGrid = 18;   // cuts per axis past which an outline is too ragged to cut into blocks
+        private const int MaxGrid = 24;   // allow finer grid for larger outlines
         private const int MaxParts = 6;
 
         /// <summary>A footprint's frame and blocks. Frame coordinates (u, v): metres along <see cref="U"/> and
@@ -161,7 +161,7 @@ namespace CloneZ
         {
             s.Blocks.Clear();
             s.Covered = 0f;
-            if (f.Pts.Count <= 5 && s.Fill >= 0.9f || s.Fill >= 0.965f)
+            if (f.Pts.Count <= 5 && (s.Fill >= 0.9f || s.Fill >= 0.965f))
             {
                 s.Blocks.Add(s.Box);
                 s.Covered = 1f;
@@ -211,7 +211,13 @@ namespace CloneZ
                         free[i, j] = false;
             }
             s.Covered = Mathf.Clamp01(covered / Mathf.Max(1f, f.Size));
-            if (s.Covered < 0.88f) s.Blocks.Clear();
+            if (s.Covered < 0.6f)
+            {
+                // Not enough area covered – fall back to a single block that is the whole footprint.
+                s.Blocks.Clear();
+                s.Blocks.Add(s.Box);
+                s.Covered = 1f;
+            }
         }
 
         // The distinct coordinates of an outline's corners along one axis, those within 0.3 m of each other merged, the
@@ -225,7 +231,7 @@ namespace CloneZ
             int start = 0;
             for (int i = 1; i <= raw.Count; i++)
             {
-                if (i < raw.Count && raw[i] - raw[i - 1] < 0.3f) continue;
+                if (i < raw.Count && raw[i] - raw[i - 1] < 0.2f) continue;
                 float sum = 0f;
                 for (int k = start; k < i; k++) sum += raw[k];
                 float c = sum / (i - start);
