@@ -17,6 +17,8 @@ namespace CloneZ
         private static readonly Color BathSeatWhite = new Color(0.96f, 0.95f, 0.92f);
         private static readonly Color BathCabinetWhite = new Color(0.92f, 0.92f, 0.90f);
         private static readonly Color BathMirror = new Color(0.84f, 0.89f, 0.91f);
+        // Rubber colour for kick‑plate (period‑correct)
+        private static readonly Color BathRubber = new Color(0.06f, 0.06f, 0.08f);
 
         // ---- Toilet (local frame; the wall at z -0.35) ----
         /// <summary>The toilet's seat and lid hinge: both turn about the same line, behind the seat.</summary>
@@ -474,7 +476,16 @@ namespace CloneZ
             m.Box(new Vector3(-0.205f, ym, z), new Vector3(0.426f, h, 0.008f), glass);
             m.Box(new Vector3(-0.424f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
             m.Box(new Vector3(0.014f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
-            m.Box(new Vector3(-0.205f, y0 + 0.006f, z), new Vector3(0.426f, 0.012f, 0.014f), chrome);
+            // rubber kick‑plate under the door
+            m.Box(new Vector3(-0.205f, y0 - 0.008f, z), new Vector3(0.426f, 0.008f, 0.014f), M(BathRubber));
+            // left‑hand hinge pins
+            m.Cylinder(new Vector3(-0.424f, y1 - 0.04f, z), 0.004f, 0.02f, 12, chrome);
+            m.Cylinder(new Vector3(-0.424f, y1 - 0.02f, z), 0.004f, 0.02f, 12, chrome);
+            // right‑hand hinge pins
+            m.Cylinder(new Vector3(0.014f, y1 - 0.04f, z), 0.004f, 0.02f, 12, chrome);
+            m.Cylinder(new Vector3(0.014f, y1 - 0.02f, z), 0.004f, 0.02f, 12, chrome);
+            // chrome top‑stop plate
+            m.Box(new Vector3(-0.205f, y1 + 0.004f, z), new Vector3(0.426f, 0.006f, 0.014f), chrome);
             for (int s = -1; s <= 1; s += 2)
             {
                 m.Box(new Vector3(-0.04f, 1.05f, z + s * 0.024f), new Vector3(0.014f, 0.24f, 0.012f), chrome);
