@@ -260,6 +260,17 @@ public void Hurt(float hp)
             Destroy(gameObject, 0.1f);
         }
 
+        /// <summary>Recharges the drone’s battery by the given fraction (0‑1). Caps at 100 %.</summary>
+        public void Recharge(float amount)
+        {
+            if (IsDead) return;
+            Battery01 = Mathf.Min(1f, Battery01 + amount);
+            GameEvents.RaiseToast("Drone battery recharged to " + Mathf.RoundToInt(Battery01 * 100f) + "%.");
+            // Reset HUD cache so OSD updates immediately
+            var hud = UnityEngine.Object.FindAnyObjectByType<HudDrone>();
+            if (hud != null) hud.ResetCache();
+        }
+
         /// <summary>A remote drone's update from its pilot.</summary>
         public void Push(Vector3 pos, float yaw)
         {
@@ -328,6 +339,17 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                 var d = _d;
                 if (d != null) d.RecoverGrenade(c.Inventory.Inventory);
             }).DisabledIf(_d == null || !_d.HasGrenade, "No grenade aboard"));
+
+            // Recharge action – consumes a “battery” item to restore 25 % charge.
+            into.Add(new InteractAction("Recharge drone", c => {
+                var d = _d;
+                if (d == null) return;
+                if (c.Inventory.Consume("battery", 1) > 0)
+                    d.Recharge(0.25f);
+                else
+                    GameEvents.RaiseToast("No batteries in inventory.");
+            }                ).DisabledIf(_d == null || _d.Battery01 >= 0.99f, "Battery already full"));
+
             bool lit = _d != null && _d.LightOn;
             into.Add(new InteractAction(lit ? "Turn off the drone's light" : "Turn on the drone's light", c => {
                 var d = _d;
@@ -541,6 +563,9 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             }
             _frame.color = on ? new Color(0f, 0.05f, 0f, 0.12f) : new Color(0f, 0f, 0f, 0f);
         }
+
+        /// <summary>Exposes a method to clear cached values so the next LateUpdate rebuilds the OSD.</summary>
+        public void ResetCache() => _firstUpdate = true;
     }
 
     /// <summary>Drones on the wire: the pilot's drone position (15 Hz) for everyone else's copy; shots on a copy go
