@@ -323,19 +323,25 @@ namespace CloneZ
 
         // Exploring: a bowed drone on open D under sparse fingerpicking (guitar, banjo or dulcimer), the phrase's tune
         // coming and going, now and then a fiddle swelling in; at night lower, darker, slower, with harmonics like bells.
+        /// <summary>Render the exploration music layer with drone, plucked strings and occasional fiddle embellishments.</summary>
         private static StereoBuf Explore(MusicCue cue)
         {
             int n = Segment + Tail;
             var s = new StereoBuf(n);
             bool night = cue.Night;
+            // Random generator for this segment (used for drone, texture selection, etc.)
             var g = MusicKit.Gen(Rate, cue.Seed, cue.Index, 0xE0u);
+            // Generator for phrase‑level variation (instrument choice, motif) based on phrase position.
             var pg = MusicKit.Gen(Rate, cue.Seed, cue.Index - cue.PhrasePos, 0xE1u);
+            // Generator for slow‑moving drone modulation (swell frequency/phase).
             var sg = MusicKit.Gen(Rate, cue.Seed, 0, 0xE2u);
+            // Plan contains scale and chord roots for this segment (different day/night).
             Plan plan = PlanFor(cue.Seed, cue.Index, night);
             double t0 = cue.Index * (double)Segment / Rate;
             float seg = Segment / (float)Rate;
 
             // The drone: an open D and its fifth, bowed softly; an octave down and darker at night.
+            // Calculate hold/release times: longer hold for the final phrase, fade‑out overlap otherwise.
             float hold = cue.Last ? seg - 2.5f : seg, release = cue.Last ? 5f : Overlap;
             float droneHz = Hz(night ? 38 : 50), swellHz = sg.Range(0.035f, 0.06f), swellPh = sg.Next();
             MusicKit.Drone(s, Rate, t0, droneHz, 0.05f, night ? 520f : 750f, 3, 9f, 0.55f, swellHz, swellPh, 0.5f, Overlap, hold, release);
@@ -345,6 +351,7 @@ namespace CloneZ
             // The phrase's instrument and tune.
             float r = pg.Next();
             int instrument = night ? (r < 0.7f ? 0 : 2) : (r < 0.55f ? 0 : r < 0.78f ? 1 : 2);
+            // Select instrument and base pitch offset (banjo an octave higher).
             StringTone tone = instrument == 1 ? MusicKit.Banjo : instrument == 2 ? MusicKit.Dulcimer : MusicKit.Guitar;
             int up = instrument == 1 ? 12 : 0;
             Motif motif = MakeMotif(pg);
@@ -352,13 +359,16 @@ namespace CloneZ
             float amp = night ? 0.34f : 0.4f;
 
             // Two bars at a time.
+            // Two‑bar texture selection: pick a pair of textures (e.g., bass‑roll) for each half‑segment.
             var tex = new Texture[4];
             for (int half = 0; half < 2; half++)
             {
+                // Choose a day or night texture pair based on time of day.
                 Texture[] pair = night ? s_NightPairs[Pick(g, s_NightPairWeight)] : s_DayPairs[Pick(g, s_DayPairWeight)];
                 tex[half * 2] = pair[0];
                 tex[half * 2 + 1] = pair[1];
             }
+            // Ensure the first half starts with a grounding texture (bass or roll) if phrase just began.
             if (cue.PhrasePos == 0 && (tex[0] == Texture.Pick || tex[0] == Texture.Melody)) tex[0] = night ? Texture.Bass : Texture.Roll;
             if (cue.Last)
             {
@@ -373,41 +383,50 @@ namespace CloneZ
                 switch (tex[bar])
                 {
                     case Texture.Bass:
+                        // Add a bass note on the downbeat, optionally a fifth on the third beat.
                         BassBar(pluck, g, plan, bar, tone, amp, night);
                         if (night && g.Chance(0.5f)) MusicKit.Harmonic(bells, bar * Bar + 3 * Beat + Human(g), Rate, Hz(g.Chance(0.5f) ? 74 : 81), 0.12f, 2.4f, g);
                         break;
                     case Texture.Roll:
+                        // Add a rolled arpeggio (slow chord) with optional octave lift.
                         RollBar(pluck, g, plan, bar, tone, amp, up);
                         break;
                     case Texture.Pick:
+                        // Perform Travis picking pattern (alternating thumb and fingers).
                         PickBar(pluck, g, plan, bar, tone, amp, night, up);
                         break;
                     case Texture.Melody:
                         bool answer = (bar & 1) == 1 && tex[bar - 1] == Texture.Melody;
                         int cell = answer ? motif.CellB : motif.CellA;
                         int[] steps = answer ? motif.StepsB : motif.StepsA;
+                        // Play the melodic line (or its answer) and underlying bass note.
                         MelodyBar(pluck, g, plan, bar, cell, steps, ref deg, tone, amp, up);
                         MusicKit.Pluck(pluck, bar * Bar + Human(g), Rate, Hz(BassMidi(plan, bar, 0)), amp * 0.8f, tone, g, 1.9f, 0.3f);
                         break;
                     case Texture.Cadence:
+                        // Play the cadence (low D drone and harmonic) to close the phrase.
                         Cadence(pluck, bells, g, plan, bar, tone, amp, up);
                         break;
                     default:
+                        // Occasionally add an ambient bell harmonic at night.
                         if (night && g.Chance(0.4f)) MusicKit.Harmonic(bells, bar * Bar + g.Int(0, 3) * Beat + Human(g), Rate, Hz(g.Chance(0.5f) ? 74 : 69), 0.1f, 2.6f, g);
                         break;
                 }
             }
+            // Apply instrument‑specific body filter (e.g., high‑pass for guitar).
             StringBody(pluck, instrument, night);
             Dsp.MixPan(s, pluck, 0, 1f, -0.15f);
             Dsp.LP(bells, 6000f, Rate);
             Dsp.MixPan(s, bells, 0, 1f, 0.35f);
 
             // A fiddle swelling in on a chord tone, sometimes sighing down a step (a cello at night) — in the bells' bus.
+            // Add occasional fiddle (or cello at night) swells on top of the bell bus.
             float[] fiddle = bells;
             Array.Clear(fiddle, 0, fiddle.Length);
             int swells = night ? (g.Chance(0.45f) ? 1 : 0) : g.Int(0, 3);
             for (int k = 0; k < swells; k++)
             {
+                // Choose a random bar for the swell; shift if that bar already has melody/pick to avoid overlap.
                 int bar = g.Int(0, 4);
                 if (tex[bar] == Texture.Melody || tex[bar] == Texture.Pick) bar = (bar + 1) & 3;
                 float start = (bar * Bar + g.Int(0, 3) * Beat) / (float)Rate;
@@ -417,6 +436,7 @@ namespace CloneZ
                 int midi = Midi(plan.Scale, d) - (night ? 12 : 0);
                 BowTone bow = night ? MusicKit.Cello : MusicKit.FiddleSwell;
                 int at = (int)(start * Rate);
+                // Occasionally split the swell into two notes for expressive phrasing.
                 if (g.Chance(0.35f) && len > 3f)
                 {
                     float first = len * 0.55f;
@@ -429,6 +449,7 @@ namespace CloneZ
             FiddleBody(fiddle, night);
             Dsp.MixPan(s, fiddle, 0, 1f, 0.3f);
 
+            // Add space ambience (reverb‑like tail) appropriate for time of day.
             MusicKit.Space(s, Rate, night ? 3.4f : 2.6f, night ? 3200f : 4800f, night ? 0.42f : 0.32f, 0.16f, 0.022f);
             return Finish(s, night ? 1.75f : 1.5f);
         }
@@ -466,6 +487,8 @@ namespace CloneZ
                     int note = e == 0 || e == 4 ? root : alt;
                     MusicKit.Pluck(x, at, Rate, Hz(note), amp * (e == 0 ? 0.95f : 0.8f) * g.Range(0.9f, 1.05f), tone, g, 0.72f, 0.18f);
                 }
+                // For sections with melodic content, render the tune notes and accompanying chords.
+                // For sections with melodic content, render the tune notes and accompanying chords.
                 else
                 {
                     if (g.Chance(drop)) continue;
@@ -615,26 +638,33 @@ namespace CloneZ
 
         // A fight: taiko-like drums and toms, a stick ticking eighths, low strings galloping in sixteenths on the bar's
         // root, fiddle chops on two and four, a banjo roll now and then, and a riser into the next downbeat.
+        /// <summary>Render the combat music layer with drums, low‑string gallop, fiddle chops and optional banjo rolls.</summary>
         private static StereoBuf Combat(MusicCue cue)
         {
             int n = Segment + Tail;
             var s = new StereoBuf(n);
+            // Random generator for this combat segment (drums, strings, etc.).
             var g = MusicKit.Gen(Rate, cue.Seed, cue.Index, 0xC00u);
             Plan plan = PlanFor(cue.Seed, cue.Index, cue.Night);
             int step = Beat / 4;
 
+            // Buffers for drum layers and stick ticks.
             var drums = new float[n];
             var hi = new float[n];
             var lo = new float[n];
             var ticks = new float[n];
+            // Choose random drum patterns for the four bars and a fill for the last bar.
             string a = s_DrumBars[g.Int(0, s_DrumBars.Length)], b = s_DrumBars[g.Int(0, s_DrumBars.Length)];
             string fill = s_Fills[g.Int(0, s_Fills.Length)];
             for (int bar = 0; bar < 4; bar++)
             {
+                // Select the pattern for this bar: a fill on the last bar, otherwise alternating a/b.
                 string pat = bar == 3 ? fill : (bar & 1) == 0 ? a : b;
                 for (int k = 0; k < 16; k++)
                 {
+                    // Compute the sample position for this sixteenth note plus a tiny human timing variation.
                     int at = bar * Bar + k * step + Human(g, 0.003f);
+                    // Accent the downbeat and every fourth sixteenth for a natural dynamic curve.
                     float accent = k == 0 ? 1f : (k & 3) == 0 ? 0.88f : 0.74f;
                     switch (pat[k])
                     {
@@ -643,6 +673,7 @@ namespace CloneZ
                         case 'h': MusicKit.Tom(hi, at, Rate, 0.42f * accent, 1.4f, g); break;
                         case 'l': MusicKit.Tom(lo, at, Rate, 0.48f * accent, 1f, g); break;
                     }
+                    // Add a stick tick on every even sixteenth (off‑beat), louder on the second/third off‑beat.
                     if ((k & 1) == 0) MusicKit.Tick(ticks, at, Rate, (k & 3) == 2 ? 0.5f : 0.3f, g);
                 }
             }
@@ -655,17 +686,22 @@ namespace CloneZ
             Dsp.MixPan(s, ticks, 0, 0.5f, 0.25f);
 
             // The buses are reused from here on: the drums are in the mix.
+            // Re‑use the drum buffer as the low‑frequency bass bus for the gallop pattern.
             float[] bass = drums;
+            // Clear the bass buffer before filling with the gallop notes.
             Array.Clear(bass, 0, n);
+            // Low‑string gallop: iterate over the four bars, placing notes according to the pattern.
             string gallop = s_Gallops[g.Int(0, s_Gallops.Length)];
             for (int bar = 0; bar < 4; bar++)
             {
                 int root = BassMidi(plan, bar, 0);
                 for (int k = 0; k < 16; k++)
                 {
+                    // Convert pattern char to note (root or octave) and play both bowed and plucked versions.
                     char c = gallop[k];
                     if (c == '.') continue;
                     int note = c == 'o' ? root + 12 : root;
+                    // Compute the sample position for this sixteenth note plus a tiny human timing variation.
                     int at = bar * Bar + k * step + Human(g, 0.003f);
                     float acc = (k & 3) == 0 ? 1f : 0.72f;
                     MusicKit.Bow(bass, at, Rate, Hz(note), 0.3f * acc, 0.15f, MusicKit.Spiccato, g);
@@ -678,12 +714,15 @@ namespace CloneZ
             Dsp.MixPan(s, bass, 0, 0.85f, 0f);
 
             // Fiddle chops: a scrape of the bow on two and four, pitched on the chord.
+            // Buffers for fiddle chops (high‑tom) and their processing.
             float[] chops = hi;
             Array.Clear(chops, 0, n);
+            // Create a bow tone for the fiddle chops (short, bright bow on the 2nd and 4th beats).
             var chop = new BowTone(0.004f, 0.05f, 0f, 5f, 0.5f, 3200f, 2, 18f);
             for (int bar = 0; bar < 4; bar++)
             {
                 int[] v = Voicing(plan, bar, 57, 70);
+                // Play fiddle chops on beats 2 and 4 of each bar (offset by one sixteenth).
                 for (int k = 4; k < 16; k += 8)
                 {
                     int at = bar * Bar + k * step + Human(g, 0.004f);
@@ -696,11 +735,13 @@ namespace CloneZ
             Dsp.MixPan(s, chops, 0, 0.7f, 0.4f);
 
             // A banjo roll racing through a bar.
+            // Possibly add a banjo roll – a fast arpeggiated line – in a random middle bar.
             if (g.Chance(0.55f))
             {
                 float[] banjo = lo;
                 Array.Clear(banjo, 0, n);
                 int bar = g.Int(1, 3);
+                // Build a roll pattern using the chord voicing for the chosen bar.
                 int[] v = Voicing(plan, bar, 62, 76);
                 int[] roll = { 0, 1, 2, 0, 1, 2, 0, 2 };
                 for (int k = 0; k < 16; k++)
@@ -712,11 +753,13 @@ namespace CloneZ
                 Dsp.MixPan(s, banjo, 0, 0.8f, -0.45f);
             }
 
+            // Add a riser effect (sweeping upward) to the tick bus before final ambience.
             float[] fx = ticks;
             Array.Clear(fx, 0, n);
             MusicKit.Riser(fx, Segment - (int)(1.5f * Rate), Rate, 0.12f, 1.5f, g);
             Dsp.MixPan(s, fx, 0, 1f, 0.1f);
 
+            // Add final space ambience (reverb‑like tail) appropriate for combat intensity.
             MusicKit.Space(s, Rate, 1.9f, 4200f, 0.2f, 0.18f, 0.012f);
             return Finish(s, 0.85f);
         }
@@ -828,6 +871,7 @@ namespace CloneZ
         private static readonly TChord s_A = new TChord(45, 40, 52, 57, 61, 64, 69);
 
         // Intro, A, A', B, A'', outro, breath.
+        // Chord progression chart for each of the seven theme sections (Intro, A, A', B, A'', Outro, Breath).
         private static readonly TChord[][] s_ThemeChart =
         {
             new[] { s_Dm, s_Dm, s_C, s_Dm }, new[] { s_Dm, s_F, s_C, s_Dm }, new[] { s_Dm, s_Bb, s_C, s_A }, new[] { s_F, s_C, s_Bb, s_A },
@@ -835,6 +879,7 @@ namespace CloneZ
         };
 
         // The tune ("WithTheDead"), per section: (MIDI, beat, beats) triples, beats counted over the section's four bars.
+        // Melody data for each theme section: (MIDI note, beat offset, duration in beats) triples.
         private static readonly float[][] s_ThemeTune =
         {
             new float[0],
@@ -852,6 +897,7 @@ namespace CloneZ
         // The title theme: a lone guitar fingerpicking the tune over its own alternating bass, a cello drone on low D
         // and A, a fiddle's counter-line on the last return. Each telling (seven sections, about 105 s with its breath)
         // is played afresh: the tune holds, the picking, ornaments, harmonics and the strings' parts change.
+        /// <summary>Render the title‑screen theme with guitar fingerpicking, drones, optional harmonics, fiddle and cello lines.</summary>
         private static StereoBuf Theme(MusicCue cue)
         {
             int n = ThemeSegment + ThemeTail;
@@ -871,11 +917,15 @@ namespace CloneZ
             bool harmonics = pg.Chance(0.75f), fiddle = pg.Chance(0.7f), cello = pg.Chance(0.65f);
             float ornament = pg.Range(0.1f, 0.3f);
 
+            // Intro section: start with a longer fade‑in, and a drone that holds for the whole section.
             if (section != 6)
             {
+                // Choose a fade‑in length: longer for the very first section, otherwise overlap time.
                 float fadeIn = section == 0 ? 4f : Overlap;
+                // Hold and release times: shorter on the final outro, otherwise overlapped with next segment.
                 float hold = section == 5 ? seg - 3f : seg, release = section == 5 ? 6f : Overlap;
                 float swellHz = sg.Range(0.04f, 0.06f), swellPh = sg.Next();
+                // Add two drones (open D and its fifth) with subtle swell and phase variation.
                 MusicKit.Drone(s, Rate, t0, Hz(38), 0.045f, 800f, 3, 8f, 0.5f, swellHz, swellPh, 0.45f, fadeIn, hold, release);
                 MusicKit.Drone(s, Rate, t0, Hz(45), 0.022f, 1000f, 2, 6f, 0.6f, swellHz * 1.4f, swellPh + 0.3f, 0.5f, fadeIn, hold, release);
             }
@@ -883,17 +933,29 @@ namespace CloneZ
             StringTone tone = MusicKit.Guitar;
             var gtr = new float[n];
             var bells = new float[n];
+            // Section 0: lay down the main fingerpicking and optional harmonics.
             if (section == 0)
             {
                 MusicKit.Pluck(gtr, Human(g), Rate, Hz(38), 0.44f, tone, g);
+                // Add optional bell harmonics if the random check passes.
                 if (harmonics) MusicKit.Harmonic(bells, 2 * beat + Human(g), Rate, Hz(74), 0.14f, 3f, g);
+                // Roll the Dm chord (arpeggiated) over the first bar.
                 ThemeRoll(gtr, g, s_Dm, bar + Human(g), tone, 0.36f, 0.18f);
+                // Possibly add a second set of harmonics later in the section.
+                // Possibly add a second set of harmonics later in the section.
                 if (harmonics && g.Chance(0.6f)) MusicKit.Harmonic(bells, bar + 3 * beat + Human(g), Rate, Hz(81), 0.1f, 3f, g);
+                // Pluck the G note to start the second bar.
+                // Pluck the G note to start the second bar.
                 MusicKit.Pluck(gtr, 2 * bar + Human(g), Rate, Hz(48), 0.38f, tone, g);
+                // Roll the C chord over the second bar, slightly offset.
+                // Roll the C chord over the second bar, slightly offset.
                 ThemeRoll(gtr, g, s_C, 2 * bar + beat / 2 + Human(g), tone, 0.32f, 0.15f);
+                // Pluck the D note on the downbeat of the third bar and its fifth after two beats.
+                // Pluck the D note on the downbeat of the third bar and its fifth after two beats.
                 MusicKit.Pluck(gtr, 3 * bar + Human(g), Rate, Hz(38), 0.4f, tone, g);
                 MusicKit.Pluck(gtr, 3 * bar + 2 * beat + Human(g), Rate, Hz(62), 0.3f, tone, g);
             }
+            // Section 6 (breath): play a series of ambient harmonics.
             else if (section == 6)
             {
                 int count = g.Int(1, 3);
@@ -902,15 +964,20 @@ namespace CloneZ
             }
             else
             {
+                // Determine whether to render a full chord progression (sections 2 and 4).
+                // Determine whether to render a full chord progression (sections 2 and 4).
                 bool full = section == 2 || section == 4;
                 for (int i = 0; i + 2 < tune.Length; i += 3)
                 {
+                    // For each note in the melody data, schedule a pluck with optional ornament.
+                    // For each note in the melody data, schedule a pluck with optional ornament.
                     int midi = (int)tune[i];
                     float len = tune[i + 2];
                     int at = (int)(tune[i + 1] * beat) + Human(g, 0.012f);
                     float a = 0.46f * g.Range(0.92f, 1.04f);
                     if (len >= 1f && g.Chance(ornament))
                     {
+                        // Ornamental grace note a half‑beat before the main note.
                         MusicKit.Pluck(gtr, at - (int)(0.08f * Rate), Rate, Hz(midi - (midi % 12 == 2 || midi % 12 == 9 ? 2 : 1)), a * 0.7f, tone, g, 0.08f, 0.02f);
                         a *= 0.82f;
                     }
