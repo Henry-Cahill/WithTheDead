@@ -191,20 +191,27 @@ namespace CloneZ
         
     public  static void Host(ushort port)
         {
+            // Create (or retrieve) the singleton NetSession and its NetworkManager/Transport.
             NetSession s = Create();
+            // Listen on all interfaces; the third argument is the advertised address for clients.
             s._utp.SetConnectionData("0.0.0.0", port, "0.0.0.0");
+            // Register server‑side callbacks for approval and client connection events.
             s._nm.ConnectionApprovalCallback = s.Approve;
             s._nm.OnClientConnectedCallback += s.OnClientConnected;
             s._nm.OnClientDisconnectCallback += s.OnClientDisconnected;
+            // Attempt to start hosting; on failure report and clean up.
             if (!s._nm.StartHost())
             {
                 GameEvents.RaiseToast("Could not host on port " + port + ".");
                 Stop();
                 return;
             }
+            // Grant full authority to the host client (owns bodies, input, AI).
             NetAuthority.Set(true, true, true, s._nm.LocalClientId);
             GameSession.Networked = true;
+            // Register all network message handlers now that the session is live.
             s.RegisterAll();
+            // Record host client info for the roster.
             Clients[s._nm.LocalClientId] = LocalInfo(s._nm.LocalClientId);
             Debug.Log("[CloneZ] Hosting on port " + port);
             GameSession.AutoStartHub = true;
@@ -216,12 +223,17 @@ namespace CloneZ
         
     public  static void Join(string address, ushort port)
         {
+            // Ensure a singleton NetSession exists for the client side.
             NetSession s = Create();
+            // Use loopback if no address supplied; set the remote host address/port.
             s._utp.SetConnectionData(string.IsNullOrEmpty(address) ? "127.0.0.1" : address, port);
+            // Encode version, player name, faction and level into the connection payload.
             CharacterProfile c = ProfileStore.ActiveCharacter;
             s._nm.NetworkConfig.ConnectionData = Encoding.UTF8.GetBytes(Version + "|" + (c != null ? c.Name : "Runner") + "|" + (c != null ? c.Faction : Factions.Freehold) + "|" + (c != null ? c.Level : 1));
+            // Register callbacks for connection events.
             s._nm.OnClientConnectedCallback += s.OnClientConnected;
             s._nm.OnClientDisconnectCallback += s.OnClientDisconnected;
+            // Attempt to start the client; on failure report and clean up.
             if (!s._nm.StartClient())
             {
                 GameEvents.RaiseToast("Could not reach " + address + ":" + port + ".");
@@ -235,10 +247,14 @@ namespace CloneZ
         
     public  static void Stop()
         {
+            // If no session exists, nothing to stop.
             if (Instance == null) return;
+            // Shut down the NetworkManager gracefully if it hasn't already begun shutdown.
             if (Instance._nm != null && !Instance._nm.ShutdownInProgress) Instance._nm.Shutdown();
+            // Destroy the singleton GameObject and clear the static reference.
             Destroy(Instance.gameObject);
             Instance = null;
+            // Clear all session‑wide collections and state.
             Clients.Clear();
             s_Handlers.Clear();
             HostRaidZone = null;
@@ -259,16 +275,24 @@ namespace CloneZ
         }
 
         // The server lets runners in while there's room and the versions agree.
+        /// <summary>Server‑side approval of a client connection: checks version compatibility and player‑count limits.</summary>
         private void Approve(NetworkManager.ConnectionApprovalRequest req, NetworkManager.ConnectionApprovalResponse res)
         {
+            // Decode the payload; empty payload means no client info.
             string payload = req.Payload != null ? Encoding.UTF8.GetString(req.Payload) : "";
             string[] p = payload.Split('|');
+            // Verify that the client runs the same game version.
             bool versionOk = p.Length > 0 && p[0] == Version;
+            // Enforce player‑count limit defined in sandbox settings.
             bool room = Clients.Count < SandboxSettings.Current.MaxPlayers;
+            // Approve only if both version and capacity checks pass.
             res.Approved = versionOk && room;
+            // The server creates player objects manually; no automatic prefab.
             res.CreatePlayerObject = false;
             res.Pending = false;
+            // If rejected, give a short reason for the client.
             if (!res.Approved) { res.Reason = !versionOk ? "Different game version." : "The server is full."; return; }
+            // Record the new client’s basic info for the roster.
             Clients[req.ClientNetworkId] = new NetClientInfo
             {
                 Id = req.ClientNetworkId,
@@ -278,10 +302,14 @@ namespace CloneZ
             };
         }
 
+        /// <summary>Handles a newly connected client, sending initial session data if this is the server or establishing authority on the local client.</summary>
+        /// <summary>Handles a newly connected client, sending initial session data if this is the server or establishing authority on the local client.</summary>
         private void OnClientConnected(ulong id)
         {
+            // Server side: inform the new client about the current game settings and host stage.
             if (_nm.IsServer)
             {
+                // Ignore the host itself – it already has the data.
                 if (id == _nm.LocalClientId) return;
                 // Tell the newcomer where the session is: the rules, whether the host's raid is open, the clock.
                 using (var o = new NetOut(1024, 1 << 16))
@@ -290,21 +318,28 @@ namespace CloneZ
                     WriteHostStage(o);
                     o.F(TimeOfDay.Instance != null ? TimeOfDay.Instance.Hour : 12f);
                     o.S(CentralEconomy.ToJson());
+                    // Send as a reliable, possibly fragmented message.
                     SendTo(id, "cz.session", o, NetworkDelivery.ReliableFragmentedSequenced);
                 }
+                // Notify everyone that a runner joined and broadcast the updated roster.
                 GameEvents.RaiseToast((Clients.TryGetValue(id, out NetClientInfo ci) ? ci.Name : "A runner") + " joined.");
                 BroadcastRoster();
             }
+            // Client side: this is the local player joining a remote host.
             else if (id == _nm.LocalClientId)
             {
+                // Set authority for the local client (only controls its own body).
                 NetAuthority.Set(true, false, false, id);
                 GameSession.Networked = true;
+                // Register all message handlers now that we are connected.
                 RegisterAll();
             }
         }
 
+        /// <summary>Handles cleanup when a client disconnects: removes them from the session and notifies remaining participants.</summary>
         private void OnClientDisconnected(ulong id)
         {
+            // Server side: clean up client state and inform remaining players.
             if (_nm != null && _nm.IsServer)
             {
                 if (Clients.TryGetValue(id, out NetClientInfo ci)) GameEvents.RaiseToast(ci.Name + " left.");
@@ -455,39 +490,50 @@ private static void ReadHostStage(NetIn m)
         // The raid runs on the host's machine (it owns the Zone's AI). The host going in opens it — and nobody is
         // dragged along; anyone in their hub can then deploy into it (as their runner, a scav, or a hunter invading
         // it), and the host can't leave until they're all out.
+        /// <summary>Manages the transition between hub and raid modes, handling host authority, seed generation and client notifications.</summary>
         private bool Transition(GameMode mode, string zone, int lz, RaidKind kind)
         {
+            // No active session – cannot transition.
             if (!Active) return false;
+            // Transitioning to the hub (menu) from a raid.
             if (mode == GameMode.Hub)
             {
                 if (_nm.IsServer)
                 {
+                    // Server must ensure no other players are still in a raid before leaving.
                     foreach (NetClientInfo c in Clients.Values)
                         if (c.Id != _nm.LocalClientId && c.InRaid)
                         {
                             GameEvents.RaiseToast("Waiting for everyone to get out of the Zone before the host can leave.");
+                            // stay in raid until all leave.
                             return true;
                         }
+                    // All clear – switch host to hub mode and broadcast the change.
                     GameSession.Mode = GameMode.Hub;
                     BroadcastHostStage();
                     return false;
                 }
+                // Client informs the server it is leaving the raid.
                 using (var o = new NetOut()) ToServer("cz.leftraid", o);
                 return false;
             }
+            // Transitioning into a raid (non‑hub mode).
             if (_nm.IsServer)
             {
+                // Host picks a random seed for the raid to ensure deterministic generation.
                 GameSession.RaidSeed = UnityEngine.Random.Range(1, int.MaxValue);
                 GameFlow.PrepareRaid(zone, lz, kind);
                 BroadcastHostStage();
                 if (Clients.TryGetValue(_nm.LocalClientId, out NetClientInfo me)) me.InRaid = true;
                 return false;
             }
+            // Client side – ensure we have host stage info.
             if (string.IsNullOrEmpty(HostRaidZone))
             {
                 GameEvents.RaiseToast("The Zone runs on the host's machine: once they go in, you can follow them.");
                 return true;
             }
+            // Follow the host into the raid using the host‑provided seed.
             HubKit.Commit();
             GameSession.RaidSeed = HostRaidSeed;
             GameFlow.PrepareRaid(HostRaidZone, lz, kind);
@@ -522,6 +568,7 @@ private static void ReadHostStage(NetIn m)
         {
             int n = m.I();
             var seen = new HashSet<ulong>();
+            // Read each client entry from the roster payload.
             for (int i = 0; i < n; i++)
             {
                 ulong id = m.UL();
@@ -529,9 +576,12 @@ private static void ReadHostStage(NetIn m)
                 c.Name = m.S(); c.Faction = m.S(); c.Squad = m.S(); c.Level = m.I();
                 seen.Add(id);
             }
+            // Find any clients that were present before but not in this update.
             var gone = new List<ulong>();
             foreach (ulong id in Clients.Keys) if (!seen.Contains(id)) gone.Add(id);
+            // Remove missing clients from the roster.
             foreach (ulong id in gone) Clients.Remove(id);
+            // Refresh squad assignments after roster changes.
             NetSocial.ApplySquads();
         }
         #endregion
