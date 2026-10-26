@@ -62,6 +62,7 @@ namespace CloneZ
         private readonly Dictionary<long, Memory> _memory = new Dictionary<long, Memory>();
         private readonly Queue<(long id, int stamp)> _memoryOrder = new Queue<(long, int)>();
         private readonly List<Vector3> _focus = new List<Vector3>(4);
+        private readonly Dictionary<Job, float> _distCache = new Dictionary<Job, float>(512);
         private Job _active;
         private int _stamp, _built, _live, _failed, _takenDown;
         private bool _navDirty, _prune, _haveNavBounds;
@@ -126,6 +127,7 @@ namespace CloneZ
 
         private void Tick(float now)
         {
+            _distCache.Clear();
             if (now >= _nextScan)
             {
                 _nextScan = now + ScanInterval;
@@ -187,6 +189,7 @@ namespace CloneZ
         // How far the nearest survivor is from a building's outline (roughly: from its middle, less its reach).
         private float Distance(Job j)
         {
+            if (_distCache.TryGetValue(j, out float c)) return c;
             Vector3 p = j.Parent.position;
             float x = p.x + j.Centre.x, z = p.z + j.Centre.y, best = float.MaxValue;
             for (int i = 0; i < _focus.Count; i++)
@@ -194,7 +197,9 @@ namespace CloneZ
                 float dx = _focus[i].x - x, dz = _focus[i].z - z;
                 best = Mathf.Min(best, dx * dx + dz * dz);
             }
-            return Mathf.Sqrt(best) - j.Radius;
+            c = Mathf.Sqrt(best) - j.Radius;
+            _distCache[j] = c;
+            return c;
         }
 
         // The jobs whose piece has been let go: what their containers held is remembered (the objects went with it).
