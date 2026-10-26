@@ -12336,10 +12336,11 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 3: Barn(RoomCtx c) – fix the stall‑partition loop that created *n + 1* partitions. Locate the block: `float pitch = (hi - lo - 1f) / n;` `for (int k = 0; k <= n; k++)` `{` `float t = lo + 0.5f + k * pitch;` `…` `}` Replace it with the following two lines and adjusted loop: `float pitch = n > 1 ? (hi - lo - 1f) / (n - 1) : 0f; // spacing so first and last stalls sit at lo+0.5 and hi‑0.5` `for (int k = 0; k < n; k++)` `{` `float t = lo + 0.5f + k * pitch;` `…` `}` (Using `n‑1` when `n>1` restores the intended equal spacing; the loop now runs exactly *n* times, matching the later straw‑placement loop.)
   Step 4: Add a comment right before the new code to document the change: `// Fixed off‑by‑one: generate exactly one partition per stall (n partitions) and space them evenly.`
   Done when: In any warehouse the racks start the correct distance from the door on all door sides (0 & 2 now both use `clearFront`), eliminating clipping into the far wall. In barns the number of stall partitions matches the number of straw piles; no extra empty partition appears and geometry no longer overlaps. All other gameplay, loot generation, and visual appearance remain unchanged.
-- [ ] Optimize BloodHUD.Update in Assets/Scripts/UI/BloodHUD.cs to avoid rebuilding the label text each frame
+- [x] Optimize BloodHUD.Update in Assets/Scripts/UI/BloodHUD.cs to avoid rebuilding the label text each frame
   Add a private field `private string _lastDisplay;` (initialized to null) to store the last shown value.
   In Update compute `string display = _blood.TypeKnown ? _blood.BloodType : "Unknown";` as before, but only assign `_typeLabel.text = $"Blood type: {display}"` when `display != _lastDisplay`.
   After assigning, set `_lastDisplay = display;`.
   This removes the per‑frame string interpolation and UI rebuild when the blood type hasn’t changed, reducing allocations and UI work.
   The player will continue to see “Blood type: …” updating instantly when the blood type becomes known, with no visual change otherwise.
   All other behavior and fields (`_typeLabel`, `_blood`, AttachToPlayer) remain unchanged.
+  - 11:17 landed by 0htsserver in 1.3 min: **Changes made**

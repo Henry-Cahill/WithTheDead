@@ -6,6 +6,7 @@ public class BloodHUD : MonoBehaviour
 {
     private Text _typeLabel;
     private PlayerBlood _blood;
+    private string _lastDisplay;
 
     void Awake()
     {
@@ -26,7 +27,11 @@ public class BloodHUD : MonoBehaviour
     {
         if (_blood == null) return;
         string display = _blood.TypeKnown ? _blood.BloodType : "Unknown";
-        _typeLabel.text = $"Blood type: {display}";
+        if (display != _lastDisplay)
+        {
+            _typeLabel.text = $"Blood type: {display}";
+            _lastDisplay = display;
+        }
     }
 
     // automatically add the HUD to the player when the scene loads
