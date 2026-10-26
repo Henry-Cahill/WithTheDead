@@ -202,15 +202,23 @@ namespace CloneZ
             return c;
         }
 
-        /// <summary>The gun safe's door, shut (it hinges on its left edge at <see cref="SafeHingeX"/>): a thick slab with a
-        /// three-spoke wheel, a combination dial and the maker's brass plate, and on its inside the bolt work.</summary>
+/// <summary>The gun safe's door, shut (it hinges on its left edge at <see cref="SafeHingeX"/>): a thick slab with a rear strike‑plate, a front key‑hole, a tiny status LED, and an interior serial‑number label.</summary>
         public static void GunSafeDoor(RaidMesh m, Color c)
         {
             m.Box(new Vector3(0f, 0.95f, 0.27f), new Vector3(0.72f, 1.8f, 0.04f), G(c * 1.15f));
             m.Box(new Vector3(0f, 0.95f, 0.243f), new Vector3(0.6f, 1.66f, 0.014f), M(c * 0.8f));
             for (int i = 0; i < 3; i++)
                 m.CylinderX(new Vector3(0.345f, 0.45f + i * 0.5f, 0.258f), 0.016f, 0.05f, 8, Mt(Chrome));
+            // rear strike‑plate, just behind the bolt‑work
             m.Box(new Vector3(0f, 1.78f, 0.295f), new Vector3(0.5f, 0.05f, 0.01f), M(Brass));
+            // rear strike‑plate, just behind the bolt‑work
+            m.Box(new Vector3(0f, 1.78f, 0.265f), new Vector3(0.45f, 0.04f, 0.006f), Mt(Chrome));
+            // front key‑hole (simple cylinder cutout)
+            m.Cylinder(new Vector3(0f, 1.55f, 0.31f), 0.008f, 0.02f, 12, M(Black));
+            // tiny LED status light (emissive green)
+            m.Box(new Vector3(0.31f, 1.78f, 0.292f), new Vector3(0.008f, 0.008f, 0.002f), Gl(new Color(0.1f, 0.85f, 0.1f)));
+            // stamped serial‑number plate (paper texture)
+            m.Box(new Vector3(0f, 0.97f, 0.29f), new Vector3(0.18f, 0.015f, 0.003f), M(Paper));
             m.Cylinder(new Vector3(0.12f, 1.05f, 0.29f), 0.09f, 0.03f, 10, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(0.12f, 1.05f, 0.33f), new Vector3(0.24f, 0.02f, 0.02f), Quaternion.Euler(0f, 0f, i * 60f), Mt(Chrome));
