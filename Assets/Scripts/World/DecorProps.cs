@@ -352,10 +352,28 @@ namespace CloneZ
         {
             Color red = V(new Color(0.62f, 0.12f, 0.08f), rng, 0.08f);
             m.Cylinder(Vector3.zero, 0.13f, 0.08f, 8, G(red * 0.8f));
+            // Thin rust streak – random vertical strip.
+            float rustHeight = R(rng, 0.12f, 0.22f);
+            Vector3 rustPos = new Vector3(0f, rustHeight * 0.5f, 0.13f);
+            m.Box(rustPos, new Vector3(0.02f, rustHeight, 0.005f), M(new Color(0.44f,0.25f,0.18f)));
             m.Cylinder(new Vector3(0f, 0.08f, 0f), 0.1f, 0.5f, 8, G(red));
+            // Valve knob – small cylinder on the front of the lower body.
+            float valveY = 0.25f + R(rng, -0.02f, 0.02f);
+            Vector3 valvePos = new Vector3(0f, valveY, 0.12f);
+            m.Cylinder(valvePos, 0.03f, 0.06f, 6, Mt(new Color(0.30f,0.30f,0.32f)));
             m.Ellipsoid(new Vector3(0f, 0.6f, 0f), new Vector3(0.22f, 0.16f, 0.22f), G(red), 8, 4);
+            // Weather‑worn label – flat grey rectangle with a tiny random yaw.
+            float labelYaw = R(rng, -10f, 10f);
+            Vector3 labelPos = new Vector3(0f, 0.28f, 0.135f);
+            m.Box(labelPos, new Vector3(0.12f, 0.015f, 0.003f), Quaternion.Euler(0f, labelYaw, 0f), M(new Color(0.30f,0.30f,0.30f)));
             m.CylinderX(new Vector3(0f, 0.42f, 0f), 0.05f, 0.34f, 6, G(red));
+            // Small hose coupling – metal‑grey ellipsoid.
+            Vector3 couplerPos = new Vector3(0.18f, 0.45f, 0f);
+            m.Ellipsoid(couplerPos, new Vector3(0.08f, 0.04f, 0.04f), Mt(new Color(0.35f,0.35f,0.38f)), 6, 2);
             m.Ellipsoid(new Vector3(0f, 0.68f, 0f), new Vector3(0.18f, 0.08f, 0.18f), M(SnowWhite), 8, 3);
+            // Small paint chip on the snow‑capped dome.
+            Vector3 chipPos = new Vector3(R(rng, -0.07f, 0.07f), 0.73f, R(rng, -0.07f, 0.07f));
+            m.Box(chipPos, new Vector3(0.04f, 0.006f, 0.04f), M(new Color(0.12f,0.12f,0.13f)));
         }
 
         /// <summary>A portable generator with a frame and exhaust.</summary>
