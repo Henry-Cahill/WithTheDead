@@ -276,7 +276,21 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.47f, 0f), new Vector3(0.32f, 0.94f, 0.32f), G(V(Beige, rng, 0.05f)));
             m.Box(new Vector3(0f, 0.75f, 0.162f), new Vector3(0.16f, 0.1f, 0.01f), M(new Color(0.15f, 0.15f, 0.16f)));
             m.Cylinder(new Vector3(0f, 0.94f, 0f), 0.13f, 0.42f, 10, Gs(new Color(0.42f, 0.58f, 0.72f)), Quaternion.identity, 0.6f);
-        }
+            // Faucet origin at top centre of the cooler's tank
+            Vector3 faucetOrigin = new Vector3(0f, 0.94f + 0.13f, 0f);
+            // Faucet base (short chrome box)
+            m.Box(faucetOrigin + new Vector3(0f, 0.015f, 0.06f), new Vector3(0.08f, 0.03f, 0.04f), Mt(Chrome));
+            // Hot lever (left side)
+            m.Rod(faucetOrigin + new Vector3(-0.028f, 0.04f, 0.09f), faucetOrigin + new Vector3(-0.028f, 0.13f, 0.09f), 0.01f, Mt(Chrome));
+            // Cold lever (right side)
+            m.Rod(faucetOrigin + new Vector3(0.028f, 0.04f, 0.09f), faucetOrigin + new Vector3(0.028f, 0.13f, 0.09f), 0.01f, Mt(Chrome));
+            // Spout (downward‑facing box)
+            m.Box(faucetOrigin + new Vector3(0f, 0.015f, 0.105f), new Vector3(0.02f, 0.01f, 0.06f), Mt(Chrome));
+            // Tiny drip emitter (emissive sphere)
+            m.Sphere(faucetOrigin + new Vector3(0f, -0.005f, 0.135f), 0.005f, Gl(new Color(0.65f, 0.75f, 0.85f)));
+            // Rust‑stained label on cooler side, colour varies with rng
+            Color rust = V(new Color(0.55f, 0.30f, 0.20f), rng, 0.08f);
+            m.Box(new Vector3(-0.46f, 0.6f, 0f), new Vector3(0.001f, 0.14f, 0.02f), M(rust));        }
 
         /// <summary>A beige photocopier.</summary>
         public static void Copier(RaidMesh m, System.Random rng)
