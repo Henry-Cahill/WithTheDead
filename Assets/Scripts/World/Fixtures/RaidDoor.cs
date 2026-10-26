@@ -479,6 +479,7 @@ namespace CloneZ
 
         public override void RestoreState(FixtureSave save)
         {
+            _lockBroken = (save.State & 8) != 0;
             _lubed = (save.State & LubedFlag) != 0;
             if (save.A > 0f) _health = Mathf.Min(save.A, _maxHealth);
             if ((save.State & 4) != 0 && !_broken)
