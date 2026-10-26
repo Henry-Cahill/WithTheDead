@@ -36,6 +36,7 @@ namespace CloneZ
         private static readonly HashSet<string> s_Reached = new HashSet<string>();
         private static int s_Rewarded;
         private float _next;
+        private Actor _cachedLocalPlayer;
 
         /// <summary>Forgets every landmark (a new raid's map).</summary>
         internal static void Reset()
@@ -75,8 +76,12 @@ namespace CloneZ
             if (Time.time < _next) return;
             // Set the next update time based on the defined interval.
             _next = Time.time + Interval;
-            // Retrieve the local player actor; if not present or dead, no landmarks can be reached.
-            Actor me = Actor.LocalPlayer;
+            // Cache the local player lookup; refresh if null or dead.
+            if (_cachedLocalPlayer == null || !_cachedLocalPlayer.IsAlive)
+            {
+                _cachedLocalPlayer = Actor.LocalPlayer;
+            }
+            Actor me = _cachedLocalPlayer;
             if (me == null || !me.IsAlive) return;
             Vector3 p = me.transform.position;
             // Convert player position to cell indices for spatial hashing.
