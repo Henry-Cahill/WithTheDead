@@ -48,18 +48,25 @@ namespace CloneZ
             bool lower, int roomSide, Color paint)
         {
             Surf frame = M(paint);
+            // Keep sash depth small so the upper/lower stack reads as two separate sashes in a double-hung.
             const float depth = 0.04f;
             float h = y1 - y0, cy = (y0 + y1) * 0.5f;
+            // Work from sash edges inward so stiles sit flush with the planned sash width.
             float s0 = mid - w * 0.5f, s1 = mid + w * 0.5f;
             float top = SashTopRail(lower), bottom = SashBottomRail(lower);
+            // Vertical stiles form the sides of the sash frame.
             m.Box(l.P(s0 + 0.0225f, cy, across), l.Size(0.045f, h, depth), frame);
             m.Box(l.P(s1 - 0.0225f, cy, across), l.Size(0.045f, h, depth), frame);
+            // Top rail is slightly proud on the lower sash so it can overhang/stack in a believable way.
             m.Box(l.P(mid, y1 - top * 0.5f, across), l.Size(w - 0.09f, top, lower ? depth + 0.005f : depth), frame);
+            // Bottom rail is deeper on the lower sash to take the lifts and read heavier under weight.
             m.Box(l.P(mid, y0 + bottom * 0.5f, across), l.Size(w - 0.09f, bottom, lower ? depth : depth + 0.005f), frame);
             float glass = h - top - bottom;
+            // Central glazing bar breaks the pane into left/right lights like a typical small sash.
             m.Box(l.P(mid, y0 + bottom + glass * 0.5f, across), l.Size(0.03f, glass, 0.03f), frame);
             if (!lower) return;
             Surf brass = Mt(Brass);
+            // Only the lower sash gets lifts; place them slightly proud of the room face for grip.
             for (int e = -1; e <= 1; e += 2)
                 m.Box(l.P(mid + e * w * 0.25f, y0 + 0.03f, across + roomSide * (depth * 0.5f + 0.008f)), l.Size(0.05f, 0.015f, 0.016f), brass);
         }
@@ -129,9 +136,12 @@ namespace CloneZ
         public static void OpeningCurtains(RaidMesh open, RaidMesh drawn, in OpeningLine l, float mid, float w, float sill, float head,
             float face, float lo, float hi, int side, Color fabric)
         {
+            // Rod sits above the casing; offset slightly off the wall so curtains hang clear of trim.
             float rodY = head + 0.13f, rodOff = side * (face + 0.075f);
+            // Clamp rod span to the wall segment so finials don't poke past corners.
             float r0 = Mathf.Max(mid - w * 0.5f - 0.25f, lo + 0.06f), r1 = Mathf.Min(mid + w * 0.5f + 0.25f, hi - 0.06f);
             Surf brass = Mt(Brass);
+            // Draw rod and finials once per mesh so both states share the same hardware.
             for (int pass = 0; pass < 2; pass++)
             {
                 RaidMesh m = pass == 0 ? open : drawn;
@@ -140,24 +150,32 @@ namespace CloneZ
                 m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
             }
 
+            // Curtain height goes from just below rod down above sill so fabric doesn't clip floor geometry.
             float top = rodY - 0.015f, bottom = sill + 0.06f, h = top - bottom;
+            // Open state: gather panels to either side; stack three slightly offset layers for depth, with a tie-back.
             for (int e = -1; e <= 1; e += 2)
             {
+                // Keep tie-back points clamped so gathered stacks don't extend past the rod ends.
                 float c = Mathf.Clamp(mid + e * (w * 0.5f + 0.08f), r0 + 0.14f, r1 - 0.14f);
                 for (int k = 0; k < 3; k++)
                 {
+                    // Alternate depth/tone to read as overlapping folds rather than flat sheets.
                     float depth = side * (face + 0.055f + (k % 2) * 0.022f);
                     open.Box(l.P(c + (k - 1) * 0.085f, bottom + h * 0.5f, depth), l.Size(0.1f, h, 0.028f), M(fabric * (k % 2 == 0 ? 1f : 0.84f)));
                 }
+                // Simple tie-back band pulls the stack back and flattens it slightly at mid-height.
                 open.Box(l.P(c, bottom + h * 0.4f, side * (face + 0.09f)), l.Size(0.3f, 0.04f, 0.012f), M(fabric * 0.7f));
             }
 
+            // Drawn state: cover across the window with interleaved folds for thickness.
             float span = r1 - r0 - 0.04f;
+            // More folds over wider spans avoid long flat panels.
             int folds = Mathf.Max(6, Mathf.RoundToInt(span / 0.11f));
             float fw = span / folds;
             for (int k = 0; k < folds; k++)
             {
                 float along = r0 + 0.02f + (k + 0.5f) * fw;
+                // Alternate depth/tone per fold to suggest billowy pleats.
                 float depth = side * (face + 0.058f + (k % 2) * 0.018f);
                 drawn.Box(l.P(along, bottom + h * 0.5f, depth), l.Size(fw + 0.012f, h, 0.026f), M(fabric * (k % 2 == 0 ? 1f : 0.86f)));
             }
@@ -277,17 +295,22 @@ namespace CloneZ
         {
             Surf sheet = Mt(new Color(0.55f, 0.57f, 0.55f)), rib = Mt(new Color(0.44f, 0.46f, 0.45f));
             float h = y1 - y0;
+            // Thin sheet forms the curtain face; ribs give corrugation without heavy geometry.
             m.Box(l.P(mid, (y0 + y1) * 0.5f, across), l.Size(len, h, 0.012f), sheet);
+            // Space ribs evenly down the band; at least one rib for very short bands.
             int ribs = Mathf.Max(1, Mathf.RoundToInt(h / 0.075f));
             for (int i = 0; i < ribs; i++)
             {
                 float y = y0 + (i + 0.5f) * h / ribs;
+                // Rib on both faces so it reads as corrugation from either side.
                 m.Box(l.P(mid, y, across + 0.008f), l.Size(len, 0.014f, 0.005f), rib);
                 m.Box(l.P(mid, y, across - 0.008f), l.Size(len, 0.014f, 0.005f), rib);
             }
             if (!bottom) return;
             Surf bar = Mt(new Color(0.30f, 0.31f, 0.31f));
+            // Heavy bottom bar adds weight and gives a grab point for lifting.
             m.Box(l.P(mid, y0 + 0.025f, across), l.Size(len, 0.05f, 0.035f), bar);
+            // Lift handles on both sides of the bottom bar for two-handed operation.
             for (int s = -1; s <= 1; s += 2)
                 m.Box(l.P(mid, y0 + 0.12f, across + s * 0.022f), l.Size(0.16f, 0.025f, 0.02f), bar);
         }
