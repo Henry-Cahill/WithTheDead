@@ -609,6 +609,7 @@ namespace CloneZ
             float h = p.Height;
             Vector3 foot = To3(p.At, 0f);
             ctx.Low(p.At).Cylinder(foot, 0.14f, h, ring ? 5 : 7, wood, Quaternion.identity, 0.72f);
+            Surf metal = DarkMetal;
             bool burning = p.Lamp != null && p.Lamp.Lit && inside;
             if (!burning)
             {
