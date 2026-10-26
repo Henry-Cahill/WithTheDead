@@ -19,6 +19,9 @@ namespace CloneZ
         private const float Interval = 0.5f;
         private const int RewardsPerRaid = 5;
 
+        /// <summary>
+        /// Data representing a tracked landmark.
+        /// </summary>
         private struct Entry
         {
             public string Id, Name;
@@ -61,30 +64,43 @@ namespace CloneZ
             }
         }
 
+        /// <summary>
+        /// Cached data for a cell's landmarks used in proximity checks.
+        /// </summary>
         private static long Key(Vector3 p) => ((long)Mathf.FloorToInt(p.x / Cell) << 32) | (uint)Mathf.FloorToInt(p.z / Cell);
 
         private void Update()
         {
+            // Skip processing until the next scheduled interval to reduce overhead.
             if (Time.time < _next) return;
+            // Set the next update time based on the defined interval.
             _next = Time.time + Interval;
+            // Retrieve the local player actor; if not present or dead, no landmarks can be reached.
             Actor me = Actor.LocalPlayer;
             if (me == null || !me.IsAlive) return;
             Vector3 p = me.transform.position;
+            // Convert player position to cell indices for spatial hashing.
             int cx = Mathf.FloorToInt(p.x / Cell), cz = Mathf.FloorToInt(p.z / Cell);
+            // Iterate over the 3×3 grid of cells surrounding the player to catch nearby landmarks.
             for (int z = cz - 1; z <= cz + 1; z++)
                 for (int x = cx - 1; x <= cx + 1; x++)
                 {
+                    // If this cell has no tracked landmarks, skip to the next cell.
                     if (!s_Cells.TryGetValue(((long)x << 32) | (uint)z, out List<Entry> list)) continue;
                     for (int i = 0; i < list.Count; i++)
                     {
                         Entry e = list[i];
                         float dx = e.At.x - p.x, dz = e.At.z - p.z;
+                        // Skip if outside landmark radius or already marked as reached.
                         if (dx * dx + dz * dz > e.Radius * e.Radius || s_Reached.Contains(e.Id)) continue;
                         Reach(e);
                     }
                 }
         }
 
+        /// <summary>
+        /// Information about the player’s location relative to known landmarks.
+        /// </summary>
         private static void Reach(Entry e)
         {
             s_Reached.Add(e.Id);
