@@ -116,16 +116,36 @@ namespace CloneZ
         /// <paramref name="off"/> out from the wall line.</summary>
         public static void OpeningBoards(RaidMesh m, System.Random rng, in OpeningLine l, float mid, float w, float sill, int outside, float off)
         {
-            Surf plank = DecorMaterials.Planks(PlankWood), nail = Mt(DarkSteel);
+            Surf plank = DecorMaterials.Planks(PlankWood), nail = Mt(DarkSteel), steel = Mt(DarkSteel), brass = Mt(Brass); Color paint = PlankWood;
             Quaternion face = Quaternion.LookRotation(l.N(outside));
             for (int i = 0; i < 3; i++)
             {
                 float y = sill + 0.25f + i * 0.38f;
                 Quaternion q = face * Quaternion.Euler(0f, 0f, R(rng, -7f, 7f));
                 Vector3 c = l.P(mid, y, outside * off);
-                m.Box(c, new Vector3(w + 0.3f, 0.16f, 0.03f), q, plank);
-                for (int e = -1; e <= 1; e += 2)
-                    m.Box(c + q * new Vector3(e * (w * 0.5f + 0.06f), 0f, 0.016f), new Vector3(0.014f, 0.014f, 0.006f), q, nail);
+                // top strap, raised 0.08 m above board centre, flush with front face
+m.Box(c + q * new Vector3(0f, 0.08f, 0.03f), new Vector3(w + 0.3f, 0.005f, 0.015f), q, steel);
+// bottom strap
+m.Box(c + q * new Vector3(0f, -0.08f, 0.03f), new Vector3(w + 0.3f, 0.005f, 0.015f), q, steel);
+// left rivet top
+m.Box(c + q * new Vector3(-(w + 0.3f) * 0.5f, 0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
+// right rivet top
+m.Box(c + q * new Vector3((w + 0.3f) * 0.5f, 0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
+// left rivet bottom
+m.Box(c + q * new Vector3(-(w + 0.3f) * 0.5f, -0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
+// right rivet bottom
+m.Box(c + q * new Vector3((w + 0.3f) * 0.5f, -0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
+// occasional faded paint drip, 20 % chance per board
+if (rng.NextDouble() < 0.20)
+{
+    // random offset along board width, up to ±0.1 m, and a tiny vertical offset
+    float dripX = R(rng, -0.1f, 0.1f);
+    float dripY = R(rng, 0.05f, 0.13f);
+    // ellipsoid 0.02 m wide, 0.03 m tall, flush with front face
+    m.Ellipsoid(c + q * new Vector3(dripX, dripY, 0.03f + 0.001f),
+        new Vector3(0.02f, 0.03f, 0.004f),
+        M(paint * 0.9f), 6, 4);
+}
             }
         }
 
