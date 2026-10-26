@@ -81,6 +81,30 @@ namespace CloneZ
                 // Create trunk geometry at the chosen position.
                 RaidMesh tm = trunks.At(p);
                 tm.Cylinder(p + Vector3.down * 0.1f, r, h * (conifer ? 0.45f : 0.9f), 7, ZoneKit.M(conifer ? ZoneKit.V(ZoneKit.Bark, rng) : ZoneKit.V(birch, rng, 0.05f)));
+                // Small bark knot, randomly placed around mid‑height
+                tm.Cylinder(
+                    p + Vector3.up * (h * 0.55f) + Vector3.right * (r * (0.6f + 0.4f * (float)rng.NextDouble())),
+                    r * 0.12f, 0.08f, 6,
+                    ZoneKit.M(ZoneKit.V(ZoneKit.Bark, rng, 0.07f)));
+                // Frost rim near the crown
+                tm.Ellipsoid(
+                    p + Vector3.up * (h * 0.96f),
+                    new Vector3(r * 1.3f, 0.03f, r * 1.3f),
+                    ZoneKit.M(ZoneKit.V(Color.white, rng, 0.06f)), 4, 2);
+                // Thin side branch, X‑aligned
+                tm.CylinderX(
+                    p + Vector3.up * (h * 0.48f) + Vector3.forward * (r * 0.9f),
+                    0.02f, r * 0.45f, 6,
+                    ZoneKit.M(ZoneKit.V(ZoneKit.Bark, rng, 0.05f)));
+                // Optional icy droplet (25 % chance per trunk)
+                if (rng.NextDouble() < 0.25)
+                {
+                    Vector3 dropletPos = p + Vector3.up * (h * (0.3f + 0.6f * (float)rng.NextDouble()));
+                    tm.Ellipsoid(
+                        dropletPos,
+                        new Vector3(0.04f, 0.06f, 0.04f),
+                        ZoneKit.M(ZoneKit.V(Color.white, rng, 0.07f)), 4, 2);
+                }
                 // Add a small top cylinder for conifers to give a bark texture highlight.
                 if (conifer) tm.Cylinder(p + Vector3.up * (h * 0.44f), r * 1.02f, 0.02f, 7, ZoneKit.Mt(ZoneKit.V(new Color(0.78f, 0.85f, 0.80f), rng, 0.04f)));
                 // Begin canopy geometry; distinct handling for conifers vs birches.
