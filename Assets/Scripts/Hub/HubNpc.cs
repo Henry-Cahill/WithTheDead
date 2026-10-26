@@ -361,20 +361,32 @@ case HubNpc.Role.Keeper:
     }
     break;
 }
-                        case HubNpc.Role.Guide:
-                            // Ask for a route hint
-                            into.Add(new InteractAction("Ask for a route hint (5 MG)", c =>
-                            {
-                                if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
-                                // pick a random hint
-                                string hint = HubNpc.GuideHints[UnityEngine.Random.Range(0, HubNpc.GuideHints.Length)];
-                                GameEvents.RaiseSubtitle(Npc.Name, hint);
-                                MoralLedger.Record("asked guide for hint", MoralLedger.HintFromGuide);
-                                Sfx.PlayUI(SfxIds.Cash);
-                                // Persist changes to player's profile.
-                                ProfileStore.Save();
-                            }));
-                            break;
+case HubNpc.Role.Guide:
+    // Ask for a route hint
+    into.Add(new InteractAction("Ask for a route hint (5 MG)", c =>
+    {
+        if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
+        // pick a random hint
+        string hint = HubNpc.GuideHints[UnityEngine.Random.Range(0, HubNpc.GuideHints.Length)];
+        GameEvents.RaiseSubtitle(Npc.Name, hint);
+        MoralLedger.Record("asked guide for hint", MoralLedger.HintFromGuide);
+        Sfx.PlayUI(SfxIds.Cash);
+        // Persist changes to player's profile.
+        ProfileStore.Save();
+    }));
+    // Compass purchase – navigation aid for the cold roads
+    into.Add(new InteractAction("Buy a compass (10 MG)", c =>
+    {
+        if (!Money.TrySpend(10, c.Inventory)) { c.Notify("You don't have 10 MG."); return; }
+        var compass = ItemDatabase.Get("compass");
+        if (compass != null) c.Inventory.Inventory.Add(compass, 1, enforceWeight: false);
+        c.Notify("You receive a compass.");
+        MoralLedger.Record("bought compass", MoralLedger.BoughtCompass);
+        Sfx.PlayUI(SfxIds.Cash);
+        GameEvents.RaiseToast("Compass added to inventory.");
+        ProfileStore.Save();
+    }));
+    break;
                         default:
                             into.Add(new InteractAction("Chat", c => GameEvents.RaiseSubtitle(Npc.Name, "Mm.")));
                             break;
