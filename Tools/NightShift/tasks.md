@@ -11625,10 +11625,11 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Leave the rest of the method unchanged; the player will still see lamps light up correctly at night, and the visual behavior is unaffected.
   These cached references are refreshed only when null, matching the existing pattern that `s_Survivor` is re‑resolved if the camera changes. This removes the per‑frame (every 0.25 s) expensive `GameManager.Instance` and `Camera.main` lookups.
   - 05:57 landed by hts-llm in 9.2 min: **Changes made**
-- [ ] Add a “Inspect seat” action and make wiping actually clean the seat in Assets/Scripts/World/Fixtures/ToiletFixture.cs
+- [x] Add a “Inspect seat” action and make wiping actually clean the seat in Assets/Scripts/World/Fixtures/ToiletFixture.cs
   Step 1: In class `ToiletFixture`, add a private method after `ScrubSeat`: `/// <summary>Tells the survivor whether the toilet seat is currently clean.</summary>` `private void InspectSeat(InteractContext ctx)` `{` `ctx.Notify(_seatClean ? "The seat is clean." : "The seat is dirty.");` `}`
   Step 2: In `GetActions(InteractContext ctx, List<InteractAction> into)`, after the line `into.Add(new InteractAction("Scrub the seat", ScrubSeat));` insert: `into.Add(new InteractAction("Inspect seat", InspectSeat));`
   Step 3: Modify the existing `WipeSeat` method (lines currently: `private void WipeSeat(InteractContext ctx)` `{` `ctx.Notify("You wipe away grime from the cold porcelain.");` `// a small calming effect, re‑using the existing toilet‑use calm value` `LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm);` `}`
+  - 06:02 landed by 0htsserver in 11.7 min: **Changes Made**
 - [ ] Add a weather‑worn metal‑strap and rivet‑detail pass to each exterior board built by `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningBoards` (four to six coordinated primitives that together give the boarded window a more believable, period‑correct hardware look).
   Step 1: Create a dark‑steel strap material reference – at the top of `OpeningBoards` after the existing `Surf plank = …` line, add `Surf steel = Mt(DarkSteel);` (this re‑uses the already‑defined dark‑steel colour).
   Step 2: Add a thin top metal strap – after the line that draws the main board `m.Box(c, new Vector3(w + 0.3f, 0.16f, 0.03f), q, plank);` insert the following (size 0.005 m tall, 0.015 m deep, spanning the board’s width): `// top strap, raised 0.08 m above board centre, flush with front face` `m.Box(c + q * new Vector3(0f, 0.08f, 0.03f), new Vector3(w + 0.3f, 0.005f, 0.015f), q, steel);`
