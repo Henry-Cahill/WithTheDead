@@ -152,47 +152,61 @@ namespace CloneZ
             public Area(MapBuild build, MapPlace place, float half, float reach,
                 System.Func<double, double, double, List<MapRegion>> regionsAround)
             {
+                // Initialise basic metadata for this Area.
                 Place = place.name;
                 BuildId = build.Id;
                 Attribution = build.Attribution;
                 Half = half;
+                // Define a square region extending 'reach' around the centre for clipping.
                 var near = Rect.MinMaxRect(-reach, -reach, reach, reach);
                 int size = build.RegionSize;
+                // Iterate over all map regions that intersect the extended reach.
                 foreach (MapRegion r in regionsAround(place.x, place.z, reach))
                 {
+                    // Translate region coordinates into local space relative to the place centre.
                     double ox = (double)r.rx * size - place.x, oz = (double)r.rz * size - place.z;
+                    // The bounds of the current region in local space.
                     var own = Rect.MinMaxRect((float)ox, (float)oz, (float)(ox + size), (float)(oz + size));
+                    // Clip and collect streets contained in both the region and the overall reach.
                     if (r.streets != null)
                         foreach (MapStreet s in r.streets)
                             foreach (List<Vector2> mine in MapGeometry.ClipLine(ToLocal(s.pts, ox, oz), own))
                                 foreach (List<Vector2> piece in MapGeometry.ClipLine(mine, near))
                                     Streets.Add(new Street(s, piece));
+                    // Clip and collect generic lines (waterways, railways, barriers, power) within the region.
                     if (r.lines != null)
                         foreach (MapLine l in r.lines) AddLine(Lines, l, ox, oz, own, near);
+                    // Process building footprints, keeping those whose centre lies within the reach.
                     if (r.buildings != null)
                         foreach (MapBuilding b in r.buildings)
                         {
                             List<Vector2> pts = ToLocal(b.pts, ox, oz);
+                            // Ignore degenerate footprints.
                             if (pts.Count < 3) continue;
                             Vector2 mid = MapGeometry.Middle(pts);
                             if (Mathf.Abs(mid.x) < reach && Mathf.Abs(mid.y) < reach) Buildings.Add(new Footprint(b, pts));
                         }
+                    // Clip land‑use areas to the region then to the overall reach.
                     if (r.areas != null)
                         foreach (MapArea a in r.areas)
                         {
                             List<Vector2> pts = MapGeometry.ClipPolygon(MapGeometry.ClipPolygon(ToLocal(a.pts, ox, oz), own), near);
                             if (pts.Count >= 3) Areas.Add(new Patch(a, pts));
                         }
+                    // Add points of interest that lie within the reach.
                     if (r.pois != null)
                         foreach (MapPoi p in r.pois)
                         {
                             Vector2 at = ToLocal(p.x, p.z, ox, oz);
                             if (near.Contains(at)) Points.Add(new Spot(p, at));
                         }
+                    // Clip and collect barrier lines.
                     if (r.barriers != null)
                         foreach (MapLine l in r.barriers) AddLine(Barriers, l, ox, oz, own, near);
+                    // Clip and collect power line segments.
                     if (r.power != null)
                         foreach (MapLine l in r.power) AddLine(Power, l, ox, oz, own, near);
+                    // Add map nodes (trees, lamps, etc.) that fall within the reach.
                     if (r.nodes != null)
                         foreach (MapNode n in r.nodes)
                         {
@@ -209,40 +223,53 @@ namespace CloneZ
             /// neighbours' buildings that reach into it. Safe off the main thread.</summary>
             public Area(string place, string buildId, string attribution, MapRegionIndex region, int cx, int cz)
             {
+                // Initialise metadata for the streamed chunk.
                 Place = place;
                 BuildId = buildId;
                 Attribution = attribution;
+                // Chunk size is half‑width of the square for this piece.
                 float chunk = region.ChunkSize;
                 Half = chunk * 0.5f;
+                // If the region has no data (e.g., empty placeholder) abort early.
                 if (region.Data == null) return;
+                // Define a square centred on the chunk for clipping to the local area.
                 var near = Rect.MinMaxRect(-Half, -Half, Half, Half);
+                // Compute world offset of the region's origin relative to this chunk centre.
                 double ox = (double)region.Rx * region.Size - (cx + 0.5) * chunk;
                 double oz = (double)region.Rz * region.Size - (cz + 0.5) * chunk;
                 var own = Rect.MinMaxRect((float)ox, (float)oz, (float)(ox + region.Size), (float)(oz + region.Size));
                 MapRegion r = region.Data;
                 MapRegionIndex.Bucket bucket = region.Get(cx, cz);
+                // Clip and add streets belonging to this bucket.
                 foreach (int i in bucket.Streets)
                     foreach (List<Vector2> mine in MapGeometry.ClipLine(ToLocal(r.streets[i].pts, ox, oz), own))
                         foreach (List<Vector2> piece in MapGeometry.ClipLine(mine, near))
                             Streets.Add(new Street(r.streets[i], piece));
+                // Add generic lines (water, rail, barriers, power) for this chunk.
                 foreach (int i in bucket.Lines) AddLine(Lines, r.lines[i], ox, oz, own, near);
+                // Include owned building footprints fully within this chunk.
                 foreach (int i in bucket.Owned)
                 {
                     List<Vector2> pts = ToLocal(r.buildings[i].pts, ox, oz);
                     if (pts.Count >= 3) Buildings.Add(new Footprint(r.buildings[i], pts) { Owned = true });
                 }
+                // Record neighbouring buildings that extend into this chunk.
                 foreach (int i in bucket.Foreign)
                 {
                     List<Vector2> pts = ToLocal(r.buildings[i].pts, ox, oz);
                     if (pts.Count >= 3) Foreign.Add(new Footprint(r.buildings[i], pts));
                 }
+                // Clip area polygons to the chunk and overall reach.
                 foreach (int i in bucket.Areas)
                 {
                     List<Vector2> pts = MapGeometry.ClipPolygon(MapGeometry.ClipPolygon(ToLocal(r.areas[i].pts, ox, oz), own), near);
                     if (pts.Count >= 3) Areas.Add(new Patch(r.areas[i], pts));
                 }
+                // Add points of interest directly.
                 foreach (int i in bucket.Pois) Points.Add(new Spot(r.pois[i], ToLocal(r.pois[i].x, r.pois[i].z, ox, oz)));
+                // Clip and add barrier lines.
                 foreach (int i in bucket.Barriers) AddLine(Barriers, r.barriers[i], ox, oz, own, near);
+                // Clip and add power lines.
                 foreach (int i in bucket.Power) AddLine(Power, r.power[i], ox, oz, own, near);
                 foreach (int i in bucket.Nodes) Nodes.Add(new Node(r.nodes[i], ToLocal(r.nodes[i].x, r.nodes[i].z, ox, oz)));
             }
@@ -251,17 +278,23 @@ namespace CloneZ
             /// <paramref name="within"/> metres, or zero when there is none.</summary>
             public Vector2 NearestStreetDirection(Vector2 from, float within)
             {
+                // Start with the maximum allowed distance and no direction.
                 float best = within;
                 Vector2 dir = Vector2.zero;
+                // Examine each street in the area.
                 foreach (Street s in Streets)
                 {
+                    // Skip tunnels – they are not considered for surface navigation.
                     if (s.Data.tunnel) continue;
+                    // Walk each segment of the polyline.
                     for (int i = 0; i + 1 < s.Pts.Count; i++)
                     {
                         Vector2 a = s.Pts[i], ab = s.Pts[i + 1] - a;
+                        // Project the point onto the segment, clamped to the segment extents.
                         float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(from - a, ab) / ab.sqrMagnitude) : 0f;
                         Vector2 to = a + ab * t - from;
                         float dist = to.magnitude;
+                        // Discard segments outside the current best range or too close to avoid jitter.
                         if (dist >= best || dist < 1e-3f) continue;
                         best = dist;
                         dir = to / dist;
@@ -359,16 +392,22 @@ namespace CloneZ
             /// on this site, so nothing a pass places for itself stands on it.</summary>
             private void TakeLot(Lot lot)
             {
+                // Convert world‑space offset of the site to local coordinates.
                 float ox = WorldOffset.x, oz = WorldOffset.z;
+                // Initialise bounds to extremes for expansion while iterating corners.
                 float x0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, z1 = float.MinValue;
                 foreach (Vector2 c in lot.Corners())
                 {
+                    // Expand the bounding box to include each corner, offset by the site origin.
                     x0 = Mathf.Min(x0, c.x - ox); x1 = Mathf.Max(x1, c.x - ox);
                     z0 = Mathf.Min(z0, c.y - oz); z1 = Mathf.Max(z1, c.y - oz);
                 }
+                // Early‑out if the lot lies completely outside the site plus a margin.
                 if (x1 < -Half - 1f || x0 > Half + 1f || z1 < -Half - 1f || z0 > Half + 1f) return;
+                // Determine grid cell indices covering the lot, expanding by one cell on each side for safety.
                 int ix0 = Mathf.Max(0, Index(x0) - 1), ix1 = Mathf.Min(_n - 1, Index(x1) + 1);
                 int iz0 = Mathf.Max(0, Index(z0) - 1), iz1 = Mathf.Min(_n - 1, Index(z1) + 1);
+                // Mark every cell that falls inside the lot as taken.
                 for (int z = iz0; z <= iz1; z++)
                     for (int x = ix0; x <= ix1; x++)
                     {
