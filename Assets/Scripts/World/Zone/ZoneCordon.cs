@@ -15,7 +15,17 @@ namespace CloneZ
         private const float SegLen = 3f;
         private static Vector3 s_GatePos;
         private static bool s_HasGate;
-        internal static bool s_SearchlightsDisabled = false;
+        internal static bool s_SearchlightsDisabled = false; // When false, searchlights are active; repaired by using spare bulb
+// style reference: "RESTRICTED ZONE - LETHAL FORCE"
+private static readonly string[] CordonSignMessages = new[]
+{
+    "RESTRICTED ZONE - LETHAL FORCE",
+    "KEEP OUT – DEADLY CONTAGION",
+    "AUTHORIZED PERSONNEL ONLY",
+    "DO NOT CROSS – TICKETS REQUIRED",
+    "ZONE ENFORCED – STAY BACK",
+    "RISK OF INFECTION – TURN BACK"
+};
 
         public static bool HasGate => s_HasGate;
 
@@ -331,7 +341,7 @@ sb.Solid.Box(new Vector3(0.2f, h * 0.5f, 1.401f),
         {
             var dress = new SiteBuilder(world, "CordonDressing", Vector3.zero, 0f, rng, cutaway: false);
             float d = site.Half - CordonRules.BeltWidth + 1.2f;
-            Surf sign = DecorMaterials.Sign("RESTRICTED ZONE - LETHAL FORCE", new Color(0.9f, 0.8f, 0.2f), new Color(0.1f, 0.1f, 0.1f), out float aspect);
+            string msg = CordonSignMessages[rng.Next(CordonSignMessages.Length)]; Surf sign = DecorMaterials.Sign(msg, new Color(0.9f, 0.8f, 0.2f), new Color(0.1f, 0.1f, 0.1f), out float aspect);
             for (int i = 0; i < 16; i++)
             {
                 int side = i % 4;
@@ -385,7 +395,8 @@ sb.Solid.Box(new Vector3(0.2f, h * 0.5f, 1.401f),
             into.Add(new InteractAction("Ask about the Zone", c =>
                 GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought ? "Keep to the road. Stay off the belt after dark." : "No pass, no passage. Off the belt, or we shoot.")));
                 // New action: disable the tower searchlights if the player has a crowbar
-                bool hasCrowbar = ctx.Inventory != null && ctx.Inventory.Has("crowbar");
+                 bool hasCrowbar = ctx.Inventory != null && ctx.Inventory.Has("crowbar");
+                 bool hasBulb = ctx.Inventory != null && ctx.Inventory.Has("searchlight_bulb");
                 into.Add(new InteractAction("Disable searchlights (requires crowbar)", c =>
                 {
                     foreach (var sweep in UnityEngine.Object.FindObjectsByType<SearchlightSweep>())
@@ -401,7 +412,19 @@ sb.Solid.Box(new Vector3(0.2f, h * 0.5f, 1.401f),
                     c.Notify("Searchlights disabled.");
                 })
                 .DisabledIf(ZoneCordon.s_SearchlightsDisabled, "Searchlights already disabled")
-                .DisabledIf(!hasCrowbar, "You need a crowbar to do that"));
+                 .DisabledIf(!hasCrowbar, "You need a crowbar to do that"));
+                  // Repair action: replace searchlight bulbs // duplicate removed
+                 into.Add(new InteractAction("Repair searchlights (requires spare bulb)", c =>
+                 {
+                     if (c.Inventory.Consume("searchlight_bulb", 1) <= 0) return;
+                     ZoneCordon.SetSearchlights(true);
+                     GameEvents.RaiseSubtitle("Warden", "You replace the busted bulbs – the towers flare to life.");
+                     Factions.AdjustReputation(Factions.Wardens, 2f, "Repaired searchlights");
+                     Sfx.PlayUI(SfxIds.SwitchHeavy, 0.8f, 0.9f);
+                     c.Notify("Searchlights repaired.");
+                 })
+                 .DisabledIf(!ZoneCordon.s_SearchlightsDisabled, "Searchlights are already on")
+                  .DisabledIf(!hasBulb, "You need a spare searchlight bulb"));
                 into.Add(new InteractAction("Check checkpoint status", c =>
                 {
                     string msg = CordonRules.PassBought

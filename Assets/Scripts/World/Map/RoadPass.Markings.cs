@@ -240,6 +240,8 @@ namespace CloneZ
             int n = s.Count;
             if (n < 2) return;
             Fit(n);
+            // Clear any leftover flags from the previous call – only the first (n‑1) entries matter.
+            System.Array.Clear(s_Keep, 0, n - 1);
             for (int i = 0; i < n; i++)
             {
                 float off = OffsetAt(c, s[i].S, kind, f);
@@ -297,26 +299,35 @@ namespace CloneZ
             // Draw the two white bars at the edges of the road.
             Bar(net, c, s0 + 0.15f, 0.15f, -r + 0.25f, l - 0.25f, net.Look.White, seed);
             Bar(net, c, s1 - 0.15f, 0.15f, -r + 0.25f, l - 0.25f, net.Look.White, seed + 1);
-            // New: draw the central walkers‑lane between the bars.
-            CrosswalkLane(net, c, s0 + 0.15f, s1 - 0.15f, net.Look.White, seed + 2);
+            // Compute inner edges of the two white bars.
+            float barLeft = l - 0.25f; // left bar inner edge (positive side)
+            float barRight = -r + 0.25f; // right bar inner edge (positive side)
+            // Centre of the space between the bars.
+            float laneCenterOffset = (barLeft + barRight) * 0.5f;
+            CrosswalkLaneBetweenBars(net, c,
+                s0 + 0.15f, s1 - 0.15f,
+                laneCenterOffset, // offset from road centre line
+                net.Look.White, seed + 2);
         }
 
-        // A straight painted bar square across a chain at <paramref name="s"/> (its direction there), <paramref name="half"/>
-        // either way along it, from <paramref name="lo"/> to <paramref name="hi"/> across it, in pieces; the slush at the
-        // gutters has buried an end piece here and there (never the middle: a lone piece left reads as a stray dash).
-        private static void CrosswalkLane(Net net, Chain c, float s0, float s1, in Surf surf, int seed)
+// A straight painted bar square across a chain at <paramref name="s"/> (its direction there), <paramref name="half"/>
+// either way along it, from <paramref name="lo"/> to <paramref name="hi"/> across it, in pieces; the slush at the
+// gutters has buried an end piece here and there (never the middle: a lone piece left reads as a stray dash).
+private static void CrosswalkLaneBetweenBars(Net net, Chain c, float s0, float s1, float centreOffset, in Surf surf, int seed)
         {
             // Bail if the stretch is tiny.
             if (s1 - s0 < 0.2f) return;
-            // Mid‑point of the crosswalk provides the direction and normal.
+            // Mid‑point provides direction.
             float m = (s0 + s1) * 0.5f;
             PointOn(c, m, out Vector2 p, out Vector2 d);
             Vector2 n = Left(d);
-            // Build a flat quad from (s0) to (s1) across the centre line.
-            Vector3 bl = To3(p + n * (-CrosswalkLaneHalf) - d * (s1 - s0) * 0.5f, MarkY);
-            Vector3 tl = To3(p + n * (-CrosswalkLaneHalf) + d * (s1 - s0) * 0.5f, MarkY);
-            Vector3 tr = To3(p + n * ( CrosswalkLaneHalf) + d * (s1 - s0) * 0.5f, MarkY);
-            Vector3 br = To3(p + n * ( CrosswalkLaneHalf) - d * (s1 - s0) * 0.5f, MarkY);
+            // Shift the whole lane by centreOffset from the road centre line.
+            Vector2 laneOrigin = p + n * centreOffset;
+            // Build the quad spanning the lane width (CrosswalkLaneHalf = 0.25f).
+            Vector3 bl = To3(laneOrigin + n * (-CrosswalkLaneHalf) - d * (s1 - s0) * 0.5f, MarkY);
+            Vector3 tl = To3(laneOrigin + n * (-CrosswalkLaneHalf) + d * (s1 - s0) * 0.5f, MarkY);
+            Vector3 tr = To3(laneOrigin + n * ( CrosswalkLaneHalf) + d * (s1 - s0) * 0.5f, MarkY);
+            Vector3 br = To3(laneOrigin + n * ( CrosswalkLaneHalf) - d * (s1 - s0) * 0.5f, MarkY);
             // Occasionally skip a piece to simulate slush covering the paint.
             if (Noise(p, 2f, seed) < 0.2f) return;
             Face(net.Out.Flat((bl + tr) * 0.5f), bl, tl, tr, br, Vector3.up, surf);

@@ -44,6 +44,12 @@ namespace CloneZ
             "A distant echo rattles the panel, but the interior stays sealed tight.",
             "The impact sparks a brief whine, then settles into deafening silence.",
             "A faint scent of yesterday’s soda lingers, offering only memory, not loot.",
+            "The frosted pane shivers, but no crumb tumbles out.",
+            "A thin gust of pine‑scented air escapes, yet the coil remains stubborn.",
+            "The metal sighs with an icy echo; nothing drops into the tray.",
+            "Your thump rattles a hollow note, as if the machine remembers a warmer summer.",
+            "A soft clatter sounds far away, but the vending belly stays sealed.",
+            "The cold metal quivers, whispering of stale soda, but offers no loot.",
         };
 
         private Transform _body;

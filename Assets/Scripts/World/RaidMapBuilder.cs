@@ -25,35 +25,53 @@ namespace CloneZ
         private const float GroundHalf = 70.8f;   // the walkable snow ends just past the fence
         private const float EdgeLine = 70.6f;     // the fence line
 
+        /// <summary>Builds the raid map and returns its info.</summary>
         public static RaidMapInfo Build(Transform world, int seed)
         {
+            // Prepare map metadata with world bounds and initial player position.
             var info = new RaidMapInfo { HalfSize = Half, PlayerSpawn = new Vector3(0f, 0.6f, 0f) };
+            // Reset ceiling visibility tracking for a fresh map build.
             CeilingVisibility.Clear();
+            // Instantiate the town builder with the world root, deterministic seed, and map info.
             var town = new RaidTown(world, seed, info);
+            // Create a helper to orchestrate the sequential construction steps.
             var builder = new Builder(town);
 
+            // Generate the ground plane covering the playable area.
             builder.Ground();
+            // Place exits that lead out of the raid map.
             builder.Exits();
+            // Construct building footprints and interior setups.
             builder.Buildings();
+            // Lay out streets connecting the buildings.
             builder.Streets();
+            // Add street furniture such as lamps and signs.
             builder.StreetFurniture();
+            // Build the outer fence edge that bounds the map.
             builder.Edge();
+            // Populate surrounding scenery like trees and props.
             builder.Scenery();
+            // Spawn the player at the designated start point.
             builder.Spawn();
 
+            // Emit outdoor objects (trees, props) into the scene hierarchy.
             town.EmitOutdoor();
+            // Apply the colour palette to generated materials.
             DecorPalette.Apply();
 
+            // Count total objects for build statistics.
             int objects = RaidTown.CountObjects(world) + RaidTown.CountObjects(town.Overhead) + RaidTown.CountObjects(town.Scenery);
             int fixtures = world.GetComponentsInChildren<Interactable>(true).Length;
             int storage = world.GetComponentsInChildren<LootContainer>(true).Length;
             LastStats = "Raid map " + seed + ": " + town.Buildings.Count + " buildings, " + storage + " containers, "
                 + fixtures + " fixtures, " + town.LightCount + " lights, " + objects + " objects, " + CeilingVisibility.Count + " ceilings";
+            // Log any layout warnings produced during construction.
             if (town.Warnings.Count > 0)
                 Debug.LogWarning("[CloneZ] Raid map layout notes (" + town.Warnings.Count + "): " + string.Join(" | ", town.Warnings) + "\n" + LastStats);
 #if UNITY_EDITOR || CLONEZ_MAPTEST
             LastTown = town;
 #endif
+            // Return the map metadata to the caller.
             return info;
         }
 

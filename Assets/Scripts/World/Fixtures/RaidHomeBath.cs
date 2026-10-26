@@ -20,6 +20,8 @@ namespace CloneZ
         private const float SoakHipsBack = 0.3f;   // the hips rest this far back from the middle, away from the taps
         private const float SoakHipsY = 0.14f;      // just off the tub's floor
         private const float CoveredCoolFactor = 0.2f; // cooling is slowed to 20 % when covered
+        /// <summary>Heat gain per second when the stove is heating the water.</summary>
+        private const float _heatRate = 0.15f; // °C‑equivalent per second when heating (chosen to feel noticeable)
         private Transform _body;
         private string _key;
         private Vector3 _point, _spout, _middle, _seat;
@@ -29,6 +31,7 @@ namespace CloneZ
         private Transform _water;
         private Vector3 _waterFull;
         private bool _running, _plugged, _borrowed, _bathedIn, _toldFull, _soaking, _covered; // true while a makeshift cover is on the tub
+        private bool _heating; // true while the stove is heating the water
         private float _level;    // 0 empty .. 1 full
         private float _heat;     // the standing water's warmth: 0 stone cold .. 1 hot
         private float _nextNoise, _nextWatch;
@@ -148,6 +151,8 @@ namespace CloneZ
             }
             else if (!_plugged && _level > 0f) _level = Mathf.Max(0f, _level - dt * _drainRate);
             if (!running && _heat > 0f) { float factor = _covered ? CoveredCoolFactor : 1f; _heat = Mathf.Max(0f, _heat - dt * _coolRate * factor); }
+            // Heat the standing water while the stove is on and taps are off.
+            if (_heating && _level > 0f && !Running) { _heat = Mathf.Min(1f, _heat + dt * _heatRate); }
             if (_level != before) ShowWater();
             if (_level < 0.9f) _toldFull = false;
 
@@ -210,6 +215,14 @@ namespace CloneZ
                 into.Add(new InteractAction("Feel the water", FeelWater));
                 into.Add(new InteractAction("Check water temperature", CheckTemp));
                 into.Add(new InteractAction("Check water level", CheckLevel));
+                // New toggle for heating water with the stove when taps are off
+                if (PowerGrid.HousePowered && !_running && _level > 0.05f)
+                {
+                    if (_heating)
+                        into.Add(new InteractAction("Stop heating water", ctx => ToggleHeat(ctx, false)));
+                    else
+                        into.Add(new InteractAction("Heat water with the stove", ctx => ToggleHeat(ctx, true)));
+                }
             }
             if (_level > 0.02f) // only useful if there is any water
             {
@@ -268,11 +281,20 @@ namespace CloneZ
             ShowPlug();
         }
 
+        /// <summary>
+        /// Toggles the stove heating the bath water.
+        /// </summary>
+        private void ToggleHeat(InteractContext ctx, bool on)
+        {
+            _heating = on;
+            MakeNoise(CloneZConfig.BathTapTurnNoise);
+            ctx.Notify(on ? "You light a small stove beneath the tub; the water begins to warm." : "You extinguish the stove; the water stops heating.");
+        }
+
         private void SetCovered(InteractContext ctx, bool cover)
         {
             _covered = cover;
-            ctx.Notify(cover ? "You drape a makeshift cover over the tub. The water will stay warm longer."
-                : "You remove the cover. The bath will cool at the normal rate.");
+            ctx.Notify(cover ? "You drape a makeshift cover over the tub. the water will stay warm longer." : "You remove the cover. The bath will cool at the normal rate.");
         }
 
         // A wash runs the taps for its length while the mains are on (and turns them off again after).
@@ -399,7 +421,7 @@ namespace CloneZ
 
         public override void CaptureState(FixtureSave save)
         {
-            save.State = (_running && !_borrowed ? 1 : 0) | (_plugged ? 2 : 0) | (_bathedIn ? 4 : 0) | (_covered ? 0x10 : 0) | 8;
+            save.State = (_running && !_borrowed ? 1 : 0) | (_plugged ? 2 : 0) | (_bathedIn ? 4 : 0) | (_covered ? 0x10 : 0) | (_heating ? 0x20 : 0) | 8;
             save.A = _level;
             save.B = _heat;
         }
@@ -412,6 +434,7 @@ namespace CloneZ
             SetPlugged((save.State & 2) != 0);
             _bathedIn = (save.State & 4) != 0;
             _covered = (save.State & 0x10) != 0;
+            _heating = (save.State & 0x20) != 0;
             _level = Mathf.Clamp01(save.A);
             _heat = Mathf.Clamp01(save.B);
             ShowWater();

@@ -90,13 +90,14 @@ namespace CloneZ
             Vector3 pos = W(p.X, 0f, p.Z);
             float yaw = Yaw(p.Yaw);
             if (solid && size.y >= TallPiece) TallFurniture(pos, yaw, size, draw, what);
-            else
-            {
-                Static.SetFrame(pos, yaw);
-                draw(Static, Rng);
-                Static.ResetFrame();
-                if (solid) AddCollider(pos + Vector3.up * (size.y * 0.5f), size, yaw);
-            }
+else
+{
+    Static.SetFrame(pos, yaw);
+    draw(Static, Rng);
+    Static.ResetFrame();
+    // Always add collider for solid small furniture to ensure correct rotation
+    if (solid) AddCollider(pos + Vector3.up * (size.y * 0.5f), size, yaw);
+}
             Rect fp = FootRect(pos, yaw, size);
             if (room != null)
             {
@@ -133,14 +134,15 @@ namespace CloneZ
             float yaw = Yaw(p.Yaw);
             LootContainer c = LootContainer.Spawn(Root, type, pos, Town.Rng.Next());
             GameObject go = c.gameObject;
-            go.transform.SetPositionAndRotation(pos, Quaternion.identity);
+            go.transform.SetPositionAndRotation(pos, Quaternion.Euler(0f, yaw, 0f));
             go.transform.localScale = Vector3.one;
             if (!string.IsNullOrEmpty(label)) c.DisplayName = label;
             var box = go.GetComponent<BoxCollider>();
             if (box != null)
             {
                 box.center = new Vector3(0f, size.y * 0.5f, 0f);
-                box.size = AabbSize(size, yaw);
+                // Align container mesh and collider with the room’s wall direction (yaw)
+                box.size = size; // axis‑aligned size; rotation is handled by the GameObject
             }
             var mesh = new RaidMesh();
             mesh.SetFrame(pos, yaw);

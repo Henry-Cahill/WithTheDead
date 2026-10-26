@@ -316,8 +316,63 @@ namespace CloneZ
                     Vector3 rungPos = To3(at + ladderBase, rungY);
                     m.Box(rungPos, new Vector3(0.6f, 0.02f, 0.02f), sh.Yaw, metalDetail);
                 }
-                // Weather‑vane / ridge‑vent – thin vertical element at front edge.
+                // RNG for the extra penthouse ornaments – deterministic per‑building.
+                System.Random rngDetail = MapStyle.Rng(j.Id, SaltUnits + 9);
+                // Lightning rod – thin cylinder, 0.05 m radius, 1.5 m tall, centered on the front parapet.
                 Vector2 frontDir = (j.P.Front >= 0) ? j.Dir[j.P.Front] : sh.U;
+                Vector2 rodPos2D = at + frontDir * (hl - 0.15f);
+                Vector3 rodPos = To3(rodPos2D, deck + h + 0.12f + 1.2f + 0.75f);
+                m.Cylinder(rodPos, 0.05f, 1.5f, 12, metalDetail);
+                // Safety railing – thin continuous box along each roof edge.
+                float railHeight = 0.10f, railDepth = 0.05f;
+                Vector3 railBase = new Vector3(0f, deck + h + 0.02f, 0f);
+                // Edge +U side
+                m.Box(railBase + To3(at + sh.U * (hl - 0.05f), 0f), new Vector3(hl * 2f - 0.1f, railHeight, railDepth), sh.Yaw, metalDetail);
+                // Edge –U side
+                m.Box(railBase + To3(at - sh.U * (hl - 0.05f), 0f), new Vector3(hl * 2f - 0.1f, railHeight, railDepth), sh.Yaw, metalDetail);
+                // Edge +V side
+                m.Box(railBase + To3(at + sh.V * (hw - 0.05f), 0f), new Vector3(railDepth, railHeight, hw * 2f - 0.1f), sh.Yaw, metalDetail);
+                // Edge –V side
+                m.Box(railBase + To3(at - sh.V * (hw - 0.05f), 0f), new Vector3(railDepth, railHeight, hw * 2f - 0.1f), sh.Yaw, metalDetail);
+                // Side access hatch – metal box, 0.7 m square, 0.15 m tall.
+                Vector2 hatchPos2D = at - sh.V * (hw - 0.3f);
+                m.Box(To3(hatchPos2D, deck + h + 0.12f + 0.075f), new Vector3(0.7f, 0.15f, 0.7f), sh.Yaw, metalDetail);
+                // Cable coil – small cylinder beside the antenna mast.
+                Vector2 coilOffset = sh.U * 0.2f; // eastward relative to roof axes
+                Vector3 coilPos = To3(at + coilOffset, deck + h + 0.12f + 0.05f);
+                m.Cylinder(coilPos, 0.02f, 0.10f, 8, metalDetail);
+                // Rust patches – small dark boxes on metal parts, random but deterministic.
+                var dark = DecorPalette.Matte(new Color(0.14f, 0.14f, 0.15f));
+                for (int rp = 0; rp < 3; rp++)
+                {
+                    if (rngDetail.NextDouble() > 0.45) continue;
+                    int surfIdx = rngDetail.Next(5);
+                    Vector3 patchPos;
+                    switch (surface)
+                    {
+                        case 0: // mast
+                            patchPos = To3(at, deck + h + 0.12f + 0.6f + (float)rngDetail.NextDouble() * 0.4f);
+                            break;
+                        case 1: // dish
+                            patchPos = To3(at, deck + h + 0.12f + 1.2f + 0.025f + (float)rngDetail.NextDouble() * 0.1f);
+                            break;
+                        case 2: // vent stack
+                            patchPos = To3(at + ventOffset, deck + 0.2f + (float)rngDetail.NextDouble() * 0.6f);
+                            break;
+                        case 3: // ladder rung
+                            int rung = rngDetail.Next(3);
+                            float rungY = deck + h + 0.05f + rung * 0.32f;
+                            patchPos = To3(at + ladderBase, rungY + (float)rngDetail.NextDouble() * 0.03f);
+                            break;
+                        default: // railing – pick a random edge midpoint
+                            float edgeT = (float)rngDetail.NextDouble();
+                            Vector2 railMid = at + sh.U * Mathf.Lerp(-hl + 0.05f, hl - 0.05f, edgeT);
+                            patchPos = To3(railMid, deck + h + 0.02f + 0.05f);
+                            break;
+                    }
+                    m.Box(patchPos, new Vector3(0.15f, 0.02f, 0.15f), sh.Yaw, dark);
+                }
+                // Weather‑vane / ridge‑vent – thin vertical element at front edge.
                 Vector2 ventPos2D = at + frontDir * (hl - 0.1f);
                 Vector3 ventPos = To3(ventPos2D, deck + h + 0.02f);
                 m.Box(ventPos, new Vector3(0.04f, 0.3f, 0.04f), sh.Yaw, metalDetail);

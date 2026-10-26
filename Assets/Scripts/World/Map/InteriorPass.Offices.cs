@@ -610,6 +610,48 @@ namespace CloneZ
             var at = new Vector3(-0.1f, 1.1f, 0.37f);
             MeshRenderer glass = KitchenParts.PieceInFrame(t, "VendingGlass", f, at, m => FurnitureBuilder.OfficeVendingWindow(m, wr, lit, false));
             MeshRenderer smashed = KitchenParts.PieceInFrame(t, "VendingSmashed", f, at, m => FurnitureBuilder.OfficeVendingWindow(m, wr, lit, true));
+            // ---- added vending‑machine visual details ----
+            // price‑display screen (small matte panel with a subtle emissive “digit”)
+            MeshRenderer priceScreen = KitchenParts.PieceAt(t, "VendingPriceScreen", f,
+                new Vector3(0f, 0.9f, 0.35f),
+                m => {
+                    // main screen panel
+                    m.Box(new Vector3(0f, 0.9f, 0.35f), new Vector3(0.38f, 0.12f, 0.02f),
+                        DecorPalette.Matte(FurnitureBuilder.Walnut));
+                    // glowing “digit” indicator
+                    m.Sphere(new Vector3(0f, 0.92f, 0.37f), 0.018f,
+                        DecorPalette.Glow(new Color(1f, 0.7f, 0.3f)));
+                });
+            // coin‑slot (thin cylinder with a metal finish)
+            MeshRenderer coinSlot = KitchenParts.PieceAt(t, "VendingCoinSlot", f,
+                new Vector3(-0.33f, 0.6f, 0.31f),
+                m => {
+                    m.Cylinder(new Vector3(-0.33f, 0.6f, 0.31f), 0.015f, 0.07f, 8,
+                        DecorPalette.Metal(FurnitureBuilder.Brass));
+                });
+            // vertical LED light strip on the right edge (four tiny emissive boxes)
+            MeshRenderer lightStrip = KitchenParts.PieceAt(t, "VendingLightStrip", f,
+                new Vector3(0.36f, 0.8f, 0.32f),
+                m => {
+                    for (int i = 0; i < 4; i++) {
+                        float y = 0.7f + i * 0.08f;
+                        m.Box(new Vector3(0.36f, y, 0.32f), new Vector3(0.02f, 0.06f, 0.01f),
+                            DecorPalette.Glow(new Color(0.9f, 0.9f, 0.6f)));
+                    }
+                });
+            // small back‑panel logo (thin matte rectangle with a random rotation for a hand‑tacked look)
+            MeshRenderer logo = KitchenParts.PieceAt(t, "VendingLogo", f,
+                new Vector3(0f, 0.3f, -0.38f),
+                m => {
+                    var rnd = b.Rng;
+                    m.Box(new Vector3(0f, 0.3f, -0.38f), new Vector3(0.22f, 0.04f, 0.008f),
+                        DecorPalette.Matte(FurnitureBuilder.Walnut));
+                    // add a random slight rotation to make it look taped
+                    m.FlatUV(new Vector3(0f, 0.3f, -0.38f), 0.22f, 0.04f,
+                        MapStyle.Range(rnd, -5f, 5f),
+                        DecorMaterials.Paper(rnd.Next(3)), new Rect(0f,0f,1f,1f));
+                });
+            // ------------------------------------------------
             RaidStoreVending.Create(t, f.P(FurnitureBuilder.OfficeVendingPanel), f.P(FurnitureBuilder.OfficeVendingTray), glass, smashed, lit, seed);
         }
         #endregion

@@ -1,4 +1,11 @@
 using UnityEngine;
+using System;
+
+
+
+
+
+
 using static CloneZ.SignDrawer;
 
 namespace CloneZ
@@ -340,9 +347,11 @@ namespace CloneZ
             var signPos = new RaidBuilding.Place(p.X, p.Z, 0f);
             // Width of the sign matches the door width (clamped for visual niceness).
             float signWidth = Mathf.Clamp(doorWidth, 1.2f, 2.4f);
+            // Decide if this sign gets weathered detail (≈45% chance).
+            bool weathered = c.Rng.Next(0, 100) < 45;
             // Use the building’s fixture body to create the geometry (same pattern as other props).
             c.B.Furnish(c.R, signPos, new Vector3(signWidth, 0.04f, 0.01f), true,
-                (m, r) => SignDrawer.Draw(m, r, c.Plan.Name ?? "Shop", new Vector3(0f, 2.0f, 0f), signWidth), "Shop sign");
+                (m, r) => SignDrawer.Draw(m, r, c.Plan.Name ?? "Shop", new Vector3(0f, 2.0f, 0f), signWidth, weathered), "Shop sign");
         }
 
         private static void Gondola(RoomCtx c, RaidBuilding.Place p, float len, bool frontStocked)

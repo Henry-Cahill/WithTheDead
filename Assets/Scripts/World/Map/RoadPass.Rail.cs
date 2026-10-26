@@ -109,6 +109,9 @@ namespace CloneZ
 
         // A fixed map's railways past the edge, into the scenery batches: the bed with its snowy shoulders, the ties and
         // the two rails' heads, flat (no colliders, no crossings), so a line doesn't stop dead at the playable edge.
+        /// <summary>
+        /// Generates railway geometry for map edges, adding ballast, ties, and rails to scenery batches.
+        /// </summary>
         private static void SceneryRail(Net net)
         {
             Look look = net.Look;
@@ -124,10 +127,13 @@ namespace CloneZ
                     List<Sample> s = net.Samples;
                     int n = s.Count;
                     if (n < 2) continue;
+                    // Ensure sample arrays are sized for the number of points on this piece.
                     Fit(n);
+                    // If this is not a bridge, generate the ballast and snow‑covered shoulders on both sides of the track.
                     if (!l.Data.bridge)
                         for (int side = -1; side <= 1; side += 2)
                         {
+                            // Set side‑specific offsets for the ballast geometry.
                             for (int i = 0; i < n; i++)
                             {
                                 s_A[i] = side * 1.45f;
@@ -135,16 +141,21 @@ namespace CloneZ
                                 s_YA[i] = BedTop;
                                 s_YB[i] = 0.004f;
                             }
+                            // Create a flat band of snow on the side.
                             FarBand(net, s, look.Snow);
                         }
+                    // Core rail bed (or girder) common to both sides.
                     for (int i = 0; i < n; i++)
                     {
                         s_A[i] = l.Data.bridge ? -1.75f : -1.45f;
                         s_B[i] = -s_A[i];
                         s_YA[i] = s_YB[i] = BedTop;
                     }
+                    // Choose material based on bridge/abandoned/disused state.
                     FarBand(net, s, l.Data.bridge ? look.Girder : abandoned ? look.Snow : look.Ballast);
+                    // No further geometry for abandoned lines.
                     if (abandoned) continue;
+                    // Place wooden ties at regular intervals along the line.
                     for (float t = 0.3f; t < line.Length; t += 0.6f)
                     {
                         PointOn(line, t, out Vector2 p, out Vector2 d);
@@ -153,6 +164,7 @@ namespace CloneZ
                         Vector3 c = To3(p + d * 0.12f + across * 1.3f, TieTop), e = To3(p - d * 0.12f + across * 1.3f, TieTop);
                         Face(net.Site.Town.Far.Flat(To3(p, 0f)), a, b, c, e, Vector3.up, look.Tie);
                     }
+                    // Add the two rail heads; choose rusted material for disused lines.
                     for (int side = -1; side <= 1; side += 2)
                     {
                         for (int i = 0; i < n; i++)
@@ -185,6 +197,9 @@ namespace CloneZ
 
         // The two rails: on the open stretches a head (polished, or rust) on a web from the ties; set flush with a dark
         // flangeway beside each where the track runs in a road, with crossing panels where it only crosses one.
+        /// <summary>
+        /// Adds the two rails and supporting geometry on open stretches of track.
+        /// </summary>
         private static void Rails(Net net, Chain line, bool disused)
         {
             Look look = net.Look;
@@ -192,26 +207,32 @@ namespace CloneZ
             int n = s.Count;
             float half = Gauge * 0.5f;
             int i = 0;
+            // Walk through the samples, grouping consecutive segments that are either open (road) or closed (railway fenced).
             while (i + 1 < n)
             {
                 bool open = s_KerbOk[i];
+                // Find the end of the current run of the same open/closed state.
                 int j = i;
                 while (j + 1 < n && s_KerbOk[j] == open) j++;
                 float from = s[i].S, to = s[j].S;
+                // Generate a dense set of samples for this stretch.
                 SamplesOf(line, from, to, 0f, net.Samples2);
                 List<Sample> c = net.Samples2;
                 Fit(c.Count);
+                // Build geometry for each side of the track.
                 for (int side = -1; side <= 1; side += 2)
                 {
                     float r = side * half;
                     if (open)
                     {
+                        // Open stretch: place rail heads and web ties.
                         for (int k = 0; k < c.Count; k++)
                         {
                             s_A[k] = r - 0.036f;
                             s_B[k] = r + 0.036f;
                         }
                         Band(net, c, s_A, s_B, RailTop, RailTop, disused ? look.RailRust : look.RailHead, null, null, true);
+                        // Add vertical faces connecting the rail head to the tie web.
                         for (int k = 0; k + 1 < c.Count; k++)
                             for (int face = -1; face <= 1; face += 2)
                             {
@@ -223,6 +244,7 @@ namespace CloneZ
                     }
                     else
                     {
+                        // Closed stretch: draw a simple rail‑head marker (junction) and a rubber‑like base.
                         for (int k = 0; k < c.Count; k++)
                         {
                             s_A[k] = r - 0.036f;
@@ -237,6 +259,7 @@ namespace CloneZ
                         Band(net, c, s_A, s_B, JunctionMarkY + 0.0015f, JunctionMarkY + 0.0015f, look.Rubber);
                     }
                 }
+                // Very short closed stretch (under 30 m) gets a crossing panel if the full map is being built.
                 if (!open && to - from < 30f && net.Full)
                 {
                     for (int k = 0; k < c.Count; k++)
@@ -322,6 +345,12 @@ namespace CloneZ
 
         // True when the chain is drawn the way its first way's points run (one‑way traffic flows along it).
         private static bool ChainRunsWithWay(Chain c) => c.Parts.Count == 0 || !c.Parts[0].Rev;
+        /// <summary>
+        /// Creates a crossbuck sign with flashing lights for a level‑crossing.
+        /// </summary>
+        // Build the crossbuck post and its flashing lamps.
+        // The frame is oriented so the front of the sign faces the direction of oncoming traffic.
+        // Geometry consists of a base box, a central post cylinder, two coloured panels, a horizontal bar and three lamps.
         private static void Crossbuck(Net net, Vector2 at, Vector2 facing)
         {
             Look look = net.Look;
@@ -332,13 +361,16 @@ namespace CloneZ
             m.Cylinder(new Vector3(0f, 0.16f, 0f), 0.055f, 4.0f, 8, look.PostGrey);
             for (int k = -1; k <= 1; k += 2)
             {
+                // Two angled panels (black and white) form the familiar cross shape.
                 Quaternion roll = Quaternion.Euler(0f, 0f, k * 45f);
                 m.Box(new Vector3(0f, 3.65f, 0.06f), new Vector3(1.26f, 0.27f, 0.02f), roll, look.CrossbuckBlack);
                 m.Box(new Vector3(0f, 3.65f, 0.075f), new Vector3(1.2f, 0.21f, 0.02f), roll, look.CrossbuckWhite);
             }
+            // Horizontal bar supporting the lamps.
             m.Box(new Vector3(0f, 2.6f, 0.02f), new Vector3(1.5f, 0.08f, 0.08f), look.PostGrey);
             for (int k = -1; k <= 1; k += 2)
             {
+                // Each side gets a red signal lamp.
                 m.CylinderX(new Vector3(k * 0.6f, 2.6f, 0.09f), 0.24f, 0.03f, 12, look.CrossbuckBlack, 90f);
                 m.CylinderX(new Vector3(k * 0.6f, 2.6f, 0.12f), 0.1f, 0.04f, 10, look.LampRed, 90f);
                 m.Box(new Vector3(k * 0.6f, 2.73f, 0.19f), new Vector3(0.24f, 0.02f, 0.16f), look.LampHood);

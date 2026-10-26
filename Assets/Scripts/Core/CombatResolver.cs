@@ -96,14 +96,16 @@ namespace CloneZ
             {
                 RaycastHit h = s_Hits[i];
                 if (shooter != null && h.collider.transform.IsChildOf(shooter)) continue;
-                result.Hit = true;
-                result.End = h.point;
-                result.Normal = h.normal;
-
                 Hitbox box = h.collider.GetComponent<Hitbox>();
                 IDamageable target = box != null && box.Owner != null ? box.Owner.Damageable : h.collider.GetComponentInParent<IDamageable>();
                 if (target == null) break; // world geometry stops the round
                 if (target.IsDead) continue; // skip dead actors
+
+                // Record hit details now that we have a live target.
+                result.Hit = true;
+                result.End = h.point;
+                result.Normal = h.normal;
+
                 Actor actor = box != null ? box.Owner : (target.Transform != null ? target.Transform.GetComponent<Actor>() : null);
                 BodyZone zone = box != null ? box.Zone : BodyZones.FromHit(target.Transform, h.point, actor != null ? actor.Height : 1.8f);
                 result.Target = target;

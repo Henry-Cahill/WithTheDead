@@ -96,11 +96,28 @@ namespace CloneZ
             float bandY, radius, top;
             if (style < 0.6f)
             {
-                // The classic: a tank on six legs, braced, round a central riser, a catwalk at its waist.
-                const int legs = 6;
-                bandY = 31f;
-                radius = 5.6f;
-                float legTop = bandY - 1.5f;
+// The classic: a tank on six legs, braced, round a central riser, a catwalk at its waist.
+                 const int legs = 6;
+                 bandY = 31f;
+                 radius = 5.6f;
+                 float legTop = bandY - 1.5f;
+
+                 // Ladder – two side rails (thin cylinders) and evenly spaced rungs.
+                 float ladderX = 0.55f; // offset from centre, metres
+                 float ladderHeight = legTop; // top of the legs
+                 // right rail
+                 low.Cylinder(new Vector3(ladderX, 0f, 0f), 0.025f, ladderHeight, 8, dark);
+                 low.Cylinder(new Vector3(-ladderX, 0f, 0f), 0.025f, ladderHeight, 8, dark);
+                 int rungCount = Mathf.FloorToInt(ladderHeight / 0.5f);
+                 for (int i = 1; i <= rungCount; i++)
+                 {
+                     float y = i * 0.5f;
+                     low.Box(new Vector3(-ladderX, y, 0f), new Vector3(ladderX * 2f, 0.02f, 0.02f), RustSurf);
+                 }
+                 {
+                     float y = i * 0.5f;
+                     low.Box(foot + new Vector3(-ladderX, y, 0f), new Vector3(ladderX*2f, 0.02f, 0.02f), RustSurf);
+                 }
                 for (int i = 0; i < legs; i++)
                 {
                     float a = i * Mathf.PI * 2f / legs;
@@ -133,10 +150,22 @@ namespace CloneZ
                 if (inside) ctx.Site.Town.PropCollider(foot + new Vector3(0f, 1.5f, 0f), new Vector3(1.8f, 3f, 1.8f), 0f);
                 high.Ellipsoid(new Vector3(0f, bandY, 0f), new Vector3(radius * 2f, 7f, radius * 2f), tank, 16, 8);
                 high.Cylinder(new Vector3(0f, bandY, 0f), radius, 4.2f, 16, tank);
+                // Catwalk hand‑rail – a thin rusted ring just above the band.
+                high.Cylinder(new Vector3(0f, bandY + 0.05f, 0f), radius + 0.12f, 0.04f, 16, RustSurf);
+                // Surface bolts – small copper caps around the tank rim.
+                int boltCount = 16;
+                for (int i = 0; i < boltCount; i++)
+                {
+                    float a = i * Mathf.PI * 2f / boltCount;
+                    Vector3 pos = new Vector3(Mathf.Sin(a), bandY + 4.2f, Mathf.Cos(a)) * (radius - 0.08f);
+                    high.Cylinder(pos, 0.03f, 0.02f, 8, Metal(Copper));
+                }
                 top = bandY + 4.2f;
                 high.Cylinder(new Vector3(0f, top, 0f), radius + 0.05f, 2.6f, 16, SnowSurf, Quaternion.identity, 0.06f);
+                // Copper finial – a small decorative dome crowning the tower.
+                high.Ellipsoid(new Vector3(0f, top + 1.2f, 0f), new Vector3(0.28f, 0.28f, 0.28f), Metal(Copper), 8, 5);
                 if (ctx.Full)
-                    for (int i = 0; i < 16; i++)
+                    for (int i = 0; i < 24; i++)
                     {
                         float a = i * Mathf.PI * 2f / 16f;
                         var dir = new Vector3(Mathf.Sin(a), 0f, Mathf.Cos(a));

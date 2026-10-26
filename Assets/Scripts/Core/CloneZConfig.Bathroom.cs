@@ -59,6 +59,8 @@ namespace CloneZ
         public const float TowelDampHours = 3f;              // in-game hours the towel hangs damp after use
         public const float TowelDampLeaves = 0.15f;          // how wet a still-damp towel leaves you (0..1)
         public const float TowelCrookedRoll = 7f;            // the most degrees a towel slung back on the rail hangs askew
+        // ---- Towel fan settings ----
+        public static readonly float TowelFanFactor = 0.5f; // remaining dry‑time is multiplied by 0.5 when fanned
         public const float MirrorCalmCooldown = 60f;         // seconds before another look in the mirror moves the nerves again
         public const float MirrorCabinetEmptyChance = 0.45f; // the cabinet is meant to be lean
         public const int MirrorCabinetMaxStacks = 2;

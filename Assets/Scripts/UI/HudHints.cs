@@ -22,6 +22,7 @@ namespace CloneZ
         private float _playTime;
         private bool _visible = true, _autoHidden;
 
+        /// <summary>Initialises the HUD hints bar and populates it with key-action chips.</summary>
         public HudHints(RectTransform root)
         {
             RectTransform bar = HudUI.Rect(root, "HintBar", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 10f),
@@ -71,6 +72,7 @@ namespace CloneZ
                 _group.alpha = Mathf.MoveTowards(_group.alpha, target, Time.unscaledDeltaTime * FadeSpeed);
         }
 
+        /// <summary>Positions a row of hint chips horizontally centred within the bar.</summary>
         private static void BuildRow(RectTransform bar, List<(string key, string action)> hints, int from, int to, float y)
         {
             var chips = new List<(RectTransform rt, float w)>(to - from);
@@ -90,6 +92,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Creates a chip UI element for a key hint and its action, returning its width.</summary>
         private static RectTransform Chip(RectTransform parent, string key, string action, out float width)
         {
             RectTransform chip = HudUI.Rect(parent, "Chip", new Vector2(0.5f, 0f), new Vector2(0f, 0f), Vector2.zero, new Vector2(10f, ChipHeight));

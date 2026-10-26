@@ -136,6 +136,7 @@ internal void SetTowel(Transform towel, Renderer dry, Renderer damp)
             // into.Add(new InteractAction("Inspect towel", Inspect));
             into.Add(new InteractAction("Check towel dryness", CheckDryness));
             into.Add(new InteractAction("Let towel dry", LetDry));
+            into.Add(new InteractAction("Fan the towel", FanTowel));
             into.Add(new InteractAction("Flick towel", Flick));
         }
 
@@ -181,6 +182,22 @@ internal void SetTowel(Transform towel, Renderer dry, Renderer damp)
             }
             _roll = 0f;
             ctx.Notify("You square the towel up on the rail and smooth it flat. There.");
+        }
+
+        private void FanTowel(InteractContext ctx)
+        {
+            if (!IsDamp)
+            {
+                ctx.Notify("The towel is already dry; the fan has nothing to do.");
+                return;
+            }
+            // Remaining hours until dry
+            float remaining = Mathf.Max(0f, _dryAt - TimeOfDay.Now);
+            // Reduce the remaining time by the fan factor (e.g. 50 % faster)
+            float newRemaining = remaining * CloneZConfig.TowelFanFactor;
+            _dryAt = TimeOfDay.Now + newRemaining;
+            ShowLook(); // update colour/visibility immediately
+            ctx.Notify($"You fan the towel. It will now be dry in {newRemaining:0.0} hours.");
         }
 
         private void LetDry(InteractContext ctx)

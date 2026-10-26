@@ -8,6 +8,8 @@ namespace CloneZ
     {
         /// <summary>Footprints smaller than this (m²) share the site's batches: too small to stand in, or to hide anyone.</summary>
         internal const float MinOwnShell = 4f;
+        /// <summary>Footprints larger than <see cref="MinOwnShell"/> but smaller than this get their own wall mesh (so they can be cut away) while still using the shared roof batch.</summary>
+        internal const float OwnWallThreshold = 20f;
 
         /// <summary>Off: every building draws into the site's shared batches and nothing is ever cut (the harness's
         /// "before" counts).</summary>
@@ -19,19 +21,34 @@ namespace CloneZ
         internal static KentuckyMap.BuildingShell ShellFor(KentuckyMap.Site site, KentuckyMap.Footprint footprint, bool scenery)
         {
             var shell = new KentuckyMap.BuildingShell { Footprint = footprint };
-            if (!OwnShells || scenery || site.Detail != KentuckyMap.Detail.Full || footprint.Size < MinOwnShell)
+            if (!OwnShells || scenery || site.Detail != KentuckyMap.Detail.Full)
             {
+                // everything stays batched – unchanged from original
                 shell.Batched = true;
                 Vector3 middle = KentuckyMap.To3(footprint.Middle, 0f);
                 RaidMesh walls = scenery ? site.Town.Far.Solid(middle) : site.Town.Out.Solid(middle);
                 for (int i = 0; i < shell.Walls.Length; i++) shell.Walls[i] = walls;
                 shell.Upper = site.Roofs.At(middle);
             }
+            else if (footprint.Size < MinOwnShell)
+            {
+                // still too tiny – fully batched (original behaviour for tiny sheds)
+                shell.Batched = true;
+                Vector3 middle = KentuckyMap.To3(footprint.Middle, 0f);
+                RaidMesh walls = scenery ? site.Town.Far.Solid(middle) : site.Town.Out.Solid(middle);
+                for (int i = 0; i < shell.Walls.Length; i++) shell.Walls[i] = walls;
+                shell.Upper = site.Roofs.At(middle);
+            }
+            else if (footprint.Size < OwnWallThreshold)
+            {
+                // own wall mesh only – roof stays shared
+                var walls = new RaidMesh();
+                for (int i = 0; i < shell.Walls.Length; i++) shell.Walls[i] = walls;
+                shell.Upper = site.Roofs.At(KentuckyMap.To3(footprint.Middle, 0f)); // shared roof batch
+            }
             else
             {
-                // One mesh for all four faces: the runtime sorts a building's walls by facing only once it has to cut
-                // some of them (see MapCutaway.Overlay.cs), so an uncut building costs two renderers. (A RaidMesh starts
-                // empty and rents its arrays from RaidMesh's shared pool, giving them back once baked.)
+                // original path – own walls *and* own roof
                 var walls = new RaidMesh();
                 for (int i = 0; i < shell.Walls.Length; i++) shell.Walls[i] = walls;
                 shell.Upper = new RaidMesh();

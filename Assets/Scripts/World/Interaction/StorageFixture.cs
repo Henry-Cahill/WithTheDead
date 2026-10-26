@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CloneZ;
 using UnityEngine;
 
 namespace CloneZ
@@ -137,15 +138,22 @@ namespace CloneZ
                 if (!_open)
                 {
                     // Lock / Unlock actions (only when the doors are closed)
-                    if (_locked)
-                    {
-                        into.Add(new InteractAction("Unlock the " + noun, c => { SetLocked(false); }));
-                    }
-                    else
-                    {
-                        into.Add(new InteractAction("Lock the " + noun, c => { SetLocked(true); }));
-                    }
-                    // Normal open (noisy) – disabled if locked
+if (_locked)
+                        {
+                            // Force‑open action – only shown when the storage is locked and has door parts
+                            if (HasParts)
+                            {
+                                var forceOpen = new InteractAction("Force open the " + noun, c => { ForceOpen(c); });
+                                // not disabled; a noisy, risky alternative to unlocking first
+                                into.Add(forceOpen);
+                            }
+                            into.Add(new InteractAction("Unlock the " + noun, c => { SetLocked(false); }));
+                        }
+                        else
+                        {
+                            into.Add(new InteractAction("Lock the " + noun, c => { SetLocked(true); }));
+                        }
+                        // Normal open (noisy) – disabled if locked
                     var openAction = new InteractAction(_opt.OpenVerb + " the " + noun, c => { SetOpen(true, true); ShowContents(c); });
                     openAction.DisabledIf(_locked, "Locked");
                     into.Add(openAction);
@@ -190,6 +198,22 @@ namespace CloneZ
             // notify the player
             PlayerInteractor pi = _player ?? PlayerInteractor.Current;
             pi?.Notify(locked ? "You lock the " + Noun + "." : "You unlock the " + Noun + ".");
+        }
+        /// <summary>Force‑opens a locked storage, unlocking it first and playing a louder noise.</summary>
+        private void ForceOpen(InteractContext ctx)
+        {
+            // unlock silently (no click noise, we’ll make our own)
+            _locked = false;
+            // notify the survivor that the lock is broken
+            PlayerInteractor pi = _player ?? PlayerInteractor.Current;
+            pi?.Notify("You pry the " + Noun + " open, breaking the lock.");
+            // open with noise – use the large‑noise setting if it exists, otherwise fall back to the normal one
+            float largeNoise = CloneZConfig.FixtureNoiseDoor;
+            if (largeNoise <= 0f) largeNoise = _opt.Noise;
+            SetOpen(true, false); // swing doors without the normal small noise
+            MakeNoise(largeNoise); // extra loud bang for the forced entry
+            // finally show the contents as a normal open would
+            ShowContents(ctx);
         }
         public void SetOpen(bool open, bool noisy)
         {

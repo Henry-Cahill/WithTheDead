@@ -19,6 +19,9 @@ namespace CloneZ
         private const int MaxVolume = 2;
         private const int RelayNet = 2;
 
+        /// <summary>
+        /// Simple container for a radio channel's metadata and transmission lines.
+        /// </summary>
         private sealed class Net
         {
             public string Name, Title;
@@ -158,14 +161,20 @@ namespace CloneZ
             if (now >= _captionAt) Caption(now);
         }
 
+        /// <summary>
+        /// Provides the list of actions the player can perform on this radio based on its power state and proximity.
+        /// </summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Determine if the player is close enough to reach the knob controls.
             bool near = LivingFixtures.FlatDistance(ctx.Position, _point) <= CloneZConfig.RaidFieldRadioKnobReach;
+            // If the radio is currently off, only allow the player to switch it on.
             if (!_on)
             {
                 into.Add(new InteractAction("Switch on the radio", SwitchOn).DisabledIf(!near, TooFar));
                 return;
             }
+            // Populate the action list with all possible interactions when the radio is on.
             into.Add(new InteractAction("Switch off the radio", _switchOffDelegate).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Change channel", Retune).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));
@@ -191,6 +200,9 @@ namespace CloneZ
             ctx.Notify($"Radio is on {n.Name} — {n.Title}. Volume: {vol}.");
         }
 
+        /// <summary>
+        /// Toggles the antenna between normal and boosted range, playing a click sound for feedback.
+        /// </summary>
         private void ToggleAntenna(InteractContext ctx)
         {
             _highGain = !_highGain;
@@ -201,6 +213,9 @@ namespace CloneZ
                 : "You fold the antenna back. The radio’s reach returns to normal.");
         }
 
+        /// <summary>
+        /// Turns the radio on or off, handling state change, visual updates and noise.
+        /// </summary>
         private void Switch(bool on)
         {
             if (_on == on) return;
@@ -213,6 +228,9 @@ namespace CloneZ
                 _noiseAt = Time.time + 0.5f;
             }
         }
+        /// <summary>
+        /// Advances to the next channel in the list, resetting the caption timer.
+        /// </summary>
         private void Retune(InteractContext ctx)
         {
             _net = (_net + 1) % Nets.Length;
@@ -222,6 +240,9 @@ namespace CloneZ
             ctx.Notify("You click the channel selector round to " + n.Name + " \u2014 " + n.Title + ".");
         }
 
+        /// <summary>
+        /// Moves to the previous channel, wrapping around, and updates caption timing.
+        /// </summary>
         private void PrevChannel(InteractContext ctx)
         {
             _net = (_net + Nets.Length - 1) % Nets.Length;
@@ -232,6 +253,9 @@ namespace CloneZ
         }
 
 
+        /// <summary>
+        /// Adjusts the radio volume up or down by one step and informs the player.
+        /// </summary>
         private void Louder(InteractContext ctx, int step)
         {
             _volume = Mathf.Clamp(_volume + step, 0, MaxVolume);
@@ -264,9 +288,13 @@ namespace CloneZ
         }
 
         // A transmission is due: the next line of the net, if the survivor can hear it from where they are.
+        /// <summary>
+        /// Handles playing the next line of the current channel when a caption is due.
+        /// </summary>
         private void Caption(float now)
         {
             PlayerInteractor pi = PlayerInteractor.Current;
+            // Verify a player exists and is within hearing range; otherwise delay the caption.
             if (pi == null || !InEarshot(pi))
             {
                 _captionAt = now + 1f;
@@ -274,12 +302,14 @@ namespace CloneZ
             }
             Net n = Nets[_net];
             string line = null;
+            // Choose the next transmission line, trying until a non‑null entry is found (or fall back to the relay notice).
             for (int tries = 0; tries < n.Lines.Length && line == null; tries++)
             {
                 int i = _cursor[_net] % n.Lines.Length;
                 _cursor[_net] = i + 1;
                 line = n.Lines[i] ?? (_net == RelayNet ? ExitNotice() : null);
             }
+            // Render the chosen line (or static) as a subtitle, using the channel’s colour and configured display time.
             Subtitles.Show("Field radio \u2014 " + n.Name, line ?? "*static*", n.Caption, CloneZConfig.ReceiverCaptionSeconds);
             _captionAt = now + Random.Range(CloneZConfig.RaidFieldRadioCaptionMin, CloneZConfig.RaidFieldRadioCaptionMax);
         }
@@ -298,6 +328,9 @@ namespace CloneZ
                 : "Evacuation notice: the " + e.Name + " is closed. I say again, the " + e.Name + " is closed. Do not approach.";
         }
 
+        /// <summary>
+        /// Determines whether the player is close enough to hear the radio, factoring antenna boost and volume.
+        /// </summary>
         private bool InEarshot(PlayerInteractor pi)
         {
             InteractContext ctx = pi.Context;
