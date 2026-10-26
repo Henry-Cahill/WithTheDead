@@ -92,6 +92,7 @@ namespace CloneZ
             public Building B;
             public int Stage, Mats, Slots, Lines, Sub, Tri, Vertices;
             public Material[] Materials;
+            public Material StubMat; // ← new
             public bool Clip;
             public float ClipTop;
             public double Ms;
@@ -246,6 +247,8 @@ namespace CloneZ
             s_Job.B = b;
             s_Job.Stage = 0;
             s_Job.Materials = materials;
+            s_Job.StubMat = new Material(materials[0]);
+            s_Job.StubMat.color = GetStubColour(b);
             s_Job.Mats = src.subMeshCount;
             s_Job.Clip = b.ClipWalls;
             s_Job.ClipTop = b.ClipTop;
@@ -290,7 +293,9 @@ namespace CloneZ
                 }
                 if (job.Stage == 2)
                 {
-                    Surf cap = DecorPalette.Matte(CapColour);
+            // Create a cap material with per‑building colour variation
+            Color capCol = GetCapColour(b);
+            Surf cap = DecorPalette.Matte(capCol);
                     for (int g = 0; g < 4; g++) Caps(s_Cuts[g], s_Lists[Part(2, g, 0, job.Mats)], cap.Uv);
                     job.Stage = 3;
                     if (Stopwatch.GetTimestamp() > deadline) return false;
@@ -451,7 +456,7 @@ namespace CloneZ
                 int n = s_Lists[i].Count;
                 parts[map[i]] = new SubMeshDescriptor(startAt, n) { bounds = bounds, firstVertex = 0, vertexCount = vertices };
                 mesh.SetSubMesh(map[i], parts[map[i]], Quiet);
-                used[map[i]] = i >= 8 * mats ? cap.Mat : job.Materials[Mathf.Min(i % mats, job.Materials.Length - 1)];
+                used[map[i]] = i >= 8 * mats ? cap.Mat : i >= 4 * mats ? job.StubMat : job.Materials[Mathf.Min(i % mats, job.Materials.Length - 1)];
                 startAt += n;
             }
             mesh.bounds = bounds;
@@ -632,6 +637,25 @@ namespace CloneZ
             }
         }
         #endregion
+
+        // Returns a deterministic rustic brown colour for a building's stub material.
+        private static Color GetStubColour(Building b)
+        {
+            // hash the building id into a hue‑like value (0‑1)
+            uint h = (uint)(b.Id * 0x9e3779b9u);
+            float t = (h & 0xFFFFu) / 65535f; // 0‑1
+            // blend between two rustic browns
+            return Color.Lerp(new Color(0.45f, 0.33f, 0.22f), new Color(0.55f, 0.40f, 0.28f), t);
+        }
+
+        // Returns a per‑building colour variation for the cap on cut walls.
+        private static Color GetCapColour(Building b)
+        {
+            uint h = (uint)(b.Id * 0x85ebca6bu);
+            float t = (h & 0xFFFFu) / 65535f;
+            // blend between the base cap colour and a slightly darker tone
+            return Color.Lerp(CapColour, new Color(0.20f, 0.18f, 0.16f), t);
+        }
 
         #region Cutting triangles
         // The part of triangle (i0, i1, i2) below height h into `into`; with `cuts`, the points where its edges cross h (in
