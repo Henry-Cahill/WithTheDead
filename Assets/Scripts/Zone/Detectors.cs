@@ -228,7 +228,8 @@ namespace CloneZ
             }
 
             float anomaly = _d.NearestAnomaly < 4f ? Mathf.Lerp(0.35f, 0f, _d.NearestAnomaly / 4f) : 0f;
-            _anomalyRing.color = new Color(1f, 0.3f, 0.2f, anomaly * (0.6f + 0.4f * Mathf.Sin(Time.time * 18f)));
+            float pulseAnomaly = 0.6f + 0.4f * Mathf.Sin(Time.time * 18f);
+            _anomalyRing.color = new Color(1f, 0.3f, 0.2f, Mathf.Clamp01(anomaly * pulseAnomaly));
 
             // Echo: a lamp that pulses faster as you close in.
             _lamp.gameObject.SetActive(tier == 1);
@@ -236,7 +237,7 @@ namespace CloneZ
             {
                 float k = _d.Target != null ? Mathf.Clamp01(_d.TargetDistance / _d.Active.Range) : 1f;
                 float pulse = _d.Target != null ? 0.5f + 0.5f * Mathf.Sin(Time.time * Mathf.Lerp(30f, 4f, k)) : 0f;
-                _lamp.color = new Color(0.2f, 1f, 0.3f, 0.15f + 0.8f * pulse * (1f - k * 0.6f));
+                _lamp.color = new Color(0.2f, 1f, 0.3f, Mathf.Clamp01(0.15f + 0.8f * pulse * (1f - k * 0.6f)));
             }
 
             // Bearing: a needle toward the nearest find, relative to where the view faces.
@@ -245,11 +246,19 @@ namespace CloneZ
 
             // Lattice: plot everything sensed.
             if (tier == 3) _d.Sensed(_sensed); else _sensed.Clear();
+            // Ensure we have enough dot objects for the sensed artifacts.
             while (_dots.Count < _sensed.Count)
             {
                 Image dot = UIKit.Panel(_plot, "Dot", Color.white);
                 UIKit.Place(dot.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(7f, 7f));
                 _dots.Add(dot);
+            }
+            // Remove excess dots that are no longer needed (e.g. when detector tier drops from 3)
+            while (_dots.Count > _sensed.Count)
+            {
+                Image surplus = _dots[_dots.Count - 1];
+                _dots.RemoveAt(_dots.Count - 1);
+                if (surplus != null) Destroy(surplus.gameObject);
             }
             for (int i = 0; i < _dots.Count; i++)
             {
