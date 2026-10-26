@@ -28,17 +28,25 @@ namespace CloneZ
             return v;
         }
 
+        /// <summary>Initialises the Cinemachine camera rig, creating the brain, custom blend settings, and the set of virtual cameras used for each view.</summary>
         private void Awake()
         {
+            // Set this as the singleton instance for global access.
             Instance = this;
+            // Ensure a CinemachineBrain component is present; it drives the real camera.
             _brain = GetComponent<CinemachineBrain>();
             if (_brain == null) _brain = gameObject.AddComponent<CinemachineBrain>();
+            // Configure brain update timings and enforce manual updates for deterministic control.
             _brain.UpdateMethod = CinemachineBrain.UpdateMethods.ManualUpdate;
             _brain.BlendUpdateMethod = CinemachineBrain.BrainUpdateMethods.LateUpdate;
+            // Force perspective lens mode by default and enable the override settings.
             _brain.LensModeOverride = new CinemachineBrain.LensModeOverrideSettings { Enabled = true, DefaultMode = LensSettings.OverrideModes.Perspective };
+            // Set a smooth default blend for view transitions.
             _brain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseInOut, 0.3f);
+            // Disable debug overlay to keep the UI clean.
             _brain.ShowDebugText = false;
 
+            // Define custom camera transition blends: instant cuts for isometric view and smooth eases for first‑person/shoulder/bodycam switches.
             var blends = ScriptableObject.CreateInstance<CinemachineBlenderSettings>();
             blends.CustomBlends = new[]
             {
@@ -49,9 +57,11 @@ namespace CloneZ
             };
             _brain.CustomBlends = blends;
 
+            // Initialise virtual cameras for each view mode.
             string[] names = { "CM Isometric", "CM Shoulder", "CM FirstPerson", "CM Bodycam" };
             for (int i = 0; i < 4; i++)
             {
+                // Create a dedicated GameObject for the virtual camera of this view.
                 var go = new GameObject(names[i]);
                 var vc = go.AddComponent<CinemachineCamera>();
                 vc.Priority = 0;
@@ -59,11 +69,13 @@ namespace CloneZ
                 vc.Lens.ModeOverride = i == 0 ? LensSettings.OverrideModes.Orthographic : LensSettings.OverrideModes.Perspective;
                 if (i > 0)
                 {
+                    // Add an impulse listener to perspective cameras so they can receive shake impulses.
                     var listener = go.AddComponent<CinemachineImpulseListener>();
                     listener.Gain = 1f;
                     listener.ChannelMask = -1;
                     listener.Use2DDistance = false;
                 }
+                // Store the created virtual camera for later lookup.
                 _vcams[i] = vc;
             }
         }
