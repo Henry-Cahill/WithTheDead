@@ -11120,13 +11120,14 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: `RankOf` (line 38), `Stamp` (line 429), `Clear` (line 509).
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
   Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
-- [ ] Cache the per‑frame `Actor.LocalPlayer` lookup in BodyAudio.Update (Assets/Scripts/Audio/BodyAudio.cs)
+- [x] Cache the per‑frame `Actor.LocalPlayer` lookup in BodyAudio.Update (Assets/Scripts/Audio/BodyAudio.cs)
   Add a private static `Actor _cachedLocalPlayer;` field.
   In `Update()` replace `Actor local = Actor.LocalPlayer;` with:
   `if (_cachedLocalPlayer == null) _cachedLocalPlayer = Actor.LocalPlayer;`
   `Actor local = _cachedLocalPlayer;`
   When the player is destroyed or changes (detected by `_actor` becoming null), reset the cache by setting `_cachedLocalPlayer = null;` inside the `if (local != _actor)` block before assigning `_actor`.
   This removes the per‑frame `Actor.LocalPlayer` lookup (which uses `FindObjectByType` internally), keeping the same gameplay audio behavior – the audio still reacts to the current player, and the cache is refreshed automatically when the player object disappears.
+  - 23:44 landed by 0htsserver in 5.5 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add a “Reset circuit” action to LightSwitch that temporarily turns the circuit off then back on, producing a visible flicker and a notification.
   Step 1: Assets/Scripts/World/Fixtures/LightSwitch.cs, class `LightSwitch`, add a private constant field for the reset delay. Insert after the existing private fields: `private const float ResetDelay = 0.5f; // seconds the circuit stays off during a reset` (Quote current fields: `private string _name; private string _key; ... private float _nextSync;`)
   Step 2: Assets/Scripts/World/Fixtures/LightSwitch.cs, add `using System.Collections;` at the top of the file (after the existing `using System.Collections.Generic;`).
