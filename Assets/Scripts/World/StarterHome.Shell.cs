@@ -123,6 +123,9 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Generate wall segment definitions for a given piece type.</summary>
+        // Build a list of wall "bands" (vertical slices) appropriate for the piece type.
+        // The list varies for windows (sill, head, side jambs), doorways (jambs and lintel) or a full wall.
         private static List<Band> BandsFor(BuildPieceType type, in Frame f)
         {
             var bands = new List<Band>(4);
@@ -158,16 +161,22 @@ namespace CloneZ
         // One solid stretch: the dark core, then each face — wallpaper over wainscot with a baseboard and
         // chair rail on a room side, clapboard over a concrete foundation with a drip cap and frieze board
         // outside. At an outer corner the east-west walls fill the corner square and the siding wraps it.
+        /// <summary>Render a vertical wall band, handling interior and exterior finishes.</summary>
+        // Render a wall "band" (vertical slice) with appropriate interior or exterior materials.
+        // Handles corner extensions, core geometry, and per‑side decorations.
         private static void DrawBand(RaidMesh m, in Frame f, in Band b, HomeRoom[] rooms, bool corner0, bool corner1)
         {
+            // Detect if this band touches the outermost corners so we can extend it for proper siding wrap‑around.
             bool atA0 = corner0 && Mathf.Abs(b.S - f.A0) < 0.01f, atA1 = corner1 && Mathf.Abs(b.E - f.A1) < 0.01f;
             float h = b.Y1 - b.Y0, cy = (b.Y0 + b.Y1) * 0.5f;
             float cs = b.S - (atA0 && f.AlongX ? Half : 0f), ce = b.E + (atA1 && f.AlongX ? Half : 0f);
+            // Core solid core for the wall segment – the dark "core" that all finishes sit on.
             m.Box(f.P((cs + ce) * 0.5f, cy, 0f), f.Size(ce - cs, h, Half * 2f), DecorPalette.Matte(CoreColor));
 
             for (int side = -1; side <= 1; side += 2)
             {
                 HomeRoom room = rooms[(side + 1) / 2];
+                // Normal vector pointing outward from this side of the wall.
                 Vector3 n = f.N(side);
                 if (room != null)
                 {
@@ -181,6 +190,7 @@ namespace CloneZ
                         m.Box(f.P(mid, rail + 0.01f, side * (Half + 0.012f)), f.Size(len, 0.06f, 0.024f), DecorPalette.Matte(room.Design.Trim * 1.05f));
                     continue;
                 }
+                // Exterior wall: apply siding, trim, and top snow lip.
                 float xs = b.S - (atA0 ? Half : 0f), xe = b.E + (atA1 ? Half : 0f);
                 float xmid = (xs + xe) * 0.5f, xlen = xe - xs;
                 m.Upright(f.P(xmid, cy, side * (Half + 0.004f)), n, xlen, h, DecorMaterials.WallExterior(ExteriorStyle.Siding, Siding));
@@ -405,6 +415,7 @@ namespace CloneZ
                          m.Box(f.P(plaqueX, plaqueY, plaqueZ), plaqueSize, DecorPalette.Matte(TrimWhite));
                          // Simulated dark numerals as small paint‑chip rectangles
                          for (int i = 0; i < 3; i++)
+                         // Process each side: -1 = interior, +1 = exterior
                          {
                              float numY = plaqueY + (float)(rng.NextDouble() - 0.5) * 0.01f;
                              float numX = plaqueX - 0.04f + i * 0.03f;
