@@ -390,7 +390,29 @@ namespace CloneZ
     /// room is turned.</summary>
     public sealed class FaceCameraYaw : MonoBehaviour
     {
+        private static int s_Frame;
+        private static Camera s_Camera;
+        private static Quaternion s_Facing;
+        private static bool s_Valid;
+
         private Camera _cam;
+
+        /// <summary>The horizontal yaw every hanging sign turns to this frame, rebuilt once for the camera and shared:
+        /// false when it looks straight down, as there is no yaw to take then.</summary>
+        private static bool TryFacing(Camera cam, out Quaternion rotation)
+        {
+            if (s_Camera != cam || s_Frame != Time.frameCount)
+            {
+                s_Frame = Time.frameCount;
+                s_Camera = cam;
+                Vector3 f = cam.transform.forward;
+                f.y = 0f;
+                s_Valid = f.sqrMagnitude >= 1e-4f;
+                s_Facing = s_Valid ? Quaternion.LookRotation(f.normalized, Vector3.up) : Quaternion.identity;
+            }
+            rotation = s_Facing;
+            return s_Valid;
+        }
 
         private void LateUpdate()
         {
@@ -399,10 +421,8 @@ namespace CloneZ
                 _cam = Camera.main;
                 if (_cam == null) return;
             }
-            Vector3 f = _cam.transform.forward;
-            f.y = 0f;
-            if (f.sqrMagnitude < 1e-4f) return;
-            transform.rotation = Quaternion.LookRotation(f.normalized, Vector3.up);
+            if (!TryFacing(_cam, out Quaternion want)) return;
+            if (transform.rotation != want) transform.rotation = want;
         }
     }
 }

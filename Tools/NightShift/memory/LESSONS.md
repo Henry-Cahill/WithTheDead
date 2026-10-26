@@ -40,3 +40,4 @@ appends one short bullet at the end. Keep each bullet to a line or two.
 - KentuckyMap: `Fill` (Ground.cs) now gives asphalt polygons per-vertex Perlin height jitter (±0.001 m) like `FillIce`; other surfaces stay flat.
 - EmissionDirector (Zone/Emissions.cs) now caches the warning-phase sky override in `_warningSkyColor` (set in `StartWarning`) instead of re-evaluating the `PsiStorm` conditional every frame in `Update`.
 - When extending a string array literal, ensure the closing brace and semicolon remain after new entries to keep C# syntax correct.
+- `FaceCameraYaw` (Hub/HubWorld.Roadhouse.cs) shares one static per-frame yaw (`TryFacing`) across all hanging signs, keyed by `Time.frameCount` and camera; reuse this pattern for many identical per-actor LateUpdate look-ats.
