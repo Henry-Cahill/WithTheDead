@@ -21,20 +21,30 @@ namespace CloneZ
                 _post = Raise(RaidLayouts.ArmyPost(_town, PostAt, PostTurns));
                 _tent = Raise(RaidLayouts.QuarantineTent(_town, TentAt, TentTurns));
                 _clinic = Raise(RaidLayouts.Clinic(_town, ClinicAt, ClinicTurns));
+                // Create each house lot building and store for later placement
                 for (int i = 0; i < HouseLots.Length; i++)
                 {
                     HouseLot lot = HouseLots[i];
                     _houses[i] = Raise(RaidLayouts.House(_town, lot.Name, lot.Center, lot.Turns, lot.Mirror, lot.Small));
                 }
 
+                // Build the county office and its staff lot
                 Office();
+                // Build the gas‑station food mart forecourt
                 FoodMart();
+                // Build the warehouse depot and its yard
                 Depot();
+                // Build the National Guard post and its motor pool
                 GuardPost();
+                // Build the quarantine tent and surrounding compound
                 Quarantine();
+                // Build the clinic and its parking lot
                 Clinic();
+                // Build Veterans Park with plaza, benches, trees and lamps
                 Park();
+                // Place each house building onto its lot and add yard features
                 for (int i = 0; i < HouseLots.Length; i++) House(HouseLots[i], _houses[i]);
+                // Add sidewalks and yards for both sides of Elm and Oak streets
                 Yards(ElmSt, +1);
                 Yards(ElmSt, -1);
                 Yards(OakSt, +1);
