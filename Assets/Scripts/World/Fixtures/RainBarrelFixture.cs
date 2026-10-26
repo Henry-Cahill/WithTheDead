@@ -19,6 +19,7 @@ namespace CloneZ
         private const float CoverSeconds = 1f;
         private bool _capped;
         private bool _boiled;
+        private bool _filtered; // true after the water has been filtered with a rag
         private string _key;   // save key, from where the barrel stands (see SaveKey)
         // Random period‑accurate notes displayed when inspecting the barrel.
         private static readonly string[] _barrelNotes = new[] {
@@ -69,6 +70,12 @@ namespace CloneZ
                         c.Notify("You sip the boiled water. It feels clean and safe.");
                     })
                         .DisabledIf(_capped, "The barrel is covered."));
+                else if (_filtered)
+                    into.Add(new InteractAction("Drink filtered water (safe)", c => {
+                        WaterUse.Drink(c, b);
+                        c.Notify("You drink the filtered water. It still tastes a bit off, but it’s safe.");
+                    })
+                        .DisabledIf(_capped, "The barrel is covered."));
                 else
                     into.Add(new InteractAction("Drink from the barrel  (tainted)", c => WaterUse.Drink(c, b))
                         .DisabledIf(_capped, "The barrel is covered.")
@@ -88,6 +95,16 @@ namespace CloneZ
                 .DisabledIf(_capped, "The barrel is covered."));
             into.Add(new InteractAction("Shake the barrel vigorously", VigorousShake).Timed(ShakeSeconds * 2, "Shaking the barrel hard").DisabledIf(!Barrel.HasWater, Barrel.DryMessage)
                 .DisabledIf(_capped, "The barrel is covered."));
+            // New action: filter water with a rag
+            into.Add(new InteractAction("Filter water with a rag", c => {
+                _filtered = true;
+                c.Notify("You run a dirty rag through the water, pulling out grit and grime. The water looks clearer.");
+            })
+                .Timed(4f, "Filtering water")
+                .DisabledIf(!water, b.DryMessage)
+                .DisabledIf(_capped, "The barrel is covered.")
+                .DisabledIf(_filtered, "The water has already been filtered.")
+                .DisabledIf(_boiled, "The water is already boiled; filtering is unnecessary."));
             into.Add(new InteractAction(_capped ? "Uncover the barrel" : "Cover the barrel", ToggleCover)
                 .Timed(CoverSeconds, _capped ? "Uncovering the barrel" : "Covering the barrel"));
             into.Add(new InteractAction(_boiled ? "Water already boiled" : "Boil the water", BoilWater)
@@ -171,6 +188,7 @@ namespace CloneZ
         private void BoilWater(InteractContext ctx)
         {
             _boiled = true;
+            _filtered = false; // boiled water no longer needs filtering
             ctx.Notify("The water reaches a rolling boil, killing the pathogens. It’s now safe to drink.");
         }
 
@@ -180,6 +198,7 @@ namespace CloneZ
             int state = 0;
             if (_capped) state |= 1; // bit 0 = capped
             if (_boiled) state |= 2; // bit 1 = boiled
+            if (_filtered) state |= 4; // bit 2 = filtered
             save.State = state;
         }
 
@@ -188,6 +207,7 @@ namespace CloneZ
             base.RestoreState(save);
             _capped = (save.State & 1) != 0;
             _boiled = (save.State & 2) != 0;
+            _filtered = (save.State & 4) != 0;
             if (Barrel != null) Barrel.ShowLid(_capped);
         }
     }
