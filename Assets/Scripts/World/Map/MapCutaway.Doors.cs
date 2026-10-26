@@ -34,11 +34,10 @@ namespace CloneZ
             // quick check – count changed or last element changed
             Interactable last = n > 0 ? all[n - 1] : null;
             bool quickChanged = n != s_Interactables || !ReferenceEquals(last, s_LastInteractable);
-            // full checksum – XOR of all instance IDs (fast, catches any add/remove/move)
-#pragma warning disable CS0619 // GetInstanceID is obsolete
-            int newChecksum = 0;
-            for (int i = 0; i < n; i++) newChecksum ^= all[i].GetHashCode();
-#pragma warning restore CS0619
+            // Full checksum: preserve list order so reordering is detected.
+            int newChecksum = 17;
+            for (int i = 0; i < n; i++)
+                newChecksum = unchecked(newChecksum * 31 + (all[i] != null ? all[i].GetHashCode() : 0));
             bool changed = quickChanged || newChecksum != s_InteractablesChecksum;
             // store current state for next frame
             s_Interactables = n;
