@@ -55,7 +55,7 @@ namespace CloneZ
         public static event Action<ShotRequest, ShotResult> ShotResolved;
 
         /// <summary>Layers bullets interact with: the world and characters.</summary>
-        public static int ShotMask => Physics.DefaultRaycastLayers;
+        public static int ShotMask => (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
 
         private static readonly RaycastHit[] s_Hits = new RaycastHit[24];
 
