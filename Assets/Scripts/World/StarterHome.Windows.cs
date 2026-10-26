@@ -135,6 +135,47 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             // right bracket
             m.Box(f.P(s1 - 0.0225f, apronY, bracketZ), f.Size(bracketW, bracketH, bracketD), rustMetal);
 
+            // ---- exterior wooden shutters (period‑correct) ----
+            float shutterDepth = 0.02f; // metres
+            float shutterHeight = WindowHead - WindowSill; // metres
+            float shutterHalfWidth = (WindowWidth * 0.5f) - 0.01f; // metres, each panel ~ half the opening
+            float shutterY = (WindowSill + WindowHead) * 0.5f; // centre vertically
+            float shutterZ = outer - sillDepth * 0.5f - apronDepth * 0.5f - shutterDepth * 0.5f - 0.001f; // just outside the stone/apron
+
+            // left shutter panel
+            float leftX = f.Mid - WindowWidth * 0.25f; // centre of left panel
+            m.Box(f.P(leftX, shutterY, shutterZ), f.Size(shutterHalfWidth, shutterHeight, shutterDepth), wood);
+
+            // right shutter panel
+            float rightX = f.Mid + WindowWidth * 0.25f; // centre of right panel
+            m.Box(f.P(rightX, shutterY, shutterZ), f.Size(shutterHalfWidth, shutterHeight, shutterDepth), wood);
+
+            // top cross‑bars
+            float barHeight = 0.015f; // metres
+            // left top bar
+            m.Box(f.P(leftX, WindowHead - barHeight * 0.5f, shutterZ), f.Size(shutterHalfWidth, barHeight, shutterDepth), wood);
+            // right top bar
+            m.Box(f.P(rightX, WindowHead - barHeight * 0.5f, shutterZ), f.Size(shutterHalfWidth, barHeight, shutterDepth), wood);
+
+            // iron hinge plates
+            float hingeSize = 0.012f; // cubic metres (approx 12 mm)
+            float hingeOffsetX = shutterHalfWidth * 0.5f - hingeSize * 0.5f;
+            float hingeTopY = WindowHead - hingeSize * 0.5f;
+            float hingeBottomY = WindowSill + hingeSize * 0.5f;
+            // left shutter hinges
+            m.Box(f.P(leftX + hingeOffsetX, hingeTopY, shutterZ), f.Size(hingeSize, hingeSize, 0.004f), rustMetal);
+            m.Box(f.P(leftX + hingeOffsetX, hingeBottomY, shutterZ), f.Size(hingeSize, hingeSize, 0.004f), rustMetal);
+            // right shutter hinges
+            m.Box(f.P(rightX - hingeOffsetX, hingeTopY, shutterZ), f.Size(hingeSize, hingeSize, 0.004f), rustMetal);
+            m.Box(f.P(rightX - hingeOffsetX, hingeBottomY, shutterZ), f.Size(hingeSize, hingeSize, 0.004f), rustMetal);
+
+            // brass latch bolt (visual only)
+            float boltW = 0.008f, boltH = 0.012f, boltD = 0.004f;
+            float boltX = leftX - shutterHalfWidth * 0.25f; // a third of the way out from centre
+            m.Box(f.P(boltX, shutterY, shutterZ + shutterDepth * 0.5f + boltD * 0.5f), f.Size(boltW, boltH, boltD), brass);
+
+            // End of exterior shutter details – visual only, no colliders or interaction points added.
+
             // nail‑head grid on the wooden apron (3 × 2)
             float nailRadius = 0.0015f, nailHeight = 0.001f;
             int nailCols = 3, nailRows = 2;
