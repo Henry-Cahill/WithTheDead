@@ -20,6 +20,8 @@ namespace CloneZ
         // The live interactables last frame: how many, and the newest (they're added at the end).
         private static int s_Interactables = -1;
         private static Interactable s_LastInteractable;
+        // after the existing static fields
+        private static int s_InteractablesChecksum = 0;
 
         /// <summary>Door renderers hidden with cut walls so far (for the harness).</summary>
         internal static int DoorsHidden;
@@ -29,10 +31,19 @@ namespace CloneZ
         {
             List<Interactable> all = Interactable.All;
             int n = all.Count;
+            // quick check – count changed or last element changed
             Interactable last = n > 0 ? all[n - 1] : null;
-            bool changed = n != s_Interactables || !ReferenceEquals(last, s_LastInteractable);
+            bool quickChanged = n != s_Interactables || !ReferenceEquals(last, s_LastInteractable);
+            // full checksum – XOR of all instance IDs (fast, catches any add/remove/move)
+#pragma warning disable CS0619 // GetInstanceID is obsolete
+            int newChecksum = 0;
+            for (int i = 0; i < n; i++) newChecksum ^= all[i].GetHashCode();
+#pragma warning restore CS0619
+            bool changed = quickChanged || newChecksum != s_InteractablesChecksum;
+            // store current state for next frame
             s_Interactables = n;
             s_LastInteractable = last;
+            s_InteractablesChecksum = newChecksum;
             return changed;
         }
 
@@ -40,6 +51,7 @@ namespace CloneZ
         {
             s_Interactables = -1;
             s_LastInteractable = null;
+            s_InteractablesChecksum = 0;
         }
 
         /// <summary>
