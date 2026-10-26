@@ -11843,7 +11843,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 6 (optional safety): ensure the method’s signature and existing collider logic remain untouched – we only insert geometry building calls; no colliders or interaction points are added or altered.
   Done when: the fire hydrant now shows a realistic, period‑appropriate set of details – a metal valve knob, a hose coupling, a rust‑streaked strip, a weathered label, and a small paint chip – all varying slightly per instance via the existing `rng`. The hydrant’s original size, collider, and placement stay exactly as before, and it still compiles and renders correctly in‑game.
   - 07:37 landed by 0htsserver in 3.6 min: Implemented a coordinated “weathered fire‑hydrant” visual pass:
-- [ ] In Assets/Scripts/Core/WeatherSystem.cs: Cache the camera‑related lookup and isometric focus point in WeatherSystem so ApplyRain() no longer performs Camera.main and IsoCameraFollow checks each frame
+- [x] In Assets/Scripts/Core/WeatherSystem.cs: Cache the camera‑related lookup and isometric focus point in WeatherSystem so ApplyRain() no longer performs Camera.main and IsoCameraFollow checks each frame
   Add a private field `private Vector3 _rainCenter;` to store the rain emission centre.
   In Update(), after the state‑timer block, compute the centre once:
   `if (_cam == null) _cam = Camera.main;`
@@ -11851,6 +11851,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `_rainCenter = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;`
   Remove the Camera.main lookup, iso check, and centre calculation from ApplyRain() and replace the local `centre` variable with the cached `_rainCenter`.
   Result: ApplyRain() now only uses the pre‑computed centre, eliminating per‑frame `Camera.main` and `IsoCameraFollow.Instance` lookups and the associated null‑checks, reducing GC pressure and CPU overhead while keeping the rain particle positioning identical to the current behaviour.
+  - 07:45 landed by 1htsserver in 10 min: **Changed file**
 - [ ] Add a “clean the cot” mechanic to Assets/Scripts/World/Fixtures/RaidStoreCot.cs that makes the cot become dirty after use, lets the survivor clean it (removing the dirt and its comfort penalty), persists the dirty/secured state, and shows a new message when cleaned.
   Step 1: Assets/Scripts/World/Fixtures/RaidStoreCot.cs – add a private field `private bool _dirty; // true after the cot has been used, reduces comfort until cleaned` just below the existing `_secured` field.
   Step 2: Assets/Scripts/World/Fixtures/RaidStoreCot.cs – modify `GetActions` to insert the new “Clean the cot” action (after the “Look under the cot” line) and to replace the existing “Get up off the cot” lambda with a method call. `if (_dirty)` `into.Add(new InteractAction("Clean the cot", CleanCot)` `.DisabledIf(seat != null && seat.IsSeated, "You can't clean it while seated"));` Replace `into.Add(new InteractAction("Get up off the cot", c => c.Seat.Stand()));` with `into.Add(new InteractAction("Get up off the cot", GetUpFromCot));`
