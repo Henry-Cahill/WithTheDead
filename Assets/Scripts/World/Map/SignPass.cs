@@ -18,6 +18,8 @@ namespace CloneZ
     {
         private const int SaltSignal = 0x5161, SaltStop = 0x5709, SaltRule = 0x7A11, SaltPost = 0x9057, SaltSpeed = 0x5BE3,
             SaltDeer = 0xDEE2, SaltBlade = 0xB1AD;
+        // bolt size for metal cap bolts (length of each bolt cube)
+        private const float PostBoltSize = 0.01f; // metres
         private static readonly Color SignalYellow = new Color(0.82f, 0.64f, 0.10f);
         private static readonly Color SignalGreen = new Color(0.12f, 0.22f, 0.15f);
         private static readonly Color PostGrey = new Color(0.56f, 0.58f, 0.60f);
@@ -344,6 +346,25 @@ namespace CloneZ
             RaidMesh m = ctx.Low(at);
             if (wood) m.Box(To3(at, height * 0.5f), new Vector3(0.09f, height, 0.09f), Matte(PostWood));
             else m.Box(To3(at, height * 0.5f), new Vector3(0.06f, height, 0.045f), Metal(PostGrey));
+            // concrete footing under the post
+            m.Box(To3(at, 0.01f), new Vector3(0.2f, 0.02f, 0.2f), Concrete);
+            // thin wooden band halfway up the post
+            m.Box(To3(at, height * 0.5f), new Vector3(0.11f, 0.025f, 0.11f), Matte(PostWood));
+            // top metal cap
+            float capHeight = 0.05f;
+            Vector3 capCenter = To3(at, height + capHeight * 0.5f);
+            m.Box(capCenter, new Vector3(0.12f, capHeight, 0.12f), Metal(PostGrey));
+            // four small bolts on the cap with deterministic jitter
+            float boltOffset = 0.04f;
+            for (int i = 0; i < 4; i++)
+            {
+                float jitterX = (float)MapStyle.Unit(ctx.KeyOf(at) ^ (i << 4), 0xA1B2) * 0.005f;
+                float jitterZ = (float)MapStyle.Unit(ctx.KeyOf(at) ^ (i << 8), 0xC3D4) * 0.005f;
+                float dx = ((i & 1) == 0 ? -boltOffset : boltOffset) + jitterX;
+                float dz = ((i & 2) == 0 ? -boltOffset : boltOffset) + jitterZ;
+                Vector3 boltPos = capCenter + new Vector3(dx, 0f, dz);
+                m.Box(boltPos, new Vector3(PostBoltSize, capHeight, PostBoltSize), Metal(PostGrey));
+            }
             m.Box(To3(at, height + 0.01f), new Vector3(0.1f, 0.02f, 0.1f), SnowSurf);
             ctx.Collider(at, 0f, new Vector3(0.1f, 2.4f, 0.1f), 0f);
             ctx.Site.Take(at, 0.3f);
