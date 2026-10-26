@@ -93,6 +93,7 @@ namespace CloneZ
             int door = c.DoorSide >= 0 ? c.DoorSide : 0;
             Rect i = c.Inner;
             Surf boards = DecorPalette.Matte(new Color(0.42f, 0.30f, 0.20f)), hay = DecorPalette.Matte(new Color(0.78f, 0.66f, 0.36f));
+            var metal = DecorPalette.Matte(new Color(0.70f, 0.70f, 0.70f)); // brushed‑metal look for hinges, latch, nails
             // Stalls along one long side: plank partitions out from the wall, a gate stood open.
             int stallSide = (door + 1) & 3;
             if (c.Len((door + 3) & 3) > c.Len(stallSide)) stallSide = (door + 3) & 3;
@@ -112,8 +113,33 @@ namespace CloneZ
                     c.Taken.Add(fp);
                     b.Furnish(c.R, new RaidBuilding.Place(q.x, q.y, RoomCtx.YawOf(stallSide) + 90f), new Vector3(2.8f, 1.3f, 0.1f), true, (m, r) =>
                     {
-                        for (int p = 0; p < 4; p++) m.Box(new Vector3(0f, 0.2f + p * 0.32f, 0f), new Vector3(2.8f, 0.2f, 0.05f), boards);
-                        m.Box(new Vector3(1.37f, 0.65f, 0f), new Vector3(0.1f, 1.3f, 0.1f), boards);
+for (int p = 0; p < 4; p++) m.Box(new Vector3(0f, 0.2f + p * 0.32f, 0f), new Vector3(2.8f, 0.2f, 0.05f), boards);
+                         m.Box(new Vector3(1.37f, 0.65f, 0f), new Vector3(0.1f, 1.3f, 0.1f), boards);
+                         // left hinge
+                         m.Box(new Vector3(0.15f, 1.20f, 0f), new Vector3(0.07f, 0.15f, 0.02f), metal);
+                         // right hinge
+                         m.Box(new Vector3(2.65f, 1.20f, 0f), new Vector3(0.07f, 0.15f, 0.02f), metal);
+                         // simple latch
+                         m.Box(new Vector3(1.38f, 0.58f, 0f), new Vector3(0.20f, 0.05f, 0.02f), metal);
+                         // top wear stripe (darkened wood)
+                         m.Box(new Vector3(0f, 1.28f, 0f), new Vector3(2.8f, 0.02f, 0.1f), boards);
+                         // nails
+                         int nailCount = r.Next(3, 6);
+                         for (int n = 0; n < nailCount; n++)
+                         {
+                             float nx = MapStyle.Range(r, 0.2f, 2.6f);
+                             float ny = MapStyle.Range(r, 0.3f, 1.0f);
+                             m.Cylinder(new Vector3(nx, ny, 0f), 0.01f, 0.03f, 8, metal);
+                         }
+                         // optional weathered sign
+                         if (r.NextDouble() < 0.05)
+                         {
+                             // simple sign: thin plank with darker paint stroke
+                             m.Box(new Vector3(1.4f, 0.90f, 0.055f), new Vector3(0.6f, 0.12f, 0.01f), boards);
+                             // dark paint stripe on the sign
+                             m.Box(new Vector3(1.4f, 0.94f, 0.056f), new Vector3(0.55f, 0.02f, 0.01f),
+                                 DecorPalette.Matte(new Color(0.40f, 0.30f, 0.20f)));
+                         }
                     }, "stall partition");
                 }
                 // The stalls' floor is taken; straw in them.
