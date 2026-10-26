@@ -289,6 +289,24 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             Remove(into, "carbattery", Battery, "Take the battery out", 4f * work, () => { Battery = false; });
             Remove(into, "sparkplug", SparkPlug, "Take the spark plug out", 3f * work, () => { SparkPlug = false; });
             Remove(into, "radiator", Radiator, "Take the radiator out", 6f * work, () => { Radiator = false; });
+            // Replace a burst tyre with a spare tyre item.
+            if (Tyres <= 0f && inv.Has("sparetyre"))
+            {
+                ItemDef def = ItemDatabase.Get("sparetyre");
+                into.Add(new InteractAction("Replace tyre", c =>
+                {
+                    // consume one spare tyre
+                    if (c.Inventory.Consume("sparetyre", 1) <= 0) return;
+                    // restore tyre health and at least one wheel if we lost them
+                    Tyres = 1f;
+                    if (Wheels < 1) Wheels = 1;
+                    RefreshParts();
+                    if (c.Skills != null) c.Skills.AddXp(PlayerSkills.Skill.Mechanics, 5f);
+                    Sfx.Play(SfxIds.CarSwitch, transform.position, 0.6f, 1f, 12f);
+                    Changed();
+                }).Timed(6f, "Replacing tyre...", HumanoidActivity.Build)
+                .DisabledIf(!inv.Has("sparetyre"), "You need a spare tyre"));
+            }
         }
 
         private static float HotwireChance(int mechanics) => Mathf.Clamp01(0.3f + mechanics * 0.12f);
@@ -308,20 +326,31 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             }).Timed(seconds, label + "...", HumanoidActivity.Build).DisabledIf(!inv.Has(id), "You need a " + (def != null ? def.DisplayName.ToLowerInvariant() : id)));
         }
 
-        private void Remove(List<InteractAction> into, string id, bool present, string label, float seconds, System.Action take)
+        // Helper for tyre replacement – called from GetActions.
+    private void ReplaceTyre(PlayerInventory inv, PlayerSkills skills)
+    {
+        if (inv.Consume("sparetyre", 1) <= 0) return;
+        Tyres = 1f;
+        if (Wheels < 1) Wheels = 1;
+        RefreshParts();
+        if (skills != null) skills.AddXp(PlayerSkills.Skill.Mechanics, 5f);
+        Sfx.Play(SfxIds.CarSwitch, transform.position, 0.6f, 1f, 12f);
+        Changed();
+    }
+private void Remove(List<InteractAction> into, string id, bool present, string label, float seconds, System.Action take)
+    {
+        if (!present) return;
+        into.Add(new InteractAction(label, c =>
         {
-            if (!present) return;
-            into.Add(new InteractAction(label, c =>
-            {
-                ItemDef def = ItemDatabase.Get(id);
-                if (def == null) return;
-                take();
-                c.Inventory.Inventory.Add(def, 1, enforceWeight: false);
-                if (c.Skills != null) c.Skills.AddXp(PlayerSkills.Skill.Mechanics, 2f);
-                RefreshParts();
-                Changed();
-            }).Timed(seconds, label + "...", HumanoidActivity.Build));
-        }
+            ItemDef def = ItemDatabase.Get(id);
+            if (def == null) return;
+            take();
+            c.Inventory.Inventory.Add(def, 1, enforceWeight: false);
+            if (c.Skills != null) c.Skills.AddXp(PlayerSkills.Skill.Mechanics, 2f);
+            RefreshParts();
+            Changed();
+        }).Timed(seconds, label + "...", HumanoidActivity.Build));
+    }
 
         private static ItemStack GasCan(PlayerInventory inv, bool withFuel)
         {
