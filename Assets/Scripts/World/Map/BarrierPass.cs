@@ -544,7 +544,8 @@ namespace CloneZ
                 if (t > len) break;
                 if (t < 0f) continue;
                 bool big = style == Style.WovenWire || style == Style.Barbed ? k % 3 == 0 : true;
-                Post(m, a + dir * t, h, style, surf, big);
+                    Post(m, a + dir * t, h, style, surf, big);
+                    AddPostDetails(m, a + dir * t, h, style);
             }
         }
 
@@ -566,12 +567,49 @@ namespace CloneZ
                     break;
                 default:
                     m.Box(To3(p, h * 0.5f), new Vector3(0.11f, h, 0.11f), surf);
-                    m.Box(To3(p, h + 0.015f), new Vector3(0.11f, 0.03f, 0.11f), SnowSurf);
+                    // Top snow slab removed – replaced by wooden cap in AddPostDetails.
+                    // m.Box(To3(p, h + 0.015f), new Vector3(0.11f, 0.03f, 0.11f), SnowSurf);
                     break;
             }
         }
 
         // A gate in a fence: open on its post at one side of the gap.
+
+        // Adds visual details to fence posts: wooden caps, bolt heads, and style‑specific braces.
+        private static void AddPostDetails(RaidMesh m, Vector2 p, float h, Style style)
+        {
+            // Wooden cap: a thin slab at the very top of every post.
+            float capHeight = 0.025f;
+            float capThickness = 0.12f;
+            m.Box(To3(p, h + capHeight * 0.5f), new Vector3(capThickness, capHeight, capThickness), Quaternion.identity, Matte(FenceWood), true);
+
+            // Metal bolt heads: three evenly‑spaced heads around the post’s upper rim.
+            int bolts = 3;
+            for (int i = 0; i < bolts; i++)
+            {
+                float angle = i * 2f * Mathf.PI / bolts;
+                Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 0.04f;
+                m.Cylinder(To3(p + offset, h - 0.02f), 0.008f, 0.04f, 6, Galvanised);
+            }
+
+            // Style‑specific brace:
+            if (style == Style.Privacy || style == Style.Picket)
+            {
+                // Diagonal wooden brace from mid‑post to ground.
+                Vector3 start = To3(p, h * 0.5f);
+                Vector3 end = To3(p + new Vector2(0.12f, 0f), 0.1f);
+                m.Upright(start, end - start, 0.12f, h * 0.5f, Matte(FenceWood));
+            }
+            else if (style == Style.GuardRail)
+            {
+                // Small metal brace (L‑shaped) on guard‑rail posts.
+                Vector3 basePos = To3(p, 0f);
+                // vertical stub
+                m.Cylinder(basePos + new Vector3(0f, 0.06f, 0f), 0.006f, 0.12f, 6, Galvanised);
+                // horizontal plate
+                m.Box(basePos + new Vector3(0.04f, 0.09f, 0f), new Vector3(0.08f, 0.012f, 0.018f), Galvanised);
+            }
+        }
         private static void Gate(Ctx ctx, List<Vector2> pts, float t, float w, Style style)
         {
             Vector2 at = PointAt(pts, t - w, out Vector2 d);
