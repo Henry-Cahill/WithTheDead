@@ -80,16 +80,20 @@ namespace CloneZ
             Show(false);
         }
 
+        /// <summary>Creates the post‑processing volume profile for night‑vision.</summary>
         private void BuildVolume()
         {
+            // Create a fresh VolumeProfile to hold all post‑processing settings for night‑vision.
             _profile = ScriptableObject.CreateInstance<VolumeProfile>();
             _profile.name = "NightVisionProfile";
 
+            // Configure base colour correction to achieve the characteristic green tint and contrast.
             _color = _profile.Add<ColorAdjustments>();
             _color.postExposure.Override(NightExposure);
             _color.contrast.Override(Contrast);
             _color.colorFilter.Override(Filter);
 
+            // Use a channel mixer to remap all colour channels toward phosphor‑green for the night‑vision look.
             var mixer = _profile.Add<ChannelMixer>();
             mixer.redOutRedIn.Override(Phosphor.r * Luma.x * 100f);
             mixer.redOutGreenIn.Override(Phosphor.r * Luma.y * 100f);
@@ -101,6 +105,7 @@ namespace CloneZ
             mixer.blueOutGreenIn.Override(Phosphor.b * Luma.y * 100f);
             mixer.blueOutBlueIn.Override(Phosphor.b * Luma.z * 100f);
 
+            // Add a vignette to darken the periphery and focus attention on the centre.
             _vignette = _profile.Add<Vignette>();
             _vignette.color.Override(VignetteColor);
             _vignette.center.Override(new Vector2(0.5f, 0.5f));
@@ -108,17 +113,20 @@ namespace CloneZ
             _vignette.smoothness.Override(VignetteSmoothness);
             _vignette.rounded.Override(true);
 
+            // Add film grain to simulate CRT‑style sensor noise.
             var grain = _profile.Add<FilmGrain>();
             grain.type.Override(GrainType);
             grain.intensity.Override(GrainIntensity);
             grain.response.Override(GrainResponse);
 
+            // Add bloom to give the image a soft glow around bright areas.
             var bloom = _profile.Add<Bloom>();
             bloom.intensity.Override(BloomIntensity);
             bloom.threshold.Override(BloomThreshold);
             bloom.scatter.Override(BloomScatter);
             bloom.tint.Override(BloomTint);
 
+            // Attach a global Volume component to apply the profile everywhere.
             _volume = gameObject.AddComponent<Volume>();
             _volume.isGlobal = true;
             _volume.priority = VolumePriority;
@@ -126,6 +134,7 @@ namespace CloneZ
             _volume.sharedProfile = _profile;
         }
 
+        /// <summary>Creates the UI overlay canvas and its components for the night‑vision scope.</summary>
         private void BuildOverlay()
         {
             var canvasGo = new GameObject("NightVisionOverlay");
@@ -150,6 +159,7 @@ namespace CloneZ
             _noise = NewFullScreen("Noise", root, VisionAssets.Noise(), NoiseColor);
         }
 
+        /// <summary>Creates a UI Image for a single sprite, positioned and pivoted as specified.</summary>
         private static RectTransform NewImage(string name, RectTransform parent, Sprite sprite, Vector2 pivot)
         {
             var go = new GameObject(name);
@@ -164,6 +174,7 @@ namespace CloneZ
             return rt;
         }
 
+        /// <summary>Creates a full‑screen RawImage for textures that scroll or tile (scanlines, noise).</summary>
         private static RawImage NewFullScreen(string name, RectTransform parent, Texture texture, Color color)
         {
             var go = new GameObject(name);
@@ -182,29 +193,39 @@ namespace CloneZ
         /// <summary>Blends the effect with the controller's night-vision blend and lays out the scope.</summary>
         internal void Tick(VisionController vision, float dt)
         {
+            // Exit early if the Volume hasn't been built – should only happen during editor shutdown.
             if (_volume == null) return;
+            // Pull the current blend amount from the VisionController; if it's negligible, hide the effect.
             float blend = vision.NightVisionBlend;
             if (blend <= 0.001f)
             {
+                // When the effect is off, ensure the overlay is hidden and skip further work.
                 if (_shown) Show(false);
                 return;
             }
+            // When turning on for the first time, enable the overlay.
             if (!_shown) Show(true);
 
+            // Update the global volume weight and UI opacity to match the blend amount.
             _volume.weight = blend;
             _group.alpha = blend;
+            // Blend day‑time and night‑time exposure, then apply a dip for low‑battery flicker.
             float exposure = Mathf.Lerp(DayExposure, NightExposure, vision.Night01);
             exposure -= BatteryDipExposure * (1f - BatteryFlicker(dt));
             _color.postExposure.value = exposure;
 
+            // Convert screen size to width/height values for later layout calculations.
             float w = Screen.width, h = Screen.height;
+            // Position the scope based on the survivor's screen location and update the vignette centre.
             Vector2 c = SurvivorOnScreen(vision, w, h);
             ScopeCentre = c;
             _vignette.center.value = new Vector2(c.x / Mathf.Max(1f, w), c.y / Mathf.Max(1f, h));
+            // Position the scope and its masks, then animate grain and noise.
             LayoutScope(c, w, h);
             AnimateGrain(dt, w, h);
         }
 
+        /// <summary>Enables or disables the volume and overlay, resetting weights when hidden.</summary>
         private void Show(bool show)
         {
             _shown = show;
@@ -232,6 +253,7 @@ namespace CloneZ
             return p;
         }
 
+        /// <summary>Positions and sizes the scope image and its mask rectangles around the survivor.</summary>
         private void LayoutScope(Vector2 c, float w, float h)
         {
             // Half size of the scope image, so the middle of its soft rim lands on ScopeRadius.
@@ -253,6 +275,7 @@ namespace CloneZ
             rt.sizeDelta = new Vector2(Mathf.Max(0f, xMax - xMin), Mathf.Max(0f, yMax - yMin));
         }
 
+        /// <summary>Animates scanline scrolling and random noise texture offsets each frame.</summary>
         private void AnimateGrain(float dt, float w, float h)
         {
             // Scanlines: the 4-texel pattern tiled one texel per pixel, creeping slowly upwards.
@@ -271,6 +294,7 @@ namespace CloneZ
         private float BatteryFlicker(float dt)
         {
             PlayerGear gear = PlayerGear.Instance;
+            // If the player gear is missing or night‑vision is off or charge is sufficient, reset dip state.
             if (gear == null || !gear.NightVisionOn || gear.NightVisionCharge01 >= LowCharge)
             {
                 _dipLeft = 0f;
