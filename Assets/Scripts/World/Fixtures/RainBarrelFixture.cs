@@ -44,13 +44,17 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Cache the barrel component for quicker access and to handle potential missing component.
             WaterSource b = Barrel;
             if (b == null) return;
+            // Determine if the barrel currently contains water for actions that need it.
             bool water = b.HasWater;
+            // Add the action to fill a bottle with tainted water, disabling it if conditions aren't met.
             into.Add(new InteractAction("Fill a water bottle  (tainted)", c => WaterUse.FillBottle(c, b))
                 .DisabledIf(!water, b.DryMessage)
                 .DisabledIf(_capped, "The barrel is covered.")
                 .DisabledIf(water && !WaterUse.HasEmptyBottle(ctx), "You have no empty bottle"));
+            // Add the simple action that just reports the current water level.
             into.Add(new InteractAction("Check the water level", CheckLevel));
             // New instant action to inspect the barrel and show a random period‑accurate note.
             into.Add(new InteractAction("Inspect the barrel", c => {
