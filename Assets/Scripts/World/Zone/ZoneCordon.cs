@@ -15,7 +15,7 @@ namespace CloneZ
         private const float SegLen = 3f;
         private static Vector3 s_GatePos;
         private static bool s_HasGate;
-        internal static bool s_SearchlightsDisabled = false;
+        internal static bool s_SearchlightsDisabled = false; // When false, searchlights are active; repaired by using spare bulb
 
         public static bool HasGate => s_HasGate;
 
@@ -385,7 +385,8 @@ sb.Solid.Box(new Vector3(0.2f, h * 0.5f, 1.401f),
             into.Add(new InteractAction("Ask about the Zone", c =>
                 GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought ? "Keep to the road. Stay off the belt after dark." : "No pass, no passage. Off the belt, or we shoot.")));
                 // New action: disable the tower searchlights if the player has a crowbar
-                bool hasCrowbar = ctx.Inventory != null && ctx.Inventory.Has("crowbar");
+                 bool hasCrowbar = ctx.Inventory != null && ctx.Inventory.Has("crowbar");
+                 bool hasBulb = ctx.Inventory != null && ctx.Inventory.Has("searchlight_bulb");
                 into.Add(new InteractAction("Disable searchlights (requires crowbar)", c =>
                 {
                     foreach (var sweep in UnityEngine.Object.FindObjectsByType<SearchlightSweep>())
@@ -401,7 +402,19 @@ sb.Solid.Box(new Vector3(0.2f, h * 0.5f, 1.401f),
                     c.Notify("Searchlights disabled.");
                 })
                 .DisabledIf(ZoneCordon.s_SearchlightsDisabled, "Searchlights already disabled")
-                .DisabledIf(!hasCrowbar, "You need a crowbar to do that"));
+                 .DisabledIf(!hasCrowbar, "You need a crowbar to do that"));
+                  // Repair action: replace searchlight bulbs // duplicate removed
+                 into.Add(new InteractAction("Repair searchlights (requires spare bulb)", c =>
+                 {
+                     if (c.Inventory.Consume("searchlight_bulb", 1) <= 0) return;
+                     ZoneCordon.SetSearchlights(true);
+                     GameEvents.RaiseSubtitle("Warden", "You replace the busted bulbs – the towers flare to life.");
+                     Factions.AdjustReputation(Factions.Wardens, 2f, "Repaired searchlights");
+                     Sfx.PlayUI(SfxIds.SwitchHeavy, 0.8f, 0.9f);
+                     c.Notify("Searchlights repaired.");
+                 })
+                 .DisabledIf(!ZoneCordon.s_SearchlightsDisabled, "Searchlights are already on")
+                  .DisabledIf(!hasBulb, "You need a spare searchlight bulb"));
                 into.Add(new InteractAction("Check checkpoint status", c =>
                 {
                     string msg = CordonRules.PassBought
