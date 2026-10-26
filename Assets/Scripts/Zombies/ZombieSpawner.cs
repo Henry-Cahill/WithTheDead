@@ -231,13 +231,18 @@ namespace CloneZ
         // How thick the Zone is around the survivors: the mean of a grid of samples over the arena round each (the
         // population follows it, eased over half a minute unless it's the opening spread) and its peak (the spawns'
         // yardstick).
+        /// <summary>Updates density sampling for ambient spawning.</summary>
         private void LookAtDensity(bool immediate)
         {
+            // Schedule the next density sample after the defined interval.
             _nextDensity = Time.time + DensityInterval;
+            // Refresh survivor list for density or straggler checks.
             GatherSurvivors();
+            // Determine the sampling grid size based on arena dimensions, ensuring a minimum radius.
             float half = Mathf.Max(8f, CloneZConfig.ArenaHalfSize * 0.85f);
             float sum = 0f, peak = 0f;
             int n = 0;
+            // Accumulate density values across the grid and track the highest sample.
             for (int s = 0; s < _survivors.Count; s++)
                 for (int iz = -2; iz <= 2; iz++)
                     for (int ix = -2; ix <= 2; ix++)
@@ -248,9 +253,12 @@ namespace CloneZ
                         peak = Mathf.Max(peak, d);
                         n++;
                     }
+            // Compute the average density and clamp it to sensible limits for scaling.
             float mean = n > 0 ? sum / n : 1f;
             float scale = Mathf.Clamp(mean, MinDensityScale, MaxDensityScale);
+            // Smoothly transition to the new scale unless an immediate update is requested.
             _densityScale = immediate ? scale : Mathf.Lerp(_densityScale, scale, 0.15f);
+            // Ensure a minimum peak value to avoid division by zero elsewhere.
             _densityPeak = Mathf.Max(0.05f, peak);
         }
 
@@ -280,20 +288,29 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Removes zombies that have strayed too far from any survivor.</summary>
         private void LetGoOfStragglers()
         {
+            // Refresh survivor list for density or straggler checks.
             GatherSurvivors();
+            // Determine the maximum distance from arena centre at which a zombie is still considered nearby.
             float reach = CloneZConfig.ArenaHalfSize + StragglerMargin;
+            // Clear the temporary list before gathering stragglers.
             _stragglers.Clear();
+            // Iterate over all alive zombies to find any that lie outside the extended arena bounds.
             foreach (ZombieHealth z in _alive)
             {
+                // Skip null entries which may appear after destruction.
                 if (z == null) continue;
+                // Compute squared distance on XZ plane to each survivor to decide if within reach.
                 Vector3 p = z.transform.position;
                 bool near = false;
                 for (int i = 0; i < _survivors.Count && !near; i++)
                     near = Mathf.Abs(p.x - _survivors[i].x) <= reach && Mathf.Abs(p.z - _survivors[i].z) <= reach;
+                // If a zombie is beyond the reach of all survivors, mark it for removal.
                 if (!near) _stragglers.Add(z);
             }
+            // Destroy each zombie that has strayed too far, removing it from tracking and unsubscribing events.
             for (int i = 0; i < _stragglers.Count; i++)
             {
                 ZombieHealth z = _stragglers[i];
@@ -313,6 +330,8 @@ namespace CloneZ
             Vector3 centre = CloneZConfig.ArenaCenter;
             if (streamed)
             {
+                // Refresh survivor positions to use as sample centres for density calculations.
+                // Refresh survivor list for density or straggler checks.
                 GatherSurvivors();
                 centre = _survivors[Random.Range(0, _survivors.Count)];
             }
