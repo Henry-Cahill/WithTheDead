@@ -392,54 +392,63 @@ namespace CloneZ
         internal static Vector2 Left(Vector2 d) => new Vector2(-d.y, d.x);
         #endregion
 
-        internal static void BuildSidewalkLamps(Ctx ctx)
-        {
-            const float spacing = 12f; // metres between poles
-            const float poleHeight = 2.4f; // metres tall
-            const float poleRadius = 0.075f; // thin wooden post
-            const float lampHeadRadius = 0.12f; // small glass head
-            const float lampHeadHeight = 0.15f; // sits on top of the pole
-            foreach (Street s in ctx.Site.Area.Streets)
-            {
-                if (RoadRank(s) > 2) continue; // skip higher‑class roads
-                // use the deterministic hue for this street
-                Color poleCol = StreetPoleHue(s);
-                Surf poleSurf = DecorPalette.Matte(poleCol);
-                // pre‑cache material for efficiency (the first call creates it)
+private static readonly Dictionary<Color, Surf> _poleSurfCache = new();
 
-                for (int i = 0; i + 1 < s.Pts.Count; i++)
+internal static void BuildSidewalkLamps(Ctx ctx)
+    {
+        const float spacing = 12f; // metres between poles
+        const float poleHeight = 2.4f; // metres tall
+        const float poleRadius = 0.075f; // thin wooden post
+        const float lampHeadRadius = 0.12f; // small glass head
+        const float lampHeadHeight = 0.15f; // sits on top of the pole
+        foreach (Street s in ctx.Site.Area.Streets)
+        {
+            if (RoadRank(s) > 2) continue; // skip higher‑class roads
+            // use the deterministic hue for this street
+            Color poleCol = StreetPoleHue(s);
+            Surf poleSurf;
+            if (!_poleSurfCache.TryGetValue(poleCol, out poleSurf))
+            {
+                poleSurf = DecorPalette.Matte(poleCol);
+                _poleSurfCache[poleCol] = poleSurf;
+            }
+            // pre‑cache material for efficiency (the first call creates it)
+
+            for (int i = 0; i + 1 < s.Pts.Count; i++)
+            {
+                Vector2 a = s.Pts[i];
+                Vector2 b = s.Pts[i + 1];
+                Vector2 seg = b - a;
+                float segLen = seg.magnitude;
+                if (segLen < 0.5f) continue; // ignore tiny fragments
+                // direction of the street (unit)
+                Vector2 dir = seg / segLen;
+                // right side of travel (street’s forward direction is from a→b)
+                Vector2 rightSide = Left(dir); // Left() gives a 90° CCW turn, so this actually points to the right side of travel
+                // start point for lamp placement on this segment
+                float offset = 0f;
+                // walk along the segment, dropping a lamp every ‘spacing’
+                while (offset < segLen)
                 {
-                    Vector2 a = s.Pts[i];
-                    Vector2 b = s.Pts[i + 1];
-                    Vector2 seg = b - a;
-                    float segLen = seg.magnitude;
-                    if (segLen < 0.5f) continue; // ignore tiny fragments
-                    // direction of the street (unit)
-                    Vector2 dir = seg / segLen;
-                    // right‑hand side of travel (street’s forward direction is from a→b)
-                    Vector2 right = Left(dir); // Left() gives a 90° CCW turn, so this is right‑hand side
-                    // start point for lamp placement on this segment
-                    float offset = 0f;
-                    // walk along the segment, dropping a lamp every ‘spacing’
-                    while (offset < segLen)
-                    {
-                        Vector2 onSeg = a + dir * offset;
-                        // distance from road centre to the kerb face (use Roadside() helper)
-                        float kerb = Roadside(s, 1); // side = +1 is the right sidewalk
-                        // final world position: centre of the sidewalk, a few centimetres out from the kerb
-                        Vector2 pos2 = onSeg + right * (kerb + 0.15f);
-                        // build pole geometry (a thin box)
-                        Vector3 polePos = new Vector3(pos2.x, poleHeight * 0.5f, pos2.y);
-                        ctx.Low(pos2).Box(polePos, new Vector3(poleRadius * 2f, poleHeight, poleRadius * 2f), poleSurf);
-                        // add the lamp head (a small sphere‑ish box just above the pole)
-                        Vector3 headPos = new Vector3(pos2.x, poleHeight + lampHeadHeight * 0.5f, pos2.y);
-                        ctx.High(pos2).Box(headPos, new Vector3(lampHeadRadius * 2f, lampHeadHeight, lampHeadRadius * 2f), Gloss(new Color(0.95f, 0.92f, 0.70f)));
-                        // advance to next placement point
-                        offset += spacing;
-                    }
+                    Vector2 onSeg = a + dir * offset;
+                    // distance from road centre to the kerb face (use Roadside() helper)
+                    float kerb = Roadside(s, 1); // side = +1 is the right sidewalk
+                    // final world position: centre of the sidewalk, a few centimetres out from the kerb
+                    Vector2 pos2 = onSeg + rightSide * (kerb + 0.15f);
+                    // build pole geometry (a thin box)
+                    Vector3 polePos = new Vector3(pos2.x, poleHeight * 0.5f, pos2.y);
+                    ctx.Low(pos2).Box(polePos, new Vector3(poleRadius * 2f, poleHeight, poleRadius * 2f), poleSurf);
+                    ctx.Collider(pos2, 0f, new Vector3(poleRadius * 2f, poleHeight, poleRadius * 2f), 0f);
+                    // add the lamp head (a small sphere‑ish box just above the pole)
+                    Vector3 headPos = new Vector3(pos2.x, poleHeight + lampHeadHeight * 0.5f, pos2.y);
+                    ctx.High(pos2).Box(headPos, new Vector3(lampHeadRadius * 2f, lampHeadHeight, lampHeadRadius * 2f), Gloss(new Color(0.95f, 0.92f, 0.70f)));
+                    ctx.Collider(pos2, poleHeight, new Vector3(lampHeadRadius * 2f, lampHeadHeight, lampHeadRadius * 2f), 0f);
+                    // advance to next placement point
+                    offset += spacing;
                 }
             }
         }
+    }
 
 
         /// <summary>
