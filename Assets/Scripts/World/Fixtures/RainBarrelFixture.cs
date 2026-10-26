@@ -26,7 +26,12 @@ namespace CloneZ
             "A faded “Do Not Drink” sticker peels from the side, its paint long gone.",
             "You spot a tiny rust‑eaten hole near the base, water drips through it.",
             "Someone scrawled “Water's fine after a fire” in shaky chalk.",
-            "A dried‑out leaf clings to the rim, a reminder of late‑summer storms."
+            "A dried‑out leaf clings to the rim, a reminder of late‑summer storms.",
+            "A rusted tin sign half‑buried in snow reads “Pure Water – Keep Closed”.",
+            "A frayed rope loops around the barrel, its ends knotted into a crude latch.",
+            "Bits of corn husk float on the surface, evidence of a recent harvest gone awry.",
+            "A faint set of rabbit tracks leads up to the barrel’s base, then disappears.",
+            "Ice crystals lace the rim, catching the pale morning light like tiny glass beads."
         };
 
         public override string DisplayName => "Rain barrel";
