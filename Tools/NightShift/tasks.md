@@ -12436,11 +12436,12 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: Add a comment above the new block to explain its purpose, following the file’s existing comment style: `// Decorative post caps, footing bases and metal brackets – give the porch a lived‑in, period‑correct look.`
   Done when: In‑game the front porch shows each post topped with a small wooden cap, sitting on a short concrete footing, and a thin dark‑metal rod (with tiny end caps) that visually ties the post to the deck. The door‑step, railing and roof remain functional; no new colliders appear, and the building still compiles and runs without errors.
   - 13:01 landed by 1htsserver in 11.3 min: **Changed file**
-- [ ] Add comments explaining the code in Assets/Scripts/UI/SkillsPanelController.cs, so a programmer new to CLONE-Z can follow it. Comments only: don't change any code.
+- [!] Add comments explaining the code in Assets/Scripts/UI/SkillsPanelController.cs, so a programmer new to CLONE-Z can follow it. Comments only: don't change any code.
   Explain the logic inside these methods, which no comment explains yet: `Refresh` (line 106, 14 lines of code), `Build` (line 138, 96 lines of code), `Label` (line 289, 15 lines of code). Above each step a reader can't follow from the code alone, add a short `//` comment saying what it is for or why it is done that way: what a block or loop is for, why a value, limit or order is what it is, what a condition guards against. Say why, not what: don't restate the line below, and leave obvious lines alone. Where one of these methods has no comment above it, add a one-sentence `/// <summary>` there too.
   Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: struct `SkillCache` (line 26).
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
   Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
+  - 13:27 failed (laserengraver, 39.7 min); see reports/2026-10-25-2243.md
 - [x] In Assets/Scripts/Player/PlayerTemperature.cs: Refactor `PlayerTemperature.UpdateTemperature` to avoid recomputing the level/descriptor each frame; add a private `float _lastTempCache;` field, initialise it in `Awake()` after the first `UpdateLevelCache()` call, then after the temperature is updated do:
   `if (Mathf.Abs(_stats.Temperature - _lastTempCache) > 0.0001f) {`
   `UpdateLevelCache();`

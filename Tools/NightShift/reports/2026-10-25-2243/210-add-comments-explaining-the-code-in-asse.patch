@@ -1,0 +1,36 @@
+diff --git a/Assets/Scripts/UI/SkillsPanelController.cs b/Assets/Scripts/UI/SkillsPanelController.cs
+index e17626a4..206dca91 100644
+--- a/Assets/Scripts/UI/SkillsPanelController.cs
++++ b/Assets/Scripts/UI/SkillsPanelController.cs
+@@ -23,6 +23,9 @@ public class SkillsPanelController : MonoBehaviour
+         private Text[] _levelTexts;
+         private Text[] _xpTexts;
+         private Image[] _progressFills;
++        /// <summary>
++        /// Cached display values for a skill to detect changes.
++        /// </summary>
+         private struct SkillCache { public int level; public float progress; }
+         private SkillCache[] _skillCache;
+ 
+@@ -105,17 +108,21 @@ private void Close()
+         /// </summary>
+         private void Refresh()
+         {
++            // Reset dirty flag now that we are updating UI.
+             _dirty = false;
++            // Iterate over each skill in the defined order.
+             for (int i = 0; i < _order.Length; i++)
+             {
+                 PlayerSkills.Skill s = _order[i];
+                 int lvl = _skills.GetLevel(s);
+                 float prog = _skills.LevelProgress(s);
++                // Update level text only when level changed.
+                 if (lvl != _skillCache[i].level)
+                 {
+                     _levelTexts[i].text = "Lv " + lvl;
+                     _skillCache[i].level = lvl;
+                 }
++                // Update progress bar only when progress changed beyond tolerance.
+                 if (!Mathf.Approximately(prog, _skillCache[i].progress))
+                 {
+                     SetFill(_progressFills[i], prog);
