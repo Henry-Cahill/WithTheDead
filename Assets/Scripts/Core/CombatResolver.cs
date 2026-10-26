@@ -55,7 +55,7 @@ namespace CloneZ
         public static event Action<ShotRequest, ShotResult> ShotResolved;
 
         /// <summary>Layers bullets interact with: the world and characters.</summary>
-        public static int ShotMask => (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+        public static int ShotMask => Physics.DefaultRaycastLayers;
 
         private static readonly RaycastHit[] s_Hits = new RaycastHit[24];
 
@@ -96,14 +96,16 @@ namespace CloneZ
             {
                 RaycastHit h = s_Hits[i];
                 if (shooter != null && h.collider.transform.IsChildOf(shooter)) continue;
-                result.Hit = true;
-                result.End = h.point;
-                result.Normal = h.normal;
-
                 Hitbox box = h.collider.GetComponent<Hitbox>();
                 IDamageable target = box != null && box.Owner != null ? box.Owner.Damageable : h.collider.GetComponentInParent<IDamageable>();
                 if (target == null) break; // world geometry stops the round
                 if (target.IsDead) continue; // skip dead actors
+
+                // Record hit details now that we have a live target.
+                result.Hit = true;
+                result.End = h.point;
+                result.Normal = h.normal;
+
                 Actor actor = box != null ? box.Owner : (target.Transform != null ? target.Transform.GetComponent<Actor>() : null);
                 BodyZone zone = box != null ? box.Zone : BodyZones.FromHit(target.Transform, h.point, actor != null ? actor.Height : 1.8f);
                 result.Target = target;
