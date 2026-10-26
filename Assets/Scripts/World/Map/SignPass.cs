@@ -173,6 +173,8 @@ namespace CloneZ
             if (wood)
             {
                 low.Cylinder(foot, 0.16f, h, 7, Matte(PoleWoods[MapStyle.Pick(ctx.KeyOf(at), 0x3D21, PoleWoods.Length)]), Quaternion.identity, 0.72f);
+                low.Cylinder(foot + new Vector3(0f, h - 1.25f, 0f), 0.185f, 0.09f, 8, Galvanised, Quaternion.identity, 0.72f);
+                low.Box(To3(at, h - 0.45f), new Vector3(0.14f, 0.07f, 0.14f), Galvanised);
                 // Its guy, pulling against the span, where there's room for the anchor (else the pole stands unguyed).
                 Vector2 anchor = at + away * (h * 0.4f);
                 if (ctx.Roadside(anchor, 0.3f) && !ctx.Blocks.Crosses(at, anchor, 0.2f))
@@ -180,7 +182,11 @@ namespace CloneZ
                     Vector3 top = To3(at, h - 0.6f), ground = To3(anchor, 0.02f);
                     ctx.Wires.Add(top, ground, 0.02f, 0.01f, new Color(0.5f, 0.5f, 0.5f), false);
                     ctx.Low(anchor).Box(ground + new Vector3(0f, 0.03f, 0f), new Vector3(0.18f, 0.06f, 0.18f), Concrete);
+                    ctx.Low(anchor).Box(ground + new Vector3(0f, 0.035f, 0f), new Vector3(0.22f, 0.01f, 0.22f), Concrete);
                     ctx.Site.Take(anchor, 0.3f);
+                    low.Box(To3(at, h - 0.58f) + (To3(away, 0f) * 0.09f), new Vector3(0.12f, 0.08f, 0.16f), Quaternion.Euler(0f, Yaw(away), 0f), Galvanised);
+                    low.Box(To3(at, h - 0.52f) + (To3(away, 0f) * 0.07f), new Vector3(0.08f, 0.06f, 0.12f), Quaternion.Euler(0f, Yaw(away), 0f), Matte(PoleWoods[MapStyle.Pick(ctx.KeyOf(at), 0x3D21, PoleWoods.Length)]));
+                    low.Box(To3(at, h - 0.64f) + (To3(away, 0f) * 0.07f), new Vector3(0.08f, 0.06f, 0.12f), Quaternion.Euler(0f, Yaw(away), 0f), Matte(PoleWoods[MapStyle.Pick(ctx.KeyOf(at), 0x3D21, PoleWoods.Length)]));
                 }
             }
             else
