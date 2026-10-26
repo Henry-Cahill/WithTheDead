@@ -208,13 +208,18 @@ if (!All.Contains(this)) All.Add(this);
         public static LootContainer SpawnFixture(Transform parent, Vector3 position, ContainerType lootType, string displayName,
             string fixtureKey, int seed, bool startEmpty = false, float emptyChance = 0f, int maxStacks = int.MaxValue, float searchTime = -1f)
         {
+            // Create a container GameObject that will be attached to the fixture.
             var go = new GameObject("Storage");
+            // Parent the storage to the fixture's transform without inheriting scale.
             go.transform.SetParent(parent, false);
             go.transform.position = position;
             var c = go.AddComponent<LootContainer>();
+            // Set up the LootContainer component with its display name and type.
             c.DisplayName = displayName;
             c.Type = lootType == ContainerType.Corpse ? ContainerType.Shelf : lootType;
+            // Record the fixture's unique key so the saved game can match this container back to its owner.
             c.FixtureKey = fixtureKey;
+            // Initialise an inventory for the container with a large capacity (999 kg) – effectively unlimited for gameplay.
             c.Contents = new Inventory(999f);
             c.SearchTime = searchTime >= 0f ? searchTime : SearchTimeFor(c.Type);
             var rng = new System.Random(seed);
@@ -406,6 +411,7 @@ c.SearchTime = 0f; c.Searched = searched;
             if (col != null) Object.Destroy(col);
         }
 
+        /// <summary>Applies size, colour and name defaults for each container type.</summary>
         private static void Style(ContainerType type, out Vector3 size, out Color color, out string name)
         {
             switch (type)
