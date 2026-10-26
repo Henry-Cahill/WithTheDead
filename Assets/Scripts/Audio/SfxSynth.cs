@@ -16,8 +16,6 @@ namespace CloneZ
     /// </summary>
     public sealed partial class SfxSynth : ISfxBackend
     {
-        /// <summary>The rate of the original recipes (see Recipes/Legacy.cs); reworked recipes use <c>g.Rate</c>.</summary>
-        private const int Rate = 22050;
         /// <summary>Full bandwidth, for anything with a sharp attack or air: gunshots, clicks, glass, footsteps.</summary>
         internal const int HiRate = 44100;
         /// <summary>For long beds and loops whose content tops out below 16 kHz (wind, rain, rumble, drones): half the memory.</summary>
@@ -167,7 +165,7 @@ namespace CloneZ
         public float[] RenderSamples(string id, int variation, out int channels, out int rate)
         {
             channels = 1;
-            rate = Rate;
+            rate = HiRate;
             if (id == null || !_recipes.TryGetValue(id, out Recipe r)) return null;
             Rendered d = Render(r, Math.Max(0, Math.Min(r.Variations - 1, variation)));
             channels = d.Channels;
@@ -243,12 +241,15 @@ namespace CloneZ
         }
 
         /// <summary>Queues every variation of every sound for background rendering: the interface first, then the beds,
-        /// then everything else in registration order (a recipe's <see cref="Recipe.Warm"/> order comes first).</summary>
+        /// then everything else in registration order (a recipe's <see cref="Recipe.Warm"/> order comes first). Stereo
+        /// beds are the exception: they are most of the memory and the render time and a session hears only some of them
+        /// (the bar, the rain, winter), so each is built when its director first asks for it (Sfx.Ready/Request).</summary>
         public void Prewarm()
         {
             if (_prewarmed) return;
             _prewarmed = true;
             var list = new List<Recipe>(_order);
+            list.RemoveAll(r => r.IsLoop && r.MakeStereo != null);
             list.Sort((a, b) =>
             {
                 int c = a.WarmOrder.CompareTo(b.WarmOrder);
@@ -369,15 +370,6 @@ namespace CloneZ
         #endregion
 
         #region Registration
-        /// <summary>An original-style recipe (22.05 kHz, the class's <c>Rate</c>).</summary>
-        private void R(string id, Func<SynthGen, float[]> make, int variations = 1, bool loop = false, float peak = 0.8f)
-        {
-            Recipe r = Put(id, Rate, variations);
-            r.Make = make;
-            r.IsLoop = loop;
-            r.PeakLevel = peak;
-        }
-
         /// <summary>A mono recipe at <paramref name="rate"/> (use <c>g.Rate</c> inside it); chain the routing onto the result.</summary>
         private Recipe Add(string id, Func<SynthGen, float[]> make, int variations = 1, int rate = HiRate)
         {

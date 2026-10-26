@@ -503,25 +503,25 @@ namespace CloneZ
         private static void Mix(Voice v, float dist)
         {
             AudioSource src = v.Src;
-            bool world = !v.Meta.NoOcclusion && v.Bus != SfxBus.Interface && v.Bus != SfxBus.Music;
+            // A blast deafens the world, not the score or the interface; anything placed in the world (the jukebox's
+            // music too) is walled off and dulled by distance.
+            bool deafens = !v.Meta.NoOcclusion && v.Bus != SfxBus.Interface && v.Bus != SfxBus.Music;
+            bool placed = v.Spatial && !v.Meta.NoOcclusion && v.Bus != SfxBus.Interface;
             float gain = s_BusGain[(int)v.Bus];
-            if (world) gain *= 1f - 0.45f * s_Concuss;
-            if (v.Spatial && world) gain *= 1f - 0.5f * v.Occlusion;
+            if (deafens) gain *= 1f - 0.45f * s_Concuss;
+            if (placed) gain *= 1f - 0.5f * v.Occlusion;
             float vol = Mathf.Clamp01(v.Base * gain);
             if (Mathf.Abs(vol - src.volume) > 0.0005f) src.volume = vol;
             v.Applied = src.volume;
 
             float cutoff = v.ManualLp;
-            if (world)
+            if (placed)
             {
-                if (v.Spatial)
-                {
-                    // Air soaks up the highs of anything far off; walls take far more.
-                    if (dist > 15f) cutoff = Mathf.Min(cutoff, Mathf.Max(1800f, FullBand * Mathf.Exp(-(dist - 15f) / 160f)));
-                    if (v.Occlusion > 0.001f) cutoff = Mathf.Min(cutoff, FullBand * Mathf.Pow(600f / FullBand, v.Occlusion));
-                }
-                if (s_Concuss > 0.01f) cutoff = Mathf.Min(cutoff, FullBand * Mathf.Pow(450f / FullBand, Mathf.Pow(s_Concuss, 0.7f)));
+                // Air soaks up the highs of anything far off; walls take far more.
+                if (dist > 15f) cutoff = Mathf.Min(cutoff, Mathf.Max(1800f, FullBand * Mathf.Exp(-(dist - 15f) / 160f)));
+                if (v.Occlusion > 0.001f) cutoff = Mathf.Min(cutoff, FullBand * Mathf.Pow(600f / FullBand, v.Occlusion));
             }
+            if (deafens && s_Concuss > 0.01f) cutoff = Mathf.Min(cutoff, FullBand * Mathf.Pow(450f / FullBand, Mathf.Pow(s_Concuss, 0.7f)));
             if (s_Paused && v.Bus == SfxBus.Ambience) cutoff = Mathf.Min(cutoff, 1200f);
 
             AudioLowPassFilter lp = v.Lp;
