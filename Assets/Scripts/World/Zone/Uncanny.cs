@@ -270,14 +270,21 @@ namespace CloneZ
     /// <summary>A figure at the edge of the fog that isn't there when you arrive.</summary>
     public sealed class DistantFigure : MonoBehaviour
     {
+        private static Camera s_MainCam;
         private float _life = 15f;
         private float _stare;
+
+        private void Awake()
+        {
+            s_MainCam = Camera.main;
+        }
 
                 /// <summary>Spawns a distant, fog‑edge figure visible to the given viewer under specific conditions.</summary>
         public static void Spawn(Actor viewer)
         {
             // Try to appear just beyond viewer's peripheral vision using camera forward or viewer forward.
-            Camera cam = Camera.main;
+            Camera cam = s_MainCam;
+            if (cam == null) s_MainCam = Camera.main;
             Vector3 fwd = cam != null ? cam.transform.forward : viewer.transform.forward;
             fwd.y = 0f;
             fwd.Normalize();
@@ -316,7 +323,8 @@ namespace CloneZ
             if (_life <= 0f || me == null) { Destroy(gameObject); return; }
             Vector3 to = transform.position - me.transform.position;
             if (to.magnitude < 22f) { Vanish(); return; }
-            Camera cam = Camera.main;
+            Camera cam = s_MainCam;
+            if (cam == null) s_MainCam = Camera.main;
             if (cam != null && Vector3.Dot(cam.transform.forward, (transform.position + Vector3.up * 1.5f - cam.transform.position).normalized) > 0.985f)
             {
                 _stare += Time.deltaTime;
