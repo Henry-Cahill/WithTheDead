@@ -53,6 +53,8 @@ namespace CloneZ
         };
 
         private float _lullabyCalmAt;
+        // Timestamp for when the next bedside‑organize action may occur.
+        private float _organizeCooldownAt;
         // Cached radius for sleep proximity checks to avoid per‑frame config lookup.
         private float _sleepCheckRadius;
         private void Awake()
@@ -60,7 +62,9 @@ namespace CloneZ
             _playerInteractor = PlayerInteractor.Current;
             // Initialize cached sleep check radius.
             _sleepCheckRadius = CloneZConfig.SleepRange + 0.5f;
+            
             _mattressSearchCooldownAt = 0f;
+            _organizeCooldownAt = 0f; // <-- added
         }
 
         /// <summary>True while the bed is made (fresh runs start with it made).</summary>
@@ -136,7 +140,12 @@ namespace CloneZ
                     .DisabledIf(onEdge, "Get up off the bed first"));
             else {
                 into.Add(new InteractAction("Plump the pillows", PlumpPillows));
-                into.Add(new InteractAction("Fluff the blankets", FluffBlankets));
+
+                // Tidy the bedside items for a calm boost.
+                into.Add(new InteractAction("Organize bedside items", OrganizeBedside)
+                    .Timed(CloneZConfig.TidyCooldown, "Organizing bedside", HumanoidActivity.Search)
+                    .DisabledIf(Time.time < _organizeCooldownAt,
+                        "You've already organized the bedside, give it a moment."));
             }
                 
                 // Calm the survivor with a short lullaby while seated or lying in the bed.
@@ -227,6 +236,20 @@ namespace CloneZ
                 ctx.Notify("You fluff the blankets. The bed looks tidier.");
             }
             else ctx.Notify("The blankets are as fluffed as they'll get now.");
+        }
+
+        private void OrganizeBedside(InteractContext ctx)
+        {
+            if (Time.time >= _organizeCooldownAt)
+            {
+                _organizeCooldownAt = Time.time + CloneZConfig.TidyCooldown;
+                LivingFixtures.Calm(ctx, CloneZConfig.TidyPanicRelief);
+                ctx.Notify("You straighten the bedside lamp, fold the papers, and tidy the nightstand. It feels a little calmer now.");
+            }
+            else
+            {
+                ctx.Notify("You've already organized the bedside. Give it a moment before rearranging again.");
+            }
         }
 
         private void SingLullaby(InteractContext ctx)
