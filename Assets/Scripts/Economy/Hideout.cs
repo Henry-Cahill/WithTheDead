@@ -44,6 +44,7 @@ namespace CloneZ
         public static readonly List<ModuleDef> Modules = new List<ModuleDef>();
         public static readonly List<Recipe> Recipes = new List<Recipe>();
 
+        /// <summary>Initialises all hideout modules, their levels, and crafting recipes.</summary>
         static Hideout()
         {
             ModuleDef gen = M("generator", "Generator", "Powers the workbench, lab, medstation and data farm. Burns fuel.", false);
