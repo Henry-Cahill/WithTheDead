@@ -136,12 +136,34 @@ namespace CloneZ
             float postTop = low + (high - low) * 0.2f / reach;
             int bays = Mathf.Max(1, Mathf.CeilToInt((s1 - s0) / 2.6f));
             float postSize = p.Style == HouseStyle.Bungalow || p.Style == HouseStyle.Foursquare ? 0.3f : 0.14f;
+            const float postCapHeight = 0.07f; // height of the wooden cap on top of each post
+            const float postBaseHeight = 0.05f; // thickness of the stone‑like footing below the deck
+            const float bracketRadius = 0.02f; // radius of the metal support rod
             for (int k = 0; k <= bays; k++)
             {
                 float s = Mathf.Lerp(s0 + postSize * 0.5f, s1 - postSize * 0.5f, k / (float)bays);
                 Vector2 at = j.At(e, s) + o * (depth - postSize * 0.5f - 0.02f);
                 var size = new Vector3(postSize, postTop - Deck, postSize);
                 Vector3 c = To3(at, Deck + size.y * 0.5f);
+                // Decorative post caps, footing bases and metal brackets – give the porch a lived‑in, period‑correct look.
+                // ---- new decorative geometry for this post ----
+                // 1) wooden cap (slightly wider than the post)
+                var capSize = new Vector3(postSize * 1.2f, postCapHeight, postSize * 1.2f);
+                var capCenter = To3(at, postTop + postCapHeight * 0.5f);
+                walls.Box(capCenter, capSize, yaw, post); // uses the same wood material as the post
+                // 2) stone‑like footing base (a short, darker block below the deck)
+                var baseSize = new Vector3(postSize * 1.1f, postBaseHeight, postSize * 1.1f);
+                var baseCenter = To3(at, Deck - postBaseHeight * 0.5f);
+                walls.Box(baseCenter, baseSize, yaw, ConcreteSurf); // concrete surf gives a stone appearance
+                // 3) metal support bracket (a thin rod from deck up to the post top)
+                var bracketStart = To3(at, Deck);
+                var bracketEnd = To3(at, postTop);
+                var metalMat = DecorPalette.Metal(new Color(0.48f, 0.44f, 0.40f));
+                walls.Rod(bracketStart, bracketEnd, bracketRadius, metalMat);
+                // 4) small metal end caps on the rod (two upright cylinders)
+                walls.Upright(bracketStart, Vector3.up, bracketRadius * 1.5f, bracketRadius * 0.8f, metalMat);
+                walls.Upright(bracketEnd, Vector3.up, bracketRadius * 1.5f, bracketRadius * 0.8f, metalMat);
+                // original post geometry
                 walls.Box(c, size, yaw, post);
                 if (j.Solid) Collider(j, c, size, yaw);
             }
