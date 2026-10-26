@@ -90,6 +90,11 @@ namespace CloneZ
         private AudioSource _hum;
         private readonly Dictionary<Actor, float> _inside = new Dictionary<Actor, float>();
         private readonly List<Actor> _scratch = new List<Actor>();
+        // Component caches to avoid per‑frame GetComponent calls
+        private static readonly Dictionary<Actor, CharacterController> _ccCache = new Dictionary<Actor, CharacterController>();
+        private static readonly Dictionary<Actor, UnityEngine.AI.NavMeshAgent> _navCache = new Dictionary<Actor, UnityEngine.AI.NavMeshAgent>();
+        private static readonly Dictionary<Actor, Rigidbody> _rbCache = new Dictionary<Actor, Rigidbody>();
+        private static readonly Dictionary<Actor, PlayerClothing> _clothingCache = new Dictionary<Actor, PlayerClothing>();
         private Light _flash;
         private float _flashUntil;
 
@@ -578,8 +583,11 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
                 Actor a = kv.Key;
                 if (a.Kind == ActorKind.Zombie) continue;     // dead things pass through untouched
                 Hurt(a, 14f * Strength * dt * 10f, RandomLeg());
-                var clothing = a.GetComponent<PlayerClothing>();
-                if (clothing != null) GearWear.Corrode(clothing, dt * 0.6f);
+                var clothing = _clothingCache.TryGetValue(a, out var pc) ? pc : a.GetComponent<PlayerClothing>();
+                    if (clothing != null) {
+                        _clothingCache[a] = clothing;
+                        GearWear.Corrode(clothing, dt * 0.6f);
+                    }
             }
             if (_inside.Count > 0 && _cooldown <= 0f) { Sfx.Play(SfxIds.AnomalyAcid, transform.position, 0.9f, Random.Range(0.93f, 1.07f), 14f); _cooldown = 2.5f; }
         }
@@ -675,11 +683,28 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
 
         private static float Speed(Actor a)
         {
-            var cc = a.GetComponent<CharacterController>();
+            // Try cached CharacterController
+            if (!_ccCache.TryGetValue(a, out var cc))
+            {
+                cc = a.GetComponent<CharacterController>();
+                _ccCache[a] = cc;
+            }
             if (cc != null) return new Vector3(cc.velocity.x, 0f, cc.velocity.z).magnitude;
-            var agent = a.GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+            // Try cached NavMeshAgent
+            if (!_navCache.TryGetValue(a, out var agent))
+            {
+                agent = a.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                _navCache[a] = agent;
+            }
             if (agent != null && agent.enabled) return agent.velocity.magnitude;
-            var rb = a.GetComponent<Rigidbody>();
+
+            // Try cached Rigidbody
+            if (!_rbCache.TryGetValue(a, out var rb))
+            {
+                rb = a.GetComponent<Rigidbody>();
+                _rbCache[a] = rb;
+            }
             return rb != null ? rb.linearVelocity.magnitude : 0f;
         }
 
