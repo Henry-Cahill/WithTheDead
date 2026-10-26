@@ -11698,7 +11698,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: `Wheels` (line 180).
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
   Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
-- [ ] In Assets/Scripts/Audio/ZombieVoices.cs: Cache the ListenerRig lookup in ZombieVoices.Update to avoid a per‑frame static property call.
+- [x] In Assets/Scripts/Audio/ZombieVoices.cs: Cache the ListenerRig lookup in ZombieVoices.Update to avoid a per‑frame static property call.
   Add a private field `private ListenerRig _listener;` and assign it in `Awake()` (or in `Ensure()` after the GameObject is created) with ` _listener = FindObjectOfType<ListenerRig>();`.
   Replace the line
   `Vector3 ears = ListenerRig.Active ? ListenerRig.Position : local.transform.position;`
@@ -11706,6 +11706,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `Vector3 ears = _listener != null && _listener.Active ? _listener.Position : local.transform.position;`.
   This removes the repeated `ListenerRig.Active` / `ListenerRig.Position` static lookups each frame; the player’s ear position still follows the listener when it exists, and falls back to the local player’s position otherwise.
   No other behaviour changes.
+  - 06:35 landed by hts-llm in 11.6 min: **Changes made**
 - [ ] Add a “Drain the washer” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that lets the survivor abort a running wash early, stops the suds visual and makes a draining noise, giving a distinct in‑game result.
   Step 1: RaidHomeWasher.cs – GetActions Locate the block `if (_running) { … }` and add a new action after the existing “Stop the wash” entry: `into.Add(new InteractAction("Drain the washer", DrainWash)` `.DisabledIf(!WaterMains.MainsOn, "No water to drain")` `.DisabledIf(!PowerGrid.HousePowered, "No power to operate the valve"));` (Quote the current line being edited: `into.Add(new InteractAction("Stop the wash", StopWash));`)
   Step 2: RaidHomeWasher.cs – private method Insert a new method after `private void StopWash(InteractContext ctx)` (or at the end of the class) implementing the drain logic: `private void DrainWash(InteractContext ctx)` `{` `// Fast‑forward the cycle to the end and clean up visual effects.` `_left = 0f;` `Halt(); // re‑uses existing halt logic to close door, hide suds, reset rotation.` `ctx.Notify("You twist the hidden valve and the water rushes out, draining the machine. The suds disappear.");` `// Play a draining‑type noise (reuse standard washer noise radius).` `MakeNoise(CloneZConfig.WasherNoiseRadius);` `}` (Quote the existing `private void StopWash(InteractContext ctx)` method to show placement.)
