@@ -122,6 +122,7 @@ namespace CloneZ
             /// <summary>
             /// Executes the harness, processing each place and generating reports.
             /// </summary>
+            // Main loop: set up logging, ensure output directory, init camera and rig, then process each place, handling errors and cleanup
             public int Execute()
             {
                 Application.logMessageReceived += OnLog;
