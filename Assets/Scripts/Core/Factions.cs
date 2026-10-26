@@ -93,7 +93,17 @@ namespace CloneZ
             { "winternote5", new Def { Id = "winternote5", Name = "Miner's Log", Color = new Color(0.55f, 0.45f, 0.30f),
                 Blurb = "A miner’s log mentions a hidden vein beneath the frozen lake, cursed by the cold." } },
             { "winternote6", new Def { Id = "winternote6", Name = "Survivor's Tale", Color = new Color(0.80f, 0.20f, 0.20f),
-                Blurb = "A torn notebook recounts a night of relentless howl‑winds and a mysterious light beyond the treeline." } }
+                Blurb = "A torn notebook recounts a night of relentless howl‑winds and a mysterious light beyond the treeline." } },
+            { "icebridgewarning", new Def { Id = "icebridgewarning", Name = "Ice‑Bridge Warning", Color = new Color(0.45f, 0.70f, 0.85f),
+                Blurb = "A shaky note pinned to a broken fence: ‘The river’s ice cracks at sunrise; cross only with a rope.’" } },
+            { "barnshout", new Def { Id = "barnshout", Name = "Barn Shout", Color = new Color(0.65f, 0.55f, 0.40f),
+                Blurb = "A faded billboard half‑torn by wind: ‘Stay clear of the old barn, the doors swing on their own.’" } },
+            { "abandonedchurch", new Def { Id = "abandonedchurch", Name = "Abandoned Church Plaque", Color = new Color(0.80f, 0.70f, 0.60f),
+                Blurb = "A cracked stone plaque reads: ‘The choir’s hymn echoes after nightfall – keep inside.’" } },
+            { "trappernote", new Def { Id = "trappernote", Name = "Trapper’s Note", Color = new Color(0.55f, 0.45f, 0.35f),
+                Blurb = "A weather‑worn scrap of paper: ‘Set snares near the pine line; wolves avoid them after the blizzard.’" } },
+            { "radiofarm", new Def { Id = "radiofarm", Name = "Farm Radio Dispatch", Color = new Color(0.60f, 0.55f, 0.75f),
+                Blurb = "Static‑filled broadcast: ‘Supply drop delayed, meet at the old silo south of the farm.’" } }
         };
 
         // Base relations: -1 hostile, 0 neutral, +1 allied. Symmetric; anything unlisted is neutral.
