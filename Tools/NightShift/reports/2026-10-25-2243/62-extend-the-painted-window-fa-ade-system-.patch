@@ -1,0 +1,66 @@
+diff --git a/Assets/Scripts/World/Map/BuildingPass.Facades.cs b/Assets/Scripts/World/Map/BuildingPass.Facades.cs
+index 8f48cb4a..14588d85 100644
+--- a/Assets/Scripts/World/Map/BuildingPass.Facades.cs
++++ b/Assets/Scripts/World/Map/BuildingPass.Facades.cs
+@@ -1,5 +1,6 @@
+ using System.Collections.Generic;
+ using UnityEngine;
++using System;
+ using static CloneZ.KentuckyMap;
+ 
+ namespace CloneZ
+@@ -18,6 +19,9 @@ internal static partial class BuildingPass
+         /// <summary>The grid textures hold 4 x 4 bays and storeys.</summary>
+         private const int GridCells = 4;
+ 
++        /// <summary>Probability that a ground‑floor window receives a shutter overlay.</summary>
++        private const float ShutterChance = 0.35f; // 35 % of ground‑floor windows get a dark shutter overlay
++
+         /// <summary>The style of painted window grid used for a building facade.</summary>
+         internal enum FacadeStyle { Punched, Ribbon, Band, Curtain, Small }
+ 
+@@ -63,7 +67,10 @@ private static void Facades(Job j)
+                 {
+                     WindowKind kind = i == p.Front ? p.FrontWindow : p.GroundWindow;
+                     GridBand(j, i, margin, len - margin, 0, 0, StyleOf(p, kind == WindowKind.Storefront ? WindowKind.Sash : kind), u0, v0);
+-                }
++            }
++        }
++
++            }
+                 if (high) GridBand(j, i, margin, len - margin, 1, p.Storeys - 1, StyleOf(p, p.UpperWindow), u0, v0 + 0.5f);
+             }
+         }
+@@ -92,8 +99,31 @@ private static void GridBand(Job j, int i, float a, float b, int k0, int k1, Fac
+                 Vector2 c2 = j.At(i, (s0 + s1) * 0.5f) + j.Out[i] * 0.012f;
+                 var centre = new Vector3(c2.x, (y0 + yTop) * 0.5f, c2.y);
+                 var uv = new Rect(u0 + (s0 - a) / cellU, v0, (s1 - s0) / cellU, (yTop - y0) / cellV);
++                // Main painted‑window quad.
+                 m.QuadUV(centre, along * ((s1 - s0) * 0.5f), Vector3.up * ((yTop - y0) * 0.5f), surf, uv);
++                // Possibly add a shutter overlay on ground‑floor windows only.
++                if (k0 == 0 && MapStyle.Pick(j.Id, i * 13 + (int)(s0 * 10f), 100) < ShutterChance * 100f)
++                {
++                    // Re‑use the centre and along vectors; compute a tiny UV for the shutter.
++                    var shutterUV = new Rect(uv.x, uv.y, uv.width, uv.height);
++                    DrawShutter(j, i, a, b, s0, s1, y0, yTop, centre, along, j.TrimS, shutterUV);
+             }
+         }
+-    }
++
++        // Draw a thin dark quad that represents a wooden shutter over a ground‑floor window.
++        private static void DrawShutter(Job j, int i, float a, float b,
++            float s0, float s1, float y0, float yTop,
++            Vector3 centre, Vector3 along,
++            Surf shutterSurf, Rect uv)
++        {
++            // Shutter occupies the lower 20 % of the window height.
++            float shutterHeight = (yTop - y0) * 0.2f;
++            var shutterCenter = new Vector3(centre.x, y0 + shutterHeight * 0.5f, centre.z);
++            var shutterUV = new Rect(uv.x, uv.y, uv.width, uv.height * 0.2f);
++            // Use the job’s Trim surface (a dark, non‑emissive material) for the shutter.
++            var mesh = j.FloorY(0) == y0 ? j.Facing(i) : j.Upper;
++            mesh.QuadUV(shutterCenter, along * ((s1 - s0) * 0.5f), Vector3.up * shutterHeight,
++                shutterSurf, shutterUV);
++        }
++        // extra brace removed
+ }
