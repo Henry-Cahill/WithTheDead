@@ -290,8 +290,17 @@ namespace CloneZ
                     Vector3 p2 = foot + r * 1.3f + new Vector3(0f, h + 0.2f, 0f), p3 = foot + r * 2.4f + new Vector3(0f, h + 0.12f, 0f);
                     high.Rod(p0, p1, 0.09f, steel, 6);
                     high.Rod(p1, p2, 0.08f, steel, 6);
-                    high.Rod(p2, p3, 0.07f, steel, 6);
-                    head = p3;
+high.Rod(p2, p3, 0.07f, steel, 6);
+                     // Rusted metal bracket that joins the arm to the pole.
+                     low.Box(p0 + new Vector3(0f, 0.02f, 0f), new Vector3(0.06f, 0.02f, 0.12f), DarkMetal);
+                     // Four rivets on the bracket corners.
+                     low.Cylinder(p0 + new Vector3(-0.025f, 0.03f, -0.055f), 0.005f, 0.001f, 6, Gloss(new Color(0.46f, 0.38f, 0.30f)), Quaternion.identity, 0.5f);
+                     low.Cylinder(p0 + new Vector3( 0.025f, 0.03f, -0.055f), 0.005f, 0.001f, 6, Gloss(new Color(0.46f, 0.38f, 0.30f)), Quaternion.identity, 0.5f);
+                     low.Cylinder(p0 + new Vector3(-0.025f, 0.03f, 0.055f), 0.005f, 0.001f, 6, Gloss(new Color(0.46f, 0.38f, 0.30f)), Quaternion.identity, 0.5f);
+                     low.Cylinder(p0 + new Vector3( 0.025f, 0.03f, 0.055f), 0.005f, 0.001f, 6, Gloss(new Color(0.46f, 0.38f, 0.30f)), Quaternion.identity, 0.5f);
+                     // Darkened wear stripe on the pole, hinting at years of use.
+                     low.Cylinder(foot + new Vector3(0f, h * 0.55f, 0f), 0.13f, 0.015f, 8, Matte(new Color(0.20f, 0.15f, 0.10f)), Quaternion.identity, 0.5f);
+                     head = p3;
                     AddSnowCap(high, head + new Vector3(0f, 0.06f, 0f));
                     PowerPass.CobraHead(ctx, lamp, head, lamp.Reach, 0.34f);
                     if (lamp.Lit && inside) Burn(ctx, lamp, at, h, head);
