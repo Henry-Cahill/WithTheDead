@@ -40,9 +40,11 @@ namespace CloneZ
         private TimeOfDay _timeOfDay;
         private PlayerClothing _clothing;
         private PlayerSleep _sleep;
-        // Cached temperature level and descriptor to avoid per-frame computation
-        private int _levelCache;
-        private string _descriptorCache;
+// Cached temperature level and descriptor to avoid per-frame computation
+         private int _levelCache;
+         private string _descriptorCache;
+         // Cache of last temperature value to avoid unnecessary level recompute
+         private float _lastTempCache;
 
         private PlayerClothing Clothing => _clothing != null ? _clothing : (_clothing = GetComponent<PlayerClothing>());
         private PlayerSleep Sleep => _sleep != null ? _sleep : (_sleep = GetComponent<PlayerSleep>());
@@ -99,6 +101,8 @@ namespace CloneZ
             _timeOfDay = TimeOfDay.Instance;
             // Initialize cached level and descriptor based on initial temperature
             UpdateLevelCache();
+            // Cache the initial temperature to detect future changes
+            _lastTempCache = _stats.Temperature;
         }
 
         private void Update()
@@ -140,35 +144,39 @@ namespace CloneZ
         private Vector3 _lastWarmthPos;
     private float _cachedWarmth;
 
-    private void UpdateTemperature(float dt)
-    {
-        // Update cached warmth from HomeComfort only when the player moves significantly.
-        Vector3 curPos = transform.position;
-        if ((curPos - _lastWarmthPos).sqrMagnitude > 0.0001f) // movement threshold (~0.01 units)
+        private void UpdateTemperature(float dt)
         {
-            _cachedWarmth = HomeComfort.WarmthAt(curPos);
-            _lastWarmthPos = curPos;
+            // Update cached warmth from HomeComfort only when the player moves significantly.
+            Vector3 curPos = transform.position;
+            if ((curPos - _lastWarmthPos).sqrMagnitude > 0.0001f) // movement threshold (~0.01 units)
+            {
+                _cachedWarmth = HomeComfort.WarmthAt(curPos);
+                _lastWarmthPos = curPos;
+            }
+
+            float clothingWarmth = Clothing != null ? Clothing.TotalInsulation(_stats.Wetness) : 0f;
+            float shelter = (Sleep != null && Sleep.IsSleeping) ? CloneZConfig.TempShelterWarmth : 0f;
+
+            float target = AmbientTemperature()
+                + clothingWarmth
+                - _stats.Wetness * CloneZConfig.TempWetChill
+                + shelter
+                + _cachedWarmth;   // cached warmth source
+            // Do not clamp – the target can be negative (freezing) or >1 (overheating)
+            Target = target;
+
+            if (Climate.Winter)
+                _stats.Temperature = Mathf.Lerp(_stats.Temperature, target, 1f - Mathf.Exp(-dt / WinterResponseSeconds));
+            else
+                _stats.Temperature = Mathf.MoveTowards(_stats.Temperature, target, CloneZConfig.TempAdjustPerSec * dt);
+
+            // Only update level cache if temperature changed noticeably
+            if (Mathf.Abs(_stats.Temperature - _lastTempCache) > 0.0001f)
+            {
+                UpdateLevelCache();
+                _lastTempCache = _stats.Temperature;
+            }
         }
-
-        float clothingWarmth = Clothing != null ? Clothing.TotalInsulation(_stats.Wetness) : 0f;
-        float shelter = (Sleep != null && Sleep.IsSleeping) ? CloneZConfig.TempShelterWarmth : 0f;
-
-        float target = AmbientTemperature()
-            + clothingWarmth
-            - _stats.Wetness * CloneZConfig.TempWetChill
-            + shelter
-            + _cachedWarmth;   // cached warmth source
-        // Do not clamp – the target can be negative (freezing) or >1 (overheating)
-        Target = target;
-
-        if (Climate.Winter)
-            _stats.Temperature = Mathf.Lerp(_stats.Temperature, target, 1f - Mathf.Exp(-dt / WinterResponseSeconds));
-        else
-            _stats.Temperature = Mathf.MoveTowards(_stats.Temperature, target, CloneZConfig.TempAdjustPerSec * dt);
-
-        // Update cached level and descriptor after temperature may have changed
-        UpdateLevelCache();
-    }
 
         // The naked, dry ambient a body would settle at: the air temperature on the warmth scale (the
         // milder air inside a building), may fall below 0 (extreme cold) or rise above 1 (extreme heat),
