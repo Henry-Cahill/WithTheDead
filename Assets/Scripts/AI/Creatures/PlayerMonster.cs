@@ -158,7 +158,8 @@ namespace CloneZ
             _strikeAt = Time.time + StrikeCooldown;
             _attackUntil = Time.time + 0.35f;
             _stillSince = Time.time;
-            Sfx.Play(Def.Id == CreatureCatalog.Hound ? SfxIds.MutantGrowl : SfxIds.MutantScreech, transform.position, 0.9f, Random.Range(0.8f, 0.95f), 25f);
+            Sfx.Play(Def.Id == CreatureCatalog.Hound ? SfxIds.HoundSnarl : Def.Id == CreatureCatalog.Puppeteer ? SfxIds.MutantGrowl : SfxIds.MutantScreech,
+                transform.position + Vector3.up * (Def.Height * 0.8f), 0.9f, Random.Range(0.9f, 1.05f), 35f);
             float reach = Def.AttackRange + 0.4f;
             Vector3 f = Facing;
             for (int i = Actor.All.Count - 1; i >= 0; i--)
@@ -198,7 +199,7 @@ namespace CloneZ
                     _pounceDir = Facing;
                     _pounceUntil = Time.time + 0.35f;
                     _attackUntil = _pounceUntil + 0.3f;
-                    Sfx.Play(SfxIds.MutantScreech, transform.position, 1f, 0.7f, 30f);
+                    Sfx.Play(SfxIds.ShadeShriek, transform.position + Vector3.up * 1.6f, 1f, 0.9f, 40f);
                     break;
             }
         }

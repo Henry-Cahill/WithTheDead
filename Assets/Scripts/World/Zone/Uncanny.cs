@@ -101,7 +101,7 @@ namespace CloneZ
         private void Radio(Vector3 around)
         {
             Vector2 o = Random.insideUnitCircle * 8f;
-            Sfx.Play(SfxIds.RadioStatic, around + new Vector3(o.x, 1f, o.y), 0.7f, 1f, 18f);
+            Sfx.Play(SfxIds.RadioStatic, around + new Vector3(o.x, 1f, o.y), 0.85f, 1f, 28f);
             GameEvents.RaiseSubtitle("A radio, somewhere", s_RadioLines[_rng.Next(s_RadioLines.Length)]);
         }
     }
@@ -236,7 +236,7 @@ namespace CloneZ
                 if (_whisper <= 0f)
                 {
                     _whisper = Random.Range(5f, 9f);
-                    Sfx.Play(SfxIds.UncannyWhisper, transform.position + Vector3.up * 1.6f, 0.5f, Random.Range(0.85f, 1.1f), 10f);
+                    Sfx.Play(SfxIds.UncannyWhisper, transform.position + Vector3.up * 1.6f, 0.6f, Random.Range(0.85f, 1.1f), 14f);
                 }
             }
         }
@@ -294,7 +294,7 @@ namespace CloneZ
 
         private void Vanish()
         {
-            Sfx.Play(SfxIds.UncannyWhisper, transform.position + Vector3.up * 1.5f, 0.35f, 0.8f, 40f);
+            Sfx.Play(SfxIds.UncannyWhisper, transform.position + Vector3.up * 1.5f, 0.45f, 0.8f, 60f);
             Destroy(gameObject);
         }
     }

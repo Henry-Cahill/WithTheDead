@@ -603,7 +603,7 @@ namespace CloneZ
             _attackCooldown = CloneZConfig.ZombieAttackCooldown;
             SafeStop();
             AttackStarted?.Invoke(false);
-            Sfx.Play(SfxIds.ZombieAttack, transform.position + Vector3.up * 1.6f, 0.8f, Random.Range(0.85f, 1.1f), 22f);
+            ZombieVoices.Say(this, SfxIds.ZombieAttack, transform.position + Vector3.up * (Type == ZombieType.Crawler ? 0.45f : 1.6f), 0.9f, 30f);
 
             // Wind-up (the lunge) before the strike lands.
             float t = 0f;
@@ -650,7 +650,7 @@ namespace CloneZ
             _attackCooldown = CloneZConfig.ZombieAttackCooldown;
             SafeStop();
             AttackStarted?.Invoke(true);
-            Sfx.Play(SfxIds.DoorBash, transform.position + Vector3.up * 1.2f + transform.forward * 0.6f, 0.6f, Random.Range(0.85f, 1.1f), 30f);
+            Sfx.Play(SfxIds.DoorBash, transform.position + Vector3.up * 1.2f + transform.forward * 0.6f, 0.6f, Random.Range(0.85f, 1.1f), 36f);
 
             float t = 0f;
             while (t < CloneZConfig.ZombieAttackWindup)

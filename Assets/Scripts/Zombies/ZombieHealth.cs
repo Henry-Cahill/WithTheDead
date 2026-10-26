@@ -65,6 +65,7 @@ namespace CloneZ
             if (info.Kind == DamageKind.Shove)
             {
                 AI.Stagger(0.7f, info.HitDirection, info.Knockback);
+                ZombieVoices.Hurt(this);
                 return;
             }
             // The dead don't feel the Zone's radiation or its psychic pressure.
@@ -84,6 +85,7 @@ namespace CloneZ
             // Survived the blow: brief stagger scaled by how hard it hit.
             float stun = info.IsHeadshot ? 0.5f : 0.25f;
             AI.Stagger(stun, info.HitDirection, info.Knockback);
+            ZombieVoices.Hurt(this);
         }
 
         private void Die(Vector3 hitDirection)
@@ -92,7 +94,7 @@ namespace CloneZ
             IsDead = true;
             Health = 0f;
             GameManager.Instance?.ReportZombieKill();
-            Sfx.Play(SfxIds.ZombieDie, transform.position + Vector3.up * 1.4f, 0.75f, UnityEngine.Random.Range(0.85f, 1.1f), 25f);
+            ZombieVoices.Say(this, SfxIds.ZombieDie, transform.position + Vector3.up * (AI != null && AI.Type == ZombieType.Crawler ? 0.4f : 1.4f), 0.85f, 36f, true);
             OnDeath?.Invoke(this);
             AI.Kill(hitDirection);
         }
