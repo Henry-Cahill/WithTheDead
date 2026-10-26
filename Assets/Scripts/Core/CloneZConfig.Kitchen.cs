@@ -21,7 +21,8 @@ namespace CloneZ
         public const float KitchenDishesWater = 1f;
         public const float KitchenDishesCalm = 4f;           // panic eased by the routine of washing up
         public const float KitchenDishesDirtyHours = 12f;    // in-game hours until there's washing-up again
-        public const float KitchenWipeSeconds = 2.5f;        // "Wipe down the worktop"
+        public const float KitchenWipeSeconds = 2.5f; // "Wipe down the worktop" duration
+        public const float KitchenSoakCalm = 2f; // panic reduction from soaking hands
 
         // ---- The gas range (KitchenStove): works without power ----
         public const float StoveWarmthRadius = 2.2f;         // how far a lit stove's warmth reaches (m)

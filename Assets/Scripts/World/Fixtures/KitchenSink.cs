@@ -22,6 +22,7 @@ namespace CloneZ
         private const float LeftDoorAngle = 88f;     // the door by the corner stops short of the counter's end
         private const float RightDoorAngle = 100f;
         private const float TapTurn = 45f;            // the cold tap's cross-head stands turned (a ×, not a +) while it runs
+        private const float SoakSeconds = 5f; // how long the survivor can soak their hands
         private const float StreamRadius = 0.0065f;
         private const string NoWater = "There's no water to wash with \u2014 the tap's dry and the sink is empty";
         private const string GaveOut = "The water gave out before you'd finished";
@@ -304,6 +305,10 @@ namespace CloneZ
                 into.Add(new InteractAction("Warm your hands", ctx => {
                     ctx.Notify("The running water warms your hands a little.");
                 }));
+                // Soak your hands timed action
+                into.Add(new InteractAction("Soak your hands", SoakHands)
+                    .Timed(SoakSeconds, "Soaking your hands")
+                    .DisabledIf(!_running, "The tap is off – you need running water to soak your hands"));
             }
         }
 
@@ -437,7 +442,7 @@ namespace CloneZ
             else if (rinsed > 0)
                 ctx.Notify("The fresh cuts rinse clean \u2014 but the hot, swollen one is past anything water can do. It needs antibiotics.");
             else if (festering > 0)
-                ctx.Notify("Water does nothing for the hot, angry swelling. That needs antibiotics, not a rinse.");
+                ctx.Notify("Water does nothing for the hot, angry swelling. That needs antibiotics.");
             else
                 ctx.Notify("There's nothing left open to rinse.");
             EndJob(ctx);
@@ -466,6 +471,15 @@ namespace CloneZ
             if (ctx.Stats != null) ctx.Stats.Panic = Mathf.Max(0f, ctx.Stats.Panic - CloneZConfig.KitchenDishesCalm);
             ctx.Notify("You scrub the plates and the mug, rinse them and stand them in the rack to drip. Such an ordinary job. It steadies you.");
             EndJob(ctx);
+        }
+
+        // New action – soak your hands while the tap runs.
+        private void SoakHands(InteractContext ctx)
+        {
+            // Called when the timed soak finishes
+            if (ctx.Stats != null)
+                ctx.Stats.Panic = Mathf.Max(0f, ctx.Stats.Panic - CloneZConfig.KitchenSoakCalm);
+            ctx.Notify("You sit with your hands under the running water. The warmth eases your nerves a little.");
         }
 
         // Empties the sink when mains are off and there is standing water.
