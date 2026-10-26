@@ -23,6 +23,9 @@ namespace CloneZ
             "DAVID'S TROPHIES.", "SUMMER CLOTHES.",
         };
 
+        /// <summary>
+        /// Draws the living‑room furniture geometry for this piece.
+        /// </summary>
         partial void DrawLiving(RaidMesh m, System.Random rng, ref bool drawn, ref RaidMesh glow, ref Vector3 bulb)
         {
             switch (Kind)
@@ -71,6 +74,7 @@ namespace CloneZ
                     break;
                 case HomeFurnitureKind.Armchair:
                     SeatFixture.Create(transform, "Armchair", new Vector3(0f, CloneZConfig.ArmchairSeatHeight, CloneZConfig.ArmchairSeatBack), Yaw,
+                        // Create a comfortable armchair seat with higher comfort settings for the player
                         CloneZConfig.ArmchairComfort, "Sit down in the armchair", "Get up out of the armchair", true);
                     break;
                 case HomeFurnitureKind.Dresser: LivingAttachDresser(); break;
@@ -142,18 +146,31 @@ namespace CloneZ
         }
 
         // The dresser's three drawers, each sliding out along the front, each its own storage.
+        /// <summary>
+        /// Sets up the dresser’s three sliding drawers as individual storage containers.
+        /// </summary>
         private void LivingAttachDresser()
         {
             Vector3 p = transform.position;
+            // Use the wood colour from the drawer or fall back to the default walnut colour
             Color wood = _livingWood.a > 0f ? _livingWood : FurnitureBuilder.Walnut;
+            // Compute the travel direction for drawer sliding (forward relative to furniture rotation)
             Vector3 travel = LivingDir(Vector3.forward * CloneZConfig.DresserDrawerTravel);
+            // Loop over each of the three drawers (top, middle, bottom)
             for (int row = 0; row < 3; row++)
             {
+                // Create a fresh mesh for this drawer's geometry
+                // Create a fresh mesh for the bedside drawer geometry
                 RaidMesh dm = LivingMesh();
+                // Populate the mesh with the drawer shape for this row using the chosen wood colour
                 FurnitureBuilder.DresserDrawer(dm, row, wood);
+                // Compute the vertical position of this drawer based on its row index
                 float y = FurnitureBuilder.DresserDrawerY(row);
+                // Create a sliding fixture part for the drawer at its local position and with the travel vector
                 FixturePart drawer = FixturePart.Slide(transform, "Drawer_" + row, dm, LivingAt(new Vector3(0f, y, 0.205f)), travel);
+                // Look up the human‑readable name for this drawer (top/middle/bottom)
                 string name = LivingDrawerNames[row];
+                // Register this drawer as a storage container with appropriate loot settings
                 StorageFixture.Create(transform, name, Interactable.KeyFor("dresser", p, row), LivingAt(new Vector3(0f, y, 0.24f)),
                     new[] { drawer }, transform, Seed + 101 * (row + 1), new StorageOptions
                     {
@@ -167,13 +184,19 @@ namespace CloneZ
         }
 
         // The bedside table's drawer (its lamp is drawn with the body and switched by the lamp's own fixture).
+        /// <summary>
+        /// Sets the bedside table’s single drawer as a storage fixture.
+        /// </summary>
         private void LivingAttachBedside()
         {
             Vector3 p = transform.position;
             RaidMesh dm = LivingMesh();
+            // Populate the mesh with the bedside drawer shape, using the wood colour from the parent or default walnut
             FurnitureBuilder.BedsideDrawer(dm, _livingWood.a > 0f ? _livingWood : FurnitureBuilder.Walnut);
+            // Create a sliding fixture for the drawer, positioned at the bedside and moving forward when opened
             FixturePart drawer = FixturePart.Slide(transform, "Drawer", dm, LivingAt(new Vector3(0f, 0.4f, 0.185f)),
                 LivingDir(Vector3.forward * CloneZConfig.BedsideDrawerTravel));
+            // Register the bedside drawer as a storage container with desk‑type loot settings
             StorageFixture.Create(transform, "Bedside drawer", Interactable.KeyFor("bedside", p), LivingAt(new Vector3(0f, 0.4f, 0.22f)),
                 new[] { drawer }, transform, Seed + 37, new StorageOptions
                 {
