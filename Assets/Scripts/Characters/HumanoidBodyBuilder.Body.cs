@@ -20,6 +20,7 @@ namespace CloneZ
 
         // ── Head ─────────────────────────────────────────────────────────────────────────────────────
 
+        /// <summary>Builds the neck, cranium, face and eyes from skin ellipsoids and limbs.</summary>
         private void BuildHead()
         {
             const int head = (int)HumanBone.Head, neck = (int)HumanBone.Neck;
@@ -47,6 +48,7 @@ namespace CloneZ
             BuildHair();
         }
 
+        /// <summary>Adds hair geometry for the selected style, leaving room for hats when worn.</summary>
         private void BuildHair()
         {
             const int head = (int)HumanBone.Head;
@@ -95,6 +97,7 @@ namespace CloneZ
 
         // ── Torso ────────────────────────────────────────────────────────────────────────────────────
 
+        /// <summary>Returns how much the torso is inflated for a given top style.</summary>
         private static float TopInflate(TopStyle top)
         {
             switch (top)
@@ -109,6 +112,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Returns how much sleeves are inflated for a given top style.</summary>
         private static float SleeveInflate(TopStyle top)
         {
             switch (top)
@@ -123,15 +127,18 @@ namespace CloneZ
         private void BuildTorso()
         {
             HumanoidShape s = _s;
+            // Underwear sits tighter at the waist so it doesn't bulge the hip band unnecessarily.
             bool underwear = s.Bottom == BottomStyle.Underwear;
             float pelvisInflate = underwear ? 0.005f : 0.009f;
             float pelvisTop = underwear ? 0.985f : 1.035f;
 
             // Hips: trousers, shorts, the top of a skirt, or underwear — with a waistband or belt.
             TorsoSection(HumanoidSlot.Bottom, 0.800f, pelvisTop, pelvisInflate, false, true);
+            // A separate trim band gives a waistband/belt that sits slightly proud of the fabric.
             TorsoSection(HumanoidSlot.BottomTrim, pelvisTop - (underwear ? 0.016f : 0.03f), pelvisTop + 0.003f, pelvisInflate + 0.004f, true, true);
             if (s.Bottom >= BottomStyle.SkirtShort)
             {
+                // Longer skirts flare lower to leave room for stride without widening the waistband.
                 float hem = s.Bottom == BottomStyle.SkirtShort ? 0.72f : s.Bottom == BottomStyle.SkirtLong ? 0.30f : 0.50f;
                 Skirt(HumanoidSlot.Bottom, 1.02f, hem, pelvisInflate + 0.004f, s.Bottom == BottomStyle.SkirtLong ? 0.17f : 0.21f);
             }
@@ -139,19 +146,23 @@ namespace CloneZ
             TopStyle top = s.Top;
             if (top == TopStyle.None)
             {
+                // No top worn: keep only skin from mid-torso up to avoid clipping loose geometry.
                 TorsoSection(HumanoidSlot.Skin, 0.95f, 1.512f, 0f, true, false);
                 return;
             }
 
             float inf = TopInflate(top);
+            // Cache inflation so sleeves and trims can follow the same silhouette.
             _topInflate = inf;
             const HumanoidSlot cloth = HumanoidSlot.Top, trim = HumanoidSlot.TopTrim;
+            // Hem sits lower for coats/hoodies and dresses to cover more of the torso; vest is cropped higher.
             float hemY = top == TopStyle.Hoodie ? 0.90f : top == TopStyle.Jacket ? 0.89f : top == TopStyle.Coat ? 0.97f
                        : top == TopStyle.Dress ? 1.00f : top == TopStyle.Vest ? 0.92f : 0.93f;
 
             bool sleeveless = top == TopStyle.Tank || top == TopStyle.Vest || top == TopStyle.Dress;
             if (sleeveless)
             {
+                // Show bare skin over the shoulders/upper chest where no sleeve is drawn.
                 TorsoSection(HumanoidSlot.Skin, 1.30f, 1.512f, 0f, true, false);
                 TorsoSection(cloth, hemY, top == TopStyle.Vest ? 1.425f : 1.405f, inf, true, true);
             }
@@ -163,19 +174,24 @@ namespace CloneZ
             switch (top)
             {
                 case TopStyle.TShirt:
+                    // Simple crew neck trim.
                     Collar(trim, 0.020f, 0.012f);
                     break;
 
                 case TopStyle.LongSleeve:
+                    // Button-up front with trim collar.
                     Collar(trim, 0.022f, 0.014f);
                     Buttons(new[] { 1.40f, 1.32f, 1.24f, 1.16f, 1.08f, 1.00f }, inf);
                     break;
 
                 case TopStyle.Hoodie:
+                    // Slightly raised waistband trim and a hood attached to chest/straps.
                     TorsoSection(trim, hemY - 0.004f, hemY + 0.035f, inf + 0.004f, true, true);
                     Ellipsoid(cloth, (int)HumanBone.Chest, new Vector3(0f, 1.475f, -0.098f), new Vector3(0.128f, 0.074f, 0.072f), I, 14, 8);
+                    // Kangaroo pocket sits low across the front.
                     Ellipsoid(trim, (int)HumanBone.Hips, new Vector3(0f, 1.0f, SurfaceZ(1.0f, 0f, inf, true)), new Vector3(0.10f, 0.052f, 0.012f), I, 12, 6, 4f, 4f);
                     for (int side = -1; side <= 1; side += 2)
+                        // Draw hood strings down from the hood to chest level.
                         Limb(trim, (int)HumanBone.Chest, new Vector3(side * 0.03f, 1.475f, SurfaceZ(1.475f, 0.03f, inf, true)),
                             new Vector3(side * 0.034f, 1.34f, SurfaceZ(1.34f, 0.034f, inf, true) + 0.004f), Fwd,
                             new[] { new Key(0f, 0.0045f, 0.0045f), new Key(1f, 0.0045f, 0.0045f) }, seg: 6);
@@ -183,10 +199,12 @@ namespace CloneZ
 
                 case TopStyle.Jacket:
                 case TopStyle.Coat:
+                    // Open-style collar; zipper for jacket, buttons + coat tails for coat.
                     BigCollar(cloth);
                     if (top == TopStyle.Jacket) Zipper(hemY, inf);
                     else
                     {
+                        // Coat tails flare below waist like a short skirt.
                         Skirt(cloth, 1.0f, 0.62f, inf, 0.12f);
                         Buttons(new[] { 1.36f, 1.24f, 1.12f, 1.00f, 0.88f }, inf);
                     }
@@ -194,6 +212,7 @@ namespace CloneZ
                     break;
 
                 case TopStyle.Vest:
+                    // Front panels sit slightly forward of the torso; back remains open to skin.
                     for (int side = -1; side <= 1; side += 2)
                     {
                         Ellipsoid(trim, (int)HumanBone.Chest, new Vector3(side * 0.075f, 1.31f, SurfaceZ(1.31f, 0.075f, inf, true)), new Vector3(0.045f, 0.04f, 0.012f), I, 10, 6, 4f, 4f);
@@ -202,10 +221,12 @@ namespace CloneZ
                     break;
 
                 case TopStyle.Tank:
+                    // Shoulder straps leave mid-upper chest/shoulder exposed.
                     Straps(cloth, inf);
                     break;
 
                 case TopStyle.Dress:
+                    // Dress: straps up top, flared skirt below, thin waist trim.
                     Straps(cloth, inf);
                     Skirt(cloth, 1.02f, 0.52f, inf, 0.24f);
                     TorsoSection(trim, 0.995f, 1.025f, inf + 0.003f, true, true);
@@ -237,6 +258,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Draws a short zipper down the front of a jacket using tapered limb segments.</summary>
         private void Zipper(float hemY, float inflate)
         {
             float[] ys = { 1.48f, 1.36f, 1.22f, 1.10f, 0.98f, hemY + 0.006f };
@@ -249,6 +271,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Adds front pockets, angled slightly out so they read on an inflated jacket.</summary>
         private void Pockets(float y, float inflate, bool large)
         {
             Vector3 size = large ? new Vector3(0.055f, 0.06f, 0.012f) : new Vector3(0.05f, 0.045f, 0.011f);
@@ -260,6 +283,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Builds shoulder straps for a tank top or dress, looping front-to-back over the chest.</summary>
         private void Straps(HumanoidSlot slot, float inflate)
         {
             var ribbon = new[] { new Key(0f, 0.013f, 0.0045f), new Key(1f, 0.013f, 0.0045f) };
@@ -275,26 +299,34 @@ namespace CloneZ
         /// flaring outward below the hips so the legs can stride inside it.</summary>
         private void Skirt(HumanoidSlot slot, float waistY, float hemY, float inflate, float flare)
         {
+            // Reuse torso ring list to loft a conical/flared tube; Clear() keeps allocations down.
             _rings.Clear();
+            // Use at least 3 steps for a smooth curve, step ~4cm down the skirt.
             int steps = Mathf.Max(3, Mathf.CeilToInt((waistY - hemY) / 0.04f));
             for (int i = 0; i <= steps; i++)
             {
                 float y = Mathf.Lerp(waistY, hemY, (float)i / steps);
                 Ring r = TorsoRing(Mathf.Max(y, 0.93f), inflate);
                 float drop = Mathf.Max(0f, 0.93f - y);
+                // Pull slightly back so the fabric doesn't clip the front too much.
                 r.C = new Vector3(0f, y, r.C.z - 0.004f);
+                // Flare outward; back gets a bit more to look like hanging fabric.
                 r.Rx += drop * flare;
                 r.Rz += drop * flare * 1.15f;
+                // Squash in the cross-section slightly for a cloth-like silhouette.
                 r.Exp = 2.3f;
+                // Attach to hips so it follows leg motion reasonably.
                 r.B0 = r.B1 = (int)HumanBone.Hips;
                 r.W1 = 0f;
                 _rings.Add(r);
             }
+            // Loft as double-sided so the inside is visible when opened, with caps for ends.
             Loft(slot, 20, true, true);
         }
 
         // ── Arms ─────────────────────────────────────────────────────────────────────────────────────
 
+        /// <summary>Builds one arm: shoulder cap, upper arm, forearm and hand, with sleeve coverage by top style.</summary>
         private void BuildArm(float sx)
         {
             bool right = sx > 0f;
@@ -306,15 +338,18 @@ namespace CloneZ
             // 0 = bare arm, 1 = short sleeve, 2 = long sleeve.
             int sleeve = top == TopStyle.TShirt ? 1
                 : top == TopStyle.LongSleeve || top == TopStyle.Hoodie || top == TopStyle.Jacket || top == TopStyle.Coat ? 2 : 0;
+            // Torn sleeves rip through the fabric down to skin.
             if ((_s.TornSleeves & (right ? 2 : 1)) != 0) sleeve = 0;
             float si = SleeveInflate(top);
             const HumanoidSlot skin = HumanoidSlot.Skin, cloth = HumanoidSlot.Top;
 
+            // Upper arm: fuller at mid-bicep, narrows toward elbow for a tapered look.
             var upperKeys = new[]
             {
                 new Key(0f, p.UpperArm, p.UpperArm), new Key(0.35f, p.UpperArm * 1.05f, p.UpperArm * 1.1f, 0.004f),
                 new Key(0.78f, p.Elbow * 1.08f, p.Elbow * 1.1f, 0.002f), new Key(1f, p.Elbow, p.Elbow),
             };
+            // Forearm: tapers to wrist, slightly flares at wrist for a glove-like cuff fit.
             var foreKeys = new[]
             {
                 new Key(0f, p.Elbow * 1.02f, p.Elbow * 1.05f), new Key(0.25f, p.Forearm * 0.95f, p.Forearm * 1.08f, 0.004f),
@@ -324,6 +359,7 @@ namespace CloneZ
             // The shoulder cap is the top of the upper arm, only a little fuller; the arm itself starts
             // just under the joint so its rounded end stays inside the shoulder instead of riding above it.
             float shoulderGrow = sleeve > 0 ? si * 0.85f : 0f;
+            // Offset slightly inward/back to avoid intersecting the body mesh.
             Ellipsoid(sleeve > 0 ? cloth : skin, upper, sh + new Vector3(sx * 0.004f, -0.028f, -0.004f),
                 new Vector3(p.Deltoid + shoulderGrow, p.Deltoid * 1.05f + shoulderGrow, p.Deltoid * 1.02f + shoulderGrow), I, 14, 9);
 
@@ -331,15 +367,19 @@ namespace CloneZ
             if (sleeve == 2) Limb(cloth, upper, sh, el, Fwd, upperKeys, si, armTop);
             else if (sleeve == 1)
             {
+                // Short sleeve only covers partway down upper arm; bare skin shows below sleeve end.
                 Limb(cloth, upper, sh, el, Fwd, upperKeys, si, armTop, 0.46f, true, false, flare: 0.006f);
                 Limb(skin, upper, sh, el, Fwd, upperKeys, 0f, 0.38f, 1f);
             }
             else Limb(skin, upper, sh, el, Fwd, upperKeys, 0f, armTop);
+            // Track sleeve coverage for later geometry if needed.
             Remember(upper, sh, el, upperKeys, sleeve == 2 ? 1f : sleeve == 1 ? 0.46f : 0f, si);
 
+            // Elbow joint gets a small ellipsoid to read under sleeve.
             Ellipsoid(sleeve == 2 ? cloth : skin, fore, el, Vector3.one * (p.Elbow + (sleeve == 2 ? si : 0f)), I, 12, 8);
             if (sleeve == 2)
             {
+                // Long sleeve down forearm with cuff trim; bare skin ends before hand.
                 Limb(cloth, fore, el, wr, Fwd, foreKeys, si, 0f, 0.9f, true, false);
                 Limb(HumanoidSlot.TopTrim, fore, el, wr, Fwd, foreKeys, si + 0.004f, 0.84f, 0.92f, false, false);
                 Limb(skin, fore, el, wr, Fwd, foreKeys, 0f, 0.8f, 1f);
@@ -358,20 +398,25 @@ namespace CloneZ
         private void BuildHand(float sx, int hand, Vector3 wr)
         {
             HandwearStyle gear = _s.Hands;
+            // Gloves cover palm/fingers; mitts cover differently but still use gloves slot for simplicity.
             HumanoidSlot palm = gear != HandwearStyle.Bare ? HumanoidSlot.Gloves : HumanoidSlot.Skin;
             HumanoidSlot fingers = gear == HandwearStyle.Gloves ? HumanoidSlot.Gloves : HumanoidSlot.Skin;
             float g = gear != HandwearStyle.Bare ? 0.004f : 0f;
             float hs = _p.Hand;
 
+            // Palm is offset slightly back and down from wrist so it faces the body/thigh.
             Ellipsoid(palm, hand, wr + new Vector3(sx * -0.004f, -0.048f, 0.006f) * hs,
                 new Vector3(0.0155f + g, 0.046f + g, 0.040f + g) * hs, I, 12, 8, 3.2f, 3f);
+            // Fingers curl inward/down; tilted slightly to read as relaxed half-closed grip.
             Ellipsoid(fingers, hand, wr + new Vector3(sx * -0.012f, -0.106f, 0.012f) * hs,
                 new Vector3(0.0145f + g, 0.033f + g, 0.036f + g) * hs, Quaternion.Euler(0f, 0f, sx * -16f), 12, 8, 3f, 2.6f);
+            // Thumb sticks out to the side for a natural grip.
             Limb(fingers, hand, wr + new Vector3(sx * -0.006f, -0.028f, 0.036f) * hs, wr + new Vector3(sx * -0.020f, -0.068f, 0.050f) * hs, Vector3.right,
                 new[] { new Key(0f, (0.012f + g) * hs, (0.012f + g) * hs), new Key(1f, (0.0095f + g) * hs, (0.0095f + g) * hs) }, seg: 8);
 
             if (gear != HandwearStyle.Bare)
             {
+                // Add a glove cuff that sits over the wrist to avoid skin showing at the edge.
                 float w = _p.Wrist;
                 Limb(HumanoidSlot.Gloves, hand, wr + new Vector3(0f, 0.022f, 0f), wr + new Vector3(0f, -0.022f, 0f), Fwd,
                     new[] { new Key(0f, w * 0.95f + 0.012f, w * 1.22f + 0.012f), new Key(1f, w * 0.95f + 0.012f, w * 1.22f + 0.012f) },
