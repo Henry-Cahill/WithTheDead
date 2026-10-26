@@ -382,7 +382,7 @@ namespace CloneZ
             float reloadMult = (Skills != null ? Skills.ReloadTimeMult : 1f) * Build.ReloadMult / Mathf.Max(0.3f, PlayerModifiers.Current.ReloadSpeed);
             _reloadTimer = gun.ReloadTime * reloadMult;
             OnReload?.Invoke();
-            Sfx.Play(SfxIds.Reload, transform.position + Vector3.up * 1.2f, 0.7f, 1f, 14f);
+            Sfx.Play(WeaponAudio.ReloadSound(gun), transform.position + Vector3.up * 1.2f, 0.7f, 1f, 16f);
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Reloading, CloneZConfig.XpReload);
              // ensure build reflects any dirt changes after reload
             return true;
@@ -476,7 +476,7 @@ namespace CloneZ
                 if (r.Target != null) anyHit = true;
                 if (r.Killed) anyKill = true;
                 CombatFX.Tracer(muzzle, r.End, build.Suppressed ? new Color(1f, 0.9f, 0.5f, 0.4f) : new Color(1f, 0.9f, 0.5f));
-                if (r.Hit && r.Target == null && Random.value < 0.15f) Sfx.Play(SfxIds.Ricochet, r.End, 0.5f, Random.Range(0.9f, 1.2f), 25f);
+                if (NetAuthority.IsClientOnly) WeaponAudio.Shot(req, r);   // the server resolves it; hear where it went here
             }
 
             if (Skills != null)
@@ -489,7 +489,8 @@ namespace CloneZ
             float noise = gun.FirearmNoise * build.Noise;
             NoiseSystem.Emit(transform.position, noise);   // gunfire draws the horde
             GameEvents.RaiseWorldEvent(transform.position, noise, "shot");
-            Sfx.Play(GunSound(gun, build), muzzle, build.Suppressed ? 0.45f : 1f, Random.Range(0.96f, 1.04f), build.Suppressed ? 30f : 140f);
+            string report = GunSound(gun, build);
+            Sfx.Play(report, muzzle, build.Suppressed ? 0.45f : 1f, Random.Range(0.96f, 1.04f), WeaponAudio.Reach(report));
 
             float kick = build.Recoil * PlayerModifiers.Current.Recoil * (AimingDownSights ? 0.75f : 1f);
             _bloom = Mathf.Min(6f, _bloom + kick * 0.6f);
@@ -499,8 +500,9 @@ namespace CloneZ
 
         private static string GunSound(ItemDef gun, WeaponBuild build)
         {
-            if (build.Suppressed) return SfxIds.GunSuppressed;
-            switch (Ballistics.CaliberOfGun(gun))
+            string caliber = Ballistics.CaliberOfGun(gun);
+            if (build.Suppressed) return caliber == "545" || caliber == "762r" ? SfxIds.GunSuppressedRifle : SfxIds.GunSuppressed;
+            switch (caliber)
             {
                 case "12g": return SfxIds.GunShotgun;
                 case "545": return SfxIds.GunRifle;
@@ -525,7 +527,7 @@ namespace CloneZ
         {
             Vector3 dir = (aim + Vector3.up * 2.2f).normalized;
             FlareProjectile.Launch(muzzle, dir);
-            Sfx.Play(SfxIds.GunFlare, muzzle, 1f, 1f, 80f);
+            Sfx.Play(SfxIds.GunFlare, muzzle, 1f, Random.Range(0.97f, 1.03f), WeaponAudio.Reach(SfxIds.GunFlare));
             NoiseSystem.Emit(transform.position, 40f);
             GameEvents.RaiseWorldEvent(transform.position, 160f, "flare");
             bool answered = ExtractionManager.Instance != null && ExtractionManager.Instance.CallHelicopter(transform.position);

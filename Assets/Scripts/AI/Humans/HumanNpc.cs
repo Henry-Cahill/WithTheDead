@@ -532,7 +532,7 @@ namespace CloneZ
                 });
             }
             _mag--;
-            Sfx.Play(GunSound(Gun), muzzle, 1f, Random.Range(0.95f, 1.05f), 140f);
+            WeaponAudio.Report(GunSound(Gun), muzzle, 1f, Random.Range(0.95f, 1.05f));
             NoiseSystem.Emit(transform.position, _noise);
             Flash(muzzle);
             if (_avatar != null) _avatar.OnFired();
@@ -556,7 +556,7 @@ namespace CloneZ
         {
             if (gun == null) return SfxIds.GunPistol;
             string cal = Ballistics.CaliberOfGun(gun) ?? "";
-            if (gun.Id.Contains("mosin") || cal.Contains("7.62x54")) return SfxIds.GunSniper;
+            if (gun.Id.Contains("mosin") || cal == "762r" || cal.Contains("7.62x54")) return SfxIds.GunSniper;
             if (gun.Id.Contains("shotgun") || cal.Contains("12")) return SfxIds.GunShotgun;
             if (gun.Id.Contains("pistol") || cal.Contains("9x")) return SfxIds.GunPistol;
             return SfxIds.GunRifle;
@@ -575,7 +575,7 @@ namespace CloneZ
             _reserve -= take;
             _mag = take;
             _reloadUntil = Time.time + Random.Range(2.2f, 3.2f);
-            Sfx.Play(SfxIds.Reload, transform.position + Vector3.up * 1.2f, 0.6f, 1f, 14f);
+            Sfx.Play(WeaponAudio.ReloadSound(Gun), transform.position + Vector3.up * 1.2f, 0.6f, 1f, 18f);
             if (_rng.NextDouble() < 0.5) Bark("Reloading!");
             if (_avatar != null) _avatar.OnReload(_reloadUntil - Time.time);
         }
