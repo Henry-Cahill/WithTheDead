@@ -53,6 +53,8 @@ namespace CloneZ
 
         private float _health = 1f, _maxHealth = 1f;
         private bool _broken, _lockBroken;
+        // True after the door’s hinges have been oiled – reduces damage from zombie blows
+        private bool _lubed;
         private OpeningLine _line;
         private float _mid, _width = 1.5f;
         private int _swing = 1;
@@ -63,10 +65,12 @@ namespace CloneZ
         private int _seed;
         private string _brokenLabel = "Close the door";
         private float _captionAt = -999f;
-        private float _kickClock, _kickNext;
+
 
         private Action<InteractContext> _kickAct, _kickBegin;
-        private Action<InteractContext, float, float> _kickTick;
+        private Action<InteractContext> _oilAct, _oilBegin;
+        private Action<InteractContext, float, float> _kickTick, _oilTick;
+        private float _kickClock, _kickNext, _oilClock, _oilNext;
 
         private Action<InteractContext> _reinforceAct, _reinforceBegin;
         private Action<InteractContext, float, float> _reinforceTick;
@@ -74,8 +78,8 @@ namespace CloneZ
 
         private static readonly Color BangCaption = new Color(0.88f, 0.62f, 0.46f);
 
-        // The detour search's candidates, best first (no allocation per search).
         private const int MaxCandidates = 6;
+        private const int LubedFlag = 0x10; // 16 – persisted in FixtureSave.State
         private static readonly RaidDoor[] s_Doors = new RaidDoor[MaxCandidates];
         private static readonly float[] s_Scores = new float[MaxCandidates];
         private static readonly Vector3[] s_Stands = new Vector3[MaxCandidates];
@@ -95,7 +99,13 @@ namespace CloneZ
         protected override void Awake()
         {
             base.Awake();
-            _kickAct = KickIn;
+            _oilAct = OilDoor;
+            _oilBegin = ctx =>
+            {
+                _oilClock = 0f;
+                _oilNext = CloneZConfig.RaidDoorKickInterval * 0.4f;
+            };
+            _oilTick = OilTick;
             _kickBegin = c =>
             {
                 _kickClock = 0f;
@@ -179,7 +189,14 @@ namespace CloneZ
                 into.Insert(Mathf.Min(start + 1, into.Count), kick);
             }
 
-            // New action to reinforce a damaged door
+            if (!_lubed && !_broken)
+                {
+                    var oil = new InteractAction("Oil door hinges", _oilAct)
+                        .Timed(CloneZConfig.RaidDoorKickSeconds, "Oiling the hinges", HumanoidActivity.Build);
+                    oil.Begin = _oilBegin;
+                    oil.Tick = _oilTick;
+                    into.Add(oil);
+                }
             if (!_broken && _health < _maxHealth)
             {
                 var reinforce = new InteractAction("Reinforce door", _reinforceAct)
@@ -313,7 +330,9 @@ namespace CloneZ
         public void TakeDamage(in DamageInfo info)
         {
             if (!Obstructs) return;
-            _health -= Mathf.Max(0f, info.Amount);
+            float dmg = Mathf.Max(0f, info.Amount);
+            if (_lubed) dmg *= 0.5f; // lubed hinges halve damage
+            _health -= dmg;
             if (_health <= 0f)
             {
                 Burst(info.HitDirection);
@@ -425,6 +444,24 @@ namespace CloneZ
         }
 
         /// <summary>Reinforces a damaged door, increasing its health and max health within limits.</summary>
+        private void OilTick(InteractContext ctx, float dt, float progress)
+        {
+            _oilClock += dt;
+            if (_oilClock < _oilNext) return;
+            _oilNext += CloneZConfig.RaidDoorKickInterval;
+            // Re‑use the “working” noise so the player knows something is happening.
+            MakeNoise(CloneZConfig.RaidDoorKickNoise);
+            // Play a subtle wood‑work sound; reuse DoorBash at a lower volume.
+            Sfx.Play(SfxIds.DoorBash, InteractPoint, 0.3f, UnityEngine.Random.Range(0.95f, 1.02f), 28f);
+        }
+
+        private void OilDoor(InteractContext ctx)
+        {
+            if (_lubed) return; // safety
+            _lubed = true;
+            ctx.Notify($"You spread oil over the {Noun}'s hinges. It will resist damage better.");
+            Caption($"The {Noun}'s hinges glisten after being oiled.", false);
+        }
         private void ReinforceDoor(InteractContext ctx)
         {
             // Cap the reinforcement so a door can’t become over‑tough.
@@ -442,13 +479,13 @@ namespace CloneZ
         public override void CaptureState(FixtureSave save)
         {
             base.CaptureState(save);
-            save.State |= (_broken ? 4 : 0) | (_lockBroken ? 8 : 0);
+            save.State |= (_broken ? 4 : 0) | (_lockBroken ? 8 : 0) | (_lubed ? LubedFlag : 0);
             save.A = _health;
         }
 
         public override void RestoreState(FixtureSave save)
         {
-            _lockBroken = (save.State & 8) != 0;
+            _lubed = (save.State & LubedFlag) != 0;
             if (save.A > 0f) _health = Mathf.Min(save.A, _maxHealth);
             if ((save.State & 4) != 0 && !_broken)
             {
