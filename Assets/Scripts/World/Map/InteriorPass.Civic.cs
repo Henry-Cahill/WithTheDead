@@ -129,7 +129,15 @@ namespace CloneZ
                 {
                     Surf wood = DecorPalette.Matte(FurnitureBuilder.Walnut), metal = DecorPalette.Metal(new Color(0.16f, 0.16f, 0.17f));
                     m.Box(new Vector3(0f, 0.15f, 0f), new Vector3(1.2f, 0.3f, 0.36f), wood);
+                     // Front edge trim (0.015 m tall, 0.02 m thick)
+                     m.Box(new Vector3(0f, 0.165f, 0.19f), new Vector3(1.2f, 0.015f, 0.02f), wood);
                     m.Box(new Vector3(0f, 1.25f, -0.12f), new Vector3(1.2f, 0.08f, 0.12f), wood);
+                     // Row of eight rivets along back edge
+                     for (int i = 0; i < 8; i++)
+                     {
+                         float x = -0.54f + i * (1.08f / 7f);
+                         m.Cylinder(new Vector3(x, 1.28f, -0.12f), 0.01f, 0.004f, 6, metal);
+                     }
                     // Randomly add up to five gun slots, each with a 50% chance.
                     for (int i = 0; i < 5; i++)
                     {
@@ -138,7 +146,23 @@ namespace CloneZ
                         m.Box(new Vector3(x, 0.75f, -0.05f), new Vector3(0.05f, 1.0f, 0.08f), metal);
                         m.Box(new Vector3(x, 0.38f, -0.03f), new Vector3(0.06f, 0.25f, 0.1f), wood);
                     }
-                    m.Rod(new Vector3(-0.58f, 1.0f, 0.12f), new Vector3(0.58f, 1.0f, 0.12f), 0.012f, metal);
+                    // Modest wooden sign panel with slight random vertical offset
+                     float signYOffset = 0.02f * (float)r.NextDouble();
+                     m.Box(new Vector3(0f, 0.6f + signYOffset, -0.20f), new Vector3(0.8f, 0.02f, 0.3f), wood);
+                     // Left bracket
+                     m.Box(new Vector3(-0.58f, 0.98f, 0.12f), new Vector3(0.02f, 0.04f, 0.08f), metal);
+                     m.Box(new Vector3(-0.58f, 0.94f, 0.12f), new Vector3(0.02f, 0.06f, 0.02f), metal);
+                     // Right bracket (mirrored)
+                     m.Box(new Vector3(0.58f, 0.98f, 0.12f), new Vector3(0.02f, 0.04f, 0.08f), metal);
+                     m.Box(new Vector3(0.58f, 0.94f, 0.12f), new Vector3(0.02f, 0.06f, 0.02f), metal);
+                     // Optional small ammo box (10% chance)
+                     if (r.NextDouble() < 0.1)
+                     {
+                         // metal base
+                         m.Box(new Vector3(0f, 1.45f, -0.05f), new Vector3(0.25f, 0.02f, 0.18f), metal);
+                         // wood lid
+                         m.Box(new Vector3(0f, 1.47f, -0.05f), new Vector3(0.25f, 0.015f, 0.18f), wood);
+                     }
                 }, "Gun rack");
             MoreLoot(c, LootCount(c, 0.15f, 3), order);
             for (int k = 0; k < 2; k++)
