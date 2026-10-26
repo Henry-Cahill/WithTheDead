@@ -11322,7 +11322,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: `StartSleep` (line 126), `TickSleep` (line 148), `ZombiesNearby` (line 174), `WakeInputPressed` (line 186).
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
   Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
-- [ ] Cache the costly `WeatherSystem.Instance` lookup in `FootstepAudio.TickWetness` (Assets/Scripts/Audio/Footsteps.cs)
+- [x] Cache the costly `WeatherSystem.Instance` lookup in `FootstepAudio.TickWetness` (Assets/Scripts/Audio/Footsteps.cs)
   Add a private static `WeatherSystem s_Weather;` field and use it instead of calling `WeatherSystem.Instance` every frame.
   In `TickWetness` replace `WeatherSystem w = WeatherSystem.Instance;` with:
   `// get or refresh the cached WeatherSystem singleton`
@@ -11331,6 +11331,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `WeatherSystem w = s_Weather;`
   All other logic remains unchanged; the wetness calculation still uses the same `w.WettingIntensity` and updates `s_WetFrom` as before.
   *What the player sees:* identical footstep wetness behavior; no audible or visual change.
+  - 01:48 landed by hts-llm in 4.8 min: **Changes made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Map/BuildingPass.Shots.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code. (Pass 2 over this file: most of it has summaries already.)
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
