@@ -295,6 +295,30 @@ namespace CloneZ
             Vector3 spout = BathSpout(end);
             m.Cylinder(new Vector3(end * 0.765f, h, 0f), 0.03f, 0.008f, 12, chrome);
             m.Rod(new Vector3(end * 0.765f, h + 0.005f, 0f), new Vector3(end * 0.765f, 0.615f, 0f), 0.03f, chrome, 10);
+
+            // towel‑bar across the back rim (brass)
+            float barY = BathHeight + 0.005f;
+            Vector3 barLeft = new Vector3(-hx + wallX * 0.5f + 0.03f, barY, 0f);
+            Vector3 barRight = new Vector3(hx - wallX * 0.5f - 0.03f, barY, 0f);
+            m.Rod(barLeft, barRight, 0.008f, Mt(Brass));
+
+            // two hooks on the bar
+            Vector3 hookPos1 = new Vector3(-0.20f, barY - 0.04f, 0f);
+            Vector3 hookPos2 = new Vector3( 0.20f, barY - 0.04f, 0f);
+            m.Cylinder(hookPos1, 0.012f, 0.08f, 8, Mt(Brass));
+            m.Cylinder(hookPos2, 0.012f, 0.08f, 8, Mt(Brass));
+
+            // soap‑dish on the left side wall
+            Vector3 soapPos = new Vector3(-hx + wallX * 0.5f + 0.05f, BathHeight * 0.55f, -hz + wallZ * 0.5f + 0.01f);
+            m.Box(soapPos, new Vector3(0.12f, 0.015f, 0.07f), enamel);
+
+            // rust spot on the spout
+            Vector3 rustCenter = BathSpout(end) + new Vector3(0f, 0.02f, 0f);
+            m.Quad(rustCenter, new Vector3(0.03f, 0f, 0f), new Vector3(0f, 0.02f, 0f), M(new Color(0.45f, 0.20f, 0.15f)));
+
+            // paint chip on left side wall
+            Vector3 chipCenter = new Vector3(-hx + wallX * 0.5f + 0.02f, BathHeight * 0.6f, 0f);
+            m.Quad(chipCenter, new Vector3(0f, 0f, 0.03f), new Vector3(0.02f, 0f, 0f), M(new Color(0.20f, 0.18f, 0.16f)));
             m.Rod(new Vector3(end * 0.765f, 0.615f, 0f), new Vector3(spout.x, 0.615f, 0f), 0.026f, chrome, 10);
             m.Cylinder(spout, 0.016f, 0.03f, 10, chrome);
 
