@@ -56,6 +56,7 @@ namespace CloneZ
         private static float s_DuckDb, s_DuckHoldUntil, s_DuckRelease = 4f, s_Concuss, s_PauseStartedAt;
 
         private AudioListener _listener;
+        private static Camera s_MainCam; // Cached main camera to avoid per-frame lookup
         private float _findListenerAt;
         private int _probeCursor;
 
@@ -474,12 +475,19 @@ namespace CloneZ
             if (_listener == null || !_listener.isActiveAndEnabled)
             {
                 _listener = null;
-                Camera cam = Camera.main;
-                if (cam != null) _listener = cam.GetComponent<AudioListener>();
+                if (s_MainCam == null || !s_MainCam.isActiveAndEnabled)
+                    s_MainCam = Camera.main;
+                if (s_MainCam != null) _listener = s_MainCam.GetComponent<AudioListener>();
                 if ((_listener == null || !_listener.isActiveAndEnabled) && Time.unscaledTime >= _findListenerAt)
                 {
                     _findListenerAt = Time.unscaledTime + 1f;
                     _listener = FindAnyObjectByType<AudioListener>();
+                    // Update cached camera if we found a listener via FindAnyObjectByType
+                    if (_listener != null)
+                    {
+                        var cam = _listener.GetComponent<Camera>();
+                        if (cam != null) s_MainCam = cam;
+                    }
                 }
             }
             s_HasEars = _listener != null && _listener.isActiveAndEnabled;

@@ -122,9 +122,12 @@ namespace CloneZ
         public static uint Add(ItemDef def, Vector3 position, int count,
             float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0, float yawDegrees = -1f, ItemExtra extra = null)
         {
+            // Cannot place a null definition or an empty stack
             if (def == null || count <= 0) return 0;
 
+            // Intern the type so the packed item record only stores an integer
             int type = TypeIndexOf(def);
+            // If no explicit yaw given, scatter facing randomly so dropped stacks don't look identical
             if (yawDegrees < 0f) yawDegrees = Random.Range(0f, 360f);
 
             var item = new Item
@@ -133,16 +136,24 @@ namespace CloneZ
                 X = position.x,
                 Z = position.z,
                 Count = count,
+                // For perishables default to now so age starts at drop time; otherwise zero
                 SpawnHours = float.IsNaN(spawnHours) ? (def.Perishable ? TimeOfDay.Now : 0f) : spawnHours,
+                // Use explicit condition if provided, else full durability for damageable items or zero for indestructible
                 Condition = (short)(condition >= 0 ? condition : (def.IsDamageable ? def.MaxCondition : 0)),
+                // Clamp repairs to byte range to avoid corrupting the packed record
                 TimesRepaired = (byte)Mathf.Clamp(timesRepaired, 0, 255),
+                // Quantise degrees to 256 steps; Repeat guards against values outside 0-360 and masking truncates
                 Yaw = (byte)(Mathf.RoundToInt(Mathf.Repeat(yawDegrees, 360f) * (256f / 360f)) & 0xFF),
+                // Assign a stable id before placement so handles can track it through list shuffles
                 Id = s_NextId++,
             };
+            // Extras live outside the packed struct to keep Item small; copy to avoid external mutation
             SetExtra(item.Id, extra);
 
+            // File by world chunk so only nearby chunks are touched on lookup/save
             Chunk chunk = GetOrCreate(KeyOf(position.x, position.z));
             chunk.Items.Add(item);
+            // Mark dirty so persistence knows this chunk changed
             chunk.Dirty = true;
             return item.Id;
         }
@@ -167,20 +178,27 @@ namespace CloneZ
         {
             def = null;
             taken = 0;
+            // Resolve may follow the hint or scan by id; if missing (picked up elsewhere) bail out
             if (!Resolve(handle, out Chunk chunk, out int index)) return false;
 
+            // Work on a copy because List<T>[i] is a struct; mutating a field copy won't update the store
             Item item = chunk.Items[index];
+            // Return definition so caller can update inventory/UI without extra lookup
             def = TypeAt(item.TypeIndex);
+            // Never take more than exist to avoid negative counts
             taken = Mathf.Min(amount, item.Count);
             item.Count -= taken;
+            // Any change makes the chunk dirty for saving
             chunk.Dirty = true;
 
             if (item.Count <= 0)
             {
+                // Stack emptied: remove via swap-to-tail to avoid list reordering cost and drop extras
                 RemoveAt(chunk, index);
                 return true;
             }
 
+            // Still has items: write modified struct back
             chunk.Items[index] = item;
             return false;
         }
@@ -192,12 +210,16 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Removes an item at an index without preserving list order; swaps the tail down to keep removal cheap.</summary>
         private static void RemoveAt(Chunk chunk, int index)
         {
             int last = chunk.Items.Count - 1;
+            // Drop per-instance extras to avoid leaking entries for removed items
             s_Extras.Remove(chunk.Items[index].Id);
+            // Swap tail into gap so RemoveAt(last) is O(1); order doesn't matter for ground items
             chunk.Items[index] = chunk.Items[last];   // swap the tail down; order on the floor is meaningless
             chunk.Items.RemoveAt(last);
+            // Chunk contents changed
             chunk.Dirty = true;
 
             // Drop the chunk once nothing is left in it. A sandbox world is explored and looted
@@ -289,9 +311,11 @@ namespace CloneZ
             handle = Handle.None;
             item = default;
 
+            // Use squared distance to avoid sqrt and allow cheap comparison; best initialized to radius^2
             float best = radius * radius;
             bool found = false;
 
+            // Compute chunk range the circle overlaps to avoid scanning all chunks
             int minX = Mathf.FloorToInt((position.x - radius) / ChunkSize);
             int maxX = Mathf.FloorToInt((position.x + radius) / ChunkSize);
             int minZ = Mathf.FloorToInt((position.z - radius) / ChunkSize);
@@ -301,18 +325,23 @@ namespace CloneZ
             {
                 for (int cz = minZ; cz <= maxZ; cz++)
                 {
+                    // Only loaded chunks matter; unloaded chunks have no items in memory
                     if (!s_Chunks.TryGetValue(Key(cx, cz), out Chunk chunk)) continue;
 
                     List<Item> items = chunk.Items;
                     for (int i = 0; i < items.Count; i++)
                     {
+                        // Compare squared distance in XZ (ground items are at y=0)
                         float dx = items[i].X - position.x;
                         float dz = items[i].Z - position.z;
                         float d2 = dx * dx + dz * dz;
+                        // Skip if outside radius or farther than current best
                         if (d2 > best) continue;
 
+                        // Found a closer item within radius
                         best = d2;
                         item = items[i];
+                        // Build handle with hint index so Resolve can hit quickly later
                         handle = new Handle(chunk.Key, i, items[i].Id);
                         found = true;
                     }

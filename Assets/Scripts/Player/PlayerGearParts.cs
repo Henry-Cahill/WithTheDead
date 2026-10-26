@@ -86,11 +86,13 @@ namespace CloneZ
             if (len < 1e-4f) return null;
             Vector3 f = d / len;
             Vector3 up = outward - Vector3.Dot(outward, f) * f;
+            up = up.sqrMagnitude < 1e-8f ? Vector3.zero : up.normalized;
             if (up.sqrMagnitude < 1e-8f) {
                 // Try a stable up direction that is unlikely to be parallel to f.
                 up = Vector3.Cross(f, Vector3.up);
                 if (up.sqrMagnitude < 1e-8f) up = Vector3.Cross(f, Vector3.right);
             }
+            up = up.normalized;
             Quaternion q = Quaternion.LookRotation(f, up);
             return Part(parent, "Strap", PrimitiveType.Cube, (a + b) * 0.5f, q, new Vector3(width, thickness, len), material);
         }
@@ -180,10 +182,13 @@ namespace CloneZ
         /// <summary>A shared unlit material in a glowing colour (a lit lens, a powered tube).</summary>
         public static Material Glow(Color color)
         {
-            int key = (Mathf.RoundToInt(color.r * 255f) << 16) | (Mathf.RoundToInt(color.g * 255f) << 8) | Mathf.RoundToInt(color.b * 255f);
+            int key = (Mathf.RoundToInt(color.r * 255f) << 24) |
+                    (Mathf.RoundToInt(color.g * 255f) << 16) |
+                    (Mathf.RoundToInt(color.b * 255f) << 8) |
+                    Mathf.RoundToInt(color.a * 255f);
             if (s_Glow.TryGetValue(key, out Material m) && m != null) return m;
             m = CloneZUtil.UnlitMat(color);
-            s_Glow[key] = m;
+            m.hideFlags = HideFlags.DontSave;
             return m;
         }
     }

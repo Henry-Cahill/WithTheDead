@@ -24,6 +24,7 @@ namespace CloneZ
         private PlayerInteractor _playerInteractor;
         // Existing style reference:
         // "Dust, a single odd sock and a shoebox of old birthday cards. Nothing you can use."
+// Additional under‑bed discoveries – winter‑time, period‑correct finds.
         private static readonly string[] _underBedDiscoveries = new[]
         {
             "Dust, a single odd sock and a shoebox of old birthday cards. Nothing you can use.",
@@ -40,7 +41,12 @@ namespace CloneZ
             "A bundle of dried corn husks, tied with twine, probably meant for a winter craft.",
             "A rusted pocketknife, its handle splintered, the blade still dull but sharp enough to cut rope.",
             "A torn page from a devotional book, the verses bleeding onto the floorboards.",
-            "A solitary pine‑cone, ice crystals clinging to its scales, a reminder of the forest outside."
+            "A frayed hand‑knit scarf, the pink yarn dulled by the cold, abandoned in haste.",
+            "A cracked enamel mug, the club logo faded, still warm from the last coffee.",
+            "A handful of pine needles, pressed flat, smelling faintly of resin and frost.",
+            "A rusted tin of horse feed, dented and empty, a reminder of the farm beyond.",
+            "A pressed newspaper clipping about the 1992 state fair, its ink smudged by snow.",
+            "A tiny wooden carving of a squirrel, its paint peeled, tucked beneath the mattress.",
         };
         private static readonly string[] _mattressFinds = new[]
         {
@@ -53,6 +59,8 @@ namespace CloneZ
         };
 
         private float _lullabyCalmAt;
+        // Timestamp for when the next bedside‑organize action may occur.
+        private float _organizeCooldownAt;
         // Cached radius for sleep proximity checks to avoid per‑frame config lookup.
         private float _sleepCheckRadius;
         private void Awake()
@@ -60,7 +68,9 @@ namespace CloneZ
             _playerInteractor = PlayerInteractor.Current;
             // Initialize cached sleep check radius.
             _sleepCheckRadius = CloneZConfig.SleepRange + 0.5f;
+            
             _mattressSearchCooldownAt = 0f;
+            _organizeCooldownAt = 0f; // <-- added
         }
 
         /// <summary>True while the bed is made (fresh runs start with it made).</summary>
@@ -136,7 +146,12 @@ namespace CloneZ
                     .DisabledIf(onEdge, "Get up off the bed first"));
             else {
                 into.Add(new InteractAction("Plump the pillows", PlumpPillows));
-                into.Add(new InteractAction("Fluff the blankets", FluffBlankets));
+
+                // Tidy the bedside items for a calm boost.
+                into.Add(new InteractAction("Organize bedside items", OrganizeBedside)
+                    .Timed(CloneZConfig.TidyCooldown, "Organizing bedside", HumanoidActivity.Search)
+                    .DisabledIf(Time.time < _organizeCooldownAt,
+                        "You've already organized the bedside, give it a moment."));
             }
                 
                 // Calm the survivor with a short lullaby while seated or lying in the bed.
@@ -227,6 +242,20 @@ namespace CloneZ
                 ctx.Notify("You fluff the blankets. The bed looks tidier.");
             }
             else ctx.Notify("The blankets are as fluffed as they'll get now.");
+        }
+
+        private void OrganizeBedside(InteractContext ctx)
+        {
+            if (Time.time >= _organizeCooldownAt)
+            {
+                _organizeCooldownAt = Time.time + CloneZConfig.TidyCooldown;
+                LivingFixtures.Calm(ctx, CloneZConfig.TidyPanicRelief);
+                ctx.Notify("You straighten the bedside lamp, fold the papers, and tidy the nightstand. It feels a little calmer now.");
+            }
+            else
+            {
+                ctx.Notify("You've already organized the bedside. Give it a moment before rearranging again.");
+            }
         }
 
         private void SingLullaby(InteractContext ctx)

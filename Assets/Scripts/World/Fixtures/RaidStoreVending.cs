@@ -51,6 +51,9 @@ namespace CloneZ
         private Renderer _glass, _smashed;
         private LootContainer _stock, _tray;
         private bool _lit, _broken;
+        private const int BitLit = 1 << 0; // already used by existing save logic
+        private const int BitBroken = 1 << 1; // persists whether the glass is smashed
+        private const int BitScavenged = 1 << 2; // persists whether the wreckage has been scavenged
         private const float LitThumpNoiseMultiplier = 1.5f;
         private int _missed;
         private bool _scavenged;
@@ -233,12 +236,22 @@ namespace CloneZ
         public override void RestoreState(FixtureSave save)
         {
             base.RestoreState(save);
-            _lit = (save.State & 1) != 0;
+            _lit = (save.State & BitLit) != 0;
+            _broken = (save.State & BitBroken) != 0;
+            _scavenged = (save.State & BitScavenged) != 0;
+            // Reflect the broken flag visually and make the stock container accessible if needed
+            ShowBroken(_broken);
+            if (_broken && _stock != null)
+                _stock.gameObject.SetActive(true);
         }
         public override void CaptureState(FixtureSave save)
         {
             base.CaptureState(save);
-            save.State = (_lit ? 1 : 0) | (save.State & ~1);
+            const int mask = BitLit | BitBroken | BitScavenged;
+            int bits = (_lit ? BitLit : 0) |
+                       (_broken ? BitBroken : 0) |
+                       (_scavenged ? BitScavenged : 0);
+            save.State = (save.State & ~mask) | bits;
         }
         private void ShowBroken(bool broken)
         {

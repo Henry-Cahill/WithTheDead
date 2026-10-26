@@ -14,6 +14,33 @@ namespace CloneZ
             new Color(0.80f, 0.42f, 0.12f), new Color(0.14f, 0.44f, 0.22f), new Color(0.90f, 0.88f, 0.84f),
         };
 
+        // Adds a dark‑green “menu board” on the wall opposite the entrance, if there is room.
+        private static void MenuBoard(RoomCtx c)
+        {
+            // Choose the wall opposite the door.
+            int door = c.DoorSide >= 0 ? c.DoorSide : 0;
+            int opp = RoomCtx.Opposite(door);
+            // Find the free run along that wall.
+            c.FreeRun(opp, out float a, out float e);
+            if (e - a < 1.4f) return; // not enough space for a board
+            float centre = (a + e) * 0.5f; // centre of the free segment
+            // Try to place a thin vertical panel (1.2 m wide × 0.08 m deep × 1.0 m tall).
+            if (!c.WallAt(opp, centre, 1.2f, 0.08f, 1.0f, out RaidBuilding.Place p)) return;
+            // Block the rectangle so nothing else occupies the same spot.
+            c.Taken.Add(c.Foot(opp, centre, 1.2f, 0.08f));
+            // Build a matte dark‑green board – looks like a chalkboard menu.
+            Surf boardMat = DecorPalette.Matte(new Color(0.08f, 0.15f, 0.08f));
+            RaidBuilding b = c.B;
+            b.Furnish(c.R, p, new Vector3(1.2f, 1.0f, 0.08f), false,
+                (m, r) =>
+                {
+                    // The board itself
+                    m.Box(new Vector3(0f, 0.5f, 0f), new Vector3(1.2f, 1.0f, 0.08f), boardMat);
+                    // A thin metal trim at the top edge for a period‑accurate look
+                    Surf trim = DecorPalette.Metal(FurnitureBuilder.Chrome);
+                    m.Box(new Vector3(0f, 0.99f, 0f), new Vector3(1.2f, 0.02f, 0.08f), trim);
+                }, "Menu board");
+        }
         private static void Eatery(RoomCtx c)
         {
             RaidBuilding b = c.B;
@@ -51,6 +78,7 @@ namespace CloneZ
             if (c.AnyWall(c.Sides(true), 0.9f, 0.8f, 1.85f, -1f, out RaidBuilding.Place vend, out _) && rng.NextDouble() < 0.4) Vending(c, vend, c.P.Lit);
             WallDecor(c, 3);
             WallDecor(c, 4);
+            MenuBoard(c);
         }
 
         // A booth against a wall: its table end-on to the wall, a bench either side.
@@ -188,6 +216,25 @@ namespace CloneZ
                     m.Box(new Vector3(-1.1f, 0.8f, 0f), new Vector3(0.1f, 0.1f, 1.1f), rail);
                     m.Box(new Vector3(1.1f, 0.8f, 0f), new Vector3(0.1f, 0.1f, 1.1f), rail);
                     m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(1.9f, 0.6f, 0.9f), rail);
+                    // Leather pocket liners tucked under the rails near each corner
+                    Surf leather = DecorPalette.Matte(new Color(0.18f, 0.12f, 0.08f));
+                    m.Box(new Vector3(-1.0f, 0.79f, -0.52f), new Vector3(0.12f, 0.02f, 0.12f), leather);
+                    m.Box(new Vector3(1.0f, 0.79f, -0.52f), new Vector3(0.12f, 0.02f, 0.12f), leather);
+                    m.Box(new Vector3(-1.0f, 0.79f, 0.52f), new Vector3(0.12f, 0.02f, 0.12f), leather);
+                    m.Box(new Vector3(1.0f, 0.79f, 0.52f), new Vector3(0.12f, 0.02f, 0.12f), leather);
+                    // Worn cloth edge strip along the long rails
+                    Surf wornFelt = DecorPalette.Matte(new Color(0.09f, 0.32f, 0.18f));
+                    m.Box(new Vector3(0f, 0.781f, -0.56f), new Vector3(2.06f, 0.01f, 0.08f), wornFelt);
+                    m.Box(new Vector3(0f, 0.781f, 0.56f), new Vector3(2.06f, 0.01f, 0.08f), wornFelt);
+                    // Cue rack on the end opposite the bar side
+                    m.Box(new Vector3(0f, 0.92f, -0.72f), new Vector3(0.8f, 0.12f, 0.02f), rail);
+                    m.Cylinder(new Vector3(-0.25f, 0.98f, -0.71f), 0.01f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Chrome));
+                    m.Cylinder(new Vector3(0.25f, 0.98f, -0.71f), 0.01f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Chrome));
+                    // Deterministic chalk marks
+                    Surf chalk = DecorPalette.Matte(new Color(0.86f, 0.84f, 0.76f));
+                    m.Sphere(new Vector3(MapStyle.Range(r, -0.3f, 0.3f), 0.821f, MapStyle.Range(r, -0.2f, 0.2f)), 0.008f, chalk);
+                    m.Sphere(new Vector3(MapStyle.Range(r, -0.1f, 0.1f), 0.821f, MapStyle.Range(r, -0.15f, 0.15f)), 0.008f, chalk);
+                    m.Sphere(new Vector3(MapStyle.Range(r, -0.2f, 0.2f), 0.821f, MapStyle.Range(r, 0.05f, 0.25f)), 0.008f, chalk);
                     for (int k = 0; k < 6; k++)
                         m.Sphere(new Vector3(MapStyle.Range(r, -0.9f, 0.9f), 0.828f, MapStyle.Range(r, -0.45f, 0.45f)), 0.028f,
                             DecorPalette.Gloss(Balls[r.Next(Balls.Length)]));
@@ -209,6 +256,7 @@ namespace CloneZ
             }
             WallDecor(c, 3);
             WallDecor(c, 4);
+            MenuBoard(c);
         }
     }
 }

@@ -17,6 +17,11 @@ namespace CloneZ
         {
             "You press your ear to the cold steel and turn the dial slowly. Click... click... a faint heavier clunk.",
             "The handle won't budge. Somebody has scratched three numbers into the paint beside it, then scratched them out.",
+            "An icy wind whistles through the broken shopfront, rattling the metal doorframe.",
+            "The distant wail of a siren drifts over the snow, its echo fading like a warning.",
+            "A crackle of static on a forgotten radio mutters, “Stay inside, curfew now.”",
+            "An old farmer’s note, half‑erased, reads: “Don’t trust the night‑shift; the dead watch.”",
+            "The wooden shelf behind the safe creaks under the weight of frozen dust.",
         };
 
         private const float LockpickDialSeconds = CloneZConfig.RaidSafeDialSeconds * 0.5f;
@@ -26,7 +31,9 @@ namespace CloneZ
         private StorageFixture _storage;
         private float _noiseAt;
         private int _listened;
+        private bool _reinforced;
 
+        // The reinforcement flag makes opening actions take 1.5× longer when true.
         public override string DisplayName => _opened ? "Opened safe" : "Safe";
         public override Vector3 InteractPoint => _point;
         public override Transform OcclusionRoot => _body != null ? _body : transform;
@@ -50,43 +57,49 @@ namespace CloneZ
         {
             if (!_opened)
             {
-                var dial = new InteractAction("Work the dial").Timed(CloneZConfig.RaidSafeDialSeconds, "Working the dial", HumanoidActivity.Use);
-                dial.Begin = c => _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval * 0.5f;
-                dial.Tick = (c, dt, progress) =>
-                {
-                    if (Time.time < _noiseAt) return;
-                    _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval;
-                    MakeNoise(CloneZConfig.RaidSafeDialNoise);
-                };
-                dial.Run = Crack;
-                into.Add(dial);
-                var force = new InteractAction("Force the dial").Timed(CloneZConfig.RaidSafeDialSeconds * 2, "Working the dial", HumanoidActivity.Use);
-                force.Begin = c => _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval * 0.5f;
-                force.Tick = (c, dt, progress) =>
-                {
-                    if (Time.time < _noiseAt) return;
-                    _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval;
-                    MakeNoise(CloneZConfig.RaidSafeDialNoise);
-                };
-                force.Run = Crack;
-                into.Add(force);
-                into.Add(new InteractAction("Try the handle", c => c.Notify("Locked solid. The wheel turns a quarter and stops dead.")));
-                into.Add(new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it.")));
-                var lockpick = new InteractAction("Use lockpick (quick)").Timed(LockpickDialSeconds, "Working the dial", HumanoidActivity.Use);
-                lockpick.Begin = c => _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval * 0.5f;
-                lockpick.Tick = (c, dt, progress) =>
-                {
-                    if (Time.time < _noiseAt) return;
-                    _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval;
-                    MakeNoise(CloneZConfig.RaidSafeDialNoise);
-                };
-                lockpick.Run = Crack;
-                into.Add(lockpick);
+            // Reinforcement flag: if true, actions take longer (1.5×).
+            float dialBase = CloneZConfig.RaidSafeDialSeconds * (_reinforced ? 1.5f : 1f);
+            float forceBase = dialBase * 2f;
+            float lockpickBase = LockpickDialSeconds * (_reinforced ? 1.5f : 1f);
+            var dial = new InteractAction("Work the dial").Timed(dialBase, "Working the dial", HumanoidActivity.Use);
+            dial.Begin = c => _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval * 0.5f;
+            dial.Tick = (c, dt, progress) =>
+            {
+                if (Time.time < _noiseAt) return;
+                _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval;
+                MakeNoise(CloneZConfig.RaidSafeDialNoise);
+            };
+            dial.Run = Crack;
+            into.Add(dial);
+            var force = new InteractAction("Force the dial").Timed(forceBase, "Working the dial", HumanoidActivity.Use);
+            force.Begin = c => _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval * 0.5f;
+            force.Tick = (c, dt, progress) =>
+            {
+                if (Time.time < _noiseAt) return;
+                _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval;
+                MakeNoise(CloneZConfig.RaidSafeDialNoise);
+            };
+            force.Run = Crack;
+            into.Add(force);
+            into.Add(new InteractAction("Try the handle", c => c.Notify("Locked solid. The wheel turns a quarter and stops dead.")));
+            into.Add(new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it.")));
+            var lockpick = new InteractAction("Use lockpick (quick)").Timed(lockpickBase, "Working the dial", HumanoidActivity.Use);
+            lockpick.Begin = c => _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval * 0.5f;
+            lockpick.Tick = (c, dt, progress) =>
+            {
+                if (Time.time < _noiseAt) return;
+                _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval;
+                MakeNoise(CloneZConfig.RaidSafeDialNoise);
+            };
+            lockpick.Run = Crack;
+            into.Add(lockpick);
                 into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));
                 into.Add(new InteractAction("Knock on the safe", c => { MakeNoise(CloneZConfig.RaidSafeDialNoise); c.Notify("Your knuckles rattle the steel. Nothing else happens."); }));
             }
             else
             {
+                var reinforce = new InteractAction("Reinforce safe", ReinforceSafe);
+                into.Add(reinforce);
                 var close = new InteractAction("Close the safe");
                 close.Run = CloseSafe;
                 into.Add(close);
@@ -119,6 +132,18 @@ namespace CloneZ
                 _storage.gameObject.SetActive(false);
             }
             ctx.Notify("You swing the door shut; the bolts clang back into place.");
+        }
+
+        private void ReinforceSafe(InteractContext ctx)
+        {
+            if (_reinforced)
+            {
+                ctx.Notify("The safe is already reinforced.");
+                return;
+            }
+            _reinforced = true;
+            MakeNoise(CloneZConfig.RaidSafeDialNoise);
+            ctx.Notify("You wedge a rough wooden bar behind the door. The safe feels sturdier now.");
         }
     }
 }

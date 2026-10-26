@@ -517,16 +517,24 @@ namespace CloneZ
                 int rate = g.Rate;
                 float[] x = g.Buffer(rifle ? 0.8f : 0.6f);
                 var d = new float[x.Length];
+                // Core suppressed blast: Friedlander pressure wave, low‑pass filtered to simulate the muffled blast inside a can.
                 Friedlander(d, rate, T0, 1f, g.Range(0.0012f, 0.0017f));
+                // Add a thin hiss to simulate the cough of gas escaping the can.
                 Dsp.LP(d, g.Range(1200f, 1600f), rate);
+                // Two overlapping noise bursts: a short high‑frequency hiss and a lower‑frequency rumble.
                 Noise(d, g, T0 + 0.0004f, 0.9f, 0.0008f, g.Range(0.007f, 0.011f), 1500f, 120f);
+                // Additional low‑frequency rumble.
                 Noise(d, g, T0 + 0.001f, 0.5f, 0.001f, 0.014f, 0f, 0f, g.Range(500f, 700f), 1.2f);
+                // A low‑frequency thump to give the impression of the gas hammering against the can.
                 Dsp.Thump(d, rate, T0, 0.7f, g.Range(170f, 210f), 70f, 0.012f, 0.0008f, 0.028f);
                 if (rifle)
                 {
+                    // Rifle‑specific high‑frequency crack from the supersonic round.
                     NWave(d, rate, T0 + 0.0003f, 0.6f, g.Range(0.00025f, 0.00035f));
+                    // Additional rifle noise: a brief burst to reinforce the supersonic crack.
                     Noise(d, g, T0 + 0.0003f, 0.35f, 0.00004f, 0.0008f, 16000f, 2200f);
                 }
+                // Normalize after adding the generic suppressed components.
                 Dsp.Norm(d);
                 Dsp.Saturate(d, 1.6f);
                 Dsp.Compress(d, rate, -18f, 3f, 0.3f, 35f);
@@ -778,6 +786,7 @@ namespace CloneZ
                         int shells = 3;
                         for (int i = 0; i < shells; i++)
                         {
+                            // Build suppressed shot: generate core suppressed blast, add low‑frequency cough and thump, then handle rifle‑specific crack and pistol‑specific clack/scrape, finally add environmental surround.
                             float t = T0 + 0.05f + i * g.Range(0.24f, 0.3f);
                             Scrape(x, g, t, 0.05f, 0.25f, g.Range(1300f, 1700f), 1.5f);
                             Clack(x, g, t + 0.05f, 0.55f, g.Range(2600f, 3000f), 0.005f, 0.5f);

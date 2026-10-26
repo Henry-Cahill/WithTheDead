@@ -31,6 +31,7 @@ namespace CloneZ
         /// <summary>The floor area inside the walls (world).</summary>
         public Rect Inner => Rect.MinMaxRect(World.xMin + 0.1f, World.yMin + 0.1f, World.xMax - 0.1f, World.yMax - 0.1f);
 
+        /// <summary>Returns true if the given rect overlaps furniture or, optionally, reserved zones.</summary>
         public bool Overlaps(Rect r, bool includeReserved)
         {
             for (int i = 0; i < Furniture.Count; i++) if (Furniture[i].Overlaps(r)) return true;
@@ -208,6 +209,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Converts local (x, y, z) coordinates to world space.</summary>
         public Vector3 W(float lx, float y, float lz)
         {
             Vector2 p = P(lx, lz);
@@ -224,6 +226,7 @@ namespace CloneZ
             return new Vector3(a.x, 0f, a.y);
         }
 
+        /// <summary>Creates a world‑space rectangle from the given coordinates.</summary>
         public Rect RectW(float x0, float z0, float x1, float z1)
         {
             Vector2 a = P(x0, z0), b = P(x1, z1);
@@ -487,9 +490,34 @@ namespace CloneZ
                     if (!r.AlongX && Mathf.Abs(a - RunStart(r)) < 0.01f) a -= Half * 2f;
                     if (!r.AlongX && Mathf.Abs(b - RunEnd(r)) < 0.01f) b += Half * 2f;
                     p.Mesh.Upright(RunPoint(r, (a + b) * 0.5f, (y0 + y1) * 0.5f, side * (Half + 0.004f)), n, b - a, y1 - y0, DecorMaterials.WallExterior(Exterior, ExteriorColor));
+                    // Draw baseboard trim for exterior wall at floor level.
+                    DrawBaseboard(p, side, y0, a, b);
                 }
                 if (i < covered.Count) cursor = Mathf.Max(cursor, covered[i].y);
             }
+        }
+
+        /// <summary>Draws a thin wooden baseboard along the bottom of an exterior wall face.</summary>
+        private void DrawBaseboard(WallPiece p, int side, float y0, float a, float b)
+        {
+            // Only draw if the band starts near the floor (y0 ≈ floor level).
+            if (y0 > 0.12f) return; // floor‑level tolerance
+            WallRun r = p.Run;
+            // Length of the wall segment.
+            float len = b - a;
+            // Center point of the segment.
+            float c = (a + b) * 0.5f;
+            // Baseboard dimensions: ~7 cm tall, ~2 cm thick.
+            const float boardH = 0.07f;
+            const float boardT = 0.02f;
+            // Slight colour variation using the building’s deterministic RNG.
+            Color boardCol = Casing * (0.9f + (float)Rng.NextDouble() * 0.2f);
+            var boardMat = DecorPalette.Matte(boardCol);
+            // Position the board a little above the floor to avoid Z‑fighting.
+            float yPos = y0 + boardH * 0.5f + 0.01f;
+            // Offset outward from the wall core (Half) by a small margin.
+            float off = side * (Half + 0.011f);
+            p.Mesh.Box(RunPoint(r, c, yPos, off), RunSize(r, len, boardH, boardT), boardMat);
         }
 
         private void DrawDoorFrame(WallPiece p)

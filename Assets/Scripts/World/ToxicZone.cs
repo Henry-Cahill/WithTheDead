@@ -33,6 +33,7 @@ namespace CloneZ
         private static Texture2D s_Texture;
         private static int s_ColorId;
         private static int s_TintFrame = -1;
+        private static int s_LastTintUpdateFrame = -1;
         private float GetGlowFactor(float phase)
         {
             // Compute glow factor per instance each frame for independent pulsation.
@@ -94,7 +95,7 @@ namespace CloneZ
         private void Update()
         {
             if (Mathf.Abs(_builtRadius - Radius) > 0.01f) Build();   // resized after spawning
-            UpdateSharedTint();
+            if (s_LastTintUpdateFrame != Time.frameCount) { UpdateSharedTint(); s_LastTintUpdateFrame = Time.frameCount; }
             if (_glow != null) _glow.intensity = GlowIntensity * GetGlowFactor(_phase);
         }
 

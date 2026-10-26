@@ -11,6 +11,7 @@ namespace CloneZ
     public sealed class BodyAudio : MonoBehaviour
     {
         // Base volumes of the breathing loops (before the effects bus).
+        private static Actor _cachedLocalPlayer;
         private const float MaskCalmVolume = 0.34f, MaskHardVolume = 0.4f, WindedVolume = 0.22f;
         // Effort above which the mask breathing turns hard, and below which it calms again (the loops' paces, about 2.85 s
         // and 1.6 s a breath, are pitched toward each other near the switch so the change in pace stays small).
@@ -50,9 +51,12 @@ namespace CloneZ
 
         private void Update()
         {
-            Actor local = Actor.LocalPlayer;
+            if (_cachedLocalPlayer == null) _cachedLocalPlayer = Actor.LocalPlayer;
+            Actor local = _cachedLocalPlayer;
             if (local != _actor)
             {
+                // Reset cached player when the local player changes or is destroyed
+                _cachedLocalPlayer = null;
                 _actor = local;
                 _stats = local != null ? local.GetComponent<PlayerStats>() : null;
                 _gear = local != null ? local.GetComponent<PlayerGear>() : null;

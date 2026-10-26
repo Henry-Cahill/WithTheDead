@@ -40,6 +40,9 @@ namespace CloneZ
         private static ZombieVoices s_Instance;
         private static readonly System.Comparison<Mouth> s_ByScore = (a, b) => a.Score.CompareTo(b.Score);
 
+        // Cached reference to the ListenerRig to avoid the per‑frame static lookup
+        private ListenerRig _listener;
+
         private readonly Dictionary<Actor, Mouth> _mouths = new Dictionary<Actor, Mouth>(64);
         private readonly List<Mouth> _near = new List<Mouth>(32);
         private readonly List<Mouth> _speaking = new List<Mouth>(8);
@@ -55,9 +58,9 @@ namespace CloneZ
             s_Instance = go.AddComponent<ZombieVoices>();
         }
 
-        private void OnDestroy()
+        private void Awake()
         {
-            if (s_Instance == this) s_Instance = null;
+            _listener = FindObjectOfType<ListenerRig>();
         }
 
         /// <summary>
@@ -107,7 +110,7 @@ namespace CloneZ
             Follow();
             if (_clock < _scanAt) return;
             _scanAt = _clock + ScanEvery;
-            Vector3 ears = ListenerRig.Active ? ListenerRig.Position : local.transform.position;
+            Vector3 ears = _listener != null && ListenerRig.Active ? ListenerRig.Position : local.transform.position;
             Scan(ears, local);
             Speak();
             if (_clock >= _pruneAt) Prune();

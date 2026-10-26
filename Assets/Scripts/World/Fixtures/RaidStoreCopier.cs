@@ -69,6 +69,12 @@ private static readonly string[] Jams =
             "A pale, almost translucent copy slides free, the toner barely clinging, and a faint smell of stale coffee lingers.",
             "A crisp copy lands, the paper speckled with tiny ice crystals that melt into the fibers as it cools.",
             "A weary copy drops, the letters slightly blurred, the margin edged with a subtle white streak hinting at the office’s chill.",
+            "A thin, frost‑kissed sheet shivers out, the paper glinting like a sheet of ice in the dim lamp.",
+            "A copy emerges with a faint coffee‑stained ring where a mug once tipped, the scent of bitter brew lingering.",
+            "A ragged page pops out, a torn edge fluttering, as if someone ripped it in haste before the outbreak.",
+            "A pale copy slides free, its surface speckled with tiny ink droplets that look like frozen rain.",
+            "A crisp sheet drops, the corners curled by the cold draft, bearing a smudge of a hastily scrawled message.",
+            "A dusty copy lands with a faint chalky residue, as if a classroom handout was printed on a summer night.",
         };
 
         private static readonly string[] Clears =

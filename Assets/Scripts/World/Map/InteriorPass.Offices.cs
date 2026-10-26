@@ -568,6 +568,35 @@ namespace CloneZ
             KitchenFrame f = b.FrameOf(p);
             FixturePart lid = KitchenParts.Door(t, "CopierLid", f, FurnitureBuilder.OfficeCopierLid, FurnitureBuilder.OfficeCopierLidHinge, Vector3.forward, Vector3.up, 70f);
             MeshRenderer jam = KitchenParts.PieceAt(t, "JamLamp", f, FurnitureBuilder.OfficeCopierJamLamp, FurnitureBuilder.OfficeCopierJamGlow);
+            // Additional visual detail parts for the copier
+            MeshRenderer glass = KitchenParts.PieceAt(t, "ScannerGlass", f, new Vector3(0f, 0.55f, 0.285f),
+                m => {
+                    m.Box(new Vector3(0f, 0.55f, 0.285f), new Vector3(0.8f, 0.9f, 0.02f),
+                        DecorPalette.Glass(new Color(0.15f, 0.15f, 0.17f)));
+                });
+            MeshRenderer tray = KitchenParts.PieceAt(t, "PaperTray", f, new Vector3(0f, 0.15f, 0.2f),
+                m => {
+                    m.Box(new Vector3(0f, 0.15f, 0.2f), new Vector3(0.7f, 0.1f, 0.3f),
+                        DecorPalette.Matte(FurnitureBuilder.Walnut));
+                });
+            MeshRenderer cord = KitchenParts.PieceAt(t, "PowerCord", f, new Vector3(0.3f, -0.55f, -0.2f),
+                m => {
+                    m.Cylinder(new Vector3(0.3f, -0.55f, -0.2f), 0.015f, 0.25f, 8,
+                        DecorPalette.Metal(FurnitureBuilder.Brass));
+                });
+            MeshRenderer led = KitchenParts.PieceAt(t, "CopierLED", f, new Vector3(-0.28f, 0.6f, 0.31f),
+                m => {
+                    m.Sphere(new Vector3(-0.28f, 0.6f, 0.31f), 0.02f,
+                        DecorPalette.Glow(new Color(1f, 0.6f, 0.2f)));
+                });
+            MeshRenderer label = KitchenParts.PieceAt(t, "CopierLabel", f, new Vector3(-0.15f, 0.5f, 0.311f),
+                m => {
+                    // Random rotation and paper material for a hand‑tacked look
+                    var rnd = b.Rng;
+                    m.FlatUV(new Vector3(-0.15f, 0.5f, 0.311f), 0.25f, 0.08f,
+                        MapStyle.Range(rnd, -10f, 10f),
+                        DecorMaterials.Paper(rnd.Next(3)), new Rect(0f,0f,1f,1f));
+                });
             RaidStoreCopier.Create(t, f.P(FurnitureBuilder.OfficeCopierPanel), lid, jam, b.Rng.Next());
         }
 

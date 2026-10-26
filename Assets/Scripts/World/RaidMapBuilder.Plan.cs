@@ -133,10 +133,13 @@ namespace CloneZ
                 DriveEast = driveEast;
             }
 
+            /// <summary>Which way the house faces (0 south if on the north side, 2 north if on the south side).</summary>
             public int Turns => Side > 0 ? 0 : 2;
             /// <summary>Mirrored as need be to bring the kitchen door (the plan's local +x wall) round to the drive.</summary>
             public bool Mirror => Side > 0 ? !DriveEast : DriveEast;
+            /// <summary>Half the house's width along the street.</summary>
             public float HalfW => Small ? 5f : 6f;
+            /// <summary>Half the house's depth front to back.</summary>
             public float HalfD => Small ? 4.5f : 5f;
             /// <summary>The sidewalk's outer edge in front of the house.</summary>
             public float SidewalkZ => Street.Coord + Side * Street.Outer;
@@ -144,6 +147,7 @@ namespace CloneZ
             public float FrontZ => SidewalkZ + Side * Setback;
             /// <summary>The back wall's outer face.</summary>
             public float BackZ => FrontZ + Side * (HalfD + RaidBuilding.Half) * 2f;
+            /// <summary>The house's centre point on the ground.</summary>
             public Vector2 Center => new Vector2(X, FrontZ + Side * (HalfD + RaidBuilding.Half));
             /// <summary>The middle of the drive, across the street.</summary>
             public float DriveX => X + (DriveEast ? 1f : -1f) * (HalfW + RaidBuilding.Half + 1f + DriveHalf);

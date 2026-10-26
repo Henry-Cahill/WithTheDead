@@ -583,6 +583,87 @@ namespace CloneZ
                     m.Tri(h0 + wide, h1 + wide, h1 - wide, head);
                     m.Tri(h0 + wide, h1 - wide, h0 - wide, head);
                 }
+                // Ice cap on reed tip – a thin disc hinting at refreezing
+                if (rng.NextDouble() < 0.40)
+                {
+                    float discR = 0.03f, discH = 0.01f;
+                    Vector3 d0 = tip + new Vector3(-discR, discH, -discR);
+                    Vector3 d1 = tip + new Vector3( discR, discH, -discR);
+                    Vector3 d2 = tip + new Vector3( discR, discH,  discR);
+                    Vector3 d3 = tip + new Vector3(-discR, discH,  discR);
+                    var iceMat = DecorPalette.Matte(new Color(0.85f, 0.92f, 0.96f));
+                    m.Tri(d0, d1, d2, iceMat);
+                    m.Tri(d0, d2, d3, iceMat);
+                }
+            }
+
+
+            // Seed pod – a low brown box at the reed base, 0.04 m × 0.04 m × 0.06 m.
+            if (rng.NextDouble() < 0.35)
+            {
+                // centre a few centimetres in front of the clump centre
+                Vector3 podC = c + new Vector3(MapStyle.Range(rng, -0.02f, 0.02f), 0f, MapStyle.Range(rng, -0.02f, 0.02f));
+                float w = 0.04f, h = 0.06f;
+                // build a simple box (8 triangles)
+                Vector3 p0 = podC + new Vector3(-w/2, 0f, -w/2);
+                Vector3 p1 = podC + new Vector3( w/2, 0f, -w/2);
+                Vector3 p2 = podC + new Vector3( w/2, 0f,  w/2);
+                Vector3 p3 = podC + new Vector3(-w/2, 0f,  w/2);
+                Vector3 p4 = p0 + Vector3.up * h;
+                Vector3 p5 = p1 + Vector3.up * h;
+                Vector3 p6 = p2 + Vector3.up * h;
+                Vector3 p7 = p3 + Vector3.up * h;
+                var podMat = DecorPalette.Matte(new Color(0.55f, 0.44f, 0.33f));
+                // bottom (optional, hidden)
+                //m.Tri(p0, p1, p2, podMat);
+                m.Tri(p0, p2, p3, podMat);
+                // top
+                m.Tri(p4, p5, p6, podMat);
+                m.Tri(p4, p6, p7, podMat);
+                // sides
+                m.Tri(p0, p1, p5, podMat); m.Tri(p0, p5, p4, podMat);
+                m.Tri(p1, p2, p6, podMat); m.Tri(p1, p6, p5, podMat);
+                m.Tri(p2, p3, p7, podMat); m.Tri(p2, p7, p6, podMat);
+                m.Tri(p3, p0, p4, podMat); m.Tri(p3, p4, p7, podMat);
+            }
+            // Tiny stone – low pyramid on the ice surface, 0.07 m tall.
+            if (rng.NextDouble() < 0.25)
+            {
+                Vector3 stoneC = c + new Vector3(MapStyle.Range(rng, -0.03f, 0.03f), 0f, MapStyle.Range(rng, -0.03f, 0.03f));
+                float radius = 0.04f, height = 0.07f;
+                // base circle approximated with 4 points (square)
+                Vector3 b0 = stoneC + new Vector3(-radius, 0f, -radius);
+                Vector3 b1 = stoneC + new Vector3( radius, 0f, -radius);
+                Vector3 b2 = stoneC + new Vector3( radius, 0f,  radius);
+                Vector3 b3 = stoneC + new Vector3(-radius, 0f,  radius);
+                Vector3 tip = stoneC + Vector3.up * height;
+                var stoneMat = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.30f));
+                // four side triangles
+                m.Tri(b0, b1, tip, stoneMat);
+                m.Tri(b1, b2, tip, stoneMat);
+                m.Tri(b2, b3, tip, stoneMat);
+                m.Tri(b3, b0, tip, stoneMat);
+                // optional bottom (hidden)
+                //m.Tri(b0, b1, b2, stoneMat);
+                m.Tri(b0, b2, b3, stoneMat);
+            }
+            // Floating leaf – thin quad drifting just above the ice.
+            if (rng.NextDouble() < 0.30)
+            {
+                Vector3 leafC = c + new Vector3(MapStyle.Range(rng, -0.04f, 0.04f), 0.02f, MapStyle.Range(rng, -0.04f, 0.04f));
+                float w = 0.12f, h = 0.08f;
+                // rotate a little for natural look
+                float angle = MapStyle.Range(rng, -15f, 15f) * Mathf.Deg2Rad;
+                Vector3 right = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * (w/2);
+                Vector3 forward = new Vector3(-Mathf.Sin(angle), 0f, Mathf.Cos(angle)) * (h/2);
+                Vector3 l0 = leafC - right - forward;
+                Vector3 l1 = leafC + right - forward;
+                Vector3 l2 = leafC + right + forward;
+                Vector3 l3 = leafC - right + forward;
+                var leafMat = DecorPalette.Matte(new Color(0.50f, 0.45f, 0.35f));
+                // two triangles
+                m.Tri(l0, l1, l2, leafMat);
+                m.Tri(l0, l2, l3, leafMat);
             }
         }
         #endregion

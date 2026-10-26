@@ -90,12 +90,20 @@ namespace CloneZ
             float r0 = 0.42f * s, r1 = 0.31f * s, r2 = 0.22f * s;
             float y0 = r0 * 0.85f, y1 = y0 + r0 * 0.75f + r1 * 0.8f, y2 = y1 + r1 * 0.75f + r2 * 0.85f;
             m.Ellipsoid(new Vector3(0f, y0, 0f), new Vector3(r0 * 2f, r0 * 1.8f, r0 * 2f), snow, 10, 6);
+            m.Cylinder(new Vector3(0f, 0.01f, 0f), r0 * 1.15f, 0.02f, 12, snow);
             m.Ellipsoid(new Vector3(0f, y1, 0f), new Vector3(r1 * 2f, r1 * 1.9f, r1 * 2f), snow, 10, 6);
             m.Ellipsoid(new Vector3(0f, y2, 0f), new Vector3(r2 * 2f, r2 * 2f, r2 * 2f), snow, 10, 6);
             for (int e = -1; e <= 1; e += 2) m.Box(new Vector3(e * r2 * 0.38f, y2 + r2 * 0.25f, r2 * 0.9f), new Vector3(0.035f, 0.035f, 0.03f), coal);
+            m.Rod(new Vector3(-r2 * 0.42f, y2 + r2 * 0.32f, r2 * 0.88f), new Vector3(-r2 * 0.32f, y2 + r2 * 0.28f, r2 * 0.91f), 0.012f, stick);
+            m.Rod(new Vector3(r2 * 0.42f, y2 + r2 * 0.32f, r2 * 0.88f), new Vector3(r2 * 0.32f, y2 + r2 * 0.28f, r2 * 0.91f), 0.012f, stick);
             m.Cylinder(new Vector3(0f, y2, r2 * 0.9f), 0.025f, 0.16f * s, 5, DecorPalette.Matte(new Color(0.85f, 0.42f, 0.10f)),
                 Quaternion.Euler(80f, 0f, 0f), 0.1f);
+            m.Box(new Vector3(-r2 * 0.08f, y2 - r2 * 0.08f, r2 * 0.88f), new Vector3(0.018f, 0.018f, 0.012f), coal);
+            m.Box(new Vector3(0f, y2 - r2 * 0.12f, r2 * 0.89f), new Vector3(0.02f, 0.018f, 0.012f), coal);
+            m.Box(new Vector3(r2 * 0.08f, y2 - r2 * 0.08f, r2 * 0.88f), new Vector3(0.018f, 0.018f, 0.012f), coal);
             for (int b = 0; b < 3; b++) m.Box(new Vector3(0f, y1 - r1 * 0.45f + b * r1 * 0.38f, r1 * 0.96f - Mathf.Abs(b - 1) * 0.02f), new Vector3(0.04f, 0.04f, 0.03f), coal);
+            m.Box(new Vector3(0f, y1 - r1 * 0.62f, r1 * 0.94f), new Vector3(0.038f, 0.038f, 0.028f), coal);
+            m.Box(new Vector3(0f, y1 + r1 * 0.1f, r1 * 0.97f), new Vector3(0.036f, 0.036f, 0.026f), coal);
             for (int a = -1; a <= 1; a += 2)
             {
                 var root = new Vector3(a * r1 * 0.85f, y1 + r1 * 0.2f, 0f);
@@ -109,6 +117,12 @@ namespace CloneZ
                 Surf scarf = DecorPalette.Matte(wool[rng.Next(wool.Length)]);
                 m.Cylinder(new Vector3(0f, y1 + r1 * 0.68f, 0f), r1 * 0.72f, 0.09f, 10, scarf);
                 m.Box(new Vector3(r1 * 0.35f, y1 + r1 * 0.2f, r1 * 0.75f), new Vector3(0.1f, 0.3f, 0.03f), Quaternion.Euler(10f, 0f, -8f), scarf);
+                if (rng.NextDouble() < 0.5)
+                {
+                    m.Box(new Vector3(r1 * 0.32f, y1 + r1 * 0.05f, r1 * 0.76f), new Vector3(0.012f, 0.09f, 0.014f), Quaternion.Euler(12f, 0f, -12f), scarf);
+                    m.Box(new Vector3(r1 * 0.38f, y1 + r1 * 0.02f, r1 * 0.74f), new Vector3(0.012f, 0.08f, 0.014f), Quaternion.Euler(8f, 0f, -6f), scarf);
+                    m.Box(new Vector3(r1 * 0.3f, y1 - r1 * 0.01f, r1 * 0.77f), new Vector3(0.012f, 0.07f, 0.014f), Quaternion.Euler(14f, 0f, -16f), scarf);
+                }
             }
             else if (rng.NextDouble() < 0.5)
             {
@@ -116,6 +130,11 @@ namespace CloneZ
                 m.Cylinder(new Vector3(0f, y2 + r2 * 0.85f, 0f), r2 * 1.05f, 0.025f, 10, hat);
                 m.Cylinder(new Vector3(0f, y2 + r2 * 0.85f, 0f), r2 * 0.68f, 0.24f * s, 10, hat);
             }
+            Vector3 broomRoot = new Vector3(-r1 * 0.6f, y1 * 0.4f, -r1 * 0.7f);
+            Vector3 broomTip = broomRoot + new Vector3(-0.25f, 0.6f, -0.15f);
+            m.Rod(broomRoot, broomTip, 0.014f, stick);
+            m.Rod(broomTip, broomTip + new Vector3(-0.08f, 0.12f, -0.05f), 0.01f, stick);
+            m.Rod(broomTip + new Vector3(-0.04f, -0.02f, -0.02f), broomTip + new Vector3(-0.12f, 0.08f, -0.08f), 0.01f, stick);
             m.ResetFrame();
         }
         #endregion

@@ -86,9 +86,23 @@ namespace CloneZ
                 m.Rod(new Vector3(0f, 0.07f, 0f), dir * 0.3f + Vector3.up * 0.05f, 0.04f, M(b));
                 m.Ellipsoid(dir * 0.3f + Vector3.up * 0.03f, new Vector3(0.05f, 0.05f, 0.05f), M(b), 6, 3);
             }
+            // existing base‑rod loop ends here
+            for (int i = 0; i < 4; i++)
+            {
+                float a = i * Mathf.PI * 0.5f; // 0°, 90°, 180°, 270°
+                var pos = new Vector3(Mathf.Sin(a), 0.035f, Mathf.Cos(a)) * 0.12f;
+                // small chrome wheel disc
+                m.Cylinder(pos, 0.04f, 0.015f, 12, Mt(Chrome));
+            }
             m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));
+            // subtle fabric seam across the seat
+            m.Box(new Vector3(0f, 0.5f - 0.001f, 0f), new Vector3(0.48f, 0.001f, 0.004f), M(f * 0.85f));
             m.Box(new Vector3(0f, 0.46f, 0.02f), new Vector3(0.48f, 0.08f, 0.46f), M(f));
             m.Box(new Vector3(0f, 0.48f, -0.2f), new Vector3(0.06f, 0.18f, 0.04f), M(b));
+            // modest lumbar ridge
+            m.Box(new Vector3(0f, 0.78f + 0.23f, -0.25f + 0.045f), new Vector3(0.3f, 0.008f, 0.01f), M(f * 0.9f));
+            // low head‑rest
+            m.Box(new Vector3(0f, 0.78f + 0.46f - 0.01f, -0.25f), new Vector3(0.2f, 0.008f, 0.07f), M(f * 0.9f));
             m.Box(new Vector3(0f, 0.78f, -0.25f), new Vector3(0.44f, 0.46f, 0.07f), Quaternion.Euler(-8f, 0f, 0f), M(f));
         }
 

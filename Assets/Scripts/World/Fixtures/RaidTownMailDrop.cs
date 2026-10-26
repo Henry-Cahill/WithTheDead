@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace CloneZ
@@ -11,18 +12,17 @@ namespace CloneZ
     [DisallowMultipleComponent]
     public class RaidTownMailDrop : Interactable
     {
-
-// What can be made out through the chute, in turn. All original flavour.
-        private static readonly string[] Letters =
+        // What can be made out through the chute, in turn. All original flavour.
+        private static readonly string[] AllLetters =
         {
             "A drift of envelopes. The top one is addressed to the county tax office in a careful hand, stamped and sealed. Somebody still meant to pay.",
-            "Red and green envelopes \u2014 Christmas cards, weeks early. Somebody wanted them out while there was still a post to send them.",
-            "A postcard lying face up: a lake and a single pine. On the back, in pencil: \u201CWish you were here. Glad you're not.\u201D No name.",
-            "A fat envelope marked PHOTOS \u2014 DO NOT BEND, bent in half to make it fit the slot.",
-            "A torn invitation, cream paper edged with glitter \u2014 a community pot‑luck scheduled for the evening before the storm. No RSVP.",
-            "A yellowed flyer, corners browned: \u201CFREE COLD‑CUT HAM – PICK‑UP TODAY\u201D. The address points to the shuttered town hall.",
-            "A handwritten note, ink smudged by frost: \u201CMeet me at the old oak, midnight. Bring the lockbox.\u201D No signature.",
-            "A glossy catalog, pages half‑frosted, advertising winter coats labeled \u201CLimited stock\u201D. The price tag reads \u201C$0 – sample\u201D.",
+            "Red and green envelopes — Christmas cards, weeks early. Somebody wanted them out while there was still a post to send them.",
+            "A postcard lying face up: a lake and a single pine. On the back, in pencil: “Wish you were here. Glad you're not.” No name.",
+            "A fat envelope marked PHOTOS — DO NOT BEND, bent in half to make it fit the slot.",
+            "A torn invitation, cream paper edged with glitter — a community pot‑luck scheduled for the evening before the storm. No RSVP.",
+            "A yellowed flyer, corners browned: “FREE COLD‑CUT HAM – PICK‑UP TODAY”. The address points to the shuttered town hall.",
+            "A handwritten note, ink smudged by frost: “Meet me at the old oak, midnight. Bring the lockbox.” No signature.",
+            "A glossy catalog, pages half‑frosted, advertising winter coats labeled “Limited stock”. The price tag reads “$0 – sample”.",
             "An eviction notice, type‑written on yellowed stock, stating the lease ends March 1st and the landlord will lock the doors at sunrise. No response.",
             "The Sunday church bulletin, folded thin, lists a prayer circle for “the ones lost in the woods” and a call for donations to repair the stained‑glass window.",
             "A handwritten recipe card, ink smudged: “Grandma’s turnip soup – 2 cups water, 1 cup diced turnips, pinch of salt, simmer till tender. Share with anyone who’s cold.”",
@@ -42,7 +42,7 @@ namespace CloneZ
             "A small flyer, creased: “Volunteer fire‑watch, meet at the old school gym, 6 PM nightly. Bring lanterns.”",
             "A folded note, penciled hurriedly: “Do not trust the man in the blue coat. He’s feeding the dead.”",
             "A weather‑alert handout, stamped “County Emergency”: “Blizzard warning – winds 45 mph, zero visibility after midnight. Stay sheltered.”",
-            "A brief obituary clipping, printed in stark type: “Mrs. Eleanor Whitaker, beloved baker, 78. Services at St. Luke’s, 2 PM Saturday.”",
+            "A brief obituary clipping, printed in stark type: “Mrs. Eleanor Whitaker, beloved baker, 78. Services at St. Luke’s, 2 PM Saturday.”"
         };
 
         // Additional flavour text for box notes
@@ -56,12 +56,13 @@ namespace CloneZ
             "A faded newspaper clipping: “Local farmer wins ‘Best Harvest’ award – celebration postponed due to blizzard.”"
         };
 
-private Vector3 _point;
-         private int _read;
-         private int _historyRead;
-         private bool _isEmpty;
-         private Color _originalColor;
-         private MeshRenderer _renderer;
+        private Vector3 _point;
+        private int _read;
+        private int _historyRead;
+        private bool _isEmpty;
+        private List<string> _letterQueue;
+        private MeshRenderer _renderer;
+        private Color _originalColor;
 
         public override string DisplayName => "Mail drop box";
         public override Vector3 InteractPoint => _point;
@@ -74,16 +75,29 @@ private Vector3 _point;
             go.transform.SetPositionAndRotation(point, Quaternion.identity);
             var m = go.AddComponent<RaidTownMailDrop>();
             m._point = point;
-            m._read = (seed & 0x7fff) % Letters.Length;
-                         m._historyRead = ((seed >> 1) & 0x7fff) % BoxNotes.Length;
-                         m._renderer = m.GetComponent<MeshRenderer>();
+            // Fill the per‑instance queue with all letters in the static master list.
+            m._letterQueue = new List<string>(AllLetters);
+            // Initialise the order with the supplied seed so that different drops start differently.
+            int seedMod = (int)((seed ^ 0x5F3759DF) & 0x7fffffff);
+            var rng = new System.Random(seedMod);
+            int n = m._letterQueue.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                var tmp = m._letterQueue[k];
+                m._letterQueue[k] = m._letterQueue[n];
+                m._letterQueue[n] = tmp;
+            }
+            m._historyRead = ((seed >> 1) & 0x7fff) % BoxNotes.Length;
+            m._renderer = m.GetComponent<MeshRenderer>();
             if (m._renderer != null) m._originalColor = m._renderer.sharedMaterial.color;
             return m;
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-                        var pull = new InteractAction("Pull open the chute", PeerIn).Timed(1.2f, "Peering into the chute", HumanoidActivity.Use);
+            var pull = new InteractAction("Pull open the chute", PeerIn).Timed(1.2f, "Peering into the chute", HumanoidActivity.Use);
             pull = pull.DisabledIf(IsEmpty(), "The chute is empty.");
             into.Add(pull);
             into.Add(new InteractAction("Read the collection times", c => c.Notify(
@@ -91,9 +105,10 @@ private Vector3 _point;
             into.Add(new InteractAction("Inspect the box", c => c.Notify("The blue paint is chipped and the metal groans with each gust of wind.")));
             into.Add(new InteractAction("Read next letter (preview)", PeekNext).Timed(0.8f, "Peeking into the chute", HumanoidActivity.Use));
             into.Add(new InteractAction("Read box history", ReadHistory));
+            into.Add(new InteractAction("Shake the box", ShakeBox).Timed(0.9f, "Shaking the chute", HumanoidActivity.Use));
         }
 
-        private bool IsEmpty() => _read >= Letters.Length;
+        private bool IsEmpty() => _read >= _letterQueue.Count;
 
         /// <summary>Preview the next letter in the chute.</summary>
         private void PeekNext(InteractContext ctx)
@@ -104,19 +119,19 @@ private Vector3 _point;
                 ctx.Notify("The chute is empty.");
                 return;
             }
-            ctx.Notify(Letters[_read]);
+            ctx.Notify(_letterQueue[_read]);
         }
 
         /// <summary>Peering into the chute to read a letter.</summary>
         private void PeerIn(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
-            if (_read >= Letters.Length)
+            if (_read >= _letterQueue.Count)
             {
                 ctx.Notify("The chute is empty.");
                 return;
             }
-            ctx.Notify(Letters[_read]);
+            ctx.Notify(_letterQueue[_read]);
             _read++;
             if (IsEmpty())
             {
@@ -126,7 +141,29 @@ private Vector3 _point;
                     _renderer.sharedMaterial.color = Color.Lerp(_originalColor, Color.gray, 0.6f);
             }
         }
-        
+
+        /// <summary>Randomise the order of the letters that have not yet been read.</summary>
+        private void ShakeBox(InteractContext ctx)
+        {
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            if (IsEmpty())
+            {
+                ctx.Notify("There is nothing left to shake around.");
+                return;
+            }
+            // Shuffle only the unread portion of the queue.
+            int unreadStart = _read;
+            var rng = new System.Random();
+            for (int i = unreadStart; i < _letterQueue.Count - 1; i++)
+            {
+                int j = rng.Next(i, _letterQueue.Count);
+                var tmp = _letterQueue[i];
+                _letterQueue[i] = _letterQueue[j];
+                _letterQueue[j] = tmp;
+            }
+            ctx.Notify("You give the chute a vigorous shake; the letters tumble and settle in a new order.");
+        }
+
         /// <summary>Cycle through the box's history notes.</summary>
         private void ReadHistory(InteractContext ctx)
         {

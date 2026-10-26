@@ -270,15 +270,18 @@ namespace CloneZ
         // sometimes blinking twice.
         private float EvaluateFlicker(float dt)
         {
+            // If a blackout is active, count down remaining off time.
             if (_outageLeft > 0f)
             {
                 _outageLeft -= dt;
                 return 0f;
             }
 
+            // Count down to the next possible blackout.
             _outageTimer -= dt;
             if (_outageTimer <= 0f)
             {
+                // Start a new outage; occasionally chain a second one for a double‑blink.
                 _outageLeft = Random.Range(OutageMinSeconds, OutageMaxSeconds);
                 _outageTimer = Random.value < DoubleBlinkChance
                     ? _outageLeft + Random.Range(0.12f, 0.3f)
@@ -286,14 +289,17 @@ namespace CloneZ
                 return 0f;
             }
 
+            // Base flicker using Perlin noise for a subtle shimmer.
             float level = 1f - FlickerWobble * Mathf.PerlinNoise(_seed, Time.time * WobbleSpeed);
             if (_dipLeft > 0f)
             {
+                // A dip is active: count it down and dim the light.
                 _dipLeft -= dt;
                 level *= 1f - _dipDepth;
             }
             else
             {
+                // No dip active: count down to the next dip and initialise it when the timer expires.
                 _dipTimer -= dt;
                 if (_dipTimer <= 0f)
                 {
@@ -324,14 +330,17 @@ namespace CloneZ
         // Culls far fittings and hands the shadow slots to the nearest ones that want them.
         private static void RefreshBudget()
         {
+            // Get the survivor's position; if we can't, abort the budget pass.
             if (!TryGetSurvivor(out Vector3 center)) return;
 
+            // Reset the nearest‑lights arrays for this frame.
             for (int i = 0; i < MaxShadowedLights; i++)
             {
                 s_Nearest[i] = null;
                 s_NearestSqr[i] = float.MaxValue;
             }
 
+            // Determine which lights are beyond the cull distance.
             float cullSqr = CullDistance * CullDistance;
             for (int i = 0; i < s_All.Count; i++)
             {
@@ -340,9 +349,11 @@ namespace CloneZ
                 float d = (l.transform.position - center).sqrMagnitude;
                 bool culled = d > cullSqr;
                 l.SetCulled(culled);
+                // If within range and wants shadows, consider it for the nearest‑lights list.
                 if (!culled && l.CastShadows && l.On) InsertNearest(l, d);
             }
 
+            // Now assign shadow‑casting slots based on the nearest‑lights list.
             for (int i = 0; i < s_All.Count; i++)
             {
                 RoomLight l = s_All[i];

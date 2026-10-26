@@ -62,6 +62,7 @@ namespace CloneZ
         private readonly Dictionary<long, Memory> _memory = new Dictionary<long, Memory>();
         private readonly Queue<(long id, int stamp)> _memoryOrder = new Queue<(long, int)>();
         private readonly List<Vector3> _focus = new List<Vector3>(4);
+        private readonly Dictionary<Job, float> _distCache = new Dictionary<Job, float>(512);
         private Job _active;
         private int _stamp, _built, _live, _failed, _takenDown;
         private bool _navDirty, _prune, _haveNavBounds;
@@ -124,15 +125,20 @@ namespace CloneZ
             Tick(now);
         }
 
+        /// <summary>Runs per-frame interior streaming logic based on survivor focus and timing intervals.</summary>
         private void Tick(float now)
         {
+            _distCache.Clear();
+            // Periodic scan: clean up orphaned jobs (pieces that disappeared) and take down interiors left far behind the survivors.
             if (now >= _nextScan)
             {
                 _nextScan = now + ScanInterval;
                 DropOrphans();
                 if (_focus.Count > 0) TakeDownBehind();
             }
+            // If any survivor is in range, attempt to furnish the nearest eligible building(s) this frame.
             if (_focus.Count > 0) Furnish();
+            // When fixtures have changed, schedule a NavMesh rebuild after a short delay to avoid thrashing.
             if (_navDirty && now >= _nextNav)
             {
                 _navDirty = false;
@@ -141,6 +147,7 @@ namespace CloneZ
                 if (streamer != null && _haveNavBounds) streamer.InvalidateNav(_navBounds);
                 _haveNavBounds = false;
             }
+            // Periodically prune ceiling visibility data to free memory and keep performance stable.
             if (_prune && now >= _nextPrune)
             {
                 _prune = false;
@@ -187,6 +194,7 @@ namespace CloneZ
         // How far the nearest survivor is from a building's outline (roughly: from its middle, less its reach).
         private float Distance(Job j)
         {
+            if (_distCache.TryGetValue(j, out float c)) return c;
             Vector3 p = j.Parent.position;
             float x = p.x + j.Centre.x, z = p.z + j.Centre.y, best = float.MaxValue;
             for (int i = 0; i < _focus.Count; i++)
@@ -194,7 +202,9 @@ namespace CloneZ
                 float dx = _focus[i].x - x, dz = _focus[i].z - z;
                 best = Mathf.Min(best, dx * dx + dz * dz);
             }
-            return Mathf.Sqrt(best) - j.Radius;
+            c = Mathf.Sqrt(best) - j.Radius;
+            _distCache[j] = c;
+            return c;
         }
 
         // The jobs whose piece has been let go: what their containers held is remembered (the objects went with it).
@@ -325,15 +335,18 @@ namespace CloneZ
         #region What was taken stays taken
         // A building just furnished: what was left in it last time (its containers' contents, the furniture broken up, its
         // doors and other fixtures as they were left), else this raid's loot.
+        /// <summary>Restores a building's state (containers, furniture, fixtures) after it has been furnished.</summary>
         private void Restore(Job j)
         {
             List<LootContainer> boxes = j.Build.Containers;
             long id = j.Plan.Id;
+            // Retrieve any previously saved memory for this building (containers, furniture, fixtures).
             _memory.TryGetValue(id, out Memory kept);
             // Furniture broken up while the building last stood comes down again, whole (its drawers with it), switched off
             // first so a merged piece's share of its room's mesh goes with it.
             List<Transform> brokenUp = null;
             List<HomeFurniture> furniture = j.Build.Furniture;
+            // Re‑activate any furniture pieces that were broken up in the previous run.
             if (kept != null && kept.FurnitureGone != null && kept.FurnitureGone.Length == furniture.Count)
                 for (int i = 0; i < furniture.Count; i++)
                 {
@@ -343,6 +356,7 @@ namespace CloneZ
                     piece.gameObject.SetActive(false);
                     InteriorPass.Kill(piece.gameObject);
                 }
+            // Restore each container's saved contents unless it was removed or belongs to a broken piece.
             bool keptBoxes = kept != null && kept.Contents.Length == boxes.Count;
             int raid = GameSession.RaidSeed;
             for (int i = 0; i < boxes.Count; i++)
@@ -366,7 +380,9 @@ namespace CloneZ
                 }
                 RaidWorldRules.RollLoot(box, new System.Random(LootSeed(raid, id, i)));
             }
+            // If the building was standing, re‑apply saved fixture states; otherwise just clear memory.
             if (kept != null && kept.Fixtures != null) RestoreFixtures(j.Build, kept.Fixtures);
+            // Finally, discard the saved memory entry now that the building state is restored.
             if (kept != null) _memory.Remove(id);
         }
 
@@ -399,11 +415,13 @@ namespace CloneZ
 
         // What each of the building's fixtures that keeps a state holds now (a door locked, battered or off its hinges, a lamp
         // switched off...), by save key; null when none does.
+        /// <summary>Captures the current state of a building's fixtures for later restoration.</summary>
         private static List<FixtureSave> CaptureFixtures(InteriorBuild b)
         {
             List<FixtureSave> saves = null;
             HashSet<string> seen = null;
             GatherFixtures(b);
+            // Iterate each unique fixture, ensuring we only capture one state per save key.
             foreach (Interactable f in s_Fixtures)
             {
                 string key = f != null ? f.SaveKey : null;

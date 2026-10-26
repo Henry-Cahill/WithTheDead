@@ -32,20 +32,32 @@ namespace CloneZ
         /// <summary>Stops listening (the HUD is going away).</summary>
         public void Dispose() => Subtitles.Shown -= OnShown;
 
+        /// <summary>
+        /// Handles a new subtitle line being shown by shifting existing lines down and updating display.
+        /// </summary>
         private void OnShown(Subtitles.Line line)
         {
+            // Shift existing subtitle slots down to make room for the incoming line at index 0.
             for (int i = Lines - 1; i > 0; i--)
             {
+                // Move previous line and its timer one slot older.
                 _lines[i] = _lines[i - 1];
                 _timers[i] = _timers[i - 1];
             }
+            // Insert the newest subtitle at the front of the buffer.
             _lines[0] = line;
+            // Initialise its timer based on the duration the line should stay visible.
             _timers[0] = line.Seconds;
+            // Refresh UI text for each active subtitle slot.
             for (int i = 0; i < Lines; i++)
             {
+                // Skip slots that have no remaining time.
                 if (_timers[i] <= 0f) continue;
+                // Cache the line for formatting.
                 Subtitles.Line l = _lines[i];
+                // Convert the source colour to an HTML hex string for rich‑text coloring.
                 string hex = ColorUtility.ToHtmlStringRGB(l.Color);
+                // Build the displayed string, optionally prefixing a coloured source name.
                 _texts[i].text = string.IsNullOrEmpty(l.Source)
                     ? l.Text
                     : "<color=#" + hex + "><b>" + l.Source + ":</b></color>  " + l.Text;

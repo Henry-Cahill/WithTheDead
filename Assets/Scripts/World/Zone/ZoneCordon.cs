@@ -173,9 +173,32 @@ namespace CloneZ
                     new Vector3(-0.39f, h * 0.5f + 0.9f + 0.02f, 1.41f),
                     0.01f, ZoneKit.Mt(ZoneKit.RustDark), 4);
                 // 6️⃣ Door handle (rusted metal)
-                sb.Solid.Box(new Vector3(0.2f, h * 0.5f, 1.401f),
-                    new Vector3(0.02f, 0.12f, 0.04f),
+sb.Solid.Box(new Vector3(0.2f, h * 0.5f, 1.401f),
+    new Vector3(0.02f, 0.12f, 0.04f),
+    ZoneKit.Mt(ZoneKit.RustDark));
+                // 9️⃣ rusted‑metal hasp – sits below the handle on the left side of the frame
+                sb.Solid.Box(
+                    new Vector3(-0.35f, h * 0.5f - 0.20f, 1.41f), // offset left from centre, 20 cm below handle height
+                    new Vector3(0.02f, 0.04f, 0.02f), // 2 cm × 4 cm × 2 cm plate
                     ZoneKit.Mt(ZoneKit.RustDark));
+                // 10️⃣ short chain link – thin metal strip linking hasp to handle
+                sb.Solid.Box(
+                    new Vector3(-0.15f, h * 0.5f - 0.10f, 1.41f), // mid‑point between hasp and handle
+                    new Vector3(0.12f, 0.008f, 0.008f), // 12 cm long, 0.8 cm thick rod‑like link
+                    ZoneKit.Mt(ZoneKit.RustDark));
+                // 11️⃣ padlock body – small rusted metal lock hanging from the chain
+                sb.Solid.Box(
+                    new Vector3(-0.15f, h * 0.5f - 0.12f, 1.425f), // slightly forward of chain, 12 cm below handle level
+                    new Vector3(0.04f, 0.03f, 0.02f), // 4 cm × 3 cm × 2 cm lock body
+                    ZoneKit.Mt(ZoneKit.RustDark));
+                // 13️⃣ optional wear – thin rust‑paint decal on right frame side
+                if (ZoneKit.R(rng, 0f, 1f) < 0.25f)
+                {
+                    sb.Solid.Box(
+                        new Vector3(0.41f, h * 0.5f, 1.41f), // just outside the right vertical frame
+                        new Vector3(0.001f, 0.1f, 0.5f), // 1 mm thick, 10 cm high, 50 cm long streak
+                        ZoneKit.Mt(ZoneKit.Rust));
+                }
                 // 7️⃣ Small lock plate above the handle (rusted metal)
                 sb.Solid.Box(new Vector3(0.2f, h * 0.5f + 0.15f, 1.401f),
                     new Vector3(0.12f, 0.02f, 0.02f),

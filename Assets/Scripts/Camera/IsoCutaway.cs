@@ -151,6 +151,7 @@ namespace CloneZ
             _renderers.Clear();
         }
 
+        /// <summary>Scans for occluding geometry by casting probes from the survivor toward the camera.</summary>
         private void Scan(Vector3 eye, Vector3 forward, bool orthographic, Transform target, float chestHeight)
         {
             _target = target;
@@ -225,6 +226,7 @@ namespace CloneZ
             return p;
         }
 
+        /// <summary>Creates a piece representing a collider or marked occluder for cut‑away handling.</summary>
         private Piece Build(Collider c)
         {
             GameObject go = c.gameObject;
@@ -301,6 +303,7 @@ namespace CloneZ
             if (p.Hidden) Hold(p.Renderers);
         }
 
+        /// <summary>Hides the renderers of a piece and marks it as cut away.</summary>
         private void Hide(Piece p)
         {
             Refresh(p);

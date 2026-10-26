@@ -275,10 +275,15 @@ namespace CloneZ
             sb.Append($" with the room {Db(SeamError(whole, a, b, seg, rate)):0} dB;");
 
             // The room's wet level for noise in (dB re the dry signal).
-            var noise = new StereoBuf(Dsp.White(g, rate * 4), null);
+            var white = Dsp.White(g, rate * 4);
+var noise = new StereoBuf(white, (float[])white.Clone());
             var dry = (float[])noise.L.Clone();
             MusicKit.Space(noise, rate, 2.6f, 4800f, 0.32f, 0f, 0.022f);
-            for (int i = 0; i < dry.Length; i++) noise.L[i] -= dry[i];
+            for (int i = 0; i < dry.Length; i++)
+{
+    noise.L[i] -= dry[i];
+    noise.R[i] -= dry[i]; // also remove dry from right channel
+}
             sb.Append($" room wet at 0.32: {Db(Dsp.Rms(noise.L) / Math.Max(1e-9f, Dsp.Rms(dry))):0.0} dB.");
             table.AppendLine(sb.ToString()).AppendLine();
         }

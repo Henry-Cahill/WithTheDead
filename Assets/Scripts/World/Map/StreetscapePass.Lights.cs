@@ -254,7 +254,7 @@ namespace CloneZ
         // Render a single lamp according to its type and lighting state.
         private static void Draw(Ctx ctx, LampPlan lamp, float h)
         {
-            Vector2 at = lamp.At;
+            Vector2 at = lamp.At; // All lamps receive a thin white “snow cap” because the map represents a 1993 Kentucky winter.
             Vector3 foot = To3(at, 0f);
             bool inside = ctx.Inside(at);
             RaidMesh low = ctx.Low(at), high = ctx.High(at);
@@ -268,6 +268,7 @@ namespace CloneZ
                     low.Cylinder(foot + new Vector3(0f, 0.55f, 0f), 0.075f, h - 0.85f, 8, black, Quaternion.identity, 0.85f);
                     low.Cylinder(foot + new Vector3(0f, h - 0.32f, 0f), 0.13f, 0.12f, 8, black);
                     head = foot + new Vector3(0f, h + 0.06f, 0f);
+                    AddSnowCap(high, head + new Vector3(0f, 0.07f, 0f));
                     if (!lamp.Lit) high.Ellipsoid(head, new Vector3(0.40f, 0.54f, 0.40f), Gloss(GlobeMilk), 10, 6);
                     high.Cylinder(head + new Vector3(0f, 0.25f, 0f), 0.16f, 0.1f, 8, black, Quaternion.identity, 0.5f);
                     high.Cylinder(head + new Vector3(0f, 0.35f, 0f), 0.03f, 0.16f, 6, black, Quaternion.identity, 0.4f);
@@ -289,8 +290,18 @@ namespace CloneZ
                     Vector3 p2 = foot + r * 1.3f + new Vector3(0f, h + 0.2f, 0f), p3 = foot + r * 2.4f + new Vector3(0f, h + 0.12f, 0f);
                     high.Rod(p0, p1, 0.09f, steel, 6);
                     high.Rod(p1, p2, 0.08f, steel, 6);
-                    high.Rod(p2, p3, 0.07f, steel, 6);
-                    head = p3;
+high.Rod(p2, p3, 0.07f, steel, 6);
+                     // Rusted metal bracket that joins the arm to the pole.
+                     low.Box(p0 + new Vector3(0f, 0.02f, 0f), new Vector3(0.06f, 0.02f, 0.12f), DarkMetal);
+                     // Four rivets on the bracket corners.
+                     low.Cylinder(p0 + new Vector3(-0.025f, 0.03f, -0.055f), 0.005f, 0.001f, 6, Gloss(new Color(0.46f, 0.38f, 0.30f)), Quaternion.identity, 0.5f);
+                     low.Cylinder(p0 + new Vector3( 0.025f, 0.03f, -0.055f), 0.005f, 0.001f, 6, Gloss(new Color(0.46f, 0.38f, 0.30f)), Quaternion.identity, 0.5f);
+                     low.Cylinder(p0 + new Vector3(-0.025f, 0.03f, 0.055f), 0.005f, 0.001f, 6, Gloss(new Color(0.46f, 0.38f, 0.30f)), Quaternion.identity, 0.5f);
+                     low.Cylinder(p0 + new Vector3( 0.025f, 0.03f, 0.055f), 0.005f, 0.001f, 6, Gloss(new Color(0.46f, 0.38f, 0.30f)), Quaternion.identity, 0.5f);
+                     // Darkened wear stripe on the pole, hinting at years of use.
+                     low.Cylinder(foot + new Vector3(0f, h * 0.55f, 0f), 0.13f, 0.015f, 8, Matte(new Color(0.20f, 0.15f, 0.10f)), Quaternion.identity, 0.5f);
+                     head = p3;
+                    AddSnowCap(high, head + new Vector3(0f, 0.06f, 0f));
                     PowerPass.CobraHead(ctx, lamp, head, lamp.Reach, 0.34f);
                     if (lamp.Lit && inside) Burn(ctx, lamp, at, h, head);
                     else ctx.Collider(at, 0f, new Vector3(0.3f, 4f, 0.3f), 0f);
@@ -314,7 +325,11 @@ namespace CloneZ
                         if (!lamp.Lit) high.Ellipsoid(tip + new Vector3(0f, -0.15f, 0f), new Vector3(0.26f, 0.12f, 0.26f), Gloss(GlobeMilk), 8, 4);
                     }
                     else PowerPass.CobraHead(ctx, lamp, head, lamp.Reach, 0.3f);
-                    if (lamp.Lit && inside) Burn(ctx, lamp, at, h, head);
+                    if (lamp.Lit && inside)
+                    {
+                        Burn(ctx, lamp, at, h, head);
+                        AddSnowCap(high, head + new Vector3(0f, 0.08f, 0f));
+                    }
                     else ctx.Collider(at, 0f, new Vector3(0.28f, 4f, 0.28f), 0f);
                     break;
                 }
@@ -323,6 +338,10 @@ namespace CloneZ
 
         private static void Burn(Ctx ctx, LampPlan lamp, Vector2 foot, float poleHeight, Vector3 head)
             => ctx.Burning.Add(new Burning { Lamp = lamp, Foot = foot, PoleHeight = poleHeight, Head = head });
+
+        // Draw a thin white “snow cap” on top of a lamp head. The scale argument lets callers adjust size per lamp type.
+        private static void AddSnowCap(RaidMesh mesh, Vector3 pos, float scale = 1f)
+            => mesh.Ellipsoid(pos, new Vector3(0.22f * scale, 0.05f * scale, 0.22f * scale), SnowSurf);
 
         // Every burning lamp made a StreetLamp. In an editor build the first few get lights of their own, spread over the
         // site: the lamp nearest each 64 m cell's middle first, then each cell's next, nearest the site's middle first.

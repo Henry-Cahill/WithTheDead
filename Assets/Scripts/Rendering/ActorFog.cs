@@ -13,6 +13,7 @@ namespace CloneZ
     public sealed class ActorFog : MonoBehaviour
     {
         private Renderer[] _renderers;
+        private float _cachedHeight = 1.6f;
         private int _count = -1;
         private bool _shown = true;
         private float _next, _lastSeen = -99f;
@@ -25,6 +26,7 @@ namespace CloneZ
         private void Start()
         {
             _actor = GetComponent<Actor>();
+            _cachedHeight = _actor != null ? _actor.Height : 1.6f;
             _transform = transform;
             _next = Time.time + Random.value * 0.1f;
             Cache();
@@ -47,7 +49,7 @@ namespace CloneZ
             bool show = true;
             if (ZombieVisibility.HasSight && _cachedLocalPlayer != null && _actor != _cachedLocalPlayer)
             {
-                float h = _actor != null ? _actor.Height : 1.6f;
+                float h = _cachedHeight;
                 Vector3 root = _transform.position;
                 bool dead = _actor != null && !_actor.IsAlive;
                 Vector3 chest = root + Vector3.up * (dead ? 0.3f : h * 0.65f);
@@ -72,7 +74,7 @@ namespace CloneZ
         {
             if (_transform == null) _transform = transform;   // the children can change before Start
             _renderers = GetComponentsInChildren<Renderer>(true);
-            _count = _transform.hierarchyCount;
+            _cachedHeight = _actor != null ? _actor.Height : 1.6f;
             for (int i = 0; i < _renderers.Length; i++)
                 if (_renderers[i] != null) _renderers[i].forceRenderingOff = !_shown;
         }

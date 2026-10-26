@@ -63,25 +63,31 @@ namespace CloneZ
             DistantFigure.Spawn(me);
         }
 
+        /// <summary>Briefly flickers nearby non-directional lights with a jittery stutter for an uncanny effect.</summary>
         private IEnumerator Flicker(Vector3 around)
         {
+            // Collect nearby lights to affect without touching the sun or player-carried lights.
             var lights = new List<Light>();
             var original = new List<float>();
             foreach (Light l in FindObjectsByType<Light>())
             {
                 if (l == null || !l.enabled || l.type == LightType.Directional) continue;
+                // Use squared distance to avoid sqrt; radius 25m keeps the effect local.
                 if ((l.transform.position - around).sqrMagnitude > 25f * 25f) continue;
+                // Don't flicker lights attached to the local player to avoid disorienting HUD/gear.
                 if (Actor.LocalPlayer != null && l.transform.IsChildOf(Actor.LocalPlayer.transform)) continue;
                 lights.Add(l);
                 original.Add(l.intensity);
             }
             if (lights.Count == 0) yield break;
+            // Short irregular flicker window to read as a glitch rather than a sustained strobe.
             float dur = Random.Range(2.5f, 4f);
             for (float t = 0f; t < dur; t += Time.deltaTime)
             {
                 for (int i = 0; i < lights.Count; i++)
                 {
                     if (lights[i] == null) continue;
+                    // Per-light Perlin threshold gives asynchronous stuttering across different fixtures.
                     float k = Mathf.PerlinNoise(Time.time * 14f, i * 3.1f) > 0.55f ? 1f : 0.05f;
                     ZoneFlameLight f = lights[i].GetComponent<ZoneFlameLight>();
                     if (f != null) f.Disturb = k;
@@ -89,6 +95,7 @@ namespace CloneZ
                 }
                 yield return null;
             }
+            // Restore original state so lights don't remain stuck in disturbed/flared state.
             for (int i = 0; i < lights.Count; i++)
             {
                 if (lights[i] == null) continue;
@@ -146,6 +153,7 @@ namespace CloneZ
                 /// <summary>Creates a new Returned figure at a suitable location and initializes its components.</summary>
         public static ReturnedFigure Spawn(System.Random rng)
         {
+            // Prefer starting near the cemetery if present (matches their lore of walking home); otherwise scatter on arena edge.
             Vector3 from;
             if (!WorldMarkers.TryGetFirst(WorldMarkers.Cemetery, out from))
             {
@@ -153,25 +161,31 @@ namespace CloneZ
                 float a = (float)rng.NextDouble() * Mathf.PI * 2f;
                 from = CloneZConfig.ArenaCenter + new Vector3(Mathf.Cos(a) * h, 0f, Mathf.Sin(a) * h);
             }
+            // Snap start to NavMesh so they can actually walk.
             if (!NavMesh.SamplePosition(from, out NavMeshHit hit, 12f, NavMesh.AllAreas)) return null;
 
             var go = new GameObject("Returned");
             go.transform.position = hit.position;
+            // Ignore raycasts so they don't interfere with weapon/interaction traces.
             go.layer = CloneZConfig.IgnoreRaycastLayer;
             var f = go.AddComponent<ReturnedFigure>();
+            // Use a pale, goreless zombie look to read as "returned" rather than freshly spawned zombies.
             HumanoidLook look = HumanoidLook.RandomZombie(rng);
             look.SkinColor = new Color(0.62f, 0.68f, 0.74f);
             look.Shape.Gore = 0;
+            // Build humanoid rig/anim manually (no prefab) and drive manually in LateUpdate.
             HumanoidRig rig = HumanoidRig.Create(go.transform, look);
             f._anim = rig.gameObject.AddComponent<HumanoidAnimator>();
             f._anim.AutoUpdate = false;
             f._anim.Gait = HumanoidGait.Shambler;
             f._anim.Limp = 0.2f;
+            // Physical presence for collision but they're harmless and untargetable.
             var col = go.AddComponent<CapsuleCollider>();
             col.center = new Vector3(0f, 0.9f, 0f);
             col.height = 1.8f;
             col.radius = 0.3f;
             f._agent = go.AddComponent<NavMeshAgent>();
+            // Slow, shambling pace to feel weary.
             f._agent.speed = 0.55f;
             f._agent.radius = 0.3f;
             f._agent.angularSpeed = 180f;
@@ -179,7 +193,9 @@ namespace CloneZ
             actor.Kind = ActorKind.Human;
             actor.Faction = Factions.Zone;
             actor.DisplayName = "One of the Returned";
+            // Untargetable so they don't become combat targets.
             actor.Untargetable = true;
+            // Find somewhere to sit (prefer a raid door) and head there.
             f._door = f.PickDoor(rng, hit.position);
             f._agent.SetDestination(f._door);
             return f;
@@ -206,32 +222,41 @@ namespace CloneZ
             if (_anim != null) _anim.Stagger(info.HitDirection * 0.4f, 0.6f);
         }
 
+        /// <summary>Drives animation (walk to door, then sit) and applies proximity panic/whispers while nearby.</summary>
         private void LateUpdate()
         {
             float dt = Time.deltaTime;
             if (_anim == null || dt <= 0f) return;
+            // Compute velocity from displacement to feed animator (agent may be stopped after arrival).
             Vector3 v = (transform.position - _lastPos) / dt;
             _lastPos = transform.position;
+            // When close enough to destination, stop moving and transition to seated pose.
             if (!_arrived && _agent != null && _agent.enabled && !_agent.pathPending && _agent.remainingDistance < 1.2f)
             {
                 _arrived = true;
                 _agent.isStopped = true;
                 _anim.Seated = true;
+                // Slightly raise seat point so they sit convincingly at a door.
                 _anim.SeatPoint = transform.position + Vector3.up * 0.3f;
             }
+            // Face in direction of travel while moving.
             if (_agent != null && _agent.velocity.sqrMagnitude > 0.01f)
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_agent.velocity.normalized), 4f * dt);
+            // If seated or velocity is implausible (large spike), zero velocity for animator.
             _anim.Velocity = _arrived ? Vector3.zero : (v.sqrMagnitude < 400f ? v : Vector3.zero);
             _anim.ArmsOut = false;
             _anim.Evaluate(dt);
 
+            // Proximity effects only for local player.
             Actor me = Actor.LocalPlayer;
             if (me == null) return;
             float d = Vector3.Distance(me.transform.position, transform.position);
             if (d < 8f)
             {
+                // Build unease without triggering combat.
                 var stats = me.GetComponent<PlayerStats>();
                 if (stats != null && stats.Panic < 55f) stats.Panic += 4f * dt;
+                // Periodic whispers to sell presence.
                 _whisper -= dt;
                 if (_whisper <= 0f)
                 {
@@ -245,25 +270,39 @@ namespace CloneZ
     /// <summary>A figure at the edge of the fog that isn't there when you arrive.</summary>
     public sealed class DistantFigure : MonoBehaviour
     {
+        private static Camera s_MainCam;
         private float _life = 15f;
         private float _stare;
+
+        private void Awake()
+        {
+            s_MainCam = Camera.main;
+        }
 
                 /// <summary>Spawns a distant, fog‑edge figure visible to the given viewer under specific conditions.</summary>
         public static void Spawn(Actor viewer)
         {
-            Camera cam = Camera.main;
+            // Try to appear just beyond viewer's peripheral vision using camera forward or viewer forward.
+            Camera cam = s_MainCam;
+            if (cam == null) s_MainCam = Camera.main;
             Vector3 fwd = cam != null ? cam.transform.forward : viewer.transform.forward;
             fwd.y = 0f;
             fwd.Normalize();
+            // Try up to 6 candidate positions to find one that is off-screen/occluded in a plausible spot.
             for (int i = 0; i < 6; i++)
             {
+                // Scatter slightly left/right of forward to avoid spawning dead-ahead.
                 Vector3 dir = Quaternion.Euler(0f, Random.Range(-30f, 30f), 0f) * fwd;
+                // Distant enough to feel uncanny but still on NavMesh.
                 Vector3 p = viewer.transform.position + dir * Random.Range(32f, 44f);
                 if (!NavMesh.SamplePosition(p, out NavMeshHit hit, 4f, NavMesh.AllAreas)) continue;
+                // Must be hidden from viewer's eyes (not in direct line of sight) so it appears when glancing away.
                 if (Physics.Linecast(viewer.EyePosition, hit.position + Vector3.up * 1.5f, Actor.SightMask, QueryTriggerInteraction.Ignore)) continue;
                 var go = new GameObject("DistantFigure");
                 go.transform.position = hit.position;
+                // Face away from viewer to suggest it's leaving/watching from edge.
                 go.transform.rotation = Quaternion.LookRotation(-dir);
+                // Build a crude humanoid silhouette from primitives (no prefab assets).
                 var m = new RaidMesh();
                 Color black = new Color(0.02f, 0.02f, 0.025f);
                 m.Ellipsoid(new Vector3(0f, 1.1f, 0f), new Vector3(0.45f, 1.5f, 0.3f), DecorPalette.Matte(black), 8, 5);
@@ -284,7 +323,8 @@ namespace CloneZ
             if (_life <= 0f || me == null) { Destroy(gameObject); return; }
             Vector3 to = transform.position - me.transform.position;
             if (to.magnitude < 22f) { Vanish(); return; }
-            Camera cam = Camera.main;
+            Camera cam = s_MainCam;
+            if (cam == null) s_MainCam = Camera.main;
             if (cam != null && Vector3.Dot(cam.transform.forward, (transform.position + Vector3.up * 1.5f - cam.transform.position).normalized) > 0.985f)
             {
                 _stare += Time.deltaTime;

@@ -65,7 +65,9 @@ namespace CloneZ
         /// <summary>A white enamel range: four burners, a back panel of knobs and an oven door.</summary>
         public static void Stove(RaidMesh m, System.Random rng, Color enamel)
         {
+            // Apply subtle random variation to enamel colour for visual variety
             Color c = V(enamel, rng, 0.04f);
+            // Base of the stove includes the main body and the oven door surface
             m.Box(new Vector3(0f, 0.46f, -0.02f), new Vector3(0.76f, 0.92f, 0.62f), G(c));
             m.Box(new Vector3(0f, 0.925f, 0f), new Vector3(0.74f, 0.01f, 0.6f), M(new Color(0.18f, 0.18f, 0.19f)));
             for (int i = 0; i < 4; i++)
@@ -114,22 +116,29 @@ namespace CloneZ
         public static void Sofa(RaidMesh m, System.Random rng, float w, Color fabric)
         {
             Color c = V(fabric, rng, 0.06f);
+            // Create the four wooden legs at the corners of the sofa
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.08f), 0.03f, (i < 2 ? -1f : 1f) * 0.34f), new Vector3(0.05f, 0.06f, 0.05f), M(Walnut));
+            // Main sofa seat surface
             m.Box(new Vector3(0f, 0.25f, -0.02f), new Vector3(w, 0.38f, 0.82f), M(c * 0.9f));
+            // Backrest with slight tilt for ergonomic support
             m.Box(new Vector3(0f, 0.62f, -0.32f), new Vector3(w - 0.36f, 0.5f, 0.2f), Quaternion.Euler(-10f, 0f, 0f), M(c));
+            // Determine number of seat cushions based on sofa width
             int n = w > 1.6f ? 3 : (w > 1.1f ? 2 : 1);
             float cw = (w - 0.4f) / n;
+            // Position each cushion evenly across the seat
             for (int i = 0; i < n; i++)
             {
                 float x = -w * 0.5f + 0.2f + cw * (i + 0.5f);
                 m.Box(new Vector3(x, 0.5f, 0.07f), new Vector3(cw - 0.02f, 0.14f, 0.6f), Yaw(R(rng, -2f, 2f)), M(V(c, rng, 0.04f)));
             }
+            // Add side armrests and accompanying cylinders for visual detail
             for (int s = -1; s <= 1; s += 2)
             {
                 m.Box(new Vector3(s * (w * 0.5f - 0.1f), 0.42f, -0.02f), new Vector3(0.2f, 0.5f, 0.82f), M(c * 0.95f));
                 m.CylinderX(new Vector3(s * (w * 0.5f - 0.1f), 0.66f, -0.02f), 0.11f, 0.82f, 8, M(c * 0.95f), 90f);
             }
+            // Occasionally place a small decorative item on the sofa
             if (Chance(rng, 0.6))
                 m.Box(new Vector3(R(rng, -w * 0.3f, w * 0.3f), 0.68f, -0.08f), new Vector3(0.4f, 0.36f, 0.12f), Quaternion.Euler(-20f, R(rng, -20f, 20f), R(rng, -10f, 10f)), M(V(new Color(0.6f, 0.5f, 0.3f), rng, 0.2f)));
         }
@@ -176,6 +185,7 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.3f, l * 0.5f - 0.025f), new Vector3(w + 0.06f, 0.6f, 0.05f), M(c * 1.05f));
             m.Box(new Vector3(0f, 0.41f, -0.01f), new Vector3(w - 0.06f, 0.2f, l - 0.1f), M(new Color(0.80f, 0.78f, 0.72f)));
             Color b = V(blanket, rng, 0.08f);
+            // Compute blanket size and position based on bed dimensions
             float bl = l * R(rng, 0.55f, 0.72f);
             float bz = l * 0.5f - 0.06f - bl * 0.5f;
             m.Box(new Vector3(0f, 0.53f, bz), new Vector3(w + 0.02f, 0.06f, bl), Yaw(R(rng, -3f, 3f)), M(b));
@@ -210,8 +220,42 @@ namespace CloneZ
             }
             m.Box(new Vector3(0f, 1.72f, -0.97f), new Vector3(0.9f, 0.04f, 0.04f), M(frame));
             m.Box(new Vector3(0f, 1.72f, 0.97f), new Vector3(0.9f, 0.04f, 0.04f), M(frame));
-            for (int r = 0; r < 4; r++) m.Box(new Vector3(0.43f, 0.6f + r * 0.25f, 0.97f), new Vector3(0.04f, 0.03f, 0.04f), M(frame));
-        }
+for (int r = 0; r < 4; r++) m.Box(new Vector3(0.43f, 0.6f + r * 0.25f, 0.97f), new Vector3(0.04f, 0.03f, 0.04f), M(frame));
+            // Ladder side rails – thin steel cylinders attached to the left outer column of the upper bunk
+            float ladderYCenter = (0.38f + 1.28f) * 0.5f; // 0.83 m
+            float ladderHeight = 1.28f - 0.38f; // 0.90 m
+            // left rail, slightly offset outward from the existing column at x = -0.48f
+            m.Cylinder(new Vector3(-0.48f, ladderYCenter, 0.9f), 0.008f, ladderHeight, 6, Mt(Steel));
+            // right rail, mirroring the left rail
+            m.Cylinder(new Vector3(-0.38f, ladderYCenter, 0.9f), 0.008f, ladderHeight, 6, Mt(Steel));
+            // Ladder rungs – evenly spaced between rails
+            int rungCount = 6;
+            float rungSpacing = ladderHeight / (rungCount + 1);
+            for (int i = 0; i < rungCount; i++)
+            {
+                float y = 0.38f + rungSpacing * (i + 1);
+                m.Box(new Vector3(-0.43f, y, 0.9f), new Vector3(0.1f, 0.018f, 0.018f), Mt(Steel));
+            }
+            // Corner rivets – small brass cylinders at each vertical frame post corner (8 total)
+            Vector3[] rivetPositions = new[] {
+                new Vector3(-0.43f, 0.05f, -0.97f), new Vector3(-0.43f, 0.05f, 0.97f),
+                new Vector3( 0.43f, 0.05f, -0.97f), new Vector3( 0.43f, 0.05f, 0.97f),
+                new Vector3(-0.43f, 1.28f, -0.97f), new Vector3(-0.43f, 1.28f, 0.97f),
+                new Vector3( 0.43f, 1.28f, -0.97f), new Vector3( 0.43f, 1.28f, 0.97f)
+            };
+            foreach (var pos in rivetPositions)
+                m.Cylinder(pos, 0.006f, 0.02f, 6, Mt(Brass));
+            // Diagonal brace between the two upper columns
+            Vector3 braceStart = new Vector3(-0.43f, 1.28f, -0.97f);
+            Vector3 braceEnd = new Vector3( 0.43f, 1.28f, 0.97f);
+            Vector3 braceCenter = (braceStart + braceEnd) * 0.5f;
+            Vector3 braceDir = (braceEnd - braceStart).normalized;
+            float braceLength = Vector3.Distance(braceStart, braceEnd);
+            Quaternion braceRot = Quaternion.FromToRotation(Vector3.up, braceDir);
+            m.Box(braceCenter, new Vector3(0.02f, braceLength, 0.02f), braceRot, M(frame));
+            // Foot‑plate for ladder stability
+            m.Box(new Vector3(-0.43f, 0.07f, 0.9f), new Vector3(0.18f, 0.02f, 0.04f), Mt(Steel));
+            }
 
         /// <summary>A two-door wooden wardrobe (1.0 wide, 0.58 deep, 1.95 high), sometimes ajar.</summary>
         public static void Wardrobe(RaidMesh m, System.Random rng, Color wood)

@@ -126,24 +126,35 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Builds all vehicle placements for a site, handling driveways, specials, lot and kerb cars, plus crashes and wrecks.</summary>
         internal static IEnumerable<string> Build(Site site)
         {
+            // Skip building when only a Lite map is requested – no cars are needed.
             if (site.Detail == Detail.Lite) yield break;
+            // Get or create the plan for this site and ensure any pending map data is processed.
             NaturePlan plan = NaturePlan.For(site);
             plan.CatchUp();
+            // Lay out driveway cars first, before other passes may fill the area.
             PlanDriveways(site, plan);
+            // Parking tracks placed cars and occupancy for this site.
             var c = new Parking(site, plan);
+            // Accumulate a diagnostic string describing counts per stage.
             string diag = "";
             int before = 0;
+            // Place cars found for driveways.
             foreach (string step in DrivewayCars(c)) yield return step;
             diag += "driveways " + (c.Count - before) + " of " + plan.Driveways.Count + ", "; before = c.Count;
+            // Add special cars (buses, cruisers, etc.).
             Specials(c);
             diag += "specials " + (c.Count - before) + ", "; before = c.Count;
             yield return "buses and cruisers";
+            // Place cars from lot parking.
             foreach (string step in LotCars(c)) yield return step;
             diag += "lots " + (c.Count - before) + ", "; before = c.Count;
+            // Place cars along kerbs.
             foreach (string step in KerbCars(c)) yield return step;
             diag += "kerbs " + (c.Count - before) + " (" + c.Stalled + " in painted stalls), "; before = c.Count;
+            // Add crashed cars and road wrecks.
             Crashes(c);
             RoadWrecks(c);
             diag += "wrecks " + (c.Count - before) + ", lootable " + c.Loot;
@@ -160,22 +171,27 @@ namespace CloneZ
         {
             List<Candidate> found = c.Found;
             bool[] keep = null;
+            // If we have more candidates than allowed, decide which to keep.
             if (found.Count > budget)
             {
                 keep = new bool[found.Count];
                 var order = new List<int>(found.Count);
                 for (int i = 0; i < found.Count; i++) order.Add(i);
+                // Sort indices by the car's thinness metric, then by original order to ensure deterministic selection.
                 order.Sort((a, b) =>
                 {
                     float ua = MapStyle.Unit(found[a].Key, SaltThin), ub = MapStyle.Unit(found[b].Key, SaltThin);
                     return ua != ub ? ua.CompareTo(ub) : a.CompareTo(b);
                 });
+                // Keep the first 'budget' candidates after sorting.
                 for (int i = 0; i < Mathf.Max(0, budget); i++) keep[order[i]] = true;
             }
+            // Iterate over all candidates, parking those marked to keep (or all if no thinning needed).
             for (int i = 0; i < found.Count; i++)
             {
                 if (keep != null && !keep[i]) continue;
                 Candidate k = found[i];
+                // Attempt to park the car; if parked in a stall, increment the stall counter.
                 if (Park(c, k.At, k.Yaw, LookFor(k.Key, k.Body, k.Snow, k.Wear), k.Key, Quaternion.identity) && k.Stall) c.Stalled++;
                 if (c.Site.StepDue) yield return step;
             }
@@ -294,8 +310,11 @@ namespace CloneZ
                     look.Chrome = u() < 0.35f;
                     break;
             }
+            // Determine how much snow is visible on the car: a base amount if the random snow value is low,
+            // otherwise blend the passed‑in snow depth with a scaled random factor to simulate patches.
             float s = MapStyle.Unit(key, SaltSnow);
             look.Snow = s < 0.22f ? 0.05f + s * 0.6f : Mathf.Clamp01(snow + (s - 0.6f) * 0.5f);   // a fifth brushed off or lightly dusted
+            // Frosted windows appear when enough snow is present, with a threshold that varies per car.
             look.Frosted = MapStyle.Unit(key, SaltSnow + 1) < (look.Snow > 0.3f ? 0.6f : 0.25f);
             return look;
         }
@@ -310,14 +329,18 @@ namespace CloneZ
         /// </summary>
         private static bool Park(Parking c, Vector2 at, float yaw, in CarLook look, long key, Quaternion tilt)
         {
+            // Abort if the site already has its maximum number of cars or the spot lies outside the build area.
             if (c.Count >= c.Max || !c.Plan.InSquare(at, 0f)) return false;
             Vector3 size = CarKit.Size(look.Body);
             Vector2 axis = Axis(yaw);
             float hl = size.z * 0.5f, hw = size.x * 0.5f;
+            // Ensure the car does not overlap any previously placed cars, allowing a small clearance margin.
             if (c.Overlaps(at, axis, hl + 0.2f, hw + 0.15f)) return false;
             float reach = Mathf.Max(0f, hl - hw);
+            // Check that the car’s front and rear stay a safe distance from walls.
             for (int k = -1; k <= 1; k++)
                 if (c.Plan.WallDistance(at + axis * (k * reach), hw + 1f) < hw + 0.15f) return false;
+            // Disallow placement where a door would intersect the car’s bounding box.
             if (c.Plan.DoorIn(at, axis, hl + 0.6f, hw + 0.6f)) return false;
             Vector3 at3 = To3(at, 0f);
             RaidMesh m = c.Site.Town.Out.Solid(at3);
@@ -325,10 +348,12 @@ namespace CloneZ
             CarKit.Draw(m, look, MapStyle.Rng(key, SaltShape));
             m.ResetFrame();
             c.Site.Town.PropCollider(at3 + Vector3.up * (size.y * 0.5f), size, yaw);
+            // Mark the space the car occupies in the occupancy grid, stepping along its length.
             int steps = Mathf.Max(1, Mathf.CeilToInt(reach * 2f / 1.5f));
             for (int i = 0; i <= steps; i++) c.Site.Take(at + axis * Mathf.Lerp(-reach, reach, i / (float)steps), hw + 0.1f);
             c.Placed.Add(new NaturePlan.Keep { At = at, Axis = axis, HalfLength = hl, HalfWidth = hw, Kind = NaturePlan.KeepKind.Car });
             c.Count++;
+            // If the car is not tilted (i.e., not a wreck), add its searchable storage containers.
             if (tilt == Quaternion.identity) Storage(c, at3, yaw, look, key, size);
             return true;
         }

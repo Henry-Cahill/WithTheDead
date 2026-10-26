@@ -13,8 +13,12 @@ namespace CloneZ
     {
         private sealed partial class Harness
         {
+            /// <summary>
+            /// Generate markdown entries and picture files for cutaway harness previews.
+            /// </summary>
             private void Pictures()
             {
+                // Pick representative buildings: a house for interior, a block for downtown, and a church for tall structure
                 MapCutaway.Building house = PickHouse(), block = PickBlock(), church = PickChurch(block);
                 _md.Append("## Pictures\n\nEach picture is the game's isometric camera at its widest zoom (").Append(Wide)
                     .Append(" m half-height) unless noted, in plain overcast daylight; the red capsule stands in for the survivor. ")
@@ -79,10 +83,12 @@ namespace CloneZ
                 string cutList = "", old = "";
                 if (cut)
                 {
+                    // Disable height usage to run the old roof test (pre‑cut) for comparison
                     MapCutaway.UseHeights = false;
                     MapCutaway.Run(at, yaw, _isoPitch, Reach(size), true, _t += 10f, true);
                     old = CutList();
                     MapCutaway.RestoreAll();
+                    // Run the cutaway scan with heights enabled to capture the post‑cut view
                     MapCutaway.UseHeights = true;
                     MapCutaway.Run(at, yaw, _isoPitch, Reach(size), true, _t += 10f, true);
                     cutList = CutList();
@@ -181,6 +187,9 @@ namespace CloneZ
 
             // A point well inside the footprint: its middle if that's inside, else the inside point farthest from the walls
             // on a half-metre grid.
+            /// <summary>
+            /// Find a point well inside the building footprint for camera placement.
+            /// </summary>
             private static Vector3 Inside(MapCutaway.Building b)
             {
                 Vector2[] p = b.Pts;
@@ -257,6 +266,9 @@ namespace CloneZ
             // The stand-in walks in through the house's door at a walking pace (from 4 m out on the camera's side, the camera
             // turned to face the door), waits, and walks back out, a cutaway frame every tenth of a second: when is the house
             // cut, when does it come back, and what does it look like on the way.
+            /// <summary>
+            /// Walk through a house, capturing cutaway frames and pictures at key moments.
+            /// </summary>
             private void Walk()
             {
                 MapCutaway.Building house = PickHouse();

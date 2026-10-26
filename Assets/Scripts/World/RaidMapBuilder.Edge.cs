@@ -14,6 +14,9 @@ namespace CloneZ
         {
             #region Exits
             // The four roads out; two or three are open each raid.
+            /// <summary>
+            /// Adds the four road exits, picks which two or three are open at random, and reserves their zones against clutter.
+            /// </summary>
             public void Exits()
             {
                 const float d = ExitReach;
@@ -40,6 +43,9 @@ namespace CloneZ
             #region Edge
             // The fence just outside the clamp line (the survivor is kept within ±Half), broken where the roads leave town,
             // each road blocked further out by its exit's own barriers; and the rail line through it.
+            /// <summary>
+            /// Builds the perimeter fence, road blocks, rail line and dock barrier to close the map edge around the playable square.
+            /// </summary>
             public void Edge()
             {
                 float e = EdgeLine, gap = MainSt.Outer + 0.2f;
@@ -166,6 +172,9 @@ namespace CloneZ
             #region Scenery past the edge
             // Never baked, never collided with: the snowfields, the frozen river and the dock to the west, the truss bridge to
             // the east, the roads and rails running on out of town, and the pine woods all round.
+            /// <summary>
+            /// Adds non-colliding far scenery — snowfields, frozen river, out-roads and rails, truss bridge, dock and pine woods.
+            /// </summary>
             public void Scenery()
             {
                 const float far = 130f;
@@ -253,6 +262,9 @@ namespace CloneZ
             #region Survivor spawn
             // The survivor starts in one of the reference-photo rooms (the Guard post's operations room or the county office
             // floor), clear of the furniture, at least 35 m from every exit.
+            /// <summary>
+            /// Picks a valid spawn point from prepared candidates, ensuring distance from exits and warning if too close to furniture.
+            /// </summary>
             public void Spawn()
             {
                 RaidMapInfo info = _town.Info;

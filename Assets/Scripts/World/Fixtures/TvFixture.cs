@@ -27,6 +27,7 @@ namespace CloneZ
         private Color _tint = Color.white;
         private bool _onAir = true;
         private float _bright = 1f, _brightTarget = 1f, _flickerAt, _airCheckAt;
+        private bool _antennaUp = true; // true = rabbit‑ears raised, receiving signal if broadcast is on‑air
         private float _thumpCalmAt;
         private float _reach;   // a set across a bigger room reaches farther (0: the usual)
         private string _name;
@@ -128,7 +129,7 @@ namespace CloneZ
                 .DisabledIf(AtQuietest, "It's down as low as it goes")
                 .DisabledIf(!near, TooFar));
             // Adjust the rabbit‑ear antenna, reachable only when near.
-            into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Toggle antenna", ToggleAntenna).DisabledIf(!near, TooFar));
             // Simple info actions – all require the player to be near the TV.
             into.Add(new InteractAction("Check volume", ctx => ctx.Notify("Volume: " + VolumeWord)).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));
@@ -166,12 +167,15 @@ namespace CloneZ
             ctx.Notify("Volume: " + VolumeWord + (Volume >= 2 ? ". The dead will hear it too." : "."));
         }
 
-        private void AdjustAerial(InteractContext ctx)
+        private void ToggleAntenna(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.ReceiverKnobNoise);
-            ctx.Notify(_onAir
-                ? "You walk the rabbit ears round until the ghosting clears. Mostly."
-                : "You point the rabbit ears every which way. There's nothing left out there to pick up.");
+            _antennaUp = !_antennaUp;
+            RefreshChannel(); // recompute _onAir based on antenna state
+            if (IsOn) Paint(); // redraw picture immediately
+            ctx.Notify(_antennaUp
+                ? "You point the rabbit ears toward the sky. The picture sharpens."
+                : "You hide the rabbit ears. The picture goes to static.");
         }
 
         private void CheckSignal(InteractContext ctx) { ctx.Notify(_onAir ? "The channel is clear." : "No signal – just snow."); }
@@ -189,7 +193,22 @@ namespace CloneZ
             }
             else ctx.Notify(_onAir ? "Another thump. The picture is exactly as good as it was." : "You thump the set. The snow doesn't care.");
         }
+        /// <summary>Captures the TV's persisted state, including antenna position.</summary>
+        public override void CaptureState(FixtureSave save)
+        {
+            base.CaptureState(save);
+            // Store antenna state (true = raised) using high bit of State
+            const int mask = unchecked((int)0x80000000);
+            save.State = (save.State & ~mask) | (_antennaUp ? mask : 0);
+        }
 
+        /// <summary>Restores the TV's persisted state, including antenna position.</summary>
+        public override void RestoreState(FixtureSave save)
+        {
+            base.RestoreState(save);
+            // Retrieve antenna state from high bit of State
+            _antennaUp = (save.State & 0x80000000) != 0;
+        }
         #region The picture
         protected override void ShowOn(bool on)
         {
@@ -225,7 +244,7 @@ namespace CloneZ
         private void RefreshChannel()
         {
             _airCheckAt = Time.time + 1f;
-            _onAir = Broadcasts.IsOnAir(Station);
+            _onAir = _antennaUp && Broadcasts.IsOnAir(Station);
             _tint = Broadcasts.ScreenTint(Station);
         }
 

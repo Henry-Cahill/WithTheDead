@@ -90,6 +90,11 @@ namespace CloneZ
         private AudioSource _hum;
         private readonly Dictionary<Actor, float> _inside = new Dictionary<Actor, float>();
         private readonly List<Actor> _scratch = new List<Actor>();
+        // Component caches to avoid per‑frame GetComponent calls
+        private static readonly Dictionary<Actor, CharacterController> _ccCache = new Dictionary<Actor, CharacterController>();
+        private static readonly Dictionary<Actor, UnityEngine.AI.NavMeshAgent> _navCache = new Dictionary<Actor, UnityEngine.AI.NavMeshAgent>();
+        private static readonly Dictionary<Actor, Rigidbody> _rbCache = new Dictionary<Actor, Rigidbody>();
+        private static readonly Dictionary<Actor, PlayerClothing> _clothingCache = new Dictionary<Actor, PlayerClothing>();
         private Light _flash;
         private float _flashUntil;
 
@@ -142,6 +147,49 @@ namespace CloneZ
                         float ang = i * 40f + ZoneKit.R(rng, -10f, 10f), r = ZoneKit.R(rng, 0.3f, Radius * 0.7f);
                         Vector3 p = Quaternion.Euler(0f, ang, 0f) * new Vector3(r, ZoneKit.R(rng, 0.4f, 1.4f), 0f);
                         m.Ellipsoid(p, Vector3.one * ZoneKit.R(rng, 0.05f, 0.11f), ZoneKit.M(ZoneKit.V(new Color(0.35f, 0.32f, 0.28f), rng)), 5, 3);
+                    }
+                    // --- Added sinkhole rim and debris ---------------------------------------
+                    // 1. Wooden rim: twelve short planks forming a rough circle around the edge
+                    for (int i = 0; i < 12; i++)
+                    {
+                        float ang = i * 30f + ZoneKit.R(rng, -5f, 5f);
+                        // position on a circle, slightly above ground (y = 0.025 m)
+                        Vector3 pos = new Vector3(
+                            Mathf.Cos(Mathf.Deg2Rad * ang) * Radius * 0.88f,
+                            0.025f,
+                            Mathf.Sin(Mathf.Deg2Rad * ang) * Radius * 0.88f);
+                        // plank dimensions ~0.12 m long, 0.02 m high, 0.02 m thick
+                        m.Box(pos, new Vector3(0.12f, 0.02f, 0.02f), ZoneKit.M(ZoneKit.WetWood));
+                    }
+                    // 2. Shallow water puddle in the centre (frost‑glazed water)
+                    m.Ellipsoid(new Vector3(0f, 0.005f, 0f), new Vector3(Radius * 0.22f, 0.008f, Radius * 0.22f),
+                        ZoneKit.Gl(new Color(0.65f, 0.78f, 0.92f, 0.42f)), 5, 3);
+                    // 3. Scatter a few stone fragments on the rim (4 stones)
+                    for (int i = 0; i < 4; i++)
+                    {
+                        float ang = ZoneKit.R(rng, 0f, 360f);
+                        float rad = Radius * ZoneKit.R(rng, 0.6f, 0.9f);
+                        Vector3 p = new Vector3(Mathf.Cos(Mathf.Deg2Rad * ang) * rad,
+                            0.012f,
+                            Mathf.Sin(Mathf.Deg2Rad * ang) * rad);
+                        m.Ellipsoid(p, Vector3.one * ZoneKit.R(rng, 0.03f, 0.05f),
+                            ZoneKit.G(new Color(0.55f, 0.55f, 0.55f)), 5, 3);
+                    }
+                    // 4. Broken fence post: a short rusted rod emerging from the rim
+                    Vector3 postBase = new Vector3(0f, 0f, Radius * 0.75f);
+                    Vector3 postTop = postBase + new Vector3(0f, 0.45f, 0f);
+                    m.Rod(postBase, postTop, 0.015f, ZoneKit.Mt(ZoneKit.Rust), 5);
+                    // 5. Frost crack lines: thin elongated ellipsoids crossing the surface
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float ang = ZoneKit.R(rng, 0f, 360f);
+                        Vector3 dir = new Vector3(Mathf.Cos(Mathf.Deg2Rad * ang), 0f, Mathf.Sin(Mathf.Deg2Rad * ang));
+                        Vector3 start = dir * Radius * 0.5f;
+                        Vector3 end = dir * Radius * 0.9f;
+                        Vector3 mid = (start + end) * 0.5f;
+                        float len = Vector3.Distance(start, end);
+                        m.Ellipsoid(mid, new Vector3(len, 0.008f, 0.008f),
+                            ZoneKit.Gl(new Color(0.85f, 0.90f, 0.95f, 0.6f)), 5, 3);
                     }
                     break;
                 case "embermoss":
@@ -535,8 +583,11 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
                 Actor a = kv.Key;
                 if (a.Kind == ActorKind.Zombie) continue;     // dead things pass through untouched
                 Hurt(a, 14f * Strength * dt * 10f, RandomLeg());
-                var clothing = a.GetComponent<PlayerClothing>();
-                if (clothing != null) GearWear.Corrode(clothing, dt * 0.6f);
+                var clothing = _clothingCache.TryGetValue(a, out var pc) ? pc : a.GetComponent<PlayerClothing>();
+                    if (clothing != null) {
+                        _clothingCache[a] = clothing;
+                        GearWear.Corrode(clothing, dt * 0.6f);
+                    }
             }
             if (_inside.Count > 0 && _cooldown <= 0f) { Sfx.Play(SfxIds.AnomalyAcid, transform.position, 0.9f, Random.Range(0.93f, 1.07f), 14f); _cooldown = 2.5f; }
         }
@@ -632,11 +683,28 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
 
         private static float Speed(Actor a)
         {
-            var cc = a.GetComponent<CharacterController>();
+            // Try cached CharacterController
+            if (!_ccCache.TryGetValue(a, out var cc))
+            {
+                cc = a.GetComponent<CharacterController>();
+                _ccCache[a] = cc;
+            }
             if (cc != null) return new Vector3(cc.velocity.x, 0f, cc.velocity.z).magnitude;
-            var agent = a.GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+            // Try cached NavMeshAgent
+            if (!_navCache.TryGetValue(a, out var agent))
+            {
+                agent = a.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                _navCache[a] = agent;
+            }
             if (agent != null && agent.enabled) return agent.velocity.magnitude;
-            var rb = a.GetComponent<Rigidbody>();
+
+            // Try cached Rigidbody
+            if (!_rbCache.TryGetValue(a, out var rb))
+            {
+                rb = a.GetComponent<Rigidbody>();
+                _rbCache[a] = rb;
+            }
             return rb != null ? rb.linearVelocity.magnitude : 0f;
         }
 

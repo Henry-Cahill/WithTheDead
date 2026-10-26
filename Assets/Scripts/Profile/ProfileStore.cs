@@ -59,6 +59,7 @@ namespace CloneZ
         {
             try
             {
+                // If a profile file exists, load it from disk.
                 if (File.Exists(FilePath))
                 {
                     s_Account = JsonUtility.FromJson<AccountProfile>(File.ReadAllText(FilePath));
@@ -122,32 +123,59 @@ namespace CloneZ
                 /// <summary>Normalises a newly loaded or created account to ensure all collections are non‑null.</summary>
         public static void NormalizeCharacter(CharacterProfile c)
         {
+            // Guard against a null character reference.
             if (c == null) return;
+            // Ensure each character has a stable short identifier used for save keys.
             if (string.IsNullOrEmpty(c.Id)) c.Id = Guid.NewGuid().ToString("N").Substring(0, 12);
+            // Initialise all per‑character collections so callers can safely add items without null checks.
             c.Traits ??= new List<string>();
+            // Initialise skill XP list for this character.
             c.SkillXp ??= new List<float>();
+            // Initialise known books for this character.
             c.Books ??= new List<SkillBookState>();
+            // Initialise the stash inventory list.
             c.Stash ??= new List<StackSave>();
+            // Initialise insurance claims list.
             c.Insurance ??= new List<InsuranceClaim>();
+            // Initialise flea market listings.
             c.Listings ??= new List<FleaListing>();
+            // Initialise trader states list.
             c.Traders ??= new List<TraderState>();
+            // Initialise faction reputation entries.
             c.FactionRep ??= new List<FactionRepEntry>();
+            // Initialise quest progression list.
             c.Quests ??= new List<QuestState>();
+            // Initialise hideout module states.
             c.Hideout ??= new List<HideoutModuleState>();
+            // Initialise crafting job list.
             c.Crafts ??= new List<CraftJob>();
+            // Initialise animal state list.
             c.Animals ??= new List<AnimalState>();
+            // Initialise zone marks list.
             c.ZoneMarks ??= new List<string>();
+            // Initialise health container with default values.
             c.Health ??= new HealthCarry();
+            // Initialise limb health list.
             c.Health.LimbHp ??= new List<float>();
+            // Initialise fracture flags for each limb.
             c.Health.Fractured ??= new List<bool>();
+            // Initialise disease list affecting the character.
             c.Health.Diseases ??= new List<string>();
+            // Initialise corpse records list.
             c.Corpses ??= new List<CorpseRecord>();
+            // Initialise buried stash list.
             c.Stashes ??= new List<BuriedStash>();
+            // Initialise miscellaneous flag list.
             c.Flags ??= new List<string>();
+            // Ensure at least the default hub is unlocked for the character.
             c.UnlockedHubs ??= new List<string> { "kettle" };
+            // Guarantee the hub list is never empty.
             if (c.UnlockedHubs.Count == 0) c.UnlockedHubs.Add("kettle");
+            // Set default hub if none specified.
             if (string.IsNullOrEmpty(c.Hub)) c.Hub = "kettle";
+            // Provide a sensible default number of stash rows.
             if (c.StashRows <= 0) c.StashRows = 14;
+            // Ensure nested collections for traders, quests, insurance, corpses, and buried stashes are initialised.
             foreach (TraderState t in c.Traders) t.Stock ??= new List<OfferStock>();
             foreach (QuestState q in c.Quests) q.Progress ??= new List<float>();
             foreach (InsuranceClaim ic in c.Insurance) ic.Items ??= new List<StackSave>();
@@ -186,8 +214,11 @@ namespace CloneZ
                 Ironman = ironman,
                 CreatedUnix = NowUnix,
             };
+            // Normalise collections and set defaults for the new character.
             NormalizeCharacter(c);
+            // Register the character's starting faction reputation.
             c.AddFactionRep(faction, 0f);
+            // Apply the starter pack (money, gear, etc.) to the new character.
             StarterPack.Apply(c);
             return c;
         }
@@ -248,19 +279,29 @@ namespace CloneZ
         public static void Wipe()
         {
             AccountProfile a = Account;
+            // Prepare a fresh roster that will hold rebuilt characters.
             var fresh = new List<CharacterProfile>();
+            // Copy surviving characters, resetting their progression but preserving identity.
             foreach (CharacterProfile old in a.Characters)
             {
+                // Skip dead ironman characters – they persist across wipes.
                 if (old.Dead && old.Ironman) continue;
+                // Create a fresh character based on the old one, resetting progression.
                 CharacterProfile n = NewCharacter(old.Name, old.Profession, old.Traits, old.Faction, old.BloodType, old.Ironman);
+                // Preserve the original unique ID.
                 n.Id = old.Id;
+                // Add the rebuilt character to the new roster.
                 fresh.Add(n);
             }
+            // Replace the old character list with the fresh one.
             a.Characters = fresh;
+            // Reset active character to the first in the new list.
             a.ActiveIndex = 0;
+            // Increment season and wipe counters, and timestamp the new season.
             a.Season++;
             a.Wipes++;
             a.SeasonStartedUnix = NowUnix;
+            // Clear outpost and zone data for the new season.
             a.Outposts.Clear();
             a.Zones.Clear();
             s_Stash = null;

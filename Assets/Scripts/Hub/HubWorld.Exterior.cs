@@ -300,6 +300,17 @@ namespace CloneZ
                 hinge.SetParent(door.transform, false);
                 hinge.position = new Vector3(s * 1.08f, 0f, z);
                 hinges[i] = hinge;
+            // Brass door handle – a short cylinder protruding from the door face.
+            {
+                float handleOffset = 0.08f; // metres outward from door plane
+                float handleHeight = 0.1f; // metres above ground
+                float handleRadius = 0.02f; // metre radius
+                float handleLength = 0.12f; // metre length
+                var hPos = new Vector3(s * (1.08f - 0.53f), handleHeight, z + s * handleOffset);
+                var mh = new RaidMesh();
+                mh.Cylinder(hPos, handleRadius, handleLength, 8, brass, Quaternion.Euler(0f, s > 0 ? 90f : -90f, 0f));
+                mh.Emit("Handle", hinge, hPos);
+            }
                 var mid = new Vector3(s * (1.08f - 0.53f), 1.18f, z);
                 var m = new RaidMesh();
                 m.Box(mid, new Vector3(1.04f, 2.34f, 0.06f), oak);
@@ -316,8 +327,56 @@ namespace CloneZ
                 m.Rod(new Vector3(s * 0.12f, 0.92f, z - 0.09f), new Vector3(s * 0.12f, 1.22f, z - 0.09f), 0.025f, brass);
                 GameObject leaf = m.Emit("Leaf", hinge, hinge.position);
                 var col = leaf.AddComponent<BoxCollider>();
+                // Hinge cap – a small cube capping the hinge bolt.
+                {
+                    var capSize = new Vector3(0.06f, 0.06f, 0.02f);
+                    var capPos = hinge.position + new Vector3(0f, 0f, s * 0.03f);
+                    var mc = new RaidMesh();
+                    mc.Box(capPos, capSize, DecorPalette.Metal(new Color(0.6f,0.6f,0.6f)));
+                    mc.Emit("HingeCap", hinge, capPos);
+                }
                 col.center = mid - hinge.position;
                 col.size = new Vector3(1.04f, 2.34f, 0.08f);
+            }
+            // Brass keyhole on the left leaf – two orthogonal thin bars.
+            {
+                var kh = new RaidMesh();
+                // Horizontal bar
+                kh.Box(new Vector3(-1.08f + 0.12f, 1.4f, z - 0.015f), new Vector3(0.18f, 0.015f, 0.01f), brass);
+                // Vertical bar
+                kh.Box(new Vector3(-1.08f + 0.12f, 1.4f, z - 0.015f), new Vector3(0.015f, 0.12f, 0.01f), brass);
+                kh.Emit("Keyhole", door.transform, Vector3.zero);
+            }
+            // Brass plaque label near the top centre of the door.
+            {
+                var plaque = new RaidMesh();
+                var plaqueSize = new Vector3(0.48f, 0.06f, 0.02f);
+                var plaquePos = new Vector3(0f, 2.0f, z - 0.02f);
+                plaque.Box(plaquePos, plaqueSize, brass);
+                plaque.Emit("DoorPlaque", door.transform, plaquePos);
+            }
+            // Randomised scratches – thin dark boxes drawn on the oak leaf.
+            {
+                var rng = new System.Random(1993);
+                var scratch = new RaidMesh();
+                for (int i = 0; i < 6; i++)
+                {
+                    float sx = (float)rng.NextDouble() * 1.8f - 0.9f;
+                    float sz = (float)rng.NextDouble() * 0.3f - 0.15f;
+                    float sy = 0.5f + (float)rng.NextDouble() * 1.0f;
+                    var size = new Vector3(0.02f, 0.02f, 0.001f);
+                    var pos = new Vector3(sx, sy, z + sz);
+                    scratch.Box(pos, size, DecorPalette.Matte(new Color(0.1f, 0.1f, 0.1f)));
+                }
+                scratch.Emit("Scratches", door.transform, Vector3.zero);
+            }
+            // Door‑bell button – small glowing sphere with a point light.
+            {
+                var bellPos = new Vector3(1.08f - 0.12f, 1.2f, z + 0.06f);
+                var mb = new RaidMesh();
+                mb.Sphere(bellPos, 0.04f, DecorPalette.Glow(new Color(1f, 0.95f, 0.6f)));
+                mb.Emit("BellButton", door.transform, bellPos);
+                PointLight(door.transform, "BellLight", bellPos + new Vector3(0f, 0f, -0.1f), new Color(1f, 0.9f, 0.5f), 0.6f, 3f);
             }
             Deco(root, "Threshold", m => m.Box(new Vector3(0f, 0.01f, z), new Vector3(2.2f, 0.02f, 0.32f), DecorPalette.Metal(new Color(0.78f, 0.62f, 0.30f))), new Vector3(0f, 0f, z));
             var kd = door.AddComponent<KettleDoor>();

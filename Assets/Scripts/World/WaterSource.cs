@@ -324,8 +324,10 @@ namespace CloneZ
                     0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
             }
             // Add small rust‑stained matte patches for weathering
-            // gauge stick (thin wood)
-            m.Cylinder(new Vector3(0f, h * 0.65f, r - 0.02f), 0.006f, 0.12f, 8, DecorPalette.Matte(new Color(0.48f, 0.38f, 0.28f)));
+// gauge stick (thin wood) – widened slightly for the new pointer
+m.Cylinder(new Vector3(0f, h * 0.65f, r - 0.02f),
+    0.006f, 0.12f, 8, DecorPalette.Matte(new Color(0.48f, 0.38f, 0.28f)));
+
             // gauge tick marks – five evenly spaced wooden bars
             for (int i = 0; i < 5; i++)
             {
@@ -334,7 +336,44 @@ namespace CloneZ
                     new Vector3(0.001f, 0.015f, 0.001f), // tiny notch
                     DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
             }
-            m.Box(new Vector3(0f, h * 0.71f, r - 0.02f), new Vector3(0.018f, 0.006f, 0.004f), DecorPalette.Metal(FurnitureBuilder.Brass));
+            // wooden gauge frame – thin rectangular box around the gauge stick
+m.Box(new Vector3(0f, h * 0.65f, r - 0.025f),
+    new Vector3(0.02f, 0.14f, 0.004f),
+    DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+
+// brass pointer – thin cylinder pivoted on the stick
+m.Cylinder(new Vector3(0f, h * 0.65f, r - 0.018f),
+    0.002f, 0.12f, 6,
+    DecorPalette.Metal(FurnitureBuilder.Brass));
+
+// small protective glass cover over the gauge
+m.Box(new Vector3(0f, h * 0.73f, r - 0.022f),
+    new Vector3(0.018f, 0.02f, 0.001f),
+    DecorPalette.Matte(new Color(0.8f, 0.9f, 1f, 0.3f)));
+
+// brass rivets around the gauge frame
+int gaugeRivetCount = strapRand.Next(3, 5); // 3‑4 rivets
+for (int i = 0; i < gaugeRivetCount; i++)
+{
+    float angle = (float)(i * Mathf.PI * 2.0 / gaugeRivetCount);
+    Vector3 pos = new Vector3(
+        Mathf.Sin(angle) * 0.009f,
+        h * 0.73f,
+        r - 0.025f + Mathf.Cos(angle) * 0.001f);
+    m.Cylinder(pos, 0.003f, 0.002f, 6,
+        DecorPalette.Metal(FurnitureBuilder.Brass));
+}
+
+// painted label on gauge frame
+float labelShade = 0.5f + 0.1f * (float)strapRand.NextDouble();
+Color labelColor = new Color(labelShade, labelShade * 0.9f, labelShade * 0.8f);
+Vector3 gaugeLabelPos = new Vector3(0f, h * 0.78f, r - 0.03f);
+m.Box(gaugeLabelPos,
+    new Vector3(0.04f, 0.01f, 0.001f),
+    DecorPalette.Matte(labelColor));
+
+// existing brass box (preserve)
+m.Box(new Vector3(0f, h * 0.71f, r - 0.02f), new Vector3(0.018f, 0.006f, 0.004f), DecorPalette.Metal(FurnitureBuilder.Brass));
             // brass ring around gauge stick – reinforces the clip
             m.Cylinder(new Vector3(0f, h * 0.71f, r - 0.021f), // 1 mm outward
                 0.008f, 0.002f, 6,

@@ -716,7 +716,7 @@ namespace CloneZ
             _state = State.Dead;
             DeathDirection = CloneZUtil.Flat(hitDirection);
             StopAllCoroutines();
-            if (_agent.isOnNavMesh) _agent.isStopped = true;
+            if (_agent.isOnNavMesh) _agent.isStopped = true; // ensure the agent is halted before disabling
             _agent.enabled = false;
             foreach (var col in GetComponentsInChildren<Collider>()) col.enabled = false;
             StartCoroutine(DeathFall());
@@ -772,18 +772,36 @@ namespace CloneZ
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), 12f * Time.deltaTime);
         }
 
-        private void SafeStop()
+private void SafeStop()
+    {
+        if (_agent.enabled && _agent.isOnNavMesh)
         {
-            if (_agent.enabled && _agent.isOnNavMesh)
-            {
-                _agent.isStopped = true;
-                _agent.velocity = Vector3.zero;
-            }
+            _agent.isStopped = true;
+        }
+    }
+
+    private void SafeResume()
+    {
+        if (_agent.enabled && _agent.isOnNavMesh)
+            _agent.isStopped = false;
+    }
+
+        /// <summary>
+        /// Clears event listeners and ensures no lingering references when the zombie is destroyed.
+        /// </summary>
+        private void OnDestroy()
+        {
+            AttackStarted = null;
+            Staggered = null;
         }
 
-        private void SafeResume()
+        /// <summary>
+        /// Clears event listeners when the zombie is disabled (e.g., during scene load).
+        /// </summary>
+        private void OnDisable()
         {
-            if (_agent.enabled && _agent.isOnNavMesh) _agent.isStopped = false;
+            AttackStarted = null;
+            Staggered = null;
         }
 
         private void SafeSetDestination(Vector3 pos)

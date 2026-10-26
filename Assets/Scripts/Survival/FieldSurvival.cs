@@ -211,6 +211,40 @@ namespace CloneZ
             return started;
         }
 
+/// <summary>Collect clean water from the river into an empty container.
+        /// Requires being near the western river edge during extraction.
+        /// Consumes one empty water container and adds the filled version.
+        /// </summary>
+        public static bool CollectWater(PlayerInventory inv)
+        {
+            if (inv == null || PlayerChannel.Local == null) return false;
+            if (!NearRiver(inv.transform.position))
+            {
+                GameEvents.RaiseToast("You need to be at the river to collect water.");
+                return false;
+            }
+            if (!inv.HasEmptyBottle())
+            {
+                GameEvents.RaiseToast("You have no empty container to fill.");
+                return false;
+            }
+            // Schedule a 5‑second action.
+            PlayerChannel.Local.Begin("Collecting water", 5f, () =>
+            {
+                    // Fill one empty bottle with clean water.
+                    if (inv.FillOneBottle(false))
+                    {
+                        Sfx.Play(SfxIds.Splash, inv.transform.position, 0.6f, 1f, 10f);
+                        GameEvents.RaiseToast("You fill your container with clean river water.");
+                    }
+                    else
+                    {
+                        GameEvents.RaiseToast("Failed to fill water.");
+                    }
+            }, HumanoidActivity.Water);
+            return true;
+        }
+
         /// <summary>Starts a cranking action to charge a battery if the player has a crank.</summary>
         public static void Crank(PlayerInventory inv)
         {
@@ -228,7 +262,7 @@ namespace CloneZ
         public static bool TryCrank(PlayerInventory inv)
         {
             // Crank itself schedules the action; we only need to report whether it could be scheduled.
-if (PlayerChannel.Local == null || PlayerChannel.Local.Busy) return false;
+    if (PlayerChannel.Local == null || PlayerChannel.Local.Busy) return false;
             Crank(inv);
             return PlayerChannel.Local.Busy;
         }
@@ -481,6 +515,7 @@ if (Time.time > _until)
             HubUI.Card(cols[2]);
             RectTransform land = HubUI.Stack(cols[2], 8f, 14);
             HubUI.Heading(land, "The land", 20);
+            Action(land, "Collect water", "Fill a bottle or canteen at the river.", () => FieldSurvival.CollectWater(inv), inv.HasEmptyBottle());
             Action(land, "Forage here", "Berries, mushrooms, herbs and worms. Better in the woods; poor in winter.", () => FieldSurvival.Forage(inv));
             Action(land, "Fish", "Rod and bait, at the river on the west edge.", () => FieldSurvival.Fish(inv), inv.Has("fishingrod"));
             Action(land, "Set a snare", "Come back later for a rabbit.", () => FieldSurvival.SetSnare(inv), inv.Has("snare"));
@@ -509,6 +544,8 @@ if (Time.time > _until)
             ItemActions.RegisterUse("lighter", (inv, s) => { return FieldSurvival.LightFire(inv); });
             ItemActions.RegisterUse("fishingrod", (inv, s) => { FieldSurvival.Fish(inv); return true; });
             ItemActions.RegisterUse("snare", (inv, s) => { FieldSurvival.SetSnare(inv); return true; });
+            // Fill an empty water container at the river.
+            ItemActions.RegisterUse(d => d != null && d.IsWaterContainer && !d.HoldsWater && !string.IsNullOrEmpty(d.FillCleanId), (inv, s) => { return FieldSurvival.CollectWater(inv); });
             ItemActions.RegisterUse("purifytabs", PurifyWater);
             ItemActions.RegisterMenu((inv, stack, into) =>
             {

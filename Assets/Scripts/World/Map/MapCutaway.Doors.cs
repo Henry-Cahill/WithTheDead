@@ -53,8 +53,9 @@ namespace CloneZ
             for (int i = 0; i < s_Active.Count; i++)
             {
                 Building b = s_Active[i];
-                if ((b.Applied & WallBits) == 0 || b.Walls == null) continue;
-                if (changed) Doors(b, b.Applied & WallBits);
+                int cut = b.Applied & WallBits;
+                if (cut == 0 || b.Walls == null) { if (b.DoorCut != -1) ShowDoors(b); b.DoorCut = -1; continue; }
+                if (changed || b.DoorCut != cut) { Doors(b, cut); b.DoorCut = cut; }
                 else KeepDoorsHidden(b);
             }
         }
@@ -107,6 +108,7 @@ namespace CloneZ
                 for (int k = 0; k < s_DoorParts.Count; k++)
                 {
                     Renderer r = s_DoorParts[k];
+                    if (r.shadowCastingMode == ShadowCastingMode.Off) { if (!r.enabled) continue; r.enabled = false; List<Renderer> off = b.DoorNoShadow ??= new List<Renderer>(4); if (!off.Contains(r)) off.Add(r); DoorsHidden++; continue; }
                     if (r.shadowCastingMode != ShadowCastingMode.On) continue;   // casts nothing, or someone else hid it
                     r.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
                     List<Renderer> hidden = b.Doors ??= new List<Renderer>(4);
@@ -129,6 +131,16 @@ namespace CloneZ
                     if (r != null && r.shadowCastingMode == ShadowCastingMode.ShadowsOnly) r.shadowCastingMode = ShadowCastingMode.On;
                 }
                 hidden.Clear();
+            }
+            List<Renderer> off = b.DoorNoShadow;
+            if (off != null)
+            {
+                for (int i = 0; i < off.Count; i++)
+                {
+                    Renderer r = off[i];
+                    if (r != null) r.enabled = true;
+                }
+                off.Clear();
             }
             b.DoorObjs?.Clear();
         }

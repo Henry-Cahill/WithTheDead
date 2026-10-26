@@ -16,7 +16,7 @@ namespace CloneZ
     internal static partial class BuildingPass
     {
         internal enum WallKind { Brick, Siding, Boards, Metal, Block, Stone, Stucco, Trailer, Concrete }
-        internal enum RoofCover { Shingle, Metal, Membrane, Slate }
+        internal enum RoofCover { Shingle, Metal, Copper, Membrane, Slate }
 
         #region Palettes
         // Kentucky in 1993: red and brown brick, white and pastel clapboard, black and red barns, galvanised roofs.
@@ -79,12 +79,12 @@ namespace CloneZ
         };
         private const int ShingleCharcoal = 0, ShingleBlack = 1, ShingleGrey = 2, ShingleBrown = 3, ShingleGreen = 4,
             ShingleRed = 5, ShingleBlue = 6;
-        private static readonly Color[] RoofMetalTones =
-        {
-            new Color(0.62f, 0.64f, 0.66f), new Color(0.50f, 0.35f, 0.26f), new Color(0.58f, 0.16f, 0.13f),
-            new Color(0.21f, 0.37f, 0.27f), new Color(0.86f, 0.87f, 0.86f), new Color(0.26f, 0.37f, 0.53f),
-            new Color(0.17f, 0.17f, 0.18f),
-        };
+private static readonly Color[] CopperTones =
+{
+    new Color(0.72f, 0.39f, 0.25f), // bright new‑copper
+    new Color(0.60f, 0.30f, 0.20f), // aged copper
+    new Color(0.48f, 0.24f, 0.15f), // weathered patina
+};
         private const int MetalGalv = 0, MetalRusty = 1, MetalRed = 2, MetalGreen = 3, MetalWhite = 4, MetalBlue = 5, MetalBlack = 6;
         private static readonly Color[] MembraneTones = { new Color(0.24f, 0.24f, 0.25f), new Color(0.50f, 0.48f, 0.45f) };
         private static readonly Color[] SlateTones = { new Color(0.29f, 0.30f, 0.35f) };
@@ -131,7 +131,7 @@ namespace CloneZ
             switch (cover)
             {
                 case RoofCover.Shingle: return ShingleTones;
-                case RoofCover.Metal: return RoofMetalTones;
+                case RoofCover.Copper: return CopperTones;
                 case RoofCover.Membrane: return MembraneTones;
                 default: return SlateTones;
             }
@@ -224,9 +224,11 @@ namespace CloneZ
         /// the slope, one repeat per <see cref="RoofPeriod"/>.</summary>
         private static Surf RoofSurfFitted(RoofCover cover, int tone) => RoofSurface(cover, tone, true);
 
-        private static float RoofPeriod(RoofCover cover)
-            => cover == RoofCover.Shingle ? ShinglePeriod : cover == RoofCover.Metal ? SeamPeriod
-                : cover == RoofCover.Slate ? SlatePeriod : MembranePeriod;
+private static float RoofPeriod(RoofCover cover)
+    => cover == RoofCover.Shingle ? ShinglePeriod :
+       cover == RoofCover.Metal ? SeamPeriod :
+       cover == RoofCover.Copper ? SeamPeriod :
+       cover == RoofCover.Slate ? SlatePeriod : MembranePeriod;
 
         private static Surf RoofSurface(RoofCover cover, int tone, bool fitted)
         {

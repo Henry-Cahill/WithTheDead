@@ -50,18 +50,26 @@ namespace CloneZ
             if (Sfx.Backend != null) StartSession();
         }
 
+        /// <summary>Initialise audio subsystem for a new play session.</summary>
         private static void StartSession()
         {
+            // Prevent double‑initialisation across multiple calls within the same session.
             if (s_SessionStarted) return;
             s_SessionStarted = true;
+            // Clear any pending audio job queues from previous sessions.
             AudioJobs.Reset();
+            // Ensure we only have a single shutdown handler registered.
             Application.quitting -= AudioJobs.Shutdown;
             Application.quitting += AudioJobs.Shutdown;
+            // If the backend is the synthesiser, reset its state and warm up caches.
             if (Sfx.Backend is SfxSynth synth)
             {
+                // Reset runtime state (e.g., playing voices) before reuse.
                 synth.ResetRuntime();
+                // Pre‑warm common sound recipes to avoid hitches on first play.
                 synth.Prewarm();
             }
+            // Guarantee each audio subsystem has its singleton instance created.
             SfxMixer.Ensure();
             SfxAcoustics.Ensure();
             WeaponAudio.Ensure();
@@ -103,25 +111,36 @@ namespace CloneZ
             Active = true;
         }
 
+        /// <summary>Update listener position each frame after all other transforms have moved.</summary>
         private void LateUpdate()
         {
+            // Abort if the ears GameObject was destroyed (e.g., during scene unload).
             if (_ears == null) return;
+            // Lazily cache the head bone transform for the first time a player avatar is present.
             if (_head == null && _avatar != null && _avatar.Rig != null && _avatar.Rig.Bones != null)
                 _head = _avatar.Rig.Bone(HumanBone.Head);
 
+            // Track the current main camera; switch AudioListener components when the camera changes.
             Camera cam = Camera.main;
             if (cam != _mutedCam)
             {
+                // Re‑enable the previously muted camera's listener.
                 if (_mutedCam != null) SetListener(_mutedCam, true);
                 _mutedCam = cam;
+                // Disable the new camera's listener so only the ears listener is active.
                 if (cam != null) SetListener(cam, false);
             }
+            // Ensure the AudioListener attached to the ears is enabled.
             if (!_listener.enabled) _listener.enabled = true;
 
+            // Determine ear position: follow the head bone if available, otherwise use a default offset above the player.
             Vector3 pos = _head != null ? _head.position : transform.position + Vector3.up * 1.65f;
+            // Base rotation on the player object; in first‑person view follow camera rotation, otherwise yaw‑only.
             Quaternion rot = transform.rotation;
             if (cam != null) rot = ViewState.FirstPersonLike ? cam.transform.rotation : Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f);
+            // Apply the calculated position and rotation to the ears transform.
             _ears.SetPositionAndRotation(pos, rot);
+            // Expose the current ear world position for other systems.
             Position = pos;
         }
 

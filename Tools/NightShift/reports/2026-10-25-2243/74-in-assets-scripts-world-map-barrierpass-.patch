@@ -1,0 +1,104 @@
+diff --git a/Assets/Scripts/World/Map/BarrierPass.cs b/Assets/Scripts/World/Map/BarrierPass.cs
+index 3558df1e..20b846c8 100644
+--- a/Assets/Scripts/World/Map/BarrierPass.cs
++++ b/Assets/Scripts/World/Map/BarrierPass.cs
+@@ -55,9 +55,7 @@ internal static IEnumerable<string> Build(Ctx ctx)
+                 {
+                     if (Warm(style, true) && site.StepDue) yield return "fences and walls";
+                     foreach (List<Vector2> piece in Outside(l.Pts, half, ctx.Reach)) Plain(ctx, l.Data, style, piece);
+-                }
+-                if (site.StepDue) yield return "fences and walls";
+-            }
++        }
+         }
+ 
+         /// <summary>A Lite site's barriers: each straight stretch one plain shape.</summary>
+@@ -369,9 +367,7 @@ public bool Crosses(Vector2 a, Vector2 b, float pad)
+                         {
+                             (Vector2 c, Vector2 d, float half) = _runs[i];
+                             if (Gap(a, b, c, d) < pad + half) return true;
+-                        }
+-                    }
+-                return false;
++                }
+             }
+ 
+             private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
+@@ -514,6 +510,8 @@ private static void Run(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 b
+                     m.Box(To3(mid, 0.45f), new Vector3(len, 0.15f, 0.06f), yaw, Galvanised);
+                     m.Box(To3(mid, 0.69f), new Vector3(len, 0.03f, 0.08f), yaw, SnowSurf);
+                     Posts(ctx, a, b, d, style, 0.72f, Matte(FenceWood * 0.8f), corner);
++                    // ← INSERTED CALL
++                    AddGuardRailDetails(ctx, m, a, b, d, len, yaw);
+                     break;
+                 }
+                 default:
+@@ -525,8 +523,40 @@ private static void Run(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 b
+             }
+             if (style != Style.GuardRail || len > 0.5f)
+                 ctx.Collider(mid, 0f, new Vector3(len, Mathf.Min(h, 2f), Mathf.Max(thick, 0.15f)), yaw);
+-        }
+ 
++        // Adds bolts, a wood brace and a wear stripe to a guard‑rail segment.
++        private static void AddGuardRailDetails(Ctx ctx, RaidMesh m, Vector2 a, Vector2 b, Vector2 d, float len, float yaw)
++        {
++            // 1️⃣ bolt spacing – 1.2 m, with a deterministic offset per segment.
++            float spacing = 1.2f;
++            // deterministic offset 0‑0.4 m using the segment’s start key
++            float offset = 0.4f * MapStyle.Unit(ctx.KeyOf(a), SaltStyle);
++            int boltCount = Mathf.FloorToInt((len - offset) / spacing) + 1;
++            for (int i = 0; i < boltCount; i++)
++            {
++                float t = offset + i * spacing;
++                if (t > len) break;
++                Vector2 pt = a + d * t;
++                // bolt – small Galvanised cylinder, centred at the top of the rail (≈0.78 m high)
++                m.Cylinder(To3(pt, 0.78f), 0.02f, 0.12f, 6, Galvanised);
++            }
++            // 2️⃣ wood brace – a short rectangular block at each post (the posts are already drawn by Posts()).
++            // Draw the brace only if the segment is longer than 0.5 m to avoid double‑drawing at tiny pieces.
++            if (len > 0.5f)
++            {
++                // brace sits halfway up the rail, 0.05 m thick, 0.12 m deep, 0.15 m wide.
++                float braceHeight = 0.55f; // metres above ground
++                float braceDepth = 0.12f;
++                float braceWidth = 0.15f;
++                // place the brace at the centre of the segment
++                Vector2 mid = (a + b) * 0.5f;
++                m.Box(To3(mid, braceHeight), new Vector3(braceWidth, braceDepth, braceDepth), yaw, Matte(FenceWood * 0.7f));
++            }
++            // 3️⃣ wear stripe – a thin dark box that runs the full length of the rail, 0.02 m high, 0.02 m thick.
++            // Gives the impression of rusted paint or accumulated grime.
++            Color wearCol = new Color(0.25f, 0.22f, 0.20f);
++            m.Box(To3((a + b) * 0.5f, 0.78f + 0.01f), new Vector3(len, 0.02f, 0.02f), yaw, Matte(wearCol));
++        }
+         // Posts along a run on the world's lattice (the same points whichever piece draws the run; see
+         // StreetLights.Lattice), and one at its start where it turns a corner.
+         private static void Posts(Ctx ctx, Vector2 a, Vector2 b, Vector2 d, Style style, float h, Surf surf, bool corner)
+@@ -663,10 +693,8 @@ private static void Plain(Ctx ctx, MapLine data, Style style, List<Vector2> pts)
+                         m.Box(To3(mid, h * 0.5f), new Vector3(len + 0.1f, h, t), yaw, wall);
+                         m.Box(To3(mid, h + 0.03f), new Vector3(len + 0.1f, 0.06f, t + 0.04f), yaw, SnowSurf);
+                         break;
+-                    }
+                 }
+             }
+-        }
+         #endregion
+ 
+         #region Textures
+@@ -791,7 +819,7 @@ private static Surf DryStone
+                                     int wx = ((xx % S) + S) % S;
+                                     bool gap = yy - y < 1 || xx - x < 1;
+                                     px[yy * S + wx] = gap ? new Color32(48, 46, 42, 255) : c;
+-                                }
++
+                             x += w;
+                         }
+                         y += rowH;
+@@ -943,5 +971,4 @@ private static Texture2D Cutout(string name, int size, System.Func<int, int, Col
+             return tex;
+         }
+         #endregion
+-    }
+-}
++            }

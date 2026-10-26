@@ -9,6 +9,7 @@ namespace CloneZ
     {
         private Vector3 _point, _face, _normal;
         private string _number, _remark;
+        private bool _scraped = false;
 
         public override string DisplayName => "House number";
         public override Vector3 InteractPoint => _point;
@@ -32,10 +33,27 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            into.Add(new InteractAction("Read the house number", c =>
-                c.Notify(_remark ?? "Number " + _number + ", says the little enamel plate by the door. Home \u2014 for now.")));
+            if (_scraped)
+            {
+                into.Add(new InteractAction("Read the scratched plate", c =>
+                    c.Notify(_remark ?? "The enamel is worn away, faint graffiti reads “—‑—”. The house number is no longer visible.")));
+            }
+            else
+            {
+                into.Add(new InteractAction("Read the house number", c =>
+                    c.Notify(_remark ?? "Number " + _number + ", says the little enamel plate by the door. Home — for now.")));
+                into.Add(new InteractAction("Scrape off the number", Scrape));
+            }
             into.Add(new InteractAction("Knock on the door", Knock));
             into.Add(new InteractAction("Yell at the house number", Yell));
+        }
+
+        private void Scrape(InteractContext ctx)
+        {
+            // Loud scraping sound
+            MakeNoise(CloneZConfig.FixtureNoiseDoor);
+            _scraped = true;
+            ctx.Notify("You scrape away the enamel, revealing faint graffiti. The house number is gone.");
         }
 
         private void Yell(InteractContext ctx)
@@ -50,6 +68,18 @@ namespace CloneZ
             // Small thud sound, like knocking on a metal plate
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
             ctx.Notify("You knock on the house‑number plate.");
+        }
+
+        public override void CaptureState(FixtureSave save)
+        {
+            base.CaptureState(save);
+            save.State = _scraped ? 1 : 0;
+        }
+
+        public override void RestoreState(FixtureSave save)
+        {
+            base.RestoreState(save);
+            _scraped = (save.State & 1) != 0;
         }
     }
 }

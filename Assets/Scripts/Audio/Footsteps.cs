@@ -35,6 +35,8 @@ namespace CloneZ
         private static readonly List<Bounds> s_Shelters = new List<Bounds>(4);
         private static float s_Wet;
         private static WeatherSystem s_WetFrom;
+        // Cached reference to the WeatherSystem singleton to avoid repeated lookups per frame.
+        private static WeatherSystem s_Weather;
         private static PlayerController s_Hooked;
 
         #region Entry points
@@ -174,7 +176,10 @@ namespace CloneZ
         /// over minutes. Advanced by the director every frame.</summary>
         internal static void TickWetness(float dt)
         {
-            WeatherSystem w = WeatherSystem.Instance;
+            // get or refresh the cached WeatherSystem singleton
+            if (s_Weather == null || s_Weather != WeatherSystem.Instance)
+                s_Weather = WeatherSystem.Instance;
+            WeatherSystem w = s_Weather;
             float target = w != null ? Mathf.Clamp01(w.WettingIntensity * 1.5f) : 0f;
             if (w != s_WetFrom)
             {

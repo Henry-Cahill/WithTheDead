@@ -122,6 +122,9 @@ namespace CloneZ
         };
 
 		private static readonly string[] GuardCalls = new[] {
+			"\u201CWe’re low on fuel, the generator sputters, over.\u201D A weak hum fades into static.",
+			"\u201CMedical supplies depleted, need bandages and antibiotics, over.\u201D The breath is shaky.",
+			"\u201CBridge collapsed after the river burst, anyone with a spare rope, over.\u201D A panicked voice cracks.",
 			"\u201CAny station, any station, this is Juniper Base\u2026\u201D You let go of the key. Only the hiss answers.",
 			"You give the post's call sign and ask for anyone at all. A voice comes back in pieces \u2014 \u201C...say again... cannot...\u201D \u2014 then nothing.",
 			"You key up and ask for help. Somebody keys back, breathes, and lets go without a word.",

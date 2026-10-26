@@ -130,8 +130,7 @@ namespace CloneZ
             return (sa + sb) * 0.5f;
         }
 
-        // One room's stretch of an outside wall, from `from` to `to` along the edge: the paper, skirting, rail and cornice,
-        // round any outside doorway in it (with the doorway's casing).
+        // Stretch the wall segment and insert door hardware after casing.
         private static void Stretch(InteriorPlan plan, RaidMesh m, PlanRoom room, int edge, Vector2 a, Vector2 d, Vector2 outward,
             Vector3 inward, float yaw, float from, float to, float t, float h)
         {
@@ -155,10 +154,13 @@ namespace CloneZ
                 Panel(m, a, d, outward, inward, yaw, cursor, d0, 0f, h, t, paper, trim, design, true);
                 Panel(m, a, d, outward, inward, yaw, d0, d1, DoorTop, h, t, paper, trim, design, false);
                 DoorCasing(m, a, d, outward, inward, yaw, nextDoor, doorHalf, t, trim);
+                // Insert hardware after casing.
+                DoorHardware(m, a, d, outward, inward, yaw, nextDoor, doorHalf, t);
                 cursor = d1;
             }
             Panel(m, a, d, outward, inward, yaw, cursor, to, 0f, h, t, paper, trim, design, true);
         }
+        
 
         // Paper over the wall from `s0` to `s1` along it and from `y0` to `y1` up it, with the room's trims where they fall.
         private static void Panel(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, Vector3 inward, float yaw, float s0, float s1,
@@ -185,6 +187,47 @@ namespace CloneZ
             for (int e = -1; e <= 1; e += 2)
                 m.Box(KentuckyMap.To3(a + d * (s + e * (half + 0.035f)) - outward * off, (DoorTop + 0.07f) * 0.5f), new Vector3(0.07f, DoorTop + 0.07f, 0.024f), yaw, wood);
             m.Box(KentuckyMap.To3(a + d * s - outward * off, DoorTop + 0.035f), new Vector3(half * 2f + 0.14f, 0.07f, 0.024f), yaw, wood);
+        }
+
+        // Adds a brass handle, knob, kick‑plate and two hinges to a doorway.
+        // All sizes are in metres; positions are relative to the doorway centre 's' and half‑width 'half'.
+        private static void DoorHardware(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, Vector3 inward, float yaw, float s, float half, float t)
+        {
+            // Material for all metal parts.
+            var metal = DecorPalette.Metal(FurnitureBuilder.Brass);
+            // ---- Kick‑plate (bottom of the door) ----
+            // Positioned at the door base, centred on the opening.
+            m.Box(
+                KentuckyMap.To3(a + d * s - outward * (t + 0.012f), 0.05f), // centre at y = 0.05 m
+                new Vector3(half * 2f + 0.14f, 0.10f, 0.025f), // width, height, depth
+                yaw, metal);
+            // ---- Brass handle (horizontal bar) ----
+            // Placed about 1.0 m above the floor, centred on the door.
+            float handleY = 1.0f;
+            m.Box(
+                KentuckyMap.To3(a + d * s - outward * (t + 0.012f), handleY),
+                new Vector3(0.30f, 0.025f, 0.02f), // length, height, depth
+                yaw, metal);
+            // ---- Brass knob (cylindrical button) ----
+            // Slightly forward from the handle bar, at the same height.
+            m.CylinderX(
+                KentuckyMap.To3(a + d * (s + 0.15f) - outward * (t + 0.015f), handleY),
+                0.015f, // radius
+                0.04f, // length (projected outward)
+                8, metal, yaw);
+            // ---- Two hinges (one near top, one near bottom) ----
+            float[] hingeYs = new[] { 0.40f, 1.60f };
+            foreach (float hy in hingeYs)
+            {
+                // Left‑hand side hinge.
+                m.CylinderX(
+                    KentuckyMap.To3(a + d * (s - half - 0.015f) - outward * (t + 0.012f), hy),
+                    0.01f, 0.04f, 8, metal, yaw);
+                // Right‑hand side hinge.
+                m.CylinderX(
+                    KentuckyMap.To3(a + d * (s + half + 0.015f) - outward * (t + 0.012f), hy),
+                    0.01f, 0.04f, 8, metal, yaw);
+            }
         }
 
         // A window from inside: the glass and the sashes in the reveal, the casing, the stool, and what the room hangs there —

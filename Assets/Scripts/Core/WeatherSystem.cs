@@ -63,6 +63,8 @@ namespace CloneZ
         private bool _restored;   // a saved game set the weather; Start must not clobber it
 
         private Camera _cam;
+        // Cached centre for rain emission (camera position or isometric focus)
+        private Vector3 _rainCenter;
         private ParticleSystem _rain;
         private ParticleSystem.EmitParams _rainEmit;
         private float _rainToEmit;
@@ -114,6 +116,10 @@ namespace CloneZ
             {
                 SetWeather(NextWeather(Current));
                 _stateTimer = NextDuration();
+                // Cache camera and rain centre for this frame (avoid per‑frame lookups in ApplyRain)
+                if (_cam == null) _cam = Camera.main;
+                bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
+                _rainCenter = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
             }
 
             PrecipitationIntensity = Mathf.MoveTowards(PrecipitationIntensity, _targetPrecip, CloneZConfig.WeatherBlendSpeed * dt);
@@ -314,18 +320,9 @@ namespace CloneZ
         private void ApplyRain()
         {
             if (_rain == null) return;
-            if (_cam == null) _cam = Camera.main;
-            Vector3 centre = _rain.transform.position;
-            if (_cam != null)
-            {
-                // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
-                // centres on the point the view looks at; in the close views, on the camera itself.
-                bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
-                centre = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
-                _rain.transform.position = centre;
-            }
-
-            // No rain indoors: none is born over a building's interior, and while the survivor is inside one, none falls
+            // Position rain volume at the cached centre (camera or isometric focus)
+            _rain.transform.position = _rainCenter;
+            Vector3 centre = _rainCenter;
             // in view at all (from above, the drops over the street would streak across the room).
             Actor me = Actor.LocalPlayer;
             float ground = me != null ? me.transform.position.y : centre.y;

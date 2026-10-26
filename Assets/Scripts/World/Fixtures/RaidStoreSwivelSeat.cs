@@ -25,6 +25,12 @@ namespace CloneZ
         private const float RockDuration = 5f; // seconds, fits existing UI timing
         private const float RockAmplitude = 8f; // max swing angle
         private const float RockSpeed = 2f; // swings per second
+        // Lean back related fields
+        private bool _tilting; // true while the LeanBack action is active
+        private float _tiltTimer; // elapsed time inside the lean back action
+        private float _tiltOffset; // current tilt angle in degrees (around X axis)
+        private const float LeanDuration = 3f; // seconds, fits existing UI timing
+        private const float LeanAngle = 12f; // maximum backward tilt in degrees
         // Prevents the player from inspecting the chair every frame
         private float _calmAt;
         private float _inspectCooldown; // time until the next inspect is allowed
@@ -65,7 +71,12 @@ namespace CloneZ
                 _spin = Mathf.Repeat(_spin + _spinSpeed * dt, 360f);
                 _spinSpeed = Mathf.Max(0f, _spinSpeed - CloneZConfig.RaidSwivelSpinDrag * dt);
             }
-            // Turn always uses current _spin + possible _rockOffset
+            // Reset tilt if not actively tilting
+            if (!_tilting && Mathf.Abs(_tiltOffset) > 0.01f)
+            {
+                _tiltOffset = 0f;
+                Turn();
+            }
             Turn();
         }
 
@@ -74,8 +85,8 @@ namespace CloneZ
         {
             if (_chair != null)
             {
-                // Apply spin plus any active rocking offset
-                _chair.rotation = Quaternion.Euler(0f, _spin + _rockOffset, 0f);
+                // Apply spin, rocking offset, and optional tilt
+                _chair.rotation = Quaternion.Euler(_tiltOffset, _spin + _rockOffset, 0f);
             }
         }
 
@@ -88,7 +99,7 @@ namespace CloneZ
                 into.Add(new InteractAction("Stand up", c => c.Seat.Stand()));
                 into.Add(SpinRound());
                 into.Add(Relax());
-                into.Add(Rock());
+                into.Add(LeanBack());
                 into.Add(new InteractAction("Inspect chair", Inspect).DisabledIf(Time.time < _inspectCooldown, "You’ve just examined it."));
                 return;
             }
@@ -151,37 +162,41 @@ namespace CloneZ
             return a;
         }
 
-        private InteractAction Rock()
+        private InteractAction LeanBack()
         {
-            var a = new InteractAction("Rock chair")
-                .Timed(RockDuration, "Rocking", HumanoidActivity.None);
+            var a = new InteractAction("Lean back")
+                .Timed(LeanDuration, "Leaning back", HumanoidActivity.None);
             a.Begin = c =>
             {
-                _rocking = true;
-                _rockTimer = 0f;
+                _tilting = true;
+                _tiltTimer = 0f;
                 MakeNoise(CloneZConfig.FixtureNoiseSmall);
             };
             a.Tick = (c, dt, progress) =>
             {
-                _rockTimer += dt;
-                // sinusoidal swing
-                _rockOffset = Mathf.Sin(_rockTimer * RockSpeed * Mathf.PI * 2f) * RockAmplitude;
-                Turn(); // apply new offset this frame
-                // a little calm while rocking: a spin's worth over the whole rock, whatever the frame rate
-                LivingFixtures.Calm(c, CloneZConfig.RaidSwivelSpinCalm * dt / RockDuration);
+                _tiltTimer += dt;
+                // linearly interpolate tilt from 0 to LeanAngle then back to 0
+                float half = 0.5f;
+                if (progress <= half)
+                    _tiltOffset = Mathf.Lerp(0f, LeanAngle, progress / half);
+                else
+                    _tiltOffset = Mathf.Lerp(LeanAngle, 0f, (progress - half) / half);
+                Turn(); // apply the new tilt this frame
+                // calm while leaning back – half the normal spin calm per second
+                LivingFixtures.Calm(c, CloneZConfig.RaidSwivelSpinCalm * dt / LeanDuration * 0.5f);
             };
             a.Stopped = c =>
             {
-                if (!_rocking) return;
-                _rocking = false;
-                _rockOffset = 0f;
+                if (!_tilting) return;
+                _tilting = false;
+                _tiltOffset = 0f;
                 Turn(); // reset rotation
-                c.Notify("You stop rocking the chair, feeling a little steadier.");
+                c.Notify("You sit upright again, feeling a little steadier.");
             };
-            a.Run = a.Stopped; // the bar filled: Stopped only comes when the rocking is cut short
+            // When the bar fills, stop the action (same as Stopped)
+            a.Run = a.Stopped;
             return a;
         }
-
         private InteractAction SpinRound()
         {
             float from = 0f;

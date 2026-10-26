@@ -172,7 +172,9 @@ namespace CloneZ
         {
             PlayerClothing clothing = Clothing;
             if (clothing == null || def == null) return false;
+            // Retrieve the current worn piece at the target slot; if none, nothing to replace
             PlayerClothing.WornPiece old = clothing.GetPiece(slot);
+            // Abort if the slot has no worn piece to replace
             if (!old.Exists) return false;
 
             PlayerInventory inv = Carried;
@@ -258,7 +260,9 @@ namespace CloneZ
             into.Clear();
             if (worn)
             {
+                // Get the player's clothing component to modify worn items
                 PlayerClothing clothing = Clothing;
+                // Proceed only if the player has a clothing component (i.e., a survivor is present)
                 if (clothing != null)
                 {
                     ClothingSlot[] slots = PlayerClothing.Slots;

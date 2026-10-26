@@ -195,34 +195,49 @@ namespace CloneZ
         public static List<KeyValuePair<string, Vector3>> Landmarks()
         {
             var result = new List<KeyValuePair<string, Vector3>>(16);
+            // Landmark marker prefix used in WorldMarkers keys
             const string prefix = "landmark:";
+            // Use the active streamer to limit landmarks to the built portion of the map
             KentuckyStreamer streamer = KentuckyStreamer.Active;
+            // Reach defines how far from the arena centre we care about landmarks (extra 160 m buffer)
             float reach = streamer != null ? streamer.BuiltReach + 160f : float.MaxValue;
+            // Center of the arena for distance calculations
             Vector3 centre = CloneZConfig.ArenaCenter;
+            // Reset the temporary real‑landmark accumulator before filling it
             s_Real.Clear();
+            // Iterate all marker kinds to find those that represent landmarks
             foreach (string kind in WorldMarkers.Kinds)
             {
+                // Skip non‑landmark entries early
                 if (kind == null || !kind.StartsWith(prefix, System.StringComparison.Ordinal)) continue;
                 IReadOnlyList<Vector3> pts = WorldMarkers.Get(kind);
                 string id = kind.Substring(prefix.Length);
                 bool real = MapGameplay.TryLandmark(id, out _, out int rank);
+                // Examine each point for this landmark
                 for (int i = 0; i < pts.Count; i++)
                 {
+                    // Discard points outside the built area when a streamer is active
                     if (streamer != null && (Mathf.Abs(pts[i].x - centre.x) > reach || Mathf.Abs(pts[i].z - centre.z) > reach)) continue;
                     if (real) s_Real.Add((id, pts[i], rank));
                     else result.Add(new KeyValuePair<string, Vector3>(id, pts[i]));
                 }
             }
+            // If no real‑world landmarks were found we can return the virtual ones now
             if (s_Real.Count == 0) return result;
+            // Sort real landmarks by descending rank (more important first), then alphabetically
             s_Real.Sort((a, b) => a.rank != b.rank ? b.rank.CompareTo(a.rank) : string.CompareOrdinal(a.id, b.id));
+            // Remember where the virtual list currently ends; new entries will be appended after this index
             int first = result.Count;
+            // Pre‑compute squared spacing to avoid sqrt in the crowded check loop
             const float spacing2 = RealLandmarkSpacing * RealLandmarkSpacing;
+            // Add each real landmark unless it is too close to an already‑added one (maintain readability)
             foreach (var l in s_Real)
             {
                 bool crowded = false;
                 for (int k = first; k < result.Count && !crowded; k++) crowded = FlatSqr(result[k].Value, l.at) < spacing2;
                 if (!crowded) result.Add(new KeyValuePair<string, Vector3>(l.id, l.at));
             }
+            // Cleanup temporary list for next call
             s_Real.Clear();
             return result;
         }
@@ -247,17 +262,23 @@ namespace CloneZ
 
         /// <summary>Where a point lies, in words: so many metres and which way from the nearest landmark, else which
         /// part of the map.</summary>
+        // Describe a location by finding the nearest landmark and formatting a human‑readable string
         public static string DescribeLocation(Vector3 p, string zoneName)
         {
+            // Get all relevant landmarks (real + virtual) for the current map
             List<KeyValuePair<string, Vector3>> marks = Landmarks();
+            // Track the closest landmark (best distance squared) and its index
             float best = float.MaxValue;
             int bi = -1;
+            // Linear scan to find the nearest landmark to the point
             for (int i = 0; i < marks.Count; i++)
             {
                 float d = FlatSqr(p, marks[i].Value);
                 if (d < best) { best = d; bi = i; }
             }
+            // Append zone name if provided for context
             string inZone = string.IsNullOrEmpty(zoneName) ? "" : " in " + zoneName;
+            // If a landmark is close enough (< 60 m) we give a detailed description
             if (bi >= 0 && best < 60f * 60f)
             {
                 float d = Mathf.Sqrt(best);
@@ -265,6 +286,7 @@ namespace CloneZ
                 if (d < 5f) return "right by " + what + inZone;
                 return Mathf.RoundToInt(d) + " m " + Compass(p - marks[bi].Value) + " of " + what + inZone;
             }
+            // Otherwise fall back to a generic region description (e.g., "north‑west part of…")
             return DescribeRegion(p, zoneName);
         }
 
@@ -301,6 +323,7 @@ namespace CloneZ
     {
         private static HumanRunner s_Instance;
 
+        /// <summary>Singleton accessor for the coroutine runner used by static human systems.</summary>
         public static HumanRunner Instance
         {
             get

@@ -95,26 +95,36 @@ namespace CloneZ
         /// <summary>Decodes <see cref="Serialize"/>'s text form; null / empty text gives null.</summary>
         public static ItemExtra Parse(string text)
         {
+            // Empty/invalid strings must round-trip to null so stacks stay plain (matches Serialize returning null).
             if (string.IsNullOrEmpty(text)) return null;
+            // Parse into a fresh instance; we only commit it if anything meaningful was set.
             var e = new ItemExtra();
+            // Semicolon-delimited tokens allow flags (no '=') and key/value pairs without complex escaping of delimiters.
             string[] parts = text.Split(';');
             for (int i = 0; i < parts.Length; i++)
             {
                 string p = parts[i];
+                // Trailing or doubled semicolons produce empty tokens; skip rather than treat as malformed.
                 if (p.Length == 0) continue;
+                // Flags are single-letter tokens with no '=' to keep the form compact.
                 if (p == "f") { e.FoundInRaid = true; continue; }
                 if (p == "i") { e.Insured = true; continue; }
                 if (p == "b") { e.OnBelt = true; continue; }
+                // Only key/value pairs after this point; require a key before '=' to avoid accepting bare '='.
                 int eq = p.IndexOf('=');
                 if (eq <= 0) continue;
                 string k = p.Substring(0, eq), v = p.Substring(eq + 1);
+                // Be defensive: legacy or hand-edited kit/save text can be bad; skip the token and log rather than aborting parse.
                 try
                 {
                     switch (k)
                     {
+                        // Mods/upgrades are comma lists stored URL-escaped per element (see Join/Split).
                         case "m": Split(v, e.Mods); break;
+                        // Dirt serialized with limited precision; parse in InvariantCulture to avoid locale issues.
                         case "d": float.TryParse(v, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out e.Dirt); break;
                         case "u": Split(v, e.Upgrades); break;
+                        // Free-form strings were escaped on write to survive delimiters/special chars.
                         case "a": e.AmmoChoice = Uri.UnescapeDataString(v); break;
                         case "n": e.Note = Uri.UnescapeDataString(v); break;
                     }
@@ -124,15 +134,19 @@ namespace CloneZ
                     Debug.LogWarning("[CloneZ] Bad item extra '" + p + "': " + ex.Message);
                 }
             }
+            // Keep the invariant "empty extras are null" so plain stacks stay plain and stack merging stays simple.
             return e.IsEmpty ? null : e;
         }
 
+        /// <summary>Joins list elements with commas, URL-escaping each element so delimiters never collide.</summary>
         private static string Join(List<string> list)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < list.Count; i++)
             {
+                // Comma separates list items (serialized inside a semicolon-delimited token).
                 if (i > 0) sb.Append(',');
+                // Escape per element because ids/strings could contain ',' or other reserved chars.
                 sb.Append(Uri.EscapeDataString(list[i]));
             }
             return sb.ToString();

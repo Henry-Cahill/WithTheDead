@@ -129,6 +129,8 @@ namespace CloneZ
             /// <summary>The doors in its cut walls and the renderers of theirs hidden with them (MapCutaway.Doors.cs).</summary>
             public System.Collections.Generic.List<HomeDoor> DoorObjs;
             public System.Collections.Generic.List<Renderer> Doors;
+            public System.Collections.Generic.List<Renderer> DoorNoShadow;
+            public int DoorCut = -1;
         }
     }
 }

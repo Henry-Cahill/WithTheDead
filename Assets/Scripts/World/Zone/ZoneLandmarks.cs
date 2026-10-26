@@ -679,6 +679,7 @@ namespace CloneZ
     public sealed class LocationVisitTrigger : MonoBehaviour
     {
         private static readonly HashSet<string> s_Visited = new HashSet<string>();
+        private static Actor s_LocalPlayer;
         public string Id;
         public float Radius = 10f;
         private float _next;
@@ -697,7 +698,8 @@ namespace CloneZ
         {
             if (Time.time < _next || string.IsNullOrEmpty(Id) || s_Visited.Contains(Id)) return;
             _next = Time.time + 0.5f;
-            Actor me = Actor.LocalPlayer;
+            if (s_LocalPlayer == null) s_LocalPlayer = Actor.LocalPlayer;
+                Actor me = s_LocalPlayer;
             if (me == null || !me.IsAlive) return;
             Vector3 d = me.transform.position - transform.position;
             d.y = 0f;

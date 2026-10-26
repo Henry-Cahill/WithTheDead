@@ -8,6 +8,7 @@ namespace CloneZ
     // a five-formant tract sized to the animal; then breath, liquid, teeth and, for the far-carrying calls, space.
     public sealed partial class SfxSynth
     {
+        /// <summary>Registers all creature sound generators with their IDs and parameters.</summary>
         partial void RegisterCreatures()
         {
             // ── The dead ────────────────────────────────────────────────────────────────────────────
@@ -124,6 +125,7 @@ namespace CloneZ
                     ampC[c] = p.Amp(u);
                     f0C[c] = p.F0(u);
                 }
+                // Pre‑compute amplitude and pitch curves at a low control resolution.
                 float dt = 1f / rate, drift = p.Drift, fryHz = p.FryHz, jitter = p.Jitter, shimmer = p.Shimmer;
                 float subAmt = p.Sub, rasp = p.Rasp, wetAmt = p.Wet, rattleAmt = p.Rattle, rattleHz = p.RattleHz, hiss = p.Hiss;
                 float a1 = 0f, b1 = 0f, c1 = 0f, a2 = 0f, b2 = 0f, c2 = 0f, a3 = 0f, b3 = 0f, c3 = 0f, a4 = 0f, b4 = 0f, c4 = 0f, a5 = 0f, b5 = 0f, c5 = 0f;
@@ -1811,6 +1813,7 @@ namespace CloneZ
             // The stinger: a low stir, then a cluster of semitones and tritones bending upward with a quickening tremolo,
             // a bowed plate screeching through it, a sub swelling, a breath sucked in, and the hit (a deep blow, a crack,
             // struck metal, a dissonant stab) reversed into itself and ringing out wide.
+            /// <summary>Creates a dramatic stinger sound used for UI alerts or weapon impacts.</summary>
             internal static StereoBuf Stinger(SynthGen g)
             {
                 int rate = g.Rate;

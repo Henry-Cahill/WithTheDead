@@ -677,6 +677,20 @@ namespace CloneZ
             m.Box((a + b) * 0.5f, new Vector3(width, depth, len), q, s);
         }
 
+        // Draw a single front step in front of a porch. Uses the building’s main wall surface.
+        // The step is a low box (≈12 cm high, 25 cm deep) centred on the front wall.
+        private static void DrawPorchStep(Job j)
+        {
+            if (!j.P.Porch) return; // only for buildings that have a porch
+            int edge = j.P.Front; // the edge that is the building’s front
+            // centre of the front wall (roughly where a door would be)
+            float s = j.Len[edge] * 0.5f;
+            // width covers most of the front wall, but leaves a bit of margin on each side
+            float w = Mathf.Max(0f, j.Len[edge] - 0.4f);
+            // step geometry: 0.12 m tall, 0.25 m deep, sitting on the ground storey
+            OnWallBox(j, j.Facing(edge), edge, s, 0f, w, 0.12f, 0.25f, j.WallS);
+        }
+
         // An upright quad on wall <paramref name="edge"/>'s face, centred s along it at height y, standing out by
         // <paramref name="proud"/>.
         private static void OnWall(Job j, RaidMesh m, int edge, float s, float y, float w, float h, float proud, in Surf surf)

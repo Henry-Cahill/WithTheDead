@@ -17,6 +17,7 @@ namespace CloneZ
         private float _yaw;          // the cot's facing (its length runs along its own X)
         private int _looked;
         private bool _secured; // true after the cot has been tied down
+        private bool _dirty; // true after the cot has been used, reduces comfort until cleaned
         private const float SecuredComfortBonus = 0.2f; // extra comfort while the cot is secured
 
         private static readonly string[] Underneath =
@@ -63,15 +64,16 @@ namespace CloneZ
             return cot;
         }
 
-        public override void GetActions(InteractContext ctx, List<InteractAction> into)
+public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             PlayerSeat seat = ctx.Seat;
             bool onEdge = seat != null && seat.IsSittingOn(this);
             into.Add(RestAction().DisabledIf(seat == null, "You can't lie down now"));
-            if (onEdge) into.Add(new InteractAction("Get up off the cot", c => c.Seat.Stand()));
+            if (onEdge) into.Add(new InteractAction("Get up off the cot", GetUpFromCot));
             else into.Add(new InteractAction("Sit on the cot", SitOnEdge).DisabledIf(seat == null, "You can't sit down now"));
             into.Add(new InteractAction("Look under the cot", LookUnder).Timed(1.6f, "Looking under the cot", HumanoidActivity.Search));
             into.Add(new InteractAction("Lean against the cot", LeanAgainst).DisabledIf(seat != null && seat.IsSeated, "You are already seated"));
+            if (_dirty) into.Add(new InteractAction("Clean the cot", CleanCot).DisabledIf(seat != null && seat.IsSeated, "You can't clean it while seated"));
             if (!_secured)
                 into.Add(new InteractAction("Secure the cot", SecureCot)
                     .DisabledIf(seat != null && seat.IsSeated, "You can't secure it while seated"));
@@ -94,6 +96,7 @@ namespace CloneZ
             a.Stopped = c =>
             {
                 if (c.Seat != null) c.Seat.GetUp();
+                _dirty = true; // cot becomes dirty after resting
             };
             return a;
         }
@@ -107,7 +110,7 @@ namespace CloneZ
             float side = me.z < 0f ? -1f : 1f;
             var local = new Vector3(Mathf.Clamp(me.x, -0.6f, 0.7f), CloneZConfig.RaidCotSeatHeight, side * 0.26f);
             float yaw = _yaw + (side < 0f ? 180f : 0f);
-            float comfort = CloneZConfig.RaidCotComfort + (_secured ? SecuredComfortBonus : 0f);
+            float comfort = CloneZConfig.RaidCotComfort + (_secured ? SecuredComfortBonus : 0f) - (_dirty ? 0.1f : 0f);
             if (!ctx.Seat.TrySit(this, _body.position + q * local, yaw, comfort, out string reason))
                 ctx.Notify(reason);
         }
@@ -123,11 +126,42 @@ namespace CloneZ
             _looked++;
         }
 
+        private void GetUpFromCot(InteractContext ctx)
+        {
+            ctx.Seat.Stand();
+            _dirty = true; // standing up after using the cot makes it dirty
+        }
+
         private void SecureCot(InteractContext ctx)
         {
             _secured = true;
             ctx.Notify("You tie the cot down with a piece of rope. It feels steadier now.");
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
+        }
+
+        private void CleanCot(InteractContext ctx)
+        {
+            _dirty = false;
+            ctx.Notify("You wipe away the grime and tighten the canvas. The cot feels fresher.");
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+        }
+
+        public override string SaveKey => Interactable.KeyFor("Cot", transform.position);
+
+        public override void CaptureState(FixtureSave save)
+        {
+            base.CaptureState(save);
+            // Bit 1: secured, Bit 2: dirty
+            save.State = (_secured ? 1 : 0) | (_dirty ? 2 : 0);
+            save.A = _looked;
+        }
+
+        public override void RestoreState(FixtureSave save)
+        {
+            base.RestoreState(save);
+            _secured = (save.State & 1) != 0;
+            _dirty = (save.State & 2) != 0;
+            _looked = Mathf.RoundToInt(save.A);
         }
 
     }

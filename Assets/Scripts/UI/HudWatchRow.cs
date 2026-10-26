@@ -75,6 +75,9 @@ namespace CloneZ
             _filterRoot.SetActive(false);
         }
 
+        /// <summary>
+        /// Constructs the seven‑segment digits and colon for the digital watch face.
+        /// </summary>
         private void BuildWatchFace(RectTransform watch)
         {
             const float digitW = 17f, digitH = 30f, thick = 4f, space = 5f, colonGap = 12f, left = 11f, top = -9f;
@@ -117,6 +120,9 @@ namespace CloneZ
             UpdateBell();
         }
 
+        /// <summary>
+        /// Updates the watch digits, AM/PM indicator and temperature/date display when they change.
+        /// </summary>
         private void UpdateWatch()
         {
             TimeOfDay tod = TimeOfDay.Instance;
@@ -150,6 +156,9 @@ namespace CloneZ
             }
         }
 
+        /// <summary>
+        /// Updates the filter UI (visibility, numeric readout, colour) based on the player's gas‑mask state.
+        /// </summary>
         private void UpdateFilter()
         {
             PlayerGear gear = _ctx.Gear;
@@ -182,6 +191,9 @@ namespace CloneZ
             _filterGas = gas;
         }
 
+        /// <summary>
+        /// Updates the activity icon (building/farming/searching) and its pulsing highlight.
+        /// </summary>
         private void UpdateActivity()
         {
             bool building = (_ctx.Builder != null && _ctx.Builder.IsBuilding) || (_ctx.Farming != null && _ctx.Farming.IsBusy);

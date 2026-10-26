@@ -203,6 +203,7 @@ namespace CloneZ
             into.Add(new InteractAction(_seatUp ? "Put the seat down" : "Lift the seat", c => SetSeat(!_seatUp)));
             into.Add(new InteractAction("Wipe the seat", WipeSeat));
             into.Add(new InteractAction("Scrub the seat", ScrubSeat));
+            into.Add(new InteractAction("Inspect seat", InspectSeat));
             if (first != Step.Use) AddStep(into, Step.Use);
             if (first != Step.Flush) AddStep(into, Step.Flush);
             PlayerSeat seat = ctx.Seat;
@@ -392,11 +393,14 @@ namespace CloneZ
 
 
         /// <summary>Wipes the toilet seat, providing a small calming effect.</summary>
+        /// <summary>Wipes the toilet seat, providing a small calming effect and cleaning it.</summary>
         private void WipeSeat(InteractContext ctx)
         {
             ctx.Notify("You wipe away grime from the cold porcelain.");
             // a small calming effect, re‑using the existing toilet‑use calm value
             LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm);
+            _seatClean = true;
+            ShowParts(false); // update seat colour to show it’s clean
         }
         
         private void ScrubSeat(InteractContext ctx)
@@ -408,9 +412,15 @@ namespace CloneZ
             }
             _seatClean = true;
             ctx.Notify("You scrub the seat until the grime is gone.");
-            ShowParts(false); // update seat colour to show it’s clean
             // a bigger calming effect than a simple wipe
             LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm * 1.5f);
+            ShowParts(false); // update seat colour to show it’s clean
+        }
+
+        /// <summary>Tells the survivor whether the toilet seat is currently clean.</summary>
+        private void InspectSeat(InteractContext ctx)
+        {
+            ctx.Notify(_seatClean ? "The seat is clean." : "The seat is dirty.");
         }
 
         /// <summary>Saves the toilet's state (seat, lid, cistern, flush flag, level).</summary>

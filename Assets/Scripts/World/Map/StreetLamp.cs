@@ -14,8 +14,8 @@ namespace CloneZ
     /// (photocells); each frame it flickers the failing ones it lights, and blinks the map's flashing signal lenses and
     /// aviation beacons (<see cref="Blinkers"/>). A map built in the editor (previews, the map harness) has no driver
     /// running, so a few of its lamps (the builder's cap) get a light of their own instead. The survivor can switch a lamp,
-    /// steady or set off its flicker, or switch the block's lamps; a lamp's state is saved under its place
-    /// (<c>"streetlamp@x,z"</c>: bit 0 on, bit 1 flickering) and remembered when a streamed piece is built again.
+    /// dim, steady or set off its flicker, or switch and dim the block's lamps; a lamp's state is saved under its place
+    /// (<c>"streetlamp@x,z"</c>: bit 0 on, bit 1 flickering, bit 2 dimmed) and remembered when a streamed piece is built again.
     /// </summary>
     [DisallowMultipleComponent]
     internal sealed class StreetLamp : Interactable
@@ -28,7 +28,8 @@ namespace CloneZ
         public const float ShadowReach = 22f;
         private const float BlockRadius = 30f;   // how far "the block's lamps" reach
         private const float ClickNoise = 2f;
-        private const int OnBit = 1, FlickerBit = 2;
+        private const int OnBit = 1, FlickerBit = 2, DimBit = 4;
+        private const float DimLevel = 0.3f;
 
         private static readonly List<StreetLamp> s_All = new List<StreetLamp>();
         // Lamps the survivor switched or steadied, by key: a streamed piece built again gets them back as they were left.
@@ -46,10 +47,10 @@ namespace CloneZ
         private Material[] _states;   // the lens off, dim, on
         private Color _colour;
         private float _intensity, _range, _angle, _phase, _level = 1f;
-        private bool _on = true, _flicker, _ready, _lit;
+        private bool _on = true, _flicker, _dim, _ready, _lit;
         private int _shown = -1;
         private string _key;
-        private System.Action<InteractContext> _switch, _toggleFlicker, _blockOn, _blockOff;
+        private System.Action<InteractContext> _switch, _toggleFlicker, _dimLamp, _blockOn, _blockOff, _blockDim;
 
         /// <summary>The lens's shape.</summary>
         internal enum Lens { Cobra, Globe, Dome }
@@ -134,6 +135,7 @@ namespace CloneZ
 
         // The light the lamp shines with right now: its own (an editor build) or the one lent from the pool.
         private Light Shining => _light != null ? _light : _lent;
+        private float Power => _dim ? DimLevel : 1f;
 
         /// <summary>True when <paramref name="point"/> is in the pool of a lamp that's lit right now (walls aside: pair it
         /// with a line-of-sight test), like <see cref="RoomLight.IsPointLit"/>.</summary>
@@ -224,8 +226,10 @@ namespace CloneZ
         {
             _switch = c => Switch(c, !_on);
             _toggleFlicker = c => SetFlicker(c, !_flicker);
+            _dimLamp = c => SetDim(c, !_dim);
             _blockOn = c => SwitchBlock(c, true);
             _blockOff = c => SwitchBlock(c, false);
+            _blockDim = c => SetBlockDim(c, !_dim);
         }
 
         private string Key => _key ??= KeyFor("streetlamp", transform.position);
@@ -241,9 +245,10 @@ namespace CloneZ
         {
             _on = (state & OnBit) != 0;
             _flicker = (state & FlickerBit) != 0;
+            _dim = (state & DimBit) != 0;
         }
 
-        private void Changed() => s_Changed[Key] = (_on ? OnBit : 0) | (_flicker ? FlickerBit : 0);
+        private void Changed() => s_Changed[Key] = (_on ? OnBit : 0) | (_flicker ? FlickerBit : 0) | (_dim ? DimBit : 0);
 
         public override string DisplayName => "Street lamp";
         public override Vector3 InteractPoint => transform.position + Vector3.up * 1.2f;
@@ -254,7 +259,9 @@ namespace CloneZ
         {
             into.Add(new InteractAction(_on ? "Turn off street lamp" : "Turn on street lamp", _switch));
             if (_on) into.Add(new InteractAction(_flicker ? "Turn off flicker" : "Turn on flicker", _toggleFlicker));
+            if (_on) into.Add(new InteractAction(_dim ? "Brighten street lamp" : "Dim street lamp", _dimLamp));
             into.Add(_on ? new InteractAction("Turn off block lamps", _blockOff) : new InteractAction("Turn on block lamps", _blockOn));
+            into.Add(new InteractAction(_dim ? "Brighten block lamps" : "Dim block lamps", _blockDim));
         }
 
         private void Switch(InteractContext ctx, bool on)
@@ -275,6 +282,15 @@ namespace CloneZ
             s_NextScan = 0f;
         }
 
+        private void SetDim(InteractContext ctx, bool dim)
+        {
+            _dim = dim;
+            Changed();
+            MakeNoise(ClickNoise);
+            ctx.Notify(dim ? "The street lamp dims to a low glow." : "The street lamp brightens.");
+            s_NextScan = 0f;
+        }
+
         private void SwitchBlock(InteractContext ctx, bool on)
         {
             float reach = BlockRadius * BlockRadius;
@@ -290,7 +306,22 @@ namespace CloneZ
             s_NextScan = 0f;
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = (_on ? OnBit : 0) | (_flicker ? FlickerBit : 0);
+        private void SetBlockDim(InteractContext ctx, bool dim)
+        {
+            float reach = BlockRadius * BlockRadius;
+            for (int i = 0; i < s_All.Count; i++)
+            {
+                StreetLamp lamp = s_All[i];
+                if (lamp == null || (lamp.transform.position - transform.position).sqrMagnitude > reach) continue;
+                lamp._dim = dim;
+                lamp.Changed();
+            }
+            MakeNoise(ClickNoise);
+            ctx.Notify(dim ? "The block's street lamps dim together." : "The block's street lamps brighten.");
+            s_NextScan = 0f;
+        }
+
+        public override void CaptureState(FixtureSave save) => save.State = (_on ? OnBit : 0) | (_flicker ? FlickerBit : 0) | (_dim ? DimBit : 0);
 
         public override void RestoreState(FixtureSave save)
         {
@@ -361,7 +392,7 @@ namespace CloneZ
                 else
                 {
                     if (!l._flicker) l._level = 1f;
-                    l.Show(l._flicker ? LensFor(l._level) : 2);
+                    l.Show(LensFor((l._flicker ? l._level : 1f) * l.Power));
                 }
                 if (!burning || !have || l._head == null) continue;
                 float d = (l._head.position - centre).sqrMagnitude;
@@ -380,7 +411,7 @@ namespace CloneZ
                 if (l._light.enabled != lit) l._light.enabled = lit;
                 LightShadows want = lit && slot == 0 && shadow ? LightShadows.Soft : LightShadows.None;
                 if (l._light.shadows != want) l._light.shadows = want;
-                if (lit && !l._flicker) l._light.intensity = l._intensity;
+                if (lit && !l._flicker) l._light.intensity = l._intensity * l.Power;
             }
             // The pool's lights lent to the nearest lamps that have none of their own.
             for (int i = 0; i < MaxLit; i++)
@@ -396,7 +427,7 @@ namespace CloneZ
                 }
                 l._lent = pool;
                 pool.transform.SetPositionAndRotation(l._head.position, l._head.rotation);
-                Shine(pool, l._colour, l._range, l._intensity * (l._flicker ? l._level : 1f), l._angle);
+                Shine(pool, l._colour, l._range, l._intensity * (l._flicker ? l._level : 1f) * l.Power, l._angle);
                 LightShadows want = i == 0 && shadow ? LightShadows.Soft : LightShadows.None;
                 if (pool.shadows != want) pool.shadows = want;
                 if (!pool.enabled) pool.enabled = true;
@@ -443,7 +474,7 @@ namespace CloneZ
             else if (Mathf.PerlinNoise(t * 2.7f, _phase + 7f) > 0.8f) level *= 0.35f;
             _level = level;
             Light shining = Shining;
-            if (shining != null) shining.intensity = _intensity * level;
+            if (shining != null) shining.intensity = _intensity * level * Power;
             Show(LensFor(level));
         }
 

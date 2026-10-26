@@ -26,7 +26,12 @@ namespace CloneZ
 "a local farming almanac, pages curled, listing winter wheat yields and a reminder to check the barn doors.",
 "a church hymn sheet, the verses smudged, with a margin note: “Sing louder on Sunday.”",
 "a school bulletin board notice: “Parent‑Teacher meetings postponed – snow day.”",
-"a handwritten newspaper clipping titled “Winter Storm Outlook”, the ink blotched where rain ran.",
+            "a handwritten newspaper clipping titled “Winter Storm Outlook”, the ink blotched where rain ran.",
+            "a county health bulletin warning about flu outbreaks, the top headline underlined in red.",
+            "a local radio schedule sheet, listing Saturday night blue‑grass shows and a weather update at 7 am.",
+            "a fire safety pamphlet folded in half, the cover showing a hand‑drawn fire‑truck and the words “Stay Safe, Keep the Fire Going”.",
+            "a farmer's equipment catalog, pages yellowed, advertising a new model of gasoline‑powered snow blower.",
+            "a community choir newsletter, the front page featuring a handwritten invitation to the “Holiday Hymn Sing‑Along” on Dec 22.",
         };
 
         private static readonly string[] Plumping =
@@ -149,9 +154,12 @@ namespace CloneZ
                 "\"Boil water, add apples, cinnamon, and sugar. Serve warm.\"",
                 "A small cider stain darkens the corner."
             },
-            };
 
-private static readonly string[] NumberLines =
+
+
+        };
+
+        private static readonly string[] NumberLines =
         {
             "Number {0}, says the enamel plate by the door. Somebody's home, once.",
             "Number {0}. A dried-out Christmas wreath still hangs under it.",

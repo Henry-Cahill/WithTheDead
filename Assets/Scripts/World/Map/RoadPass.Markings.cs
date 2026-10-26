@@ -12,6 +12,7 @@ namespace CloneZ
     internal static partial class RoadPass
     {
         private const float LineWidth = 0.1f;
+        private const float CrosswalkLaneHalf = 0.25f; // half the width of the central lane (≈0.5 m total)
         private const float DashLength = 3f, DashPeriod = 12f;
 
         /// <summary>Where a line runs across a chain: about its centre line, a fraction across its lanes, or by one of its
@@ -287,13 +288,38 @@ namespace CloneZ
             return p.Rev ? w.ArcOffset + w.Cum[p.Run.V1] - (s - p.S0) : w.ArcOffset + w.Cum[p.Run.V0] + (s - p.S0);
         }
 
-        // A crosswalk: two white bars across the whole carriageway, kerb to kerb, with the walkers' lane between them.
+        // Crosswalks now include a faint white lane (the walkers’ lane) between the two painted bars,
+        /// matching period‑accurate rural road markings of 1993 Kentucky.
         private static void Crosswalk(Net net, Chain c, float s0, float s1, int seed)
         {
             if (s1 - s0 < 1f) return;
             float m = (s0 + s1) * 0.5f, l = EdgeAt(c, 1, m), r = EdgeAt(c, -1, m);
+            // Draw the two white bars at the edges of the road.
             Bar(net, c, s0 + 0.15f, 0.15f, -r + 0.25f, l - 0.25f, net.Look.White, seed);
             Bar(net, c, s1 - 0.15f, 0.15f, -r + 0.25f, l - 0.25f, net.Look.White, seed + 1);
+            // New: draw the central walkers‑lane between the bars.
+            CrosswalkLane(net, c, s0 + 0.15f, s1 - 0.15f, net.Look.White, seed + 2);
+        }
+
+        // A straight painted bar square across a chain at <paramref name="s"/> (its direction there), <paramref name="half"/>
+        // either way along it, from <paramref name="lo"/> to <paramref name="hi"/> across it, in pieces; the slush at the
+        // gutters has buried an end piece here and there (never the middle: a lone piece left reads as a stray dash).
+        private static void CrosswalkLane(Net net, Chain c, float s0, float s1, in Surf surf, int seed)
+        {
+            // Bail if the stretch is tiny.
+            if (s1 - s0 < 0.2f) return;
+            // Mid‑point of the crosswalk provides the direction and normal.
+            float m = (s0 + s1) * 0.5f;
+            PointOn(c, m, out Vector2 p, out Vector2 d);
+            Vector2 n = Left(d);
+            // Build a flat quad from (s0) to (s1) across the centre line.
+            Vector3 bl = To3(p + n * (-CrosswalkLaneHalf) - d * (s1 - s0) * 0.5f, MarkY);
+            Vector3 tl = To3(p + n * (-CrosswalkLaneHalf) + d * (s1 - s0) * 0.5f, MarkY);
+            Vector3 tr = To3(p + n * ( CrosswalkLaneHalf) + d * (s1 - s0) * 0.5f, MarkY);
+            Vector3 br = To3(p + n * ( CrosswalkLaneHalf) - d * (s1 - s0) * 0.5f, MarkY);
+            // Occasionally skip a piece to simulate slush covering the paint.
+            if (Noise(p, 2f, seed) < 0.2f) return;
+            Face(net.Out.Flat((bl + tr) * 0.5f), bl, tl, tr, br, Vector3.up, surf);
         }
 
         // A straight painted bar square across a chain at <paramref name="s"/> (its direction there), <paramref name="half"/>

@@ -10,11 +10,12 @@ namespace CloneZ
         private const string LightName = "HeaterLight";
         private const float DefaultFuelSeconds = 300f; // 5 min of heat when first turned on
         private const float MaxFuelSeconds = 1800f; // 30 min cap
-        private const float FuelPerRefill = 300f; // 5 min added per refuel
+        private const float FuelPerRefill = 300f; // 5 min added per refill
         private float _fuelSeconds; // remaining fuel while on
         private Light _light;
         private TextMesh _timerText;
         private bool _isOn;
+        private ParticleSystem _smoke; // visual smoke while the heater burns
 
         public override string DisplayName => "Heater";
         public override Vector3 InteractPoint => transform.position + Vector3.up * 0.5f;
@@ -54,6 +55,19 @@ namespace CloneZ
             _timerText.alignment = TextAlignment.Center;
             _timerText.anchor = TextAnchor.MiddleCenter;
             _timerText.color = new Color(1f, 0.9f, 0.6f);
+            // ---- NEW SMOKE EFFECT ----
+            var smokeGo = new GameObject("HeaterSmoke");
+            smokeGo.transform.SetParent(transform, false);
+            smokeGo.transform.localPosition = new Vector3(0f, 0.5f, 0f);
+            _smoke = smokeGo.AddComponent<ParticleSystem>();
+            var main = _smoke.main;
+            main.startLifetime = 0.6f;
+            main.startSpeed = 0.15f;
+            main.startSize = 0.08f;
+            main.loop = true;
+            var emission = _smoke.emission;
+            emission.rateOverTime = 12f;
+            _smoke.Stop(); // start disabled
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
@@ -61,6 +75,7 @@ namespace CloneZ
             string label = _isOn ? "Turn heater off" : "Turn heater on";
             into.Add(new InteractAction(label, c => Toggle()));
             into.Add(new InteractAction("Add fuel (5 min)", c => AddFuel()));
+            into.Add(new InteractAction("Add fuel (10 min)", c => AddFuelLarge()));
         }
 
         private void Toggle()
@@ -86,10 +101,11 @@ namespace CloneZ
                 _fuelSeconds -= Time.deltaTime;
                 if (_fuelSeconds <= 0f)
                 {
-                    _fuelSeconds = 0f;
+_fuelSeconds = 0f;
                     _isOn = false;
                     HubRules.HeaterOn = false;
                     UpdateLight();
+                    UpdateSmoke();
                     Sfx.PlayUI(SfxIds.UiClick);
                     GameEvents.RaiseToast("The heater sputters out as its fuel is spent.");
                 }
@@ -149,10 +165,31 @@ namespace CloneZ
             }
         }
 
+        private void AddFuelLarge()
+        {
+            float before = _fuelSeconds;
+            _fuelSeconds = Mathf.Min(_fuelSeconds + FuelPerRefill * 2f, MaxFuelSeconds);
+            if (_fuelSeconds > before)
+            {
+                Sfx.PlayUI(SfxIds.UiClick);
+                GameEvents.RaiseToast("You pile extra kindling into the heater, extending its warmth further.");
+                UpdateTimerDisplay();
+            }
+        }
+
         private void UpdateLight()
         {
             if (_light != null) _light.enabled = _isOn;
         }
+
+        private void UpdateSmoke()
+        {
+            if (_smoke == null) return;
+            if (_isOn && !_smoke.isPlaying) _smoke.Play();
+            else if (!_isOn && _smoke.isPlaying) _smoke.Stop();
+        }
+
+
         public Vector3 WarmthPosition => transform.position + new Vector3(0f, 0.3f, 0f);
         public float WarmthRadius => 2f;
         public float Warmth => _isOn ? 0.3f : 0f;

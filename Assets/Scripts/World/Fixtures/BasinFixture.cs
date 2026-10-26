@@ -64,7 +64,13 @@ private static readonly string[] WashLines =
                             "Steam rises from the basin like the ghost of a forgotten stove, fleeting and warm.",
                             "You scrub your hands until the suds turn gray with soot, a small battle against the dust.",
                             "The faucet gurgles, echoing the wind outside as you wash away yesterday’s grime.",
-                            "Your fingers tremble under the icy stream, but the clean feeling steadies them."
+                            "Your fingers tremble under the icy stream, but the clean feeling steadies them.",
+                            "The icy splash hits your knuckles, a reminder that the world outside is still a frozen wasteland.",
+                            "A faint whiff of burnt wood drifts from the stove, mixing with the water’s chill as you lather up.",
+                            "Each scrub feels like a quiet rebellion against the silence that the snow has sewn over the house.",
+                            "The basin’s surface shivers under the flow, like a radio humming static before a lost broadcast.",
+                            "Warm suds gather in the corner, a tiny hearth where the cold can’t quite reach.",
+                            "When the water drains, it leaves a thin veil of crystal, a small sanctuary against the encroaching cold."
                         };
 
         private static readonly string[] SipLines =

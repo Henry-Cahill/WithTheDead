@@ -94,22 +94,29 @@ public static bool CanBuy(CharacterProfile c, TraderDef t, TraderOffer o, Player
         /// <summary>Attempts to buy the given offer, updating inventory, stock and trader reputation. Returns success and a message.</summary>
 public static bool Buy(CharacterProfile c, TraderDef t, TraderOffer o, PlayerInventory carried, out string message)
         {
+            // Verify purchase eligibility and obtain failure reason
             if (!CanBuy(c, t, o, carried, out message)) return false;
+            // Deduct money if the offer has a price and ensure the player can afford it
             if (o.Price > 0 && !Money.TrySpend(o.Price, carried)) { message = "Not enough money"; return false; }
+            // Remove required barter items from the player's inventory
             if (o.Barter != null)
                 foreach ((string id, int n) in o.Barter) TakeOwned(id, n, carried);
 
+            // Add purchased item(s) to the player's stash (doesn't check weight limits)
             ItemDef def = ItemDatabase.Get(o.ItemId);
             Inventory stash = ProfileStore.StashInventory;
             int count = Mathf.Max(1, o.Count);
             stash.Add(def, count, enforceWeight: false);
+            // Ensure the trader's stock list exists and decrement the remaining stock for this offer
             TraderState s = c.Trader(t.Id);
             if (s.Stock == null) s.Stock = new List<OfferStock>();
                 OfferStock st = s.Stock.Find(x => x.OfferId == o.Id);
                 if (st == null) { st = new OfferStock { OfferId = o.Id, Left = o.Stock }; s.Stock.Add(st); }
                 st.Left = Mathf.Max(0, st.Left - 1);
+            // Update trader reputation based on money spent (capped to avoid runaway values)
             s.Spent += o.Price;
             s.Rep = Mathf.Clamp(s.Rep + Mathf.Min(0.01f, o.Price / 400000f), -1f, 1f);
+            // Build user‑facing confirmation that the item was added to the stash
             message = "Bought " + def.DisplayName + (count > 1 ? " x" + count : "") + " \u2014 it's in your stash.";
             ProfileStore.Save();
             return true;

@@ -1,0 +1,92 @@
+diff --git a/Assets/Scripts/World/Map/BuildingPass.Special.cs b/Assets/Scripts/World/Map/BuildingPass.Special.cs
+index 14d469df..4ca49dd1 100644
+--- a/Assets/Scripts/World/Map/BuildingPass.Special.cs
++++ b/Assets/Scripts/World/Map/BuildingPass.Special.cs
+@@ -562,6 +562,8 @@ private static void CanopyBuilding(Job j)
+                             j.Upper.Flat(To3(sh.World(u, v), top - 0.85f), 0.9f, 1.6f, yaw + 180f, DecorPalette.Glow(new Color(0.9f, 0.92f, 0.86f)));
+                 int cols = sh.Length > 18f ? 3 : 2, rows = sh.Width > 9f ? 2 : 1;
+                 Surf steel = DecorPalette.Matte(new Color(0.86f, 0.86f, 0.84f));
++// metal for gutters, vents and sign brackets
++Surf metal = DecorPalette.Metal(new Color(0.40f, 0.40f, 0.42f));
+                 for (int a = 0; a < cols; a++)
+                     for (int b = 0; b < rows; b++)
+                     {
+@@ -575,23 +577,45 @@ private static void CanopyBuilding(Job j)
+                         if (j.Lite) continue;
+                         // A pump each side of the post on its island.
+                         for (int s = -1; s <= 1; s += 2)
+-                        {
++
+                             Vector3 pump = To3(sh.World(u + s * 1.3f, v), 0f);
+                             ground.SetFrame(pump, yaw + 90f);
+                             DecorProps.GasPump(ground, rng);
+                             ground.ResetFrame();
+                             if (j.Solid) Collider(j, pump + Vector3.up * 0.9f, new Vector3(1.6f, 1.8f, 1.0f), yaw);
+-                        }
+-                    }
+-                j.Top = top + 0.1f;
+-                if (!j.Scenery)
+-                {
+-                    if (!s_FuelCanopies.TryGetValue(j.Site, out List<Vector2> list))
+-                    {
+-                        list = new List<Vector2>();
+-                        s_FuelCanopies.Add(j.Site, list);
++
+                     }
+-                    list.Add(sh.O);
++                // front gutter: thin metal box tucked under the roof edge
++float gutterY = top - 0.48f; // about 5 cm below roof top
++Vector3 gutterPos = To3(sh.O + (-sh.V) * (w * 0.5f + 0.03f), gutterY);
++// ceiling lamp: low‑profile cylinder with a warm glow
++Surf lampGlow = DecorPalette.Glow(new Color(0.92f, 0.86f, 0.60f));
++Vector3 lampPos = To3(sh.O, top - 0.30f);
++j.Upper.Cylinder(lampPos, 0.08f, 0.20f, 8, lampGlow);
++// front sign board, slightly tilted for visual interest
++float signWidth = l * 0.6f;
++float signHeight = 0.20f;
++float signDepth = 0.10f;
++Vector3 signCenter = To3(sh.O + (-sh.V) * (w * 0.5f + signDepth * 0.5f), top + 0.10f);
++float signYaw = yaw + MapStyle.Unit(j.F.Data.id, SaltCanopy + 11) * 2f; // ±2°
++j.Upper.Box(signCenter, new Vector3(signWidth, signHeight, signDepth), signYaw, white);
++// two vent caps on random corners (front‑left / front‑right)
++int[] cornerIdx = { 0, 1 }; // 0 = front‑left, 1 = front‑right
++for (int ci = 0; ci < 2; ci++)
++{
++    // pick a corner using deterministic randomness
++    int pick = (int)Mathf.FloorToInt(MapStyle.Unit(j.F.Data.id, SaltCanopy + 13 + ci) * 2f);
++    Vector2 corner = sh.O + (-sh.V) * (w * 0.5f) + ((pick == 0) ? -sh.U : sh.U) * (l * 0.5f);
++    Vector3 ventPos = To3(corner, top - 0.35f);
++    j.Upper.Box(ventPos, new Vector3(0.30f, 0.15f, 0.30f), yaw, metal);
++}
++
++if (!s_FuelCanopies.TryGetValue(j.Site, out List<Vector2> list))
++{
++    list = new List<Vector2>();
++    s_FuelCanopies.Add(j.Site, list);
++}
++list.Add(sh.O);
+                 }
+             }
+             else
+@@ -600,6 +624,7 @@ private static void CanopyBuilding(Job j)
+                 Surf post = DecorPalette.Matte(new Color(0.88f, 0.88f, 0.86f));
+                 int along = Mathf.Max(1, Mathf.CeilToInt(sh.Length / 3.2f));
+                 for (int a = 0; a <= along; a++)
++                {
+                     for (int s = -1; s <= 1; s += 2)
+                     {
+                         Vector2 at = sh.World(Mathf.Lerp(-sh.HalfL + 0.1f, sh.HalfL - 0.1f, a / (float)along), s * (sh.HalfW - 0.1f));
+@@ -607,7 +632,12 @@ private static void CanopyBuilding(Job j)
+                         Vector3 c = To3(at, top * 0.5f);
+                         ground.Box(c, size, yaw, post);
+                         if (j.Solid) Collider(j, c, size, yaw);
+-                    }
++                        // snow cap on post when snow is present
++                        if (p.Snow != SnowCover.Bare)
++                        {
++                            j.Upper.Box(To3(at, top + 0.02f), new Vector3(0.12f, 0.04f, 0.12f), yaw, RoofSnow);
++
++
+                 s_OneBlock.Clear();
+                 s_OneBlock.Add(sh.Box);
+                 j.Parts = Parts(j, s_OneBlock);

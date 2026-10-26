@@ -205,8 +205,11 @@ namespace CloneZ
         public bool IsHealthy => LimbHp.Count == 0 && Radiation <= 0f && Diseases.Count == 0 && Blood >= 4999f;
     }
 
+    /// <summary>The survivor's relationship with a trader: rep, loyalty, what was spent, and current stock rotation.</summary>
     [Serializable] public class TraderState { public string Id; public float Rep; public int Spent; public int Loyalty = 1; public long RestockUnix; public List<OfferStock> Stock = new List<OfferStock>(); }
+    /// <summary>How many of a trader's offer remain in stock this rotation.</summary>
     [Serializable] public class OfferStock { public string OfferId; public int Left; }
+    /// <summary>Reputation between the character and a faction.</summary>
     [Serializable] public class FactionRepEntry { public string Faction; public float Rep; }
 
     /// <summary>0 available, 1 active, 2 objectives done (ready to hand in), 3 turned in, 4 failed.</summary>
@@ -221,9 +224,13 @@ namespace CloneZ
         public const int Available = 0, Active = 1, Ready = 2, Done = 3, Failed = 4;
     }
 
+    /// <summary>State of a hideout module: its level and fuel.</summary>
     [Serializable] public class HideoutModuleState { public string Id; public int Level; public float Fuel; }
+    /// <summary>An in-progress craft job ticking down in a hideout module.</summary>
     [Serializable] public class CraftJob { public string RecipeId; public string ModuleId; public long StartUnix; public long DoneUnix; }
+    /// <summary>A hideout animal: what it is, how fed it is, and when it last produced.</summary>
     [Serializable] public class AnimalState { public string Kind; public string Name; public float Fed = 1f; public float Produce; public long LastTickUnix; }
+    /// <summary>Progress reading a skill book.</summary>
     [Serializable] public class SkillBookState { public string BookId; public float Read; public bool Finished; }
 
     /// <summary>Insured gear that will come back from the trader on <see cref="ReturnOnDay"/> unless someone took it.</summary>
@@ -254,6 +261,7 @@ namespace CloneZ
         public bool Opened;
     }
 
+    /// <summary>A listing on the flea market: who sells it, for how much, and when it expires.</summary>
     [Serializable]
     public class FleaListing
     {

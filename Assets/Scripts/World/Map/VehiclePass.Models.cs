@@ -85,6 +85,9 @@ namespace CloneZ
             public float Inset;
         }
 
+        /// <summary>Gets the geometric specifications for a given vehicle body type.</summary>
+        // Returns the dimension set for the vehicle type, used throughout rendering to position parts correctly.
+        // Choose dimensions based on vehicle body type; these specs drive placement of all parts.
         private static Spec SpecOf(CarBody body)
         {
             switch (body)
@@ -181,6 +184,7 @@ namespace CloneZ
         {
             int flat = (wear & CarWear.Flat) != 0 ? rng.Next(4) : -1;
             Surf tyre = burnt ? Mt(Rust) : M(Tyre);
+            // Two wheel positions per axle: left (-1) and right (+1).
             for (int i = 0; i < 4; i++)
             {
                 float side = i % 2 == 0 ? -1f : 1f;
@@ -227,6 +231,7 @@ namespace CloneZ
             // B pillars (and a wagon's or a van's D pillars near the back).
             for (int side = -1; side <= 1; side += 2)
             {
+                // Choose pillar height proportion based on vehicle type (longer for coupes).
                 float t = kind == CarBody.Coupe ? 0.62f : 0.5f;
                 Pillar(m, s, hw0, hw1, y0, y1, side, t, body);
                 if (kind == CarBody.Wagon || kind == CarBody.Suv || kind == CarBody.Minivan) Pillar(m, s, hw0, hw1, y0, y1, side, 0.22f, body);
@@ -244,6 +249,8 @@ namespace CloneZ
         }
 
         // A pickup's bed: rails along its sides and a tailgate, full of snow (or under a camper shell).
+        /// <summary>Draws the pickup bed (rails, tailgate, optional camper shell) and handles snow accumulation.</summary>
+        // Builds the pickup's cargo area: side rails, tailgate, and optionally a camper shell, then adds snow if present.
         private static void Bed(RaidMesh m, in Spec s, in CarLook look, float belt, float clear, in Surf body, in Surf snow)
         {
             float back = -s.L * 0.5f + 0.05f, front = s.Back0 - 0.04f, len = front - back, mid = (front + back) * 0.5f;
@@ -269,11 +276,15 @@ namespace CloneZ
         }
 
         // Bumper, grille and headlights; on a wreck the hood buckled up and the bumper knocked askew.
+        /// <summary>Creates the front end (bumper, grille, headlights) and applies crash deformation if needed.</summary>
+        // Draws bumper, grille and headlights; if the vehicle is crashed, skews parts to suggest impact damage.
+        // Add front bumper, grille and headlights; if the vehicle is crashed we skew them to suggest impact damage.
         private static void Front(RaidMesh m, in Spec s, in CarLook look, float clear, float belt, bool crashed, System.Random rng)
         {
             Surf bumper = look.Chrome ? Mt(Chrome) : M(Trim);
             float z = s.L * 0.5f;
             float grilleY = (clear + belt) * 0.5f + 0.06f, h = belt - clear;
+            // If crashed, randomly offset and tilt bumper and hood to look damaged.
             if (crashed)
             {
                 m.Box(new Vector3(R(rng, -0.1f, 0.1f), clear + 0.08f, z - 0.02f), new Vector3(s.W + 0.03f, 0.16f, 0.14f),
@@ -283,9 +294,13 @@ namespace CloneZ
                 m.Upright(new Vector3(0f, grilleY, z - 0.035f), Vector3.forward, s.W * 0.7f, h * 0.5f, M(new Color(0.08f, 0.08f, 0.08f)));
                 return;
             }
+            // Draw standard bumper, grille and headlights when vehicle is intact.
+            // (No else block needed; this code runs when not crashed.)
             m.Box(new Vector3(0f, clear + 0.13f, z - 0.03f), new Vector3(s.W + 0.03f, 0.16f, 0.14f), bumper);
+            // Add grille and headlights positioned relative to the bumper.
             m.Upright(new Vector3(0f, grilleY, z - 0.04f), Vector3.forward, s.W * 0.46f, h * 0.42f, look.Chrome ? Mt(Chrome * 0.8f) : M(Trim));
             Surf lamp = Gs(new Color(0.72f, 0.72f, 0.66f));
+            // Place two headlamps on either side of the grille.
             for (int side = -1; side <= 1; side += 2)
                 m.Upright(new Vector3(side * s.W * 0.34f, grilleY, z - 0.038f), Vector3.forward, 0.32f, 0.14f, lamp);
         }
@@ -379,6 +394,9 @@ namespace CloneZ
         #region Big vehicles
         // A conventional yellow school bus: hood out front, a long box with its black rub rails and a band of windows,
         // "SCHOOL BUS" over the windscreen and the back door, dual rear wheels, a white roof under the snow.
+        /// <summary>Generates a yellow school bus model with its distinctive shape, windows, and signage.</summary>
+        // Builds a conventional yellow school bus: long box, raised roof, dual rear wheels, signage and snow covering.
+        // Generate a yellow school bus: long box, raised roof, dual rear wheels, signage and snow covering.
         private static Vector3 Bus(RaidMesh m, in CarLook look, System.Random rng)
         {
             const float L = 10.8f, W = 2.44f, H = 3.0f, wheel = 0.5f, clear = 0.42f, front = 3.9f;
@@ -392,6 +410,7 @@ namespace CloneZ
                 {
                     float x = side * (W * 0.5f - 0.16f);
                     m.CylinderX(new Vector3(x, wheel, axles[a]), wheel, 0.28f, 8, tyre);
+                    // Add a second rear wheel for the rear axle (dual wheels).
                     if (a == 1) m.CylinderX(new Vector3(x - side * 0.3f, wheel, axles[a]), wheel, 0.26f, 8, tyre);
                 }
             float boxLen = front + L * 0.5f;

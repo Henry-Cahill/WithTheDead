@@ -1,0 +1,33 @@
+diff --git a/Assets/Scripts/UI/HudRaidOverlay.cs b/Assets/Scripts/UI/HudRaidOverlay.cs
+index dd6cf6c0..8c54c8c5 100644
+--- a/Assets/Scripts/UI/HudRaidOverlay.cs
++++ b/Assets/Scripts/UI/HudRaidOverlay.cs
+@@ -26,6 +26,7 @@ public sealed class HudRaidOverlay
+         private RaidExit _shownExit;
+         private string[] _protectionTexts;
+ 
++        /// <summary>Initialises HUD elements for spawn protection, extraction progress and dawn warning.</summary>
+         public HudRaidOverlay(HudContext ctx, RectTransform root, Transform protectionLayer)
+         {
+             _ctx = ctx;
+@@ -62,17 +63,20 @@ public void Tick(float dt)
+             UpdateDawn(live ? em : null);
+         }
+ 
++        /// <summary>Updates spawn protection overlay visibility and text based on player state.</summary>
+         private void UpdateProtection(ExtractionManager em)
+         {
+             bool on = em != null && em.SpawnProtected && _ctx.Stats != null;
+             if (on)
+             {
++                // Ensure we have a camera reference before positioning the overlay. This avoids null exceptions later when trying to convert world coordinates to screen space.
+                 if (_cam == null) _cam = Camera.main;
+                 on = _cam != null;
+             }
+             if (on)
+             {
+                 Vector3 sp = _cam.WorldToScreenPoint(_ctx.Stats.transform.position + Vector3.up * HeadHeight);
++                // Verify the screen point is in front of the camera and within a reasonable margin of the viewport, so the overlay only appears when the player is visible on screen.
+                 on = sp.z > 0f && sp.x > -50f && sp.x < Screen.width + 50f && sp.y > -20f && sp.y < Screen.height + 20f;
+                 if (on && RectTransformUtility.ScreenPointToLocalPointInRectangle(_root, sp, null, out Vector2 local))
+                     _protection.rectTransform.anchoredPosition = local;

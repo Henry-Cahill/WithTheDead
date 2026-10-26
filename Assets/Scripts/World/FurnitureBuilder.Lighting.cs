@@ -48,9 +48,31 @@ namespace CloneZ
             glow?.Ellipsoid(dome, new Vector3(0.226f, 0.13f, 0.116f), q, Gl(WarmGlow), 12, 6);
             // The bands hug the dome a little above and below its middle.
             Surf band = M(new Color(0.20f, 0.20f, 0.21f));
-            for (int e = -1; e <= 1; e += 2)
-                m.Ellipsoid(dome + Vector3.up * (e * 0.028f), new Vector3(0.215f, 0.012f, 0.112f), q, band, 12, 3);
-            return dome;
+            Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;
+            // vertical bars
+                m.Box(dome + normal * 0.001f + right * 0.06f, new Vector3(0.004f, 0.12f, 0.002f), q, Mt(Chrome));
+                m.Box(dome + normal * 0.001f - right * 0.06f, new Vector3(0.004f, 0.12f, 0.002f), q, Mt(Chrome));
+                // horizontal bars
+                m.Box(dome + normal * 0.001f + Vector3.up * 0.04f, new Vector3(0.12f, 0.004f, 0.002f), q, Mt(Chrome));
+                m.Box(dome + normal * 0.001f - Vector3.up * 0.04f, new Vector3(0.12f, 0.004f, 0.002f), q, Mt(Chrome));
+                // vertical strap
+                m.Box(dome - normal * 0.015f + Vector3.up * -0.06f, new Vector3(0.008f, 0.10f, 0.002f), q, Mt(Chrome));
+                // horizontal flange
+                m.Box(dome - normal * 0.015f + Vector3.up * -0.11f + right * 0.03f,
+                    new Vector3(0.06f, 0.008f, 0.002f), q, Mt(Chrome));
+                // dust film
+                m.Ellipsoid(dome, new Vector3(0.226f, 0.13f, 0.116f), q,
+                    M(new Color(0.93f, 0.93f, 0.90f, 0.20f)), 12, 6);
+                // WARN label
+                Surf warnSign = DecorMaterials.Sign("WARN",
+                    new Color(0.92f, 0.20f, 0.20f), // deep red background
+                    new Color(0.05f, 0.05f, 0.05f), // dark text
+                    out float warnAspect);
+                float warnW = 0.09f; // width in metres
+                m.Upright(dome - normal * 0.018f + right * 0.07f + Vector3.up * -0.08f,
+                    normal, warnW, warnW / warnAspect, warnSign,
+                    new Rect(0f, 0f, 1f, 1f));
+                return dome;
         }
 
         /// <summary>A bathroom vanity light: a frosted tube held out from a chrome backplate between two chrome caps, on the

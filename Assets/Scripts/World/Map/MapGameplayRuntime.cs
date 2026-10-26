@@ -19,6 +19,9 @@ namespace CloneZ
         private const float Interval = 0.5f;
         private const int RewardsPerRaid = 5;
 
+        /// <summary>
+        /// Data representing a tracked landmark.
+        /// </summary>
         private struct Entry
         {
             public string Id, Name;
@@ -33,6 +36,7 @@ namespace CloneZ
         private static readonly HashSet<string> s_Reached = new HashSet<string>();
         private static int s_Rewarded;
         private float _next;
+        private Actor _cachedLocalPlayer;
 
         /// <summary>Forgets every landmark (a new raid's map).</summary>
         internal static void Reset()
@@ -61,30 +65,47 @@ namespace CloneZ
             }
         }
 
+        /// <summary>
+        /// Cached data for a cell's landmarks used in proximity checks.
+        /// </summary>
         private static long Key(Vector3 p) => ((long)Mathf.FloorToInt(p.x / Cell) << 32) | (uint)Mathf.FloorToInt(p.z / Cell);
 
         private void Update()
         {
+            // Skip processing until the next scheduled interval to reduce overhead.
             if (Time.time < _next) return;
+            // Set the next update time based on the defined interval.
             _next = Time.time + Interval;
-            Actor me = Actor.LocalPlayer;
+            // Cache the local player lookup; refresh if null or dead.
+            if (_cachedLocalPlayer == null || !_cachedLocalPlayer.IsAlive)
+            {
+                _cachedLocalPlayer = Actor.LocalPlayer;
+            }
+            Actor me = _cachedLocalPlayer;
             if (me == null || !me.IsAlive) return;
             Vector3 p = me.transform.position;
+            // Convert player position to cell indices for spatial hashing.
             int cx = Mathf.FloorToInt(p.x / Cell), cz = Mathf.FloorToInt(p.z / Cell);
+            // Iterate over the 3×3 grid of cells surrounding the player to catch nearby landmarks.
             for (int z = cz - 1; z <= cz + 1; z++)
                 for (int x = cx - 1; x <= cx + 1; x++)
                 {
+                    // If this cell has no tracked landmarks, skip to the next cell.
                     if (!s_Cells.TryGetValue(((long)x << 32) | (uint)z, out List<Entry> list)) continue;
                     for (int i = 0; i < list.Count; i++)
                     {
                         Entry e = list[i];
                         float dx = e.At.x - p.x, dz = e.At.z - p.z;
+                        // Skip if outside landmark radius or already marked as reached.
                         if (dx * dx + dz * dz > e.Radius * e.Radius || s_Reached.Contains(e.Id)) continue;
                         Reach(e);
                     }
                 }
         }
 
+        /// <summary>
+        /// Information about the player’s location relative to known landmarks.
+        /// </summary>
         private static void Reach(Entry e)
         {
             s_Reached.Add(e.Id);

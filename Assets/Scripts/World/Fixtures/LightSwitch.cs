@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace CloneZ
@@ -18,6 +19,7 @@ namespace CloneZ
         private Vector3 _point, _face, _normal;
         private string[] _circuits;
         private FixturePart[] _toggles;
+        private const float ResetDelay = 0.5f; // seconds the circuit stays off during a reset
         private float _nextSync;
 
         public override string DisplayName => _name;
@@ -81,6 +83,7 @@ namespace CloneZ
                 into.Add(new InteractAction((on ? "Switch off the " : "Switch on the ") + LightCircuits.Noun(circuit), c => Flip(c, circuit, !on)));
                 // Add inspect action without changing state
                 into.Add(new InteractAction("Inspect the " + LightCircuits.Noun(circuit), c => Inspect(c, circuit)));
+                into.Add(new InteractAction("Reset the " + LightCircuits.Noun(circuit) + " circuit", c => ResetCircuit(c, circuit)));
             }
 
             // Toggle all circuits at once: if any are off, turn all on; otherwise turn all off.
@@ -122,33 +125,55 @@ namespace CloneZ
             }
         }
 
-    private void Flip(InteractContext ctx, string circuit, bool on)
-    {
-        LightCircuits.Set(circuit, on);
-        Sync(false);
-        MakeNoise(CloneZConfig.LightSwitchNoise);
-        if (!on) return;
-        if (!PowerGrid.HousePowered)
+        private void Flip(InteractContext ctx, string circuit, bool on)
         {
-            ctx.Notify(LightingFixtures.NothingHappens());
-            return;
+            LightCircuits.Set(circuit, on);
+            Sync(false);
+            MakeNoise(CloneZConfig.LightSwitchNoise);
+            if (!on) return;
+            if (!PowerGrid.HousePowered)
+            {
+                ctx.Notify(LightingFixtures.NothingHappens());
+                return;
+            }
+            // Show lamp count feedback similar to ToggleAll for this circuit.
+            HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);
+            if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
+            else if (lit > 0) return;
+            else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
+            else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now — its sensor waits for dusk.");
         }
-        HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);
-        if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
-        else if (lit > 0) return;
-        else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
-        else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now \u2014 its sensor waits for dusk.");
-    }
 
-    // Inspect a circuit without changing state, showing lamp counts.
-    private void Inspect(InteractContext ctx, string circuit)
-    {
-        HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);
-        if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
-        else if (lit > 0) return;
-        else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
-        else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now \u2014 its sensor waits for dusk.");
-    }
+        private void ResetCircuit(InteractContext ctx, string circuit)
+        {
+            // Remember the circuit's current state so we can restore it after the delay.
+            bool originalOn = LightCircuits.IsOn(circuit);
+            // Turn the circuit off to create the flicker.
+            LightCircuits.Set(circuit, false);
+            Sync(false);
+            MakeNoise(CloneZConfig.LightSwitchNoise);
+            ctx.Notify("You flip the breaker – the lights flicker.");
+            // Schedule restoration after a short pause.
+            StartCoroutine(ResetCoroutine(circuit, originalOn));
+        }
+
+        private IEnumerator ResetCoroutine(string circuit, bool restoreOn)
+        {
+            yield return new WaitForSeconds(ResetDelay);
+            LightCircuits.Set(circuit, restoreOn);
+            Sync(false);
+            // No extra noise here; the restoration is silent.
+        }
+
+        // Inspect a circuit without changing state, showing lamp counts.
+        private void Inspect(InteractContext ctx, string circuit)
+        {
+            HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);
+            if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
+            else if (lit > 0) return;
+            else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
+            else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now — its sensor waits for dusk.");
+        }
 
     // Checks if the house still has power and notifies the survivor.
     private void CheckPower(InteractContext ctx)

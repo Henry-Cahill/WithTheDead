@@ -82,14 +82,17 @@ namespace CloneZ
             UpdateNightVision();
         }
 
+        /// <summary>Refreshes the weapon/hand icon and ammo/readouts based on equipped gear and combat state.</summary>
         private void UpdateWeapon(float dt)
         {
             PlayerInventory inv = _ctx.Inventory;
             PlayerCombat combat = _ctx.Combat;
+            // Prefer the explicitly equipped weapon, but fall back to the equipped firearm if nothing is slotted.
             ItemDef weapon = inv != null ? inv.EquippedWeapon : null;
             ItemDef gun = combat != null ? combat.EquippedFirearm : null;
             if (weapon == null) weapon = gun;
 
+            // Only swap the icon when the hand changes to avoid re-baking sprites every frame.
             if (!_weaponShown || weapon != _weapon)
             {
                 _weaponShown = true;
@@ -98,6 +101,7 @@ namespace CloneZ
                 _weaponIcon.color = weapon != null ? HudUI.Ink : HudUI.WithAlpha(HudUI.Ink, 0.5f);
             }
 
+            // Tools (melee) show wear via condition; charge-based gear uses its own bars elsewhere, so skip here.
             bool showCondition = weapon != null && weapon.IsDamageable && !weapon.UsesCharge && inv != null;
             HudUI.Show(_condRoot, showCondition);
             if (showCondition)
@@ -107,6 +111,7 @@ namespace CloneZ
                 _condFill.color = HudUI.Condition(c);
             }
 
+            // Switching firearms invalidates cached ammo counts so they redraw immediately.
             if (gun != _gun)
             {
                 _gun = gun;
@@ -122,6 +127,7 @@ namespace CloneZ
             }
             if (!_ammo.enabled) _ammo.enabled = true;
 
+            // Show reloading text once and hold it until the state flips back to avoid flicker.
             if (combat.IsReloading)
             {
                 if (!_shownReloading)
@@ -133,6 +139,7 @@ namespace CloneZ
                 return;
             }
 
+            // Reserve counts are looked up via inventory (which may be expensive or change slowly); throttle to 4/s.
             _reserveTimer -= dt;
             if (_reserveTimer <= 0f)
             {
@@ -140,6 +147,7 @@ namespace CloneZ
                 _reserve = inv != null ? inv.AmmoReserve(gun.AmmoId) : 0;
             }
             int loaded = combat.LoadedAmmo;
+            // Only rebuild the label when counts/state change; colour red when the mag is empty to draw attention.
             if (_shownReloading || loaded != _shownLoaded || _reserve != _shownReserve)
             {
                 _shownReloading = false;
@@ -150,39 +158,47 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Refreshes the flashlight slot (on/off glow and battery) based on gear state.</summary>
         private void UpdateLight()
         {
             PlayerGear gear = _ctx.Gear;
             bool has = gear != null && gear.HasFlashlight;
             bool on = has && gear.FlashlightOn;
+            // Map presence+state to a small enum to avoid redundant UI updates when unchanged.
             int state = !has ? 0 : on ? 2 : 1;
             if (state != _lightState)
             {
                 _lightState = state;
                 _lightIcon.enabled = has;
+                // On = bright yellow ring; off but present = idle ring; absent = dim ring.
                 _lightRing.color = state == 2 ? HudUI.WithAlpha(LightOn, 0.9f) : has ? RingIdle : RingEmpty;
                 _lightIcon.color = on ? LightOn : HudUI.WithAlpha(HudUI.Ink, 0.85f);
                 _lightGlow.enabled = on;
                 HudUI.Show(_battRoot, has);
             }
+            // Subtle pulsing glow while lit (unscaledTime so it doesn't freeze in pause menus).
             if (on) _lightGlow.color = HudUI.WithAlpha(LightOn, 0.26f + 0.06f * Mathf.Sin(Time.unscaledTime * 2.2f));
             if (has)
             {
+                // Clamp charge in case of desync between gear state and HUD.
                 float c = Mathf.Clamp01(gear.FlashlightCharge01);
                 _battFill.fillAmount = c;
                 _battFill.color = HudUI.Condition(c);
             }
         }
 
+        /// <summary>Updates the night-vision goggles slot (green glow while active).</summary>
         private void UpdateNightVision()
         {
             PlayerGear gear = _ctx.Gear;
             bool has = gear != null && gear.HasNightVision;
             bool on = has && gear.NightVisionOn;
+            // Map presence+state to a small enum to avoid redundant UI updates when unchanged.
             int state = !has ? 0 : on ? 2 : 1;
             if (state == _nvgState) return;
             _nvgState = state;
             HudUI.Show(_nvgRoot, has);
+            // Tinted green when active, otherwise dimmed to indicate availability without power.
             _nvgIcon.color = on ? NvgOn : HudUI.WithAlpha(HudUI.Ink, 0.8f);
             _nvgRing.color = on ? HudUI.WithAlpha(NvgOn, 0.9f) : RingIdle;
             _nvgGlow.enabled = on;
