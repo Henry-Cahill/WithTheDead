@@ -7,6 +7,8 @@ sentence of its summary. Grep the code for details.
 - CloneZBatch.cs (151) CloneZBatch, SmokeGuard: Entry points for running the editor headless (Unity.exe -batchmode -executeMethod ...): regenerating
 - CutawayShots.cs (67) CutawayShots: The isometric cutaway's harness (see global::CloneZ.CutawayShots), run headless: Unity.exe -batchmod
 - InteriorShots.cs (68) InteriorShots: The interiors' harness (see global::CloneZ.InteriorShots), run headless: Unity.exe -batchmode -proje
+- SoundBoard.cs (213) SoundBoard: WithTheDead ▸ Sound Board: every procedural sound by family, any variation played on the spot (no pl
+- TownShots.cs (69) TownShots: The Introduction town's harness (see global::CloneZ.TownShots), run headless: Unity.exe -batchmode -
 
 ## Assets/Scripts/AI/Creatures
 - CreatureCatalog.cs (165) CreatureLoot, CreatureDef, CreatureCatalog: One line of a carcass's loot: an item id, how many, and the chance it is there at all.
@@ -24,12 +26,39 @@ sentence of its summary. Grep the code for details.
 - Outposts.cs (433) OutpostSystem, Outpost, PdaStashes: Warfare outposts (Gray Zone Warfare's PvEvP): sandbagged positions held by a faction's garrison.
 
 ## Assets/Scripts/Audio
-- AudioDirector.cs (316) AudioModule, ListenerRig, FootstepAudio: Installs the synthesiser as the game's sound backend and wires the sounds no single system owns.
-- Sfx.cs (162) ISfxBackend, Sfx, SfxIds: Produces the clip for a sound id (the procedural synthesiser implements this).
-- SfxSynth.cs (597) SfxSynth, Recipe: Every sound in the game, synthesised in code on first use (there are no audio assets): gunshots with
+- AmbienceDirector.cs (531) AmbienceDirector, Bed, Caller: The sound of the world around the survivor, all of it synthesised.
+- AudioDirector.cs (143) AudioModule, ListenerRig: Installs the synthesiser as the game's sound backend, starts building every sound in the background,
+- AudioJobs.cs (163) AudioJobs, Job, Crew: A small job system for audio rendering: work runs on a couple of low-priority background threads and
+- BodyAudio.cs (115) BodyAudio: The survivor's own body, heard from inside the head: breathing through a gas mask, heavy breathing w
+- Footsteps.cs (897) FootstepAudio, Surface, Ground: Footsteps that sound like what is underfoot, for everything that walks.
+- MusicDirector.cs (980) MusicDirector, Context, Phrase: The score: music that follows what the survivor is going through, rendered in code (MusicScore, Musi
+- Sfx.cs (128) Sfx: The game's sound API: positional one-shots, flat sounds and attached loops by id (see SfxIds).
+- SfxAcoustics.cs (227) SfxAcoustics, Space: The space the survivor stands in, heard.
+- SfxIds.cs (93) SfxBus, SfxMeta, ISfxBackend: The volume buses: each has its own slider in the settings and its own share of ducking.
+- SfxMixer.cs (592) SfxMixer, Voice, Delayed: The mixer behind Sfx.
+- SfxSynth.cs (425) SfxSynth, Recipe, Rendered: Every sound in the game, synthesised in code (there are no audio assets).
+- WeaponAudio.cs (230) WeaponAudio: The sounds of the fight that no single weapon owns.
+- ZombieVoices.cs (354) ZombieVoices, Mouth: The voices of the dead.
 
 ## Assets/Scripts/Audio/Synth
-- SynthCore.cs (989) SynthGen, OnePole, Biquad: The deterministic random source and buffer helpers for one generated sound (one variation of one id)
+- SynthCore.cs (998) SynthGen, OnePole, Biquad: The deterministic random source and buffer helpers for one generated sound (one variation of one id)
+- SynthStereo.cs (296) StereoBuf, Dsp, Tank: A stereo render: two channels of equal length (beds and music; positional sounds stay mono).
+- WavFile.cs (42) WavFile: Writes 16-bit PCM WAV files: the sound board's export and the offline sound tools.
+
+## Assets/Scripts/Audio/Synth/Music
+- MusicKit.cs (867) StringTone, BowTone, MusicKit: How a plucked string sounds: how long it rings, how fast its overtones die, how bright the pluck is,
+- MusicPreview.cs (320) MusicPreview: Offline previews of the score for the sound tools (never called by the game): each layer over a few 
+- MusicRecords.cs (559) MusicRecords, Take: The Kettle's jukebox: four old records — a honky-tonk shuffle, a bluegrass breakdown, a country blue
+- MusicScore.cs (1018) MusicPart, MusicCue, MusicScore: The layers of the score.
+- SfxSynth.Music.cs (233) SfxSynth, MusicStingers, SfxIds: Stepping out into the Zone: a deep drum, a low cello swelling, a banjo climbing D–A–D–E–F and leavin
+
+## Assets/Scripts/Audio/Synth/Recipes
+- SfxSynth.Ambience.cs (2069) SfxSynth, AmbienceKit, Scene: The world around the survivor, all of it synthesised: the weather (wind, rain, the roof overhead, th
+- SfxSynth.Creatures.cs (1944) SfxSynth, CreatureKit, Throat: One throat.
+- SfxSynth.Foley.cs (1367) SfxSynth, FoleyKit, SfxIds: The foley family's building blocks and recipes (pure DSP on the generator; thread-safe).
+- SfxSynth.Footsteps.cs (856) SfxSynth, StepKit, SfxIds: The footstep family's toolbox: contacts, thuds, crunch, pings, splashes, scrapes and squeaks, and th
+- SfxSynth.Weapons.cs (1425) SfxSynth, WeaponKit, Surround: Where transients start: clear of the 1.5 ms fade-in every one-shot gets.
+- SfxSynth.Zone.cs (1882) SfxSynth, ZoneSfx, V8: One cycle of a band-limited wave from harmonic amplitudes (index 0 = the fundamental).
 
 ## Assets/Scripts/Bootstrap
 - GameBootstrapper.cs (663) GameBootstrapper: Builds the entire playable world from code — ground, cover, lighting, the player, the isometric came
