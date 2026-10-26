@@ -348,7 +348,7 @@ namespace CloneZ
                     Vector2 p = m + side * (half * (2f * k / lanes - 1f));
                     int i = Mathf.FloorToInt((p.x - b.HX) / cell), j = Mathf.FloorToInt((p.y - b.HZ) / cell);
                     if (i < 0 || j < 0 || i >= b.HW || j >= b.HH) continue;
-                    if (field[j * b.HW + i] >= need) return true;
+                    if (field[j * b.HW + i] > 0 && field[j * b.HW + i] >= need) return true;
                 }
             }
             return false;
