@@ -418,16 +418,16 @@ namespace CloneZ
                 };
                 _mat = CutoutMaterial(_tex, "StreetNames");
                 _mat.hideFlags = HideFlags.None;
-                var holder = new GameObject("StreetNames");
-                holder.transform.SetParent(site.Town.World, false);
+var holder = new GameObject("StreetNames");
+Transform parent = site.Town != null ? site.Town.World : null;
+holder.transform.SetParent(parent, false);
                 SiteSignAssets assets = holder.AddComponent<SiteSignAssets>();
                 assets.Texture = _tex;
                 assets.Material = _mat;
             }
 
-            /// <summary>Provides the rendering surface for the name atlas using its material.</summary>
-            /// <summary>Provides the rendering surface for the name atlas using its material.</summary>
-            public Surf Surf => new Surf(_mat, Vector2.zero, 0f);
+/// <summary>Provides the rendering surface for the name atlas using its material.</summary>
+public Surf Surf => new Surf(_mat, Vector2.zero, 0f);
 
             /// <summary>A green street-name blade with <paramref name="name"/> (abbreviated, in capitals); its width over
             /// its height in <paramref name="aspect"/>. False when the atlas is full.</summary>
