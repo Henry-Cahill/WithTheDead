@@ -297,12 +297,37 @@ for (int i = 0; i < 4; i++)
             Vector3 n = f.N(side), at = Face(f, side, along, y);
             Surf s = DecorMaterials.Sign(HouseNo, new Color(0.86f, 0.85f, 0.80f), new Color(0.10f, 0.12f, 0.20f), out float aspect);
             float h = 0.1f, w = h * aspect;
+            // thin wooden backing (0.9 × plate size, 0.004 m thick) placed 0.002 m behind the enamel
+            Surf woodBack = DecorPalette.Matte(new Color(0.42f, 0.35f, 0.30f));
+            Vector3 backPos = at + n * 0.002f; // 2 mm inset from wall
+            Vector3 backSize = new Vector3(w * 0.9f + 0.03f, h * 0.9f + 0.03f, 0.004f);
+            m.Box(backPos, backSize, woodBack);
             m.Box(at + n * 0.008f, f.Size(w + 0.03f, h + 0.03f, 0.016f), DecorPalette.Matte(new Color(0.10f, 0.12f, 0.20f)));
-            m.Upright(at + n * 0.0175f, n, w, h, s, new Rect(0f, 0f, 1f, 1f));
+            // metal latch – tiny hinge box + short rod
+            Surf latchMetal = DecorPalette.Metal(new Color(0.08f, 0.08f, 0.09f));
+            Vector3 latchBase = at + n * 0.018f + Vector3.right * (w * 0.5f + 0.005f); // just outside right edge
+            m.Box(latchBase, new Vector3(0.006f, 0.012f, 0.004f), latchMetal); // hinge piece
+                        // rust spot – appears on ~30 % of houses, deterministic via LightVariation
+            float rustChance = LightVariation(at);
+            if (rustChance < 0.70f) // ~30 % probability
+            {
+                Surf rustMat = DecorPalette.Matte(new Color(0.45f, 0.30f, 0.20f));
+                Vector3 rustPos = backPos - n * 0.001f + Vector3.left * (w * 0.35f) + Vector3.down * (h * 0.35f);
+                m.Box(rustPos, new Vector3(0.018f, 0.006f, 0.004f), rustMat);
+            }
+                        // enamel wear line – thin dark strip across the top of the plate
+            Surf wearMat = DecorPalette.Matte(new Color(0.08f, 0.08f, 0.07f));
+            Vector3 wearPos = at + n * 0.009f + Vector3.up * (h * 0.5f + 0.002f);
+            m.Box(wearPos, new Vector3(w + 0.03f, 0.002f, 0.004f), wearMat);
             // tiny dark‑metal screw detail on the house‑number plate
             Vector3 screwPos = at + n * 0.018f + Vector3.up * 0.02f;
             m.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
-            OutdoorHouseNumber.Create(piece.transform, HouseNo, at + n * 0.04f, at, n);
+                        // hanging tag – thin string and small metal tag
+            Surf tagMetal = DecorPalette.Metal(new Color(0.08f, 0.08f, 0.09f));
+            Vector3 tagRoot = at + n * 0.025f + Vector3.up * (h * 0.5f + 0.015f);
+            m.Cylinder(tagRoot, 0.001f, 0.03f, 6, tagMetal); // string
+            Vector3 tagPlate = tagRoot + Vector3.up * 0.032f;
+            m.Box(tagPlate, new Vector3(0.028f, 0.008f, 0.004f), tagMetal); // metal tag
         }
 
         // The house's breaker panel on the store room's west wall: the box drawn into the wall, its door (hinged on the
