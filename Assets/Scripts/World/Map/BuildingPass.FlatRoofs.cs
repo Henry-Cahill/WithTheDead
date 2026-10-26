@@ -299,19 +299,35 @@ namespace CloneZ
             Vector2 at = sh.World(c);
             RaidMesh m = j.Upper;
             Surf wall = p.Curtain ? WallSurf(WallKind.Concrete, 1) : j.WallS;
-            m.Box(To3(at, deck + h * 0.5f), new Vector3(hl * 2f, h, hw * 2f), sh.Yaw, wall);
-            if (!j.Lite)
-            {
-                Surf louvre = DecorPalette.Matte(new Color(0.20f, 0.21f, 0.22f));
-                for (int s = -1; s <= 1; s += 2)
-                    m.Upright(To3(at + sh.V * (s * (hw + 0.01f)), deck + h * 0.72f), To3(sh.V * s, 0f), hl * 1.4f, h * 0.28f, louvre);
-                m.Upright(To3(at + sh.U * (hl + 0.01f), deck + h * 0.4f), To3(sh.U, 0f), 1.0f, 2.1f, DecorPalette.Matte(new Color(0.45f, 0.46f, 0.47f)));
+            Surf metalDetail = DecorPalette.Matte(new Color(0.55f, 0.55f, 0.56f));
+                m.Box(To3(at, deck + h * 0.5f), new Vector3(hl * 2f, h, hw * 2f), sh.Yaw, wall);
+                // Antenna mast – 1.2 m tall, 0.08 m radius, sits on the roof centre.
+                m.Cylinder(To3(at, deck + h + 0.12f), 0.08f, 1.2f, 12, metalDetail);
+                // Dish antenna – 0.4 m wide, 0.05 m thick, mounted on top of the mast.
+                m.Box(To3(at, deck + h + 0.12f + 1.2f + 0.025f), new Vector3(0.4f, 0.05f, 0.3f), sh.Yaw, metalDetail);
+                // Vent stack – 0.15 m radius, 1.0 m tall, positioned near the right edge.
+                Vector2 ventOffset = sh.U * (hl - 0.3f);
+                m.Cylinder(To3(at + ventOffset, deck + 0.2f), 0.15f, 1.0f, 8, metalDetail);
+                // Ladder – three rungs, each 0.02 m high, 0.6 m long, spaced 0.3 m apart.
+                Vector2 ladderBase = sh.U * -(hl - 0.3f);
+                for (int i = 0; i < 3; i++)
+                {
+                    float rungY = deck + h + 0.05f + i * 0.32f;
+                    Vector3 rungPos = To3(at + ladderBase, rungY);
+                    m.Box(rungPos, new Vector3(0.6f, 0.02f, 0.02f), sh.Yaw, metalDetail);
+                }
+                // Weather‑vane / ridge‑vent – thin vertical element at front edge.
+                Vector2 frontDir = (j.P.Front >= 0) ? j.Dir[j.P.Front] : sh.U;
+                Vector2 ventPos2D = at + frontDir * (hl - 0.1f);
+                Vector3 ventPos = To3(ventPos2D, deck + h + 0.02f);
+                m.Box(ventPos, new Vector3(0.04f, 0.3f, 0.04f), sh.Yaw, metalDetail);
+if (snowy)
+                {
+                    // Snow on antenna mast tip.
+                    m.Box(To3(at, deck + h + 0.12f + 1.2f + 0.07f), new Vector3(0.2f, 0.04f, 0.2f), sh.Yaw, RoofSnow);
+                }
+                return Rect.MinMaxRect(c.x - hl, c.y - hw, c.x + hl, c.y + hw);
             }
-            m.Box(To3(at, deck + h + 0.05f), new Vector3(hl * 2f + 0.2f, 0.1f, hw * 2f + 0.2f), sh.Yaw, CopingSurf(p));
-            if (snowy) m.Box(To3(at, deck + h + 0.14f), new Vector3(hl * 2f - 0.12f, 0.1f, hw * 2f - 0.12f), sh.Yaw, RoofSnow);
-            j.Top = Mathf.Max(j.Top, deck + h + 0.2f);
-            return Rect.MinMaxRect(c.x - hl, c.y - hw, c.x + hl, c.y + hw);
-        }
 
         // True when a rectangle of half sides hl (along U) and hw centred at c (frame coordinates) stands inside the
         // footprint with <paramref name="margin"/> to spare.
