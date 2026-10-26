@@ -302,7 +302,7 @@ namespace CloneZ
             {
                 // Skip null entries which may appear after destruction.
                 if (z == null) continue;
-                // Compute squared distance on XZ plane to each survivor to decide if within reach.
+                // Check the zombie's XZ coordinates against each survivor's axis-aligned reach bounds.
                 Vector3 p = z.transform.position;
                 bool near = false;
                 for (int i = 0; i < _survivors.Count && !near; i++)
