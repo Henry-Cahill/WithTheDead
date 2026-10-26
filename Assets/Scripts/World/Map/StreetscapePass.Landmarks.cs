@@ -106,11 +106,14 @@ namespace CloneZ
                  float ladderX = 0.55f; // offset from centre, metres
                  float ladderHeight = legTop; // top of the legs
                  // right rail
-                 low.Cylinder(foot + new Vector3(ladderX, 0f, 0f), 0.025f, ladderHeight, 8, dark);
-                 // left rail
-                 low.Cylinder(foot + new Vector3(-ladderX, 0f, 0f), 0.025f, ladderHeight, 8, dark);
+                 low.Cylinder(new Vector3(ladderX, 0f, 0f), 0.025f, ladderHeight, 8, dark);
+                 low.Cylinder(new Vector3(-ladderX, 0f, 0f), 0.025f, ladderHeight, 8, dark);
                  int rungCount = Mathf.FloorToInt(ladderHeight / 0.5f);
                  for (int i = 1; i <= rungCount; i++)
+                 {
+                     float y = i * 0.5f;
+                     low.Box(new Vector3(-ladderX, y, 0f), new Vector3(ladderX * 2f, 0.02f, 0.02f), RustSurf);
+                 }
                  {
                      float y = i * 0.5f;
                      low.Box(foot + new Vector3(-ladderX, y, 0f), new Vector3(ladderX*2f, 0.02f, 0.02f), RustSurf);
