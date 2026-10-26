@@ -55,6 +55,9 @@ namespace CloneZ
         public bool IsLying => _lying;
         /// <summary>True once the body has (mostly) settled onto a seat.</summary>
         public bool IsSitting => _sitW > 0.5f;
+        /// <summary>The stride cycle's phase in radians, 2π a stride: the left heel strikes near π/2 and the right near
+        /// 3π/2 (a crawler's palms land near 0 and π). Read-only; the footstep audio times its steps from it.</summary>
+        public float GaitPhase => _phase;
 
         private const int BoneCount = HumanoidProportions.BoneCount;
         private const int Hips = 0, Spine = 1, Chest = 2, Neck = 3, HeadB = 4;

@@ -31,6 +31,7 @@ namespace CloneZ
         private float _verticalVelocity;
         private float _groundY;
         private float _footstepTimer;
+        private float _fallSpeed, _airborneAt;   // for the landing sound
         private Plane _groundPlane; // cached plane at the player’s current Y position
 
         /// <summary>Where the survivor aims: the ground under the cursor (isometric), or the first solid
@@ -317,6 +318,7 @@ namespace CloneZ
 
             Vector3 velocity = worldMove * speed + Vector3.up * _verticalVelocity;
             if (_controller.enabled) _controller.Move(velocity * Time.deltaTime);
+            TrackLanding();
 
             KeepInsideArena();
             EmitFootsteps(moving, wantSprint);
@@ -350,8 +352,26 @@ namespace CloneZ
             _footstepTimer = interval;
         }
 
-        /// <summary>Raised on every footstep of the survivor (sprinting, sneaking) — the audio plays steps from it.</summary>
+        /// <summary>Raised on every footstep of the survivor (sprinting, sneaking) — the AI hears it; the audio follows the
+        /// body's stride instead and falls back to this when there is no animated body.</summary>
         public event System.Action<bool, bool> Footstep;
+
+        /// <summary>Raised when the survivor touches down after a drop, with how fast they hit the ground (m/s) — for the audio.</summary>
+        public event System.Action<float> Landed;
+
+        // Touching down after falling faster than a stumble off a kerb (sound only; no gameplay rides on it).
+        private void TrackLanding()
+        {
+            if (!_controller.enabled) { _fallSpeed = 0f; return; }
+            if (!_controller.isGrounded)
+            {
+                _fallSpeed = Mathf.Max(_fallSpeed, -_verticalVelocity);
+                _airborneAt = Time.time;
+                return;
+            }
+            if (_fallSpeed > 4.5f && Time.time - _airborneAt < 0.2f) Landed?.Invoke(_fallSpeed);
+            _fallSpeed = 0f;
+        }
 
         private void FaceAim()
         {
