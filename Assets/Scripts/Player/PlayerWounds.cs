@@ -123,6 +123,43 @@ namespace CloneZ
         public bool PainkillersActive => _painkillerTimer > 0f;
 
         // Raw timer readouts, captured/restored by the save system.
+        // Cached wound‑state booleans – updated when the wound list changes.
+        private bool _cachedNeedsBandage;
+        private bool _cachedCanBandage;
+        private bool _cachedCanDisinfect;
+        private bool _cachedHasInfectedWound;
+        private bool _cachedHasHeavyBleed;
+        private int _cachedTourniquetsOn;
+        // Recalculates the cached wound state flags.
+        private void UpdateWoundCaches()
+        {
+            _cachedNeedsBandage = false;
+            _cachedCanBandage = false;
+            _cachedCanDisinfect = false;
+            _cachedHasInfectedWound = false;
+            _cachedHasHeavyBleed = false;
+            _cachedTourniquetsOn = 0;
+            for (int i = 0; i < _wounds.Count; i++)
+            {
+                var w = _wounds[i];
+                // NeedsBandage / IsBleeding
+                if (w.Bleeding && !w.Bandaged) _cachedNeedsBandage = true;
+                // CanBandage logic
+                if (!w.IsHeavy)
+                {
+                    if (!w.Bandaged) _cachedCanBandage = true;
+                    else if (w.Bandaged && !w.CleanBandage && !w.Infected) _cachedCanBandage = true;
+                }
+                // CanDisinfect logic
+                if (!w.Infected && !w.Disinfected && !(w.Bandaged && w.CleanBandage)) _cachedCanDisinfect = true;
+                // Infection
+                if (w.Infected) _cachedHasInfectedWound = true;
+                // Heavy bleed present
+                if (w.IsHeavy && w.Bleeding) _cachedHasHeavyBleed = true;
+                // Tourniquet count
+                if (w.Tourniquet) _cachedTourniquetsOn++;
+            }
+        }
         /// <summary>Current antibiotic timer value (seconds of coverage).</summary>
         public float AntibioticTimer => _antibioticTimer;
         /// <summary>Current painkiller timer value (seconds remaining).</summary>
@@ -130,60 +167,19 @@ namespace CloneZ
         /// <summary>Current painkiller relief fraction (0..1).</summary>
         public float PainkillerRelief => _painkillerRelief;
 
-        public bool IsBleeding
-        {
-            get
-            {
-                for (int i = 0; i < _wounds.Count; i++)
-                    if (_wounds[i].Bleeding && !_wounds[i].Bandaged) return true;
-                return false;
-            }
-        }
+        public bool IsBleeding => _cachedNeedsBandage;
 
         /// <summary>True when any wound is bleeding (used by UI to show bandage hint).</summary>
-        public bool NeedsBandage => IsBleeding;
+        public bool NeedsBandage => _cachedNeedsBandage;
 
         /// <summary>True when any wound is infected.</summary>
-        public bool HasInfectedWound
-        {
-            get
-            {
-                for (int i = 0; i < _wounds.Count; i++)
-                    if (_wounds[i].Infected) return true;
-                return false;
-            }
-        }
+        public bool HasInfectedWound => _cachedHasInfectedWound;
 
         /// <summary>True when a bandage would help — an undressed wound, or a dirty rag to replace.</summary>
-        public bool CanBandage
-        {
-            get
-            {
-                for (int i = 0; i < _wounds.Count; i++)
-                {
-                    Wound w = _wounds[i];
-                    // Heavy bleeds cannot be treated with a simple bandage; they require a tourniquet or haemostatic gauze.
-                    if (w.IsHeavy) continue;
-                    if (!w.Bandaged) return true;
-                    if (w.Bandaged && !w.CleanBandage && !w.Infected) return true;
-                }
-                return false;
-            }
-        }
+        public bool CanBandage => _cachedCanBandage;
 
         /// <summary>True when a wound is open/dirty enough to benefit from disinfectant.</summary>
-        public bool CanDisinfect
-        {
-            get
-            {
-                for (int i = 0; i < _wounds.Count; i++)
-                {
-                    Wound w = _wounds[i];
-                    if (!w.Infected && !w.Disinfected && !(w.Bandaged && w.CleanBandage)) return true;
-                }
-                return false;
-            }
-        }
+        public bool CanDisinfect => _cachedCanDisinfect;
 
         private void Awake() {
     _stats = GetComponent<PlayerStats>();
@@ -240,6 +236,7 @@ namespace CloneZ
             }
             w.Prone = w.Prone && Random.value >= PlayerModifiers.Current.InfectionResist;
             _wounds.Add(w);
+            UpdateWoundCaches();
             // A fresh wound spikes pain immediately.
             _stats.Pain = Mathf.Min(CloneZConfig.PainMax, _stats.Pain + w.BasePain * 0.5f);
             return w;
@@ -254,14 +251,7 @@ namespace CloneZ
         }
 
         /// <summary>True when a heavy bleed exists on a limb that can be tourniquetted.</summary>
-        public bool HasHeavyBleed
-        {
-            get
-            {
-                for (int i = 0; i < _wounds.Count; i++) if (_wounds[i].IsHeavy && _wounds[i].Bleeding) return true;
-                return false;
-            }
-        }
+        public bool HasHeavyBleed => _cachedHasHeavyBleed;
 
         /// <summary>Holds the worst heavy limb bleed with a tourniquet (limbs only). False when none needs one.</summary>
         public bool ApplyTourniquet()
@@ -270,10 +260,11 @@ namespace CloneZ
             {
                 Wound w = _wounds[i];
                 if (!w.IsHeavy || !w.Bleeding || !(BodyZones.IsArm(w.Zone) || BodyZones.IsLeg(w.Zone))) continue;
-                w.Tourniquet = true;
-                w.Bleeding = false;
-                w.Bandaged = true;
-                return true;
+            w.Tourniquet = true;
+            w.Bleeding = false;
+            w.Bandaged = true;
+            UpdateWoundCaches();
+            return true;
             }
             return false;
         }
@@ -285,11 +276,12 @@ namespace CloneZ
             {
                 Wound w = _wounds[i];
                 if (w.Type != WoundType.HeavyBleed || !w.Bleeding) continue;
-                w.Bleeding = false;
-                w.Bandaged = true;
-                w.CleanBandage = true;
-                w.Tourniquet = false;
-                return true;
+            w.Bleeding = false;
+            w.Bandaged = true;
+            w.CleanBandage = true;
+            w.Tourniquet = false;
+            UpdateWoundCaches();
+            return true;
             }
             return false;
         }
@@ -301,11 +293,12 @@ namespace CloneZ
             {
                 Wound w = _wounds[i];
                 if (!w.NeedsStitches) continue;
-                w.NeedsStitches = false;
-                w.Bleeding = false;
-                w.Bandaged = true;
-                _stats.Pain = Mathf.Min(CloneZConfig.PainMax, _stats.Pain + 25f);
-                return true;
+            w.NeedsStitches = false;
+            w.Bleeding = false;
+            w.Bandaged = true;
+            _stats.Pain = Mathf.Min(CloneZConfig.PainMax, _stats.Pain + 25f);
+            UpdateWoundCaches();
+            return true;
             }
             return false;
         }
@@ -317,23 +310,16 @@ namespace CloneZ
             {
                 Wound w = _wounds[i];
                 if (!w.Lodged) continue;
-                w.Lodged = false;
-                _stats.Pain = Mathf.Min(CloneZConfig.PainMax, _stats.Pain + 12f);
-                return true;
+            w.Lodged = false;
+            _stats.Pain = Mathf.Min(CloneZConfig.PainMax, _stats.Pain + 12f);
+            UpdateWoundCaches();
+            return true;
             }
             return false;
         }
 
         /// <summary>Wounds on zones where a tourniquet is still on (the limb slowly suffers for it).</summary>
-        public int TourniquetsOn
-        {
-            get
-            {
-                int n = 0;
-                for (int i = 0; i < _wounds.Count; i++) if (_wounds[i].Tourniquet) n++;
-                return n;
-            }
-        }
+        public int TourniquetsOn => _cachedTourniquetsOn;
 
         /// <summary>Rebuilds the wound list and medical timers from a saved game.</summary>
         public void LoadState(List<WoundSave> saved, float antibioticTimer, float painkillerTimer, float relief)
@@ -366,6 +352,7 @@ namespace CloneZ
             _antibioticTimer = Mathf.Max(0f, antibioticTimer);
             _painkillerTimer = Mathf.Max(0f, painkillerTimer);
             _painkillerRelief = Mathf.Clamp01(relief);
+            UpdateWoundCaches();
         }
 
         private void Update()
@@ -438,8 +425,10 @@ namespace CloneZ
                 if (w.Lodged) p += 8f;
                 painTarget += p;
             }
+            // Update cached wound state after any removals/healing.
+            UpdateWoundCaches();
 
-                        if (healthDrain > 0f) _stats.Bleed(healthDrain * _cachedBleedMult * dt);
+            if (healthDrain > 0f) _stats.Bleed(healthDrain * _cachedBleedMult * dt);
 
             // Pain spikes quickly but ebbs slowly; painkillers blunt what you feel.
             painTarget = Mathf.Min(CloneZConfig.PainMax, painTarget) * (1f - _painkillerRelief) * (1f - Mathf.Clamp01(PlayerModifiers.Current.PainResist));
@@ -468,6 +457,7 @@ private float healMult => PlayerModifiers.Current.HealRate * (_skills != null ? 
             w.CleanBandage = sterile;
             w.Bleeding = false;
             if (sterile) w.Sepsis = Mathf.Max(0f, w.Sepsis - CloneZConfig.BandageSepsisReduction);
+            UpdateWoundCaches();
             return true;
         }
 
@@ -480,10 +470,11 @@ private float healMult => PlayerModifiers.Current.HealRate * (_skills != null ? 
                 Wound w = _wounds[i];
                 // Skip anything already infected (needs antibiotics) or already kept clean.
                 if (w.Infected || w.Disinfected || (w.Bandaged && w.CleanBandage)) continue;
-                w.Disinfected = true;
-                w.Sepsis = Mathf.Max(0f, w.Sepsis - CloneZConfig.BandageSepsisReduction);
-                did = true;
+            w.Disinfected = true;
+            w.Sepsis = Mathf.Max(0f, w.Sepsis - CloneZConfig.BandageSepsisReduction);
+            did = true;
             }
+            UpdateWoundCaches();
             return did;
         }
 
@@ -515,6 +506,7 @@ private float healMult => PlayerModifiers.Current.HealRate * (_skills != null ? 
             w.Disinfected = true;
             w.Sepsis = 0f;
             w.HealSeconds = Mathf.Min(w.HealSeconds, CloneZConfig.FirstAidHealSeconds);
+            UpdateWoundCaches();
             return true;
         }
         #endregion

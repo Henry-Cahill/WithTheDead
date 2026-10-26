@@ -576,6 +576,18 @@ PlayerGearParts.Box(root, "FrontWearScratch", new Vector3(0f, lidY + 0.04f, lidZ
             float standOff = _mask.Def != null && _mask.Def.Gear == GearKind.GasMask ? 0.03f : 0f;
             Transform root = Root(_goggles, HumanBone.Head, "Gear_NightVision");
             PlayerGearParts.Band(root, "HeadStrap", new Vector3(0f, 1.775f, -0.024f), 0.092f, 0.107f, 0.016f, Quaternion.Euler(-10f, 0f, 0f), web);
+Material hardware = CloneZUtil.Mat(Hardware, 0.4f);
+// Battery pack – a small metal box on the strap
+PlayerGearParts.Box(root, "BatteryBox", new Vector3(0.04f, 1.795f, -0.024f), new Vector3(0.032f, 0.022f, 0.016f), hardware);
+var switchObj = PlayerGearParts.Box(root, "BatterySwitch", new Vector3(0.04f, 1.795f, -0.016f), new Vector3(0.006f, 0.008f, 0.004f), hardware);
+for (int i = 0; i < 2; i++)
+{
+    float xOffset = -0.006f + i * 0.012f;
+    PlayerGearParts.Box(root, $"BatteryVent{i}", new Vector3(0.04f + xOffset, 1.805f, -0.034f), new Vector3(0.008f, 0.002f, 0.001f), hardware);
+}
+PlayerGearParts.Box(root, "BatteryLabel", new Vector3(0.074f, 1.795f, -0.028f), new Vector3(0.014f, 0.008f, 0.001f), hardware);
+var strapWearMat = CloneZUtil.Mat(HumanoidLook.Shade(TorchColor, 0.55f), 0.2f);
+PlayerGearParts.Box(root, "StrapWear", new Vector3(0.024f, 1.78f, -0.020f), new Vector3(0.036f, 0.003f, 0.001f), strapWearMat);
             PlayerGearParts.Box(root, "Mount", new Vector3(0f, 1.787f, 0.094f + standOff * 0.4f), new Vector3(0.042f, 0.042f, 0.02f),
                 Quaternion.Euler(-14f, 0f, 0f), dark);
 

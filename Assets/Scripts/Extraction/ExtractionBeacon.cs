@@ -156,15 +156,22 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Creates a child GameObject with a mesh and returns its transform for a beacon part.</summary>
         private Transform MakePart(string name, Mesh mesh, Vector3 localPos, out MeshRenderer renderer)
         {
+            // Create a dedicated GameObject for this beacon component.
             var go = new GameObject(name);
+            // Attach it to the beacon root without inheriting scaling.
             Transform t = go.transform;
             t.SetParent(_root, false);
+            // Position the part relative to the root as requested.
             t.localPosition = localPos;
+            // Attach the mesh data so the part has geometry.
             go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            // Add a renderer and configure it to use the shared glow material.
             renderer = go.AddComponent<MeshRenderer>();
             renderer.sharedMaterial = GlowMaterial();
+            // Disable shadows and probe usage because the beacon is purely visual.
             renderer.shadowCastingMode = ShadowCastingMode.Off;
             renderer.receiveShadows = false;
             renderer.lightProbeUsage = LightProbeUsage.Off;
@@ -295,11 +302,14 @@ namespace CloneZ
 
         // A vertical quad (XY plane) for the light column: bright core, soft halo either side, fading out
         // toward the top. Turned to face the camera about the vertical axis each frame.
+        /// <summary>Creates a vertical quad mesh for the beacon's light column, with a bright core and soft halo that taper off towards the top.</summary>
         private static Mesh BeamMesh()
         {
             if (s_BeamMesh != null) return s_BeamMesh;
+            // Define horizontal offsets (xs) and their per‑vertex alpha falloff (xa) for the beam shape.
             float[] xs = { -1f, -0.2f, 0f, 0.2f, 1f };
             float[] xa = { 0f, 0.3f, 1f, 0.3f, 0f };
+            // Define vertical positions (ys) and corresponding alpha scaling (ya) to shape the column's taper.
             float[] ys = { 0f, 1.2f, 5f, 14f, 30f, BeamHeight };
             float[] ya = { 0.6f, 1f, 0.8f, 0.5f, 0.22f, 0f };
 
@@ -307,6 +317,7 @@ namespace CloneZ
             var verts = new Vector3[cols * rows];
             var colors = new Color[verts.Length];
             var uvs = new Vector2[verts.Length];
+            // Populate vertex buffer: position, per‑vertex color (alpha) and UVs for texture mapping.
             for (int j = 0; j < rows; j++)
                 for (int i = 0; i < cols; i++)
                 {
@@ -318,6 +329,7 @@ namespace CloneZ
 
             var tris = new int[(cols - 1) * (rows - 1) * 6];
             int n = 0;
+            // Build index buffer for quad strips connecting adjacent rows and columns.
             for (int j = 0; j < rows - 1; j++)
                 for (int i = 0; i < cols - 1; i++)
                 {
@@ -345,13 +357,16 @@ namespace CloneZ
 
         // Concentric rings of vertices (radius + alpha each) joined into a fan/annulus, white with the
         // given alphas. Flat on the ground (XZ) or upright (XY).
+        /// <summary>Builds a concentric‑ring mesh used for the exit ring and glow disc, optionally laying flat on the ground.</summary>
         private static Mesh BuildRadialMesh(string name, float[] radii, float[] alphas, int segments, bool flatOnGround)
         {
+            // Number of concentric rings (including centre) defines mesh resolution.
             int rings = radii.Length;
             var verts = new Vector3[rings * segments];
             var colors = new Color[verts.Length];
             var uvs = new Vector2[verts.Length];
             float maxR = Mathf.Max(0.001f, radii[rings - 1]);
+            // Generate vertices for each ring and segment, positioning them in the chosen plane and assigning per‑ring alpha.
             for (int k = 0; k < rings; k++)
             {
                 float r = Mathf.Max(0f, radii[k]);
@@ -368,6 +383,7 @@ namespace CloneZ
 
             var tris = new int[(rings - 1) * segments * 6];
             int n = 0;
+            // Connect each pair of adjacent rings with quads (two triangles) to form the annulus.
             for (int k = 0; k < rings - 1; k++)
                 for (int s = 0; s < segments; s++)
                 {

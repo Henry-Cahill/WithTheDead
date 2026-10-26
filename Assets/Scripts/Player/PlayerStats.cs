@@ -105,20 +105,20 @@ public float SicknessMoveMultiplier =>
         public Vector3 LastHitFrom { get; private set; }
         public float LastHitTime { get; private set; } = -1f;
 
-        private PlayerSkills _skills;
-        private PlayerSkills Skills => _skills != null ? _skills : (_skills = GetComponent<PlayerSkills>());
+        private PlayerSkills _cachedSkills;
+        private PlayerSkills Skills => _cachedSkills;
 
-        private PlayerWounds _wounds;
-        private PlayerWounds Wounds => _wounds != null ? _wounds : (_wounds = GetComponent<PlayerWounds>());
+        private PlayerWounds _cachedWounds;
+        private PlayerWounds Wounds => _cachedWounds;
 
-        private PlayerClothing _clothing;
-        private PlayerClothing Clothing => _clothing != null ? _clothing : (_clothing = GetComponent<PlayerClothing>());
+        private PlayerClothing _cachedClothing;
+        private PlayerClothing Clothing => _cachedClothing;
 
-        private PlayerLimbs _limbs;
-        private PlayerLimbs Limbs => _limbs != null ? _limbs : (_limbs = GetComponent<PlayerLimbs>());
+        private PlayerLimbs _cachedLimbs;
+        private PlayerLimbs Limbs => _cachedLimbs;
 
-        private PlayerBlood _blood;
-        private PlayerBlood BloodPool => _blood != null ? _blood : (_blood = GetComponent<PlayerBlood>());
+        private PlayerBlood _cachedBlood;
+        private PlayerBlood BloodPool => _cachedBlood;
 
         private StatMods _cachedMods;
         private SandboxSettings _cachedSandbox;
@@ -129,6 +129,11 @@ public float SicknessMoveMultiplier =>
         {
             _cachedMods = PlayerModifiers.Current;
             _cachedSandbox = SandboxSettings.Current;
+            _cachedSkills = GetComponent<PlayerSkills>();
+            _cachedWounds = GetComponent<PlayerWounds>();
+            _cachedClothing = GetComponent<PlayerClothing>();
+            _cachedLimbs = GetComponent<PlayerLimbs>();
+            _cachedBlood = GetComponent<PlayerBlood>();
         }
 
         private void Update()

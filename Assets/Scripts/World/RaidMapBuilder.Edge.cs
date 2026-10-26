@@ -142,10 +142,18 @@ namespace CloneZ
                 Prop(_town, new Vector3(-EdgeLine + 0.4f, 0f, 0f), 90f, new Vector3(len, 1.1f, 0.3f), true, (m, r) =>
                 {
                     Surf wood = DecorPalette.Matte(new Color(0.40f, 0.32f, 0.22f));
-                    for (int i = 0; i <= 3; i++) m.Box(new Vector3(-len * 0.5f + len * i / 3f, 0.55f, 0f), new Vector3(0.14f, 1.1f, 0.14f), wood);
-                    m.Box(new Vector3(0f, 0.95f, 0f), new Vector3(len, 0.14f, 0.08f), wood);
-                    m.Box(new Vector3(0f, 0.55f, 0f), new Vector3(len, 0.14f, 0.08f), wood);
-                    m.Box(new Vector3(0f, 1.04f, 0f), new Vector3(len - 0.1f, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
+for (int i = 0; i <= 3; i++) m.Box(new Vector3(-len * 0.5f + len * i / 3f, 0.55f, 0f), new Vector3(0.14f, 1.1f, 0.14f), wood);
+                     // Metal brackets along the top edge
+                     Surf metal = DecorPalette.Metal(new Color(0.30f, 0.28f, 0.25f));
+                     for (int b = 0; b <= 2; b++)
+                     {
+                         // size 0.06 m × 0.10 m × 0.05 m, positioned 0.05 m above the planks
+                         m.Box(new Vector3(-len * 0.5f + len * b / 2f, 1.05f, 0f),
+                               new Vector3(0.06f, 0.10f, 0.05f), metal);
+                     }
+                     m.Box(new Vector3(0f, 0.95f, 0f), new Vector3(len, 0.14f, 0.08f), wood);
+                     m.Box(new Vector3(0f, 0.55f, 0f), new Vector3(len, 0.14f, 0.08f), wood);
+                     m.Box(new Vector3(0f, 1.04f, 0f), new Vector3(len - 0.1f, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
                 });
                 Sign(new Vector3(-65f, 0f, -DepotRd.Outer - 1.2f), 0f, "BOAT DOCK", new Color(0.16f, 0.24f, 0.30f), new Color(0.86f, 0.86f, 0.80f), 0.4f, 1.2f);
                 RaidMesh d = _town.Out.Solid(new Vector3(-68f, 0f, 0f));

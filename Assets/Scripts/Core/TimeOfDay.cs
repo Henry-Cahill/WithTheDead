@@ -68,8 +68,11 @@ namespace CloneZ
         private WeatherSystem _weather;
         private Camera _cam;
         private string _clockTextCached;
-        private string _clock12Cached;
-        private bool _clockDirty = true;
+private string _clock12Cached;
+private bool _clockDirty = true;
+private System.DateTime _dateCached;
+private string _dateTextCached;
+private bool _dateDirty = true;
         // Updates cached formatted time strings.
         private void UpdateClockCache()
         {
@@ -80,6 +83,14 @@ namespace CloneZ
             int h12 = h % 12 == 0 ? 12 : h % 12;
             _clock12Cached = string.Format("{0:00}:{1:00}", h12, m);
             _clockDirty = false;
+        }
+
+        // Updates cached formatted date strings and DateTime.
+        private void UpdateDateCache()
+        {
+            _dateCached = new System.DateTime(Year, StartMonth, StartDayOfMonth).AddDays(Mathf.Max(0, Day - 1));
+            _dateTextCached = _dateCached.Month + "/" + _dateCached.Day;
+            _dateDirty = false;
         }
 
 
@@ -101,6 +112,7 @@ namespace CloneZ
         public void Configure(float startHour, float dayLengthSeconds, int startMonth, int startDayOfMonth)
         {
             Day = 1;
+            _dateDirty = true;
             Hour = Mathf.Repeat(startHour, 24f);
             _clockDirty = true;
             DayLengthSeconds = Mathf.Max(1f, dayLengthSeconds);
@@ -126,7 +138,7 @@ namespace CloneZ
         {
             float hoursPerSecond = 24f / Mathf.Max(1f, DayLengthSeconds);
             Hour += hoursPerSecond * TimeScale * dt;
-            while (Hour >= 24f) { Hour -= 24f; Day++; }
+            while (Hour >= 24f) { Hour -= 24f; Day++; _dateDirty = true; }
             _clockDirty = true;
         }
 
@@ -136,6 +148,7 @@ namespace CloneZ
             Day = Mathf.Max(1, day);
             Hour = Mathf.Repeat(hour, 24f);
             _clockDirty = true;
+            _dateDirty = true;
             Apply();
         }
 
@@ -203,15 +216,22 @@ namespace CloneZ
         public string AmPm => Hour < 12f ? "AM" : "PM";
 
         /// <summary>Today's calendar date (Day 1 is the configured start date).</summary>
-        public System.DateTime Date => new System.DateTime(Year, StartMonth, StartDayOfMonth).AddDays(Mathf.Max(0, Day - 1));
+        public System.DateTime Date
+        {
+            get
+            {
+                if (_dateDirty) UpdateDateCache();
+                return _dateCached;
+            }
+        }
 
         /// <summary>Month/day as a digital watch shows it, e.g. "12/17".</summary>
         public string DateText
         {
             get
             {
-                System.DateTime d = Date;
-                return d.Month + "/" + d.Day;
+                if (_dateDirty) UpdateDateCache();
+                return _dateTextCached;
             }
         }
     }

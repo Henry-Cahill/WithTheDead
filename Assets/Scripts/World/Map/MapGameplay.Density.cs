@@ -32,6 +32,8 @@ namespace CloneZ
         // What each site added to the cells' households, so a piece built again replaces its share instead of adding it twice.
         private static readonly Dictionary<long, List<KeyValuePair<long, float>>> s_SiteUnits = new Dictionary<long, List<KeyValuePair<long, float>>>();
         private static object s_DensityEpoch;
+        private const float k_MinLightSpacing = 12f; // metres between lights on the densest roads
+        private static readonly GameObject k_StreetLightPrototype;
 
         // The map's frame: the start place's grid point is the world's origin; the build's places, sorted into 8 km cells
         // (the big ones, whose pull reaches farther, also apart).

@@ -22,27 +22,38 @@ namespace CloneZ
         private static readonly List<(float at, float face)> s_Rows = new List<(float at, float face)>(16);
         private static readonly float[] s_Along = new float[4], s_Amount = new float[4];
 
+        /// <summary>
+        /// Generates ground features for parking lots: draws the plowed edge band and, depending on detail level,
+        /// creates stall rows or their packed‑snow representation.
+        /// </summary>
         private static IEnumerable<string> Lots(Ground g)
         {
             bool any = false;
+            // Track whether any parking lot was processed; used later to exit early if none found
             foreach (Owner o in g.Owners)
+                // Iterate over owners in the main ground square; only consider visible parking lots.
                 if (o.Kind == "parking" && o.Visible > 20f)
                 {
                     PlowedEdge(g, o, g.Square, g.Site.Town.Out);
                     any = true;
+                    // Yield a step token if the engine expects incremental processing.
                     if (g.Site.StepDue) yield return "lots";
                 }
             for (int b = 0; b < g.Ring.Count; b++)
+                // Process parking lots that lie in outer ring bands (farther from the player).
                 foreach (Owner o in g.Ring[b])
                     if (o.Kind == "parking" && o.Visible > 20f)
                     {
                         PlowedEdge(g, o, RingBand(g, b), g.Site.Town.Far);
+                        // Draw the packed‑snow representation of stall rows for distant lots.
                         PackedRows(g, o, RingBand(g, b));
                     }
+            // No parking lots processed; stop further work.
             if (!any) yield break;
             foreach (Owner o in g.Owners)
             {
                 if (o.Kind != "parking" || o.Visible <= 20f) continue;
+                // For detailed view, generate stall rows; otherwise just packed‑snow rows.
                 if (g.Lite) PackedRows(g, o, g.Square);
                 else
                     foreach (string step in StallRows(g, o)) yield return step;
@@ -51,31 +62,43 @@ namespace CloneZ
 
         // The snow the plow pushed off the lot: a ragged band along its mapped edges (the road pass draws over it where
         // a street or a drive comes in).
+        /// <summary>
+        /// Draws the ragged snow band left by the plow along the parking lot's perimeter.
+        /// Handles both closed polygons (no explicit border start) and open shapes.
+        /// </summary>
         private static void PlowedEdge(Ground g, Owner o, Rect domain, OutdoorBatches into)
         {
             List<Vector2> p = o.Pts;
             int n = p.Count, start = -1;
+            // Find the first edge that lies on the lot's border within the domain; start will be its index.
+            // If none found the polygon is considered closed.
             for (int k = 0; k < n && start < 0; k++)
                 if (OnBorder(p[k], p[(k + 1) % n], domain)) start = k;
+            // True when the lot's outline forms a closed loop.
             bool closed = start < 0;
+            // Edge width varies with map style; SaltLotEdge adds subtle random variation.
             float width = 1.0f + 0.8f * MapStyle.Unit(o.Id, SaltLotEdge);
             var chain = new List<Vector2>();
             var normals = new List<Vector2>();
+            // Iterate over each edge, starting just after the found border edge, wrapping around.
             for (int s = 0; s <= n; s++)
             {
                 int k = (start + 1 + s) % n;
+                // Collect consecutive border edges into a chain for processing.
                 if (s < n && !OnBorder(p[k], p[(k + 1) % n], domain))
                 {
                     if (chain.Count == 0) chain.Add(p[k]);
                     Densify(chain, p[(k + 1) % n], 2f);
                     continue;
                 }
+                // When we reach a non‑border edge (or loop end) and have a chain, compute normals and inner offsets.
                 if (chain.Count >= 2)
                 {
                     Normals(chain, normals);
                     var inner = new float[chain.Count];
                     for (int i = 0; i < chain.Count; i++)
                         inner[i] = width * (0.5f + 0.9f * WorldNoise(g.World(chain[i]), 4f, SaltLotEdge)) * Taper(chain, i, domain, closed);
+                    // Emit the final strip geometry for this border segment.
                     Strip(into, chain, normals, inner, null, DecalY, SnowSurf);
                 }
                 chain.Clear();

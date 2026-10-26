@@ -44,6 +44,7 @@ namespace CloneZ
         public static readonly List<ModuleDef> Modules = new List<ModuleDef>();
         public static readonly List<Recipe> Recipes = new List<Recipe>();
 
+        /// <summary>Initialises all hideout modules, their levels, and crafting recipes.</summary>
         static Hideout()
         {
             ModuleDef gen = M("generator", "Generator", "Powers the workbench, lab, medstation and data farm. Burns fuel.", false);
@@ -329,6 +330,12 @@ namespace CloneZ
             notes.Add("The fire in the heater sputters, casting trembling shadows on the walls.");
             notes.Add("Your breath fogs in the cold air as you step deeper into the hideout.");
             notes.Add("A faint radio crackles, playing static‑filled war news from distant towns.");
+            notes.Add("A creaking door shudders in the bitter wind, as if something unseen nudges it.");
+            notes.Add("The old wooden floorboards sigh under the weight of the snow‑drifted night.");
+            notes.Add("A distant train horn moans, its echo swallowed by the valley's frozen silence.");
+            notes.Add("Marta the goat low‑barks, the sound muffled by a thin layer of frost on her horns.");
+            notes.Add("A yellowed newspaper clutched to a beam bears the headline: \"Cold Front Cuts Power Across County\".");
+            notes.Add("A hand‑written warning scrawls on the wall: \"Do not feed the hens after dark – they’ll peck your boots\".");
             if (notes.Count > 0) ProfileStore.Save();
             return notes;
         }

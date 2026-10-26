@@ -301,6 +301,7 @@ namespace CloneZ
             return blocked;
         }
 
+        /// <summary>Breaks the door, disabling its lock and making it permanently open.</summary>
         private void SetBroken(InteractContext ctx)
         {
             if (_broken) return;
@@ -332,19 +333,30 @@ namespace CloneZ
             ctx.Notify("The handle turns, but the door won't budge \u2014 it's locked from the inside.");
         }
 
+        /// <summary>Peeks through the door's peephole, reporting any dead zombies visible from the lock side.
+        /// Uses the Lookout system to count visible zombies within range, handling darkness and proximity.
+        /// </summary>
         // An eye to the peephole: the dead out on the street, as far as the light allows and where nothing hides them.
         private void Peep(InteractContext ctx)
         {
+            // Determine outward direction opposite the lock side (lockSide is positive side index)
             Vector3 outward = _normal * -_lockSide;
+            // Get effective range for peeping and whether it's dark; dark influences description.
             float range = Lookout.Range(CloneZConfig.DoorPeepRange, out bool dark);
+            // Position of the eye slightly above the door and offset outward for proper line of sight.
             Vector3 eye = _point + Vector3.up * 0.5f + outward * 0.16f;
+            // Count zombies seen from eye towards the door within range; also get distance to nearest.
             int n = Lookout.Count(eye, _point, outward, range, out float nearest);
             string seen;
+            // No zombies seen: report darkness or clear street.
             if (n == 0) seen = dark ? "It's dark out there \u2014 nothing moves that you can make out." : "The street is clear.";
+            // Some seen and the nearest is within doorstep range: emphasize immediate threat.
             else if (nearest <= CloneZConfig.DoorDoorstepRange)
                 seen = n == 1 ? "One of the dead is right outside the door!"
                     : Lookout.Capitalised(Lookout.Number(n)) + " of the dead out front \u2014 one right on the doorstep!";
+            // Otherwise report count of zombies at a distance.
             else seen = n == 1 ? "You count one of the dead out front." : "You count " + Lookout.Number(n) + " of the dead out front.";
+            // If it's dark and there were zombies, hint that more may be hidden.
             if (dark && n > 0) seen += " There may be more in the dark.";
             ctx.Notify(seen);
         }
@@ -360,6 +372,7 @@ namespace CloneZ
                 : "You rap on the door. The sound carries \u2014 anything nearby will have heard it.");
         }
 
+        /// <summary>Listens at the door, reporting any nearby zombie footstep sounds within peep range.</summary>
         private void Listen(InteractContext ctx)
         {
             // Use the same range as the peephole view; hearing is plausible through a thin door.
