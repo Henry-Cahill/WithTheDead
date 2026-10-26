@@ -38,6 +38,11 @@ namespace CloneZ
         private const string GrandmaLettuce = "Grandma’s scribbled tip: “Wrap lettuce in damp cloth, keep it crisp longer in the freezer’s cold belly.”";
         private const string CoalStoveWarning = "Keep the coal stove’s fire low after dark – a runaway blaze will melt the roof before the sunrise.";
         private const string HiddenCache = "A crumpled map tucked under a tin can: “Old barn north of the creek, stash buried beneath the oak. – J.”";
+            private const string NeighborLetter = "Letter from the next‑door family: “We left cans of beans in the pantry – take what you need, we’ll manage later.”";
+            private const string DampLogs = "Margie’s reminder scrawled on a torn card: “Check the wood pile – damp logs won’t keep a fire going.”";
+            private const string Prayer = "A faded prayer scratched into the wall: “Lord, keep us warm and safe till the thaw comes.”";
+            private const string MapFragment = "A torn map fragment tucked under a rusted spoon: “Old mill road – may hold supplies beyond the creek.”";
+            private const string RadioSchedule = "Old radio schedule clipped from a newspaper: “6 am sunrise broadcast – ‘Keep the fire low, the night brings wolves.’”";
         // Kitchen note themes: winter hardship, heirloom cooking tips, fire‑safety advice, and a hidden‑supply hint.
         private static readonly string[] KitchenNotes = new[] {
             FrostyMorning,
@@ -48,7 +53,12 @@ namespace CloneZ
             SnowboundCough,
             GrandmaLettuce,
             CoalStoveWarning,
-            HiddenCache
+            HiddenCache,
+            NeighborLetter,
+            DampLogs,
+            Prayer,
+            MapFragment,
+            RadioSchedule
         };
 
         private static readonly Vector3 PointLocal = new Vector3(FurnitureBuilder.SinkBowlX, FurnitureBuilder.SinkDeckY + 0.01f, FurnitureBuilder.SinkBowlZ);
