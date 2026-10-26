@@ -220,8 +220,42 @@ namespace CloneZ
             }
             m.Box(new Vector3(0f, 1.72f, -0.97f), new Vector3(0.9f, 0.04f, 0.04f), M(frame));
             m.Box(new Vector3(0f, 1.72f, 0.97f), new Vector3(0.9f, 0.04f, 0.04f), M(frame));
-            for (int r = 0; r < 4; r++) m.Box(new Vector3(0.43f, 0.6f + r * 0.25f, 0.97f), new Vector3(0.04f, 0.03f, 0.04f), M(frame));
-        }
+for (int r = 0; r < 4; r++) m.Box(new Vector3(0.43f, 0.6f + r * 0.25f, 0.97f), new Vector3(0.04f, 0.03f, 0.04f), M(frame));
+            // Ladder side rails – thin steel cylinders attached to the left outer column of the upper bunk
+            float ladderYCenter = (0.38f + 1.28f) * 0.5f; // 0.83 m
+            float ladderHeight = 1.28f - 0.38f; // 0.90 m
+            // left rail, slightly offset outward from the existing column at x = -0.48f
+            m.Cylinder(new Vector3(-0.48f, ladderYCenter, 0.9f), 0.008f, ladderHeight, 6, Mt(Steel));
+            // right rail, mirroring the left rail
+            m.Cylinder(new Vector3(-0.38f, ladderYCenter, 0.9f), 0.008f, ladderHeight, 6, Mt(Steel));
+            // Ladder rungs – evenly spaced between rails
+            int rungCount = 6;
+            float rungSpacing = ladderHeight / (rungCount + 1);
+            for (int i = 0; i < rungCount; i++)
+            {
+                float y = 0.38f + rungSpacing * (i + 1);
+                m.Box(new Vector3(-0.43f, y, 0.9f), new Vector3(0.1f, 0.018f, 0.018f), Mt(Steel));
+            }
+            // Corner rivets – small brass cylinders at each vertical frame post corner (8 total)
+            Vector3[] rivetPositions = new[] {
+                new Vector3(-0.43f, 0.05f, -0.97f), new Vector3(-0.43f, 0.05f, 0.97f),
+                new Vector3( 0.43f, 0.05f, -0.97f), new Vector3( 0.43f, 0.05f, 0.97f),
+                new Vector3(-0.43f, 1.28f, -0.97f), new Vector3(-0.43f, 1.28f, 0.97f),
+                new Vector3( 0.43f, 1.28f, -0.97f), new Vector3( 0.43f, 1.28f, 0.97f)
+            };
+            foreach (var pos in rivetPositions)
+                m.Cylinder(pos, 0.006f, 0.02f, 6, Mt(Brass));
+            // Diagonal brace between the two upper columns
+            Vector3 braceStart = new Vector3(-0.43f, 1.28f, -0.97f);
+            Vector3 braceEnd = new Vector3( 0.43f, 1.28f, 0.97f);
+            Vector3 braceCenter = (braceStart + braceEnd) * 0.5f;
+            Vector3 braceDir = (braceEnd - braceStart).normalized;
+            float braceLength = Vector3.Distance(braceStart, braceEnd);
+            Quaternion braceRot = Quaternion.FromToRotation(Vector3.up, braceDir);
+            m.Box(braceCenter, new Vector3(0.02f, braceLength, 0.02f), braceRot, M(frame));
+            // Foot‑plate for ladder stability
+            m.Box(new Vector3(-0.43f, 0.07f, 0.9f), new Vector3(0.18f, 0.02f, 0.04f), Mt(Steel));
+            }
 
         /// <summary>A two-door wooden wardrobe (1.0 wide, 0.58 deep, 1.95 high), sometimes ajar.</summary>
         public static void Wardrobe(RaidMesh m, System.Random rng, Color wood)
