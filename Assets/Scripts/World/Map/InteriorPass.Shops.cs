@@ -1,5 +1,5 @@
 using UnityEngine;
-using static CloneZ.KentuckyMap;
+using static CloneZ.SignDrawer;
 
 namespace CloneZ
 {
@@ -24,6 +24,7 @@ namespace CloneZ
                 float pref = door == 1 || door == 2 ? 0.85f : 0.15f;
                 if (c.Wall(side, len, 0.72f, 1.4f, pref, out RaidBuilding.Place counter) || c.Wall(RoomCtx.Opposite(side), len, 0.72f, 1.4f, pref, out counter))
                     Checkout(c, counter, len);
+                ShopSign(c, door, counter, len);
             }
             switch (use)
             {
@@ -330,9 +331,20 @@ namespace CloneZ
             StorageFixture.Create(t, "Checkout counter", Interactable.KeyFor("register", t.position), f.P(len * 0.2f, 0.7f, 0.39f), null, t, b.Rng.Next(), under);
         }
 
-        // A double-sided gondola: its stock searchable while the room's loot budget lasts (one face stocked, the other picked
-        // over), else plain shelving.
-        /// <summary>Creates a double‑sided gondola shelf, stocked on one side if resources allow.</summary>
+        // Places a simple wooden “Shop” sign above the storefront entrance.
+        // The sign width follows the door width and the text uses the building’s name when available.
+        private static void ShopSign(RoomCtx c, int frontSide, RaidBuilding.Place p, float doorWidth)
+        {
+            // Position the sign a short distance out from the wall and a little above head height.
+            // Use the wall’s centre (p.X/Z) and raise Y by ~2.0 m.
+            var signPos = new RaidBuilding.Place(p.X, p.Z, 0f);
+            // Width of the sign matches the door width (clamped for visual niceness).
+            float signWidth = Mathf.Clamp(doorWidth, 1.2f, 2.4f);
+            // Use the building’s fixture body to create the geometry (same pattern as other props).
+            c.B.Furnish(c.R, signPos, new Vector3(signWidth, 0.04f, 0.01f), true,
+                (m, r) => SignDrawer.Draw(m, r, c.Plan.Name ?? "Shop", new Vector3(0f, 2.0f, 0f), signWidth), "Shop sign");
+        }
+
         private static void Gondola(RoomCtx c, RaidBuilding.Place p, float len, bool frontStocked)
         {
             RaidBuilding b = c.B;
