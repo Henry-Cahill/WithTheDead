@@ -129,7 +129,7 @@ documentation worker is on duty:
   as the night's other work lands.
 
 When no documentation worker is left on duty, the others take documentation tasks again. A documentation worker uses
-`NIGHTSHIFT_HELPER_MODEL`, like the other helpers.
+`NIGHTSHIFT_HELPER_MODEL` (when that's empty, `NIGHTSHIFT_MODEL`), like the other helpers.
 
 **Comments only.** `NIGHTSHIFT_DOCS_WORKERS=all` makes every worker, the Spark included, a documentation worker, so
 the night shift writes comments and nothing else: the planner writes only documentation tasks (`docs` and `explain` in
