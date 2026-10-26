@@ -1,13 +1,15 @@
 # Night Shift
 
-Local AI coding agents that work through [tasks.md](tasks.md) overnight (and into the day, until you stop them),
-so WithTheDead gets built while you sleep without spending cloud AI tokens. The models run in Ollama on the DGX Spark
-(`qwen3.8` and `gpt-oss:120b`),
-[OpenCode](https://opencode.ai) is the agent, and everything runs on your own machines:
+AI coding agents that work through [tasks.md](tasks.md) overnight (and into the day, until you stop them),
+so WithTheDead gets built while you sleep. [OpenCode](https://opencode.ai) is the agent. Its model is Big Pickle
+(`opencode/big-pickle`), a free model in OpenCode's cloud, until the network's free allowance runs out; then the rest of
+the night runs on `gpt-oss:120b` in Ollama on the DGX Spark, which spends no cloud tokens (see [Models](#models)).
+Everything else runs on your own machines:
 
-- **The Spark** runs the model and the coordinator, inside the AI Workbench project container. In AI
+- **The Spark** runs the coordinator and the local model, inside the AI Workbench project container. In AI
   Workbench it is the **night-shift** toggle under *Applications*.
-- **Helper machines** (optional) run extra agents in parallel. They use the Spark's model over the LAN and
+- **Helper machines** (optional) run extra agents in parallel. They use the same model (the Spark's, over the LAN,
+  once the night is on the local one) and
   do their own compile checks, so more tasks get done per night. They can be Linux or Windows (see
   [Windows helpers](#windows-helpers)); a helper can also be set to work through the documentation tasks only, and so
   can every worker, so the night shift writes nothing but comments (see [Documentation workers](#documentation-workers)).
@@ -72,7 +74,7 @@ fewer are waiting than there are workers plus two. It takes the focus areas in `
 | `docs` | missing `/// <summary>` comments on public members (a fixed task; no model needed; see [Documentation workers](#documentation-workers)) |
 | `explain` | code no comment explains: methods with 12 or more lines of code and no comment inside (or 25 in a row without one), and methods and types with no comment above them. The task names them with their lines (a fixed task; no model needed) |
 
-For each task it picks the script that fits the focus and was shown least recently, shows it whole to the local model
+For each task it picks the script that fits the focus and was shown least recently, shows it whole to the planner's model
 (`NIGHTSHIFT_AUTOPLAN_MODEL`, by default the helpers' model, which runs beside the agents) with
 [LESSONS.md](memory/LESSONS.md), and queues the task it writes under `### Auto-planned <date>` in tasks.md, but only
 if the task names that script, mentions no file that doesn't exist or that agents may not touch, calls no method
@@ -127,7 +129,7 @@ documentation worker is on duty:
   as the night's other work lands.
 
 When no documentation worker is left on duty, the others take documentation tasks again. A documentation worker uses
-`NIGHTSHIFT_HELPER_MODEL`, like the other helpers.
+`NIGHTSHIFT_HELPER_MODEL` (when that's empty, `NIGHTSHIFT_MODEL`), like the other helpers.
 
 **Comments only.** `NIGHTSHIFT_DOCS_WORKERS=all` makes every worker, the Spark included, a documentation worker, so
 the night shift writes comments and nothing else: the planner writes only documentation tasks (`docs` and `explain` in
@@ -229,7 +231,7 @@ head of the branch's merged pull request.
    `nightshift/<date>` and switches to it. It commits the queue and refreshes
    `memory/PROJECT_MAP.md`, and checks that the project compiles before anything changes.
 2. Each worker (the Spark itself in `/tmp`, and every helper in `~/clonez-nightshift`) takes the next
-   unchecked task and gets the latest commit. It runs `opencode run` with the local model, then runs
+   unchecked task and gets the latest commit. It runs `opencode run` with the night's model, then runs
    [check.sh](check.sh) and gives the agent up to two rounds to fix compile errors before committing.
 3. The coordinator lands each result on the night's branch one at a time, compiles everything again and
    ticks the task off. If two tasks collide, the later one goes back in the queue once to be redone on
@@ -250,13 +252,33 @@ refuses to push anything under `.state/` or `.unityrefs/`, or anything that look
 
 [nightshift.env](nightshift.env) sets the models, the stop time (empty: keep going until stopped), the time
 limit per task, the number of fix rounds, auto-planning, which models take only small tasks and which workers take
-only documentation tasks. It's read at every start. The Spark's own agent uses `qwen3.8`, and the helpers use
-`gpt-oss:120b`: Ollama serves `qwen3.8` one request at a time, so helpers on it would only wait their turn,
-while `gpt-oss:120b` runs several at once (and is about twice as fast).
+only documentation tasks. It's read at every start.
+
+### Models
+
+A model named `opencode/<id>` is one of OpenCode's own, run in its cloud; any other name is a model in Ollama on the
+Spark. The agents and the planner use Big Pickle (`NIGHTSHIFT_MODEL=opencode/big-pickle`; `NIGHTSHIFT_HELPER_MODEL`
+is empty, so the helpers use it too). Big Pickle can't run in Ollama: OpenCode hasn't published its weights, and the
+model behind the name changes from time to time. What that means:
+
+- **The project's code goes to OpenCode.** Each agent sends the scripts it reads, and the planner the script it plans
+  for, to OpenCode's cloud. During Big Pickle's free period, OpenCode may use that data to improve the model.
+- **The allowance is small.** OpenCode's free models answer only OpenCode itself, and OpenCode doesn't publish their
+  allowance (third parties measure a few hundred requests a day per network). A task takes dozens, since every step
+  the agent takes is a request, and OpenCode used on other machines on the network likely counts too. OpenCode Go
+  doesn't include Big Pickle, so subscribing doesn't raise the limit.
+- **When it runs out**, OpenCode keeps retrying without a word, so the night shift watches OpenCode's error log: the
+  agent stops at once, its task goes back in the queue (the try doesn't count against it), and every worker and the
+  planner switch to `NIGHTSHIFT_FALLBACK_MODEL` (`gpt-oss:120b`) for the rest of the night. The report and the log
+  say when and why. If Big Pickle doesn't answer when the night starts, the night starts on the fallback. With
+  `NIGHTSHIFT_FALLBACK_MODEL` empty, the workers on Big Pickle stop instead.
+- **Local only** again: set `NIGHTSHIFT_MODEL=gpt-oss:120b` (and `NIGHTSHIFT_HELPER_MODEL`, as you like). Ollama serves
+  `qwen3.8` one request at a time, so helpers on it would only wait their turn, while `gpt-oss:120b` runs several at
+  once (and is about twice as fast).
 
 Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (compile the project as it is),
 `state` (one line of JSON that `NightShift.ps1 pr` reads), `plan` (write one task with the planner now) and `chat`
-(OpenCode in a terminal with the same local model, for interactive work in JupyterLab's terminal).
+(OpenCode in a terminal with the same model, for interactive work in JupyterLab's terminal).
 
 ## Troubleshooting
 
@@ -265,6 +287,10 @@ Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (co
   auto-planning on, `idle: waiting for the planner's next task` means the planner is writing one; lines starting
   `planner:` say what it queued or why it skipped a script.
 - **"Unity's reference assemblies aren't on the Spark"**: run `.\NightShift.ps1 refs` on this PC.
+- **"opencode/big-pickle stopped answering (Free usage limit reached)"**: Big Pickle's free allowance has run out for
+  now (OpenCode gives the same answer to a request that offers no tools, which the night shift never sends). The
+  night carries on with `NIGHTSHIFT_FALLBACK_MODEL`, and the next start tries Big Pickle again. To leave more of the
+  allowance for the night shift, use something else in OpenCode on this network during the day.
 - **"the project doesn't compile before any changes"**: the branch the Workbench project is on doesn't
   compile; fix it (or switch branch) first. Errors that only appear on the Spark usually mean the
   references are stale; rerun `refs`.
@@ -304,4 +330,4 @@ they do not connect to the Spark or GitHub. `Tools/NightShift/tests/Helpers.Test
 
 The coordinator's tests (the planner, task routing and the helpers' commands) run on Linux or Windows:
 `python3 -m unittest discover -s Tools/NightShift/tests -p "test_*.py"` (`python` on Windows). They use a fake model,
-fake ssh and temporary folders. On Windows, which has no `fcntl`, tasks.md is locked within the process only.
+fake OpenCode, fake ssh and temporary folders. On Windows, which has no `fcntl`, tasks.md is locked within the process only.

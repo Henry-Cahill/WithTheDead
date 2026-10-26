@@ -52,6 +52,10 @@ namespace CloneZ
         /// <summary>Current cloudiness level, 0..1.</summary>
         public float Cloudiness { get; private set; }      // 0..1
 
+        /// <summary>Raised on each lightning strike of a thunderstorm. While anything listens (the ambience director:
+        /// its flash of light and the thunder that follows), the flash is theirs; otherwise the sky lights up here.</summary>
+        public static event System.Action Lightning;
+
         private float _targetPrecip, _targetFog, _targetCloud;
         private float _cachedFog = -1f; // cache last fog intensity to avoid redundant RenderSettings updates
         private float _stateTimer;
@@ -369,7 +373,8 @@ namespace CloneZ
                 if (_flashTimer <= 0f)
                 {
                     _flashTimer = Random.Range(4f, 11f);
-                    StartCoroutine(Flash());
+                    if (Lightning != null) Lightning();
+                    else StartCoroutine(Flash());
                 }
             }
         }

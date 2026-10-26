@@ -239,7 +239,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             {
                 _headlightsOn = !_headlightsOn;
                 UpdateHeadlights();
-                Sfx.Play(SfxIds.Crank, transform.position, 0.3f, 1f, 10f);
+                Sfx.Play(SfxIds.CarSwitch, transform.position + Vector3.up * 0.9f, 0.6f, Random.Range(0.95f, 1.05f), 8f);
                 GameEvents.RaiseToast(_headlightsOn ? "Headlights on." : "Headlights off.");
             }).DisabledIf(!Battery, "No battery"));
             float work = ctx.Skills != null ? 1f / ctx.Skills.MechanicsMult : 1f;
@@ -340,6 +340,7 @@ public void Enter(PlayerStats who)
         {
             if (who == null || Driver != null || RemoteDriver != ulong.MaxValue) return;
             Driver = who;
+            Door();
             var d = who.gameObject.AddComponent<VehicleDriver>();
             d.Begin(this);
             _rb.isKinematic = true;
@@ -352,6 +353,7 @@ public void Exit()
             if (Driver == null) return;
             EngineOn = false;
             UpdateEngineFx();
+            Door();
             Speed = 0f;
             Driver = null;
             VehicleNet.Claim(this, false);
@@ -371,7 +373,7 @@ public bool TryStart(out string why)
             else if (!Hotwired && (Driver == null || Driver.GetComponent<PlayerInventory>() == null || !Driver.GetComponent<PlayerInventory>().Has("carkey"))) why = "No key — it needs hotwiring.";
             if (why != null)
             {
-                Sfx.Play(SfxIds.EngineStartFail, transform.position, 0.9f, 1f, 30f);
+                Sfx.Play(SfxIds.EngineStartFail, transform.position, 0.9f, Random.Range(0.96f, 1.04f), 40f);
                 if (Battery) Charge = Mathf.Max(0f, Charge - 0.04f);
                 return false;
             }
@@ -390,11 +392,24 @@ public bool TryStart(out string why)
         private void UpdateEngineFx()
         {
             if (_lights != null) foreach (Light l in _lights) if (l != null) l.intensity = EngineOn ? 2.2f : 0f;
-            if (EngineOn && _engine == null) _engine = Sfx.Loop(SfxIds.EngineLoop, transform, 0.9f, 70f);
-            else if (!EngineOn && _engine != null) { Sfx.Stop(_engine); _engine = null; }
+            if (EngineOn && _engine == null)
+            {
+                // It cranks, catches and settles; the idle loop rises under the settle.
+                Sfx.Play(SfxIds.EngineStart, transform.position, 0.9f, 1f, 45f);
+                _engine = Sfx.Loop(SfxIds.EngineLoop, transform, 0f, 90f, 0.7f);
+                if (_engine != null) Sfx.FadeTo(_engine, 0.9f, 2f);
+            }
+            else if (!EngineOn && _engine != null)
+            {
+                Sfx.Play(SfxIds.EngineStop, transform.position, 0.9f, 1f, 45f);
+                Sfx.FadeTo(_engine, 0f, 0.2f, true);
+                _engine = null;
+            }
             // ensure headlights follow the current toggle
             UpdateHeadlights();
         }
+
+        private void Door() => Sfx.Play(SfxIds.CarDoor, transform.position + Vector3.up * 0.9f, 0.9f, Random.Range(0.95f, 1.05f), 20f);
 
         private void OnDestroy() { if (_engine != null) Sfx.Stop(_engine); }
 
@@ -443,7 +458,7 @@ public void Drive(float throttle, float steer, bool brake, float dt)
                 Wheels--;
                 Tyres = 0.7f;
                 RefreshParts();
-                Sfx.Play(SfxIds.Ricochet, transform.position, 1f, 0.5f, 40f);
+                Sfx.Play(SfxIds.TyreBurst, transform.position, 1f, Random.Range(0.94f, 1.06f), 60f);
                 GameEvents.RaiseToast("A tyre bursts. You'll need another wheel.");
                 Changed();
             }
@@ -538,6 +553,7 @@ public void PushRemote(Vector3 pos, float yaw, float speed, bool engine)
         /// <summary>Update the remote driver's seat status, handling disconnection and engine state.</summary>
 public void RemoteSeat(ulong who)
         {
+            if (who != RemoteDriver) Door();
             RemoteDriver = who;
             if (who == ulong.MaxValue && EngineOn) { EngineOn = false; UpdateEngineFx(); }
         }

@@ -226,7 +226,7 @@ namespace CloneZ
             if (noisy)
             {
                 MakeNoise(CloneZConfig.FixtureNoiseDoor);
-                Sfx.Play(open ? SfxIds.DoorOpen : SfxIds.DoorClose, transform.position + Vector3.up * 1.2f, 0.75f, UnityEngine.Random.Range(0.92f, 1.08f), 22f);
+                Sfx.Play(open ? SfxIds.DoorOpen : SfxIds.DoorClose, transform.position + Vector3.up * 1.2f, 0.75f, UnityEngine.Random.Range(0.92f, 1.08f), 30f);
             }
         }
 
@@ -309,7 +309,7 @@ namespace CloneZ
             _lockSide = 0;
             Apply(false);
             PartsChanged();
-            Sfx.Play(SfxIds.DoorBash, transform.position + Vector3.up * 1.2f, 0.75f, UnityEngine.Random.Range(0.92f, 1.08f), 22f);
+            Sfx.Play(SfxIds.DoorBash, transform.position + Vector3.up * 1.2f, 0.85f, UnityEngine.Random.Range(0.92f, 1.08f), 36f);
             ctx.Notify("You slam the door hard; the lock snaps and the door is now broken.");
         }
 
@@ -320,12 +320,15 @@ namespace CloneZ
             if (_lockSide == 0 || _locked == locked || (locked && (_open || LockFault != null))) return;
             _locked = locked;
             if (ctx == null) return;
+            // A deadbolt's heavier clack, or a little slide bolt's lighter one.
+            Sfx.Play(SfxIds.DoorBolt, _point, 0.7f, _deadbolt ? UnityEngine.Random.Range(0.86f, 0.93f) : UnityEngine.Random.Range(1.1f, 1.2f), 14f);
             if (_deadbolt) ctx.Notify(locked ? "You turn the deadbolt. The " + _noun + " is locked." : "You draw back the deadbolt.");
             else ctx.Notify(locked ? "You slide the little bolt across. The " + _noun + " is locked." : "You slide the bolt back.");
         }
         private void Rattle(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.DoorRattleNoise);
+            Sfx.Play(SfxIds.DoorLocked, _point, 0.7f, UnityEngine.Random.Range(0.94f, 1.06f), 16f);
             ctx.Notify("The handle turns, but the door won't budge \u2014 it's locked from the inside.");
         }
 
@@ -350,6 +353,7 @@ namespace CloneZ
         private void Knock(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.DoorKnockNoise);
+            Sfx.Play(SfxIds.DoorKnock, _point, 0.85f, UnityEngine.Random.Range(0.95f, 1.05f), 30f);
             Subtitles.Show(_name, "Knock, knock, knock.", KnockCaption, 2.5f);
             bool farSide = _lockSide != 0 && SideOf(ctx.Position, _point, _normal) != _lockSide;
             ctx.Notify(farSide ? "You knock. Nobody answers \u2014 nobody living, anyway."

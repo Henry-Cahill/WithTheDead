@@ -137,14 +137,85 @@ namespace CloneZ
         private void Start()
         {
             _nextLine = Time.time + 4f + (float)_rng.NextDouble() * 10f;
-            if (Kind == Role.Musician) _music = Sfx.Loop(SfxIds.Guitar, transform, 0.55f, 14f);
+            // You walk in on the musician mid-set.
+            if (Kind == Role.Musician) _setLeft = Random.Range(150f, 360f);
             if (_anim != null) _anim.Snap();
         }
 
         private void OnDestroy() { if (_music != null) Sfx.Stop(_music); }
 
+        #region The musician's sets
+        private const float MusicVolume = 1f, MusicRange = 22f;
+        private float _setLeft, _tuneLeft;
+        private bool _resting, _fromTop;
+
+        // Sets of four to seven minutes, one tune running into the next, and two to four minutes' rest between them
+        // (the jukebox's turn: it plays while no guitar under him is sounding). A tune starts silent once its sound is
+        // built and fades in.
+        private void Perform(float dt)
+        {
+            _setLeft -= dt;
+            if (_resting)
+            {
+                if (_setLeft > 0f) return;
+                _resting = false;
+                _fromTop = true;
+                _setLeft = Random.Range(240f, 420f);
+            }
+            if (_music == null)
+            {
+                if (!Sfx.Ready(SfxIds.Guitar)) { Sfx.Request(SfxIds.Guitar); return; }
+                _music = StartTune(null, _fromTop);
+                _fromTop = false;
+                return;
+            }
+            if (_setLeft <= 0f)
+            {
+                Sfx.FadeTo(_music, 0f, 3f, true);
+                _music = null;
+                _resting = true;
+                _setLeft = Random.Range(120f, 240f);
+                return;
+            }
+            _tuneLeft -= dt;
+            if (_tuneLeft > 0f) return;
+            AudioSource next = StartTune(_music.clip, true);
+            if (next == null) { _tuneLeft = 10f; return; }
+            Sfx.FadeTo(_music, 0f, 1.5f, true);
+            _music = next;
+        }
+
+        // The next tune (another than `previous`, when there is one), on the guitar across his knee.
+        private AudioSource StartTune(AudioClip previous, bool fromTop)
+        {
+            AudioSource src = null;
+            for (int k = 0; k < 4; k++)
+            {
+                src = Sfx.Loop(SfxIds.Guitar, transform, 0f, MusicRange);
+                if (src == null) return null;
+                if (previous == null || src.clip != previous || k == 3) break;
+                Sfx.Stop(src);
+            }
+            src.transform.localPosition = new Vector3(0f, 0.75f, 0.25f);
+            if (fromTop) src.timeSamples = 0;
+            Sfx.FadeTo(src, MusicVolume, fromTop ? 2f : 1.5f);
+            _tuneLeft = src.clip != null ? src.clip.length * Random.Range(3, 6) : 60f;
+            return src;
+        }
+
+        /// <summary>A song asked for (and paid): a resting musician takes up the guitar again.</summary>
+        internal void RequestSong()
+        {
+            if (Kind != Role.Musician || !_resting) return;
+            _resting = false;
+            _fromTop = true;
+            _setLeft = Random.Range(120f, 240f);
+        }
+        #endregion
+
         private void LateUpdate()
         {
+            if (Kind == Role.Musician) Perform(Time.deltaTime);
             if (_anim == null) return;
             Actor me = Actor.LocalPlayer;
             float dist = me != null ? Vector3.Distance(me.transform.position, transform.position) : 99f;
@@ -242,6 +313,7 @@ namespace CloneZ
                         if (!Money.TrySpend(10, c.Inventory)) { c.Notify("You don't have 10 MG."); return; }
                         GameEvents.RaiseSubtitle(Npc.Name, "For you, then. Something slow.");
                         GameEvents.RaiseWorldEvent(transform.position, 10f, "music");
+                        Npc.RequestSong();
                     }));
                     // Added cheaper short tune option
                     into.Add(new InteractAction("Request a short tune (5 MG)", c =>
@@ -249,6 +321,7 @@ namespace CloneZ
                         if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
                         GameEvents.RaiseSubtitle(Npc.Name, "A quick melody for you.");
                         GameEvents.RaiseWorldEvent(transform.position, 5f, "music");
+                        Npc.RequestSong();
                         Sfx.PlayUI(SfxIds.Cash);
                     }));
                     break;

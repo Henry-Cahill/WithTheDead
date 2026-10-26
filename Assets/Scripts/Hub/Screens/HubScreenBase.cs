@@ -18,9 +18,13 @@ namespace CloneZ
         protected HubTooltip Tip;
         private Text _money;
         private bool _closed;
+        private bool _announced;
         private float _nextSecond;
         private bool _needsSecond;
         private readonly List<KeyValuePair<Text, Func<string>>> _live = new List<KeyValuePair<Text, Func<string>>>();
+        // The closing sound of a screen shut this frame: a screen opening in the same frame (switching) speaks for both.
+        private static AudioSource s_Closing;
+        private static int s_ClosingFrame = -1;
         private void UpdateNeedsSecond()
         {
             _needsSecond = _live.Count > 0 || (ShowMoney && Character != null);
@@ -39,6 +43,13 @@ namespace CloneZ
         {
             EnsureChrome();
             _closed = false;
+            if (!_announced)
+            {
+                _announced = true;
+                if (s_ClosingFrame == Time.frameCount && s_Closing != null) Sfx.Stop(s_Closing);
+                s_Closing = null;
+                Sfx.PlayUI(SfxIds.UiOpen, 0.8f, UnityEngine.Random.Range(0.97f, 1.03f));
+            }
             _live.Clear();
             if (Tip != null) Tip.HideAll();
             if (NeedsCharacter && Character == null)
@@ -123,12 +134,8 @@ namespace CloneZ
 
         protected static void Click() => Sfx.PlayUI(SfxIds.UiClick);
 
-        /// <summary>Opens another hub screen (closing this one).</summary>
-        protected static void Open(string id, string arg = null)
-        {
-            Click();
-            HubScreens.Open(id, arg);
-        }
+        /// <summary>Opens another hub screen (closing this one); the next screen sounds its own opening.</summary>
+        protected static void Open(string id, string arg = null) => HubScreens.Open(id, arg);
 
         /// <summary>Called once a second while open (after the live labels refresh).</summary>
         protected virtual void OnSecond() { }
@@ -174,6 +181,8 @@ bool removed = false;
             _closed = true;
             _live.Clear();
             _needsSecond = false;
+            s_Closing = Sfx.PlayUI(SfxIds.UiClose, 0.8f, UnityEngine.Random.Range(0.97f, 1.03f));
+            s_ClosingFrame = Time.frameCount;
         }
 
         /// <summary>A standard service button strip (insurance, medic, technician, guide...), skipping this screen's own id.</summary>

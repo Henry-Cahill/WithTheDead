@@ -1,161 +1,127 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneZ
 {
-    /// <summary>Produces the clip for a sound id (the procedural synthesiser implements this).</summary>
-    public interface ISfxBackend
-    {
-        /// <summary>A clip for <paramref name="id"/>, or null when unknown. May return a different variation each call.</summary>
-        AudioClip Get(string id);
-    }
-
     /// <summary>
-    /// The game's sound API: positional one-shots, UI clicks and attached loops by id (see <see cref="SfxIds"/>).
-    /// Every sound is positional in the world and heard from the survivor's head (the listener rides the head
-    /// bone, never the camera — <see cref="ListenerRig"/>). Sources are pooled. With no backend registered
-    /// every call is a silent no-op, so gameplay never depends on audio.
+    /// The game's sound API: positional one-shots, flat sounds and attached loops by id (see <see cref="SfxIds"/>).
+    /// Every positional sound is heard from the survivor's head (the listener rides the head bone, never the camera —
+    /// <see cref="ListenerRig"/>). Each sound belongs to a bus (effects, ambience, music, interface) with its own
+    /// settings slider; the mixer (<see cref="SfxMixer"/>) scales it by its bus, ducks the beds under loud events,
+    /// muffles it through walls and with distance, swaps in a distant version far away, and freezes the world's sounds
+    /// while the game is paused. Volumes are therefore set through <see cref="SetVolume"/> or <see cref="FadeTo"/> (a
+    /// direct write to AudioSource.volume is taken as the new base volume). One-shot sources are pooled. With no backend
+    /// registered every call is a silent no-op, so gameplay never depends on audio.
     /// </summary>
     public static class Sfx
     {
         public static ISfxBackend Backend;
 
-        private static Transform s_Root;
-        private static readonly List<AudioSource> s_Pool = new List<AudioSource>(48);
-        private const int MaxPool = 64;
-
         public static bool Enabled => Backend != null;
 
-        private static Transform Root
+        /// <summary>Where the survivor hears from: the ears on the head bone, else the active listener.</summary>
+        public static Vector3 ListenerPosition => SfxMixer.Ears;
+
+        /// <summary>The routing of <paramref name="id"/> (never null).</summary>
+        public static SfxMeta Meta(string id)
         {
-            get
-            {
-                if (s_Root == null)
-                {
-                    s_Root = new GameObject("[Sfx]").transform;
-                    s_Pool.Clear();
-                }
-                return s_Root;
-            }
+            if (Backend == null || string.IsNullOrEmpty(id)) return SfxMeta.Default;
+            return Backend.Meta(id) ?? SfxMeta.Default;
         }
 
-        private static AudioClip Clip(string id)
+        /// <summary>True when <paramref name="id"/> can start without being rendered on the spot.</summary>
+        public static bool Ready(string id) => Backend != null && !string.IsNullOrEmpty(id) && Backend.IsReady(id);
+
+        /// <summary>Asks for <paramref name="id"/> to be built in the background ahead of the queue.</summary>
+        public static void Request(string id)
+        {
+            if (Backend != null && !string.IsNullOrEmpty(id)) Backend.Request(id);
+        }
+
+        internal static AudioClip Clip(string id, int variation = -1)
         {
             if (Backend == null || string.IsNullOrEmpty(id)) return null;
-            try { return Backend.Get(id); }
+            try { return variation >= 0 ? Backend.Get(id, variation) : Backend.Get(id); }
             catch (System.Exception e) { Debug.LogException(e); return null; }
         }
 
-        private static AudioSource Rent()
-        {
-            Transform root = Root;
-            for (int i = 0; i < s_Pool.Count; i++)
-            {
-                AudioSource s = s_Pool[i];
-                if (s != null && !s.isPlaying && !s.loop) return s;
-            }
-            if (s_Pool.Count >= MaxPool)
-            {
-                AudioSource oldest = s_Pool[0];
-                s_Pool.RemoveAt(0);
-                s_Pool.Add(oldest);
-                oldest.Stop();
-                return oldest;
-            }
-            var go = new GameObject("Sfx");
-            go.transform.SetParent(root, false);
-            var src = go.AddComponent<AudioSource>();
-            src.playOnAwake = false;
-            src.dopplerLevel = 0f;
-            s_Pool.Add(src);
-            return src;
-        }
-
-        /// <summary>A positional one-shot. Returns the source (null when silent).</summary>
+        #region One-shots
+        /// <summary>A positional one-shot. Returns the source (null when silent or out of earshot).</summary>
         public static AudioSource Play(string id, Vector3 position, float volume = 1f, float pitch = 1f, float maxDistance = 45f)
-        {
-            AudioClip clip = Clip(id);
-            if (clip == null) return null;
-            AudioSource src = Rent();
-            src.transform.SetParent(Root, false);
-            src.transform.position = position;
-            Configure(src, volume, pitch, maxDistance, true);
-            src.loop = false;
-            src.clip = clip;
-            src.Play();
-            return src;
-        }
+            => SfxMixer.PlayAt(id, position, volume, pitch, maxDistance, true);
+
+        /// <summary>A positional one-shot of one particular variation (wrapped into range): a speaker with a voice of
+        /// its own, the same every time. A distant version, when one takes over, picks its own.</summary>
+        public static AudioSource Play(string id, Vector3 position, float volume, float pitch, float maxDistance, int variation)
+            => SfxMixer.PlayAt(id, position, volume, pitch, maxDistance, true, true, variation);
 
         /// <summary>A flat (non-positional) sound: menus, the survivor's own breathing.</summary>
-        public static AudioSource PlayUI(string id, float volume = 1f, float pitch = 1f)
+        public static AudioSource PlayUI(string id, float volume = 1f, float pitch = 1f) => PlayFlat(id, volume, pitch);
+
+        /// <summary>A flat sound, optionally panned (-1 left .. +1 right).</summary>
+        public static AudioSource PlayFlat(string id, float volume = 1f, float pitch = 1f, float pan = 0f)
         {
-            AudioClip clip = Clip(id);
-            if (clip == null) return null;
-            AudioSource src = Rent();
-            Configure(src, volume, pitch, 10f, false);
-            src.loop = false;
-            src.clip = clip;
-            src.Play();
+            AudioSource src = SfxMixer.PlayAt(id, Vector3.zero, volume, pitch, 10f, false);
+            if (src != null) src.panStereo = Mathf.Clamp(pan, -1f, 1f);
             return src;
         }
 
+        /// <summary>A positional one-shot <paramref name="delay"/> seconds of game time from now (thunder after the flash).</summary>
+        public static void PlayDelayed(string id, Vector3 position, float delay, float volume = 1f, float pitch = 1f, float maxDistance = 45f)
+            => SfxMixer.Schedule(id, position, delay, volume, pitch, maxDistance, true, true);
+        #endregion
+
+        #region Loops and owned sources
         /// <summary>A looping sound that follows a transform until <see cref="Stop"/> (an engine, a rotor, an anomaly's hum).</summary>
         public static AudioSource Loop(string id, Transform follow, float volume = 1f, float maxDistance = 25f, float pitch = 1f)
         {
+            if (follow == null) return null;
             AudioClip clip = Clip(id);
-            if (clip == null || follow == null) return null;
-            var go = new GameObject("SfxLoop " + id);
-            go.transform.SetParent(follow, false);
-            var src = go.AddComponent<AudioSource>();
-            src.playOnAwake = false;
-            Configure(src, volume, pitch, maxDistance, true);
-            src.loop = true;
-            src.clip = clip;
-            src.Play();
-            return src;
+            if (clip == null) return null;
+            return SfxMixer.StartLoop(clip, Meta(id), follow, volume, pitch, maxDistance, true, "SfxLoop " + id);
         }
 
-        public static void Stop(AudioSource src)
+        /// <summary>A flat looping bed (wind, rain, a mask's breathing) until <see cref="Stop"/>.</summary>
+        public static AudioSource LoopFlat(string id, float volume = 1f, float pitch = 1f)
         {
-            if (src == null) return;
-            src.Stop();
-            if (src.loop && !s_Pool.Contains(src)) Object.Destroy(src.gameObject);
+            AudioClip clip = Clip(id);
+            if (clip == null) return null;
+            return SfxMixer.StartLoop(clip, Meta(id), null, volume, pitch, 10f, false, "SfxBed " + id);
         }
 
-        private static void Configure(AudioSource src, float volume, float pitch, float maxDistance, bool spatial)
-        {
-            src.volume = Mathf.Clamp01(volume);
-            src.pitch = Mathf.Clamp(pitch, 0.1f, 3f);
-            src.spatialBlend = spatial ? 1f : 0f;
-            src.rolloffMode = AudioRolloffMode.Linear;
-            src.minDistance = Mathf.Min(2f, maxDistance * 0.1f);
-            src.maxDistance = Mathf.Max(3f, maxDistance);
-        }
-    }
+        /// <summary>
+        /// A source the caller drives itself (assigns clips, schedules them) but which still answers to its bus, the
+        /// ducking and the pause: the music uses these. Positional when <paramref name="parent"/> is given and
+        /// <paramref name="spatial"/> is true. Release it with <see cref="Stop"/>.
+        /// </summary>
+        public static AudioSource CreateSource(string name, SfxBus bus, Transform parent = null, bool spatial = false, float maxDistance = 25f)
+            => SfxMixer.CreateOwned(name, bus, parent, spatial, maxDistance);
 
-    /// <summary>Every sound id the game asks for. The synthesiser is expected to produce all of these.</summary>
-    public static class SfxIds
-    {
-        public const string GunPistol = "gun_pistol", GunRifle = "gun_rifle", GunShotgun = "gun_shotgun", GunSniper = "gun_sniper",
-            GunSuppressed = "gun_suppressed", GunFlare = "gun_flare", DryFire = "dryfire", Reload = "reload", Jam = "jam",
-            BoltThrow = "bolt_throw", BoltLand = "bolt_land",
-            StepSnow = "step_snow", StepWood = "step_wood", StepConcrete = "step_concrete", StepGrass = "step_grass",
-            DoorOpen = "door_open", DoorClose = "door_close", DoorBash = "door_bash", GearRustle = "gear_rustle",
-            ZombieGroan = "zombie_groan", ZombieAttack = "zombie_attack", ZombieDie = "zombie_die",
-            HitFlesh = "hit_flesh", HitArmor = "hit_armor", Ricochet = "ricochet", MeleeSwing = "melee_swing", MeleeHit = "melee_hit",
-            Explosion = "explosion", Grenade = "grenade_pin",
-            DetectorBeep = "detector_beep", DetectorAlert = "detector_alert", Geiger = "geiger_click",
-            AnomalyHum = "anomaly_hum", AnomalyGravity = "anomaly_gravity", AnomalyFire = "anomaly_fire", AnomalyElectric = "anomaly_electric",
-            AnomalyAcid = "anomaly_acid", AnomalyTrigger = "anomaly_trigger",
-            EmissionSiren = "emission_siren", EmissionRumble = "emission_rumble", PsiWhisper = "psi_whisper",
-            HeliRotor = "heli_rotor", FlareBurn = "flare_burn",
-            BreathMask = "breath_mask", MaskCrack = "mask_crack", VisorWipe = "visor_wipe", Heartbeat = "heartbeat", Sneeze = "sneeze", Cough = "cough",
-            WindAmbience = "amb_wind", ForestAmbience = "amb_forest", BarAmbience = "amb_bar", Guitar = "guitar",
-            WolfHowl = "wolf_howl", BearRoar = "bear_roar", MutantScreech = "mutant_screech", MutantGrowl = "mutant_growl", DeerCall = "deer_call",
-            UiClick = "ui_click", UiBuy = "ui_buy", UiError = "ui_error", Cash = "cash",
-            UncannyWhisper = "uncanny_whisper", RadioStatic = "radio_static", Stinger = "horror_stinger",
-            EngineLoop = "engine_loop", EngineStartFail = "engine_start_fail", DroneBuzz = "drone_buzz",
-            Pickup = "pickup", Eat = "eat", Drink = "drink", Bandage = "bandage", Injector = "injector", PageTurn = "page_turn",
-            Splash = "splash", Crank = "crank", Lighter = "lighter", Handcuffs = "handcuffs";
+        /// <summary>Stops a sound; loops and owned sources are destroyed, pooled one-shots go back to the pool.</summary>
+        public static void Stop(AudioSource src) => SfxMixer.Stop(src);
+        #endregion
+
+        #region Control
+        /// <summary>Sets a playing sound's base volume (before its bus, ducking and occlusion).</summary>
+        public static void SetVolume(AudioSource src, float volume) => SfxMixer.SetVolume(src, volume);
+
+        /// <summary>A playing sound's base volume (before its bus, ducking and occlusion).</summary>
+        public static float GetVolume(AudioSource src) => SfxMixer.GetVolume(src);
+
+        /// <summary>Glides a sound's base volume to <paramref name="volume"/> over <paramref name="seconds"/> (real time);
+        /// with <paramref name="stopAtZero"/>, a fade to silence stops it (destroying a loop).</summary>
+        public static void FadeTo(AudioSource src, float volume, float seconds, bool stopAtZero = false) => SfxMixer.FadeTo(src, volume, seconds, stopAtZero);
+
+        /// <summary>An extra low-pass on one sound (a bed heard from indoors); 22000 or more removes it.</summary>
+        public static void SetLowPass(AudioSource src, float hz) => SfxMixer.SetLowPass(src, hz);
+
+        /// <summary>Ducks ambience and music by <paramref name="db"/> (negative) for <paramref name="hold"/> seconds, recovering over <paramref name="release"/>.</summary>
+        public static void Duck(float db, float hold = 0.6f, float release = 2.5f) => SfxMixer.Duck(db, hold, release);
+
+        /// <summary>A blast too close: the mix is muffled and the ears ring, by <paramref name="strength"/> 0..1, recovering over a few seconds.</summary>
+        public static void Concuss(float strength) => SfxMixer.Concuss(strength);
+
+        /// <summary>The current gain of a bus (its slider times ducking and the pause), for diagnostics and tools.</summary>
+        public static float BusGain(SfxBus bus) => SfxMixer.BusGain(bus);
+        #endregion
     }
 }

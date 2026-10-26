@@ -80,6 +80,7 @@ namespace CloneZ
 
         private void Update()
         {
+            BurnerSound();
             if (_isOn)
             {
                 _fuelSeconds -= Time.deltaTime;
@@ -95,6 +96,29 @@ namespace CloneZ
                 UpdateTimerDisplay();
             }
         }
+
+        // The wick's soft rush and the steel ticking while it burns: started (silent) once its sound is built, faded in
+        // and out with the flame.
+        private AudioSource _burner;
+
+        private void BurnerSound()
+        {
+            if (_isOn && _burner == null)
+            {
+                if (!Sfx.Ready(SfxIds.HeaterHiss)) { Sfx.Request(SfxIds.HeaterHiss); return; }
+                _burner = Sfx.Loop(SfxIds.HeaterHiss, transform, 0f, 6f);
+                if (_burner == null) return;
+                _burner.transform.localPosition = new Vector3(0f, 0.3f, 0f);
+                Sfx.FadeTo(_burner, 0.4f, 1.5f);
+            }
+            else if (!_isOn && _burner != null)
+            {
+                Sfx.FadeTo(_burner, 0f, 1.5f, true);
+                _burner = null;
+            }
+        }
+
+        private void OnDestroy() { if (_burner != null) Sfx.Stop(_burner); }
 
         private void UpdateTimerDisplay()
         {

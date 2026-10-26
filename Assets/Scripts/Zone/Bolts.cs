@@ -67,7 +67,7 @@ private Rigidbody _rb;
         {
             if (_sounded || c.relativeVelocity.magnitude < 1.2f) return;
             _sounded = true;
-            Sfx.Play(SfxIds.BoltLand, transform.position, 0.55f, Random.Range(0.9f, 1.15f), 16f);
+            Sfx.Play(SfxIds.BoltLand, transform.position, 0.75f, Random.Range(0.9f, 1.15f), 30f);
             NoiseSystem.Emit(transform.position, 4f);
         }
 

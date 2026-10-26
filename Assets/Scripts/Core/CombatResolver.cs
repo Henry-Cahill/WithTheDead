@@ -163,7 +163,7 @@ namespace CloneZ
         {
             NoiseSystem.Emit(center, radius * 6f);
             GameEvents.RaiseWorldEvent(center, radius * 6f, "explosion");
-            Sfx.Play(SfxIds.Explosion, center, 1f, UnityEngine.Random.Range(0.9f, 1.05f), 120f);
+            WeaponAudio.Report(SfxIds.Explosion, center, 1f, UnityEngine.Random.Range(0.9f, 1.05f));
             Actor attacker = source != null ? source.GetComponentInParent<Actor>() : null;
             var done = new HashSet<IDamageable>();
             for (int i = Actor.All.Count - 1; i >= 0; i--)

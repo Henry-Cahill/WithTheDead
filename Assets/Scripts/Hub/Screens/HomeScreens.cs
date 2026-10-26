@@ -282,6 +282,10 @@ namespace CloneZ
             RectTransform b = HubUI.Stack(cols[1], 6f, 16);
             HubUI.Heading(b, "Sound and voice", 20);
             UIKit.Slider(b, "Master volume", 0f, 1f, g.MasterVolume, v => { g.MasterVolume = v; AudioListener.volume = v; });
+            UIKit.Slider(b, "Music", 0f, 1f, g.MusicVolume, v => g.MusicVolume = v);
+            UIKit.Slider(b, "Effects", 0f, 1f, g.EffectsVolume, v => g.EffectsVolume = v);
+            UIKit.Slider(b, "Ambience and weather", 0f, 1f, g.AmbienceVolume, v => g.AmbienceVolume = v);
+            UIKit.Slider(b, "Interface", 0f, 1f, g.InterfaceVolume, v => g.InterfaceVolume = v);
             UIKit.Slider(b, "Voice volume", 0f, 1f, g.VoiceVolume, v => g.VoiceVolume = v);
             UIKit.Toggle(b, "Microphone (proximity voice)", g.Microphone, v => g.Microphone = v);
             UIKit.Toggle(b, "Push to talk (Caps Lock)", g.PushToTalk, v => g.PushToTalk = v);

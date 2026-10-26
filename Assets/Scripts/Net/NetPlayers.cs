@@ -245,8 +245,9 @@ namespace CloneZ
             Vector3 from = m.V(), to = m.V();
             bool flesh = m.B();
             string weapon = m.S();
-            Sfx.Play(HumanNpc.GunSound(ItemDatabase.Get(weapon)), from, 1f, Random.Range(0.96f, 1.04f), 140f);
-            if (flesh) Sfx.Play(SfxIds.HitFlesh, to, 0.5f, 1f, 18f);
+            WeaponAudio.Report(HumanNpc.GunSound(ItemDatabase.Get(weapon)), from, 1f, Random.Range(0.96f, 1.04f));
+            // The server heard (and hit-thudded) it as it resolved it; a client hears where it went from here.
+            if (NetAuthority.IsClientOnly) WeaponAudio.RemoteShot(from, to, flesh, weapon);
             NetTracer.Draw(from, to);
             RemotePlayer p = ProxyOf(shooter);
             if (p != null) p.Fired();

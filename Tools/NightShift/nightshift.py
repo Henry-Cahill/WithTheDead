@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""CLONE-Z Night Shift: local-LLM coding agents that work through tasks.md overnight.
+"""CLONE-Z Night Shift: AI coding agents that work through tasks.md overnight.
 
-The model runs in Ollama on the DGX Spark and OpenCode (`opencode run`) is the agent, so no cloud AI tokens
-are spent. The coordinator runs in the AI Workbench project container on the Spark. It hands tasks to
+OpenCode (`opencode run`) is the agent. Its model runs in Ollama on the DGX Spark (no cloud AI tokens spent), or,
+named opencode/<id>, in OpenCode's own cloud: Big Pickle (opencode/big-pickle) is free while the network's allowance
+lasts, and NIGHTSHIFT_FALLBACK_MODEL takes over for the rest of the night once it runs out. The coordinator runs
+in the AI Workbench project container on the Spark. It hands tasks to
 workers (the Spark itself plus any helper machines, Linux or Windows), each of which does its task in its own
 checkout, compile-checks it against Unity's assemblies and commits. The coordinator then lands each result on the
 night's branch (nightshift/<date>), compiles the whole project again and ticks the task off in tasks.md.
@@ -10,7 +12,7 @@ night's branch (nightshift/<date>), compiles the whole project again and ticks t
   nightshift.py run           coordinator: work through the queue (nightshift.sh start runs it in the background)
   nightshift.py status        progress summary
   nightshift.py map           rebuild memory/PROJECT_MAP.md
-  nightshift.py plan [args]   write one task with the local model now (what NIGHTSHIFT_AUTOPLAN does when the queue runs low)
+  nightshift.py plan [args]   write one task with the planner's model now (what NIGHTSHIFT_AUTOPLAN does when the queue runs low)
   nightshift.py chat [args]   interactive OpenCode with the same model and settings
   nightshift.py work ...      worker: do one task in a checkout and print the result (run by the coordinator)
 """
@@ -70,6 +72,7 @@ OWN_PATHS = [f"{REL}/tasks.md", f"{REL}/reports", f"{REL}/memory"]  # files the 
 DEFAULTS = {
     "NIGHTSHIFT_MODEL": "qwen3.8",
     "NIGHTSHIFT_HELPER_MODEL": "gpt-oss:120b",
+    "NIGHTSHIFT_FALLBACK_MODEL": "",
     "NIGHTSHIFT_STOP_AT": "",
     "NIGHTSHIFT_TZ": "America/Chicago",
     "NIGHTSHIFT_TASK_MINUTES": "120",
@@ -211,7 +214,15 @@ def find_ollama(cfg: dict) -> str:
             return url
         except Exception:
             continue
+    if not uses_ollama(cfg):
+        return candidates[-1].rstrip("/")  # every model is one of OpenCode's own, so Ollama goes unused
     raise RuntimeError("Can't reach Ollama (tried " + ", ".join(candidates) + ")")
+
+
+def uses_ollama(cfg: dict) -> bool:
+    """Whether any model the night shift may use runs in Ollama (the others are OpenCode's own, in its cloud)."""
+    keys = ("NIGHTSHIFT_MODEL", "NIGHTSHIFT_HELPER_MODEL", "NIGHTSHIFT_AUTOPLAN_MODEL", "NIGHTSHIFT_FALLBACK_MODEL")
+    return any(cfg.get(key, "").strip() and not is_cloud(cfg[key].strip()) for key in keys)
 
 
 def ollama_models(base: str) -> set[str]:
@@ -220,15 +231,163 @@ def ollama_models(base: str) -> set[str]:
 
 
 def has_model(base: str, model: str) -> bool:
+    if is_cloud(model):
+        return model in cloud_models()
     names = ollama_models(base)
     return model in names or (":" not in model and model + ":latest" in names)
 
 
 def warm_model(base: str, model: str) -> None:
+    """Loads an Ollama model into memory for the night. One of OpenCode's own has nothing to load, so it is asked for a
+    word instead: one that has stopped answering (ModelOut) shows up now rather than partway through a task."""
+    if is_cloud(model):
+        ask_opencode(model, "Reply with the single word OK.", timeout=300)
+        return
     body = json.dumps({"model": model, "prompt": "", "keep_alive": "8h"}).encode()
     req = urllib.request.Request(base + "/api/generate", body, {"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=900) as r:
         r.read()
+
+
+# --- OpenCode's own models ------------------------------------------------------------------------------------
+# A model named opencode/<id> is one of OpenCode's own, run in its cloud rather than in Ollama; Big Pickle is
+# opencode/big-pickle, free for a limited time. OpenCode's free models answer only OpenCode itself (`opencode run`), have
+# an allowance OpenCode doesn't publish, and may use what they're sent to improve the model.
+
+CLOUD_PREFIX = "opencode/"
+# OpenCode's errors for one of its models that has stopped answering for now. After the first (a free model's usage
+# limit) OpenCode keeps retrying without a word, so an agent would otherwise sit out its task's whole time limit.
+MODEL_OUT = re.compile(r"Free usage limit|usage limit reached|quota exceeded|insufficient_quota|FreeTierError"
+                       r"|free tier can only be used|ProviderModelNotFoundError", re.I)
+LOG_ERRORS = ["--print-logs", "--log-level", "ERROR"]  # how those errors reach us: OpenCode's error log, on stderr
+ASK_STEPS = 3  # a plain question takes one step; a model that keeps calling tools it hasn't got is cut off after this
+ASK_MESSAGE = "Answer the request below. Everything you need is in it, so answer directly, without using any tools."
+
+
+class ModelOut(RuntimeError):
+    """One of OpenCode's own models stopped answering: its free usage limit was reached, say."""
+
+    def __init__(self, model: str, why: str):
+        super().__init__(f"{model} stopped answering: {why}")
+        self.model, self.why = model, why
+
+
+def is_cloud(model: str) -> bool:
+    return model.startswith(CLOUD_PREFIX)
+
+
+def opencode_model(model: str) -> str:
+    """The provider/model OpenCode knows a model by: one of its own as it is, an Ollama model under ollama/."""
+    return model if is_cloud(model) else f"ollama/{model}"
+
+
+def model_home(model: str) -> str:
+    return "OpenCode's cloud" if is_cloud(model) else "Ollama on the DGX Spark"
+
+
+def why_out(text: str) -> str:
+    """The gist of an error MODEL_OUT matched, e.g. "Free usage limit reached"."""
+    m = MODEL_OUT.search(text)
+    return text[m.start():].split('"')[0].split(". ")[0].strip()[:160] if m else text.strip()[:160]
+
+
+def cloud_models() -> set[str]:
+    """The models OpenCode's own provider offers here; without an account, its free ones (opencode/big-pickle...)."""
+    try:
+        r = subprocess.run([opencode_bin(), "models", "opencode"], capture_output=True, text=True, timeout=120,
+                           stdin=subprocess.DEVNULL, env=dict(os.environ, OPENCODE_DISABLE_AUTOUPDATE="true"))
+    except (OSError, RuntimeError, subprocess.TimeoutExpired):
+        return set()
+    names = (re.sub(r"\x1b\[[0-9;]*m", "", line).strip() for line in r.stdout.splitlines())
+    return {name for name in names if name.startswith(CLOUD_PREFIX)}
+
+
+def ask_config(model: str) -> dict:
+    """OpenCode's settings for a plain question (the planner's, or whether a model answers at all). Big Pickle's free
+    tier turns away a request that offers no tools, with the same "Free usage limit reached" as when the allowance is
+    used up, so the read-only tools stay: in an empty folder, with everything outside it out of bounds, they can't
+    read a thing."""
+    read_only = {tool: "allow" for tool in ("read", "glob", "grep", "list")}
+    return {"$schema": "https://opencode.ai/config.json", "autoupdate": False, "share": "disabled", "lsp": False,
+            "model": opencode_model(model), "small_model": opencode_model(model), "instructions": [],
+            "agent": {"build": {"steps": ASK_STEPS}},
+            "permission": {"*": "deny", **read_only, "external_directory": "deny"}}
+
+
+def write_and_close(pipe, text: str) -> None:
+    try:
+        pipe.write(text)
+        pipe.close()
+    except (OSError, ValueError):  # the process ended without reading it all
+        pass
+
+
+def ask_opencode(model: str, prompt: str, timeout: float = 900) -> str:
+    """One answer from one of OpenCode's own models, which answer only OpenCode: `opencode run` in an empty folder (see
+    ask_config), the prompt piped in (a script shown whole can be too long for a command line). Any reasoning is left
+    out. Raises ModelOut when the model has stopped answering (see MODEL_OUT)."""
+    with tempfile.TemporaryDirectory(prefix="nightshift-ask-") as tmp:
+        work = Path(tmp) / "work"
+        work.mkdir()
+        cfg_path = Path(tmp) / "opencode.json"
+        cfg_path.write_text(json.dumps(ask_config(model)), encoding="utf-8")
+        cmd = [opencode_bin(), "run", "--format", "json", "--model", opencode_model(model), "--dir", str(work),
+               "--title", "nightshift: question", *LOG_ERRORS, ASK_MESSAGE]
+        env = dict(os.environ, OPENCODE_CONFIG=str(cfg_path), OPENCODE_DISABLE_AUTOUPDATE="true",
+                   OPENCODE_DISABLE_LSP_DOWNLOAD="true")
+        # No preexec_fn (die_with_parent) here: the coordinator runs other threads, and forking with it isn't safe there.
+        # The question ends with the timeout, or when the night shift stops (watch).
+        proc = subprocess.Popen(cmd, cwd=work, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace",
+                                start_new_session=True)
+        threading.Thread(target=write_and_close, args=(proc.stdin, prompt), daemon=True).start()
+        expired, done = threading.Event(), threading.Event()
+        timer = threading.Timer(timeout, lambda: (expired.set(), terminate(proc, 10)))
+        timer.start()
+
+        def watch() -> None:
+            while not done.wait(1):
+                if STOPPING.is_set():
+                    terminate(proc, 5)
+                    return
+
+        threading.Thread(target=watch, daemon=True).start()
+        texts: dict[str, list[str]] = {}
+        last, error, out = "", "", ""
+        try:
+            for line in proc.stdout:
+                try:
+                    ev = json.loads(line)
+                except ValueError:
+                    if MODEL_OUT.search(line):
+                        out = line
+                        break
+                    continue
+                if not isinstance(ev, dict):
+                    continue
+                kind, part = ev.get("type"), ev.get("part") or {}
+                if kind == "text" and (part.get("text") or "").strip():
+                    last = part.get("messageID", "")
+                    texts.setdefault(last, []).append(part["text"])
+                elif kind == "error":
+                    error = json.dumps(ev.get("error") or ev)[:400]
+                    if MODEL_OUT.search(error):
+                        out = error
+                        break
+        finally:
+            done.set()
+            timer.cancel()
+            terminate(proc, grace=5)
+    if out:
+        raise ModelOut(model, why_out(out))
+    if error:
+        raise RuntimeError(f"{model}: {error}")
+    if expired.is_set():
+        raise RuntimeError(f"{model} gave no answer within {timeout:.0f} s")
+    reply = "\n".join(texts.get(last, []))
+    if not reply.strip() and proc.returncode:
+        raise RuntimeError(f"opencode run exited with code {proc.returncode} without an answer from {model}")
+    return re.sub(r"<think>.*?</think>", "", reply, flags=re.S).strip()
 
 
 # --- OpenCode -----------------------------------------------------------------------------------------------
@@ -268,7 +427,8 @@ def bash_exe() -> str:
 def opencode_config(base_url: str, model: str, context: int, repo: Path) -> dict:
     models = {}
     for name in dict.fromkeys([model, "qwen3.8", "gpt-oss:120b"]):
-        models[name] = {"name": f"{name} (DGX Spark)", "limit": {"context": context, "output": 32768}}
+        if not is_cloud(name):  # OpenCode knows its own models' limits
+            models[name] = {"name": f"{name} (DGX Spark)", "limit": {"context": context, "output": 32768}}
     bash = {"*": "allow"}
     for pattern in ("git commit*", "git push*", "git pull*", "git fetch*", "git reset*", "git checkout*", "git switch*",
                     "git restore*", "git rebase*", "git merge*", "git cherry-pick*", "git revert*", "git stash*",
@@ -283,8 +443,8 @@ def opencode_config(base_url: str, model: str, context: int, repo: Path) -> dict
         "autoupdate": False,
         "share": "disabled",
         "lsp": False,
-        "model": f"ollama/{model}",
-        "small_model": f"ollama/{model}",
+        "model": opencode_model(model),
+        "small_model": opencode_model(model),
         "instructions": [str(repo / LESSONS_REL), str(repo / MAP_REL)],
         "provider": {"ollama": {"npm": "@ai-sdk/openai-compatible", "name": "Ollama (DGX Spark)",
                                 "options": {"baseURL": base_url.rstrip("/") + "/v1"}, "models": models}},
@@ -311,6 +471,7 @@ class AgentRun:
     tokens_cached: int = 0
     timed_out: bool = False
     error: str = ""
+    model_out: bool = False  # the model stopped answering (see MODEL_OUT), so the agent was stopped
 
 
 def kill_group(proc: subprocess.Popen, sig: int = signal.SIGTERM) -> None:
@@ -411,7 +572,10 @@ def describe_tool(part: dict, repo: Path) -> str:
 
 def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s: float, log_file: Path,
                  env: dict, session: str | None = None, title: str | None = None) -> AgentRun:
-    cmd = [opencode_bin(), "run", "--auto", "--format", "json", "--model", f"ollama/{model}", "--dir", str(repo)]
+    cloud = is_cloud(model)
+    cmd = [opencode_bin(), "run", "--auto", "--format", "json", "--model", opencode_model(model), "--dir", str(repo)]
+    if cloud:
+        cmd += LOG_ERRORS  # how a model that has stopped answering shows up (see MODEL_OUT)
     if session:
         cmd += ["--session", session]
     elif title:
@@ -445,6 +609,9 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
                 except ValueError:
                     if line.strip():
                         log(line.strip()[:200])
+                        if cloud and not res.model_out and MODEL_OUT.search(line):
+                            res.model_out, res.error = True, why_out(line)
+                            stop_agent(False)
                     continue
                 res.session = res.session or ev.get("sessionID")
                 kind, part = ev.get("type"), ev.get("part") or {}
@@ -463,6 +630,8 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
                 elif kind == "error":
                     res.error = json.dumps(ev.get("error") or ev)[:400]
                     log("  agent error: " + res.error)
+                    if cloud and MODEL_OUT.search(res.error):
+                        res.model_out, res.error = True, why_out(res.error)
         proc.wait()
     finally:
         timer.cancel()
@@ -801,13 +970,15 @@ class Result:
     tokens_in: int = 0
     tokens_out: int = 0
     tokens_cached: int = 0
+    model: str = ""  # the model the agent ran on
+    model_out: bool = False  # the model stopped answering partway (see MODEL_OUT); errors says why
 
 
 def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: float, fix_rounds: int,
             context: int, unityrefs: str) -> Result:
     started = time.time()
     deadline = started + minutes * 60
-    res = Result()
+    res = Result(model=model)
     env = dict(os.environ, NIGHTSHIFT_UNITYREFS=unityrefs) if unityrefs else dict(os.environ)
     git(repo, "checkout", "-q", "--detach", "--force", base)
     git(repo, "clean", "-q", "-fdx", "-e", f"{REL}/.state/")
@@ -827,7 +998,10 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
         res.tokens_cached += run.tokens_cached
         if run.text:
             res.summary = run.text
-        if run.timed_out:
+        if run.model_out:
+            res.model_out, res.errors = True, run.error
+            trouble.append(f"{model} stopped answering: {run.error}")
+        elif run.timed_out:
             trouble.append(f"the agent hit the {minutes:.0f}-minute time limit")
         elif run.error:
             trouble.append("the agent reported an error: " + run.error)
@@ -838,6 +1012,10 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
         return run
 
     first = agent(PROMPT.format(task=task))
+    if res.model_out:  # not the task's doing: nothing it did is checked or kept, and the task goes back in the queue
+        res.status = "error"
+        res.minutes = round((time.time() - started) / 60, 1)
+        return res
     reverted = revert_protected(repo, base)
     if reverted:
         log("  rolled back protected files: " + ", ".join(reverted[:8]))
@@ -864,6 +1042,8 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
     git(repo, "add", "-A")
     if STOPPING.is_set():
         res.status, res.errors = "error", "stopped"
+    elif res.model_out:  # partway through the fix rounds: the task goes back in the queue, as above
+        res.status = "error"
     elif trouble and not res.files:
         res.status, res.errors = "error", "; ".join(trouble)
     elif trouble or not ok:
@@ -1059,6 +1239,7 @@ class Night:
         self.workers: list[str] = []
         self.entries: list[Entry] = []
         self.unfinished: list[str] = []  # tasks tried tonight that are still unchecked
+        self.switches: list[str] = []  # when and why the night moved from a cloud model to NIGHTSHIFT_FALLBACK_MODEL
         self.tokens = [0, 0, 0]  # in, out, cached
         # A second run on the same date gets its own report rather than overwriting the first.
         name = date if not (REPORTS / f"{date}.md").exists() else f"{date}-{self.started:%H%M}"
@@ -1071,14 +1252,22 @@ class Night:
     def write(self) -> None:
         REPORTS.mkdir(parents=True, exist_ok=True)
         count = lambda o: sum(1 for e in self.entries if e.outcome == o)
+        names = [m.strip() for m in self.model.split(",") if m.strip()]
+        local = ", ".join(m for m in names if not is_cloud(m))
+        cloud = ", ".join(m for m in names if is_cloud(m))
+        if cloud:
+            where = f"`{cloud}` in OpenCode's cloud" + (f" and `{local}` in Ollama on the DGX Spark" if local else "")
+        else:
+            where = f"`{self.model}` in Ollama on the DGX Spark (no cloud tokens)"
         lines = [
             f"# Night shift {self.date}",
             "",
-            f"Branch `{self.branch}` · model `{self.model}` in Ollama on the DGX Spark (no cloud tokens) · "
-            f"workers: {', '.join(self.workers) or '-'}",
+            f"Branch `{self.branch}` · model {where} · workers: {', '.join(self.workers) or '-'}",
             f"Started {self.started:%H:%M} · updated {dt.datetime.now():%H:%M} · {count('landed')} landed · "
             f"{count('failed') + count('gave up')} failed · {count('no change')} no change · "
-            f"{self.tokens[0] + self.tokens[1]:,} tokens processed locally ({self.tokens[2]:,} from cache)",
+            f"{self.tokens[0] + self.tokens[1]:,} tokens processed{'' if cloud else ' locally'} "
+            f"({self.tokens[2]:,} from cache)",
+            *(f"Switched at {note}" for note in self.switches),
             "",
             "| # | Task | Result | Worker | Minutes | Commit |",
             "|---|---|---|---|---|---|",
@@ -1812,7 +2001,10 @@ def plan_prompt(focus: str, path: str, source: str, existing: list[str], lessons
 
 def ask_model(base: str, model: str, prompt: str, timeout: float = 900) -> str:
     """One answer from Ollama's OpenAI-compatible endpoint, the one OpenCode uses, so the model keeps being served exactly
-    as it is for the agents (other settings would make Ollama reload it). Any reasoning is left out."""
+    as it is for the agents (other settings would make Ollama reload it). Any reasoning is left out. One of OpenCode's
+    own models answers only OpenCode, so it is asked through OpenCode (ask_opencode)."""
+    if is_cloud(model):
+        return ask_opencode(model, prompt, timeout)
     body = json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}], "stream": False}).encode()
     req = urllib.request.Request(base.rstrip("/") + "/v1/chat/completions", body, {"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -2021,7 +2213,7 @@ def plan_model(cfg: dict, ollama: str) -> str:
 
 class Planner:
     """Writes the next task into tasks.md when the queue runs low (NIGHTSHIFT_AUTOPLAN). It goes round the focus areas in
-    NIGHTSHIFT_AUTOPLAN_FOCUS, shows the local model one script at a time (the one that fits and was shown least
+    NIGHTSHIFT_AUTOPLAN_FOCUS, shows the model one script at a time (the one that fits and was shown least
     recently) and queues the task it writes once that checks out: it must name that script, mention only scripts that
     exist and nothing protected, and not repeat a task already in tasks.md. Documentation tasks (the docs and explain
     focuses) need no model. A focus written with a trailing "+" asks for a big task: several located steps, with the
@@ -2193,13 +2385,23 @@ class Worker:
         if self.target and not SSH_KEY.exists():
             return "no SSH key for helpers yet (run NightShift.ps1 helpers on the PC)"
         repo = shlex.quote(self.repo)
+        # What its models need: Ollama for one there (the fallback included), the internet for one of OpenCode's own.
+        fallback = self.cfg.get("NIGHTSHIFT_FALLBACK_MODEL", "").strip()
+        reach = []
+        if not is_cloud(self.model) or (fallback and not is_cloud(fallback)):
+            reach.append(f"curl -s --max-time 5 {shlex.quote(self.ollama)}/api/version >/dev/null || "
+                         f"{{ echo \"can't reach Ollama at {self.ollama}\"; exit 1; }}")
+        if is_cloud(self.model) or is_cloud(fallback):
+            reach.append("curl -s --max-time 10 -o /dev/null https://opencode.ai || "
+                         "{ echo \"can't reach opencode.ai, where OpenCode's own models run\"; exit 1; }")
+        reach_lines = "\n".join(reach)
         script = f"""set -e
 export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$HOME/.dotnet:/opt/dotnet:$PATH"
 mkdir -p {repo} && cd {repo} && (git rev-parse --git-dir >/dev/null 2>&1 || git init -q)
 command -v opencode >/dev/null || {{ echo "OpenCode is not installed"; exit 1; }}
 command -v dotnet >/dev/null || {{ echo ".NET SDK is not installed"; exit 1; }}
 [ -f "{self.unityrefs}/Runtime.csproj" ] || {{ echo "Unity reference assemblies are missing"; exit 1; }}
-curl -s --max-time 5 {shlex.quote(self.ollama)}/api/version >/dev/null || {{ echo "can't reach Ollama at {self.ollama}"; exit 1; }}
+{reach_lines}
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*)
   git config core.autocrlf false && git config core.eol lf && git config core.longpaths true  # files as on Linux
   for py in python "py -3" ""; do  # python3 there is often the Microsoft Store's stand-in, not Python
@@ -2304,6 +2506,11 @@ class Coordinator:
     def __init__(self, cfg: dict):
         self.cfg = cfg
         self.model = cfg["NIGHTSHIFT_MODEL"]
+        # The model the night switches to once one of OpenCode's own stops answering (Big Pickle's free usage limit
+        # reached, say); empty: the workers on that model stop instead.
+        self.fallback = cfg.get("NIGHTSHIFT_FALLBACK_MODEL", "").strip()
+        self.models_out: set[str] = set()  # cloud models that stopped answering tonight; their workers are on the fallback
+        self.ollama = ""  # Ollama's address (find_ollama), set when the night starts
         self.minutes = float(cfg["NIGHTSHIFT_TASK_MINUTES"])
         self.fix_rounds = int(cfg["NIGHTSHIFT_FIX_ROUNDS"])
         self.context = int(cfg["NIGHTSHIFT_CONTEXT"])
@@ -2327,6 +2534,65 @@ class Coordinator:
 
     def until(self) -> str:
         return f"no new tasks after {self.deadline:%a %H:%M}" if self.deadline else "on duty until stopped"
+
+    def takes_big(self, worker: Worker) -> bool:
+        """Whether `worker` takes big tasks: not when its model is in NIGHTSHIFT_SMALL_TASK_MODELS."""
+        return worker.model.removesuffix(":latest") not in self.small_models
+
+    def fall_back(self, model: str, why: str) -> bool:
+        """`model`, one of OpenCode's own, stopped answering (`why`: its free usage limit was reached, say). Every worker
+        on it, and the planner, switch to NIGHTSHIFT_FALLBACK_MODEL for the rest of the night. Returns False when there's
+        nothing to switch to: the workers on `model` then stop for the night."""
+        if not self.fallback or model == self.fallback:
+            return False
+        with self.queue_lock:
+            first = model not in self.models_out
+            self.models_out.add(model)
+            for w in self.workers:
+                if w.model == model:
+                    w.model = self.fallback
+                    w.big = self.takes_big(w)
+            if self.planner and getattr(self.planner, "model", None) == model:
+                self.planner.model = self.fallback
+            if self.model == model:
+                self.model = self.fallback
+            if first and self.night:
+                self.night.switches.append(f"{dt.datetime.now():%H:%M} to `{self.fallback}`: `{model}` stopped answering "
+                                           f"({why})")
+                self.night.model = ", ".join(sorted({m.strip() for m in self.night.model.split(",") if m.strip()}
+                                                    | {self.fallback}))
+            if self.night:
+                self.write_status()
+        if first:
+            log(f"{model} stopped answering ({why}); the rest of the night runs on {self.fallback}")
+            if not is_cloud(self.fallback):
+                try:
+                    log(f"loading {self.fallback} into memory...")
+                    warm_model(self.ollama, self.fallback)
+                except Exception as e:  # the agents' first requests load it anyway
+                    log(f"couldn't load {self.fallback} ahead of the agents ({first_line(str(e), 160)})")
+        return True
+
+    def start_model(self, model: str) -> str:
+        """Gets `model` ready for the night and returns the model to start on. An Ollama model is loaded into memory.
+        One of OpenCode's own is asked for a word first, and if it doesn't answer (its free usage limit reached, say),
+        the night starts on NIGHTSHIFT_FALLBACK_MODEL instead; without one, it doesn't start."""
+        if not is_cloud(model):
+            log(f"loading {model} into memory...")
+            warm_model(self.ollama, model)
+            return model
+        log(f"checking {model} answers...")
+        try:
+            if not has_model(self.ollama, model):
+                raise ModelOut(model, "OpenCode doesn't offer it here")
+            warm_model(self.ollama, model)
+            return model
+        except Exception as e:
+            why = e.why if isinstance(e, ModelOut) else first_line(str(e), 200)
+            if not self.fall_back(model, why):
+                raise RuntimeError(f"{model} isn't answering ({why}), and NIGHTSHIFT_FALLBACK_MODEL names no model to "
+                                   f"start on instead") from e
+            return self.fallback
 
     def off_duty(self) -> bool:
         """True once no new task may start: stopping, a finish was requested, or the stop time has passed."""
@@ -2515,6 +2781,8 @@ class Coordinator:
         if self.cfg.get("NIGHTSHIFT_AUTOPLAN", "0").strip().lower() in ("", "0", "off", "no", "false"):
             return
         model = plan_model(self.cfg, ollama)
+        if model in self.models_out:  # stopped answering before the night began
+            model = self.fallback
         focus = [f.strip() for f in self.cfg.get("NIGHTSHIFT_AUTOPLAN_FOCUS", "").split(",") if f.strip()]
         # While documentation workers are on duty the rotation skips documentation: they get theirs on demand (wanted).
         self.planner = Planner(ollama, model, focus, on_duty=lambda: self.planning.is_set() and not self.off_duty(),
@@ -2548,6 +2816,11 @@ class Coordinator:
                     planned = self.planner.plan_docs()
                 else:
                     planned = self.planner.plan_one(small=want == "small")
+            except ModelOut as e:  # on to the fallback model, at once; without one, nothing more gets planned
+                if self.fall_back(e.model, e.why):
+                    continue
+                log(f"planner: {e}, and there's no NIGHTSHIFT_FALLBACK_MODEL to ask instead, so nothing more is planned")
+                return
             except Exception as e:  # Ollama busy or restarting, a script moved by a landing...
                 log(f"planner: {first_line(str(e), 200)}")
                 planned = None
@@ -2651,8 +2924,9 @@ class Coordinator:
                 night.add(entry)
                 night.write()
                 git(repo, "add", "-A")
-                body = (f"{res.summary.strip()}\n\nTask: {task.text}\n\nWorker: {worker.name} · model {worker.model} "
-                        f"(Ollama on the DGX Spark) · {res.minutes:g} min · compile check passed")
+                model = res.model or worker.model
+                body = (f"{res.summary.strip()}\n\nTask: {task.text}\n\nWorker: {worker.name} · model {model} "
+                        f"({model_home(model)}) · {res.minutes:g} min · compile check passed")
                 entry.sha = git_commit(repo, "Night shift: " + task.key[:70], body)
                 log(f"landed {entry.sha[:9]}: {task.key[:90]}", worker.name)
                 return task.key, "x", note
@@ -2712,7 +2986,12 @@ class Coordinator:
                 res = worker.run(task, base, max(20.0, min(self.minutes, left)), worker.model, self.fix_rounds, self.context)
             except Exception as e:
                 res = Result(status="error", errors=str(e)[-1500:])
-            worker.errors = worker.errors + 1 if res.status == "error" else 0
+            switched = False
+            if res.model_out:  # the model stopped answering, not the task's doing: this try doesn't count against it
+                with self.queue_lock:
+                    self.dispatches[task.key] = max(0, self.dispatches.get(task.key, 1) - 1)
+                switched = self.fall_back(res.model or worker.model, res.errors)
+            worker.errors = worker.errors + 1 if res.status == "error" and not res.model_out else 0
             try:
                 self.land(worker, task, res)
             except Exception as e:
@@ -2721,6 +3000,10 @@ class Coordinator:
                 with self.queue_lock:
                     self.in_flight.pop(task.key, None)
                     self.write_status()
+            if res.model_out and not switched:
+                log(f"{res.model or worker.model} stopped answering and there's no NIGHTSHIFT_FALLBACK_MODEL to switch to; "
+                    f"this worker is done for the night", worker.name)
+                break
             if worker.errors >= 2:
                 log("two errors in a row; this worker is done for the night", worker.name)
                 break
@@ -2737,9 +3020,14 @@ class Coordinator:
 
     def run(self) -> None:
         log(f"Night shift starting · model {self.model} · {self.until()}")
-        ollama = find_ollama(self.cfg)
-        if not has_model(ollama, self.model):
+        ollama = self.ollama = find_ollama(self.cfg)
+        if not is_cloud(self.model) and not has_model(ollama, self.model):
             raise RuntimeError(f"Ollama at {ollama} doesn't have {self.model}; run 'ollama pull {self.model}' on the Spark")
+        if self.fallback and not has_model(ollama, self.fallback):
+            where = "offered by OpenCode here" if is_cloud(self.fallback) else f"in Ollama at {ollama}"
+            log(f"NIGHTSHIFT_FALLBACK_MODEL {self.fallback} isn't {where}, so nothing takes over if a cloud model stops "
+                f"answering")
+            self.fallback = ""
         opencode_bin()
         if not (HERE / ".unityrefs" / "Runtime.csproj").exists():
             raise RuntimeError("Unity's reference assemblies aren't on the Spark yet; run 'NightShift.ps1 refs' on the PC")
@@ -2754,15 +3042,17 @@ class Coordinator:
         ok, out = compile_check(ROOT, dict(os.environ))
         if not ok:
             raise RuntimeError("the project doesn't compile before any changes, so no work could be verified:\n" + out[-2500:])
-        log(f"loading {self.model} into memory...")
-        warm_model(ollama, self.model)
+        self.model = self.start_model(self.model)
         candidates = [Worker("spark", None, self.cfg, ollama)] if self.cfg["NIGHTSHIFT_LOCAL_WORKER"] != "0" else []
         candidates += [Worker(name, target, self.cfg, ollama) for name, target in helpers(self.cfg)]
         for w in candidates:
+            if w.model in self.models_out:
+                w.model = self.fallback
             if w.model != self.model and not has_model(ollama, w.model):
-                log(f"{w.model} isn't in Ollama on the Spark; {w.name} uses {self.model} instead")
+                where = "offered by OpenCode here" if is_cloud(w.model) else "in Ollama on the Spark"
+                log(f"{w.model} isn't {where}; {w.name} uses {self.model} instead")
                 w.model = self.model
-            w.big = w.model.removesuffix(":latest") not in self.small_models
+            w.big = self.takes_big(w)
             w.docs = self.docs_only(w)
         known = {n for w in candidates for n in (w.name.lower(), (w.target or "").lower(),
                                                   (w.target or "").split("@")[-1].lower())}
@@ -2771,8 +3061,15 @@ class Coordinator:
             log(f"NIGHTSHIFT_DOCS_WORKERS names {', '.join(sorted(unknown))}, which isn't a worker here "
                 f"(set a helper up with NightShift.ps1 helpers)")
         for extra in sorted({w.model for w in candidates} - {self.model}):
-            log(f"loading {extra} into memory...")
-            warm_model(ollama, extra)
+            try:
+                ready = self.start_model(extra)
+            except RuntimeError as e:  # one of OpenCode's own that isn't answering, with no fallback
+                log(f"{first_line(str(e), 200)}; its workers use {self.model} instead")
+                ready = self.model
+            for w in candidates:
+                if w.model == extra:
+                    w.model = ready
+                    w.big = self.takes_big(w)
         taken: set[str] = set()
         for w in candidates:
             name, n = w.name, 2
@@ -2936,13 +3233,23 @@ def cmd_state() -> int:
 
 
 def cmd_plan(args: argparse.Namespace) -> int:
-    """Writes one task with the local model now, the way the planner does when the queue runs low."""
+    """Writes one task with the planner's model now, the way the planner does when the queue runs low."""
     cfg = load_config()
     ollama = find_ollama(cfg)
     model = args.model or plan_model(cfg, ollama)
     focus = [args.focus] if args.focus else [f.strip() for f in cfg["NIGHTSHIFT_AUTOPLAN_FOCUS"].split(",") if f.strip()]
     planner = Planner(ollama, model, focus, dry_run=args.dry_run)
-    task = planner.plan_one(tries=1 if args.target else 3, focus=args.focus, target=args.target)
+    tries = 1 if args.target else 3
+    try:
+        task = planner.plan_one(tries=tries, focus=args.focus, target=args.target)
+    except ModelOut as e:  # as the night shift does, ask the fallback model instead (unless a model was asked for)
+        fallback = cfg.get("NIGHTSHIFT_FALLBACK_MODEL", "").strip()
+        if args.model or not fallback or fallback == model:
+            print(f"{e}.")
+            return 1
+        print(f"{e}; asking {fallback} instead.")
+        model = planner.model = fallback
+        task = planner.plan_one(tries=tries, focus=args.focus, target=args.target)
     if task is None:
         print("No task planned (see the reason above).")
         return 1
@@ -2955,7 +3262,7 @@ def cmd_chat(extra: list[str]) -> int:
     path = write_opencode_config(ROOT, find_ollama(cfg), cfg["NIGHTSHIFT_MODEL"], int(cfg["NIGHTSHIFT_CONTEXT"]))
     env = dict(os.environ, OPENCODE_CONFIG=str(path), OPENCODE_DISABLE_AUTOUPDATE="true", OPENCODE_DISABLE_LSP_DOWNLOAD="true")
     exe = opencode_bin()
-    os.execvpe(exe, [exe, str(ROOT), "--model", f"ollama/{cfg['NIGHTSHIFT_MODEL']}", *extra], env)
+    os.execvpe(exe, [exe, str(ROOT), "--model", opencode_model(cfg["NIGHTSHIFT_MODEL"]), *extra], env)
     return 0
 
 
@@ -2993,11 +3300,12 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("status", help="progress summary")
     sub.add_parser("state", help="one line of JSON: running, busy or idle, and the branch (for NightShift.ps1)")
     sub.add_parser("map", help="rebuild memory/PROJECT_MAP.md")
-    plan = sub.add_parser("plan", help="write one task with the local model now, as the planner (NIGHTSHIFT_AUTOPLAN) does")
+    plan = sub.add_parser("plan", help="write one task with the planner's model now, as the planner (NIGHTSHIFT_AUTOPLAN) does")
     plan.add_argument("--focus", choices=focus_names(),
                       help="the kind of task, a trailing + for a big one (default: the next in NIGHTSHIFT_AUTOPLAN_FOCUS)")
     plan.add_argument("--target", help="the script to plan for, e.g. Assets/Scripts/World/DecorProps.cs")
-    plan.add_argument("--model", help="the Ollama model to ask (default: as the planner chooses)")
+    plan.add_argument("--model", help="the model to ask: in Ollama, or opencode/<id> for one of OpenCode's own "
+                                      "(default: as the planner chooses)")
     plan.add_argument("--dry-run", action="store_true", help="show the task without queueing it")
     chat = sub.add_parser("chat", help="interactive OpenCode with the night shift's model and settings")
     chat.add_argument("extra", nargs=argparse.REMAINDER)

@@ -24,6 +24,7 @@ namespace CloneZ
 
         private Transform _visual;
         private Light _glow;
+        private AudioSource _hum;
         private float _revealedUntil, _songAt;
 // Tracks the last time the artifact was studied to enforce a short cooldown.
             private float _lastStudyTime;
@@ -52,7 +53,21 @@ namespace CloneZ
         }
 
         protected override void OnEnable() { base.OnEnable(); if (!All.Contains(this)) All.Add(this); }
-        protected override void OnDisable() { base.OnDisable(); All.Remove(this); }
+        protected override void OnDisable() { base.OnDisable(); All.Remove(this); Hum(false); }
+
+        // A revealed artifact sings faintly (the prize a little louder); started only once built, never rendered on the spot.
+        private void Hum(bool on)
+        {
+            if (!on)
+            {
+                if (_hum != null) Sfx.Stop(_hum);
+                _hum = null;
+                return;
+            }
+            if (_hum != null) return;
+            if (!Sfx.Ready(SfxIds.ArtifactHum)) { Sfx.Request(SfxIds.ArtifactHum); return; }
+            _hum = Sfx.Loop(SfxIds.ArtifactHum, transform, IsPrize ? 0.45f : 0.3f, IsPrize ? 10f : 6f, Random.Range(0.94f, 1.06f));
+        }
 
         private void BuildVisual(ArtifactCatalog.Def def)
         {
@@ -97,6 +112,7 @@ namespace CloneZ
                 Revealed = false;
                 _visual.gameObject.SetActive(false);
             }
+            Hum(_visual.gameObject.activeSelf);
             if (_visual.gameObject.activeSelf)
             {
                 _visual.localPosition = Vector3.up * (Mathf.Sin(Time.time * 1.7f) * 0.04f);

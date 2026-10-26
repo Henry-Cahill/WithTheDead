@@ -43,6 +43,7 @@ private bool _isShade;
         private Vector3 _home, _lastPos, _lure;
         private bool _hasLure;
         private int _packIndex;
+        private float _voiceAt, _hurtVoiceAt;   // audio only: when it may next growl or call, cry out in pain
 
         /// <summary>Creates and registers a new creature instance at the given position, optionally adding it to a pack.</summary>
         public static Creature Spawn(string id, Vector3 position, List<Creature> pack = null)
@@ -74,6 +75,7 @@ private bool _isShade;
             c._isShade = id == CreatureCatalog.Shade;
             c._hp = def.MaxHp;
             c._home = position;
+            c._voiceAt = Time.time + Random.Range(4f, 20f);
             c.Pack = pack;
             if (pack != null) { c._packIndex = pack.Count; pack.Add(c); }
             c._body = root.AddComponent<CreatureBody>();
@@ -158,16 +160,23 @@ private bool _isShade;
                 _lastSeen = Time.time;
                 if (Def.Id == CreatureCatalog.Deer || (Def.Id == CreatureCatalog.Wolf && !HumanUtil.IsNight && (Pack == null || Pack.Count < 3)))
                 {
-                    if (bestD < Def.Sight * 0.6f) Flee(best.transform.position);
+                    if (bestD < Def.Sight * 0.6f)
+                    {
+                        if (Def.Id == CreatureCatalog.Deer && State != Mode.Flee) Cry(Cue.Warn);
+                        Flee(best.transform.position);
+                    }
                     return;
                 }
-                if (Def.Id == CreatureCatalog.Bear && State != Mode.Hunt && bestD > 14f && _hp > Def.MaxHp * 0.95f) return;   // bears warn first
-                if (_target != best && State != Mode.Hunt)
+                if (Def.Id == CreatureCatalog.Bear && State != Mode.Hunt && bestD > 14f && _hp > Def.MaxHp * 0.95f)   // bears warn first
                 {
-                    if (Def.Id == CreatureCatalog.Wolf) Sfx.Play(SfxIds.WolfHowl, transform.position, 0.6f, Random.Range(0.95f, 1.1f), 60f);
-                    else if (Def.Id == CreatureCatalog.Bear) Sfx.Play(SfxIds.BearRoar, transform.position, 0.9f, 1f, 50f);
-                    else if (Def.IsMutant) Sfx.Play(Def.Id == CreatureCatalog.Hound ? SfxIds.MutantGrowl : SfxIds.MutantScreech, transform.position + Vector3.up, 0.8f, Random.Range(0.9f, 1.1f), 45f);
+                    if (Time.time >= _voiceAt)
+                    {
+                        _voiceAt = Time.time + Random.Range(4f, 7f);
+                        Cry(Cue.Warn);
+                    }
+                    return;
                 }
+                if (_target != best && State != Mode.Hunt) Cry(Cue.Alert);
                 _target = best;
                 State = Mode.Hunt;
                 if (Pack != null) foreach (Creature m in Pack) if (m != null && !m.IsDead && m._target == null) { m._target = best; m.State = Mode.Hunt; }
@@ -178,6 +187,11 @@ private bool _isShade;
 
         private void Wander()
         {
+            if (Time.time >= _voiceAt)
+            {
+                _voiceAt = Time.time + Random.Range(10f, 25f) * (Def.Id == CreatureCatalog.Wolf ? 2.5f : 1f);
+                Cry(Cue.Idle);
+            }
             if (Def.Id == CreatureCatalog.Deer && _agent.velocity.sqrMagnitude < 0.05f && Random.value < 0.3f) return;   // grazing
             if (_hasLure)
             {
@@ -200,6 +214,11 @@ private bool _isShade;
 
             if (_hp < Def.MaxHp * 0.3f && Def.Id != CreatureCatalog.Thumper && Def.Id != CreatureCatalog.Shade) { Flee(t); return; }
             if (Pack != null && Def.Id == CreatureCatalog.Hound && AlivePack() < 2) { Flee(t); return; }
+            if (Time.time >= _voiceAt && d < 30f)
+            {
+                _voiceAt = Time.time + Random.Range(3f, 7f) * (Def.Id == CreatureCatalog.Thumper || Def.Id == CreatureCatalog.Puppeteer ? 2.5f : 1f);
+                Cry(Cue.Hunt);
+            }
 
             switch (Def.Id)
             {
@@ -244,6 +263,7 @@ private bool _isShade;
             _revealUntil = Time.time + 2f;
             Stop();
             Face(_target.transform.position);
+            Cry(Cue.Attack);
             Actor victim = _target;
             StartCoroutine(Strike(victim));
         }
@@ -253,7 +273,7 @@ private bool _isShade;
             yield return new WaitForSeconds(Def.AttackWindup);
             if (IsDead || victim == null || !victim.IsAlive) yield break;
             if (HumanUtil.FlatDistance(transform.position, victim.transform.position) > Def.AttackRange + 0.5f) yield break;
-            Sfx.Play(Def.IsMutant ? SfxIds.MutantGrowl : SfxIds.HitFlesh, victim.Center, 0.8f, Random.Range(0.9f, 1.1f), 20f);
+            Sfx.Play(SfxIds.HitFlesh, victim.Center, 0.8f, Random.Range(0.9f, 1.1f), 25f);
             var info = new DamageInfo(Def.AttackDamage, Def.AttackKind, victim.Center, (victim.transform.position - transform.position).normalized, gameObject)
             {
                 HpScale = true, BleedChance = Def.Bleed, FractureChance = Def.Fracture, Knockback = Def.Knockback, WeaponId = Def.Id,
@@ -267,6 +287,7 @@ private bool _isShade;
             _attackReady = Time.time + Def.AttackCooldown;
             _attackAnimUntil = Time.time + Def.AttackWindup + 0.4f;
             Stop();
+            Cry(Cue.Attack);
             StartCoroutine(SlamRoutine());
         }
 
@@ -275,7 +296,7 @@ private bool _isShade;
             yield return new WaitForSeconds(Def.AttackWindup);
             if (IsDead) yield break;
             Vector3 c = transform.position;
-            Sfx.Play(SfxIds.Explosion, c, 0.8f, 0.6f, 70f);
+            Sfx.Play(SfxIds.ThumperSlam, c, 1f, Random.Range(0.92f, 1.05f), 75f);
             CreatureRingFx.Spawn(c + Vector3.up * 0.2f, new Color(0.55f, 0.48f, 0.38f, 0.45f), new Vector3(1f, 0.3f, 1f), new Vector3(Def.AttackRange * 2.2f, 0.6f, Def.AttackRange * 2.2f), 0.6f);
             NoiseSystem.Emit(c, 35f);
             for (int i = Actor.All.Count - 1; i >= 0; i--)
@@ -297,7 +318,7 @@ private bool _isShade;
             _trickReady = Time.time + Random.Range(6f, 9f);
             _attackAnimUntil = Time.time + 0.8f;
             Vector3 c = Actor.EyePosition;
-            Sfx.Play(SfxIds.PsiWhisper, c, 1f, 0.7f, 40f);
+            Sfx.Play(SfxIds.PsiWhisper, c, 1f, 0.75f, 50f);
             CreatureRingFx.Spawn(c, new Color(0.6f, 0.4f, 0.9f, 0.35f), Vector3.one * 0.5f, Vector3.one * 9f, 0.7f);
             Actor victim = _target;
             var info = new DamageInfo(30f, DamageKind.Psi, victim.EyePosition, (victim.transform.position - transform.position).normalized, gameObject)
@@ -362,6 +383,11 @@ private bool _isShade;
                 else { _target = attacker; State = Mode.Hunt; _lastSeen = Time.time; }
             }
             if (_hp <= 0f) Die(info.HitDirection);
+            else if (Time.time >= _hurtVoiceAt && info.Kind != DamageKind.Radiation)
+            {
+                _hurtVoiceAt = Time.time + (Def.Height > 1.2f ? Random.Range(2.5f, 4f) : Random.Range(0.8f, 1.6f));
+                Cry(Cue.Hurt);
+            }
         }
 
         public void ReceiveZombieAttack(bool bite) => TakeDamage(new DamageInfo(30f, DamageKind.Bite, Actor.Center, transform.forward, null) { HpScale = true });
@@ -375,7 +401,7 @@ private bool _isShade;
             var col = GetComponent<Collider>();
             if (col != null) col.enabled = false;
             _body.Die(dir);
-            Sfx.Play(Def.IsMutant ? SfxIds.MutantScreech : SfxIds.HitFlesh, transform.position + Vector3.up, 0.6f, 0.7f, 30f);
+            Cry(Cue.Die);
 
             var loot = gameObject.AddComponent<LootContainer>();
             loot.DisplayName = Def.CorpseName;
@@ -394,6 +420,68 @@ private bool _isShade;
                 var skills = Actor.LocalPlayer != null ? Actor.LocalPlayer.GetComponent<PlayerSkills>() : null;
                 if (skills != null) skills.AddXp(PlayerSkills.Skill.Aiming, Def.Xp * 0.2f);
             }
+        }
+        #endregion
+
+        #region Voice
+        private enum Cue { Idle, Warn, Alert, Hunt, Attack, Hurt, Die }
+
+        // The species' own voice for a moment of its life, from its head (audio only: nothing here is heard by the AI).
+        private void Cry(Cue cue)
+        {
+            string id;
+            float volume, range, pitch = Random.Range(0.94f, 1.06f);
+            switch (Def.Id)
+            {
+                case CreatureCatalog.Wolf:
+                    if (cue == Cue.Idle) { if (!HumanUtil.IsNight || _packIndex > 0) return; id = SfxIds.WolfHowl; volume = 0.75f; range = 120f; }   // the pack's first wolf calls at night
+                    else if (cue == Cue.Alert) { id = Pack != null && Pack.Count > 1 ? SfxIds.WolfHowl : SfxIds.WolfBark; volume = 0.9f; range = 90f; }
+                    else if (cue == Cue.Hurt) { id = SfxIds.WolfYelp; volume = 0.85f; range = 45f; }
+                    else if (cue == Cue.Die) { id = SfxIds.WolfDie; volume = 0.85f; range = 50f; }
+                    else { id = SfxIds.WolfGrowl; volume = cue == Cue.Attack ? 0.9f : 0.7f; range = 35f; }
+                    break;
+                case CreatureCatalog.Bear:
+                    if (cue == Cue.Alert || cue == Cue.Hurt) { id = SfxIds.BearRoar; volume = 1f; range = 70f; }
+                    else if (cue == Cue.Die) { id = SfxIds.BearDie; volume = 1f; range = 60f; }
+                    else { id = SfxIds.BearHuff; volume = cue == Cue.Idle ? 0.6f : cue == Cue.Attack ? 0.95f : 0.85f; range = 40f; }
+                    break;
+                case CreatureCatalog.Deer:
+                    if (cue == Cue.Die) { id = SfxIds.DeerDie; volume = 0.85f; range = 50f; }
+                    else if (cue == Cue.Hurt) { id = SfxIds.DeerCall; volume = 0.85f; range = 50f; pitch *= 1.15f; }
+                    else if (cue == Cue.Idle) { id = SfxIds.DeerCall; volume = 0.6f; range = 60f; }
+                    else { id = SfxIds.DeerSnort; volume = 0.85f; range = 45f; }
+                    break;
+                case CreatureCatalog.Hound:
+                    if (cue == Cue.Alert) { id = SfxIds.HoundBark; volume = 0.9f; range = 60f; }
+                    else if (cue == Cue.Die) { id = SfxIds.MutantDie; volume = 0.85f; range = 45f; pitch *= 1.15f; }
+                    else if (cue == Cue.Hurt) { id = SfxIds.WolfYelp; volume = 0.8f; range = 40f; pitch *= 0.8f; }
+                    else if (cue == Cue.Idle) { id = SfxIds.MutantGrowl; volume = 0.55f; range = 30f; pitch *= 1.2f; }
+                    else { id = SfxIds.HoundSnarl; volume = cue == Cue.Attack ? 0.9f : 0.7f; range = 35f; }
+                    break;
+                case CreatureCatalog.Shade:
+                    if (cue == Cue.Idle || cue == Cue.Hunt || cue == Cue.Warn) return;   // it hunts in silence
+                    if (cue == Cue.Die) { id = SfxIds.MutantDie; volume = 0.85f; range = 45f; }
+                    else if (cue == Cue.Attack) { id = SfxIds.MutantScreech; volume = 0.85f; range = 35f; }
+                    else { id = SfxIds.ShadeShriek; volume = 0.8f; range = 45f; }
+                    break;
+                case CreatureCatalog.Puppeteer:
+                    if (cue == Cue.Die) { id = SfxIds.MutantDie; volume = 0.85f; range = 45f; pitch *= 0.85f; }
+                    else if (cue == Cue.Attack) { id = SfxIds.MutantGrowl; volume = 0.8f; range = 30f; }
+                    else if (cue == Cue.Hurt) { id = SfxIds.MutantScreech; volume = 0.8f; range = 40f; pitch *= 0.8f; }
+                    else { id = SfxIds.PuppeteerMoan; volume = cue == Cue.Alert ? 0.85f : 0.55f; range = 45f; }
+                    break;
+                case CreatureCatalog.Thumper:
+                    if (cue == Cue.Die) { id = SfxIds.ThumperDie; volume = 1f; range = 80f; }
+                    else { id = SfxIds.ThumperBellow; volume = cue == Cue.Idle || cue == Cue.Hunt ? 0.75f : 1f; range = 80f; }
+                    break;
+                default:
+                    if (!Def.IsMutant) return;
+                    id = cue == Cue.Die ? SfxIds.MutantDie : SfxIds.MutantGrowl;
+                    volume = 0.8f;
+                    range = 40f;
+                    break;
+            }
+            Sfx.Play(id, Actor.EyePosition, volume, pitch, range);
         }
         #endregion
     }

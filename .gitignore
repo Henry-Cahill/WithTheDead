@@ -173,3 +173,6 @@ coverage.xml
 cover/
 
 # Workbench Project Layout
+
+# Sound Board WAV exports
+/AudioExport/
