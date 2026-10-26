@@ -47,6 +47,9 @@ namespace CloneZ
         /// <summary>A clip for <paramref name="id"/>, or null when unknown. May return a different variation each call.
         /// Renders on the calling thread when nothing is ready yet.</summary>
         AudioClip Get(string id);
+        /// <summary>The given variation of <paramref name="id"/> (wrapped into range) — one zombie's own throat. While it
+        /// is still being built another variation stands in.</summary>
+        AudioClip Get(string id, int variation);
         /// <summary>The routing for <paramref name="id"/>; never null.</summary>
         SfxMeta Meta(string id);
         /// <summary>True when <see cref="Get"/> can answer without rendering (a variation is already built).</summary>

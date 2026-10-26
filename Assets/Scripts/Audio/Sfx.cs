@@ -37,10 +37,10 @@ namespace CloneZ
             if (Backend != null && !string.IsNullOrEmpty(id)) Backend.Request(id);
         }
 
-        internal static AudioClip Clip(string id)
+        internal static AudioClip Clip(string id, int variation = -1)
         {
             if (Backend == null || string.IsNullOrEmpty(id)) return null;
-            try { return Backend.Get(id); }
+            try { return variation >= 0 ? Backend.Get(id, variation) : Backend.Get(id); }
             catch (System.Exception e) { Debug.LogException(e); return null; }
         }
 
@@ -48,6 +48,11 @@ namespace CloneZ
         /// <summary>A positional one-shot. Returns the source (null when silent or out of earshot).</summary>
         public static AudioSource Play(string id, Vector3 position, float volume = 1f, float pitch = 1f, float maxDistance = 45f)
             => SfxMixer.PlayAt(id, position, volume, pitch, maxDistance, true);
+
+        /// <summary>A positional one-shot of one particular variation (wrapped into range): a speaker with a voice of
+        /// its own, the same every time. A distant version, when one takes over, picks its own.</summary>
+        public static AudioSource Play(string id, Vector3 position, float volume, float pitch, float maxDistance, int variation)
+            => SfxMixer.PlayAt(id, position, volume, pitch, maxDistance, true, true, variation);
 
         /// <summary>A flat (non-positional) sound: menus, the survivor's own breathing.</summary>
         public static AudioSource PlayUI(string id, float volume = 1f, float pitch = 1f) => PlayFlat(id, volume, pitch);

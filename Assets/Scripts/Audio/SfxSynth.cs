@@ -197,6 +197,24 @@ namespace CloneZ
             return c;
         }
 
+        public AudioClip Get(string id, int variation)
+        {
+            if (id == null || !_recipes.TryGetValue(id, out Recipe r)) return null;
+            int n = r.Variations;
+            int v = ((variation % n) + n) % n;
+            AudioClip c = Built(r, v);
+            if (c != null) return c;
+            Queue(r, v, true);
+            for (int k = 1; k < n; k++)
+            {
+                AudioClip other = Built(r, (v + k) % n);
+                if (other != null) return other;
+            }
+            Interlocked.Exchange(ref r.Done[v], 1);
+            c = r.Clips[v] = MakeClip(r, v, Render(r, v));
+            return c;
+        }
+
         public void Request(string id)
         {
             if (id == null || !_recipes.TryGetValue(id, out Recipe r)) return;

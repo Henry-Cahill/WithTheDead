@@ -38,7 +38,7 @@ namespace CloneZ
             public bool Spatial, Companions;
         }
 
-        private const int MaxPool = 64, MaxDelayed = 128, ProbesPerFrame = 6;
+        private const int MaxPool = 64, MaxDelayed = 256, ProbesPerFrame = 6;
         private const float FullBand = 22000f;
         // World geometry only: characters sit on Ignore Raycast, so they never muffle anything.
         private const int OcclusionMask = 1 << 0;
@@ -111,7 +111,7 @@ namespace CloneZ
         }
 
         #region Starting sounds
-        internal static AudioSource PlayAt(string id, Vector3 position, float volume, float pitch, float maxDistance, bool spatial, bool companions = true)
+        internal static AudioSource PlayAt(string id, Vector3 position, float volume, float pitch, float maxDistance, bool spatial, bool companions = true, int variation = -1)
         {
             if (Sfx.Backend == null || string.IsNullOrEmpty(id)) return null;
             SfxMeta meta = Sfx.Meta(id);
@@ -120,10 +120,11 @@ namespace CloneZ
             {
                 id = meta.Far;
                 meta = Sfx.Meta(id);
+                variation = -1;
             }
             float range = Mathf.Max(3f, Mathf.Max(maxDistance, meta.MinRange));
             if (spatial && s_HasEars && dist > range * 1.1f) return null;
-            AudioClip clip = Sfx.Clip(id);
+            AudioClip clip = Sfx.Clip(id, variation);
             if (clip == null) return null;
 
             Ensure();
