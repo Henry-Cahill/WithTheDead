@@ -32,7 +32,13 @@ namespace CloneZ
         private ZoneDef _zone;
         private System.Random _rng;
         private float _nextAt, _phaseEnds, _tick, _rumbleAt;
-        private AudioSource _siren;
+        // The siren is heard Zone-wide (a flat bed, not a positional loop); _sirenOut is the one winding down after.
+        private AudioSource _siren, _sirenOut;
+        private bool _sirenWanted, _waveDone;
+        private float _muffle = 22000f;
+        private const float SirenVolume = 0.85f;
+        // The pressure wave's front takes this long to arrive: it starts this early so the hit lands with the blast.
+        private const float WaveLead = 1.6f;
 
                 /// <summary>Start the emission system for the given zone and random seed.</summary>
         public static void Begin(ZoneDef zone, int seed)
@@ -79,6 +85,7 @@ namespace CloneZ
             if (Instance == this) Instance = null;
             ZoneAtmosphere.SkyOverrideStrength = 0f;
             if (_siren != null) Sfx.Stop(_siren);
+            if (_sirenOut != null) Sfx.Stop(_sirenOut);
         }
 
         private void Schedule(bool first)
@@ -94,6 +101,7 @@ namespace CloneZ
 
         private void Update()
         {
+            Listen();
             switch (Current)
             {
                 case Phase.Calm:
@@ -103,6 +111,7 @@ namespace CloneZ
                     ZoneAtmosphere.SkyOverride = _warningSkyColor;
                     ZoneAtmosphere.SkyOverrideStrength = Mathf.Lerp(0.05f, 0.45f, 1f - PhaseLeft / WarningSeconds);
                     Rumble(8f, 0.35f);
+                    if (!_waveDone && PhaseLeft <= WaveLead) PlayWave();
                     if (Time.time >= _phaseEnds) StartBlast();
                     break;
                 case Phase.Blast:
@@ -125,8 +134,10 @@ namespace CloneZ
             _warningSkyColor = PsiStorm ? _psiStormColor : _standardColor;
             _phaseEnds = Time.time + WarningSeconds;
             if (!_follower) Started?.Invoke(PsiStorm);
-            _siren = Sfx.Loop(SfxIds.EmissionSiren, transform, 0.55f, 10f);
-            if (_siren != null) _siren.spatialBlend = 0f;
+            _sirenWanted = true;
+            _waveDone = false;
+            Sfx.Request(SfxIds.EmissionWave);
+            Siren();
             GameEvents.RaiseEmission(true);
             GameEvents.RaiseSubtitle("Radio", PsiStorm
                 ? "Psi storm coming in! Get indoors, get your head down, don't listen to anything you hear!"
@@ -139,14 +150,28 @@ namespace CloneZ
             Current = Phase.Blast;
             _phaseEnds = Time.time + BlastSeconds;
             _tick = 0f;
-            Sfx.PlayUI(SfxIds.EmissionRumble, 1f);
+            if (!_waveDone) PlayWave();
+            // Out in the open the wave hits like a blast: the mix muffles and the ears ring for a moment.
+            if (!SfxAcoustics.Indoors) Sfx.Concuss(0.35f);
+            // The storm drowns the siren out.
+            if (_siren != null) Sfx.FadeTo(_siren, SirenVolume * 0.5f, 1.5f);
+            // The wave carries its own boom: the next rumble rolls in once it has passed.
+            _rumbleAt = Time.time + 2.5f;
         }
 
         private void StartFading()
         {
             Current = Phase.Fading;
             _phaseEnds = Time.time + FadeSeconds;
-            if (_siren != null) { Sfx.Stop(_siren); _siren = null; }
+            _sirenWanted = false;
+            // The motor is cut: the rotor coasts down (its pitch falling in Update) as the wail dies away.
+            if (_siren != null)
+            {
+                if (_sirenOut != null) Sfx.Stop(_sirenOut);
+                _sirenOut = _siren;
+                _siren = null;
+                Sfx.FadeTo(_sirenOut, 0f, 6f, true);
+            }
         }
 
         private void Finish()
@@ -168,8 +193,45 @@ namespace CloneZ
         {
             if (Time.time < _rumbleAt) return;
             _rumbleAt = Time.time + every * Random.Range(0.6f, 1.4f);
-            Sfx.PlayUI(SfxIds.EmissionRumble, volume, Random.Range(0.8f, 1.1f));
+            Muffled(Sfx.PlayUI(SfxIds.EmissionRumble, volume, Random.Range(0.8f, 1.1f)));
             if (PsiStorm && Current != Phase.Calm) Sfx.PlayUI(SfxIds.PsiWhisper, volume * 0.6f, Random.Range(0.8f, 1.2f));
+        }
+
+        // The siren: started once it's built (never rendered on the spot), faded in like a distant one winding up.
+        private void Siren()
+        {
+            if (!_sirenWanted || _siren != null) return;
+            if (!Sfx.Ready(SfxIds.EmissionSiren)) { Sfx.Request(SfxIds.EmissionSiren); return; }
+            _siren = Sfx.LoopFlat(SfxIds.EmissionSiren, 0f);
+            if (_siren == null) return;
+            Sfx.FadeTo(_siren, Current == Phase.Blast ? SirenVolume * 0.5f : SirenVolume, 3f);
+            Muffled(_siren);
+        }
+
+        // The blowout's pressure wave, heard everywhere (muffled under a roof); its front arrives WaveLead seconds in.
+        private void PlayWave()
+        {
+            _waveDone = true;
+            Muffled(Sfx.PlayFlat(SfxIds.EmissionWave, 1f));
+        }
+
+        // Every frame: keep the siren going, wind the old one down, and muffle it all while the survivor is under a roof.
+        private void Listen()
+        {
+            if (Current == Phase.Warning || Current == Phase.Blast) Siren();
+            if (_sirenOut != null) _sirenOut.pitch = Mathf.Max(0.5f, _sirenOut.pitch - Time.deltaTime * 0.09f);
+            float want = SfxAcoustics.Indoors ? 900f : 22000f;
+            float next = Mathf.Exp(Mathf.Lerp(Mathf.Log(_muffle), Mathf.Log(want), 1f - Mathf.Exp(-Time.unscaledDeltaTime * 3f)));
+            if (Mathf.Abs(next - _muffle) < 1f) next = want;
+            if (next == _muffle) return;
+            _muffle = next;
+            Muffled(_siren);
+            Muffled(_sirenOut);
+        }
+
+        private void Muffled(AudioSource src)
+        {
+            if (src != null) Sfx.SetLowPass(src, _muffle);
         }
 
         /// <summary>True when a position is under a solid roof (the only safe place during the blast).</summary>
