@@ -353,6 +353,22 @@ namespace CloneZ
             float lockX = o0 - 0.04f;
             float lockZ = 0f;
                       m.Box(f.P(lockX, lockY, lockZ), new Vector3(0.015f, 0.05f, 0.02f), DecorPalette.Matte(TrimWhite * 0.55f));
+                // Brass tone for hardware (already used for the door‑bell)
+                Color brass = new Color(0.78f, 0.61f, 0.43f);
+                // Door knob – roundish box centred on the lock plate, protruding outward
+                m.Box(f.P(lockX, lockY, lockZ + 0.015f), new Vector3(0.04f, 0.03f, 0.02f), DecorPalette.Matte(brass));
+                // Small escutcheon behind the knob, slightly darker for depth
+                m.Box(f.P(lockX, lockY, lockZ + 0.002f), new Vector3(0.06f, 0.06f, 0.004f), DecorPalette.Matte(brass * 0.9f));
+                // Keyhole – dark rectangle inset in the lock plate
+                Color keyholeCol = new Color(0.18f, 0.18f, 0.18f);
+                m.Box(f.P(lockX, lockY, lockZ + 0.018f), new Vector3(0.008f, 0.016f, 0.001f), DecorPalette.Matte(keyholeCol));
+                // Occasional low‑paint‑chip wear on the door’s exterior face
+                if (rng.NextDouble() < 0.4)
+                {
+                    float chipX = lockX - 0.07f; // left of the lock
+                    float chipY = lockY + 0.12f; // a bit above the lock
+                    m.Box(f.P(chipX, chipY, 0f), new Vector3(0.06f, 0.02f, 0.001f), DecorPalette.Matte(TrimWhite * 0.5f));
+                }
                     // Top wooden jamb cap – runs across the doorway just under the lintel.
                     float capTopY = DoorTop - 0.01f; // 1 cm below the top edge
                     Vector3 capTopSize = new Vector3(gap + 0.04f, 0.018f, 0.012f);
@@ -392,7 +408,7 @@ namespace CloneZ
                      float bellX = lockX; // same X as the lock plate
                      float bellZ = lockZ;
                      Vector3 bellSize = new Vector3(0.03f, 0.02f, 0.015f);
-                     Color brass = new Color(0.78f, 0.61f, 0.43f);
+
                      m.Box(f.P(bellX, bellY, bellZ), bellSize, DecorPalette.Matte(brass));
                      // Back‑plate for the door‑bell button
                      float plateY = bellY - 0.01f;
