@@ -43,6 +43,8 @@ namespace CloneZ
         private static Material WaterNormalMaterial => CloneZUtil.Mat(BarrelWater, smoothness: 0.7f);
         private static Material WaterFullMaterial => CloneZUtil.Mat(new Color(0.55f, 0.75f, 0.65f), smoothness: 0.8f);
         private static WeatherSystem _weather;
+        private static bool _weatherResolved;
+
 
         // Length of a full day in hours; used to correct rain‑fill timing when the clock wraps.
         /// <summary>Number of hours that constitute a full day in the game's time system.</summary>
@@ -50,12 +52,17 @@ namespace CloneZ
 
         private void Awake()
         {
-            // Cache the singleton; it may be created after this Awake, so we keep the fallback in Update.
-            _weather = WeatherSystem.Instance;
             // Initialise the fill‑simulation timer for rain barrels; this avoids a first‑frame delta of zero
             // when the barrel is spawned before the first Update call.
             if (Kind == WaterSourceKind.RainBarrel)
                 _lastHours = TimeOfDay.Now;
+        }
+
+        // Resolve the WeatherSystem singleton once after Awake. Some components may start before the WeatherSystem exists.
+        private void Start()
+        {
+            _weather = WeatherSystem.Instance;
+            _weatherResolved = true;
         }
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
@@ -511,8 +518,8 @@ m.Box(new Vector3(0f, h * 0.71f, r - 0.02f), new Vector3(0.018f, 0.006f, 0.004f)
         {
             if (Kind != WaterSourceKind.RainBarrel) return;
 
-            // Ensure we have a reference to WeatherSystem even if it was instantiated after Awake.
-            if (_weather == null) _weather = WeatherSystem.Instance;
+            // Ensure we have a WeatherSystem reference; if not yet resolved, skip this frame.
+            if (!_weatherResolved) return;
 
             float now = TimeOfDay.Now;
             float dH = now - _lastHours;
@@ -529,6 +536,7 @@ m.Box(new Vector3(0f, h * 0.71f, r - 0.02f), new Vector3(0.018f, 0.006f, 0.004f)
                 RefreshVisual();
             }
         }
+
 
         // Raises/lowers the water inside the open barrel to match the level (its surface shows from above), with the
         // float riding on it. Both stand on the drum's floor, up on the barrel's stand.
