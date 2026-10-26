@@ -62,7 +62,7 @@ namespace CloneZ
                 }
             }
 
-            /// <summary>Constructs the temporary rig with camera, lighting, volume and a placeholder survivor model.
+            /// <summary>Constructs the temporary rig with camera, lighting, volume and a placeholder survivor model.</summary>
             private void BuildRig()
             {
                 _rig = new GameObject("[CutawayShots]");
