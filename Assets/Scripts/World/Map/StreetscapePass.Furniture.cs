@@ -348,18 +348,25 @@ namespace CloneZ
         private static void Bench(Ctx ctx, Vector2 at, Vector2 facing)
         {
             Vector3 foot = To3(at, 0f);
+            // deterministic variation for optional sign
+            long benchKey = ctx.KeyOf(at);
+            bool showRedPlate = MapStyle.Pick(benchKey, 0xBEEF, 2) == 1;
             RaidMesh m = ctx.Low(at);
             m.SetFrame(foot, Yaw(facing));
             Surf iron = Matte(new Color(0.08f, 0.09f, 0.08f));
             Surf wood = Matte(new Color(0.42f, 0.30f, 0.20f));
+            // bolt‑head caps (0.06 m × 0.06 m × 0.08 m) on top of each leg
             for (int s = -1; s <= 1; s += 2)
-            {
-                m.Box(new Vector3(s * 0.82f, 0.22f, 0.05f), new Vector3(0.06f, 0.44f, 0.5f), iron);
-                m.Box(new Vector3(s * 0.82f, 0.62f, -0.2f), new Vector3(0.06f, 0.42f, 0.08f), iron);
-            }
-            for (int i = 0; i < 3; i++) m.Box(new Vector3(0f, 0.45f, 0.2f - i * 0.13f), new Vector3(1.72f, 0.035f, 0.1f), wood);
+                m.Box(new Vector3(s * 0.82f, 0.71f, 0.05f), new Vector3(0.06f, 0.06f, 0.08f), iron);
+            // side rail (1.64 m × 0.04 m × 0.06 m) connecting the legs
+            m.Box(new Vector3(0f, 0.50f, 0.05f), new Vector3(1.64f, 0.04f, 0.06f), iron);
             for (int i = 0; i < 2; i++) m.Box(new Vector3(0f, 0.62f + i * 0.17f, -0.22f), new Vector3(1.72f, 0.09f, 0.03f), wood);
-            m.Box(new Vector3(0f, 0.48f, 0.07f), new Vector3(1.62f, 0.03f, 0.36f), SnowSurf);
+            if (showRedPlate)
+            {
+                // small red plate (0.15 m × 0.04 m × 0.01 m) mounted on the back edge
+                Surf redPlate = Gloss(new Color(0.75f, 0.10f, 0.06f));
+                m.Box(new Vector3(0f, 0.90f, -0.10f), new Vector3(0.15f, 0.04f, 0.01f), redPlate);
+            }
             m.ResetFrame();
             ctx.Block(at, new Vector3(1.75f, 0.8f, 0.55f), Yaw(facing));
             Claim(ctx, at, 0.9f);
