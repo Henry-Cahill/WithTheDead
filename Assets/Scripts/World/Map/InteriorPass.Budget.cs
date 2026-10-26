@@ -14,9 +14,28 @@ namespace CloneZ
 
         /// <summary>Lamps a home may have in all; and the ones its ceilings leave for desk, bedside and standard lamps. (Its
         /// fridge, stove and TV bring lights of their own, off until they're used.)</summary>
-        private const int HomeLamps = 7, HomeSpareLamps = 2;
+        private const int HomeLamps = 7;
+        /// <summary>Spare lamps for homes, dynamic per building.</summary>
+        private static int HomeSpareLampsFor(InteriorPlan plan)
+        {
+            // 2 spare lamps for the smallest house, up‑to 5 for larger ones.
+            // Scale with room count (roughly building size) and clamp to [2,5].
+            int baseSpare = Mathf.Clamp(plan.Rooms.Count / 5, 2, 5);
+            // Add a small random jitter so two identical seeds don’t look identical.
+            var rng = new System.Random(unchecked(plan.Seed ^ 0x5A3F));
+            return baseSpare + rng.Next(0, 2); // +0 or +1 extra spare lamp
+        }
         /// <summary>The most lamps any building has (a school, a hospital), and those kept for desk lamps.</summary>
-        private const int MaxLamps = 10, WorkSpareLamps = 2;
+        private const int MaxLamps = 10;
+        /// <summary>Spare lamps for non‑home buildings, dynamic per building.</summary>
+        private static int WorkSpareLampsFor(InteriorPlan plan)
+        {
+            // Offices, schools, hospitals etc. get a base of 2‑3 spare lamps.
+            // Scale with room count, clamp to [2,4].
+            int baseSpare = Mathf.Clamp(plan.Rooms.Count / 6, 2, 4);
+            var rng = new System.Random(unchecked(plan.Seed ^ 0x1B7E));
+            return baseSpare + rng.Next(0, 2);
+        }
 
         private static readonly List<PlanRoom> s_ByNeed = new List<PlanRoom>(32);
 
@@ -57,7 +76,7 @@ namespace CloneZ
             // Lamps: a ceiling fitting or more for each room by its size, the rooms people use first, within the building's
             // budget; what's left of it goes to desk, bedside and standard lamps as the rooms are furnished.
             plan.LampCap = home ? HomeLamps : Mathf.Clamp(4 + plan.Rooms.Count / 3, 6, MaxLamps);
-            int ceilings = plan.LampCap - (home ? HomeSpareLamps : WorkSpareLamps);
+            int ceilings = plan.LampCap - (home ? HomeSpareLampsFor(plan) : WorkSpareLampsFor(plan));
             s_ByNeed.Clear();
             s_ByNeed.AddRange(plan.Rooms);
             s_ByNeed.Sort((a, b) =>
