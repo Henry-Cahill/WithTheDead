@@ -29,7 +29,8 @@ namespace CloneZ
                 int units = Mathf.Min(budget, Mathf.FloorToInt(usable / 3.6f));
                 if (units <= 0) break;
                 float len = Mathf.Min(3.6f, usable / units);
-                float from = (rowsAlongZ ? i.yMin : i.xMin) + (door == 0 || door == 3 ? clearFront : clearBack);
+                // Correct front/back clearance: both north (0) and south (2) doors need clearFront space.
+                float from = (rowsAlongZ ? i.yMin : i.xMin) + (door == 0 || door == 2 ? clearFront : clearBack);
                 for (int u = 0; u < units; u++)
                 {
                     float a = from + u * len + len * 0.5f;
@@ -100,8 +101,9 @@ namespace CloneZ
             {
                 c.Span(stallSide, out float lo, out float hi);
                 int n = Mathf.Clamp(Mathf.FloorToInt((hi - lo - 1f) / 3f), 1, 8);
-                float pitch = (hi - lo - 1f) / n;
-                for (int k = 0; k <= n; k++)
+                // Fixed off‑by‑one: generate exactly one partition per stall (n partitions) and space them evenly.
+                float pitch = n > 1 ? (hi - lo - 1f) / (n - 1) : 0f; // spacing so first and last stalls sit at lo+0.5 and hi‑0.5
+                for (int k = 0; k < n; k++)
                 {
                     float t = lo + 0.5f + k * pitch;
                     Vector2 q = c.OnWall(stallSide, t, 1.4f);
