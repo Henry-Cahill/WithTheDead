@@ -22,6 +22,8 @@ namespace CloneZ
         private Vector3 _seatLocal;   // on the furniture, in its own frame (front +Z)
         private float _yaw, _comfort, _currentComfort;
         private bool _lounge;         // the armchair: can be sunk back into
+private const float PolishCooldown = 30f; // seconds between polish actions
+private float _lastPolishTime = -Mathf.Infinity;
 
         /// <summary>Every seat in the world (for the dining table's "Sit at the table").</summary>
         public static IReadOnlyList<SeatFixture> Seats => s_Seats;
@@ -101,7 +103,14 @@ namespace CloneZ
                 return;
             }
             into.Add(new InteractAction(_sitLabel, SitDown));
-            into.Add(new InteractAction("Inspect seat", c => c.Notify($"This seat feels {(int)(_currentComfort * 100)}% comfortable.")));
+            // Polishing is only possible while the seat is not at full comfort.
+            if (_currentComfort < _comfort)
+            {
+                var polish = new InteractAction("Polish seat", PolishSeat);
+                polish = polish.DisabledIf(Time.time - _lastPolishTime < PolishCooldown,
+                    "You need a short break before polishing again.");
+                into.Add(polish);
+            }
             if (_currentComfort < _comfort)
             {
                 into.Add(new InteractAction("Repair seat", RepairSeat));
@@ -123,6 +132,19 @@ namespace CloneZ
             ctx.Notify("You kick the seat, making a loud clatter.");
             // Slightly reduce the comfort of the seat while seated
             _currentComfort = Mathf.Max(0.1f, _currentComfort - 0.25f);
+        }
+
+        private void PolishSeat(InteractContext ctx)
+        {
+            // Cool‑down check (already handled in UI, but guard against abuse)
+            if (Time.time - _lastPolishTime < PolishCooldown) return;
+            // Increase comfort a modest amount, never exceeding the design value.
+            float before = _currentComfort;
+            _currentComfort = Mathf.Min(_comfort, _currentComfort + 0.10f);
+            _lastPolishTime = Time.time;
+            // Give player feedback.
+            ctx.Notify("You rub the seat’s surface, restoring a bit of its comfort.");
+            MakeNoise(0.5f); // a soft scuff that won’t attract zombies
         }
 
         private void RepairSeat(InteractContext ctx)
