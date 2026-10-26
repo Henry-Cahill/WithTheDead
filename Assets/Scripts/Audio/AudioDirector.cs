@@ -13,13 +13,12 @@ namespace CloneZ
     /// </summary>
     public sealed class AudioModule : IGameModule
     {
+        private static bool s_SessionStarted;
+
         public int Order => -50;
 
         public void Init()
         {
-            AudioJobs.Reset();
-            Application.quitting -= AudioJobs.Shutdown;
-            Application.quitting += AudioJobs.Shutdown;
             var synth = new SfxSynth();
             Sfx.Backend = synth;
             _ = GameSettings.Current;   // loading applies the saved master volume
@@ -28,9 +27,6 @@ namespace CloneZ
                 if (f.IsLiteral && f.GetValue(null) is string id && !synth.Has(id))
                     Debug.LogWarning("[CloneZ] No sound recipe for '" + id + "'.");
 #endif
-            synth.Prewarm();
-            SfxMixer.Ensure();
-            SfxAcoustics.Ensure();
             WorldHooks.PlayerBuilt += p =>
             {
                 if (p == null) return;
@@ -39,6 +35,35 @@ namespace CloneZ
                 BodyAudio.OnPlayerBuilt(p);
             };
             GameEvents.ItemLooted += (stack, source) => Sfx.PlayUI(SfxIds.Pickup, 0.45f, Random.Range(0.92f, 1.08f));
+            StartSession();
+        }
+
+        // Modules initialise once per run of the game, but in the editor a run spans several play sessions (domain
+        // reload is off): statics and event hooks survive, while every object the last session made is gone. So the
+        // per-session half — background builds, the mixer, the directors — starts again with each session.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void NewSession() => s_SessionStarted = false;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void ResumeSession()
+        {
+            if (Sfx.Backend != null) StartSession();
+        }
+
+        private static void StartSession()
+        {
+            if (s_SessionStarted) return;
+            s_SessionStarted = true;
+            AudioJobs.Reset();
+            Application.quitting -= AudioJobs.Shutdown;
+            Application.quitting += AudioJobs.Shutdown;
+            if (Sfx.Backend is SfxSynth synth)
+            {
+                synth.ResetRuntime();
+                synth.Prewarm();
+            }
+            SfxMixer.Ensure();
+            SfxAcoustics.Ensure();
             WeaponAudio.Ensure();
             FootstepAudio.Ensure();
             BodyAudio.Ensure();

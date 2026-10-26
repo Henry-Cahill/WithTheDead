@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CloneZ
 {
@@ -52,7 +53,7 @@ namespace CloneZ
         private static AnimationCurve s_Rolloff;
         private static Vector3 s_Ears;
         private static bool s_HasEars, s_Paused;
-        private static float s_DuckDb, s_DuckHoldUntil, s_DuckRelease = 4f, s_Concuss;
+        private static float s_DuckDb, s_DuckHoldUntil, s_DuckRelease = 4f, s_Concuss, s_PauseStartedAt;
 
         private AudioListener _listener;
         private float _findListenerAt;
@@ -77,14 +78,36 @@ namespace CloneZ
             s_Pool.Clear();
             s_BySource.Clear();
             s_Delayed.Clear();
+            // Statics outlive a play session in the editor (no domain reload); the clocks they compare against restart.
             s_DuckDb = 0f;
+            s_DuckHoldUntil = 0f;
+            s_DuckRelease = 4f;
             s_Concuss = 0f;
+            s_Paused = false;
+            s_PauseStartedAt = 0f;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;
             s_Instance = go.AddComponent<SfxMixer>();
         }
 
         private void OnDestroy()
         {
             if (s_Instance == this) s_Instance = null;
+        }
+
+        // A new scene (quitting to the title, leaving a raid): the old world's one-shots, anything the pause froze and
+        // anything still scheduled end with it, as they did when the pool lived in the scene.
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (mode != LoadSceneMode.Single) return;
+            s_Delayed.Clear();
+            for (int i = 0; i < s_Pool.Count; i++)
+            {
+                Voice v = s_Pool[i];
+                if (v.Src == null || (v.Bus != SfxBus.Effects && v.Bus != SfxBus.Ambience && !v.PausedByMixer)) continue;
+                v.Src.Stop();
+                v.PausedByMixer = false;
+            }
         }
 
         #region Starting sounds
@@ -369,7 +392,9 @@ namespace CloneZ
             float dt = Time.unscaledDeltaTime;
             AudioJobs.Pump(2.5f);
             UpdateEars();
-            s_Paused = Time.timeScale <= 0f;
+            bool paused = Time.timeScale <= 0f;
+            if (paused && !s_Paused) s_PauseStartedAt = Time.unscaledTime;
+            s_Paused = paused;
 
             if (Time.unscaledTime > s_DuckHoldUntil) s_DuckDb = Mathf.MoveTowards(s_DuckDb, 0f, s_DuckRelease * dt);
             s_Concuss = Mathf.MoveTowards(s_Concuss, 0f, dt / 6f);
@@ -396,7 +421,16 @@ namespace CloneZ
             {
                 Voice v = s_Voices[i];
                 AudioSource src = v.Src;
-                if (s_Paused && v.Bus == SfxBus.Effects)
+                // Callers may still flatten a positional loop by hand (spatialBlend = 0); follow what the source does.
+                bool spatial = src.spatialBlend >= 0.5f;
+                if (spatial != v.Spatial)
+                {
+                    v.Spatial = spatial;
+                    v.Occlusion = v.OcclusionTarget = 0f;
+                    src.reverbZoneMix = spatial ? Mathf.Clamp01(v.Meta.Reverb) : 0f;
+                }
+                // The pause freezes the world as it was; sounds started while paused (the menus') play on.
+                if (s_Paused && v.Bus == SfxBus.Effects && (v.PausedByMixer || v.StartedAt < s_PauseStartedAt))
                 {
                     if (src.isPlaying) { src.Pause(); v.PausedByMixer = true; }
                     continue;

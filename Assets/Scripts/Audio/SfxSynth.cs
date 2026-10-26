@@ -203,6 +203,27 @@ namespace CloneZ
             for (int v = 0; v < r.Variations; v++) Queue(r, v, true);
         }
 
+        /// <summary>
+        /// Forgets clips lost with the last play session, so they are built again: in the editor (no domain reload) the
+        /// synthesiser outlives a play session but the clips it made are destroyed when play mode ends.
+        /// </summary>
+        public void ResetRuntime()
+        {
+            foreach (Recipe r in _order)
+            {
+                for (int v = 0; v < r.Variations; v++)
+                {
+                    if (r.Clips[v] != null) continue;
+                    r.Clips[v] = null;
+                    Volatile.Write(ref r.Pending[v], null);
+                    Interlocked.Exchange(ref r.Done[v], 0);
+                    Interlocked.Exchange(ref r.Queued[v], 0);
+                    Interlocked.Exchange(ref r.QueuedUrgent[v], 0);
+                }
+            }
+            _prewarmed = false;
+        }
+
         /// <summary>Queues every variation of every sound for background rendering: the interface first, then the beds,
         /// then everything else in registration order (a recipe's <see cref="Recipe.Warm"/> order comes first).</summary>
         public void Prewarm()
