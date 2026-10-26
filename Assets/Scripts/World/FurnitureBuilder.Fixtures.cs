@@ -90,6 +90,25 @@ namespace CloneZ
         public static void CeilingDome(RaidMesh m, Vector3 at, bool lit)
         {
             m.Cylinder(at + new Vector3(0f, -0.02f, 0f), 0.2f, 0.02f, 12, M(new Color(0.75f, 0.74f, 0.7f)));
+            // metal mounting rim (brass‑coloured, 2 mm thick, slightly taller than the glass cylinder)
+            m.Cylinder(at + new Vector3(0f, -0.018f, 0f), 0.215f, 0.005f, 12, Mt(Chrome));
+            // thin mounting plate around the rim (dark‑metal tint)
+            m.Box(at + new Vector3(0f, -0.022f, 0f), new Vector3(0.44f, 0.002f, 0.44f), Mt(Chrome));
+            // screws around the rim
+            {
+                var rng = new System.Random(at.GetHashCode());
+                int screwCount = 6 + rng.Next(5); // 6–10 screws for visual variety
+                for (int i = 0; i < screwCount; i++)
+                {
+                    float ang = i * Mathf.PI * 2f / screwCount;
+                    Vector3 screwPos = at + new Vector3(
+                        Mathf.Sin(ang) * 0.215f,
+                        -0.023f,
+                        Mathf.Cos(ang) * 0.215f);
+                    // tiny brass‑head screw (cylinder, 1.2 cm radius, 0.4 cm height)
+                    m.Cylinder(screwPos, 0.012f, 0.004f, 6, Mt(Chrome));
+                }
+            }
             m.Ellipsoid(at + new Vector3(0f, -0.06f, 0f), new Vector3(0.34f, 0.12f, 0.34f), lit ? Gl(new Color(1f, 0.88f, 0.66f)) : G(new Color(0.62f, 0.62f, 0.58f)), 10, 4);
         }
 
