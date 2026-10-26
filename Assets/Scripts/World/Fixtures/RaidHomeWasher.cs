@@ -103,6 +103,9 @@ namespace CloneZ
             if (_running)
             {
                 into.Add(new InteractAction("Stop the wash", StopWash));
+                into.Add(new InteractAction("Drain the washer", DrainWash)
+                    .DisabledIf(!WaterMains.MainsOn, "No water to drain")
+                    .DisabledIf(!PowerGrid.HousePowered, "No power to operate the valve"));
                 into.Add(new InteractAction("Check the dial", CheckDial));
                 into.Add(new InteractAction("Open the washing machine").DisabledIf(true, "The door's locked until the wash is done"));
                 return;
@@ -178,6 +181,16 @@ into.Add(new InteractAction("Close washing machine", CloseDoor)
             if (_sudsT != null) _sudsT.rotation = Quaternion.identity;
             // Emit a door‑close noise to signal the wash has halted.
             MakeNoise(CloneZConfig.WasherDoorNoise);
+        }
+
+        private void DrainWash(InteractContext ctx)
+        {
+            // Fast‑forward the cycle to the end and clean up visual effects.
+            _left = 0f;
+            Halt(); // re‑uses existing halt logic to close door, hide suds, reset rotation.
+            ctx.Notify("You twist the hidden valve and the water rushes out, draining the machine. The suds disappear.");
+            // Play a draining‑type noise (reuse standard washer noise radius).
+            MakeNoise(CloneZConfig.WasherNoiseRadius);
         }
 
         private void StopWash(InteractContext ctx)
@@ -260,6 +273,7 @@ into.Add(new InteractAction("Close washing machine", CloseDoor)
 
         public override void CaptureState(FixtureSave save)
         {
+            // Draining a running wash merely halts the cycle; its state is saved as "not running".
             save.State = _running ? 1 : 0;
             save.A = _left;
         }
