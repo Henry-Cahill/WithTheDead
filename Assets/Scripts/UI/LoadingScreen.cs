@@ -29,6 +29,7 @@ namespace CloneZ
             "Cold kills slowly. Dress for the night before you step out the door.",
         };
 
+        private static readonly Vector2 _fullAnchor = new Vector2(1f, 1f);
         private CanvasGroup _group;
         private Text _title, _subtitle, _stage, _tip;
         private RectTransform _fill;
@@ -36,6 +37,7 @@ namespace CloneZ
         private float _progress = -1f, _shown, _tipAt;
         private int _tipIndex;
         private bool _hiding;
+        private bool _breathing; // true when progress unknown, animates bar
 
         /// <summary>True while the card is up (and not on its way out).</summary>
         public static bool Showing => s_Instance != null && !s_Instance._hiding;
@@ -68,7 +70,11 @@ namespace CloneZ
             s._progress = progress01;
             bool known = progress01 >= 0f;
             float p = Mathf.Clamp01(progress01);
-            s._fill.anchorMax = new Vector2(known ? p : 0f, 1f);
+            s._breathing = !known;
+            if (known)
+                s._fill.anchorMax = new Vector2(p, 1f);
+            else
+                s._fill.anchorMax = _fullAnchor;
             s._stage.text = string.IsNullOrEmpty(stage) ? "" : known ? stage + "   " + Mathf.RoundToInt(p * 100f) + "%" : stage;
         }
 
@@ -166,13 +172,13 @@ namespace CloneZ
                 _tip.text = Tips[_tipIndex];
             }
             // With no progress to show, the bar breathes, so a card that's waiting doesn't look stuck.
-            if (_progress < 0f)
+            if (_breathing)
             {
                 float a = 0.35f + 0.35f * Mathf.Sin(Time.unscaledTime * 3f);
-                _fill.anchorMax = new Vector2(1f, 1f);
                 _fillImage.color = new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, a);
             }
-            else _fillImage.color = UIKit.Accent;
+            else
+                _fillImage.color = UIKit.Accent;
         }
     }
 }
