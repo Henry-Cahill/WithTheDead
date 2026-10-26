@@ -24,6 +24,7 @@ namespace CloneZ
         private PlayerInteractor _playerInteractor;
         // Existing style reference:
         // "Dust, a single odd sock and a shoebox of old birthday cards. Nothing you can use."
+// Additional under‑bed discoveries – winter‑time, period‑correct finds.
         private static readonly string[] _underBedDiscoveries = new[]
         {
             "Dust, a single odd sock and a shoebox of old birthday cards. Nothing you can use.",
@@ -40,7 +41,12 @@ namespace CloneZ
             "A bundle of dried corn husks, tied with twine, probably meant for a winter craft.",
             "A rusted pocketknife, its handle splintered, the blade still dull but sharp enough to cut rope.",
             "A torn page from a devotional book, the verses bleeding onto the floorboards.",
-            "A solitary pine‑cone, ice crystals clinging to its scales, a reminder of the forest outside."
+            "A frayed hand‑knit scarf, the pink yarn dulled by the cold, abandoned in haste.",
+            "A cracked enamel mug, the club logo faded, still warm from the last coffee.",
+            "A handful of pine needles, pressed flat, smelling faintly of resin and frost.",
+            "A rusted tin of horse feed, dented and empty, a reminder of the farm beyond.",
+            "A pressed newspaper clipping about the 1992 state fair, its ink smudged by snow.",
+            "A tiny wooden carving of a squirrel, its paint peeled, tucked beneath the mattress.",
         };
         private static readonly string[] _mattressFinds = new[]
         {
