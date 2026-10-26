@@ -58,14 +58,26 @@ namespace CloneZ
                 }
             }
             Mark("balconies");
-            if (j.DoorEdge < 0) return;
-            bool porch = p.Porch && j.Len[j.DoorEdge] >= 2.6f;
-            if (porch) Porch(j);
-            else if (p.Stoop || p.Arch == Arch.House) Stoop(j);
-            Mark("porch");
-            if (p.Mailbox) WallMailbox(j);
-            if (p.PorchLight || porch) DoorLamp(j);
-            Mark("lamp");
+            bool doorPresent = j.DoorEdge >= 0;
+            if (doorPresent)
+            {
+                bool porch = false;
+                // Only read j.Len[…] if a door edge actually exists.
+                if (p.Porch) porch = j.Len[j.DoorEdge] >= 2.6f;
+                if (porch) Porch(j);
+                else if (p.Stoop || p.Arch == Arch.House) Stoop(j);
+                Mark("porch");
+                if (p.Mailbox) WallMailbox(j);
+                if (p.PorchLight || porch) DoorLamp(j);
+                Mark("lamp");
+            }
+            else
+            {
+                // No door edge – skip porch/stoop/mailbox/lamp generation.
+                // Still emit markers for consistency with existing debug flow.
+                Mark("porch");
+                Mark("lamp");
+            }
         }
 
         #region Houses
