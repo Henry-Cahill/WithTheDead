@@ -58,6 +58,12 @@ namespace CloneZ
                 _opened = !_opened;
                 ctx.Notify(_opened ? "You pry open the hydrant with the wrench – cold water rushes out." : "You shut the hydrant valve.");
             }));
+            // If the hydrant is opened, let the player drink or fill a bottle
+            if (_opened)
+            {
+                // WaterPoints will add "Drink water" and "Fill bottle" actions depending on inventory
+                WaterUse.AddDrinkAndFill(ctx, this, into);
+            }
         }
 
         private void Brush(InteractContext ctx)
@@ -66,7 +72,15 @@ namespace CloneZ
             ctx.Notify("Under the snow a painted tag reads FLUSHED 10-92. Somebody looked after this once.");
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = _opened ? 1 : 0;
-        public override void RestoreState(FixtureSave save) => _opened = (save.State & 1) != 0;
+        public override void CaptureState(FixtureSave save)
+        {
+            // Bit 0 = opened, Bit 1 = brushed
+            save.State = (_opened ? 1 : 0) | (_brushed ? 2 : 0);
+        }
+        public override void RestoreState(FixtureSave save)
+        {
+            _opened = (save.State & 1) != 0;
+            _brushed = (save.State & 2) != 0;
+        }
     }
 }
