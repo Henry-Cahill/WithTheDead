@@ -100,6 +100,12 @@ namespace CloneZ
                 into.Add(new InteractAction("Read the rusted maintenance log", c => c.Notify("Scrawled in oily ink: ‘15‑Nov‑1992 – replaced hose clamps, but the sealant cracked after the blizzard.’")));
                 // Theme: family reminiscence – a child's drawing taped to the pump
                 into.Add(new InteractAction("Read the child's drawing", c => c.Notify("A crayon sketch of a smiling family standing beside a red pickup, captioned ‘Our happy farm.’ The corners are frayed by wind.")));
+            // Added flavour‑text actions covering local legend, survival tip, maintenance log, personal reminiscence, and map clue
+            into.Add(new InteractAction("Read the town legend plaque", c => c.Notify("A rusted metal plaque tells the tale: ‘On moonlit nights, the ghost of Old Man Harlan haunts the pump, warning travelers to keep their lights on.’")));
+            into.Add(new InteractAction("Read the survival tip scribble", c => c.Notify("A hand‑written tip in faded ink advises: ‘Never refuel a vehicle with the engine running after a snowstorm; static can cause sparks.’")));
+            into.Add(new InteractAction("Read the maintenance log entry", c => c.Notify("Scrawled in oily ink dated 12‑Mar‑1995: ‘Replaced cracked hose and greased nozzle bearings after the winter freeze.’")));
+            into.Add(new InteractAction("Read the veteran's reminiscence", c => c.Notify("A weather‑worn note from a former pump attendant reads: ‘I remember the night the power went out; we kept the lantern burning till sunrise.’")));
+            into.Add(new InteractAction("Read the map fragment", c => c.Notify("A torn map corner pinned to the pump shows a red X near the old school gym, marked ‘Safe shelter – bring firewood.’")));
                 // Theme: whispered rumor – a torn flyer about a nearby shelter
                 into.Add(new InteractAction("Read the torn flyer", c => c.Notify("The torn flyer promises: ‘Safe haven at the old school gym, north‑west of town. Bring firewood.’ The ink is smudged, but the promise feels real.")));
 
