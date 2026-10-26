@@ -76,6 +76,8 @@ namespace CloneZ
         private readonly float[] _hit = new float[Directions + 1];
         private int _probe;
         private float _ringTurn, _nextApply;
+        private float _nextOutdoorUpdate;
+        private float _cachedStreet, _cachedForest, _cachedOpen;
 
         /// <summary>True while the ears are inside (a sheltered interior or an enclosed space with a roof).</summary>
         public static bool Indoors { get; private set; }
@@ -185,10 +187,15 @@ namespace CloneZ
                 return;
             }
 
-            float street = Mathf.Clamp01((enclosure - 0.25f) / 0.5f);
-            float forest = Mathf.Clamp01(ZoneForest.Density(ears) * 1.3f) * (1f - street);
-            float open = Mathf.Max(0f, 1f - street - forest);
-            _target = Space.Mix(Street, street, Forest, forest, Open, open);
+            if (Time.unscaledTime >= _nextOutdoorUpdate)
+            {
+                _nextOutdoorUpdate = Time.unscaledTime + CycleSeconds;
+                float enc = Enclosure;
+                _cachedStreet = Mathf.Clamp01((enc - 0.25f) / 0.5f);
+                _cachedForest = Mathf.Clamp01(ZoneForest.Density(ears) * 1.3f) * (1f - _cachedStreet);
+                _cachedOpen = Mathf.Max(0f, 1f - _cachedStreet - _cachedForest);
+            }
+            _target = Space.Mix(Street, _cachedStreet, Forest, _cachedForest, Open, _cachedOpen);
         }
 
         // The size across (cube root of the volume) of the smallest sheltered interior holding the ears, or 0.

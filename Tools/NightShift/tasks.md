@@ -11227,7 +11227,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
   Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
   - 00:52 landed by laserengraver in 9.5 min: Added comprehensive XML documentation and explanatory comments to **HudWatchRow.cs**:
-- [ ] Cache the expensive outdoor acoustic mix in Assets/Scripts/Audio/SfxAcoustics.cs by using the unused `CycleSeconds` (0.25 s) to throttle calls to `ZoneForest.Density(ears)` and the subsequent `Space.Mix` calculation; add a private float `_nextOutdoorUpdate` and three cached `float` fields (`_cachedStreet`, `_cachedForest`, `_cachedOpen`) that are refreshed only when `Time.unscaledTime >= _nextOutdoorUpdate`, otherwise reuse the previously stored mix target – this reduces per‑frame allocations and heavy density queries while keeping the audible environment identical because the outdoor acoustics only need updating at the 0.25 s cadence already defined by the constant.
+- [x] Cache the expensive outdoor acoustic mix in Assets/Scripts/Audio/SfxAcoustics.cs by using the unused `CycleSeconds` (0.25 s) to throttle calls to `ZoneForest.Density(ears)` and the subsequent `Space.Mix` calculation; add a private float `_nextOutdoorUpdate` and three cached `float` fields (`_cachedStreet`, `_cachedForest`, `_cachedOpen`) that are refreshed only when `Time.unscaledTime >= _nextOutdoorUpdate`, otherwise reuse the previously stored mix target – this reduces per‑frame allocations and heavy density queries while keeping the audible environment identical because the outdoor acoustics only need updating at the 0.25 s cadence already defined by the constant.
   Add the field declarations after `_nextApply`
   `private float _nextOutdoorUpdate;`
   `private float _cachedStreet, _cachedForest, _cachedOpen;`
@@ -11236,6 +11236,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `{`
   `_nextOutdoorUpdate = Time.unscaledTime + CycleSeconds;`
   `float enclosure = Enclosure;`
+  - 00:54 landed by hts-llm in 10.1 min: **Changed files**
 - [ ] Add comments explaining the code in Assets/Scripts/Camera/IsoCutaway.cs, so a programmer new to CLONE-Z can follow it. Comments only: don't change any code.
   Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: `Scan` (line 154), `Build` (line 228), `Hide` (line 304).
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
