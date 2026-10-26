@@ -239,7 +239,25 @@ namespace CloneZ
             Color c = V(wood, rng, 0.06f);
             m.Box(new Vector3(0f, 0.2f, 0f), new Vector3(w, 0.22f, l), M(c));
             m.Box(new Vector3(0f, 0.55f, -l * 0.5f + 0.03f), new Vector3(w + 0.06f, 1.1f, 0.06f), M(c * 1.05f));
+            // Side panels framing the head-board
+            float panelThick = 0.02f;
+            float panelHeight = 0.9f; // slightly lower than the head-board top
+            float panelZ = -l * 0.5f + 0.03f;
+            float panelY = 0.8f; // centre height of the panels
+            float sideX = w * 0.5f + panelThick * 0.5f; // outside the main body
+            m.Box(new Vector3(-sideX, panelY, panelZ), new Vector3(panelThick, panelHeight, 0.06f), M(c * 0.9f));
+            m.Box(new Vector3( sideX, panelY, panelZ), new Vector3(panelThick, panelHeight, 0.06f), M(c * 0.9f));
+            // Decorative top-rail trim on the head-board
+            float railY = 1.08f + 0.015f; // just above the existing top rail
+            m.Box(new Vector3(0f, railY, -l * 0.5f + 0.03f), new Vector3(w + 0.12f, 0.015f, 0.02f), M(c * 0.85f));
             m.Box(new Vector3(0f, 1.08f, -l * 0.5f + 0.03f), new Vector3(w + 0.1f, 0.06f, 0.09f), M(c * 0.9f));
+            // Brass latch (tiny lock plate) on the head-board side
+            Vector3 latchPos = new Vector3(w * 0.5f - 0.08f, 0.72f, -l * 0.5f + 0.045f);
+            Quaternion latchYaw = Yaw(R(rng, -5f, 5f));
+            m.Box(latchPos, new Vector3(0.04f, 0.06f, 0.008f), latchYaw, Mt(Brass));
+            // Leather pull-strap attached to the latch
+            Vector3 strapPos = latchPos + new Vector3(0f, 0.02f, 0.015f);
+            m.Box(strapPos, new Vector3(0.08f, 0.008f, 0.015f), latchYaw, M(new Color(0.55f, 0.45f, 0.35f)));
             m.Box(new Vector3(0f, 0.3f, l * 0.5f - 0.025f), new Vector3(w + 0.06f, 0.6f, 0.05f), M(c * 1.05f));
             m.Box(new Vector3(0f, 0.41f, -0.01f), new Vector3(w - 0.06f, 0.2f, l - 0.1f), M(BedSheet));
             int pillows = w > 1.2f ? 2 : 1;
