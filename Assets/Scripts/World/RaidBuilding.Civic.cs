@@ -39,6 +39,11 @@ namespace CloneZ
             "Every rifle in the rack is chained through its trigger guard, and the padlock won't budge.",
             "Drill rifles, most of them \u2014 the firing pins drawn. Whoever locked up took the real ones.",
             "A steel cable runs through the lot and into a padlock the size of your fist. Not tonight.",
+            "A thin layer of frost clings to the steel, melting into rust where the chain meets the rack.",
+            "A torn piece of newspaper taped to the side reads “No firing without orders – SGT. Harlan”.",
+            "A dented tin cup sits atop a rifle; its lid is half‑filled with dried coffee grounds.",
+            "The rack’s ammo pouch hangs empty, the brass shells scattered like wilted wheat.",
+            "A faded training log lies slipped between guns, its last entry scribbled: “31‑Oct‑92 – live fire drill cancelled”."
         };
 
         private static System.Action<InteractContext> s_CivicSpinDial, s_CivicTryRifle;
