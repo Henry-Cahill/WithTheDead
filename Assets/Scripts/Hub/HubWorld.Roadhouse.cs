@@ -119,6 +119,21 @@ namespace CloneZ
                 Surf cabinet = DecorPalette.Gloss(new Color(0.30f, 0.14f, 0.08f));
                 Surf chrome = DecorPalette.Metal(new Color(0.80f, 0.80f, 0.82f));
                 m.Box(j + new Vector3(0f, 0.65f, 0f), new Vector3(0.6f, 1.3f, 0.94f), cabinet);
+                // metal coin slot, 6 cm × 2 cm × 1 cm, centered on front face
+                m.Box(j + new Vector3(0f, 0.42f, 0.47f), new Vector3(0.06f, 0.02f, 0.01f), chrome);
+                // glowing push‑buttons
+                Surf buttonGlow = DecorPalette.Glow(new Color(1f, 0.65f, 0.25f)); // amber glow
+                float btnY = 1.25f; // height of button centre
+                float btnZ = 0.25f; // distance from front edge
+                foreach (float xOff in new[] { -0.1f, 0f, 0.1f })
+                {
+                    m.Cylinder(j + new Vector3(xOff, btnY, btnZ), 0.02f, 0.01f, 12, buttonGlow);
+                }
+                // thin matte “PLAY” label plaque above the coin slot
+                Surf labelMat = DecorPalette.Matte(new Color(0.35f, 0.25f, 0.20f)); // faded walnut
+                m.Box(j + new Vector3(0f, 0.52f, 0.47f), new Vector3(0.12f, 0.015f, 0.002f), labelMat);
+                // metal trim, 60 cm × 2 cm × 1 cm, flush with front face near the top
+                m.Box(j + new Vector3(0f, 1.08f, 0.475f), new Vector3(0.6f, 0.02f, 0.01f), chrome);
                 m.CylinderX(j + new Vector3(0f, 1.3f, 0f), 0.47f, 0.6f, 16, cabinet);
                 float x = j.x - 0.305f;
                 // Bubble tubes up the sides, the glowing band, the record window and the grille.
