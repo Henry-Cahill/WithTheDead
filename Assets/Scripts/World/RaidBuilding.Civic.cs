@@ -210,12 +210,16 @@ namespace CloneZ
         /// wind open and shut.</summary>
         public StorageFixture ToolBench(RaidRoom room, Place p, ContainerType loot, string name)
         {
+            // Define the bench size to match typical workshop dimensions.
             var size = new Vector3(1.8f, 1.9f, 0.75f);
+            // Build the bench body and apply any visual customisation.
             Transform t = FixtureBody(room, p, size, true, (m, r) => FurnitureBuilder.ToolBenchBody(m, r), name);
             KitchenFrame f = FrameOf(p);
             Vector3 at = t.position;
+            // Configure how far drawers slide out; pulled from config for consistency.
             var travel = new Vector3(0f, 0f, CloneZConfig.CivicBenchDrawerTravel);
             var drawers = new FixturePart[2];
+            // Create the two side drawers, each with its own random seed for visual variety.
             for (int i = 0; i < 2; i++)
             {
                 int n = i;
@@ -223,6 +227,7 @@ namespace CloneZ
                 drawers[i] = KitchenParts.Drawer(t, "BenchDrawer_" + i, f, d => FurnitureBuilder.BenchDrawer(d, rng, n),
                     new Vector3(FurnitureBuilder.BenchDrawerX[i], FurnitureBuilder.BenchDrawerY, FurnitureBuilder.BenchDrawerFront), travel);
             }
+            // Set up storage options for the main drawer containers.
             StorageOptions o = MainStock(loot, "tool drawers");
             o.ContainerName = name;
             o.OpenVerb = "Pull out";
@@ -230,14 +235,18 @@ namespace CloneZ
             StorageFixture main = StorageFixture.Create(t, name, Interactable.KeyFor("toolbench", at),
                 f.P(-0.3f, FurnitureBuilder.BenchDrawerY, FurnitureBuilder.BenchDrawerFront + 0.03f), drawers, t, Rng.Next(), o);
 
+            // Pegboard is a non‑storage surface that players can examine for tools.
             StorageOptions peg = SmallStock(ContainerType.ToolBench, "pegboard");
             peg.ContainerName = "Pegboard";
             peg.LookLabel = "Look over the pegboard";
+            // Position pegboard slightly forward on the bench for easy access.
             StorageFixture.Create(t, "Pegboard", Interactable.KeyFor("pegboard", at), f.P(-0.2f, 1.42f, -0.3f), null, t, Rng.Next(), peg);
 
+            // Define the vice component; it has its own travel distance.
             Vector3 vice = FurnitureBuilder.BenchVice;
             FixturePart jaw = KitchenParts.Drawer(t, "ViceJaw", f, FurnitureBuilder.BenchViceJaw, vice, new Vector3(0f, 0f, CloneZConfig.CivicViceTravel))
                 .WithSpeed(0.7f);
+            // Set up a toggle that lets the player wind the vice open or shut, with notes and sound.
             CivicToggle.Create(t, "Bench vice", Interactable.KeyFor("vice", at), f.P(vice.x, vice.y + 0.04f, vice.z + 0.13f), t,
                     "Wind the vice open", "Wind the vice shut")
                 .Moving(jaw)
@@ -345,8 +354,11 @@ namespace CloneZ
             System.Action<RaidMesh, System.Random> dress, bool? pedestalRight = null)
         {
             const float d = 0.75f;
+            // Randomly choose which side the desk pedestal sits on; mirrors real-world variability.
             bool right = pedestalRight ?? Rng.NextDouble() < 0.5;
+            // Use the provided wood colour as the base paint for the desk.
             Color paint = wood;
+            // Build the desk body geometry; the optional dress action can add extra decorative details.
             Transform t = FixtureBody(room, p, new Vector3(w, 0.9f, d), true, (m, r) =>
             {
                 paint = FurnitureBuilder.DeskBody(m, r, w, d, wood, right);
@@ -355,8 +367,11 @@ namespace CloneZ
 
             KitchenFrame f = FrameOf(p);
             Vector3 at = t.position;
+            // Horizontal offset for drawer placement based on which side the pedestal is.
             float px = (right ? 1f : -1f) * (w * 0.5f - 0.22f);
+            // Drawer travel distance pulled from config for consistent animation.
             var travel = new Vector3(0f, 0f, CloneZConfig.CivicDrawerTravel);
+            // Create the three primary drawers, each with its own random seed for visual variation.
             for (int row = 0; row < 3; row++)
             {
                 int n = row;
@@ -369,6 +384,7 @@ namespace CloneZ
                 StorageFixture.Create(t, name, Interactable.KeyFor("desk", at, row), f.P(px, y, d * 0.5f + 0.02f), new[] { part }, t, Rng.Next(),
                     CivicDrawer(o, name, row == 0 ? "Top drawer" : row == 1 ? "Middle drawer" : "Bottom drawer"));
             }
+            // Create the pencil drawer; positioned near the opposite side for ergonomics.
             var prng = new System.Random(Rng.Next());
             float cx = (right ? -1f : 1f) * 0.21f;
             FixturePart pencil = KitchenParts.Drawer(t, "PencilDrawer", f, m => FurnitureBuilder.DeskPencilDrawer(m, prng, w, d, paint, right),
@@ -427,10 +443,13 @@ namespace CloneZ
         public Transform SteelCounter(RaidRoom room, Place p, float len, float? sinkX, ContainerType loot, string name,
             System.Action<RaidMesh, System.Random> dress = null, bool clinical = false)
         {
+            // Determine how many cupboard bays to create based on the counter length; each bay is ~0.5 m.
             int doors = Mathf.Max(1, Mathf.RoundToInt(len / 0.5f));
+            // If a sink position is supplied, we will add a sink later.
             bool sink = sinkX.HasValue;
             float sx = sinkX ?? 0f;
             Color steel = FurnitureBuilder.Steel;
+            // Build the counter body and optionally apply a custom surface dress.
             Transform t = FixtureBody(room, p, new Vector3(len, 1.1f, 0.65f), true, (m, r) =>
             {
                 steel = FurnitureBuilder.SteelCounterBody(m, r, len, doors, sink, sx);
@@ -440,10 +459,12 @@ namespace CloneZ
             KitchenFrame f = FrameOf(p);
             Vector3 at = t.position;
             float dw = len / doors;
+            // Create cupboard doors in pairs; each pair forms a bay.
             for (int i = 0, bay = 0; i < doors; i += 2, bay++)
             {
                 int count = Mathf.Min(2, doors - i);
                 var parts = new FixturePart[count];
+                // Build each door in the current bay; hinge side alternates per door.
                 for (int k = 0; k < count; k++)
                 {
                     int n = i + k;
@@ -456,11 +477,13 @@ namespace CloneZ
                 float mid = -len * 0.5f + dw * (i + count * 0.5f);
                 bool under = sink && Mathf.Abs(mid - sx) < dw * count * 0.5f;
                 string label = under ? "Cupboard under the sink" : "Cupboard";
+                // Storage for the first bay is a small place; subsequent bays hold spare items.
                 StorageOptions o = bay == 0 ? SmallStock(loot, label.ToLowerInvariant()) : SpareStock(under ? ContainerType.Shelf : loot, label.ToLowerInvariant());
                 o.ContainerName = label;
                 StorageFixture.Create(t, label, Interactable.KeyFor("countercupboard", at, bay), f.P(mid, 0.5f, FurnitureBuilder.SteelDoorFront + 0.02f),
                     parts, t, Rng.Next(), o);
             }
+            // Add a sink if the layout requested one.
             if (sink) CivicSink.Create(t, f, sx, clinical ? "Scrub sink" : "Sink", clinical);
             return t;
         }
@@ -471,6 +494,7 @@ namespace CloneZ
         /// feel and the notes on the door — a <paramref name="medical"/> fridge with a thermometer and a log instead.</summary>
         public StorageFixture WorkFridge(RaidRoom room, Place p, Color enamel, ContainerType loot, string name, bool medical)
         {
+            // Create the fridge cabinet body and apply a slight colour variation for realism.
             Color c = enamel;
             Transform t = FixtureBody(room, p, new Vector3(0.76f, 1.75f, 0.72f), true, (m, r) =>
             {
@@ -481,23 +505,29 @@ namespace CloneZ
             Vector3 at = t.position;
             var rng = new System.Random(Rng.Next());
             const float front = FurnitureBuilder.FridgeDoorFront, hinge = FurnitureBuilder.FridgeHingeX;
+            // Build the freezer door; it opens outward and uses a higher angle for a realistic swing.
             FixturePart freezerDoor = KitchenParts.Door(t, "FreezerDoor", f, d => FurnitureBuilder.FridgeDoor(d, rng, c, true),
                 new Vector3(hinge, FurnitureBuilder.FreezerDoorY0, front), Vector3.right, Vector3.forward, 105f);
+            // Build the main fridge door.
             FixturePart fridgeDoor = KitchenParts.Door(t, "FridgeDoor", f, d => FurnitureBuilder.FridgeDoor(d, rng, c, false),
                 new Vector3(hinge, FurnitureBuilder.FridgeDoorY0, front), Vector3.right, Vector3.forward, 105f);
+            // Light that turns on when the fridge door is open.
             MeshRenderer lens = KitchenParts.PieceAt(t, "FridgeLamp", f, FurnitureBuilder.FridgeLampLens, FurnitureBuilder.FridgeLampGlow);
             RoomLight lamp = RoomLight.Spawn(t, f.P(0f, 1.08f, 0f), CivicFridge.Lamp, CloneZConfig.FridgeLampRange, CloneZConfig.FridgeLampIntensity, false, false);
             lamp.ShowBulb = false;
             lamp.On = false;
 
+            // Attach behaviour script that handles fridge logic (temperature, notes, etc.).
             CivicFridge works = t.gameObject.AddComponent<CivicFridge>();
             works.Init(lens, lamp, medical);
+            // Main fridge storage, representing the primary container for items.
             StorageOptions fo = MainStock(loot, medical ? "medical fridge" : "fridge");
             fo.ContainerName = name;
             fo.ExtraActions = works.FridgeActions;
             fo.OnOpenChanged = works.DoorMoved;
             StorageFixture fridge = StorageFixture.Create(t, name, Interactable.KeyFor("fridge", at), f.P(0.2f, 0.85f, front + 0.01f),
                 new[] { fridgeDoor }, t, Rng.Next(), fo);
+            // Freezer is a secondary container with its own actions.
             StorageOptions zo = SpareStock(loot, "freezer");
             zo.ContainerName = "Freezer";
             zo.ExtraActions = works.FreezerActions;
