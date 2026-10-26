@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace CloneZ
 {
@@ -30,6 +31,22 @@ namespace CloneZ
         private static readonly float[] s_NearD = new float[MaxLit];
 
         private Light _light;
+        private static readonly Material s_PostMaterial;
+        private static readonly Material s_GlobeMaterial;
+        /// <summary>Creates shared runtime materials for porch‑lamp posts and globes.</summary>
+        static PorchLamp()
+        {
+            // dark‑brown wood for the post
+            s_PostMaterial = new Material(Shader.Find("Standard"));
+            s_PostMaterial.color = new Color(0.22f, 0.15f, 0.10f);
+            s_PostMaterial.SetFloat("_Glossiness", 0.3f);
+            // warm‑emissive glass for the lamp globe
+            s_GlobeMaterial = new Material(Shader.Find("Standard"));
+            s_GlobeMaterial.color = new Color(1f, 0.82f, 0.56f);
+            s_GlobeMaterial.EnableKeyword("_EMISSION");
+            s_GlobeMaterial.SetColor("_EmissionColor", new Color(1f, 0.65f, 0.30f) * 2f);
+            s_GlobeMaterial.SetFloat("_Glossiness", 0.9f);
+        }
         private float _intensity, _phase;
         private bool _wanted;
 
@@ -61,6 +78,7 @@ namespace CloneZ
             // Define the radius within which the lamp can affect nearby objects.
             // Define the radius within which the lamp can affect nearby objects.
             light.range = 5.5f;
+            light.transform.localPosition = new Vector3(0f, 1.0f, 0f);
             // Disable shadows for performance; porch lamps are not meant to cast shadows.
             light.shadows = LightShadows.None;
             // Add the PorchLamp component to bind behaviour to the GameObject.
@@ -69,6 +87,26 @@ namespace CloneZ
             lamp._light = light;
             // Store the original intensity for later flicker modulation.
             lamp._intensity = light.intensity;
+            // ------- visual post & globe -------
+            float randScale = UnityEngine.Random.Range(0.9f, 1.1f);
+            // create the wooden post
+            GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            UnityEngine.Object.DestroyImmediate(post.GetComponent<Collider>()); // no collider needed
+            post.transform.SetParent(go.transform, false);
+            post.transform.localScale = new Vector3(0.07f, 0.5f, 0.07f) * randScale;
+            post.transform.localPosition = new Vector3(0f, 0.5f, 0f); // pivot at centre, so bottom sits on ground
+            post.GetComponent<Renderer>().material = s_PostMaterial;
+            // create the glass globe
+            GameObject globe = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            UnityEngine.Object.DestroyImmediate(globe.GetComponent<Collider>());
+            globe.transform.SetParent(go.transform, false);
+            globe.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f) * randScale;
+            globe.transform.localPosition = new Vector3(0f, 1.0f, 0f);
+            globe.GetComponent<Renderer>().material = s_GlobeMaterial;
+            globe.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
+            // Ensure objects are not static (avoid light‑map baking)
+            post.isStatic = false;
+            globe.isStatic = false;
             // Record the per‑lamp phase offset to desynchronize flicker between neighbours.
             lamp._phase = phase;
             return lamp;
