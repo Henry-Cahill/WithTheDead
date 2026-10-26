@@ -38,6 +38,7 @@ namespace CloneZ
         public IReadOnlyList<ALifeSquad> Squads => _squads;
 
         private const float OnlineRange = 75f, OfflineRange = 95f;
+        private static Actor[] _playerCache;
         private readonly List<ALifeSquad> _squads = new List<ALifeSquad>();
         private ZoneDef _zone;
         private System.Random _rng;
@@ -79,10 +80,15 @@ namespace CloneZ
                 {
                     if (s.Members <= 0) continue;
                     _squads.Add(new ALifeSquad
-                    {
-                        Id = s.Id, Faction = s.Faction, LoadoutId = string.IsNullOrEmpty(s.LoadoutId) ? HumanLoadouts.DefaultIdFor(s.Faction, _rng) : s.LoadoutId, Members = s.Members,
-                        Position = HumanUtil.ClampToMap(s.Position, 8f), GoalLabel = s.Goal, Strength = s.Strength,
-                    });
+{
+    Id = s.Id,
+    Faction = s.Faction,
+    LoadoutId = string.IsNullOrEmpty(s.LoadoutId) ? HumanLoadouts.DefaultIdFor(s.Faction, _rng) : s.LoadoutId,
+    Members = s.Members,
+    Position = HumanUtil.ClampToMap(s.Position, 8f),
+    GoalLabel = s.Goal,
+    Strength = s.Strength,
+});
                 }
                 // The time you were away: a few minutes of the sim for every hour, so returning finds the Zone moved on.
                 long away = state.LastVisitUnix > 0 ? System.DateTimeOffset.UtcNow.ToUnixTimeSeconds() - state.LastVisitUnix : 0;
@@ -136,7 +142,7 @@ namespace CloneZ
                     Members = faction == Factions.Choir ? 2 + _rng.Next(3) : 2 + _rng.Next(3),
                 };
                 s.Position = anywhere ? HumanUtil.RandomMapPoint(_rng, 12f) : HumanUtil.EdgePoint(_rng, 6f);
-                if (HumanUtil.NearestPlayerDistance(s.Position) < OfflineRange + 10f) s.Position = HumanUtil.EdgePoint(_rng, 6f);
+                if (CachedNearestPlayerDistance(s.Position) < OfflineRange + 10f) s.Position = HumanUtil.EdgePoint(_rng, 6f);
                 PickGoal(s);
                 _squads.Add(s);
             }
@@ -197,14 +203,14 @@ namespace CloneZ
         {
             _tick -= Time.deltaTime;
             if (_tick > 0f) return;
-            _tick = 1f;
+            _playerCache = FindObjectsByType<Actor>(FindObjectsSortMode.None);
 
             for (int i = _squads.Count - 1; i >= 0; i--)
             {
                 ALifeSquad s = _squads[i];
                 if (s.Online) TickOnline(s);
                 if (s.Members <= 0 && !s.Online) { _squads.RemoveAt(i); continue; }
-                float d = HumanUtil.NearestPlayerDistance(s.Online ? LeaderPos(s) : s.Position);
+                float d = CachedNearestPlayerDistance(s.Online ? LeaderPos(s) : s.Position);
                 if (!s.Online && d < OnlineRange) GoOnline(s);
                 else if (s.Online && d > OfflineRange) GoOffline(s);
             }
@@ -224,28 +230,45 @@ namespace CloneZ
             return s.Position;
         }
 
-        private void TickOnline(ALifeSquad s)
+        private static float CachedNearestPlayerDistance(Vector3 from)
         {
-            s.Live.RemoveAll(n => n == null || n.IsDead);
-            s.Members = s.Live.Count;
-            if (s.Members == 0) { s.Online = false; return; }
-            s.Position = LeaderPos(s);
-            bool busy = false;
-            foreach (HumanNpc n in s.Live) if (n.State == HumanNpc.Mode.Combat || n.State == HumanNpc.Mode.Flee || n.State == HumanNpc.Mode.Investigate) busy = true;
-            if (busy) return;
-            if (HumanUtil.FlatDistance(s.Position, s.Goal) < 5f)
+            if (_playerCache == null || _playerCache.Length == 0)
             {
-                if (s.DwellUntil <= 0f) s.DwellUntil = Time.time + Random.Range(40f, 110f);
-                else if (Time.time > s.DwellUntil) PickGoal(s);
-                return;
+                // Fallback to original utility if no players cached (shouldn't happen during gameplay)
+                return HumanUtil.NearestPlayerDistance(from);
             }
-            // Walk in a loose file behind the leader.
-            for (int i = 0; i < s.Live.Count; i++)
+            float best = float.MaxValue;
+            for (int i = 0; i < _playerCache.Length; i++)
             {
-                Vector3 offset = i == 0 ? Vector3.zero : Quaternion.Euler(0f, 140f + i * 40f, 0f) * Vector3.forward * (1.6f * i);
-                s.Live[i].TravelTo(s.Goal + offset);
+                var p = _playerCache[i];
+                if (p == null) continue;
+                float d = HumanUtil.FlatSqr(from, p.EyePosition);
+                if (d < best) best = d;
             }
+            return Mathf.Sqrt(best);
         }
+        private void TickOnline(ALifeSquad s)
+{
+    s.Live.RemoveAll(n => n == null || n.IsDead);
+    s.Members = s.Live.Count;
+    if (s.Members == 0) { s.Online = false; return; }
+    s.Position = LeaderPos(s);
+    bool busy = false;
+    foreach (HumanNpc n in s.Live) if (n.State == HumanNpc.Mode.Combat || n.State == HumanNpc.Mode.Flee || n.State == HumanNpc.Mode.Investigate) busy = true;
+    if (busy) return;
+    if (HumanUtil.FlatDistance(s.Position, s.Goal) < 5f)
+    {
+        if (s.DwellUntil <= 0f) s.DwellUntil = Time.time + Random.Range(40f, 110f);
+        else if (Time.time > s.DwellUntil) PickGoal(s);
+        return;
+    }
+    // Walk in a loose file behind the leader.
+    for (int i = 0; i < s.Live.Count; i++)
+    {
+        Vector3 offset = i == 0 ? Vector3.zero : Quaternion.Euler(0f, 140f + i * 40f, 0f) * Vector3.forward * (1.6f * i);
+        s.Live[i].TravelTo(s.Goal + offset);
+    }
+}
 
         private void GoOnline(ALifeSquad s)
         {

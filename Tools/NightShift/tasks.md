@@ -12491,12 +12491,13 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: No further changes. The collider and block calls at the end of the method remain untouched, preserving interaction and physics.
   Done when: In‑game benches display a thin metal side rail, small metal‑cap boxes on the tops of their legs, and (on roughly half of them) a small red “no‑smoking” plate on the back – all built from the existing `iron`, `wood`, `SnowSurf`, and `Gloss` materials, with no change to colliders or interaction zones.
   - 13:47 landed by hts-llm in 17.2 min: **Changed file**
-- [ ] Cache the per‑frame player lookup and distance calculation in Assets/Scripts/AI/Humans/ALife.cs
+- [x] Cache the per‑frame player lookup and distance calculation in Assets/Scripts/AI/Humans/ALife.cs
   Add a private static field `Player[] _playerCache` (or the concrete player type used in the project) and populate it once each Update instead of letting HumanUtil.NearestPlayerDistance search the scene repeatedly.
   Create a private static method `float CachedNearestPlayerDistance(Vector3 from)` that iterates over `_playerCache` and returns the smallest distance (using the same logic as the original utility).
   Replace the two calls to `HumanUtil.NearestPlayerDistance(...)` inside Update with `CachedNearestPlayerDistance(...)`.
   Insert the cache fill at the start of Update right after the `_tick` handling, e.g. ` _playerCache = FindObjectsByType<Player>(FindObjectsSortMode.None);`.
   The player‑visible behavior does not change – squads still go online/offline based on the same distance thresholds – but the heavy per‑squad scene search is eliminated, reducing GC pressure and CPU load each frame.
+  - 14:27 landed by spark in 55 min: **What was changed**
 - [x] Add a “Fan the towel” action to `Assets/Scripts/World/Fixtures/TowelRail.cs` that lets the survivor speed up drying by reducing the remaining dry‑time, using a new config multiplier.
   Step 1: Assets/Scripts/World/Fixtures/TowelRail.cs – `GetActions` `into.Add(new InteractAction("Fan the towel", FanTowel));` (Insert the line after the existing “Let towel dry” action.)
   Step 2: Assets/Scripts/World/Fixtures/TowelRail.cs – new method `FanTowel` `private void FanTowel(InteractContext ctx)` `{` `if (!IsDamp)` `{` `ctx.Notify("The towel is already dry; the fan has nothing to do.");` `return;` `}` `// Remaining hours until dry` `float remaining = Mathf.Max(0f, _dryAt - TimeOfDay.Now);` `// Reduce the remaining time by the fan factor (e.g. 50 % faster)` `float newRemaining = remaining * CloneZConfig.TowelFanFactor;` `_dryAt = TimeOfDay.Now + newRemaining;` `ShowLook(); // update colour/visibility immediately` `ctx.Notify($"You fan the towel. It will now be dry in {newRemaining:0.0} hours.");` `}`
