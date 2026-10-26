@@ -61,6 +61,7 @@ namespace CloneZ
         // Subtle flame flicker effect – varies intensity each frame when lit
         private void Update()
         {
+            FireSound();
             if (!_isLit || _flameLight == null) return;
             // Per-frame flicker and fuel consumption only while lit (the flame light is off otherwise)
             // Perlin noise creates a gentle, non‑repeating variation
@@ -74,6 +75,30 @@ namespace CloneZ
                 GameEvents.RaiseToast("The fire sputters out as it runs out of fuel.");
             }
         }
+
+        // The fire crackling while it burns, heard through the stove's iron door: started (silent) once its sound is
+        // built, faded in as it catches and out as it dies.
+        private AudioSource _fire;
+
+        private void FireSound()
+        {
+            if (_isLit && _fire == null)
+            {
+                if (!Sfx.Ready(SfxIds.FireCrackle)) { Sfx.Request(SfxIds.FireCrackle); return; }
+                _fire = Sfx.Loop(SfxIds.FireCrackle, transform, 0f, 10f);
+                if (_fire == null) return;
+                _fire.transform.localPosition = new Vector3(0f, 0.45f, 0f);
+                Sfx.SetLowPass(_fire, 5500f);
+                Sfx.FadeTo(_fire, 0.85f, 2.5f);
+            }
+            else if (!_isLit && _fire != null)
+            {
+                Sfx.FadeTo(_fire, 0f, 2f, true);
+                _fire = null;
+            }
+        }
+
+        private void OnDestroy() { if (_fire != null) Sfx.Stop(_fire); }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
