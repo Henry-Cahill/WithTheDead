@@ -11617,13 +11617,14 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: `BuildOverlay` (line 129), `NewImage` (line 153), `NewFullScreen` (line 167), `Show` (line 208), `LayoutScope` (line 235), `AnimateGrain` (line 256).
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
   Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
-- [ ] Cache GameManager.Instance and Camera.main lookups in Assets/Scripts/World/Map/PorchLamp.cs to avoid per‑check FindObjectByType calls
+- [x] Cache GameManager.Instance and Camera.main lookups in Assets/Scripts/World/Map/PorchLamp.cs to avoid per‑check FindObjectByType calls
   Add a private static `GameManager s_GameManager;` field next to `s_Survivor`.
   Add a private static `Camera s_MainCam;` field next to it.
   In `TryGetSurvivor` replace `GameManager gm = GameManager.Instance;` with `if (s_GameManager == null) s_GameManager = GameManager.Instance; GameManager gm = s_GameManager;`.
   Replace `else if (s_Survivor == null && Camera.main != null) s_Survivor = Camera.main.transform;` with `if (s_MainCam == null) s_MainCam = Camera.main; if (s_Survivor == null && s_MainCam != null) s_Survivor = s_MainCam.transform;`.
   Leave the rest of the method unchanged; the player will still see lamps light up correctly at night, and the visual behavior is unaffected.
   These cached references are refreshed only when null, matching the existing pattern that `s_Survivor` is re‑resolved if the camera changes. This removes the per‑frame (every 0.25 s) expensive `GameManager.Instance` and `Camera.main` lookups.
+  - 05:57 landed by hts-llm in 9.2 min: **Changes made**
 - [ ] Add a “Inspect seat” action and make wiping actually clean the seat in Assets/Scripts/World/Fixtures/ToiletFixture.cs
   Step 1: In class `ToiletFixture`, add a private method after `ScrubSeat`: `/// <summary>Tells the survivor whether the toilet seat is currently clean.</summary>` `private void InspectSeat(InteractContext ctx)` `{` `ctx.Notify(_seatClean ? "The seat is clean." : "The seat is dirty.");` `}`
   Step 2: In `GetActions(InteractContext ctx, List<InteractAction> into)`, after the line `into.Add(new InteractAction("Scrub the seat", ScrubSeat));` insert: `into.Add(new InteractAction("Inspect seat", InspectSeat));`

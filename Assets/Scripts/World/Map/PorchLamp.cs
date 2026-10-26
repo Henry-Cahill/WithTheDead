@@ -26,6 +26,8 @@ namespace CloneZ
         private static PorchLampDriver s_Driver;
         private static float s_NextCheck;
         private static Transform s_Survivor;
+        private static GameManager s_GameManager;
+        private static Camera s_MainCam;
         // The nearest lamps found by a check, nearest first, and their squared distances.
         private static readonly int[] s_Near = new int[MaxLit];
         private static readonly float[] s_NearD = new float[MaxLit];
@@ -176,9 +178,13 @@ namespace CloneZ
         /// <summary>Attempts to locate the survivor's position for lamp culling.</summary>
         private static bool TryGetSurvivor(out Vector3 position)
         {
-            GameManager gm = GameManager.Instance;
+            if (s_GameManager == null) s_GameManager = GameManager.Instance;
+            GameManager gm = s_GameManager;
             if (gm != null && gm.Player != null) s_Survivor = gm.Player.transform;
-            else if (s_Survivor == null && Camera.main != null) s_Survivor = Camera.main.transform;
+            else {
+                if (s_MainCam == null) s_MainCam = Camera.main;
+                if (s_Survivor == null && s_MainCam != null) s_Survivor = s_MainCam.transform;
+            }
             if (s_Survivor == null)
             {
                 position = default;
