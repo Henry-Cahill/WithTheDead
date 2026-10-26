@@ -30,6 +30,7 @@ namespace CloneZ
         private static readonly Color InsulatorGlass = new Color(0.50f, 0.66f, 0.60f);
         private static readonly Color TransformerGrey = new Color(0.50f, 0.54f, 0.56f);
         private static readonly Color TowerSteel = new Color(0.56f, 0.58f, 0.60f);
+        private static readonly Color RustColour = new Color(0.55f, 0.29f, 0.20f);
 
         #region Lines along the roads
         // A run of one road's pieces joined end to end, as its line follows them.
@@ -608,7 +609,10 @@ namespace CloneZ
             Surf wood = Matte(PoleWoods[MapStyle.Pick(p.Key, SaltWood, PoleWoods.Length)]);
             float h = p.Height;
             Vector3 foot = To3(p.At, 0f);
-            ctx.Low(p.At).Cylinder(foot, 0.14f, h, ring ? 5 : 7, wood, Quaternion.identity, 0.72f);
+            var low = ctx.Low(p.At);
+            low.Cylinder(foot, 0.14f, h, ring ? 5 : 7, wood, Quaternion.identity, 0.72f);
+            // metal base collar (period‑correct grounding plate)
+            low.Cylinder(new Vector3(0f, 0.025f, 0f), 0.22f, 0.05f, 6, DarkMetal, Quaternion.identity, 0.9f);
             Surf metal = DarkMetal;
             bool burning = p.Lamp != null && p.Lamp.Lit && inside;
             if (!burning)
@@ -619,6 +623,19 @@ namespace CloneZ
 
             RaidMesh m = ctx.High(p.At);
             m.SetFrame(foot, Yaw(Left(p.Across)));
+            // wooden mid‑height strap (a “belt” around the pole)
+            m.Box(new Vector3(0f, h * 0.5f, 0f), new Vector3(0.30f, 0.02f, 0.02f), wood);
+            // randomised rust patches along the pole, based on the pole's random seed
+            int rustCount = Mathf.FloorToInt(MapStyle.Unit(p.Key, SaltWood) * 5f);
+            Surf rustSurf = Gloss(RustColour);
+            for (int i = 0; i < rustCount; i++)
+            {
+                float height = h * (0.2f + i * 0.15f);
+                // offset a little from the pole surface for visual depth
+                Vector3 pos = new Vector3(0f, height, 0f);
+                Vector3 size = new Vector3(0.04f, 0.02f, 0.04f);
+                m.Box(pos, size, rustSurf);
+            }
             // Local frame: x across the line, z along it, y up.
             if (ring)
             {
