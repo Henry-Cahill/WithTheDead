@@ -341,14 +341,14 @@ namespace CloneZ
             {
                 float line = up + Mathf.Max(0f, u - lift) * tan;   // the sight line's height above the base here
                 if (line >= b.Top) return false;   // nothing of the building reaches it from here on
-                int need = line <= 0f ? 0 : Mathf.Min(255, Mathf.FloorToInt(line / HeightStep));
+                int need = line <= 0f ? 0 : Mathf.Min(255, Mathf.CeilToInt(line / HeightStep));
                 Vector2 m = s + back * u;
                 for (int k = 0; k <= lanes; k++)
                 {
                     Vector2 p = m + side * (half * (2f * k / lanes - 1f));
                     int i = Mathf.FloorToInt((p.x - b.HX) / cell), j = Mathf.FloorToInt((p.y - b.HZ) / cell);
                     if (i < 0 || j < 0 || i >= b.HW || j >= b.HH) continue;
-                    if (field[j * b.HW + i] > need) return true;
+                    if (field[j * b.HW + i] >= need) return true;
                 }
             }
             return false;
