@@ -11987,10 +11987,11 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Above each of these, which have no comment yet, add a one-sentence `/// <summary>` saying what it is for, in the same voice as the file's other summaries: class `Job` (line 38), class `Memory` (line 49), `Add` (line 98), `GatherFocus` (line 177), `TakeDownBehind` (line 220), `Touch` (line 318).
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.
   Insert only: put each comment on its own line, indented like the line below it, never at the end of a line of code. Never delete, move or rewrite existing lines or comments; if an edit fails, re-read the file first.
-- [ ] Cache the per‑frame lookup of the local player in `HudDrone.LateUpdate` (Assets/Scripts/Gadgets/Gadgets.cs)
+- [x] Cache the per‑frame lookup of the local player in `HudDrone.LateUpdate` (Assets/Scripts/Gadgets/Gadgets.cs)
   · Add a private `Transform _player;` field to `HudDrone`.
   · At the start of `LateUpdate` set `if (_player == null && Actor.LocalPlayer != null) _player = Actor.LocalPlayer.transform;` and clear it when the player reference disappears (`else if (Actor.LocalPlayer == null) _player = null;`).
   · Replace the line
+  - 08:48 landed by 0htsserver in 3.2 min: **Changed files**
 - [ ] Add comments explaining the code in Assets/Scripts/Economy/Trading.cs, so a programmer new to CLONE-Z can follow it. Comments only: don't change any code.
   Explain the logic inside these methods, which no comment explains yet: `Buy` (line 95, 18 lines of code). Above each step a reader can't follow from the code alone, add a short `//` comment saying what it is for or why it is done that way: what a block or loop is for, why a value, limit or order is what it is, what a condition guards against. Say why, not what: don't restate the line below, and leave obvious lines alone. Where one of these methods has no comment above it, add a one-sentence `/// <summary>` there too.
   Never add a second `<summary>` where one exists, and give none to members that override a base member or implement an interface, or to Unity messages such as Update: they inherit their docs.

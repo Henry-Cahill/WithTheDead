@@ -482,6 +482,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         private float _lastAltitude = -1f;
         private int _lastSpeedKmh = -1;
         private float _lastDist = -1f;
+        private Transform _player;
         private bool _lastHasGrenade = false;
         private bool _lastLightOn = false;
         private DroneKind _lastKind = (DroneKind)(-1);
@@ -503,6 +504,12 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
 
         private void LateUpdate()
         {
+            // Cache player transform for per‑frame distance calculation
+            if (_player == null && Actor.LocalPlayer != null)
+                _player = Actor.LocalPlayer.transform;
+            else if (Actor.LocalPlayer == null)
+                _player = null;
+
             DronePilot p = DronePilot.Local;
             bool on = p != null && p.Drone != null;
             string newText = "";
@@ -519,7 +526,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                 float battery = d.Battery01;
                 float altitude = d.transform.position.y;
                 int speedKmh = Mathf.RoundToInt(d.Speed * 3.6f);
-                float dist = Actor.LocalPlayer != null ? Vector3.Distance(Actor.LocalPlayer.transform.position, d.transform.position) : 0f;
+                float dist = _player != null ? Vector3.Distance(_player.position, d.transform.position) : 0f;
                 bool hasGrenade = d.HasGrenade;
                 bool lightOn = d.LightOn;
                 DroneKind kind = d.Kind;
