@@ -36,18 +36,27 @@ namespace CloneZ
         public static void AttachTo(Inventory from, ItemStack gun, ItemStack modStack, PlayerInventory refresh = null)
         {
             ModStats mod = Ballistics.Mod(modStack.Def.Id);
+            // Abort if the mod is unknown or doesn't fit the gun, avoiding unnecessary work and UI noise.
             if (mod == null || !Ballistics.ModFits(gun.Def, mod)) return;
+            // Ensure the gun has an ItemExtra component to hold attached mods.
             ItemExtra x = gun.Ensure();
+            // Iterate backwards so removing items doesn't affect the loop index.
             for (int i = x.Mods.Count - 1; i >= 0; i--)
             {
                 ModStats old = Ballistics.Mod(x.Mods[i]);
+                // Only remove mods that occupy the same slot as the new mod.
                 if (old == null || old.Slot != mod.Slot) continue;
+                // Return the old mod to the player's inventory before discarding it.
                 from.Add(ItemDatabase.Get(x.Mods[i]), 1, enforceWeight: false);
                 x.Mods.RemoveAt(i);
             }
+            // Add the new mod ID to the gun's mod list.
             x.Mods.Add(mod.Id);
+            // Remove one instance of the mod stack from the inventory, as it is now attached.
             from.Remove(modStack, 1);
+            // Play a UI sound to give audible feedback for the attachment action.
             Sfx.PlayUI(SfxIds.Reload, 0.6f, 1.2f);
+            // Show a toast notification confirming the attachment.
             GameEvents.RaiseToast(modStack.Def.DisplayName + " fitted to the " + gun.Def.DisplayName + ".");
         }
 
@@ -111,11 +120,14 @@ namespace CloneZ
         #endregion
 
         #region Menu verbs
+        /// <summary>Populate context‑menu actions for a firearm item, including stripping attachments, loading ammo, cleaning and insurance.</summary>
         private static void GunVerbs(PlayerInventory inv, ItemStack s, List<ItemMenuAction> into)
         {
             ItemDef d = s.Def;
+            // If the item is a firearm, add context‑menu options relevant to guns.
             if (d.IsFirearm)
             {
+                // Offer a "Strip attachments" action when the gun currently has mods attached.
                 if (s.Extra != null && s.Extra.Mods.Count > 0)
                     into.Add(new ItemMenuAction("Strip attachments (" + s.Extra.Mods.Count + ")", () =>
                     {
@@ -123,6 +135,7 @@ namespace CloneZ
                         GameEvents.RaiseToast("Stripped " + n + " attachment" + (n == 1 ? "" : "s") + " off the " + d.DisplayName + ".");
                     }));
                 // Load a different round of the same calibre (the gun in hand only).
+                // Load a different calibre of ammo only for the gun currently equipped.
                 PlayerCombat combat = inv.GetComponent<PlayerCombat>();
                 if (combat != null && inv.EquippedStack == s)
                 {
@@ -131,12 +144,15 @@ namespace CloneZ
                     for (int i = 0; i < stacks.Count; i++)
                     {
                         ItemDef a = stacks[i].Def;
+                        // Prevent duplicate ammo entries and ensure the ammo calibre matches the gun.
                         if (a == null || a.Category != ItemCategory.Ammo || !seen.Add(a.Id) || !Ballistics.Accepts(d, a.Id)) continue;
+                        // Skip the currently loaded ammo type to avoid redundant load actions.
                         if (a.Id == combat.LoadedAmmoId) continue;
                         string id = a.Id;
                         into.Add(new ItemMenuAction("Load " + a.DisplayName, () => combat.SwitchAmmo(id)));
                     }
                 }
+                // Add a "Clean" option when the gun is sufficiently fouled and the player has a cleaning kit.
                 if (s.DirtLevel() > 0.05f && inv.Has("cleaningkit"))
                     into.Add(new ItemMenuAction("Clean (" + Mathf.RoundToInt(s.DirtLevel() * 100f) + "% fouled)", () =>
                     {
@@ -161,6 +177,7 @@ namespace CloneZ
                         }
                     }));
             }
+            // In the hub, allow insuring an item if it can be insured and isn't already.
             if (GameSession.IsHub && InsuranceDesk.Insurable(s) && !s.IsInsured())
                 into.Add(new ItemMenuAction("Insure (" + Money.Format(InsuranceDesk.Premium(s)) + ")", () =>
                 {
@@ -182,6 +199,7 @@ namespace CloneZ
         {
             var sb = new StringBuilder();
             AmmoStats ammo = Ballistics.Ammo(d.Id);
+            // Ammo-specific tooltip lines – calibre, damage, penetration, bleeding and special currency flag.
             if (ammo != null && d.Category == ItemCategory.Ammo)
             {
                 Line(sb, "Calibre", CaliberName(ammo.Caliber));
@@ -191,6 +209,7 @@ namespace CloneZ
                 if (ammo.Currency) sb.Append("\n<color=#e0c060>The Zone's money: every shot spends it.</color>");
             }
             GunStats gun = Ballistics.Gun(d.Id);
+            // Gun-specific tooltip – calibre, fire mode, recoil ergonomics and optional slot list.
             if (gun != null && d.IsFirearm)
             {
                 Line(sb, "Calibre", CaliberName(gun.Caliber));
@@ -204,6 +223,7 @@ namespace CloneZ
                 }
             }
             ModStats mod = Ballistics.Mod(d.Id);
+            // Mod-specific tooltip – slot name, optional calibre restriction and statistical modifiers.
             if (mod != null)
             {
                 Line(sb, "Slot", mod.Slot + (string.IsNullOrEmpty(mod.Caliber) ? "" : " (" + CaliberName(mod.Caliber) + " only)"));
@@ -215,6 +235,7 @@ namespace CloneZ
                 if (mod.Zoom > 1f) Line(sb, "Zoom", mod.Zoom.ToString("0.#") + "x");
             }
             ArmorStats armor = Ballistics.Armor(d.Id);
+            // Armor-specific tooltip – class, covered zones, resistances and other bonuses.
             if (armor != null)
             {
                 if (armor.Class > 0) Line(sb, "Armour class", armor.Class.ToString());
@@ -228,6 +249,7 @@ namespace CloneZ
                 if (armor.CarryBonusKg > 0f) Line(sb, "Carry", "+" + armor.CarryBonusKg.ToString("0") + " kg");
                 if (armor.MovePenalty > 0f) Line(sb, "Movement", "-" + Mathf.RoundToInt(armor.MovePenalty * 100f) + "%");
             }
+            // Trim leading newline before returning the final tooltip string.
             return sb.Length > 0 ? sb.ToString().TrimStart('\n') : null;
         }
 
