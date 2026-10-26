@@ -123,6 +123,7 @@ NearBed = _cachedBed != null;
             return null;
         }
 
+        /// <summary>Begins the sleeping process, positioning the player and freezing gameplay.</summary>
         private void StartSleep()
         {
             if (Seat != null)
@@ -145,6 +146,7 @@ NearBed = _cachedBed != null;
             Prompt = "";
         }
 
+        /// <summary>Updates sleep timers each frame and checks for wake‑up conditions.</summary>
         private void TickSleep()
         {
             float dt = Time.deltaTime;
@@ -171,6 +173,7 @@ NearBed = _cachedBed != null;
             return t != null && t.Hour >= CloneZConfig.SleepWakeHour && t.Hour < 11f && !t.IsNight;
         }
 
+        /// <summary>Returns true if any zombie is within the danger radius while sleeping.</summary>
         private bool ZombiesNearby()
         {
             // Detect any zombie (including those using trigger colliders) within the danger radius.
@@ -183,6 +186,7 @@ NearBed = _cachedBed != null;
             return false;
         }
 
+        /// <summary>Detects if the player pressed any wake‑up key during sleep.</summary>
         private static bool WakeInputPressed()
         {
             Keyboard kb = Keyboard.current;
