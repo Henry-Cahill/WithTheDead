@@ -188,6 +188,25 @@ namespace CloneZ
                     m.Box(new Vector3(-1.1f, 0.8f, 0f), new Vector3(0.1f, 0.1f, 1.1f), rail);
                     m.Box(new Vector3(1.1f, 0.8f, 0f), new Vector3(0.1f, 0.1f, 1.1f), rail);
                     m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(1.9f, 0.6f, 0.9f), rail);
+                    // Leather pocket liners tucked under the rails near each corner
+                    Surf leather = DecorPalette.Matte(new Color(0.18f, 0.12f, 0.08f));
+                    m.Box(new Vector3(-1.0f, 0.79f, -0.52f), new Vector3(0.12f, 0.02f, 0.12f), leather);
+                    m.Box(new Vector3(1.0f, 0.79f, -0.52f), new Vector3(0.12f, 0.02f, 0.12f), leather);
+                    m.Box(new Vector3(-1.0f, 0.79f, 0.52f), new Vector3(0.12f, 0.02f, 0.12f), leather);
+                    m.Box(new Vector3(1.0f, 0.79f, 0.52f), new Vector3(0.12f, 0.02f, 0.12f), leather);
+                    // Worn cloth edge strip along the long rails
+                    Surf wornFelt = DecorPalette.Matte(new Color(0.09f, 0.32f, 0.18f));
+                    m.Box(new Vector3(0f, 0.781f, -0.56f), new Vector3(2.06f, 0.01f, 0.08f), wornFelt);
+                    m.Box(new Vector3(0f, 0.781f, 0.56f), new Vector3(2.06f, 0.01f, 0.08f), wornFelt);
+                    // Cue rack on the end opposite the bar side
+                    m.Box(new Vector3(0f, 0.92f, -0.72f), new Vector3(0.8f, 0.12f, 0.02f), rail);
+                    m.Cylinder(new Vector3(-0.25f, 0.98f, -0.71f), 0.01f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Chrome));
+                    m.Cylinder(new Vector3(0.25f, 0.98f, -0.71f), 0.01f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Chrome));
+                    // Deterministic chalk marks
+                    Surf chalk = DecorPalette.Matte(new Color(0.86f, 0.84f, 0.76f));
+                    m.Sphere(new Vector3(MapStyle.Range(r, -0.3f, 0.3f), 0.821f, MapStyle.Range(r, -0.2f, 0.2f)), 0.008f, chalk);
+                    m.Sphere(new Vector3(MapStyle.Range(r, -0.1f, 0.1f), 0.821f, MapStyle.Range(r, -0.15f, 0.15f)), 0.008f, chalk);
+                    m.Sphere(new Vector3(MapStyle.Range(r, -0.2f, 0.2f), 0.821f, MapStyle.Range(r, 0.05f, 0.25f)), 0.008f, chalk);
                     for (int k = 0; k < 6; k++)
                         m.Sphere(new Vector3(MapStyle.Range(r, -0.9f, 0.9f), 0.828f, MapStyle.Range(r, -0.45f, 0.45f)), 0.028f,
                             DecorPalette.Gloss(Balls[r.Next(Balls.Length)]));
