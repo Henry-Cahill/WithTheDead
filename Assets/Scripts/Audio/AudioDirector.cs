@@ -1,12 +1,20 @@
-using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
 namespace CloneZ
 {
-    /// <summary>Installs the synthesiser as the game's sound backend and wires the sounds no single system owns.</summary>
+    /// <summary>
+    /// Installs the synthesiser as the game's sound backend, starts building every sound in the background, and wires
+    /// the sounds no single system owns. Each part of the soundscape has its own director: footsteps
+    /// (<see cref="FootstepAudio"/>), the survivor's body (<see cref="BodyAudio"/>), the dead (<see cref="ZombieVoices"/>),
+    /// the world's ambience and weather (<see cref="AmbienceDirector"/>), the fight (<see cref="WeaponAudio"/>) and the
+    /// score (<see cref="MusicDirector"/>); the mixer (<see cref="SfxMixer"/>) plays them all, in the space the survivor
+    /// stands in (<see cref="SfxAcoustics"/>).
+    /// </summary>
     public sealed class AudioModule : IGameModule
     {
+        private static bool s_SessionStarted;
+
         public int Order => -50;
 
         public void Init()
@@ -23,21 +31,45 @@ namespace CloneZ
             {
                 if (p == null) return;
                 if (p.GetComponent<ListenerRig>() == null) p.gameObject.AddComponent<ListenerRig>();
-                var controller = p.GetComponent<PlayerController>();
-                Transform t = p.transform;
-                if (controller != null) controller.Footstep += (sprint, sneak) => FootstepAudio.Play(t.position, sprint, sneak);
-                var gear = p.GetComponent<PlayerGear>();
-                var actor = p.GetComponent<Actor>();
-                AudioDirector.SetLocalPlayer(actor);
-                if (gear != null) gear.Coughed += () => Sfx.Play(SfxIds.Cough, t.position + Vector3.up * 1.6f, 0.7f, Random.Range(0.9f, 1.1f), 18f);
-            };
-            CombatResolver.ShotResolved += (req, r) =>
-            {
-                if (r.Hit && (r.TargetActor != null || r.Target != null))
-                    Sfx.Play(SfxIds.HitFlesh, r.End, 0.6f, Random.Range(0.9f, 1.1f), 18f);
+                FootstepAudio.OnPlayerBuilt(p);
+                BodyAudio.OnPlayerBuilt(p);
             };
             GameEvents.ItemLooted += (stack, source) => Sfx.PlayUI(SfxIds.Pickup, 0.45f, Random.Range(0.92f, 1.08f));
-            AudioDirector.Ensure();
+            StartSession();
+        }
+
+        // Modules initialise once per run of the game, but in the editor a run spans several play sessions (domain
+        // reload is off): statics and event hooks survive, while every object the last session made is gone. So the
+        // per-session half — background builds, the mixer, the directors — starts again with each session.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void NewSession() => s_SessionStarted = false;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void ResumeSession()
+        {
+            if (Sfx.Backend != null) StartSession();
+        }
+
+        private static void StartSession()
+        {
+            if (s_SessionStarted) return;
+            s_SessionStarted = true;
+            AudioJobs.Reset();
+            Application.quitting -= AudioJobs.Shutdown;
+            Application.quitting += AudioJobs.Shutdown;
+            if (Sfx.Backend is SfxSynth synth)
+            {
+                synth.ResetRuntime();
+                synth.Prewarm();
+            }
+            SfxMixer.Ensure();
+            SfxAcoustics.Ensure();
+            WeaponAudio.Ensure();
+            FootstepAudio.Ensure();
+            BodyAudio.Ensure();
+            ZombieVoices.Ensure();
+            AmbienceDirector.Ensure();
+            MusicDirector.Ensure();
         }
     }
 
@@ -58,6 +90,8 @@ namespace CloneZ
         public static Vector3 Position { get; private set; }
         /// <summary>Whether the ListenerRig is currently active in the scene.</summary>
         public static bool Active { get; private set; }
+        /// <summary>The ears themselves (the AudioListener's transform), or null with no rig.</summary>
+        public static Transform Ears { get; private set; }
 
         private void Start()
         {
@@ -65,6 +99,7 @@ namespace CloneZ
             var go = new GameObject("Ears");
             _ears = go.transform;
             _listener = go.AddComponent<AudioListener>();
+            Ears = _ears;
             Active = true;
         }
 
@@ -99,217 +134,9 @@ namespace CloneZ
         private void OnDestroy()
         {
             Active = false;
+            if (Ears == _ears) Ears = null;
             if (_mutedCam != null) SetListener(_mutedCam, true);
             if (_ears != null) Destroy(_ears.gameObject);
-        }
-    }
-
-    /// <summary>Footsteps that sound like what is underfoot: snow, boards, concrete and asphalt, grass and earth.</summary>
-    public static class FootstepAudio
-    {
-        /// <summary>Determines the surface type under the given foot position for appropriate footstep sounds.</summary>
-        public static string SurfaceAt(Vector3 feet)
-        {
-            if (Physics.Raycast(feet + Vector3.up * 0.4f, Vector3.down, out RaycastHit hit, 1.4f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-            {
-                string s = SurfaceName(hit.collider);
-                if (s != null)
-                {
-                    if (Has(s, "snow")) return SfxIds.StepSnow;
-                    if (Has(s, "asphalt") || Has(s, "concrete") || Has(s, "road") || Has(s, "pavement") || Has(s, "tile") || Has(s, "gravel") || Has(s, "slab") || Has(s, "stair"))
-                        return SfxIds.StepConcrete;
-                    if (Has(s, "wood") || Has(s, "plank") || Has(s, "floor") || Has(s, "deck") || Has(s, "porch")) return SfxIds.StepWood;
-                }
-            }
-            if (Shelter.Count > 0 && Shelter.IsSheltered(feet + Vector3.up)) return SfxIds.StepWood;
-            if (GameSession.IsHub) return SfxIds.StepWood;
-            if (Climate.SnowFraction > 0.5f) return SfxIds.StepSnow;
-            return SfxIds.StepGrass;
-        }
-
-        public static void Play(Vector3 feet, bool sprinting, bool sneaking, float loudness = 1f)
-        {
-            float vol = (sneaking ? 0.2f : sprinting ? 0.7f : 0.45f) * loudness;
-            float range = sneaking ? 6f : sprinting ? 24f : 14f;
-            Sfx.Play(SurfaceAt(feet), feet + Vector3.up * 0.05f, vol, Random.Range(0.9f, 1.1f), range);
-        }
-
-        private static string SurfaceName(Collider c)
-        {
-            var r = c.GetComponent<Renderer>();
-            if (r != null && r.sharedMaterial != null)
-            {
-                Texture tex = r.sharedMaterial.mainTexture;
-                if (tex != null && !string.IsNullOrEmpty(tex.name)) return (tex.name + " " + c.name).ToLowerInvariant();
-                return (r.sharedMaterial.name + " " + c.name).ToLowerInvariant();
-            }
-            return c.name.ToLowerInvariant();
-        }
-
-        private static bool Has(string s, string part) => s.IndexOf(part, System.StringComparison.Ordinal) >= 0;
-    }
-
-    /// <summary>
-    /// The sound of the world around the survivor: a bed of wind that rises with the weather and drops indoors,
-    /// birds in the trees by day, the murmur and glasses of the bar in the hub; the dead groaning nearby (more when
-    /// they hunt); wolves far off at night; the rasp of breath inside a gas mask.
-    /// </summary>
-    public sealed class AudioDirector : MonoBehaviour
-    {
-        private static AudioDirector s_Instance;
-        private static Actor _cachedPlayer;
-        public static void SetLocalPlayer(Actor p) => _cachedPlayer = p;
-
-        // Ensure static reference is cleared when this instance is destroyed to avoid stale singleton.
-        private void OnDestroy()
-        {
-            if (s_Instance == this) s_Instance = null;
-        }
-
-        private AudioSource _wind, _forest, _bar, _mask;
-        private WeatherSystem _weather;
-        private TimeOfDay _timeOfDay;
-        private float _groanTimer, _animalTimer = 40f;
-        private readonly Dictionary<Actor, float> _nextGroan = new Dictionary<Actor, float>();
-        private readonly List<Actor> _near = new List<Actor>();
-        private Actor _localActor;
-        private PlayerStats _localStats;
-        private PlayerGear _localGear;
-
-        /// <summary>Ensures a single AudioDirector instance exists in the scene.</summary>
-        public static void Ensure()
-        {
-            // If the stored instance is null or has been destroyed, create a fresh one.
-            if (s_Instance == null || s_Instance.gameObject == null)
-            {
-                var go = new GameObject("[AudioDirector]");
-                DontDestroyOnLoad(go);
-                s_Instance = go.AddComponent<AudioDirector>();
-            }
-        }
-
-        private AudioSource Bed(string id)
-        {
-            AudioSource s = Sfx.Loop(id, transform, 0f, 10f);
-            if (s != null) s.spatialBlend = 0f;
-            return s;
-        }
-
-                private void Awake()
-        {
-            _wind = Bed(SfxIds.WindAmbience);
-            _forest = Bed(SfxIds.ForestAmbience);
-            _bar = Bed(SfxIds.BarAmbience);
-            _mask = Bed(SfxIds.BreathMask);
-            // The Bed helper already returns null‑safe AudioSource objects, but we keep the references
-            // for the Fade calls; null checks are performed inside Fade().
-            _weather = WeatherSystem.Instance;
-            _timeOfDay = TimeOfDay.Instance;
-        }
-
-        private void Update()
-        {
-            float dt = Time.unscaledDeltaTime;
-            Actor local = _cachedPlayer;
-            if (local != _localActor)
-            {
-                _localActor = local;
-                _localStats = local != null ? local.GetComponent<PlayerStats>() : null;
-                _localGear = local != null ? local.GetComponent<PlayerGear>() : null;
-            }
-            PlayerStats me = _localStats;
-            Vector3 ears = ListenerRig.Active ? ListenerRig.Position : (me != null ? me.transform.position : Vector3.zero);
-            bool paused = Time.timeScale <= 0f;
-
-            float wind = 0.16f, forest = 0f, bar = 0f, mask = 0f;
-            if (GameSession.IsHub && me != null)
-            {
-                wind = 0.04f;
-                bar = 0.4f;
-            }
-            else if (me != null)
-            {
-                WeatherSystem w = _weather; if (w == null) { _weather = WeatherSystem.Instance; w = _weather; }
-                if (w != null)
-                {
-                    switch (w.Current)
-                    {
-                        case Weather.Cloudy: wind = 0.22f; break;
-                        case Weather.Overcast: wind = 0.28f; break;
-                        case Weather.Fog: wind = 0.12f; break;
-                        case Weather.Rain: wind = 0.34f; break;
-                        case Weather.Storm: wind = 0.55f; break;
-                    }
-                }
-                // The clock is built with each world, after this director (it outlives scenes), so look again until found.
-                if (_timeOfDay == null) _timeOfDay = TimeOfDay.Instance;
-                bool night = _timeOfDay != null && _timeOfDay.IsNight;
-                float trees = ZoneForest.Density(ears);
-                forest = night ? 0f : Mathf.Clamp01(trees * 1.4f) * 0.4f + (GameSession.IsExtraction ? 0.05f : 0f);
-                bool indoors = Shelter.Count > 0 && Shelter.IsSheltered(ears);
-                if (indoors) { wind *= 0.3f; forest *= 0.25f; }
-
-                if (_localGear != null && _localGear.HasGasMask && !me.IsDead) mask = 0.32f;
-            }
-            if (paused) { wind *= 0.3f; forest = 0f; bar *= 0.3f; mask = 0f; }
-
-            Fade(_wind, wind, dt);
-            Fade(_forest, forest, dt);
-            Fade(_bar, bar, dt);
-            Fade(_mask, mask, dt * 3f);
-
-            if (paused || me == null || GameSession.IsHub) return;
-            Groans(ears, dt);
-            Animals(ears, dt);
-        }
-
-        private static void Fade(AudioSource s, float target, float dt)
-        {
-            if (s == null) return;
-            s.volume = Mathf.MoveTowards(s.volume, target, dt * 0.25f);
-        }
-
-        // Each nearby corpse-walker groans now and then on its own clock; hunters more often, all of them throttled.
-        private void Groans(Vector3 ears, float dt)
-        {
-            _groanTimer -= dt;
-            if (_groanTimer > 0f) return;
-            _groanTimer = 0.45f;
-
-            _near.Clear();
-            for (int i = 0; i < Actor.All.Count; i++)
-            {
-                Actor a = Actor.All[i];
-                if (a == null || a.Kind != ActorKind.Zombie || !a.IsAlive) continue;
-                if ((a.transform.position - ears).sqrMagnitude > 30f * 30f) continue;
-                _near.Add(a);
-            }
-            if (_near.Count == 0) return;
-
-            Actor pick = _near[Random.Range(0, _near.Count)];
-            float now = Time.time;
-            if (_nextGroan.TryGetValue(pick, out float next) && now < next) return;
-
-            var ai = pick.GetComponent<ZombieAI>();
-            bool hunting = ai != null && ai.IsHunting;
-            if (_nextGroan.Count > 400) _nextGroan.Clear();
-            _nextGroan[pick] = now + (hunting ? Random.Range(2.5f, 5f) : Random.Range(6f, 14f));
-            Sfx.Play(SfxIds.ZombieGroan, pick.transform.position + Vector3.up * 1.6f, hunting ? 0.75f : 0.5f, Random.Range(0.85f, 1.12f), hunting ? 30f : 22f);
-        }
-
-        // Far-off animals: wolves at night, a deer by day in the trees. Placed well away from the survivor so they
-        // read as the landscape, not a threat.
-        private void Animals(Vector3 ears, float dt)
-        {
-            if (!GameSession.IsExtraction) return;
-            _animalTimer -= dt;
-            if (_animalTimer > 0f) return;
-            _animalTimer = Random.Range(45f, 120f);
-                bool night = _timeOfDay != null && _timeOfDay.IsNight;
-            Vector2 o = Random.insideUnitCircle.normalized * Random.Range(35f, 60f);
-            Vector3 at = ears + new Vector3(o.x, 2f, o.y);
-            if (night) Sfx.Play(SfxIds.WolfHowl, at, 0.45f, Random.Range(0.9f, 1.08f), 90f);
-            else if (ZoneForest.Density(ears) > 0.25f) Sfx.Play(SfxIds.DeerCall, at, 0.35f, Random.Range(0.9f, 1.1f), 70f);
         }
     }
 }

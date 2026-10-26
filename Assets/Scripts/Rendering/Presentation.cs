@@ -265,7 +265,7 @@ namespace CloneZ
             float damage = _clothing != null ? 1f - _clothing.GetCondition01(ClothingSlot.Mask) : 0f;
             _cracks.color = new Color(1f, 1f, 1f, Mathf.Clamp01(damage * 1.3f));
             _fog.color = new Color(1f, 1f, 1f, _condensation * 0.85f);
-            if (damage > 0.6f && Random.value < Time.deltaTime * 0.02f) Sfx.PlayUI(SfxIds.MaskCrack, 0.35f);
+            if (damage > 0.6f && Random.value < Time.deltaTime * 0.02f) Sfx.PlayUI(SfxIds.MaskCrack, 0.5f);
         }
 
         // A spider-web of cracks from a couple of impact points.

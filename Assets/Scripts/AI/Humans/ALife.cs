@@ -368,7 +368,9 @@ namespace CloneZ
                 int shots = 1 + Random.Range(0, 4);
                 for (int k = 0; k < shots; k++)
                 {
-                    Sfx.Play(Random.value < 0.6f ? SfxIds.GunRifle : SfxIds.GunPistol, at + Random.insideUnitSphere * 6f, 0.9f, Random.Range(0.9f, 1.05f), 220f);
+                    float pick = Random.value;
+                    string report = pick < 0.55f ? SfxIds.GunRifle : pick < 0.85f ? SfxIds.GunPistol : SfxIds.GunShotgun;
+                    WeaponAudio.Report(report, at + Random.insideUnitSphere * 6f, 0.9f, Random.Range(0.9f, 1.05f));
                     yield return new WaitForSeconds(Random.Range(0.08f, 0.15f));
                 }
                 yield return new WaitForSeconds(Random.Range(0.4f, 1.6f));

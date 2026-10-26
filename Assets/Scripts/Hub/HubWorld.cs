@@ -44,9 +44,16 @@ namespace CloneZ
 
         private static void Open(string screen, string arg)
         {
-            Sfx.PlayUI(SfxIds.UiClick);
-            if (HubScreens.Has(screen)) HubScreens.Open(screen, arg);
-            else GameEvents.RaiseToast("Nobody's behind the counter right now.");
+            if (HubScreens.Has(screen))
+            {
+                HubScreens.Open(screen, arg);
+                if (!(UIScreen.Current is HubScreenBase)) Sfx.PlayUI(SfxIds.UiClick);   // the hub's own screens sound their opening
+            }
+            else
+            {
+                Sfx.PlayUI(SfxIds.UiClick);
+                GameEvents.RaiseToast("Nobody's behind the counter right now.");
+            }
         }
     }
 

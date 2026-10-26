@@ -16,6 +16,9 @@ namespace CloneZ
         public static System.Action<ushort> HostAction;
         public static System.Action<string, ushort> JoinAction;
 
+        /// <summary>True while the title screen is up (the score plays its theme under it).</summary>
+        public static bool Showing { get; private set; }
+
         private static readonly Color TitleRed = new Color(0.86f, 0.24f, 0.20f);
         private static readonly Color PlaceColor = new Color(0.88f, 0.83f, 0.74f);
         private static readonly Color CardColor = new Color(0.055f, 0.065f, 0.085f, 0.90f);
@@ -42,6 +45,10 @@ namespace CloneZ
             WinterBackdrop.Build(_root, 160, true);
             ShowTitle();
         }
+
+        private void OnEnable() => Showing = true;
+
+        private void OnDisable() => Showing = false;
 
         private void Clear()
         {

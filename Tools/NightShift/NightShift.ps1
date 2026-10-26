@@ -728,7 +728,7 @@ function Publish-NightShift {
     $failed = ([regex]::Matches($all, '(?m)^\*\*(failed|gave up)\*\* by')).Count
     $none = ([regex]::Matches($all, '(?m)^\*\*no change\*\* by')).Count
     $head = @"
-Work by the CLONE-Z Night Shift: local AI agents (Ollama on the DGX Spark and the helper machines, no cloud tokens) working through ``Tools/NightShift/tasks.md``.
+Work by the CLONE-Z Night Shift: AI coding agents (OpenCode, on the DGX Spark and the helper machines) working through ``Tools/NightShift/tasks.md``. Each report below names the model and where it ran.
 
 **$landed landed, $failed failed, $none no change.** Every change compiled against Unity's assemblies before it landed, but the agents can't play the game, so **play-test in Unity before merging**: ``git fetch origin $branch`` then ``git switch $branch``.
 

@@ -332,6 +332,7 @@ namespace CloneZ
             SetOpen(true, false);
             Wreck(toward);
             NoiseSystem.Emit(InteractPoint, CloneZConfig.RaidDoorBreakNoise);
+            Sfx.Play(SfxIds.DoorBash, InteractPoint, 1f, UnityEngine.Random.Range(0.78f, 0.86f), 48f);
             Caption("The " + Noun + " gives way with a crash of splintering wood!", true);
         }
 
@@ -397,6 +398,7 @@ namespace CloneZ
             if (_kickClock < _kickNext) return;
             _kickNext += CloneZConfig.RaidDoorKickInterval;
             MakeNoise(CloneZConfig.RaidDoorKickNoise);
+            Sfx.Play(SfxIds.DoorBash, InteractPoint, 0.65f, UnityEngine.Random.Range(0.95f, 1.08f), 34f);
         }
 
         // The last boot: the strike plate tears out of the frame and the door flies open.
@@ -408,6 +410,7 @@ namespace CloneZ
             _health = Mathf.Min(_health, _maxHealth * 0.6f);   // and the frame's the weaker for it
             SetOpen(true, true);
             MakeNoise(CloneZConfig.RaidDoorKickNoise);
+            Sfx.Play(SfxIds.DoorBash, InteractPoint, 0.95f, UnityEngine.Random.Range(0.85f, 0.92f), 42f);
             ctx.Notify("The frame splits and the " + Noun + " flies open. That lock won't hold again.");
         }
 

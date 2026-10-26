@@ -168,6 +168,10 @@ public static SandboxSettings LoadFromDisk()
         public bool Crosshair = true;
         public float MasterVolume = 0.9f;
         public float VoiceVolume = 1f;
+        public float MusicVolume = 0.65f;
+        public float EffectsVolume = 1f;
+        public float AmbienceVolume = 0.9f;
+        public float InterfaceVolume = 0.8f;
         public bool Microphone = true;
         public bool PushToTalk = true;
         public string MicrophoneDevice = "";
@@ -195,7 +199,12 @@ public static SandboxSettings LoadFromDisk()
             try
             {
                 string json = PlayerPrefs.GetString(PrefsKey, "");
-                if (!string.IsNullOrEmpty(json)) s_Current = JsonUtility.FromJson<GameSettings>(json);
+                if (!string.IsNullOrEmpty(json))
+                {
+                    // Overwrite a fresh instance, so settings added since the save keep their defaults.
+                    s_Current = new GameSettings();
+                    JsonUtility.FromJsonOverwrite(json, s_Current);
+                }
             }
             catch { s_Current = null; }
             if (s_Current == null) s_Current = new GameSettings();

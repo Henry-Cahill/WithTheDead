@@ -374,7 +374,7 @@ namespace CloneZ
                     ZoneCordon.s_SearchlightsDisabled = true;
                     GameEvents.RaiseSubtitle("Warden", "You jam the searchlights. The towers fall dark.");
                     Factions.AdjustReputation(Factions.Wardens, -2f, "Disabled searchlights");
-                    Sfx.PlayUI(SfxIds.Cash);
+                    Sfx.PlayUI(SfxIds.SwitchHeavy, 0.7f, 0.8f);   // the breaker forced over with the crowbar
                     c.Notify("Searchlights disabled.");
                 })
                 .DisabledIf(ZoneCordon.s_SearchlightsDisabled, "Searchlights already disabled")

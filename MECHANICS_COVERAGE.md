@@ -38,7 +38,7 @@ This maps every row of *Survival Shooter Mechanics Breakdown* (Oct 2026) to wher
 | Grid inventory, weight drains stamina | [InventoryLayout.cs](Assets/Scripts/Items/InventoryLayout.cs), [InventoryUIController.Grid.cs](Assets/Scripts/UI/InventoryUIController.Grid.cs) |
 | Use-based skills + level | [PlayerSkills.cs](Assets/Scripts/Player/PlayerSkills.cs), [Progression.cs](Assets/Scripts/Profile/Progression.cs) |
 | Wipes | `ProfileStore.Wipe` in [ProfileStore.cs](Assets/Scripts/Profile/ProfileStore.cs), `SandboxSettings.SeasonLengthDays` |
-| Sound (positional footsteps, doors, gear) | [AudioDirector.cs](Assets/Scripts/Audio/AudioDirector.cs), [SfxSynth.cs](Assets/Scripts/Audio/SfxSynth.cs) |
+| Sound (positional footsteps for every walker, doors, gear; walls muffle, rooms echo; volume buses) | [Sfx.cs](Assets/Scripts/Audio/Sfx.cs), [SfxMixer.cs](Assets/Scripts/Audio/SfxMixer.cs), [SfxAcoustics.cs](Assets/Scripts/Audio/SfxAcoustics.cs), [Footsteps.cs](Assets/Scripts/Audio/Footsteps.cs), recipes in [SfxSynth.cs](Assets/Scripts/Audio/SfxSynth.cs) and [Synth/Recipes](Assets/Scripts/Audio/Synth/Recipes) |
 
 ## 2. DayZ
 

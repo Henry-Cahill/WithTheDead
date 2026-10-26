@@ -395,7 +395,7 @@ into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", c =>
     Apply(true, !Open, Locked, Code);
     Broadcast();
     NoiseSystem.Emit(transform.position, 22f);
-    Sfx.Play(Open ? SfxIds.DoorOpen : SfxIds.DoorClose, transform.position, 0.8f, 0.85f, 18f);
+    Sfx.Play(Open ? SfxIds.DoorOpen : SfxIds.DoorClose, transform.position, 0.8f, 0.85f, 26f);
 }));
             if (!Trusted) return;
             if (!Locked)
@@ -550,7 +550,7 @@ into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", c =>
         {
             Vector3 at = m.V();
             float radius = m.F();
-            Sfx.Play(SfxIds.Explosion, at, 1f, Random.Range(0.9f, 1.05f), 120f);
+            WeaponAudio.Report(SfxIds.Explosion, at, 1f, Random.Range(0.9f, 1.05f));
             GameEvents.RaiseWorldEvent(at, radius * 6f, "explosion");
             ExplosionFx.Play(at, radius);
         }
@@ -698,7 +698,7 @@ public static void Spawn(Vector3 at, Vector3 velocity, GameObject thrower)
 
         private void OnCollisionEnter(Collision c)
         {
-            if (c.relativeVelocity.magnitude > 2f) Sfx.Play(SfxIds.BoltLand, transform.position, 0.5f, 0.8f, 15f);
+            if (c.relativeVelocity.magnitude > 2f) Sfx.Play(SfxIds.BoltLand, transform.position, 0.5f, 0.8f, 25f);
         }
     }
 

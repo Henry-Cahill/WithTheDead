@@ -103,7 +103,7 @@ public float Speed => _vel.magnitude;
             }
             var rb = gameObject.AddComponent<Rigidbody>();
             rb.isKinematic = true;
-            _buzz = Sfx.Loop(SfxIds.DroneBuzz, transform, Kind == DroneKind.Fpv ? 0.8f : 0.35f, Kind == DroneKind.Fpv ? 45f : 15f, Kind == DroneKind.Fpv ? 1.2f : 0.6f);
+            _buzz = Kind == DroneKind.Fpv ? Sfx.Loop(SfxIds.DroneBuzz, transform, 0.8f, 60f, 1.2f) : Sfx.Loop(SfxIds.DroneRover, transform, 0.35f, 18f);
             if (Remote) return;
             Cam = new GameObject("Drone camera").AddComponent<Camera>();
             Cam.transform.SetParent(transform, false);
@@ -185,6 +185,13 @@ public float Speed => _vel.magnitude;
                 if (GroundProbe.Below(next + Vector3.up, 3f, transform, out float groundY)) next.y = groundY;
                 transform.SetPositionAndRotation(next, Quaternion.Euler(0f, _yaw, 0f));
                 _vel = Quaternion.Euler(0f, _yaw, 0f) * Vector3.forward * speed;
+                // The track motors only strain when it's driving or turning.
+                if (_buzz != null)
+                {
+                    float drive = Mathf.Clamp01(Mathf.Abs(move.y) + Mathf.Abs(move.x) * 0.5f);
+                    _buzz.pitch = 0.8f + 0.35f * drive;
+                    Sfx.SetVolume(_buzz, 0.12f + 0.25f * drive);
+                }
             }
             if (Time.frameCount % 20 == 0) NoiseSystem.Emit(transform.position, Kind == DroneKind.Fpv ? 22f : 5f);
         }

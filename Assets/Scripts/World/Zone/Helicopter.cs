@@ -158,7 +158,7 @@ namespace CloneZ
 
         private void Start()
         {
-            _rotor = Sfx.Loop(SfxIds.HeliRotor, transform, 1f, 160f);
+            _rotor = Sfx.Loop(SfxIds.HeliRotor, transform, 1f, 320f);
             StartCoroutine(NoiseLoop());
         }
 

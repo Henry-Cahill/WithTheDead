@@ -162,7 +162,7 @@ namespace CloneZ
             {
                 inv.Consume("bait", 1);
                 float chance = 0.45f * (skills != null ? skills.FishingMult : 1f);
-                Sfx.Play(SfxIds.Splash, inv.transform.position + inv.transform.forward * 3f, 0.6f, 1f, 14f);
+                Sfx.Play(SfxIds.Splash, inv.transform.position + inv.transform.forward * 3f, 0.6f, 1f, 20f);
                 if (UnityEngine.Random.value < chance)
                 {
                     ItemDef fish = ItemDatabase.Get("rawfish");
@@ -205,7 +205,7 @@ namespace CloneZ
             {
                 inv.Consume(fuel, 1);
                 if (!inv.Has("lighter")) inv.Consume("matches", 1);
-                Sfx.Play(SfxIds.Lighter, p, 0.6f, 1f, 8f);
+                Sfx.Play(SfxIds.Lighter, p, 0.6f, 1f, 11f);
                 Campfire.Light(p, fuel == "plank" ? 240f : 90f);
             }, HumanoidActivity.Build);
             return started;
@@ -218,7 +218,7 @@ namespace CloneZ
             if (gear == null) return;
             PlayerChannel.Local.Begin("Cranking", 8f, () =>
             {
-                Sfx.Play(SfxIds.Crank, inv.transform.position + Vector3.up, 0.7f, 1f, 16f);
+                Sfx.Play(SfxIds.Crank, inv.transform.position + Vector3.up, 0.7f, 1f, 22f);
                 NoiseSystem.Emit(inv.transform.position, 12f);
                 GameEvents.RaiseToast(gear.ChargeFlattest(0.3f, out string name) ? "Some life back in the " + name + "." : "Nothing needs charging.");
             }, HumanoidActivity.Use);
@@ -358,7 +358,7 @@ if (PlayerChannel.Local == null || PlayerChannel.Local.Busy) return false;
                 {
                     c.Inventory.Consume(fuel, 1);
                     _until = Mathf.Max(_until, Time.time) + add;
-                    Sfx.Play(SfxIds.Lighter, transform.position, 0.6f, 1f, 8f);
+                    Sfx.Play(SfxIds.Lighter, transform.position, 0.6f, 1f, 11f);
                     GameEvents.RaiseToast($"Added {fuel}, the fire will burn longer.");
                 }
             }).DisabledIf(!anyFuel, "No fuel"));
@@ -383,8 +383,8 @@ into.Add(new InteractAction("Inspect", c =>
         private void Extinguish()
         {
             HomeComfort.Unregister(this);
-            // Play a short extinguish sound (re‑using the lighter SFX at lower volume).
-            Sfx.Play(SfxIds.Lighter, transform.position, 0.3f, 0.8f, 6f);
+            // Water thrown over the embers.
+            Sfx.Play(SfxIds.Splash, transform.position, 0.4f, 1.25f, 10f);
             GameEvents.RaiseToast("You douse the fire.");
             Destroy(gameObject);
         }

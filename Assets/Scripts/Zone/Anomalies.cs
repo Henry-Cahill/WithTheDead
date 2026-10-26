@@ -362,6 +362,7 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
         {
             Vector3 eye = GetEyePosition();
             float d = Vector3.Distance(new Vector3(eye.x, 0f, eye.z), new Vector3(transform.position.x, 0f, transform.position.z));
+            UpdateHum(d);
             float k = ViewState.Current == CameraView.Isometric ? Mathf.InverseLerp(9f, 5f, d) : Mathf.InverseLerp(26f, 18f, d);
             if (Def.Id == "tollgate" && Dormant) k *= 0.5f;
             if (Mathf.Abs(k - _visible) < 0.02f) return;
@@ -373,12 +374,24 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
                 ParticleSystem.EmissionModule em = _ps.emission;
                 em.rateOverTime = _psRate * k;
             }
-
-            // The hum only plays near the listener (dozens of anomalies, a handful of voices).
-            bool near = d < 12f;
-            if (near && _hum == null) _hum = Sfx.Loop(SfxIds.AnomalyHum, transform, 0.35f, 9f, Def.Id == "staticbloom" ? 1.4f : Def.Id == "sinkhole" ? 0.7f : 1f);
-            else if (!near && d > 16f && _hum != null) { Sfx.Stop(_hum); _hum = null; }
         }
+
+        // The hum only plays near the listener (dozens of anomalies, a handful of voices), each kind its own; it's checked
+        // every frame (not just when the fade changes) and only started once built, never rendered on the spot.
+        private void UpdateHum(float d)
+        {
+            if (d < 13f && _hum == null)
+            {
+                string id = HumId(Def.Id);
+                if (!Sfx.Ready(id)) { Sfx.Request(id); return; }
+                _hum = Sfx.Loop(id, transform, 0.4f, 12f, Random.Range(0.97f, 1.03f));
+            }
+            else if (d > 16f && _hum != null) { Sfx.Stop(_hum); _hum = null; }
+        }
+
+        private static string HumId(string kind) =>
+            kind == "sinkhole" ? SfxIds.AnomalyHumGravity : kind == "embermoss" ? SfxIds.AnomalyHumFire
+            : kind == "staticbloom" ? SfxIds.AnomalyHumElectric : kind == "greysyrup" ? SfxIds.AnomalyHumAcid : SfxIds.AnomalyHum;
         #endregion
 
         #region Rules
@@ -490,7 +503,7 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
             if (_charge >= 0.55f * (_crackles + 1) && _crackles < 4)
             {
                 _crackles++;
-                Sfx.Play(SfxIds.DetectorBeep, transform.position + Vector3.up, 0.45f, 0.5f + _crackles * 0.08f, 14f);
+                Sfx.Play(SfxIds.AnomalyCrackle, transform.position + Vector3.up, 0.5f + _crackles * 0.12f, 0.9f + _crackles * 0.06f, 18f);
                 Flash(0.08f, 1.2f);
             }
             if (_crackles < 4 || _charge < 2.4f) return;
@@ -525,7 +538,7 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
                 var clothing = a.GetComponent<PlayerClothing>();
                 if (clothing != null) GearWear.Corrode(clothing, dt * 0.6f);
             }
-            if (_inside.Count > 0 && _cooldown <= 0f) { Sfx.Play(SfxIds.AnomalyAcid, transform.position, 0.5f, 1f, 12f); _cooldown = 2.5f; }
+            if (_inside.Count > 0 && _cooldown <= 0f) { Sfx.Play(SfxIds.AnomalyAcid, transform.position, 0.9f, Random.Range(0.93f, 1.07f), 14f); _cooldown = 2.5f; }
         }
 
         // Tollgate: takes the first living thing that crosses, then sleeps.
