@@ -250,31 +250,54 @@ namespace CloneZ
             }
         }
 
-        // A crossbuck with flashing lights on the right of each approach to every short stretch of track set into a road.
-        private static void LevelCrossings(Net net, Chain line, List<Sample> s)
+// A crossbuck with flashing lights on the right of each approach to every short stretch of track set into a road.
+         private static void LevelCrossings(Net net, Chain line, List<Sample> s)
+         {
+             int n = s.Count;
+             int i = 0;
+             while (i + 1 < n)
+             {
+                 if (s_KerbOk[i])
+                 {
+                     i++;
+                     continue;
+                 }
+                 int j = i;
+                 while (j + 1 < n && !s_KerbOk[j]) j++;
+                 float length = s[j].S - s[i].S;
+                 if (length < 30f)
+                 {
+                     Vector2 mid = (s[i].P + s[j].P) * 0.5f;
+                     PointOn(line, (s[i].S + s[j].S) * 0.5f, out Vector2 _, out Vector2 railDir);
+                     if (NearestChain(net, mid, out Chain c, out float sx)) {
+                         Crossbucks(net, c, sx, railDir);
+                         // Build concrete crossing panel under the crossbuck
+                         CrossingPanel(net, mid, railDir);
+                     }
+                 }
+                 i = j;
+             }
+         }
+
+        /// <summary>
+        /// Generates a concrete crossing stripe on the road surface for level‑crossings.
+        /// </summary>
+        private static void CrossingPanel(Net net, Vector2 at, Vector2 railDir)
         {
-            int n = s.Count;
-            int i = 0;
-            while (i + 1 < n)
-            {
-                if (s_KerbOk[i])
-                {
-                    i++;
-                    continue;
-                }
-                int j = i;
-                while (j + 1 < n && !s_KerbOk[j]) j++;
-                float length = s[j].S - s[i].S;
-                if (length < 30f)
-                {
-                    Vector2 mid = (s[i].P + s[j].P) * 0.5f;
-                    PointOn(line, (s[i].S + s[j].S) * 0.5f, out Vector2 _, out Vector2 railDir);
-                    if (NearestChain(net, mid, out Chain c, out float sx)) Crossbucks(net, c, sx, railDir);
-                }
-                i = j;
-            }
+            // road surface Y‑level – use the same constant the rest of the road code uses
+            const float y = RoadY;
+            // orientation: the panel lies across the road, i.e. its front faces the rail direction
+            float angle = Mathf.Atan2(railDir.x, railDir.y) * Mathf.Rad2Deg;
+            Vector3 at3 = To3(at, y);
+            RaidMesh m = net.Out.Solid(at3);
+            m.SetFrame(at3, angle);
+            // size: about a typical road‑crossing stripe (1.2 m wide, 0.25 m deep, 2 cm thick)
+            m.Box(new Vector3(0f, 0.01f, 0f), new Vector3(1.2f, 0.02f, 0.25f), net.Look.Panel);
+            m.ResetFrame();
         }
 
+
+        // Place crossbucks (signs with lamps) on both sides of a short level‑crossing.
         private static void Crossbucks(Net net, Chain c, float sx, Vector2 railDir)
         {
             PointOn(c, sx, out Vector2 p, out Vector2 d);
@@ -296,10 +319,9 @@ namespace CloneZ
             }
         }
 
-        // True when the chain is drawn the way its first way's points run (one-way traffic flows along it).
-        private static bool ChainRunsWithWay(Chain c) => c.Parts.Count == 0 || !c.Parts[0].Rev;
 
-        // A white crossbuck on a grey mast, two red lamps on a crossarm below it, facing <paramref name="facing"/>.
+        // True when the chain is drawn the way its first way's points run (one‑way traffic flows along it).
+        private static bool ChainRunsWithWay(Chain c) => c.Parts.Count == 0 || !c.Parts[0].Rev;
         private static void Crossbuck(Net net, Vector2 at, Vector2 facing)
         {
             Look look = net.Look;
