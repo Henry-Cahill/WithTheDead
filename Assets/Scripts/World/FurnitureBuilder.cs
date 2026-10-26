@@ -201,17 +201,27 @@ namespace CloneZ
         /// a whip antenna. Sits on a surface at local y = <paramref name="y"/>.</summary>
         public static void FieldRadio(RaidMesh m, System.Random rng, Vector3 at, float yaw)
         {
+            // Rotate the radio according to the supplied yaw.
             Quaternion q = Yaw(yaw);
+            // Base colour of the radio body, varied slightly for visual randomness.
             Color c = V(new Color(0.26f, 0.32f, 0.18f), rng, 0.05f);
+            // Main radio chassis.
             m.Box(at + q * new Vector3(0f, 0.11f, 0f), new Vector3(0.38f, 0.22f, 0.24f), q, M(c));
+            // Front panel surface.
             m.Box(at + q * new Vector3(0f, 0.12f, 0.121f), new Vector3(0.32f, 0.16f, 0.004f), q, M(new Color(0.12f, 0.13f, 0.12f)));
+            // Dial ring indicating the tuning knob.
             m.Box(at + q * new Vector3(-0.07f, 0.16f, 0.125f), new Vector3(0.12f, 0.04f, 0.004f), q, Gl(new Color(0.55f, 0.45f, 0.20f)));
+            // Three rotary knobs on the front.
             for (int i = 0; i < 3; i++)
                 m.Cylinder(at + q * new Vector3(0.04f + i * 0.045f, 0.09f, 0.123f), 0.015f, 0.025f, 6, M(Black), q * Quaternion.Euler(90f, 0f, 0f));
+            // Left and right side buttons.
             m.Box(at + q * new Vector3(-0.12f, 0.25f, 0f), new Vector3(0.02f, 0.06f, 0.02f), q, M(c * 0.7f));
             m.Box(at + q * new Vector3(0.12f, 0.25f, 0f), new Vector3(0.02f, 0.06f, 0.02f), q, M(c * 0.7f));
+            // Bottom control strip.
             m.Box(at + q * new Vector3(0f, 0.28f, 0f), new Vector3(0.26f, 0.02f, 0.025f), q, M(c * 0.7f));
+            // Whip antenna extending backwards.
             m.Rod(at + q * new Vector3(0.15f, 0.22f, -0.08f), at + q * new Vector3(0.2f, 0.85f, -0.16f), 0.008f, M(Black));
+            // Base footpad for stability.
             m.Box(at + q * new Vector3(-0.3f, 0.06f, 0.02f), new Vector3(0.12f, 0.04f, 0.2f), q, M(new Color(0.1f, 0.1f, 0.1f)));
         }
 
