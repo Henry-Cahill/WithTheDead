@@ -88,13 +88,13 @@ namespace CloneZ
         private int _notesRead;   // how many of _playerNotes have been read
         private string[][] _post;   // a raid house's own post, all of it come already (null: the starter home's days of post)
 
-        private void Awake()
-        {
-            // Ensure the importance list matches the number of deliveries for this mailbox
-            var length = Post.Length;
-            _important = new List<bool>(new bool[length]);
-            _playerNotes = new List<string>();
-        }
+private void Awake()
+{
+    // Ensure the importance list matches the number of deliveries for this mailbox
+    // Initialize with empty lists; importance list will be sized when needed based on actual post length.
+    _important = new List<bool>();
+    _playerNotes = new List<string>();
+}
 
         public override string DisplayName => "Mailbox";
         public override Vector3 InteractPoint => _point;
@@ -174,24 +174,30 @@ namespace CloneZ
                 }));
             if (ctx.Inventory != null && ctx.Inventory.Has("paper"))
                 {
-                    into.Add(new InteractAction("Leave a note", c =>
-                    {
-                        // consume one paper
-                        // Find a stack of paper and remove one unit
-                        var inv = ctx.Inventory;
-                        // Find first stack with ID "paper"
-                        foreach (var stack in inv.Inventory.Stacks)
-                        {
-                            if (stack.Def != null && stack.Def.Id == "paper")
-                            {
-                                inv.Inventory.Remove(stack, 1);
-                                break;
-                            }
-                        }
-                        // Add placeholder note
-                        _playerNotes.Add("A handwritten note from you: \u201CStay safe, stay warm.\u201D");
-                        c.Notify("You slide a personal note into the mailbox. It will arrive with the next batch of mail.");
-                    }));
+into.Add(new InteractAction("Leave a note", c =>
+{
+    // consume one paper
+    var inv = ctx.Inventory;
+    bool removed = false;
+    // Find first stack with ID "paper"
+    foreach (var stack in inv.Inventory.Stacks)
+    {
+        if (stack.Def != null && stack.Def.Id == "paper")
+        {
+            inv.Inventory.Remove(stack, 1);
+            removed = true;
+            break;
+        }
+    }
+    if (!removed)
+    {
+        c.Notify("You have no paper to write a note.");
+        return;
+    }
+    // Add placeholder note
+    _playerNotes.Add("A handwritten note from you: \u201CStay safe, stay warm.\u201D");
+    c.Notify("You slide a personal note into the mailbox. It will arrive with the next batch of mail.");
+}));
                 }
             if (close != null && unread > 0) into.Add(close);
             into.Add(_flagUp
@@ -200,8 +206,8 @@ namespace CloneZ
             // Offer to toggle importance on the last post delivery read (once one has been read; notes don't count)
             if (_read > 0 && _read <= Post.Length)
             {
-                if (_important == null || _important.Count != Post.Length)
-                    _important = new List<bool>(new bool[Post.Length]);
+if (_important == null || _important.Count != Post.Length)
+    _important = new List<bool>(new bool[Post.Length]);
                 bool currently = _important[_read - 1];
                 string label = currently ? "Unmark last letter as important" : "Mark last letter as important";
                 into.Add(new InteractAction(label, c =>
@@ -318,7 +324,9 @@ namespace CloneZ
             save.A = _read;
             save.B = _notesRead;
             // Serialize importance list as a comma‑separated "0/1" string
-            var importance = string.Join(",", _important.ConvertAll(b => b ? "1" : "0"));
+            var importance = _important.Count > 0
+    ? string.Join(",", _important.ConvertAll(b => b ? "1" : "0"))
+    : "";
             // Serialize player notes as a semicolon‑separated list
             var notes = string.Join(";", _playerNotes);
             save.Text = importance + "|" + notes;
@@ -343,9 +351,14 @@ namespace CloneZ
                 if (split.Length > 1 && !string.IsNullOrEmpty(split[1]))
                     _playerNotes.AddRange(split[1].Split(';'));
             }
-            // The counts last, once the notes they're clamped to are back.
-            _read = Mathf.Clamp(Mathf.RoundToInt(save.A), 0, Post.Length);
-            _notesRead = Mathf.Clamp(Mathf.RoundToInt(save.B), 0, _playerNotes.Count);
+            // Ensure the importance list matches the actual post length, preserving existing flags where possible
+if (_important.Count != Post.Length)
+{
+    var resized = new List<bool>(new bool[Post.Length]);
+    for (int i = 0; i < Mathf.Min(_important.Count, resized.Count); i++)
+        resized[i] = _important[i];
+    _important = resized;
+}
         }
     }
 }
