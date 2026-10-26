@@ -645,8 +645,12 @@ namespace CloneZ
             public bool Scenery, Edge, Lite, Enterable;
             public string Use, Name;
 
+            /// <summary>Gets a short label for the building, using the house style for houses or the architecture name otherwise.</summary>
             public string Label => Arch == Arch.House ? "House/" + Style : Arch.ToString();
 
+            /// <summary>
+            /// Gets a concise description of the building, combining its footprint ID, optional name and use, size, label, storeys, roof, wall, top height and flags.
+            /// </summary>
             public string Describe() => (F.Data.kind ?? "?") + " " + F.Data.id + (string.IsNullOrEmpty(Name) ? "" : " \"" + Name + "\"")
                 + (string.IsNullOrEmpty(Use) ? "" : " (" + Use + ")") + ", " + Mathf.RoundToInt(F.Size) + " m² | " + Label + ", " + Storeys
                 + " storeys, " + Roof + " roof, " + Wall + ", top " + Top.ToString("0.0", CultureInfo.InvariantCulture) + " m"
