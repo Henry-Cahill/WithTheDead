@@ -1,0 +1,85 @@
+diff --git a/Assets/Scripts/World/Map/BuildingPass.Plan.cs b/Assets/Scripts/World/Map/BuildingPass.Plan.cs
+index 3547dd1f..8153372b 100644
+--- a/Assets/Scripts/World/Map/BuildingPass.Plan.cs
++++ b/Assets/Scripts/World/Map/BuildingPass.Plan.cs
+@@ -88,7 +88,8 @@ private sealed class Plan
+             public bool Porch, FullPorch, KneeWall, Stoop, Mailbox, PorchLight, Swing;
+             public float PorchDepth = 2.1f;
+             public bool Storefront, Awning, SignBand, GhostSign;
+-            public string Sign;
++            /// <summary>Auto‑filled by GenerateSign() when a storefront is created.</summary>
++public string Sign;
+             public int AwningTone, SignTone;
+             public bool Enterable = true, Fuel;
+             /// <summary>A tower's walls all glass, its floors painted on as a curtain wall.</summary>
+@@ -174,8 +175,8 @@ private static Plan Classify(Context ctx, Footprint f, Shape sh, List<Footprint>
+             return p;
+         }
+ 
+-        // The wall the front door goes in: the longest facing the road, never one shared with a neighbour.
+-        private static int FrontWall(Footprint f, Plan p)
++        
++            private static int FrontWall(Footprint f, Plan p)
+         {
+             List<Vector2> pts = f.Pts;
+             int best = -1;
+@@ -679,9 +680,10 @@ private static void Row(Plan p, float area, bool city, System.Random rng)
+             p.Spacing = Range(rng, 2.2f, 2.7f);
+             p.Door = DoorKind.Shop;
+             p.Awning = Chance(rng, 0.45f);
+-            p.AwningTone = rng.Next(AwningTones.Length);
+-            p.SignBand = true;
+-            p.SignTone = rng.Next(4);
++p.AwningTone = rng.Next(AwningTones.Length);
++                p.SignBand = true;
++                p.Sign = GenerateSign(p, rng);
++                p.SignTone = rng.Next(4);
+             p.GhostSign = storeys >= 2 && Chance(rng, 0.3f);
+             p.Covering = RoofCover.Membrane;
+             p.CoverTone = 0;
+@@ -736,8 +738,9 @@ private static void Store(Plan p, float area, System.Random rng)
+             p.GroundWindow = WindowKind.Small;
+             p.Spacing = 5f;
+             p.Door = DoorKind.Shop;
+-            p.SignBand = true;
+-            p.SignTone = rng.Next(4);
++p.SignBand = true;
++                p.Sign = GenerateSign(p, rng);
++                p.SignTone = rng.Next(4);
+             p.Awning = rural && Chance(rng, 0.2f);
+             p.AwningTone = rng.Next(AwningTones.Length);
+             p.RoofUnits = p.Roof == RoofKind.Flat;
+@@ -1170,7 +1173,30 @@ private static void Finish(Plan p, MapBuilding b, Shape sh, System.Random rng)
+             else p.Snow = r < 0.42f ? SnowCover.Full : r < 0.78f ? SnowCover.Partial : SnowCover.Bare;
+             if (p.Roof != RoofKind.Flat && p.Pitch >= 48f && p.Snow == SnowCover.Full) p.Snow = SnowCover.Partial;
+             if (!p.Heated) p.Icicles = false;
+-            if (p.Snow == SnowCover.Bare) p.Icicles = p.Icicles && Chance(rng, 0.3f);
++            }
++
++            /// <summary>Creates a short, upper‑case sign string for a commercial building.</summary>
++        /// <remarks>
++        /// If the building has a non‑empty Name, that name is used (trimmed to 12 characters) as the sign.
++        /// Otherwise a generic phrase based on the building's Use is chosen. The result is always upper‑case
++        /// and limited to characters that fit the existing sign band sprite set.
++        /// </remarks>
++        private static string GenerateSign(Plan p, System.Random rng)
++        {
++            // Prefer an explicit name – keep it short enough for the sign band texture.
++            if (!string.IsNullOrWhiteSpace(p.Name))
++            {
++                string clean = p.Name.Trim().ToUpperInvariant();
++                // Limit to 12 characters; longer names are truncated with a trailing "…" to hint omission.
++                return clean.Length <= 12 ? clean : clean.Substring(0, 11) + "…";
++            }
++            // No explicit name – fall back to a generic phrase based on the building use.
++            // The list mirrors the existing sign‑band vocab in the original game.
++            string[] generic = {
++                "GENERAL STORE", "MART", "DINER", "Café", "GAS STATION",
++                "PHARMACY", "BANK", "POST OFFICE", "BARBER", "REPAIR SHOP"
++            };
++            // Choose deterministically from the rng seeded per‑building.
++            return generic[rng.Next(generic.Length)].ToUpperInvariant();
++        }
+         }
+-    }
+-}
