@@ -87,14 +87,18 @@ namespace CloneZ
         private List<string> _playerNotes; // personal notes left by the survivor
         private int _notesRead;   // how many of _playerNotes have been read
         private string[][] _post;   // a raid house's own post, all of it come already (null: the starter home's days of post)
+        private int _donations; // total logs donated via this mailbox
+        private bool _thanksGiven; // whether the post‑donation thank‑you line has been shown
 
-private void Awake()
-{
-    // Ensure the importance list matches the number of deliveries for this mailbox
-    // Initialize with empty lists; importance list will be sized when needed based on actual post length.
-    _important = new List<bool>();
-    _playerNotes = new List<string>();
-}
+    private void Awake()
+    {
+        // Ensure the importance list matches the number of deliveries for this mailbox
+        // Initialize with empty lists; importance list will be sized when needed based on actual post length.
+        _important = new List<bool>();
+        _playerNotes = new List<string>();
+        _donations = 0;
+        _thanksGiven = false;
+    }
 
         public override string DisplayName => "Mailbox";
         public override Vector3 InteractPoint => _point;
@@ -172,33 +176,31 @@ private void Awake()
                     _notesRead = _playerNotes.Count;
                     c.Notify("All mail has been read.");
                 }));
-            if (ctx.Inventory != null && ctx.Inventory.Has("paper"))
+            if (ctx.Inventory != null && ctx.Inventory.Has("log"))
+            {
+                into.Add(new InteractAction("Donate a log", c =>
                 {
-into.Add(new InteractAction("Leave a note", c =>
-{
-    // consume one paper
-    var inv = ctx.Inventory;
-    bool removed = false;
-    // Find first stack with ID "paper"
-    foreach (var stack in inv.Inventory.Stacks)
-    {
-        if (stack.Def != null && stack.Def.Id == "paper")
-        {
-            inv.Inventory.Remove(stack, 1);
-            removed = true;
-            break;
-        }
-    }
-    if (!removed)
-    {
-        c.Notify("You have no paper to write a note.");
-        return;
-    }
-    // Add placeholder note
-    _playerNotes.Add("A handwritten note from you: \u201CStay safe, stay warm.\u201D");
-    c.Notify("You slide a personal note into the mailbox. It will arrive with the next batch of mail.");
-}));
-                }
+                    var inv = c.Inventory;
+                    bool removed = false;
+                    foreach (var stack in inv.Inventory.Stacks)
+                    {
+                        if (stack.Def != null && stack.Def.Id == "log")
+                        {
+                            inv.Inventory.Remove(stack, 1);
+                            removed = true;
+                            break;
+                        }
+                    }
+                    if (!removed)
+                    {
+                        c.Notify("You have no logs to donate.");
+                        return;
+                    }
+                    _donations++;
+                    c.Notify($"You slip a log into the mailbox. Community donations: {_donations}.");
+                }));
+            }
+
             if (close != null && unread > 0) into.Add(close);
             into.Add(_flagUp
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
@@ -279,8 +281,16 @@ if (_important == null || _important.Count != Post.Length)
                 if (UnreadPost + UnreadNotes > 0) {
                     c.Notify("There's more post underneath.");
                 } else {
+                if (!_thanksGiven && _donations >= 3)
+                {
+                    _thanksGiven = true;
+                    c.Notify("Your donated logs have helped the neighbourhood. A thank‑you note arrives with the next mail.");
+                }
+                else
+                {
                     // Subtle hope after the final piece of mail
                     c.Notify("A faint glimmer of hope lingers in the last letter.");
+                }
                 }
             };
             return a;
@@ -320,7 +330,7 @@ if (_important == null || _important.Count != Post.Length)
 
         public override void CaptureState(FixtureSave save)
         {
-            save.State = (_open ? 1 : 0) | (_flagUp ? 2 : 0);
+            save.State = (_open ? 1 : 0) | (_flagUp ? 2 : 0) | (_thanksGiven ? 4 : 0);
             save.A = _read;
             save.B = _notesRead;
             // Serialize importance list as a comma‑separated "0/1" string
@@ -329,7 +339,7 @@ if (_important == null || _important.Count != Post.Length)
     : "";
             // Serialize player notes as a semicolon‑separated list
             var notes = string.Join(";", _playerNotes);
-            save.Text = importance + "|" + notes;
+            save.Text = importance + "|" + notes + "|" + _donations;
         }
 
         public override void RestoreState(FixtureSave save)
@@ -337,6 +347,7 @@ if (_important == null || _important.Count != Post.Length)
             SetOpen((save.State & 1) != 0, true);
             _flagUp = (save.State & 2) != 0;
             if (_flag != null) _flag.SetOpen(_flagUp, true);
+            _thanksGiven = (save.State & 4) != 0;
             // Deserialize importance list; if the saved string is malformed, fall back to all false
             _important = new List<bool>(new bool[Post.Length]);
             _playerNotes = new List<string>();
@@ -350,6 +361,11 @@ if (_important == null || _important.Count != Post.Length)
                 // second part = notes (may be empty)
                 if (split.Length > 1 && !string.IsNullOrEmpty(split[1]))
                     _playerNotes.AddRange(split[1].Split(';'));
+                // third part = donation count
+                if (split.Length > 2 && int.TryParse(split[2], out var donated))
+                    _donations = donated;
+                else
+                    _donations = 0;
             }
             // Ensure the importance list matches the actual post length, preserving existing flags where possible
 if (_important.Count != Post.Length)
