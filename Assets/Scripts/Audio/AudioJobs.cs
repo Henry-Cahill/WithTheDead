@@ -13,6 +13,7 @@ namespace CloneZ
     /// </summary>
     public static class AudioJobs
     {
+        /// <summary>Base type for audio rendering jobs.</summary>
         private abstract class Job
         {
             public int Generation;
@@ -20,6 +21,7 @@ namespace CloneZ
             public abstract void Complete();
         }
 
+        /// <summary>Concrete generic job that stores work and completion delegates.</summary>
         private sealed class Job<T> : Job
         {
             public Func<T> Work;
@@ -117,6 +119,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Ensures worker threads exist; starts them if needed.</summary>
         private static void EnsureThreads()
         {
             if (s_Crew != null || s_Inline) return;
@@ -146,6 +149,7 @@ namespace CloneZ
 
         private static bool Take(out Job job) => s_Urgent.TryDequeue(out job) || s_Normal.TryDequeue(out job);
 
+        /// <summary>Background worker loop that executes jobs and enqueues their results.</summary>
         private static void Worker(Crew crew)
         {
             while (!crew.Stop)
