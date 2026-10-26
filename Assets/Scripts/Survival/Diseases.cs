@@ -104,7 +104,7 @@ namespace CloneZ
             {
                 _sneezeAt = Time.time + Random.Range(25f, 70f);
                 bool sneeze = Random.value < 0.6f;
-                Sfx.Play(sneeze ? SfxIds.Sneeze : SfxIds.Cough, transform.position + Vector3.up * 1.6f, 0.8f, Random.Range(0.9f, 1.1f), 20f);
+                Sfx.Play(sneeze ? SfxIds.Sneeze : SfxIds.Cough, transform.position + Vector3.up * 1.6f, 0.8f, Random.Range(0.9f, 1.1f), 28f);
                 NoiseSystem.Emit(transform.position, sneeze ? 11f : 8f);
                 // Warm, dry and rested, a cold runs its course.
                 if (_stats.ColdStrength < 0.1f && _stats.Wetness < 0.1f && Random.value < 0.15f) Cure(Cold, "Your cold has cleared up.");

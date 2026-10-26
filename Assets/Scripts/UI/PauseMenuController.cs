@@ -80,6 +80,7 @@ namespace CloneZ
         private int _selected;
         private float _openedAt;
         private bool _open;
+        private int _soundFrame = -1;   // the frame the menu itself last made a sound (opening, closing, a warning)
         private bool _prevBlocked;   // was some OTHER panel blocking gameplay last frame?
 private GameManager _gm;
 private ExtractionManager _em;
@@ -191,6 +192,7 @@ Keyboard kbEsc = Keyboard.current;
             Select(0, false);
             Animate(0f);
             if (_fader != null) _fader.Show();
+            MenuSound(SfxIds.UiOpen, 0.7f);
         }
 
         private void Resume()
@@ -201,6 +203,14 @@ Keyboard kbEsc = Keyboard.current;
             DisarmAbandon();
             if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
             if (_fader != null) _fader.Hide();
+            MenuSound(SfxIds.UiClose, 0.7f);
+        }
+
+        // A sound of the menu's own; a press that leads to one doesn't click as well.
+        private void MenuSound(string id, float volume)
+        {
+            _soundFrame = Time.frameCount;
+            Sfx.PlayUI(id, volume);
         }
 
         private void OnSave()
@@ -238,7 +248,7 @@ Keyboard kbEsc = Keyboard.current;
                 _abandonArmedAt = Time.unscaledTime;
                 if (_abandon != null && _abandon.Text != null) _abandon.Text.text = "CLICK AGAIN TO ABANDON";
                 _shownDescription = null;
-                Sfx.PlayUI(SfxIds.UiError, 0.5f);
+                MenuSound(SfxIds.UiError, 0.5f);
                 return;
             }
 
@@ -269,8 +279,7 @@ Keyboard kbEsc = Keyboard.current;
 
         private void OpenScreen<T>() where T : UIScreen
         {
-            Sfx.PlayUI(SfxIds.PageTurn, 0.5f);
-            UIScreen.Show<T>();
+            UIScreen.Show<T>();   // the screen sounds its own opening (a ledger opened)
         }
 
         private void Flash(string message, Color color)
@@ -371,7 +380,7 @@ Keyboard kbEsc = Keyboard.current;
         private void Select(int index, bool sound)
         {
             if (index < 0 || index >= _items.Count) return;
-            if (index != _selected && sound) Sfx.PlayUI(SfxIds.UiClick, 0.22f, 1.25f);
+            if (index != _selected && sound) Sfx.PlayUI(SfxIds.UiHover, 0.75f, UnityEngine.Random.Range(0.96f, 1.04f));
             if (index != _selected) _shownDescription = null;
             _selected = index;
         }
@@ -386,8 +395,9 @@ Keyboard kbEsc = Keyboard.current;
                 CycleItem(index, 1);
                 return;
             }
-            Sfx.PlayUI(SfxIds.UiClick, 0.6f);
             it.Activate?.Invoke();
+            // The press clicks, unless what it did answered with a sound of its own (the menu closing, a warning, a screen opening).
+            if (_soundFrame != Time.frameCount && UIScreen.Current == null) Sfx.PlayUI(SfxIds.UiClick, 0.6f);
         }
 
         private void CycleItem(int index, int dir)

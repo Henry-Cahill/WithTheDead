@@ -182,7 +182,7 @@ namespace CloneZ
                 foreach (RaidExit e in ExtractionManager.Instance.Exits)
                     if (e.Condition == ExitCondition.Switch) e.Powered = false;
             NoiseSystem.Emit(transform.position, 15f);
-            Sfx.Play(SfxIds.UiClick, transform.position, 0.6f);
+            Sfx.Play(SfxIds.SwitchHeavy, transform.position, 0.5f, 0.8f, 30f);   // the breaker trips back out
             GameEvents.RaiseToast("The freight‑gate power fades; the gate powers down.");
         }
         private void UpdateColor()
@@ -216,7 +216,7 @@ into.Add(new InteractAction(_on ? "The power is on" : "Throw the power switch", 
                         foreach (RaidExit e in ExtractionManager.Instance.Exits)
                             if (e.Condition == ExitCondition.Switch) e.Powered = true;
                     NoiseSystem.Emit(transform.position, 25f);
-                    Sfx.Play(SfxIds.DoorBash, transform.position, 0.8f);
+                    Sfx.Play(SfxIds.SwitchHeavy, transform.position, 0.85f, Random.Range(0.95f, 1.05f), 40f);
                     c.Notify("Somewhere a freight gate hums awake.");
                 }).Timed(2.5f, "Throwing the switch").DisabledIf(_on, "Already on"));
             // Reset action appears after the switch has been thrown
@@ -230,7 +230,7 @@ into.Add(new InteractAction("Reset the power switch", c =>
                         foreach (RaidExit e in ExtractionManager.Instance.Exits)
                             if (e.Condition == ExitCondition.Switch) e.Powered = false;
                     NoiseSystem.Emit(transform.position, 15f);
-                    Sfx.Play(SfxIds.UiClick, transform.position, 0.6f);
+                    Sfx.Play(SfxIds.SwitchHeavy, transform.position, 0.7f, Random.Range(0.82f, 0.88f), 30f);
                     c.Notify("The freight gate powers down.");
                 }).Timed(1.5f, "Resetting the switch").DisabledIf(!_on, "Already off"));
             // Inspect action

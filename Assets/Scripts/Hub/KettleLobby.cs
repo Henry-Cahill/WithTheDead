@@ -177,11 +177,7 @@ namespace CloneZ
             if (!GameSession.IsHub) return;
             if (!IsOpen) into.Add(new InteractAction("Head out into Bardstown", c => SetOpen(true, true)));
             else into.Add(new InteractAction("Close the door", c => SetOpen(false, false)));
-            into.Add(new InteractAction("Other ways in (scav run, open Zone, hunt, helicopter)", c =>
-            {
-                Sfx.PlayUI(SfxIds.UiClick);
-                HubScreens.Open(HubScreens.Deploy);
-            }));
+            into.Add(new InteractAction("Other ways in (scav run, open Zone, hunt, helicopter)", c => HubScreens.Open(HubScreens.Deploy)));
             into.Add(new InteractAction("Look out through the glass", c => c.Notify(
                 "Snow coming down on the street under the lamps. Somewhere out there, the dead are listening.")));
         }
@@ -191,7 +187,8 @@ namespace CloneZ
         {
             if (Barred || IsOpen == open) return;
             IsOpen = open;
-            Sfx.Play(SfxIds.DoorBash, transform.position + Vector3.up, 0.35f);
+            // The Kettle's heavy glazed doors (their swing runs a little longer than a house door's: pitched down).
+            Sfx.Play(open ? SfxIds.DoorOpen : SfxIds.DoorClose, transform.position + Vector3.up, 0.75f, Random.Range(0.84f, 0.9f), 25f);
             if (open && warn)
                 GameEvents.RaiseToast("The door's open. Step outside and the raid begins: everything you carry is at risk.");
         }
@@ -207,7 +204,7 @@ namespace CloneZ
         {
             if (Time.time < _nextKnock) return;
             _nextKnock = Time.time + 4f;
-            Sfx.Play(SfxIds.DoorBash, transform.position + Vector3.up, 0.5f);
+            Sfx.Play(SfxIds.DoorKnock, transform.position + Vector3.up, 0.85f, Random.Range(0.88f, 0.95f), 30f);
             NoiseSystem.Emit(transform.position, 14f);
             GameEvents.RaiseSubtitle("Mott (through the door)", "We're shut till you come back through an exit, friend. Go on.");
         }

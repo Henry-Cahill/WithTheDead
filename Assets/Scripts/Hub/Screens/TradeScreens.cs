@@ -91,8 +91,14 @@ namespace CloneZ
         {
             if (!r.StillValid) { Refresh(); return; }
             int got = Trading.Sell(c, t, r.Owner, r.Stack, n, out string msg);
-            if (got > 0) { HubKit.AfterChange(); ProfileStore.CommitStash(); Sfx.PlayUI(SfxIds.Cash); }
-            Report(got > 0, msg);
+            if (got > 0)
+            {
+                HubKit.AfterChange();
+                ProfileStore.CommitStash();
+                Sfx.PlayUI(SfxIds.Cash);   // the till says it all: no stamp on top
+                SetStatus(msg ?? "");
+            }
+            else Report(false, msg);
             Refresh();
         }
 
