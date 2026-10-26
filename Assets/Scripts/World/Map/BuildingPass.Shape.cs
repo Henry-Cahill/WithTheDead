@@ -58,12 +58,14 @@ namespace CloneZ
             public Rect Box => Rect.MinMaxRect(-HalfL, -HalfW, HalfL, HalfW);
         }
 
+        /// <summary>Computes the geometric shape of a footprint, including its frame, orthogonal flag and edge‑axis classification.</summary>
         private static Shape ShapeOf(Footprint f)
         {
             List<Vector2> p = f.Pts;
             int n = p.Count;
             var s = new Shape { Area = f.Size, EdgeAxis = new int[n] };
             float perimeter = 0f, longest = 0f;
+            // Sum edge lengths to get total perimeter and track longest edge – used later for roundness and orthogonal checks.
             for (int i = 0; i < n; i++)
             {
                 float len = Vector2.Distance(p[i], p[(i + 1) % n]);
@@ -75,6 +77,7 @@ namespace CloneZ
 
             // The smallest rectangle round the outline has a side along one of its walls; try each (the short ones
             // only when nothing else will do).
+            // Find the smallest-area rectangle that aligns with an edge of the footprint – tries each edge longer than a threshold.
             float bestArea = float.MaxValue;
             Vector2 bestDir = Vector2.right;
             float minWall = Mathf.Min(0.5f, longest * 0.5f);
@@ -106,6 +109,7 @@ namespace CloneZ
                 u0 = Mathf.Min(u0, a); u1 = Mathf.Max(u1, a);
                 v0 = Mathf.Min(v0, b); v1 = Mathf.Max(v1, b);
             }
+            // Flip orientation so the longer side becomes U (local x axis) – ensures a consistent frame across footprints.
             if (v1 - v0 > u1 - u0)
             {
                 // U along the longer side: turn the frame a quarter.
@@ -157,6 +161,7 @@ namespace CloneZ
 
         // Cuts an orthogonal outline into blocks on the grid of its own corners: the biggest rectangle inside it, then
         // the biggest of what's left, and so on. A near-rectangle is one block: its bounding rectangle.
+        /// <summary>Breaks an orthogonal outline into rectangular roof blocks on a grid derived from the footprint's corners.</summary>
         private static void Blocks(Footprint f, Shape s)
         {
             s.Blocks.Clear();
@@ -283,6 +288,7 @@ namespace CloneZ
 
         // Marks the corners between a and b (b may be n: corner 0 again) that stand farther than the tolerance from
         // the line a-b, recursively.
+        /// <summary>Recursively marks points between indices a and b that lie farther than tolerance from the segment a‑b, enabling Simplify to retain significant corners.</summary>
         private static void Keep(List<Vector2> pts, int a, int b, float tolerance, bool[] keep)
         {
             int n = pts.Count;
