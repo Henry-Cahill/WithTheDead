@@ -1,0 +1,324 @@
+diff --git a/Assets/Scripts/World/Map/VehiclePass.Models.cs b/Assets/Scripts/World/Map/VehiclePass.Models.cs
+index fa4c5cd8..9e4186c7 100644
+--- a/Assets/Scripts/World/Map/VehiclePass.Models.cs
++++ b/Assets/Scripts/World/Map/VehiclePass.Models.cs
+@@ -1,4 +1,5 @@
+ using UnityEngine;
++using System;
+ 
+ namespace CloneZ
+ {
+@@ -30,11 +31,11 @@ internal enum CarBody : byte
+         Bus,
+         /// <summary>A box truck (a moving van, a delivery truck).</summary>
+         BoxTruck,
+-    }
++    
+ 
+     /// <summary>What's happened to a vehicle since it was left.</summary>
+     [System.Flags]
+-    internal enum CarWear : byte { None = 0, DoorOpen = 1, Crashed = 2, Burnt = 4, Flat = 8 }
++    internal enum CarWear : byte { None = 0, DoorOpen = 1, Crashed = 2, Burnt = 4, Flat = 8 
+ 
+     /// <summary>How one vehicle looks: its body, paint and trim, how deep the snow lies on it and what's happened to it.</summary>
+     internal struct CarLook
+@@ -49,7 +50,7 @@ internal struct CarLook
+         /// <summary>Windows iced over.</summary>
+         public bool Frosted;
+         public CarWear Wear;
+-    }
++    
+ 
+     /// <summary>
+     /// The nature passes' vehicles, drawn round the local frame's origin on the ground, nose towards +Z: a lower body with
+@@ -83,7 +84,7 @@ private struct Spec
+             public float Back0, Front0, Back1, Front1;
+             /// <summary>How far the roof's sides lean in.</summary>
+             public float Inset;
+-        }
++        
+ 
+         /// <summary>Gets the geometric specifications for a given vehicle body type.</summary>
+         // Returns the dimension set for the vehicle type, used throughout rendering to position parts correctly.
+@@ -119,8 +120,8 @@ private static Spec SpecOf(CarBody body)
+                 default:
+                     return new Spec { L = 4.8f, W = 1.76f, Roof = 1.36f, Belt = 0.86f, Wheel = 0.31f, AxleF = 1.42f, AxleR = -1.30f,
+                         Back0 = -1.00f, Front0 = 0.80f, Back1 = -0.68f, Front1 = 0.22f, Inset = 0.12f };
+-            }
+-        }
++            
++        
+ 
+         /// <summary>The vehicle's box (width, height, length) for its collider, without drawing it.</summary>
+         public static Vector3 Size(CarBody body)
+@@ -129,7 +130,7 @@ public static Vector3 Size(CarBody body)
+             if (body == CarBody.BoxTruck) return new Vector3(2.36f, 3.3f, 7.2f);
+             Spec s = SpecOf(body);
+             return new Vector3(s.W, s.Roof, s.L);
+-        }
++        
+ 
+         /// <summary>Draws the vehicle at the frame's origin, nose to +Z, and returns its box (width, height, length).</summary>
+         public static Vector3 Draw(RaidMesh m, in CarLook look, System.Random rng)
+@@ -156,6 +157,8 @@ public static Vector3 Draw(RaidMesh m, in CarLook look, System.Random rng)
+             bool panelSides = look.Body == CarBody.Van && !look.Vinyl;   // a cargo van ("Vinyl" stands for windows here)
+             Surf roofSurf = look.Vinyl && look.Body != CarBody.Van && !burnt ? M(look.Second) : body;
+             Cabin(m, s, belt, roof, hw0, hw1, roofSurf, windscreen, glass, panelSides ? body : glass, body, look.Body);
++            MirrorsHandlesAntenna(m, s, look, belt, rng);
++            MirrorsHandlesAntenna(m, s, look, belt, rng);
+             if (look.Body == CarBody.Pickup) Bed(m, s, look, belt, clear, body, snow);
+             Front(m, s, look, clear, belt, crashed, rng);
+             Rear(m, s, look, clear, belt);
+@@ -164,7 +167,7 @@ public static Vector3 Draw(RaidMesh m, in CarLook look, System.Random rng)
+             if ((look.Wear & CarWear.DoorOpen) != 0) OpenDoor(m, s, look, clear, belt, roof, body, glass, rng);
+             if (burnt) Scorch(m, s, clear, belt, rng);
+             return new Vector3(s.W, roof, s.L);
+-        }
++        
+ 
+         #region Parts
+         // A quad from four corners in order round it, turned to face along `outward`.
+@@ -175,10 +178,10 @@ private static void Face(RaidMesh m, Vector3 a, Vector3 b, Vector3 c, Vector3 d,
+                 Vector3 t = b;
+                 b = d;
+                 d = t;
+-            }
++            
+             m.Tri(a, b, c, s);
+             m.Tri(a, c, d, s);
+-        }
++        
+ 
+         private static void Wheels(RaidMesh m, in Spec s, CarWear wear, System.Random rng, bool burnt)
+         {
+@@ -192,8 +195,8 @@ private static void Wheels(RaidMesh m, in Spec s, CarWear wear, System.Random rn
+                 float z = i < 2 ? s.AxleF : s.AxleR;
+                 float r = burnt ? s.Wheel * 0.6f : i == flat ? s.Wheel * 0.8f : s.Wheel;
+                 m.CylinderX(new Vector3(x, r, z), r, 0.22f, 6, tyre);
+-            }
+-        }
++            
++        
+ 
+         // Fake wood down both sides (a Country Squire's), framed by a pale strip.
+         private static void Woodgrain(RaidMesh m, in Spec s, float clear, float belt)
+@@ -206,8 +209,8 @@ private static void Woodgrain(RaidMesh m, in Spec s, float clear, float belt)
+                 float x = side * (s.W * 0.5f + 0.006f);
+                 m.Upright(new Vector3(x, y, -0.05f), normal, s.L * 0.8f, h, wood);
+                 m.Upright(new Vector3(side * (s.W * 0.5f + 0.008f), y + h * 0.5f + 0.02f, -0.05f), normal, s.L * 0.8f, 0.04f, rim);
+-            }
+-        }
++            
++        
+ 
+         // The greenhouse: a roof, raked windscreen and back glass, sides of glass (or panel), and a pillar of paint up the
+         // middle of each side.
+@@ -235,8 +238,8 @@ private static void Cabin(RaidMesh m, in Spec s, float y0, float y1, float hw0,
+                 float t = kind == CarBody.Coupe ? 0.62f : 0.5f;
+                 Pillar(m, s, hw0, hw1, y0, y1, side, t, body);
+                 if (kind == CarBody.Wagon || kind == CarBody.Suv || kind == CarBody.Minivan) Pillar(m, s, hw0, hw1, y0, y1, side, 0.22f, body);
+-            }
+-        }
++            
++        
+ 
+         // A strip of paint up a side of the greenhouse, `t` of the way from its back to its front.
+         private static void Pillar(RaidMesh m, in Spec s, float hw0, float hw1, float y0, float y1, int side, float t, in Surf body)
+@@ -246,7 +249,7 @@ private static void Pillar(RaidMesh m, in Spec s, float hw0, float hw1, float y0
+             const float w = 0.05f;
+             Face(m, new Vector3(x0, y0, z0 - w), new Vector3(x0, y0, z0 + w), new Vector3(x1, y1, z1 + w), new Vector3(x1, y1, z1 - w),
+                 new Vector3(side, 0f, 0f), body);
+-        }
++        
+ 
+         // A pickup's bed: rails along its sides and a tailgate, full of snow (or under a camper shell).
+         /// <summary>Draws the pickup bed (rails, tailgate, optional camper shell) and handles snow accumulation.</summary>
+@@ -265,7 +268,7 @@ private static void Bed(RaidMesh m, in Spec s, in CarLook look, float belt, floa
+                     m.Box(new Vector3(0f, belt + 0.64f + look.Snow * 0.08f, mid), new Vector3(s.W - 0.2f, 0.04f + look.Snow * 0.16f, len - 0.15f),
+                         Quaternion.identity, snow, true);
+                 return;
+-            }
++            
+             for (int side = -1; side <= 1; side += 2)
+                 m.Box(new Vector3(side * (s.W * 0.5f - 0.04f), belt + 0.06f, mid), new Vector3(0.08f, 0.12f, len), body);
+             m.Box(new Vector3(0f, belt + 0.06f, back + 0.04f), new Vector3(s.W, 0.12f, 0.08f), body);
+@@ -273,7 +276,7 @@ private static void Bed(RaidMesh m, in Spec s, in CarLook look, float belt, floa
+                 m.Box(new Vector3(0f, belt + 0.02f + look.Snow * 0.08f, mid + 0.02f), new Vector3(s.W - 0.16f, 0.04f + look.Snow * 0.16f, len - 0.14f),
+                     Quaternion.identity, snow, true);
+             else m.Upright(new Vector3(0f, belt + 0.003f, mid), Vector3.up, s.W - 0.16f, len - 0.14f, M(Trim));
+-        }
++        
+ 
+         // Bumper, grille and headlights; on a wreck the hood buckled up and the bumper knocked askew.
+         /// <summary>Creates the front end (bumper, grille, headlights) and applies crash deformation if needed.</summary>
+@@ -293,7 +296,7 @@ private static void Front(RaidMesh m, in Spec s, in CarLook look, float clear, f
+                 m.Box(new Vector3(0f, belt + 0.08f, z - 0.55f), new Vector3(s.W - 0.12f, 0.06f, 0.9f), Quaternion.Euler(-14f, R(rng, -6f, 6f), 0f), G(paint));
+                 m.Upright(new Vector3(0f, grilleY, z - 0.035f), Vector3.forward, s.W * 0.7f, h * 0.5f, M(new Color(0.08f, 0.08f, 0.08f)));
+                 return;
+-            }
++            
+             // Draw standard bumper, grille and headlights when vehicle is intact.
+             // (No else block needed; this code runs when not crashed.)
+             m.Box(new Vector3(0f, clear + 0.13f, z - 0.03f), new Vector3(s.W + 0.03f, 0.16f, 0.14f), bumper);
+@@ -303,7 +306,7 @@ private static void Front(RaidMesh m, in Spec s, in CarLook look, float clear, f
+             // Place two headlamps on either side of the grille.
+             for (int side = -1; side <= 1; side += 2)
+                 m.Upright(new Vector3(side * s.W * 0.34f, grilleY, z - 0.038f), Vector3.forward, 0.32f, 0.14f, lamp);
+-        }
++        
+ 
+         // Bumper, taillights and the plate.
+         private static void Rear(RaidMesh m, in Spec s, in CarLook look, float clear, float belt)
+@@ -314,7 +317,7 @@ private static void Rear(RaidMesh m, in Spec s, in CarLook look, float clear, fl
+             for (int side = -1; side <= 1; side += 2)
+                 m.Upright(new Vector3(side * s.W * 0.36f, belt - 0.16f, z + 0.04f), Vector3.back, 0.36f, 0.12f, red);
+             m.Upright(new Vector3(0f, clear + 0.34f, z + 0.037f), Vector3.back, 0.3f, 0.15f, M(new Color(0.86f, 0.86f, 0.80f)));
+-        }
++        
+ 
+         // A cruiser's light bar and the stripe down its sides, "POLICE" on its doors.
+         private static void CruiserKit(RaidMesh m, in Spec s, in CarLook look, float clear, float belt, float roof)
+@@ -330,8 +333,8 @@ private static void CruiserKit(RaidMesh m, in Spec s, in CarLook look, float cle
+                 m.Upright(new Vector3(side * (s.W * 0.5f + 0.006f), belt - 0.32f, 0.1f), normal, s.L * 0.86f, 0.08f, G(look.Second));
+                 m.Upright(new Vector3(side * (s.W * 0.5f + 0.008f), belt - 0.16f, -0.2f), normal, 0.2f * aspect, 0.2f, word,
+                     side > 0 ? new Rect(0f, 0f, 1f, 1f) : new Rect(0f, 0f, 1f, 1f));
+-            }
+-        }
++            
++        
+ 
+         // Snow on the roof (heaped in a second, narrower layer when deep), the hood and the trunk, a rim of paint showing
+         // round each (a car brushed off, or under a thin fall, shows most of its paint), and banked against the wheels of
+@@ -359,7 +362,7 @@ private static void Snowfall(RaidMesh m, in Spec s, in CarLook look, float belt,
+             for (int side = -1; side <= 1; side += 2)
+                 m.Ellipsoid(new Vector3(side * (s.W * 0.5f + 0.04f), 0.05f, R(rng, -0.2f, 0.2f)),
+                     new Vector3(0.62f, 0.45f + look.Snow * 0.3f, s.L * R(rng, 0.62f, 0.8f)), drift, 6, 3);
+-        }
++        
+ 
+         // The driver's door hanging open: its panel and window frame swung out on the front hinge, the dark cab behind.
+         private static void OpenDoor(RaidMesh m, in Spec s, in CarLook look, float clear, float belt, float roof, in Surf body, in Surf glass,
+@@ -376,23 +379,66 @@ private static void OpenDoor(RaidMesh m, in Spec s, in CarLook look, float clear
+                 m.Box(new Vector3(c.x, belt + (roof - belt) * 0.42f, c.z), new Vector3(0.03f, (roof - belt) * 0.8f, len * 0.92f), q, glass);
+             m.Upright(new Vector3(-s.W * 0.5f - 0.004f, (clear + belt) * 0.5f + 0.08f, s.Front0 - 0.02f - len * 0.5f), Vector3.left,
+                 len - 0.06f, belt - clear - 0.12f, M(new Color(0.09f, 0.08f, 0.08f)));
+-        }
++        
+ 
+         // Rust blooms over a burnt-out shell.
++        // Adds side‑mirrors, door‑handles and a small roof‑antenna.
++        // Mirrors use a metal housing (chrome if the car is chrome) and dark‑glass panes.
++        // Handles are simple metal bars on closed doors.
++        // The antenna is a thin metal rod centred on the roof.
++        private static void MirrorsHandlesAntenna(RaidMesh m, in Spec s, in CarLook look, float belt, System.Random rng)
++        {
++            // ----- side mirrors (both sides) -----
++            for (int side = -1; side <= 1; side += 2)
++            {
++                // housing
++                var housingPos = new Vector3(side * (s.W * 0.5f + 0.02f), belt + 0.28f, s.AxleF);
++                var housingSize = new Vector3(0.04f, 0.12f, 0.02f);
++                var housingMat = look.Chrome ? Mt(Chrome) : M(Trim);
++                m.Box(housingPos, housingSize, housingMat);
++                // glass pane
++                var glassPos = housingPos + new Vector3(0f, 0f, 0.015f);
++                var glassSize = new Vector3(0.02f, 0.10f, 0.004f);
++                m.Box(glassPos, glassSize, Gs(DarkGlass));
++            
++            // ----- door handles (only on closed doors) -----
++            if ((look.Wear & CarWear.DoorOpen) == 0)
++            {
++                for (int side = -1; side <= 1; side += 2)
++                {
++                    // position near the front edge of the door
++                    var handlePos = new Vector3(side * (s.W * 0.5f - 0.07f), belt * 0.6f, s.Front0 - 0.30f);
++                    // tiny random drift to avoid perfect symmetry
++                    handlePos.x += R(rng, -0.01f, 0.01f);
++                    var handleSize = new Vector3(0.02f, 0.04f, 0.01f);
++                    var handleMat = look.Chrome ? Mt(Chrome) : M(Trim);
++                    m.Box(handlePos, handleSize, handleMat);
++                
++            
++            // ----- roof antenna (only if roof is exposed) -----
++            // Exposed roof when not a camper shell or burnt‑out roof
++            if (!look.Topper && (look.Wear & CarWear.Burnt) == 0)
++            {
++                var antPos = new Vector3(0f, s.Roof + 0.03f, 0f);
++                var antSize = new Vector3(0.02f, 0.10f, 0.02f);
++                var antMat = Mt(Chrome);
++                m.Box(antPos, antSize, antMat);
++            }
++}        // Rust blooms over a burnt-out shell.
+         private static void Scorch(RaidMesh m, in Spec s, float clear, float belt, System.Random rng)
+         {
+             Surf rust = M(Rust);
+             for (int i = 0; i < 3; i++)
+             {
+                 float side = i % 2 == 0 ? 1f : -1f;
+-                m.Blob(new Vector3(side * (s.W * 0.5f + 0.005f), Mathf.Lerp(clear, belt, R(rng, 0.25f, 0.75f)), R(rng, -s.L * 0.35f, s.L * 0.35f)),
++                m.Blob(new Vector3(side * (s.W * 0.5f + 0.005f), Mathf.Lerp(clear, belt, R(rng, 0.25f, 0.75f)), new Vector3(R(rng, -s.L * 0.35f, s.L * 0.35f), 0f, 0f),
+                     new Vector3(0f, 0f, side), Vector3.up, R(rng, 0.25f, 0.5f), R(rng, 0.1f, 0.2f), 8, 0.4f, rng, rust);
+-            }
+-        }
+-        #endregion
+-
+-        #region Big vehicles
+-        // A conventional yellow school bus: hood out front, a long box with its black rub rails and a band of windows,
++            
++                }
++    }
++}
++    }
++}        // A conventional yellow school bus: hood out front, a long box with its black rub rails and a band of windows,
+         // "SCHOOL BUS" over the windscreen and the back door, dual rear wheels, a white roof under the snow.
+         /// <summary>Generates a yellow school bus model with its distinctive shape, windows, and signage.</summary>
+         // Builds a conventional yellow school bus: long box, raised roof, dual rear wheels, signage and snow covering.
+@@ -412,7 +458,7 @@ private static Vector3 Bus(RaidMesh m, in CarLook look, System.Random rng)
+                     m.CylinderX(new Vector3(x, wheel, axles[a]), wheel, 0.28f, 8, tyre);
+                     // Add a second rear wheel for the rear axle (dual wheels).
+                     if (a == 1) m.CylinderX(new Vector3(x - side * 0.3f, wheel, axles[a]), wheel, 0.26f, 8, tyre);
+-                }
++                
+             float boxLen = front + L * 0.5f;
+             m.Box(new Vector3(0f, (clear + H) * 0.5f, front - boxLen * 0.5f), new Vector3(W, H - clear, boxLen), body);
+             m.Box(new Vector3(0f, (clear + 1.55f) * 0.5f, (front + L * 0.5f) * 0.5f), new Vector3(W - 0.24f, 1.55f - clear, L * 0.5f - front), body);
+@@ -425,7 +471,7 @@ private static Vector3 Bus(RaidMesh m, in CarLook look, System.Random rng)
+                 m.Upright(new Vector3(x, 2.05f, mid - 0.3f), normal, boxLen - 1.6f, 0.78f, glass);
+                 m.Upright(new Vector3(side * (W * 0.5f + 0.008f), 1.12f, mid), normal, boxLen - 0.3f, 0.07f, black);
+                 m.Upright(new Vector3(side * (W * 0.5f + 0.008f), 1.55f, mid), normal, boxLen - 0.3f, 0.07f, black);
+-            }
++            
+             m.Upright(new Vector3(0f, 2.1f, front + 0.006f), Vector3.forward, W - 0.3f, 0.95f, look.Snow > 0.78f ? snow : glass);
+             m.Upright(new Vector3(0f, 2.0f, -L * 0.5f - 0.006f), Vector3.back, 1.0f, 1.0f, glass);
+             Surf sign = DecorMaterials.Sign("SCHOOL BUS", yellow, new Color(0.06f, 0.06f, 0.06f), out float aspect);
+@@ -439,6 +485,9 @@ private static Vector3 Bus(RaidMesh m, in CarLook look, System.Random rng)
+                 Quaternion.identity, snow, true);
+             return new Vector3(W, H, L);
+         }
++    }
++}
++        
+ 
+         // A box truck: a cab with its hood and the long box behind it (a moving van's orange and white, a delivery
+         // company's plain colour), dual rear wheels.
+@@ -455,7 +504,7 @@ private static Vector3 BoxTruck(RaidMesh m, in CarLook look, System.Random rng)
+                     float x = side * (W * 0.5f - 0.18f);
+                     m.CylinderX(new Vector3(x, wheel, axles[a]), wheel, 0.26f, 8, tyre);
+                     if (a == 1) m.CylinderX(new Vector3(x - side * 0.28f, wheel, axles[a]), wheel, 0.24f, 8, tyre);
+-                }
++                
+             m.Box(new Vector3(0f, 0.68f, 0f), new Vector3(W - 0.5f, 0.3f, L - 0.3f), black);   // the frame
+             m.Box(new Vector3(0f, (0.85f + 3.3f) * 0.5f, -0.95f), new Vector3(W, 3.3f - 0.85f, 5.3f), box);
+             m.Box(new Vector3(0f, (clear + 2.5f) * 0.5f, 2.3f), new Vector3(W - 0.08f, 2.5f - clear, 1.1f), cab);
+@@ -470,6 +519,10 @@ private static Vector3 BoxTruck(RaidMesh m, in CarLook look, System.Random rng)
+             m.Box(new Vector3(0f, 1.3f + d * 0.4f, 3.2f), new Vector3(W - 0.34f, d * 0.8f, 0.6f), Quaternion.identity, snow, true);
+             return new Vector3(W, 3.3f, L);
+         }
+-        #endregion
+     }
+ }
++
++        
++
++    
++
