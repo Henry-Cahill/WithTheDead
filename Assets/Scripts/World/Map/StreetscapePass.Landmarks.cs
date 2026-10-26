@@ -24,6 +24,8 @@ namespace CloneZ
         private static readonly Color Granite = new Color(0.55f, 0.55f, 0.53f);
         private static readonly Color Bronze = new Color(0.33f, 0.46f, 0.40f);
         private static readonly Color Aluminium = new Color(0.78f, 0.79f, 0.80f);
+    private static readonly Color Copper = new Color(0.78f, 0.45f, 0.20f);
+    private static readonly Surf CopperSurf = Metal(Copper);
 
         /// <summary>The landmarks of a full site: water towers, masts, flagpoles and memorials (yielding between them once
         /// the step has had its time).</summary>
@@ -395,8 +397,15 @@ namespace CloneZ
             low.Cylinder(foot + new Vector3(0f, 0.22f, 0f), 0.42f, 0.03f, 10, SnowSurf);
             low.Cylinder(foot + new Vector3(0f, 0.22f, 0f), 0.08f, h, 8, Metal(Aluminium), Quaternion.identity, 0.5f);
             high.Ellipsoid(foot + new Vector3(0f, h + 0.3f, 0f), new Vector3(0.16f, 0.16f, 0.16f), Gloss(new Color(0.85f, 0.68f, 0.25f)), 8, 5);
-            float fw = h >= 12f ? 1.8f : 1.5f, fh = fw * 0.62f;
             float top = halfStaff ? h * 0.58f : h - 0.1f;
+            float fw = h >= 12f ? 1.8f : 1.5f, fh = fw * 0.62f;
+            if (halfStaff)
+            {
+                // rope from hoist to midway point on the flag
+                Vector3 ropeStart = foot + new Vector3(0f, top, 0f) + To3(wind, 0.09f);
+                Vector3 ropeEnd = foot + new Vector3(0f, h * 0.58f, 0f) + To3(wind, 0.09f);
+                low.Cylinder(ropeStart, 0.02f, Vector3.Distance(ropeStart, ropeEnd), 8, CopperSurf);
+            }
             const float droop = 30f;
             Vector3 down = Vector3.down;
             Vector3 fly = (To3(wind, 0f) * Mathf.Cos(droop * Mathf.Deg2Rad) + down * Mathf.Sin(droop * Mathf.Deg2Rad)) * fw;
@@ -407,7 +416,14 @@ namespace CloneZ
             high.QuadUV(centre, -fly * 0.5f, -down * (fh * 0.5f), SignArt.Surf, new Rect(uv.xMax, uv.yMin, -uv.width, uv.height));
             ctx.Wires.Add(foot + new Vector3(0f, 1.2f, 0f) + To3(wind, 0f) * 0.1f, foot + new Vector3(0f, h, 0f) + To3(wind, 0f) * 0.1f,
                 0.05f, 0.006f, new Color(0.85f, 0.85f, 0.82f), !ctx.Inside(at));
-            ctx.Collider(at, 0f, new Vector3(0.9f, 1f, 0.9f), 0f);
+            if (halfStaff)
+            {
+                ctx.Wires.Add(
+                    foot + new Vector3(0f, 1.2f, 0f) + To3(wind, 0.1f),
+                    foot + new Vector3(0f, top, 0f) + To3(wind, 0.1f),
+                    0.025f, 0.003f, Copper, !ctx.Inside(at));
+            }
+            low.Box(foot + new Vector3(0f, 0.01f, 0f), new Vector3(0.6f, 0.02f, 0.6f), SnowSurf);
             ctx.Site.Take(at, 0.5f);
         }
         #endregion
