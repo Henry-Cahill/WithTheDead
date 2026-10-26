@@ -154,6 +154,25 @@ namespace CloneZ
             m.Cylinder(new Vector3(-0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
             m.Cylinder(new Vector3(0f, 1.55f, -0.1f), 0.05f, 1.2f, 8, Mt(new Color(0.46f, 0.47f, 0.48f)));
             m.Box(new Vector3(0f, 0.42f, 0.3f), new Vector3(0.13f, 0.12f, 0.08f), M(new Color(0.12f, 0.12f, 0.13f)));
+                // Gauge face – sits just above the control box
+                m.Box(new Vector3(0f, 0.57f, 0.31f), new Vector3(0.10f, 0.04f, 0.006f), Mt(Chrome));
+                // Needle (thin black box, rotated)
+                float needleAngle = 30f;
+                Quaternion needleRot = Quaternion.Euler(0f, 0f, needleAngle);
+                m.Box(new Vector3(0f, 0.585f, 0.315f), new Vector3(0.004f, 0.02f, 0.001f), needleRot, M(Black));
+                // Glass overlay – slightly raised to avoid Z‑fighting
+                m.Box(new Vector3(0f, 0.58f, 0.318f), new Vector3(0.102f, 0.042f, 0.002f), Gs(new Color(0.95f, 0.96f, 0.97f)));
+                // Warning label – use Paper material with dark text
+                m.Box(new Vector3(-0.045f, 0.57f, 0.322f), new Vector3(0.02f, 0.008f, 0.001f), M(Paper));
+                // Rust patches – small brownish boxes scattered near gauge
+                for (int i = 0; i < 3; i++)
+                {
+                    float x = R(rng, -0.06f, 0.06f);
+                    float y = R(rng, 0.55f, 0.60f);
+                    float z = R(rng, 0.295f, 0.325f);
+                    Color rust = new Color(0.45f, 0.30f, 0.22f) * R(rng, 0.8f, 1.2f);
+                    m.Box(new Vector3(x, y, z), new Vector3(0.015f, 0.003f, 0.004f), M(rust));
+                }
             m.Cylinder(new Vector3(0f, 0.44f, 0.34f), 0.03f, 0.03f, 8, M(new Color(0.62f, 0.12f, 0.1f)), Quaternion.Euler(90f, 0f, 0f));
             m.Box(new Vector3(0.08f, 0.38f, 0.3f), new Vector3(0.02f, 0.04f, 0.06f), M(Black));
             m.Box(new Vector3(0f, 0.2f, 0.277f), new Vector3(0.18f, 0.12f, 0.012f), M(new Color(0.16f, 0.16f, 0.17f)));
