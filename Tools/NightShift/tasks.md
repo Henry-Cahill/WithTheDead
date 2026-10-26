@@ -11841,3 +11841,11 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: `DecorProps.Hydrant` – after the snow‑capped ellipsoid `m.Ellipsoid(new Vector3(0f, 0.68f, 0f), new Vector3(0.18f, 0.08f, 0.18f), M(SnowWhite), 8, 3);` add a top chip to suggest paint wear: `// Small paint chip on the snow‑capped dome.` `Vector3 chipPos = new Vector3(R(rng, -0.07f, 0.07f), 0.73f, R(rng, -0.07f, 0.07f));` `m.Box(chipPos, new Vector3(0.04f, 0.006f, 0.04f), M(new Color(0.12f,0.12f,0.13f)));`
   Step 6 (optional safety): ensure the method’s signature and existing collider logic remain untouched – we only insert geometry building calls; no colliders or interaction points are added or altered.
   Done when: the fire hydrant now shows a realistic, period‑appropriate set of details – a metal valve knob, a hose coupling, a rust‑streaked strip, a weathered label, and a small paint chip – all varying slightly per instance via the existing `rng`. The hydrant’s original size, collider, and placement stay exactly as before, and it still compiles and renders correctly in‑game.
+- [ ] In Assets/Scripts/Core/WeatherSystem.cs: Cache the camera‑related lookup and isometric focus point in WeatherSystem so ApplyRain() no longer performs Camera.main and IsoCameraFollow checks each frame
+  Add a private field `private Vector3 _rainCenter;` to store the rain emission centre.
+  In Update(), after the state‑timer block, compute the centre once:
+  `if (_cam == null) _cam = Camera.main;`
+  `bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;`
+  `_rainCenter = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;`
+  Remove the Camera.main lookup, iso check, and centre calculation from ApplyRain() and replace the local `centre` variable with the cached `_rainCenter`.
+  Result: ApplyRain() now only uses the pre‑computed centre, eliminating per‑frame `Camera.main` and `IsoCameraFollow.Instance` lookups and the associated null‑checks, reducing GC pressure and CPU overhead while keeping the rain particle positioning identical to the current behaviour.
