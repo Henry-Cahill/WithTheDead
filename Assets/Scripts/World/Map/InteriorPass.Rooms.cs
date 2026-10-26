@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using static CloneZ.KentuckyMap;
 
 namespace CloneZ
@@ -544,7 +545,7 @@ namespace CloneZ
         internal static void Furnish(InteriorBuild build, int index)
         {
             RoomCtx c = Context(build, index);
-            if (c.Inner.width < 0.8f || c.Inner.height < 0.8f) return;
+            if (c.Inner.width < 0.8f || c.Inner.height < 0.8f)             // Do not return here – allow the caller to place another decor piece
             switch (c.P.Role)
             {
                 case RoomRole.Living: Living(c); break;
@@ -586,6 +587,7 @@ namespace CloneZ
                 case RoomRole.Greenhouse: Greenhouse(c); break;
             }
             Lights(c);
+            AddWallDecor(c);
             Litter(c, LitterFor(c.P.Role));
         }
 
@@ -771,7 +773,7 @@ namespace CloneZ
             for (int i = 0; i < count; i++)
             {
                 ContainerType? t = c.NextLoot();
-                if (t == null) return;
+                if (t == null)             // Do not return here – allow the caller to place another decor piece
                 LootPiece(c, t.Value, sides);
             }
         }
@@ -862,6 +864,25 @@ namespace CloneZ
         };
 
         /// <summary>A picture, a calendar or a notice on one of the room's partitions (kind as <see cref="RaidBuilding.Poster"/>).</summary>
+        private static void AddWallDecor(RoomCtx c)
+        {
+            // Choose a decor kind based on the room role.
+            // 0 = picture, 1 = calendar, 2 = notice, 3 = poster, 4 = clock.
+            int kind = c.P.Role switch
+            {
+                RoomRole.Living => 4, // clocks in living rooms
+                RoomRole.Kitchen => 4, // clocks in kitchens
+                RoomRole.Bar => 4, // clocks in bars
+                RoomRole.Office => 0, // pictures in offices
+                RoomRole.Hall => 0, // pictures in halls
+                _ => 0, // default to picture
+            };
+            // Try to place up to two pieces: first the chosen kind, then a fallback picture.
+            WallDecor(c, kind);
+            if (kind != 0) WallDecor(c, 0);
+        }
+
+
         private static void WallDecor(RoomCtx c, int kind)
         {
             foreach (int side in c.Sides(true))
@@ -879,7 +900,7 @@ namespace CloneZ
                     if (!clear) continue;
                     if (kind == 4) c.B.Clock(c.R, RoomCtx.Char(side), t, 2.05f);
                     else c.B.Poster(c.R, RoomCtx.Char(side), t, 1.55f, kind == 2 ? 0.6f : 0.45f, kind == 2 ? 0.45f : 0.65f, kind);
-                    return;
+                    // do not return here – allow the caller to place another decor piece
                 }
             }
         }
