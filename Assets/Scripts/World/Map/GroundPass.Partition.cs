@@ -61,6 +61,7 @@ namespace CloneZ
         /// <see cref="L1"/>..<see cref="R1"/> along y = <see cref="Y1"/> (x, z site-local).</summary>
         private struct Trap { public float Y0, Y1, L0, R0, L1, R1; }
 
+        /// <summary>The priority tier of a land-use kind: facilities show over cover, and cover over the broad ground.</summary>
         private static int TierOf(string kind)
         {
             switch (kind)
@@ -81,6 +82,7 @@ namespace CloneZ
         {
             switch (o.Kind)
             {
+                // Wide water keeps a channel open through the freeze; the rest has frozen to ice.
                 case "water": surf = LookOf(o).Open ? WaterSurf : IceSurf; return true;
                 case "forest": surf = ForestFloorSurf; return true;
                 case "meadow": case "orchard": surf = MeadowSurf; return true;
@@ -88,6 +90,7 @@ namespace CloneZ
                 case "wetland": surf = ReedsSurf; return true;
                 case "parking": surf = LotSurf; return true;
                 case "fuel": surf = ForecourtSurf; return true;
+                // Fixed by the area's id, so every chunk of a plaza is paved the same way.
                 case "plaza": surf = MapStyle.Unit(o.Id, SaltPlaza) < 0.5f ? BrickPaversSurf : SlabsSurf; return true;
                 case "lot": surf = MudSurf; return true;
                 case "sand": surf = SandSurf; return true;
@@ -96,6 +99,7 @@ namespace CloneZ
                 case "quarry": case "rock": surf = RockSurf; return true;
                 case "playground": surf = TroddenSurf; return true;
                 case "farmland":
+                    // Only a hayfield is filled as meadow; the other crops show as rows drawn over the base snow.
                     if (CropOf(o) == Crop.Hay)
                     {
                         surf = MeadowSurf;
@@ -176,6 +180,7 @@ namespace CloneZ
         }
 
         #region The partition
+        /// <summary>One non-horizontal edge of an owner's cut outline: its x at its lower end and how that x changes with y.</summary>
         private struct Edge
         {
             public float X0, Y0, Y1, Slope;
@@ -201,7 +206,9 @@ namespace CloneZ
                 for (int i = 0; i < p.Count; i++)
                 {
                     Vector2 a = p[i], b = p[(i + 1) % p.Count];
+                    // Horizontal edges neither start nor end a slab, so the sweep never needs them.
                     if (Mathf.Abs(a.y - b.y) < SlabEps) continue;
+                    // Point every edge upward so Y0 is always its lower end, which the slab loop assumes.
                     if (a.y > b.y)
                     {
                         Vector2 t = a;
@@ -214,11 +221,13 @@ namespace CloneZ
                 }
             }
             if (edges.Count == 0) return;
+            // Every corner is a slab boundary, so no edge starts or ends partway up a slab.
             ys.Sort();
             int u = 0;
             for (int i = 1; i < ys.Count; i++)
                 if (ys[i] - ys[u] > SlabEps) ys[++u] = ys[i];
             ys.RemoveRange(u + 1, ys.Count - u - 1);
+            // Sorted by their lower end, the edges can be added to the active list in one pass up the domain.
             edges.Sort((e, f) => e.Y0.CompareTo(f.Y0));
 
             var sweep = new Sweep(owners, edges);
@@ -227,8 +236,10 @@ namespace CloneZ
             for (int s = 0; s + 1 < ys.Count; s++)
             {
                 float ya = ys[s], yb = ys[s + 1];
+                // An edge that has reached this slab's bottom can no longer bound a run in it.
                 for (int i = active.Count - 1; i >= 0; i--)
                     if (edges[active[i]].Y1 <= ya + SlabEps) active.RemoveAt(i);
+                // Pick up the edges whose lower end is here; the rest start in a later slab.
                 while (next < edges.Count && edges[next].Y0 <= ya + SlabEps)
                 {
                     if (edges[next].Y1 > ya + SlabEps) active.Add(next);
@@ -239,14 +250,19 @@ namespace CloneZ
             sweep.Finish(ys[ys.Count - 1]);
             foreach (Owner o in owners)
             {
+                // Each trapezoid's area is its mean width times its height; the total tells later passes
+                // whether the owner is worth drawing at all.
                 float area = 0f;
                 foreach (Trap t in o.Traps) area += (t.R0 - t.L0 + t.R1 - t.L1) * 0.5f * (t.Y1 - t.Y0);
                 o.Visible = area;
             }
         }
 
+        /// <summary>The sweep that turns the outlines' edges into trapezoids, giving each run of a slab to the
+        /// highest-ranked owner inside it.</summary>
         private sealed class Sweep
         {
+            /// <summary>A span of one owner's ground in the slab just swept, kept so it can be continued into the next one.</summary>
             private struct Open { public int Owner, Left, Right; public float Y0; }
 
             private readonly List<Owner> _owners;
@@ -271,6 +287,7 @@ namespace CloneZ
                 };
             }
 
+            /// <summary>Runs one slab of the sweep: sorts its edges, splits the slab where they cross, then fills each piece.</summary>
             public void Slab(float ya, float yb, List<int> active)
             {
                 _order.Clear();
@@ -329,6 +346,7 @@ namespace CloneZ
                 for (int k = 0; k < _order.Count; k++)
                 {
                     int e = _order[k], o = _edges[e].Owner;
+                    // Even-odd: every edge crossed takes its owner from outside to inside, or back out.
                     if (_in[o])
                     {
                         _in[o] = false;
@@ -339,18 +357,23 @@ namespace CloneZ
                         _in[o] = true;
                         _inside.Add(o);
                     }
+                    // The strip between this edge and the next belongs to the highest-ranked owner inside it.
                     int top = -1;
                     for (int i = 0; i < _inside.Count; i++)
                         if (_inside[i] > top) top = _inside[i];
                     if (top == run) continue;
+                    // The strip's owner changed: close the span begun at the previous edge and start a new one.
                     if (run >= 0) Span(run, left, e, ya);
                     run = top;
                     left = e;
                 }
+                // The flags are scratch within one slab, so clear them for the next.
                 for (int i = 0; i < _inside.Count; i++) _in[_inside[i]] = false;
                 _inside.Clear();
+                // A span from the last slab that wasn't continued into this one ends at this slab's bottom.
                 foreach (KeyValuePair<long, Open> kv in _open)
                     if (!_next.ContainsKey(kv.Key)) Close(kv.Value, ya);
+                // Swap the two span tables back and forth instead of allocating one per slab.
                 Dictionary<long, Open> was = _open;
                 _open = _next;
                 _next = was;
@@ -386,6 +409,7 @@ namespace CloneZ
             foreach (Trap t in o.Traps) FillTrap(into, t, y, surf);
         }
 
+        /// <summary>Draws one trapezoid's ground face up at height <paramref name="y"/>, into the batch of its middle.</summary>
         private static void FillTrap(OutdoorBatches into, in Trap t, float y, in Surf surf)
         {
             var a = new Vector3(t.L0, y, t.Y0);
@@ -440,16 +464,20 @@ namespace CloneZ
         private static void Box(List<Vector2> pts, out Vector2 axis, out Vector2 middle, out Vector2 halfSize)
         {
             List<Vector2> hull = Hull(pts);
+            // The defaults only matter if the hull is empty (fewer than three distinct points).
             axis = Vector2.right;
             middle = hull.Count > 0 ? hull[0] : Vector2.zero;
             halfSize = Vector2.zero;
             float best = float.MaxValue;
+            // A minimum-area rectangle has a side flush with a hull edge, so trying those directions is enough.
             for (int i = 0; i < hull.Count; i++)
             {
                 Vector2 d = hull[(i + 1) % hull.Count] - hull[i];
+                // Repeated hull points have no direction to offer.
                 if (d.sqrMagnitude < 1e-6f) continue;
                 d.Normalize();
                 var n = new Vector2(-d.y, d.x);
+                // Project the hull onto d and its normal: the spread along each is the box's size.
                 float a0 = float.MaxValue, a1 = float.MinValue, b0 = float.MaxValue, b1 = float.MinValue;
                 foreach (Vector2 p in hull)
                 {
@@ -458,13 +486,16 @@ namespace CloneZ
                     b0 = Mathf.Min(b0, b); b1 = Mathf.Max(b1, b);
                 }
                 float area = (a1 - a0) * (b1 - b0);
+                // Keep the first of two near-equal boxes; the epsilon keeps float noise from flipping the choice.
                 if (area >= best - 1e-4f) continue;
                 best = area;
+                // The long axis is the longer side, so swap the extents when the normal is longer.
                 bool along = a1 - a0 >= b1 - b0;
                 axis = along ? d : n;
                 middle = d * ((a0 + a1) * 0.5f) + n * ((b0 + b1) * 0.5f);
                 halfSize = along ? new Vector2((a1 - a0) * 0.5f, (b1 - b0) * 0.5f) : new Vector2((b1 - b0) * 0.5f, (a1 - a0) * 0.5f);
             }
+            // Fix the sign so the axis doesn't depend on which way round the hull passed.
             if (axis.x < 0f || (axis.x == 0f && axis.y < 0f)) axis = -axis;
         }
 
