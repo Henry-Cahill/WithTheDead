@@ -233,15 +233,19 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Determine if the survivor is within knob‑reach of the radio.
             bool near = LivingFixtures.FlatDistance(ctx.Position, _point) <= CloneZConfig.ReceiverKnobReach;
+            // If the radio is currently off, only expose the "Turn on" action when the survivor is close enough.
             if (!_on)
             {
                 into.Add(new InteractAction("Turn on the radio", _turnOn).DisabledIf(!near, TooFar));
                 return;
             }
+            // Create a timed "Listen in" action that will call the Listen handler each tick.
             var listen = new InteractAction("Listen in").Timed(-1f, "Listening to the radio", HumanoidActivity.None);
             listen.Tick = _listen;
             into.Add(listen);
+            // Once the radio is on, expose the full set of interactions, each gated by proximity.
             into.Add(new InteractAction("Turn off the radio", _turnOff).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Change channel", _retune).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", _louder).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
@@ -249,6 +253,7 @@ namespace CloneZ
                 into.Add(new InteractAction("Check channel", _checkChannel).DisabledIf(!near, TooFar));
                 into.Add(new InteractAction("Check volume", _checkVolume).DisabledIf(!near, TooFar));
                 into.Add(new InteractAction("Recall last transmission", _recall).DisabledIf(!near, TooFar));
+            // Allow the survivor to key the handset and call for help; this action also requires proximity.
             into.Add(new InteractAction("Key the handset and call for help", _callIn)
                 .Timed(2.5f, "Calling in", HumanoidActivity.Use)
                 .DisabledIf(!near, "Get closer to reach the handset"));
@@ -283,6 +288,7 @@ namespace CloneZ
             ctx.Notify(_calls[_call++ % _calls.Length]);
         }
 
+        /// <summary>Toggle the radio on or off, handling state change, visual indicator and initial caption setup.</summary>
         private void Switch(bool on)
         {
             if (_on == on) return;
@@ -335,6 +341,7 @@ namespace CloneZ
             _captionAt = now + UnityEngine.Random.Range(CloneZConfig.ReceiverCaptionMin, CloneZConfig.ReceiverCaptionMax + 2f);
         }
 
+        /// <summary>Determine whether the survivor is close enough to hear the radio's transmission.</summary>
         private bool InEarshot(PlayerInteractor pi)
         {
             InteractContext ctx = pi.Context;
