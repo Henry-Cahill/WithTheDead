@@ -16,6 +16,8 @@ namespace CloneZ
     internal static partial class GroundPass
     {
         private const int SnowSize = 512;
+        private const float LotKerbWidth = 2f; // pixels of bright‑snow kerb on a lot texture
+        private static readonly Color LotKerbColor = new Color(0.92f, 0.93f, 0.96f);
 
         private sealed class Painting
         {
@@ -591,6 +593,8 @@ namespace CloneZ
         #endregion
 
         #region Hard ground
+        // Parking‑lot (lot) surface now has a bright‑snow kerb edge and occasional oil patches
+        // to make the 1993 Kentucky lot look worn and period‑appropriate.
         /// <summary>A plowed parking lot: worn grey asphalt with its aggregate showing, a faint haze of road salt, the odd
         /// oil spot and sealed crack, slush lying thin in the low spots, all of it even enough not to show its 12 m repeat
         /// (the snow left in the stall rows is the snow's tone).</summary>
@@ -613,6 +617,9 @@ namespace CloneZ
                     c = Color.Lerp(c, slush, Smooth(0.62f, 0.78f, low.At(u, v)) * 0.3f);
                     px[y * s + x] = c;
                 }
+            // after the base lot texture is built, add kerb and oil details
+            AddLotKerb(px, s);
+            AddLotOilSpots(px, s);
             var rng = new System.Random(406);
             for (int i = 0; i < 4; i++)
                 Ellipse(px, s, R(rng, 0, s), R(rng, 0, s), R(rng, 5f, 12f), R(rng, 4f, 9f), R(rng, 0f, 3.2f),
@@ -633,6 +640,38 @@ namespace CloneZ
 
         /// <summary>Brick pavers in a running bond, weathered dull, snow packed into the joints and a thin trodden layer
         /// over them all (6 m; the broad patches of trodden snow are the snow's tone, which doesn't repeat).</summary>
+                /// <summary>Draws a thin bright‑snow border around the edge of a square texture.</summary>
+        private static void AddLotKerb(Color[] px, int s)
+        {
+            for (int y = 0; y < s; y++)
+                for (int x = 0; x < s; x++)
+                {
+                    int dy = y < LotKerbWidth ? y : (s - 1 - y);
+                    int dx = x < LotKerbWidth ? x : (s - 1 - x);
+                    int dist = Mathf.Min(dx, dy);
+                    if (dist < LotKerbWidth)
+                    {
+                        // blend a bit so the kerb fades into the base colour
+                        px[y * s + x] = Color.Lerp(px[y * s + x], LotKerbColor, 0.7f);
+                    }
+                }
+        }
+
+        /// <summary>Sprinkles a few dark, semi‑transparent spots to simulate old oil on a lot.</summary>
+        private static void AddLotOilSpots(Color[] px, int s)
+        {
+            var rng = new System.Random(467);
+            const int spotCount = 6; // few spots keep the look subtle
+            var oil = new Color(0.12f, 0.12f, 0.10f, 0.6f);
+            for (int i = 0; i < spotCount; i++)
+            {
+                float cx = R(rng, 0, s), cy = R(rng, 0, s);
+                float rx = R(rng, 6f, 14f), ry = R(rng, 4f, 10f);
+                float angle = R(rng, 0f, Mathf.PI * 2f);
+                Ellipse(px, s, cx, cy, rx, ry, angle, oil, 1f, 0.5f);
+            }
+        }
+
         private static Color[] PaintPavers(int s)
         {
             var px = new Color[s * s];
