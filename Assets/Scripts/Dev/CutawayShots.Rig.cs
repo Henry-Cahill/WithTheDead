@@ -39,12 +39,15 @@ namespace CloneZ
             /// camera, as <see cref="MapCutaway.Tick"/> works it out.</summary>
             private float Reach(float size) => IsoDistance(size) * Mathf.Cos(Mathf.Clamp(_isoPitch, 10f, 89f) * Mathf.Deg2Rad) + 1f;
 
+            /// <summary>Reads default camera parameters from a temporary IsoCameraFollow instance.</summary>
             private void ReadCamera()
             {
+                // Create a temporary hidden GameObject to host an IsoCameraFollow instance for reading default camera settings
                 var go = new GameObject("[CutawayShots] camera numbers");
                 go.SetActive(false);
                 try
                 {
+                    // Configure the camera with settings matching the game's isometric view
                     var f = go.AddComponent<IsoCameraFollow>();
                     _isoYaw = f.IsoYaw;
                     _isoPitch = f.IsoPitch;
@@ -59,9 +62,11 @@ namespace CloneZ
                 }
             }
 
+            /// <summary>Constructs the temporary rig with camera, lighting, volume and a placeholder survivor model.
             private void BuildRig()
             {
                 _rig = new GameObject("[CutawayShots]");
+                // Set up the main camera, disabling it until a picture is taken
                 var camGo = new GameObject("Camera");
                 camGo.transform.SetParent(_rig.transform, false);
                 _cam = camGo.AddComponent<Camera>();
@@ -76,6 +81,7 @@ namespace CloneZ
                 data.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
                 data.antialiasingQuality = AntialiasingQuality.High;
 
+                // Create a directional light to act as the sun for the scene
                 var sunGo = new GameObject("Sun");
                 sunGo.transform.SetParent(_rig.transform, false);
                 _sun = sunGo.AddComponent<Light>();
@@ -85,6 +91,7 @@ namespace CloneZ
                 _sun.colorTemperature = 5000f;
                 RenderSettings.sun = _sun;
 
+                // If a post‑processing profile is set, add a global Volume to apply it
                 if (_profile != null)
                 {
                     var volGo = new GameObject("Game Volume");
@@ -95,6 +102,7 @@ namespace CloneZ
                 }
 
                 // A survivor-sized stand-in (1.8 m), as MapShots has.
+                // Create a simple capsule to represent the survivor for visual reference
                 _figure = GameObject.CreatePrimitive(PrimitiveType.Capsule);
                 _figure.name = "Survivor";
                 Object.DestroyImmediate(_figure.GetComponent<Collider>());
@@ -169,7 +177,9 @@ namespace CloneZ
             private void Picture(string file, Vector3 at, float yaw, float size, bool survivor, bool night, bool iso = false)
             {
                 Light(night, at);
+                // Activate the survivor model only if the picture should show it
                 _figure.SetActive(survivor);
+                // Position the survivor capsule at the correct height above the ground
                 if (survivor) _figure.transform.SetPositionAndRotation(at + Vector3.up * 0.9f, Quaternion.identity);
                 PoseIso(at, yaw, size);
                 if (iso)
@@ -182,6 +192,7 @@ namespace CloneZ
                 Texture2D tex = null;
                 try
                 {
+                    // Reset the pose and render the scene, returning a texture
                     tex = Capture(1600, 1000);
                     File.WriteAllBytes(Path.Combine(_out, file), tex.EncodeToPNG());
                 }
