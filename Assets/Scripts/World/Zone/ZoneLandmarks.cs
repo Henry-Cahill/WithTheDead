@@ -353,12 +353,30 @@ namespace CloneZ
             sb.Solid.Box(new Vector3(0f, 1.4f, 5.4f), new Vector3(4f, 2.8f, 2.4f), ZoneKit.M(stone));
             // Rust‑tinted latch and bolts on the front of the crypt niche
             Color rust = new Color(0.5f, 0.3f, 0.1f);
-            Vector3 latchPos = new Vector3(0f, 1.5f, 5.4f + 1.2f + 0.02f) + new Vector3(ZoneKit.R(sb.Rng, -0.05f, 0.05f), ZoneKit.R(sb.Rng, -0.02f, 0.02f), 0f);
-            sb.Solid.Box(latchPos, new Vector3(0.3f, 0.1f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
-            Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);
-            sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
-            sb.Solid.Box(latchPos - boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
-            sb.Collider(new Vector3(0f, 1.4f, 5.4f), new Vector3(4f, 2.8f, 2.4f));
+                Vector3 latchPos = new Vector3(0f, 1.5f, 5.4f + 1.2f + 0.02f) + new Vector3(ZoneKit.R(sb.Rng, -0.05f, 0.05f), ZoneKit.R(sb.Rng, -0.02f, 0.02f), 0f);
+                sb.Solid.Box(latchPos, new Vector3(0.3f, 0.1f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
+                Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);
+                sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
+                sb.Solid.Box(latchPos - boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
+                // --- Rust‑metal door set (panel, studs, lintel, hinges, handle, kick‑plate, plaque) ---
+                // Door panel
+                sb.Solid.Box(new Vector3(0f, 1.4f, 5.4f + 1.2f - 0.01f), new Vector3(2.5f, 2.8f, 0.02f), ZoneKit.M(rustMetal));
+                // Vertical side studs (wet‑wood)
+                sb.Solid.Box(new Vector3(-1.3f, 1.4f, 5.4f + 1.2f - 0.01f), new Vector3(0.12f, 2.8f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+                sb.Solid.Box(new Vector3( 1.3f, 1.4f, 5.4f + 1.2f - 0.01f), new Vector3(0.12f, 2.8f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+                // Top lintel
+                sb.Solid.Box(new Vector3(0f, 2.8f, 5.4f + 1.2f - 0.01f), new Vector3(2.6f, 0.2f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+                // Hinges (left side)
+                sb.Solid.CylinderX(new Vector3(-1.26f, 1.0f, 5.4f + 1.2f - 0.01f), 0.015f, 0.05f, 8, ZoneKit.M(rustMetal), 0f);
+                sb.Solid.CylinderX(new Vector3(-1.26f, 1.8f, 5.4f + 1.2f - 0.01f), 0.015f, 0.05f, 8, ZoneKit.M(rustMetal), 0f);
+                // Handle (right side) with slight yaw jitter
+                float handleYaw = (float)sb.Rng.NextDouble() * 8f - 4f;
+                sb.Solid.CylinderX(new Vector3(1.26f, 1.4f, 5.4f + 1.2f - 0.01f), 0.02f, 0.07f, 8, ZoneKit.M(rustMetal), handleYaw);
+                // Kick‑plate
+                sb.Solid.Box(new Vector3(0f, 0.01f, 5.4f + 1.2f - 0.01f), new Vector3(2.5f, 0.02f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+                // Small iron‑cross plaque above door
+                sb.Solid.Box(new Vector3(0f, 3.0f, 5.4f + 1.2f - 0.01f), new Vector3(0.3f, 0.02f, 0.02f), ZoneKit.M(rustMetal));
+                sb.Collider(new Vector3(0f, 1.4f, 5.4f), new Vector3(4f, 2.8f, 2.4f));
             sb.Storage("Crypt niche", "lm_cemetery_crypt", new Vector3(0f, 1f, 4.1f), ContainerType.Desk, 3);
             ZoneFlameLight.Spawn(sb.Root, sb.W(0.8f, 1.4f, 4f), new Color(0.6f, 0.75f, 1f), 6f, 0.7f, 0.4f);
             WorldMarkers.Add(WorldMarkers.Cemetery, sb.W(0f, 0f, 0f));
