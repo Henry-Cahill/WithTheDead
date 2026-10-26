@@ -11276,13 +11276,14 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 6: Landmarks.cs – keep existing collider and take logic untouched – no code changes required; the new geometry is added only to the visual `RaidMesh` objects (`low`/`high`) and does not affect any `ctx.Site.Take` or `ctx.Site.Town.PropCollider` calls already present.
   Done when: In‑game each flagpole shows a concrete base with a visible rust‑stained patch, a thin aluminium band a quarter metre up, a small rust spot on the shaft, and a discreet aluminium finial capping the pole; all other flagpole functionality (flag animation, wires, colliders, half‑staff behaviour) remains exactly as before.
   - 01:22 landed by spark in 7.1 min: **Summary of changes**
-- [ ] Cache the per‑frame lookup of the local player in LocationVisitTrigger.Update (Assets/Scripts/World/Zone/ZoneLandmarks.cs)
+- [x] Cache the per‑frame lookup of the local player in LocationVisitTrigger.Update (Assets/Scripts/World/Zone/ZoneLandmarks.cs)
   Add a private static `Actor s_LocalPlayer;` field to LocationVisitTrigger.
   In `Update()` replace `Actor me = Actor.LocalPlayer;` with
   `if (s_LocalPlayer == null) s_LocalPlayer = Actor.LocalPlayer;`
   `Actor me = s_LocalPlayer;`
   In `Awake()` (or the first `Update` call) also assign `s_LocalPlayer = Actor.LocalPlayer;` to prime the cache.
   This removes the repeated `Actor.LocalPlayer` lookup (which internally searches the scene each frame) for every landmark trigger, reducing GC pressure and CPU load while keeping the same gameplay – the player still triggers landmark visits at the same radius and timing.
+  - 01:28 landed by spark in 5.5 min: **Changes made**
 - [x] Add persistent brush state and water‑use actions to Assets/Scripts/World/Fixtures/RaidTownHydrant.cs so the hydrant can supply drink/filled bottle when opened and remember if it has been brushed.
   Step 1: Assets/Scripts/World/Fixtures/RaidTownHydrant.cs – GetActions Locate the line `into.Add(new InteractAction(_opened ? "Close the valve" : "Open with wrench", c =>` and after the closing brace of that `Add` call, insert: `// If the hydrant is opened, let the player drink or fill a bottle` `if (_opened)` `{` `// WaterPoints will add “Drink water” and “Fill bottle” actions depending on inventory` `WaterPoints.AddDrinkAndFill(ctx, this, into);` `}` (Quote of existing line for context: `into.Add(new InteractAction(_opened ? "Close the valve" : "Open with wrench", c => { … }));`)
   Step 2: Assets/Scripts/World/Fixtures/RaidTownHydrant.cs – CaptureState Replace the current one‑liner `public override void CaptureState(FixtureSave save) => save.State = _opened ? 1 : 0;` with a version that also records whether the hydrant has been brushed: `public override void CaptureState(FixtureSave save)` `{` `// Bit 0 = opened, Bit 1 = brushed` `save.State = (_opened ? 1 : 0) | (_brushed ? 2 : 0);` `}`
