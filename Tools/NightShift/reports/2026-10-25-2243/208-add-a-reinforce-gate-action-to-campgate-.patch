@@ -1,0 +1,60 @@
+diff --git a/Assets/Scripts/World/Camps.cs b/Assets/Scripts/World/Camps.cs
+index 36672bf5..dcfe2f07 100644
+--- a/Assets/Scripts/World/Camps.cs
++++ b/Assets/Scripts/World/Camps.cs
+@@ -299,6 +299,7 @@ public sealed class CampGate : Interactable
+         private GameObject _block;
+         private float _noiseAt;
+         private const float RepairHealFraction = 0.25f; // heal up to 25% of max health per repair
++    private const float ReinforceHealFraction = 0.25f; // increase max health by 25 % per reinforcement
+ 
+         /// <summary>Creates or retrieves the CampGate component for a piece.</summary>
+         public static CampGate On(BuildPiece p)
+@@ -371,7 +372,40 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+                     ZoneCamps.Announce(Piece);
+                 }).Timed(6f, "Repairing the gate...", HumanoidActivity.Build).DisabledIf(!canRepair, "Needs a hammer, 4 planks and 6 nails"));
+             }
++                // Reinforce gate – add planks and nails to boost its durability
++                if (Hung && Trusted && Piece != null)
++                {
++                    const int needPlanks = 4;
++                    const int needNails = 6;
++                    bool canReinforce = inv.Has("hammer") && inv.Has("plank", needPlanks) && inv.Has("nails", needNails);
++                    var reinforce = new InteractAction($"Reinforce gate (+{(int)(ReinforceHealFraction * 100)}% health, {needPlanks} planks, {needNails} nails)", c =>
++                    {
++                        if (!c.Inventory.Has("plank", needPlanks) || !c.Inventory.Has("nails", needNails)) return;
++                        c.Inventory.Consume("plank", needPlanks);
++                        c.Inventory.Consume("nails", needNails);
++                        c.Inventory.WearTool("hammer");
++                        // increase max health and current health proportionally
++                        var maxProp = typeof(BuildPiece).GetProperty("MaxHealth");
++                        var healthProp = typeof(BuildPiece).GetProperty("Health");
++                        if (maxProp != null && healthProp != null)
++                        {
++                            float add = Piece.MaxHealth * ReinforceHealFraction;
++                            float newMax = Piece.MaxHealth + add;
++                            maxProp.SetValue(Piece, newMax);
++                            float newHealth = Mathf.Min(Piece.Health + add, newMax);
++                            healthProp.SetValue(Piece, newHealth);
++                        }
++                        c.Notify("Gate reinforced.");
++                        if (c.Skills != null) c.Skills.AddXp(PlayerSkills.Skill.Carpentry, 5f);
++                        Sfx.Play(SfxIds.DoorClose, transform.position, 0.7f, 1f, 15f);
++                        ZoneCamps.Announce(Piece);
++                    }).Timed(6f, "Reinforcing the gate...", HumanoidActivity.Build)
++                        .DisabledIf(!canReinforce, "Needs a hammer, 4 planks and 6 nails");
++                    into.Add(reinforce);
++                }
+ 
++            }
++            
+             if (Locked && !Trusted)
+             {
+                 into.Add(new InteractAction("Pry the lock off", c =>
+@@ -796,5 +830,4 @@ private void Update()
+             _ready = Time.time + 1f;
+             Explosives.Throw(_inv);
+         }
+-    }
+-}
++
