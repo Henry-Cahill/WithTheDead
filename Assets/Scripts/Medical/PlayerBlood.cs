@@ -24,7 +24,8 @@ namespace CloneZ
         private Image _blackout;
         private StatMods _modifiers;
         private Text _blackoutText;
-        private CharacterProfile _cachedProfile;
+        private CharacterProfile CurrentProfile => ProfileStore.ActiveCharacter;
+
 
         /// <summary>Gets the normalized blood amount (0‑1) based on current blood.</summary>
         public float Blood01 => Mathf.Clamp01(Blood / MaxBlood);
@@ -42,7 +43,7 @@ namespace CloneZ
         {
             get
             {
-                return _cachedProfile != null && !GameSession.IsScavRun && !string.IsNullOrEmpty(_cachedProfile.BloodType) ? _cachedProfile.BloodType : _scavType;
+                var p = CurrentProfile; return p != null && !GameSession.IsScavRun && !string.IsNullOrEmpty(p.BloodType) ? p.BloodType : _scavType;
             }
         }
 
@@ -53,7 +54,7 @@ namespace CloneZ
         {
             get
             {
-                return _cachedProfile != null && _cachedProfile.HasFlag("bloodknown");
+                var p = CurrentProfile; return p != null && p.HasFlag("bloodknown");
             }
         }
 
@@ -62,7 +63,7 @@ namespace CloneZ
             _stats = GetComponent<PlayerStats>();
             _modifiers = PlayerModifiers.Current;
             _scavType = BloodTypes.Roll();
-            _cachedProfile = ProfileStore.ActiveCharacter; // cache profile at Awake
+
         }
 
         private void Start()
