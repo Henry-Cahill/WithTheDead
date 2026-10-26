@@ -189,13 +189,7 @@ namespace CloneZ
                 into.Insert(Mathf.Min(start + 1, into.Count), kick);
             }
 
-            if (!_lubed && !_broken)
-                {
-                    var oil = new InteractAction("Oil door hinges", _oilAct)
-                        .Timed(CloneZConfig.RaidDoorKickSeconds, "Oiling the hinges", HumanoidActivity.Build);
-                    oil.Begin = _oilBegin;
-                    oil.Tick = _oilTick;
-                    into.Add(oil);
+            if (!_lubed && !_broken && IsLocked && _health >= _maxHealth)
                 }
             if (!_broken && _health < _maxHealth)
             {
