@@ -11,6 +11,8 @@ namespace CloneZ
     {
         private static IEnumerable<string> Paths(Net net)
         {
+            // Width of the thin snow‑drift that hugs each side of a pedestrian footway.
+            const float SideDriftWidth = 0.25f; // metres of snow drift on each side of a footway
             Look look = net.Look;
             foreach (Way p in net.Ways)
             {
@@ -40,7 +42,16 @@ namespace CloneZ
                     s_A[i] = -width * 0.5f;
                     s_B[i] = width * 0.5f;
                 }
-                Band(net, s, s_A, s_B, PathY, PathY, paved ? look.Paved : look.Trodden, null, s_Keep);
+                // left snow‑drift edge
+                for (int i = 0; i < n; i++)
+                {
+                    // outer edge of the main band
+                    float leftOuter = s_A[i];
+                    // drift runs from leftOuter‑SideDriftWidth to leftOuter
+                    s_A[i] = leftOuter - SideDriftWidth;
+                    s_B[i] = leftOuter;
+                }
+                Band(net, s, s_A, s_B, PathY + 0.0005f, PathY + 0.0005f, look.Snow, null, s_Keep);
                 if (net.Full && !paved)
                 {
                     int seed = Seed(p, 0x7A7);
@@ -54,7 +65,15 @@ namespace CloneZ
                     for (int i = 0; i + 1 < n; i++) s_Keep[i] = s_KerbOk[i] && s_KerbOk[i + 1] && Noise(s[i].P, 4.5f, seed + 2) > 0.25f;
                     Band(net, s, s_A, s_B, PathY + 0.0015f, PathY + 0.0015f, look.TroddenLine, null, s_Keep);
                 }
-                // Keep the drawn stretches clear of props.
+                // right snow‑drift edge
+                for (int i = 0; i < n; i++)
+                {
+                    float rightOuter = s_B[i];
+                    // drift runs from rightOuter to rightOuter+SideDriftWidth
+                    s_A[i] = rightOuter;
+                    s_B[i] = rightOuter + SideDriftWidth;
+                }
+                Band(net, s, s_A, s_B, PathY + 0.0005f, PathY + 0.0005f, look.Snow, null, s_Keep);
                 List<Vector2> run = null;
                 for (int i = 0; i < n; i++)
                 {
@@ -63,7 +82,7 @@ namespace CloneZ
                         (run ??= new List<Vector2>()).Add(s[i].P);
                         continue;
                     }
-                    if (run != null && run.Count >= 2) net.Site.TakeRoad(run, width * 0.5f, 0.2f);
+                if (run != null && run.Count >= 2) net.Site.TakeRoad(run, width * 0.5f, SideDriftWidth + 0.2f);
                     run = null;
                 }
                 if (run != null && run.Count >= 2) net.Site.TakeRoad(run, width * 0.5f, 0.2f);
