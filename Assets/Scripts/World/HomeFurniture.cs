@@ -32,6 +32,7 @@ namespace CloneZ
     {
         public static readonly List<HomeFurniture> All = new List<HomeFurniture>();
 
+        /// <summary>The kind of furniture this piece represents, determining its shape, behaviour and salvage.</summary>
         public HomeFurnitureKind Kind { get; private set; }
         /// <summary>Facing in degrees (0 = front toward +Z). The root stays unrotated; the mesh is drawn turned.</summary>
         public float Yaw { get; private set; }
@@ -128,6 +129,7 @@ namespace CloneZ
             return new Rect(position.x - a.x * 0.5f, position.z - a.z * 0.5f, a.x, a.z);
         }
 
+        /// <summary>Computes the axis-aligned bounding box size in world space for a given size and yaw rotation.</summary>
         private static Vector3 AabbSize(Vector3 size, float yaw)
         {
             float rad = yaw * Mathf.Deg2Rad;
@@ -154,6 +156,7 @@ namespace CloneZ
             return f;
         }
 
+        /// <summary>Builds the visual mesh and adds colliders, navmesh modifiers and interactive fixtures for this furniture piece.</summary>
         private void Build()
         {
             Vector3 p = transform.position;
@@ -297,6 +300,7 @@ namespace CloneZ
         #endregion
 
         #region IDemolishable
+        /// <summary>The display name used when dismantling this furniture piece.</summary>
         public string DemolishName => Kind switch
         {
             HomeFurnitureKind.Counter => "kitchen counter",
@@ -317,6 +321,7 @@ namespace CloneZ
             _ => "boxes",
         };
 
+        /// <summary>Determines whether this furniture can be dismantled, checking for stored contents or items placed on top.</summary>
         public bool CanDemolish(out string reason)
         {
             // Whatever is kept in its drawers or cupboards would be lost with it.
@@ -329,6 +334,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Returns the salvage materials obtained by dismantling this piece of furniture.</summary>
         public void GetSalvage(out int planks, out int nails)
         {
             switch (Kind)
@@ -347,8 +353,10 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Whether this furniture piece was baked into the navmesh and will require a rebuild when removed.</summary>
         public bool CarvesNavMesh => BakesIntoNavMesh(Kind);   // baked into the navmesh -> removing it needs a rebuild
 
+        /// <summary>Dismantles this furniture piece, removing it from the world and dropping it out of the navmesh bake.</summary>
         public void Dismantle()
         {
             All.Remove(this);
