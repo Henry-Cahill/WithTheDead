@@ -31,6 +31,7 @@ namespace CloneZ
         /// <summary>The floor area inside the walls (world).</summary>
         public Rect Inner => Rect.MinMaxRect(World.xMin + 0.1f, World.yMin + 0.1f, World.xMax - 0.1f, World.yMax - 0.1f);
 
+        /// <summary>Returns true if the given rect overlaps furniture or, optionally, reserved zones.</summary>
         public bool Overlaps(Rect r, bool includeReserved)
         {
             for (int i = 0; i < Furniture.Count; i++) if (Furniture[i].Overlaps(r)) return true;
@@ -208,6 +209,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Converts local (x, y, z) coordinates to world space.</summary>
         public Vector3 W(float lx, float y, float lz)
         {
             Vector2 p = P(lx, lz);
@@ -224,6 +226,7 @@ namespace CloneZ
             return new Vector3(a.x, 0f, a.y);
         }
 
+        /// <summary>Creates a world‑space rectangle from the given coordinates.</summary>
         public Rect RectW(float x0, float z0, float x1, float z1)
         {
             Vector2 a = P(x0, z0), b = P(x1, z1);
