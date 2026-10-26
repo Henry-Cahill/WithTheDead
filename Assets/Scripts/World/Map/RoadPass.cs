@@ -379,10 +379,14 @@ namespace CloneZ
                 if (w.S == null) continue;
                 if (s_Ways.TryGetValue(w.S, out Way old))
                 {
-                    if (old == w || old.Length >= w.Length) continue;
+                    if (old == w) continue;
+                    if (old.Length >= w.Length) continue;
                     s_Ways.Remove(w.S);
+                    s_Ways.Add(w.S, w);
+                    continue;
                 }
                 s_Ways.Add(w.S, w);
+                continue;
             }
             s_Stalls.Remove(net.Site);
             s_Stalls.Add(net.Site, net.Stalls);
