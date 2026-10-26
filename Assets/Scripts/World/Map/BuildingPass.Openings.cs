@@ -275,7 +275,7 @@ namespace CloneZ
             switch (kind)
             {
                 case WindowKind.Picture: w = 1.8f; h = 1.25f; sill = 0.95f; spacing = Mathf.Max(spacing, 3.4f); break;
-                case WindowKind.Ribbon: w = Mathf.Min(2.6f, spacing - 0.7f); h = p.WindowHeight; sill = p.Sill; break;
+                case WindowKind.Ribbon: w = Mathf.Max(0.5f, Mathf.Min(2.6f, spacing - 0.7f)); h = p.WindowHeight; sill = p.Sill; break;
                 case WindowKind.Band: w = len - 1.2f; h = 1.4f; sill = 0.9f; break;
                 case WindowKind.Arched: w = p.WindowWidth; h = p.WindowHeight; sill = p.Sill; break;
                 case WindowKind.Small:
@@ -323,7 +323,7 @@ namespace CloneZ
             for (int k = 0; k < panes; k++)
             {
                 float s0 = a + each * k + (k > 0 ? 0.2f : 0f), s1 = a + each * (k + 1) - (k < panes - 1 ? 0.2f : 0f);
-                AddWindow(j, edge, 0, (s0 + s1) * 0.5f, s1 - s0, 0.5f, 2.35f, WindowKind.Storefront, j.Id);
+                float paneWidth = s1 - s0; if (paneWidth <= 0f) continue; AddWindow(j, edge, 0, (s0 + s1) * 0.5f, paneWidth, 0.5f, 2.35f, WindowKind.Storefront, j.Id);
             }
         }
 
