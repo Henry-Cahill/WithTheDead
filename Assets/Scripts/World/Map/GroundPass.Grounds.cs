@@ -40,7 +40,8 @@ namespace CloneZ
                         {
                             stones += placed;
                             yield return "cemeteries";
-                        }
+            }
+
                         Clearings(g, o);
                         break;
                     case "playground": Playground(g, o); break;
@@ -557,6 +558,19 @@ namespace CloneZ
                 m.Box(new Vector3(0f, y + 0.035f, z), new Vector3(length - 0.05f, 0.025f, 0.28f), snow);
                 m.Box(new Vector3(0f, y - 0.22f, z - 0.25f), new Vector3(length, 0.04f, 0.22f), alu);
             }
+            // top rail per row – thin metal rail above each seat row
+            for (int r = 0; r < rows; r++)
+            {
+                float z = r * 0.62f;
+                float yTop = 0.42f + r * 0.4f + 0.07f; // 7 cm above the seat slab
+                m.Box(new Vector3(0f, yTop, z), new Vector3(length, 0.03f, 0.02f), alu);
+            }
+            // front solid backing – runs the full bleacher length, full height
+            float fullHeight = 0.42f + rows * 0.4f;
+            m.Box(new Vector3(0f, fullHeight * 0.5f, -0.1f), new Vector3(length, fullHeight, 0.04f), frame);
+            // metal trash‑bin – 15 cm radius, 25 cm tall, centred 30 cm in front of the bleachers
+            Vector3 binPos = new Vector3(0f, 0.125f, -0.35f);
+            m.Cylinder(binPos, 0.15f, 0.25f, 12, alu);
             for (float x = -length * 0.5f; x <= length * 0.5f + 0.01f; x += length / 4f)
             {
                 m.Rod(new Vector3(x, 0f, -0.1f), new Vector3(x, 0.42f, -0.1f), 0.06f, frame);
@@ -616,7 +630,8 @@ namespace CloneZ
                     {
                         Vector3 q = Vector3.Lerp(a3, b3, i / (float)posts);
                         f.Rod(q, q + Vector3.up * 3f, 0.05f, metal);
-                    }
+            }
+            
                     f.Rod(a3 + Vector3.up * 3f, b3 + Vector3.up * 3f, 0.04f, metal);
                     f.Rod(a3 + Vector3.up * 0.1f, b3 + Vector3.up * 0.1f, 0.03f, metal);
                     f.Box((a3 + b3) * 0.5f + Vector3.up * 3.04f, new Vector3(0.06f, 0.02f, len), Quaternion.LookRotation((b3 - a3).normalized), snow);
