@@ -18,7 +18,14 @@ namespace CloneZ
             Rate = rate;
             Dt = 1f / rate;
             Variation = variation;
-            _s = seed != 0 ? seed : 0x6D2B79F5u;
+            // Each variation draws its own stream: the id's seed crossed with the variation, then avalanched.
+            uint s = seed ^ ((uint)variation * 0x9E3779B9u);
+            s ^= s >> 16;
+            s *= 0x7FEB352Du;
+            s ^= s >> 15;
+            s *= 0x846CA68Bu;
+            s ^= s >> 16;
+            _s = s != 0 ? s : 0x6D2B79F5u;
             for (int i = 0; i < 8; i++) NextUInt();
         }
 
