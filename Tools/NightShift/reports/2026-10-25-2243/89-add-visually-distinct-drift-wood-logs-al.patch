@@ -1,0 +1,174 @@
+diff --git a/Assets/Scripts/World/Map/GroundPass.Water.cs b/Assets/Scripts/World/Map/GroundPass.Water.cs
+index b36bf34e..2945fc3b 100644
+--- a/Assets/Scripts/World/Map/GroundPass.Water.cs
++++ b/Assets/Scripts/World/Map/GroundPass.Water.cs
+@@ -1,4 +1,5 @@
+ using System.Collections.Generic;
++using System;
+ using UnityEngine;
+ using static CloneZ.KentuckyMap;
+ 
+@@ -15,6 +16,7 @@ namespace CloneZ
+     internal static partial class GroundPass
+     {
+         private const float StreamStep = 2.5f;   // metres between a waterway's points as drawn (they wobble)
++        private const int SaltDriftwood = 0x8AB3; // random seed for drift‑wood placement
+ 
+         /// <summary>What a body of water looks like in January.</summary>
+         private struct WaterLook
+@@ -225,6 +227,8 @@ private static void RimChain(Ground g, List<Vector2> chain, float rim, Rect doma
+             for (int i = 0; i < chain.Count; i++)
+                 inner[i] = rim * (0.55f + 0.9f * WorldNoise(g.World(chain[i]), 7f, SaltRim)) * Taper(chain, i, domain, closed);
+             Strip(into, chain, normals, inner, null, DecalY, SnowSurf);   // left of the outline is the ice
++            // NEW: scatter drift‑wood logs on the frozen rim
++            LogChain(g, chain, normals, into);
+         }
+ 
+         // Shelf ice along a stretch of an open river's bank: out from the shore by the river's shelf, now back in bays
+@@ -247,6 +251,74 @@ private static void ShelfChain(Ground g, List<Vector2> chain, in WaterLook look,
+             }
+             Strip(into, chain, normals, shelf, null, ShelfY, IceSurf);
+             Strip(into, chain, normals, snow, null, FloeY, SnowSurf);
++            // NEW: scatter drift‑wood logs on the icy shelf edge
++            LogChain(g, chain, normals, into);
++        }
++
++                /// <summary>Scatter drift‑wood logs along a shore chain (rim or shelf).</summary>
++        private static void LogChain(Ground g, List<Vector2> chain, List<Vector2> normals, OutdoorBatches into)
++        {
++            int n = chain.Count;
++            for (int i = 0; i < n; i++)
++            {
++                // one log per ~3 m of shoreline, but skip very short segments
++                if (i > 0 && Vector2.Distance(chain[i - 1], chain[i]) < 0.5f) continue;
++                long key = MapStyle.Key(g.World(chain[i]));
++                // probability controlled by a per‑point random; only a few logs per lake/river
++                if (MapStyle.Unit(key, SaltDriftwood) > 0.3f) continue;
++                System.Random rng = MapStyle.Rng(key, SaltDriftwood + 1);
++                // place the log a little inside the water (negative normal) so it sits on the ice surface
++                Vector2 at = chain[i] - normals[i] * MapStyle.Range(rng, 0.05f, 0.15f);
++                if (!g.Clear(at, 0.2f)) continue; // avoid intersecting other props
++                AddDriftwoodLog(g, into, at, normals[i], rng);
++            }
++        }
++
++                /// <summary>Place a thin drift‑wood log on the ice at world‑space <paramref name="at"/>.</summary>
++        private static void AddDriftwoodLog(Ground g, OutdoorBatches into, Vector2 at, Vector2 normal, System.Random rng)
++        {
++            // orient the log roughly along the shoreline; a small random yaw adds variety
++            float yaw = Mathf.Atan2(normal.y, normal.x) + Mathf.PI * 0.5f + MapStyle.Range(rng, -0.2f, 0.2f);
++            float length = MapStyle.Range(rng, 0.6f, 1.2f); // metres
++            float thickness = 0.04f;
++            float height = 0.05f;
++            // centre of the log in world XYZ (use DecalY – the same height used for the rim/shelf geometry)
++            Vector3 c = To3(at, DecalY);
++            // build a rotation quaternion around Y
++            Quaternion rot = Quaternion.AngleAxis(yaw * Mathf.Rad2Deg, Vector3.up);
++            // four corner points of the log’s base (local XZ plane)
++            Vector3 half = new Vector3(length * 0.5f, 0f, thickness * 0.5f);
++            Vector3[] basePts = new[]
++            {
++                rot * new Vector3(-half.x, 0f, -half.z),
++                rot * new Vector3( half.x, 0f, -half.z),
++                rot * new Vector3( half.x, 0f,  half.z),
++                rot * new Vector3(-half.x, 0f,  half.z)
++            };
++            // raise the base to world centre
++            for (int i = 0; i < 4; i++) basePts[i] += c;
++            // top points
++            Vector3[] topPts = new Vector3[4];
++            for (int i = 0; i < 4; i++) topPts[i] = basePts[i] + Vector3.up * height;
++            // material – a weather‑worn brown
++            var logMat = DecorPalette.Matte(new Color(0.45f, 0.33f, 0.22f));
++            // build a simple box (12 triangles)
++            RaidMesh m = into.Solid(c);
++            // top
++            m.Tri(topPts[0], topPts[1], topPts[2], logMat);
++            m.Tri(topPts[0], topPts[2], topPts[3], logMat);
++            // sides
++            for (int i = 0; i < 4; i++)
++            {
++                int j = (i + 1) & 3;
++                m.Tri(basePts[i], basePts[j], topPts[j], logMat);
++                m.Tri(basePts[i], topPts[j], topPts[i], logMat);
++            }
++            // optional collider – tiny box centred on the log
++                if (g.Site.Take(at, 0.12f)) // reserves a little space; Take returns true if free
++                {
++                    g.Site.Town.PropCollider(c, new Vector3(length, height, thickness), yaw * Mathf.Rad2Deg);
++                }
+         }
+ 
+         private static void BankChain(Ground g, List<Vector2> chain, float bank, bool reedy, Rect domain, bool closed, OutdoorBatches into, bool inside)
+@@ -554,7 +626,7 @@ private static float WorldNoise(Vector2 w, float cell, int seed)
+         #region Reeds
+         /// <summary>A clump of dead reeds and cattails: thin blades of straw and brown, leaning every way, a few with
+         /// their cigar heads.</summary>
+-        private static void ReedClump(OutdoorBatches into, Vector2 at, System.Random rng, float size)
++                private static void ReedClump(OutdoorBatches into, Vector2 at, System.Random rng, float size)
+         {
+             // Convert the ground position to world space at water level (y=0) for mesh placement
+             Vector3 c = To3(at, 0f);
+@@ -572,61 +644,15 @@ private static void ReedClump(OutdoorBatches into, Vector2 at, System.Random rng
+                 Color col = Color.Lerp(new Color(0.70f, 0.60f, 0.40f), new Color(0.47f, 0.38f, 0.25f), (float)rng.NextDouble());
+                 Surf s = DecorPalette.Matte(col);
+                 m.Tri(baseAt - side, tip, baseAt + side, s);
+-                m.Tri(baseAt + side, tip, baseAt - side, s);
+                 if (rng.NextDouble() < 0.3)
+                 {
+                     Vector3 h0 = baseAt + dir * (h * 0.72f), h1 = baseAt + dir * (h * 0.9f);
+                     Vector3 wide = side * 1.8f;
+                     Surf head = DecorPalette.Matte(new Color(0.33f, 0.23f, 0.16f));
+                     m.Tri(h0 - wide, h1 - wide, h1 + wide, head);
+-                    m.Tri(h0 - wide, h1 + wide, h0 + wide, head);
+-                    m.Tri(h0 + wide, h1 + wide, h1 - wide, head);
+-                    m.Tri(h0 + wide, h1 - wide, h0 - wide, head);
+                 }
+-                // Ice cap on reed tip – a thin disc hinting at refreezing
+-                if (rng.NextDouble() < 0.40)
+-                {
+-                    float discR = 0.03f, discH = 0.01f;
+-                    Vector3 d0 = tip + new Vector3(-discR, discH, -discR);
+-                    Vector3 d1 = tip + new Vector3( discR, discH, -discR);
+-                    Vector3 d2 = tip + new Vector3( discR, discH,  discR);
+-                    Vector3 d3 = tip + new Vector3(-discR, discH,  discR);
+-                    var iceMat = DecorPalette.Matte(new Color(0.85f, 0.92f, 0.96f));
+-                    m.Tri(d0, d1, d2, iceMat);
+-                    m.Tri(d0, d2, d3, iceMat);
+                 }
+-            }
+-
+-
+-            // Seed pod – a low brown box at the reed base, 0.04 m × 0.04 m × 0.06 m.
+-            if (rng.NextDouble() < 0.35)
+-            {
+-                // centre a few centimetres in front of the clump centre
+-                Vector3 podC = c + new Vector3(MapStyle.Range(rng, -0.02f, 0.02f), 0f, MapStyle.Range(rng, -0.02f, 0.02f));
+-                float w = 0.04f, h = 0.06f;
+-                // build a simple box (8 triangles)
+-                Vector3 p0 = podC + new Vector3(-w/2, 0f, -w/2);
+-                Vector3 p1 = podC + new Vector3( w/2, 0f, -w/2);
+-                Vector3 p2 = podC + new Vector3( w/2, 0f,  w/2);
+-                Vector3 p3 = podC + new Vector3(-w/2, 0f,  w/2);
+-                Vector3 p4 = p0 + Vector3.up * h;
+-                Vector3 p5 = p1 + Vector3.up * h;
+-                Vector3 p6 = p2 + Vector3.up * h;
+-                Vector3 p7 = p3 + Vector3.up * h;
+-                var podMat = DecorPalette.Matte(new Color(0.55f, 0.44f, 0.33f));
+-                // bottom (optional, hidden)
+-                //m.Tri(p0, p1, p2, podMat);
+-                m.Tri(p0, p2, p3, podMat);
+-                // top
+-                m.Tri(p4, p5, p6, podMat);
+-                m.Tri(p4, p6, p7, podMat);
+-                // sides
+-                m.Tri(p0, p1, p5, podMat); m.Tri(p0, p5, p4, podMat);
+-                m.Tri(p1, p2, p6, podMat); m.Tri(p1, p6, p5, podMat);
+-                m.Tri(p2, p3, p7, podMat); m.Tri(p2, p7, p6, podMat);
+-                m.Tri(p3, p0, p4, podMat); m.Tri(p3, p4, p7, podMat);
+-            }
+-            // Tiny stone – low pyramid on the ice surface, 0.07 m tall.
++                // Tiny stone – low pyramid on the ice surface, 0.07 m tall.
+             if (rng.NextDouble() < 0.25)
+             {
+                 Vector3 stoneC = c + new Vector3(MapStyle.Range(rng, -0.03f, 0.03f), 0f, MapStyle.Range(rng, -0.03f, 0.03f));
