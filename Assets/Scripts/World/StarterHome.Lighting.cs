@@ -326,8 +326,8 @@ for (int i = 0; i < 4; i++)
             Surf tagMetal = DecorPalette.Metal(new Color(0.08f, 0.08f, 0.09f));
             Vector3 tagRoot = at + n * 0.025f + Vector3.up * (h * 0.5f + 0.015f);
             m.Cylinder(tagRoot, 0.001f, 0.03f, 6, tagMetal); // string
-            Vector3 tagPlate = tagRoot + Vector3.up * 0.032f;
             m.Box(tagPlate, new Vector3(0.028f, 0.008f, 0.004f), tagMetal); // metal tag
+            OutdoorHouseNumber.Create(piece.transform, HouseNo, at + n * 0.04f, at, n);
         }
 
         // The house's breaker panel on the store room's west wall: the box drawn into the wall, its door (hinged on the

@@ -138,9 +138,8 @@ private bool _dateDirty = true;
         {
             float hoursPerSecond = 24f / Mathf.Max(1f, DayLengthSeconds);
             Hour += hoursPerSecond * TimeScale * dt;
-            while (Hour >= 24f) { Hour -= 24f; Day++; }
+            while (Hour >= 24f) { Hour -= 24f; Day++; _dateDirty = true; }
             _clockDirty = true;
-            _dateDirty = true;
         }
 
         /// <summary>Restores the clock from a saved game and refreshes the sky immediately.</summary>
