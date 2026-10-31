@@ -89,6 +89,12 @@ namespace CloneZ
         /// <summary>The build's folder in the store.</summary>
         public readonly string Folder;
         public readonly MapManifest Manifest;
+        /// <summary>The store's validation folder (world/validation, beside the builds): what was found of the buildings
+        /// and the corrections the game applies to them (see <see cref="MapValidation"/>).</summary>
+        public readonly string ValidationFolder;
+        /// <summary>Apply the corrections in <see cref="ValidationFolder"/> to the regions read. The game always does; a
+        /// tool may want the data as mapped.</summary>
+        public bool UseCorrections = true;
         private readonly HashSet<long> _regions = new HashSet<long>();
         private MapPlace[] _places;
 
@@ -97,6 +103,7 @@ namespace CloneZ
             Id = id;
             Folder = folder;
             Manifest = manifest;
+            ValidationFolder = MapValidation.FolderOf(folder);
             if (manifest.regions != null)
                 foreach (MapRegionEntry r in manifest.regions) _regions.Add(Key(r.rx, r.rz));
         }
@@ -157,14 +164,18 @@ namespace CloneZ
             return found;
         }
 
-        /// <summary>Reads one region file (gzipped JSON).</summary>
+        /// <summary>Reads one region file (gzipped JSON), with its buildings' corrections applied (unless
+        /// <see cref="UseCorrections"/> is off). Safe on any thread.</summary>
         public MapRegion LoadRegion(int rx, int rz)
         {
             string path = Path.Combine(Folder, "regions", rx + "_" + rz + ".json.gz");
+            MapRegion region;
             using (FileStream file = File.OpenRead(path))
             using (var gz = new GZipStream(file, CompressionMode.Decompress))
             using (var reader = new StreamReader(gz))
-                return JsonUtility.FromJson<MapRegion>(reader.ReadToEnd());
+                region = JsonUtility.FromJson<MapRegion>(reader.ReadToEnd());
+            if (UseCorrections) MapValidation.Apply(region, MapValidation.Load(ValidationFolder, rx, rz));
+            return region;
         }
     }
 }

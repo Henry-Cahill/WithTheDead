@@ -26,6 +26,7 @@ files written by any machine can be changed by all the others and from Windows.
 | `world/sources/osm/` | the OpenStreetMap extract for Kentucky | the world builder |
 | `world/builds/<id>/` | one build of the world: its `manifest.json` and its regions | the machines building it, each only its own regions |
 | `world/current.json` | which build the game and the servers load | whoever publishes a build |
+| `world/validation/regions/` | what was found of each building and the corrections the game applies (see [Checking the buildings](#checking-the-buildings)) | the Kentucky Atlas, in the editor and in the browser |
 | `machines/<name>.json` | what each machine is doing right now | that machine |
 | `scratch/<name>/` | each machine's temporary files | that machine |
 
@@ -149,11 +150,25 @@ top of `KentuckyMap.cs`):
   (OpenStreetMap rarely has storeys or roof shapes for Kentucky, so mostly heuristics): downtown brick rows with
   storefronts, frame houses with porches, trailers, churches with steeples, schools, warehouses, barns, silos, gas
   stations; real roofs (gable, hip, gambrel, flat with parapet…) with snow and chimneys.
+* **Floors and stairs** (`KentuckyMap.Levels`, `BuildingPass.Levels`, `LevelStructure`): every storey of an enterable
+  building has a floor, and about half the family-sized houses (70–450 m², chosen by id) a basement under their main
+  block; one switchback stairwell joins them, in a band along one side (or the back) of the main block with a landing
+  hall in front of it (in a row too narrow for that, along one side at the back with the hall beside it), the same on
+  every floor. The flights are 1.7 m wide with a landing at each turn, so the NavMesh runs up them and the dead follow
+  the survivors (the rooms' 1.5 m doorways are at the edge of what the NavMesh's 0.5 m agent gets through, so a stair
+  hall behind one may be out of their reach: the atlas survey reports which); the ground leaves a basement open (the
+  house's own floor covers it, and the snow's sides are kept out of the NavMesh), and a survivor's body passes through
+  the ground's collider there.
 * **Interiors** (`InteriorPass*`, `InteriorStreamer`): floor plans, furniture, working fixtures, lights and loot by
   what the building was, room by room; built at once on a fixed square, and on the statewide map lazily, only within
-  about 45 m of a survivor.
+  about 45 m of a survivor (the floor they're on first). Every floor is furnished: bedrooms and a bathroom over a house,
+  flats or offices (or the stock) over a shop on a town street, more offices, classrooms, wards or bunk rooms over a
+  workplace, a loft over a barn, a laundry, workshop, den and stores in a basement, each off a corridor from the
+  landing.
 * **Cutaway** (`CutawayPass`, `MapCutaway*`): roofs and upper storeys show from the isometric camera and are lifted off,
-  Project Zomboid-style, around the survivor and between them and the camera.
+  Project Zomboid-style, around the survivor and between them and the camera. In a building with floors, whatever is
+  over the floor the survivor is on goes (its floors, stairs and furnished rooms too) and their own floor's walls are
+  lowered on the camera's side; from a basement, everything from the ground floor up.
 * **Streetscape** (`StreetscapePass*`, `PowerPass`, `SignPass`, `BarrierPass`, `StreetLamp`): utility poles and wires,
   street lights (a small pool of real lights lent to the nearest lamps), span-wire signals, stop signs and street-name
   blades, route shields, hydrants, mailboxes, benches, water towers with the town's name, fences and stone walls.
@@ -201,8 +216,80 @@ with `CLONEZ_WORLD` set. It writes top-down and isometric pictures by day and ni
 Places are only as complete as OpenStreetMap: a town where few buildings are mapped looks sparse. The night shift's
 `map` focus works on the builder's code (`Assets/Scripts/World/Map/`), not on the data.
 
+## Checking the buildings
+
+The **Kentucky Atlas** is the whole state from above with every building of the current build on it, for checking the
+buildings one by one and correcting what's wrong. It comes in two parts that share their records:
+
+* **In the browser**, over Kentucky's own aerial photographs (KyFromAbove's 3-inch statewide imagery of 2022-24, the
+  older 6-inch imagery, or OpenStreetMap's map): `.\World.ps1 atlas` (or `python Tools/World/atlas/atlas.py`) serves
+  [atlas/](atlas) at http://127.0.0.1:8765/ and opens it. This is where to check that each **footprint** matches the
+  building on the photograph (and that it's still there) and that its **kind** is right. Keys: F / Shift+F footprint
+  good / wrong, K / Shift+K kind good / wrong, H not there, Enter (Ctrl+Enter in a text box) save and go on to the
+  nearest building whose outline or kind isn't checked yet, N next, Esc let go. A link to a building (`#b=<rx>_<rz>_<id>`)
+  opens it; *Edit the map* opens it in OpenStreetMap's editor, which fixes it for every later build.
+* **In the editor**, WithTheDead ▸ Kentucky Atlas
+  ([KentuckyAtlasWindow](../../Assets/Editor/KentuckyAtlasWindow.cs)): pick a building and *Build in scene* builds its
+  piece of the map in the open scene the way the game streams it, furnished
+  ([KentuckyAtlas](../../Assets/Scripts/Dev/KentuckyAtlas.cs)), says what the game made of it (archetype, house style,
+  storeys, roof, walls, its rooms and loot) and checks every door can be reached from both sides, that it has windows
+  and that its inside was furnished; for a building with floors, that every floor was furnished where it stands and
+  that the dead can get to each floor's landing from outside the front door (on a NavMesh baked round it as the game
+  bakes the map's). The Scene view goes to it from the game's angle, its rooms from above (roofs off)
+  or at its front door. This is where to check the **outside**, **windows**, **doors** and **inside**. In a running raid
+  in Kentucky, *Go there in the raid* sends the survivor to its front door to try it in the game. The preview never
+  goes into the saved scene and is taken down before play mode. Keys (outside a text box): N next, B build, F centre on
+  it, S save, Enter save and go on to the nearest building not fully checked, Esc let go.
+
+Each check is good, wrong or doesn't apply (a shed's inside); a building is green when every check is good or doesn't
+apply, red when one is wrong, amber when it's partly checked. A correction changes how the game builds it, everywhere it
+reads the map (`MapBuild.LoadRegion` applies them as it reads a region, [MapValidation](../../Assets/Scripts/World/Map/MapValidation.cs)):
+its **kind**, **use** (an amenity or `shop:<kind>`; `none` for no use), **name**, **storeys**, **roof** and **walls** replace
+what the map data says, so the interiors and the loot follow a corrected kind and use; its **archetype**, **house style**
+and the way its **front faces** override the building pass's own choices (`BuildingPass.Classify`); **not there** leaves it
+out. The editor's *Build in scene* shows a correction before it's saved.
+
+The records are kept by region in `world/validation/regions/<rx>_<rz>.json` (a building is in the region its middle is in,
+as in the builds), keyed by the building's id, so they outlive any one build:
+
+```json
+{"format": 1, "rx": 186, "rz": 142, "buildings": [{
+  "id": 2622504470,
+  "checks": {"footprint": "ok", "kind": "bad", "outside": "", "windows": "", "doors": "", "inside": ""},
+  "note": "The courthouse, mapped as commercial",
+  "fix": {"hide": false, "kind": "civic", "use": "", "name": "", "arch": "", "style": "", "roof": "", "material": "",
+          "facing": "", "storeys": 0},
+  "game": {"seen": "", "arch": "", "style": "", "roof": "", "wall": "", "storeys": 0, "enterable": false, "doors": 0,
+           "windows": 0, "blockedDoors": 0, "furnished": false, "use": "", "rooms": "", "containers": 0, "lights": 0,
+           "problems": ""},
+  "build": "ky-20261019-2305", "by": "web@HANK-DEV", "updated": "2026-10-31T11:29:10-05:00"}]}
+```
+
+A check is `""` (not checked), `ok`, `bad` or `na`; a correction's `""` or `0` leaves the data, or the game's choice, as
+it is (the values the tools offer are in [atlas/web/vocab.json](atlas/web/vocab.json), which the tests keep in step with
+the game). `game` is what the game made of it when the editor last built it, for the browser, which can't build it; the
+browser never changes it. A record that says nothing is dropped. Both tools read a region's file again just before they
+write it and write it under a temporary name; a record saved meanwhile by the other tool is noticed (the browser reloads
+it, the editor asks) rather than overwritten.
+
+To sweep a town before checking it by hand, the survey builds the buildings nearest its middle one by one as the editor
+does, and reports what the game made of each and what the checks found wrong (`report.md`), with the map as the atlas
+draws it (`atlas-map.png`):
+`Unity.exe -batchmode -projectPath <project> -executeMethod CloneZ.EditorTools.KentuckyAtlasWindow.Survey -clonez-out <dir> [-clonez-atlas-place <town>] [-clonez-atlas-count <n>] [-clonez-atlas-levels] [-clonez-atlas-ids <id,id,…>] -logFile <log>`
+with `CLONEZ_WORLD` set (with the editor open on the project, run it on a copy, as for the smoke tests).
+`-clonez-atlas-save` also saves a test correction to the store and checks the game builds it the corrected way, so point
+`CLONEZ_WORLD` at a copy of the store for that. `-clonez-atlas-levels` takes the nearest buildings likely to have floors
+above or below the ground one (mapped with storeys, or houses), reports every floor (its rooms, whether everything
+furnished on it stands on it, the doorways the dead don't get through, whether the dead get there from the front door
+and, where they don't, how far along its stairs the NavMesh reaches, with a map of the stairwell and what's in the way
+where it breaks) and takes the isometric cutaway's pictures of the first few with a survivor stand-in on each floor's
+landing (`levels_<id>_<level>.png`).
+`-clonez-atlas-ids` surveys just those buildings (OpenStreetMap ids, in the place's region), to go back over the ones a
+survey found wrong.
+
 ## Credit
 
 The map data is © OpenStreetMap contributors and available under the
 [Open Database License](https://opendatacommons.org/licenses/odbl/). The game credits it in the zone's description;
-keep that credit wherever the map is shown.
+keep that credit wherever the map is shown. The browser atlas's aerial photographs are the Commonwealth of Kentucky's
+(KyFromAbove), credited on its map.

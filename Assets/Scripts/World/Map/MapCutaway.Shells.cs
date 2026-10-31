@@ -148,6 +148,24 @@ namespace CloneZ
             public System.Collections.Generic.List<Renderer> Doors;
             public System.Collections.Generic.List<Renderer> DoorNoShadow;
             public int DoorCut = -1;
+
+            // A building with floors above or below the ground one (MapCutaway.Levels.cs): its levels; its upper part's
+            // storeys apart from the roof (Bands[0] what stands between the ground storey and level 1's floor, Bands[k] storey
+            // k) and each storey's walls as a building of their own to the stand-ins (BandWalls[k], cut by facing while the
+            // survivor is on that floor); each level's floors and stairs and its stairwell's walls (index level - Lowest).
+            public KentuckyMap.LevelLayout Levels;
+            public MeshRenderer[] Bands;
+            public Mesh[] BandMeshes;
+            public Building[] BandWalls;
+            public Renderer[] Structure, Stairwells;
+            /// <summary>For a storey's walls standing in as a building (see <see cref="BandWalls"/>): the floor its cut walls'
+            /// stubs stand on (0 for a building's own walls, which stand on its base).</summary>
+            public float StubBase;
+            /// <summary>The level the survivor is on in it while they're in it (<see cref="int.MinValue"/> when they aren't),
+            /// the level everything over which is lifted now (<see cref="int.MaxValue"/>: nothing is) and the facings of that
+            /// floor's walls lowered; when the hidden parts were last made sure of.</summary>
+            public int Level = int.MinValue, Shown = int.MaxValue, ShownFacing;
+            public float Reassert;
         }
     }
 }

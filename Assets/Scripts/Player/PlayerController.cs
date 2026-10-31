@@ -53,6 +53,13 @@ namespace CloneZ
         public bool IsSneaking { get; private set; }
         public float CurrentSpeed { get; private set; }
 
+        /// <summary>Forgets a fall in progress, for a survivor just set down somewhere else (see <see cref="FallWatch"/>).</summary>
+        public void StopFalling()
+        {
+            _verticalVelocity = 0f;
+            _fallSpeed = 0f;
+        }
+
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
@@ -317,7 +324,10 @@ namespace CloneZ
             _verticalVelocity += CloneZConfig.Gravity * Time.deltaTime;
 
             Vector3 velocity = worldMove * speed + Vector3.up * _verticalVelocity;
+            bool wasGrounded = _controller.isGrounded;
+            LevelStructure.KeepUp(_controller);
             if (_controller.enabled) _controller.Move(velocity * Time.deltaTime);
+            SnapDown(wasGrounded, velocity);
             TrackLanding();
 
             KeepInsideArena();
@@ -392,7 +402,34 @@ namespace CloneZ
             }
             if (_controller.isGrounded && _verticalVelocity < 0f) _verticalVelocity = -2f;
             _verticalVelocity += CloneZConfig.Gravity * Time.deltaTime;
+            LevelStructure.KeepUp(_controller);
             _controller.Move(Vector3.up * _verticalVelocity * Time.deltaTime);
+        }
+
+        private static readonly RaycastHit[] s_SnapHits = new RaycastHit[8];
+
+        // Walking down a slope or a flight of stairs faster than gravity pulls: back down onto the ground under the feet, no
+        // further than a 45° slope drops over the step just taken (anything deeper is a fall).
+        private void SnapDown(bool wasGrounded, Vector3 velocity)
+        {
+            if (!_controller.enabled || !wasGrounded || _controller.isGrounded || velocity.y > 0f) return;
+            float flat = new Vector2(velocity.x, velocity.z).magnitude * Time.deltaTime;
+            float big = _controller.radius, small = big * 0.9f;
+            Vector3 bottom = transform.TransformPoint(_controller.center) + Vector3.down * (_controller.height * 0.5f - big);
+            int n = Physics.SphereCastNonAlloc(bottom, small, Vector3.down, s_SnapHits, flat + 0.06f + (big - small), ~0, QueryTriggerInteraction.Ignore);
+            // Over a basement the body passes through the ground's box (LevelStructure): it isn't ground there.
+            bool overBasement = LevelStructure.OverBasement(transform.position);
+            float best = float.MaxValue;
+            for (int i = 0; i < n; i++)
+            {
+                RaycastHit h = s_SnapHits[i];
+                Collider c = h.collider;
+                if (c == null || c == _controller || h.distance <= 0f || h.normal.y < 0.7f) continue;
+                if (overBasement && c is BoxCollider && c.gameObject.name == "Ground") continue;
+                best = Mathf.Min(best, h.distance);
+            }
+            if (best == float.MaxValue) return;
+            _controller.Move(Vector3.down * Mathf.Max(0f, best - (big - small) + 0.01f));
         }
 
         private void KeepInsideArena()

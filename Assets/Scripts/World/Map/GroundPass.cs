@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static CloneZ.KentuckyMap;
@@ -82,8 +83,11 @@ namespace CloneZ
             Warm();
             // Ensure shared geometry (e.g., meshes) is prepared.
             MakeAll();
+            // The basements under the houses: the ground leaves them open (KentuckyMap.Levels).
+            g.Holes = new List<Vector2[]>();
+            foreach (string step in Basements(site, g.Holes)) yield return step;
             // Create the base walkable snow and distant snowfield.
-            BaseSnow(site);
+            BaseSnow(site, g.Holes);
             // Partition the site into owners (areas) for later processing.
             Partition(g);
             yield return "ground";
@@ -168,15 +172,25 @@ namespace CloneZ
 
         #region The base snow
         // Walkable snow with one collider over the playable square (like the procedural town's), and a snowfield
-        // without a collider under the scenery beyond, so the horizon isn't empty.
-        private static void BaseSnow(Site site)
+        // without a collider under the scenery beyond, so the horizon isn't empty. Over a basement the snow is open: a body
+        // there passes through the collider (LevelStructure), and the house's own floor covers it.
+        private static void BaseSnow(Site site, List<Vector2[]> holes)
         {
             float half = site.Half + 0.8f;
             var ground = new GameObject("Ground");
             ground.transform.SetParent(site.Town.World, false);
             var m = new RaidMesh();
-            m.Box(new Vector3(0f, -0.5f, 0f), new Vector3(half * 2f, 1f, half * 2f), SnowSurf);
+            SnowTop(m, half, holes);
             m.ApplyTo(ground, Vector3.zero, ShadowCastingMode.Off);
+            // Its sides, a metre deep, for where the next piece isn't built: open where a basement crosses one, and kept out
+            // of the NavMesh (there's nothing to walk on under the snow, and a side hangs in any basement past the piece's edge
+            // that it doesn't know of, under the next piece's house).
+            var sides = new RaidMesh();
+            SnowSides(sides, half, holes);
+            var skirt = new GameObject("Sides");
+            skirt.transform.SetParent(ground.transform, false);
+            sides.ApplyTo(skirt, Vector3.zero, ShadowCastingMode.Off);
+            skirt.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
             var col = ground.AddComponent<BoxCollider>();
             col.center = new Vector3(0f, -0.5f, 0f);
             col.size = new Vector3(half * 2f, 1f, half * 2f);
@@ -186,6 +200,183 @@ namespace CloneZ
             var field = new RaidMesh();
             field.Flat(new Vector3(0f, FarSnowY, 0f), far * 2f, far * 2f, 0f, SnowSurf);
             field.Emit("Snowfield", site.Town.Scenery, Vector3.zero, ShadowCastingMode.Off);
+        }
+
+        // The snow's top with the basements cut out of it; no underside, which would hang in the basements (and keep the
+        // NavMesh out of them).
+        private static void SnowTop(RaidMesh m, float half, List<Vector2[]> holes)
+        {
+            var pieces = new List<List<Vector2>>
+            {
+                new List<Vector2> { new Vector2(-half, -half), new Vector2(half, -half), new Vector2(half, half), new Vector2(-half, half) },
+            };
+            var next = new List<List<Vector2>>();
+            var frame = new LevelLayout();
+            if (holes != null)
+                foreach (Vector2[] h in holes)
+                {
+                    if (!HoleFrame(h, frame, out Rect hole)) continue;
+                    next.Clear();
+                    foreach (List<Vector2> p in pieces)
+                    {
+                        if (!Overlaps(frame, p, hole)) next.Add(p);
+                        else Levels.OutsideRect(frame, p, hole, next);
+                    }
+                    (pieces, next) = (next, pieces);
+                }
+            Surf snow = SnowSurf;
+            foreach (List<Vector2> p in pieces)
+            {
+                if (MapGeometry.SignedArea(p) > 0f) p.Reverse();   // clockwise seen from above: the face looks up
+                for (int i = 1; i + 1 < p.Count; i++) m.Tri(To3(p[0], 0f), To3(p[i], 0f), To3(p[i + 1], 0f), snow);
+            }
+        }
+
+        // The snow's sides round the square, a metre deep, less where a basement's hole crosses one.
+        private static void SnowSides(RaidMesh m, float half, List<Vector2[]> holes)
+        {
+            Surf snow = SnowSurf;
+            SnowSide(m, new Vector2(-half, half), new Vector2(half, half), Vector3.forward, holes, snow);
+            SnowSide(m, new Vector2(-half, -half), new Vector2(half, -half), Vector3.back, holes, snow);
+            SnowSide(m, new Vector2(half, -half), new Vector2(half, half), Vector3.right, holes, snow);
+            SnowSide(m, new Vector2(-half, -half), new Vector2(-half, half), Vector3.left, holes, snow);
+        }
+
+        private static void SnowSide(RaidMesh m, Vector2 a, Vector2 b, Vector3 outward, List<Vector2[]> holes, in Surf snow)
+        {
+            var cuts = new List<Vector2>(2);
+            if (holes != null)
+                foreach (Vector2[] h in holes)
+                    if (Crossing(a, b, h, out float t0, out float t1)) cuts.Add(new Vector2(t0, t1));
+            cuts.Sort((p, q) => p.x.CompareTo(q.x));
+            float length = Vector2.Distance(a, b), t = 0f;
+            foreach (Vector2 c in cuts)
+            {
+                if (c.x > t) SnowStretch(m, a, b, t, c.x, length, outward, snow);
+                t = Mathf.Max(t, c.y);
+            }
+            if (t < 1f) SnowStretch(m, a, b, t, 1f, length, outward, snow);
+        }
+
+        private static void SnowStretch(RaidMesh m, Vector2 a, Vector2 b, float t0, float t1, float length, Vector3 outward, in Surf snow)
+        {
+            if ((t1 - t0) * length < 0.01f) return;
+            Vector2 mid = Vector2.Lerp(a, b, (t0 + t1) * 0.5f);
+            m.Upright(new Vector3(mid.x, -0.5f, mid.y), outward, (t1 - t0) * length, 1f, snow);
+        }
+
+        // The stretch t0..t1 of the segment a..b that lies in a convex quad (clipped against each of its sides), if any.
+        private static bool Crossing(Vector2 a, Vector2 b, Vector2[] quad, out float t0, out float t1)
+        {
+            t0 = 0f;
+            t1 = 1f;
+            Vector2 d = b - a, mid = Vector2.zero;
+            foreach (Vector2 p in quad) mid += p;
+            mid /= quad.Length;
+            for (int i = 0; i < quad.Length; i++)
+            {
+                Vector2 p = quad[i], e = quad[(i + 1) % quad.Length] - p;
+                var n = new Vector2(-e.y, e.x);
+                if (Vector2.Dot(mid - p, n) < 0f) n = -n;   // inward
+                float num = Vector2.Dot(a - p, n), den = Vector2.Dot(d, n);
+                if (Mathf.Abs(den) < 1e-9f)
+                {
+                    if (num < 0f) return false;
+                    continue;
+                }
+                float t = -num / den;
+                if (den > 0f) t0 = Mathf.Max(t0, t);
+                else t1 = Mathf.Min(t1, t);
+                if (t0 >= t1) return false;
+            }
+            return true;
+        }
+        #endregion
+
+        #region Basements
+        // The basements under the site's houses (and those of the houses its neighbours build that reach into it): their
+        // corners, anticlockwise. KentuckyMap.Levels tells from the data alone, so the buildings, raised after the ground,
+        // have them just where it leaves room. Each house's main block is worked out here (and kept): a step at a time.
+        private static IEnumerable<string> Basements(Site site, List<Vector2[]> into)
+        {
+            if (site.Detail != Detail.Full) yield break;
+            foreach (Footprint f in site.Area.Buildings)
+            {
+                Basement(f, into);
+                if (site.StepDue) yield return "ground";
+            }
+            foreach (Footprint f in site.Area.Foreign)
+            {
+                Basement(f, into);
+                if (site.StepDue) yield return "ground";
+            }
+        }
+
+        private static void Basement(Footprint f, List<Vector2[]> into)
+        {
+            Vector2[] b = Levels.BasementOf(f);
+            if (b != null && b.Length == 4) into.Add(b);
+        }
+
+        // A basement's rectangle in a frame of its own (its first corner, its sides' directions).
+        private static bool HoleFrame(Vector2[] h, LevelLayout frame, out Rect hole)
+        {
+            Vector2 ex = h[1] - h[0], ez = h[3] - h[0];
+            float w = ex.magnitude, d = ez.magnitude;
+            hole = new Rect(0f, 0f, w, d);
+            if (w < 0.5f || d < 0.5f) return false;
+            frame.Origin = h[0];
+            frame.Ex = ex / w;
+            frame.Ez = ez / d;
+            return true;
+        }
+
+        // True when a polygon's extent in the frame overlaps the rectangle.
+        private static bool Overlaps(LevelLayout frame, List<Vector2> poly, Rect r)
+        {
+            float x0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, z1 = float.MinValue;
+            foreach (Vector2 p in poly)
+            {
+                Vector2 q = frame.ToLocal(p);
+                x0 = Mathf.Min(x0, q.x); x1 = Mathf.Max(x1, q.x);
+                z0 = Mathf.Min(z0, q.y); z1 = Mathf.Max(z1, q.y);
+            }
+            return x1 > r.xMin + 1e-3f && x0 < r.xMax - 1e-3f && z1 > r.yMin + 1e-3f && z0 < r.yMax - 1e-3f;
+        }
+
+        // True when the square cell (x0, z0)..(x1, z1) and the convex quad overlap (by their separating axes), less a
+        // sliver at the edges.
+        private static bool CellOverHole(Vector2[] h, float x0, float z0, float x1, float z1)
+        {
+            const float eps = 0.05f;
+            float hx0 = float.MaxValue, hz0 = float.MaxValue, hx1 = float.MinValue, hz1 = float.MinValue;
+            foreach (Vector2 p in h)
+            {
+                hx0 = Mathf.Min(hx0, p.x); hx1 = Mathf.Max(hx1, p.x);
+                hz0 = Mathf.Min(hz0, p.y); hz1 = Mathf.Max(hz1, p.y);
+            }
+            if (hx1 <= x0 + eps || hx0 >= x1 - eps || hz1 <= z0 + eps || hz0 >= z1 - eps) return false;
+            for (int i = 0; i < h.Length; i++)
+            {
+                Vector2 e = h[(i + 1) % h.Length] - h[i];
+                var n = new Vector2(-e.y, e.x);
+                float len = n.magnitude;
+                if (len < 1e-5f) continue;
+                n /= len;
+                float a0 = float.MaxValue, a1 = float.MinValue, c0 = float.MaxValue, c1 = float.MinValue;
+                foreach (Vector2 p in h)
+                {
+                    float s = Vector2.Dot(p, n);
+                    a0 = Mathf.Min(a0, s); a1 = Mathf.Max(a1, s);
+                }
+                for (int k = 0; k < 4; k++)
+                {
+                    float s = Vector2.Dot(new Vector2((k & 1) == 0 ? x0 : x1, (k & 2) == 0 ? z0 : z1), n);
+                    c0 = Mathf.Min(c0, s); c1 = Mathf.Max(c1, s);
+                }
+                if (a1 <= c0 + eps || c1 <= a0 + eps) return false;
+            }
+            return true;
         }
         #endregion
 
@@ -211,6 +402,8 @@ namespace CloneZ
             public readonly Vector2 Offset;
             /// <summary>The areas cut to the square, in priority order (the last one shows where they overlap).</summary>
             public List<Owner> Owners = new List<Owner>();
+            /// <summary>The basements under the site's houses, their corners anticlockwise: the ground leaves them open.</summary>
+            public List<Vector2[]> Holes;
             /// <summary>A fixed map's areas past its edge (the scenery ring), in the four bands round the square.</summary>
             public readonly List<List<Owner>> Ring = new List<List<Owner>>();
             public readonly List<ParkingStall> Stalls = new List<ParkingStall>();

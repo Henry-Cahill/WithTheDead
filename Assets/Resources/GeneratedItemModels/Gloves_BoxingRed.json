@@ -1,0 +1,12 @@
+{"version": 1, "id": "Gloves_BoxingRed", "baseHeight": 0.095, "name": "Gloves Boxing Red", "model": "gpt-oss:120b", "notes": "Flat pair of red boxing gloves, each ~0.24 m long × 0.12 m wide × 0.07 m thick, laid side‑by‑side on the floor.  Each glove has a main palm block, a thumb protrusion, a cuff band at the wrist, a small logo on the top surface and a thin stitching strip.", "score": 6, "parts": [
+  {"name":"LeftBody","shape":"cube","pos":[-0.18,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"LeftThumb","shape":"cylinder","pos":[-0.18,0.0,0.09],"rot":[90.0,0.0,0.0],"size":[0.07,0.06,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"LeftCuff","shape":"cylinder","pos":[-0.27,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.07,0.06],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LeftLogo","shape":"cylinder","pos":[-0.18,0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"LeftStitch","shape":"cube","pos":[-0.18,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.12],"color":[0.7,0.65,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"RightBody","shape":"cube","pos":[0.18,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"RightThumb","shape":"cylinder","pos":[0.18,0.0,-0.09],"rot":[90.0,0.0,0.0],"size":[0.07,0.06,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"RightCuff","shape":"cylinder","pos":[0.27,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.07,0.06],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RightLogo","shape":"cylinder","pos":[0.18,0.0025,-0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"RightStitch","shape":"cube","pos":[0.18,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.12],"color":[0.7,0.65,0.75],"smooth":0.05,"metal":0.0}
+]}

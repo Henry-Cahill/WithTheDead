@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -10,55 +11,108 @@ namespace CloneZ
 {
     /// <summary>
     /// An automated smoke test, inert unless the game (or a batch-mode editor in play mode) is started with
-    /// <c>-clonez-smoke solo|hunter|host|client|lobby</c>. It plays through the real flows — makes a character, walks into
+    /// <c>-clonez-smoke solo|hunter|host|client|lobby|wave</c>. It plays through the real flows — makes a character, walks into
     /// the bar, deploys into a Zone — and pokes the systems (a grenade, a drone, a car, a camp gate and a breaching
     /// charge, the tablet, cuffs, the economy; as a hunter, claws and a trick; as host and client, a networked raid),
     /// counting every error and exception the game logs. <c>lobby</c> plays the starter lobby in the town instead: into
     /// the Kettle from the title screen, out of its front door into the raid where you stand, and back through an exit;
-    /// with <c>-clonez-smoke-shots &lt;dir&gt;</c> it photographs each step. It uses its own profile file and never touches
-    /// the player's. Results are logged as "[Smoke] ..." lines; the process exits with 0 (clean) or 2 (errors).
+    /// with <c>-clonez-smoke-shots &lt;dir&gt;</c> it photographs each step. <c>wave</c> plays Wave Survival through its own
+    /// controls: every key and mouse action, every fixture action, every button of every panel, the pause menu, waves,
+    /// saving, Continue and a death (see SmokeTest.Wave.cs). It uses its own profile file (and, for <c>wave</c>, its own
+    /// save file) and never touches the player's. Results are logged as "[Smoke] ..." lines; the process exits with 0
+    /// (clean) or 2 (errors). The editor's CloneZ ▸ Smoke Test menu plays a run in its own Game view instead, to watch it
+    /// (stopping play mode when it's done), and <c>-clonez-smoke-pace &lt;seconds&gt;</c> leaves that pause between presses.
     /// </summary>
-    public sealed class SmokeTest : MonoBehaviour
+    public sealed partial class SmokeTest : MonoBehaviour
     {
         private const ushort Port = 7791;
         private static string s_Mode;
         private static int s_Errors;
+        private static string s_LastError;
         private static string s_ShotDir;
         private static int s_SceneLoads;
         private static readonly List<string> s_FirstErrors = new List<string>();
         private readonly List<string> _checks = new List<string>();
         private int _failed;
 
+        /// <summary>Session-state keys the editor's Smoke Test menu sets to play a mode in its own Game view, with a pace
+        /// (seconds) between presses to watch it by.</summary>
+        public const string MenuModeKey = "CloneZ.Smoke.Mode", MenuPaceKey = "CloneZ.Smoke.Pace";
+        private static bool s_FromMenu, s_Finished, s_RanInBackground;
+
         public static bool Running => s_Mode != null;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Boot()
         {
+            if (s_Mode != null) return;
             string[] args = Environment.GetCommandLineArgs();
-            int i = Array.IndexOf(args, "-clonez-smoke");
-            if (i < 0 || i + 1 >= args.Length || s_Mode != null) return;
-            s_Mode = args[i + 1].ToLowerInvariant();
+            s_FromMenu = false;
+            s_Pace = 0f;
+            string mode = ArgAfter(args, "-clonez-smoke") ?? MenuRequest();
+            if (string.IsNullOrEmpty(mode)) return;
+            s_Mode = mode.ToLowerInvariant();
+            // An editor that skips the domain reload keeps statics from one play session to the next: start clean.
             s_Errors = 0;
+            s_LastError = null;
+            s_Saves = 0;
+            s_SceneLoads = 0;
+            s_Finished = false;
             s_FirstErrors.Clear();
-            int shots = Array.IndexOf(args, "-clonez-smoke-shots");
-            if (shots >= 0 && shots + 1 < args.Length)
+            if (float.TryParse(ArgAfter(args, "-clonez-smoke-pace"), NumberStyles.Float, CultureInfo.InvariantCulture, out float pace)) s_Pace = pace;
+            s_ShotDir = ArgAfter(args, "-clonez-smoke-shots");
+            if (s_ShotDir != null)
             {
-                s_ShotDir = args[shots + 1];
                 try { Directory.CreateDirectory(s_ShotDir); } catch { s_ShotDir = null; }
             }
-            UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, how) => s_SceneLoads++;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
             ProfileStore.PathOverride = "smoke_" + s_Mode + "_profile.json";
             try { if (File.Exists(ProfileStore.FilePath)) File.Delete(ProfileStore.FilePath); } catch { }
+            if (s_Mode == "wave") PrepareWave();
             Application.logMessageReceived += OnLog;
+            s_RanInBackground = Application.runInBackground;
             Application.runInBackground = true;
+#if UNITY_EDITOR
+            if (s_FromMenu)
+            {
+                // A script change mid-run would reload the scripts under it and lose the run and its tidying up: the
+                // reload waits until the run is over (OnPlayModeChanged).
+                UnityEditor.EditorApplication.LockReloadAssemblies();
+                UnityEditor.EditorApplication.playModeStateChanged += OnPlayModeChanged;
+            }
+#endif
             var go = new GameObject("[Smoke]");
             DontDestroyOnLoad(go);
             go.AddComponent<SmokeTest>();
-            Debug.Log("[Smoke] mode=" + s_Mode + " profile=" + ProfileStore.FilePath);
+            Debug.Log("[Smoke] mode=" + s_Mode + " profile=" + ProfileStore.FilePath + (s_Pace > 0f ? " pace=" + s_Pace + " s" : ""));
         }
+
+        private static string ArgAfter(string[] args, string name)
+        {
+            int i = Array.IndexOf(args, name);
+            return i >= 0 && i + 1 < args.Length ? args[i + 1] : null;
+        }
+
+        // A run the editor's Smoke Test menu asked for, in its session state (which outlives the domain reload into play mode).
+        private static string MenuRequest()
+        {
+#if UNITY_EDITOR
+            string mode = UnityEditor.SessionState.GetString(MenuModeKey, "");
+            if (mode.Length == 0) return null;
+            UnityEditor.SessionState.EraseString(MenuModeKey);
+            s_Pace = UnityEditor.SessionState.GetFloat(MenuPaceKey, 0f);
+            s_FromMenu = true;
+            return mode;
+#else
+            return null;
+#endif
+        }
+
+        private static void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode how) => s_SceneLoads++;
 
         private static void OnLog(string message, string stack, LogType type)
         {
+            if (message.StartsWith("[CloneZ] Game saved", StringComparison.Ordinal)) s_Saves++;
             if (type != LogType.Exception && type != LogType.Error && type != LogType.Assert) return;
             if (message.StartsWith("[Smoke]")) return;
             // The editor's own AI Assistant relay complains in batch mode, its search indexer throws on startup in this Unity,
@@ -66,7 +120,8 @@ namespace CloneZ
             if (stack != null && (stack.Contains("com.unity.ai.assistant") || stack.Contains("UnityEditor.Search.")
                 || stack.Contains("UnityEditor.EditorApplicationLayout"))) return;
             s_Errors++;
-            if (s_FirstErrors.Count < 30) s_FirstErrors.Add(type + ": " + message + (string.IsNullOrEmpty(stack) ? "" : " @ " + FirstLine(stack)));
+            s_LastError = type + ": " + message + (string.IsNullOrEmpty(stack) ? "" : " @ " + FirstLine(stack));
+            if (s_FirstErrors.Count < 30) s_FirstErrors.Add(s_LastError);
             // The NavMesh bake names no mesh it rejects; look for the culprit now (the bake is synchronous, so the scene is as
             // the bake saw it) and again on the next frame.
             if (message.Contains("invalid vertex data"))
@@ -170,12 +225,13 @@ namespace CloneZ
         {
             yield return null;
             yield return null;
-            MakeCharacter();
+            if (s_Mode != "wave") MakeCharacter();   // the waves need no runner
             switch (s_Mode)
             {
                 case "host": yield return Host(); break;
                 case "client": yield return Client(); break;
                 case "lobby": yield return Lobby(); break;
+                case "wave": yield return WaveRun(); break;
                 default: yield return Solo(s_Mode == "hunter"); break;
             }
             Finish();
@@ -579,6 +635,8 @@ namespace CloneZ
             }
             yield return new WaitForSeconds(1.5f);
             Check("roof back over the bar from the street", RoofShown(), "survivor " + Vector3.Dot(me.transform.position - door.transform.position, outward).ToString("0.0") + " m out of the door");
+            Check("standing in the street, not fallen through it", FallWatch.Caught == 0 && cc != null && cc.isGrounded && me.transform.position.y > -1f,
+                "y " + me.transform.position.y.ToString("0.00") + (FallWatch.Caught > 0 ? ", fell out of the world " + FallWatch.Caught + " time(s)" : ""));
             // From the street, rain and snow fall round the bar and none inside it.
             Climate.Winter = false;
             if (weather != null) weather.Restore(Weather.Rain, 0.6f, 0.28f, 0.75f);
@@ -914,12 +972,64 @@ namespace CloneZ
             foreach (string e in s_FirstErrors) Debug.Log("[Smoke] error: " + e);
             int code = _failed > 0 || s_Errors > 0 ? 2 : 0;
             Debug.Log("[Smoke] RESULT " + (code == 0 ? "PASS" : "FAIL") + " exit=" + code);
-            try { if (File.Exists(ProfileStore.FilePath)) File.Delete(ProfileStore.FilePath); } catch { }
+            s_Finished = true;
+#if UNITY_EDITOR
+            if (s_FromMenu)
+            {
+                UnityEditor.EditorApplication.isPlaying = false;   // back to edit mode, which tidies up (OnPlayModeChanged)
+                return;
+            }
+#endif
+            CleanUp();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.Exit(code);
 #else
             Application.Quit(code);
 #endif
         }
+
+        // Puts back what a run changed outside itself: its profile file, and for the waves its save file, the settings
+        // its presses wrote and the input it took over.
+        private static void CleanUp()
+        {
+            try { if (File.Exists(ProfileStore.FilePath)) File.Delete(ProfileStore.FilePath); } catch { }
+            if (s_Mode == "wave") EndWave();
+        }
+
+#if UNITY_EDITOR
+        // A menu run ends in edit mode, whether it finished or the Play button stopped it; edit mode comes after every
+        // quit-save the run's world made. This editor goes on to play the game on its own profile, save and settings.
+        private static void OnPlayModeChanged(UnityEditor.PlayModeStateChange change)
+        {
+            // The input goes back while the run's settings object still exists: play mode's own objects go as it ends,
+            // and the Input System then restores its settings into whichever object is current.
+            if (change == UnityEditor.PlayModeStateChange.ExitingPlayMode)
+            {
+                RemoveInput();
+                return;
+            }
+            if (change != UnityEditor.PlayModeStateChange.EnteredEditMode) return;
+            UnityEditor.EditorApplication.playModeStateChanged -= OnPlayModeChanged;
+            try
+            {
+                if (!s_Finished) Debug.Log("[Smoke] " + s_Mode + ": stopped before the end");
+                CleanUp();
+                SaveSystem.PathOverride = null;
+                ProfileStore.PathOverride = null;
+                typeof(ProfileStore).GetField("s_Account", BindingFlags.NonPublic | BindingFlags.Static)?.SetValue(null, null);   // the run's account
+                GameSettings.Load();
+                Application.logMessageReceived -= OnLog;
+                UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+                Application.runInBackground = s_RanInBackground;
+                s_Mode = null;
+                s_FromMenu = false;
+                s_Pace = 0f;
+            }
+            finally
+            {
+                UnityEditor.EditorApplication.UnlockReloadAssemblies();
+            }
+        }
+#endif
     }
 }

@@ -1,0 +1,10 @@
+{"version": 1, "id": "fannypack", "baseHeight": 0.073, "name": "Fanny Pack", "model": "gpt-oss:120b", "notes": "Flat fanny pack laid out as a product photo: 0.25 m wide × 0.15 m tall × 0.07 m deep, 2 cm thick. Main pouch, front flap, side pocket, two strap loops, front buckle, top zipper strip and a thin inner lining give a clear silhouette.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.002,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.15],"color":[0.45,0.2,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"Flap","shape":"cube","pos":[0.0,0.0055,0.0738],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.04],"color":[0.45,0.2,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"SidePocket","shape":"cube","pos":[-0.09,-0.003,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.07,0.018,0.08],"color":[0.38,0.16,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.08,-0.002,-0.0788],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.2,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.08,-0.002,-0.0788],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.2,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[0.0,-0.0045,0.0613],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.01],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":0.9},
+  {"name":"Zipper","shape":"cube","pos":[0.0,0.0005,0.0613],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.01],"color":[0.3,0.3,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"Lining","shape":"cube","pos":[0.0,-0.004,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.24,0.018,0.14],"color":[0.55,0.3,0.35],"smooth":0.05,"metal":0.0}
+]}

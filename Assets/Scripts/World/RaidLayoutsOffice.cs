@@ -98,7 +98,7 @@ namespace CloneZ
             // --- Break room: the home's own sink unit, counter and fridge, wall cupboards over them, a table to eat at ---
             RaidBuilding.Place sink = b.N(brk, 3.75f, 0.63f);
             Transform sinkBody = b.FixtureBody(brk, sink, Sz(1.22f, 1.0f, 0.63f), false, null, "Sink");
-            WaterSource.Spawn(sinkBody, b.At(sink), WaterSourceKind.Tap, b.Yaw(sink.Yaw));
+            WaterSource.Spawn(sinkBody, b.At(sink), WaterSourceKind.Tap, b.Yaw(sink.Yaw), b.Floor);
             b.HomePiece(brk, b.N(brk, 4.99f, 0.63f), HomeFurnitureKind.Counter);
             b.UpperCabinets(brk, 'N', 4.37f, 2.44f, FurnitureBuilder.HomeCabinetPaint);
             b.HomePiece(brk, b.E(brk, -0.3f, 0.70f), HomeFurnitureKind.Fridge);

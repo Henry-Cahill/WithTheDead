@@ -57,7 +57,8 @@ namespace CloneZ
                 PlanRoom r = plan.Rooms[i];
                 kinds[i] = r.Kind;
                 areas[i] = InnerArea(r);
-                r.Pool = MapGameplay.ContainersFor(site, f, r.Kind);
+                // Nothing stands on the stairs: the stairwell's share goes to the rooms.
+                r.Pool = r.Role == RoomRole.Stair ? System.Array.Empty<ContainerType>() : MapGameplay.ContainersFor(site, f, r.Kind);
             }
             MapGameplay.Allot(site, f, kinds, areas, counts);
             // A room whose kind holds nothing here hands its share to the biggest rooms that do.
@@ -150,7 +151,7 @@ namespace CloneZ
         private static int LampsWanted(PlanRoom r)
         {
             float a = InnerArea(r);
-            if (a < 2.5f) return 0;
+            if (a < 2.5f || r.Role == RoomRole.Stair) return 0;
             return a < 150f ? 1 : a < 400f ? 2 : 3;
         }
 

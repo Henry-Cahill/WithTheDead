@@ -1,0 +1,12 @@
+{"version": 1, "id": "Gloves_FingerlessGloves", "baseHeight": 0.0688, "name": "Gloves Fingerless Gloves", "model": "gpt-oss:120b", "notes": "Fingerless glove pair laid flat, spread like a product photo. Each glove ≈0.20 m wide × 0.25 m long × 0.015 m thick. Consists of a palm block, a thumb extension, a cuff band at the wrist, and thin darker edge strips for a cloth‑seam hint.", "score": 6, "parts": [
+  {"name":"PalmL","shape":"cube","pos":[-0.22,-0.0013,0.02],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThumbL","shape":"cube","pos":[-0.31,-0.0013,-0.01],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.22,-0.0013,-0.09],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgePalmL","shape":"cube","pos":[-0.22,0.0067,0.02],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeThumbL","shape":"cube","pos":[-0.31,0.0067,-0.01],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PalmR","shape":"cube","pos":[0.22,-0.0013,0.02],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThumbR","shape":"cube","pos":[0.31,-0.0013,-0.01],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.22,-0.0013,-0.09],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgePalmR","shape":"cube","pos":[0.22,0.0067,0.02],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeThumbR","shape":"cube","pos":[0.31,0.0067,-0.01],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

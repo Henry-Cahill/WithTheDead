@@ -195,7 +195,7 @@ namespace CloneZ
         {
             Vector3 pos = W(p.X, 0f, p.Z);
             float yaw = Yaw(p.Yaw);
-            HomeFurniture f = HomeFurniture.Spawn(Root, kind, pos, yaw, Rng.Next());
+            HomeFurniture f = HomeFurniture.Spawn(Root, kind, pos, yaw, Rng.Next(), Floor);
             if (room != null && !HomeFurniture.IsSurfaceItem(kind))
             {
                 Rect fp = HomeFurniture.Footprint(kind, pos, yaw);

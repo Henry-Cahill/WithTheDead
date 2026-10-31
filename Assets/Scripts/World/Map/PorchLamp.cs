@@ -33,21 +33,21 @@ namespace CloneZ
         private static readonly float[] s_NearD = new float[MaxLit];
 
         private Light _light;
-        private static readonly Material s_PostMaterial;
-        private static readonly Material s_GlobeMaterial;
-        /// <summary>Creates shared runtime materials for porch‑lamp posts and globes.</summary>
-        static PorchLamp()
+        private static Material s_PostMaterial, s_GlobeMaterial;
+
+        // The post's and the globe's materials, made with the first lamp, in URP's Lit like every material the game makes.
+        // Not in a static constructor: one runs inside the first AddComponent<PorchLamp>(), where Unity's API may not be
+        // called, and it threw there, taking the whole piece's build (and with it the lobby after dark) down.
+        private static void EnsureMaterials()
         {
-            // dark‑brown wood for the post
-            s_PostMaterial = new Material(Shader.Find("Standard"));
-            s_PostMaterial.color = new Color(0.22f, 0.15f, 0.10f);
-            s_PostMaterial.SetFloat("_Glossiness", 0.3f);
-            // warm‑emissive glass for the lamp globe
-            s_GlobeMaterial = new Material(Shader.Find("Standard"));
-            s_GlobeMaterial.color = new Color(1f, 0.82f, 0.56f);
+            if (s_PostMaterial != null && s_GlobeMaterial != null) return;
+            s_PostMaterial = CloneZUtil.Mat(new Color(0.22f, 0.15f, 0.10f), 0.3f);   // dark-brown wood
+            var glass = new Color(1f, 0.82f, 0.56f);                                    // warm, glowing glass
+            s_GlobeMaterial = new Material(CloneZUtil.LitShader) { name = "PorchLampGlobe", color = glass, enableInstancing = true };
+            if (s_GlobeMaterial.HasProperty("_BaseColor")) s_GlobeMaterial.SetColor("_BaseColor", glass);
+            if (s_GlobeMaterial.HasProperty("_Smoothness")) s_GlobeMaterial.SetFloat("_Smoothness", 0.9f);
             s_GlobeMaterial.EnableKeyword("_EMISSION");
             s_GlobeMaterial.SetColor("_EmissionColor", new Color(1f, 0.65f, 0.30f) * 2f);
-            s_GlobeMaterial.SetFloat("_Glossiness", 0.9f);
         }
         private float _intensity, _phase;
         private bool _wanted;
@@ -56,6 +56,7 @@ namespace CloneZ
         /// <paramref name="phase"/> keeps it from flickering in step with its neighbours.</summary>
         internal static PorchLamp Spawn(Transform parent, Vector3 at, float phase)
         {
+            EnsureMaterials();
             // Create a new GameObject to host the lamp instance.
             // Create a new GameObject to host the lamp instance.
             var go = new GameObject("PorchLamp");
@@ -97,14 +98,14 @@ namespace CloneZ
             post.transform.SetParent(go.transform, false);
             post.transform.localScale = new Vector3(0.07f, 0.5f, 0.07f) * randScale;
             post.transform.localPosition = new Vector3(0f, 0.5f, 0f); // pivot at centre, so bottom sits on ground
-            post.GetComponent<Renderer>().material = s_PostMaterial;
+            post.GetComponent<Renderer>().sharedMaterial = s_PostMaterial;
             // create the glass globe
             GameObject globe = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             UnityEngine.Object.DestroyImmediate(globe.GetComponent<Collider>());
             globe.transform.SetParent(go.transform, false);
             globe.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f) * randScale;
             globe.transform.localPosition = new Vector3(0f, 1.0f, 0f);
-            globe.GetComponent<Renderer>().material = s_GlobeMaterial;
+            globe.GetComponent<Renderer>().sharedMaterial = s_GlobeMaterial;
             globe.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
             // Ensure objects are not static (avoid light‑map baking)
             post.isStatic = false;

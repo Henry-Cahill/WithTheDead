@@ -709,6 +709,7 @@ namespace CloneZ
             root.AddComponent<PlayerTemperature>();     // body warmth & wetness (reads clothing + weather)
             root.AddComponent<PlayerFoodSickness>();     // food poisoning / nausea (raised by eating spoiled food)
             root.AddComponent<PlayerController>();
+            root.AddComponent<FallWatch>();           // a drop out of the world: logs what let the survivor through, sets them back
             root.AddComponent<PlayerCombat>();
             root.AddComponent<PlayerInventory>();
             root.AddComponent<PlayerInteractor>();

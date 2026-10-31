@@ -89,9 +89,25 @@ namespace CloneZ
             Rect cover = f.Bounds;
             if (u != null && u != w && u.PlanExtents(Vector3.zero, out Vector4 least, out Vector4 most) && Finite(least) && Finite(most))
                 cover = Rect.MinMaxRect(Mathf.Min(cover.xMin, least.x), Mathf.Min(cover.yMin, least.y), Mathf.Max(cover.xMax, most.x), Mathf.Max(cover.yMax, most.y));
+            // A building with floors above the ground one has its upper part split by storey, so the cutaway can lift what's
+            // over the floor the survivor is on and keep what's under it: the roof stands for the upper part.
+            LevelLayout levels = shell.Levels;
+            RaidMesh[] bands = null;
+            if (levels != null && levels.Top >= 1 && u != null && u != w && !u.IsEmpty && f.Size >= MapCutaway.OwnWallThreshold)
+            {
+                bands = Levels.SplitUpper(u, levels);
+                u.Release();
+                u = bands[levels.Top + 1];
+            }
             GameObject wallsGo = Place(site, w, "Walls " + id, wallsRoot, origin);
             GameObject upperGo = u != w ? Place(site, u, "Upper " + id, upperRoot, origin) : null;
-            if ((wallsGo == null && upperGo == null) || f.Pts.Count < 3) return null;
+            var bandGos = bands != null ? new GameObject[levels.Top + 1] : null;
+            for (int k = 0; bandGos != null && k < bandGos.Length; k++) bandGos[k] = Place(site, bands[k], "Upper " + id + " L" + k, upperRoot, origin);
+            // Each level's floors and stairs with the walls: in the NavMesh, so the dead follow the survivors up and down.
+            var structure = levels != null && shell.Structure != null ? new GameObject[shell.Structure.Length] : null;
+            for (int i = 0; structure != null && i < structure.Length; i++)
+                structure[i] = Place(site, shell.Structure[i], "Level " + id + " " + (i + levels.Lowest), wallsRoot, origin);
+            if ((wallsGo == null && upperGo == null && bandGos == null && structure == null) || f.Pts.Count < 3) return null;
 
             var b = new MapCutaway.Building
             {
@@ -106,6 +122,7 @@ namespace CloneZ
                 WallsMesh = wallsGo != null ? wallsGo.GetComponent<MeshFilter>().sharedMesh : null,
                 UpperMesh = upperGo != null ? upperGo.GetComponent<MeshFilter>().sharedMesh : null,
             };
+            if (levels != null) MapCutaway.SetLevels(b, levels, bandGos, structure, shell.Stairwells);
             bool cuttable = wallsGo != null && shell.WallTop >= MinWalls;
             b.WallTop = cuttable ? shell.WallTop : 0f;
             b.ClipTop = b.WallTop;

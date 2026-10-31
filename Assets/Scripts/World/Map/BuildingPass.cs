@@ -315,6 +315,7 @@ namespace CloneZ
                     j.Shell.WallTop = Mathf.Min(GroundStorey, p.WallHeight);
                     j.Top = p.WallHeight;
                     PlanOpenings(j);
+                    PlanLevels(j);
                     Walls(j);
                     return true;
                 case 1:
@@ -414,6 +415,8 @@ namespace CloneZ
         private static void Walls(Job j)
         {
             Plan p = j.P;
+            // Storeys people go up to have solid walls all the way up.
+            bool upstairs = j.Record != null && j.Record.Levels != null && j.Record.Levels.Top >= 1;
             for (int i = 0; i < j.N; i++)
             {
                 float len = j.Len[i];
@@ -437,7 +440,7 @@ namespace CloneZ
                     }
                     WallBox(j, facing, a, d, inset, cur, s1, 0f, ground, yaw, j.WallS, true);
                     if (seg.Top > GroundStorey + 0.01f)
-                        WallBox(j, j.Upper, a, d, inset, s0, s1, GroundStorey, seg.Top, yaw, j.WallS, false);
+                        WallBox(j, j.Upper, a, d, inset, s0, s1, GroundStorey, seg.Top, yaw, j.WallS, upstairs);
                 }
                 if (j.Lite) continue;
                 Foundation(j, i, facing, yaw);
@@ -546,6 +549,7 @@ namespace CloneZ
         {
             Plan p = j.P;
             Footprint f = j.F;
+            LevelLayout levels = j.Record != null ? j.Record.Levels : null;
             bool roofed = p.Arch != Arch.Ruin && p.Arch != Arch.Canopy;
             if (!j.Lite)
             {
@@ -557,47 +561,115 @@ namespace CloneZ
                 Surf floorSurf = FloorOf(p);
                 Surf ceilingSurf = CeilingSurf;
                 float ceiling = p.Storeys == 1 && p.Eave > 4.5f && p.Arch != Arch.Row ? p.Eave - 0.15f : CeilingY;
+                // Over a basement the ground floor is the building's own (its levels' structure); a stairwell going up
+                // leaves the ground storey's ceiling open over it.
+                bool basement = levels != null && levels.Basement, shaft = levels != null && levels.Top >= 1;
+                var tri = new List<Vector2>(3);
+                var pieces = new List<List<Vector2>>(4);
                 for (int t = 0; t + 2 < tris.Count; t += 3)
                 {
                     Vector2 a = pts[tris[t]], b = pts[tris[t + 1]], c = pts[tris[t + 2]];
-                    floor.Tri(To3(a, 0.02f), To3(b, 0.02f), To3(c, 0.02f), floorSurf);
-                    if (roofed) ceilings.Tri(To3(a, ceiling), To3(c, ceiling), To3(b, ceiling), ceilingSurf);
+                    if (!basement && !shaft)
+                    {
+                        floor.Tri(To3(a, 0.02f), To3(b, 0.02f), To3(c, 0.02f), floorSurf);
+                        if (roofed) ceilings.Tri(To3(a, ceiling), To3(c, ceiling), To3(b, ceiling), ceilingSurf);
+                        continue;
+                    }
+                    tri.Clear();
+                    tri.Add(a);
+                    tri.Add(b);
+                    tri.Add(c);
+                    Pieces(levels, tri, basement ? levels.Main : (Rect?)null, pieces);
+                    foreach (List<Vector2> piece in pieces) FacingUp(floor, piece, 0.02f, floorSurf, false);
+                    if (!roofed) continue;
+                    Pieces(levels, tri, shaft ? levels.Shaft : (Rect?)null, pieces);
+                    foreach (List<Vector2> piece in pieces) FacingUp(ceilings, piece, ceiling, ceilingSurf, true);
                 }
             }
-            Rows(j, roofed && !j.Lite);
+            Rows(j, roofed && !j.Lite, levels);
+            DrawLevels(j);
             if (j.Record != null) j.Site.Enterables.Add(j.Record);
         }
 
-        // The footprint in strips 2 m deep: each strip's stretches inside it are taken from the props and, under a roof,
-        // registered as shelter (a rotated building's bounding box would shelter the snow round its corners).
-        private static readonly List<float> s_Xs = new List<float>(16);
+        // A footprint triangle, less a rectangle of the levels' frame (or whole, without one).
+        private static void Pieces(LevelLayout levels, List<Vector2> tri, Rect? hole, List<List<Vector2>> into)
+        {
+            into.Clear();
+            if (hole == null || !FrameBounds(levels, tri).Overlaps(hole.Value)) into.Add(new List<Vector2>(tri));
+            else Levels.OutsideRect(levels, tri, hole.Value, into);
+        }
 
-        private static void Rows(Job j, bool shelter)
+        // A flat convex polygon at height y, its face up (or down for a ceiling).
+        private static void FacingUp(RaidMesh m, List<Vector2> poly, float y, in Surf s, bool down)
+        {
+            if (poly.Count < 3) return;
+            if (MapGeometry.SignedArea(poly) > 0f) poly.Reverse();   // clockwise seen from above: a face drawn through it looks up
+            for (int i = 1; i + 1 < poly.Count; i++)
+            {
+                if (down) m.Tri(To3(poly[0], y), To3(poly[i + 1], y), To3(poly[i], y), s);
+                else m.Tri(To3(poly[0], y), To3(poly[i], y), To3(poly[i + 1], y), s);
+            }
+        }
+
+        // The footprint in strips 2 m deep: each strip's stretches inside it are taken from the props and, under a roof,
+        // registered as shelter (a rotated building's bounding box would shelter the snow round its corners). What's taken
+        // is the outline's width at the strip's bottom, middle and top, widened to any corner standing in the strip, so a
+        // slanting wall's sliver isn't left to the props (they'd stand in the rooms, and hang in a stairwell's shaft over a
+        // basement); the shelter is the middle's.
+        private static readonly List<float> s_Xs = new List<float>(16);
+        private static readonly List<Vector2> s_Spans = new List<Vector2>(16);
+
+        private static void Rows(Job j, bool shelter, LevelLayout levels = null)
         {
             Footprint f = j.F;
             List<Vector2> p = f.Pts;
-            float shelterTop = Mathf.Min(j.P.FirstStorey, j.P.WallHeight);
+            // Sheltered from the weather: the ground storey, or every level from the basement's floor to the top ceiling.
+            float shelterBottom = levels != null ? levels.Floors[0] : 0f;
+            float shelterTop = levels != null ? levels.Floors[levels.Count] : Mathf.Min(j.P.FirstStorey, j.P.WallHeight);
             for (float z0 = f.Bounds.yMin; z0 < f.Bounds.yMax; z0 += 2f)
             {
                 float z1 = Mathf.Min(z0 + 2f, f.Bounds.yMax), zc = (z0 + z1) * 0.5f;
-                s_Xs.Clear();
-                for (int i = 0, k = p.Count - 1; i < p.Count; k = i++)
+                s_Spans.Clear();
+                Crossings(p, zc, s_Spans);
+                int middle = s_Spans.Count;
+                for (int i = 0; i < middle; i++)
                 {
-                    Vector2 a = p[k], b = p[i];
-                    if ((a.y > zc) == (b.y > zc)) continue;
-                    s_Xs.Add(a.x + (zc - a.y) * (b.x - a.x) / (b.y - a.y));
-                }
-                s_Xs.Sort();
-                for (int i = 0; i + 1 < s_Xs.Count; i += 2)
-                {
-                    float x0 = s_Xs[i], x1 = s_Xs[i + 1];
-                    if (x1 - x0 < 0.3f) continue;
-                    j.Site.Take(Rect.MinMaxRect(x0, z0, x1, z1));
+                    float x0 = s_Spans[i].x, x1 = s_Spans[i].y;
                     if (!shelter || x1 - x0 < 1f) continue;
-                    Shelter.Register(j.Site.ToWorld(new Bounds(new Vector3((x0 + x1) * 0.5f, shelterTop * 0.5f, zc),
-                        new Vector3(x1 - x0 - 0.4f, shelterTop, Mathf.Max(0.5f, z1 - z0 - 0.1f)))));
+                    Shelter.Register(j.Site.ToWorld(new Bounds(new Vector3((x0 + x1) * 0.5f, (shelterBottom + shelterTop) * 0.5f, zc),
+                        new Vector3(x1 - x0 - 0.4f, shelterTop - shelterBottom, Mathf.Max(0.5f, z1 - z0 - 0.1f)))));
                 }
+                Crossings(p, Mathf.Min(z0 + 0.01f, zc), s_Spans);
+                Crossings(p, Mathf.Max(z1 - 0.01f, zc), s_Spans);
+                foreach (Vector2 v in p)
+                {
+                    if (v.y < z0 || v.y > z1) continue;
+                    int best = -1;
+                    float bestD = 2f;
+                    for (int i = 0; i < s_Spans.Count; i++)
+                    {
+                        float d = Mathf.Max(0f, Mathf.Max(s_Spans[i].x - v.x, v.x - s_Spans[i].y));
+                        if (d < bestD) { bestD = d; best = i; }
+                    }
+                    if (best >= 0 && bestD > 0f) s_Spans[best] = new Vector2(Mathf.Min(s_Spans[best].x, v.x), Mathf.Max(s_Spans[best].y, v.x));
+                }
+                foreach (Vector2 s in s_Spans)
+                    if (s.y - s.x >= 0.3f) j.Site.Take(Rect.MinMaxRect(s.x, z0, s.y, z1));
             }
+        }
+
+        // The stretches of the outline across the line z (x from, x to), into `into`.
+        private static void Crossings(List<Vector2> p, float z, List<Vector2> into)
+        {
+            s_Xs.Clear();
+            for (int i = 0, k = p.Count - 1; i < p.Count; k = i++)
+            {
+                Vector2 a = p[k], b = p[i];
+                if ((a.y > z) == (b.y > z)) continue;
+                s_Xs.Add(a.x + (z - a.y) * (b.x - a.x) / (b.y - a.y));
+            }
+            s_Xs.Sort();
+            for (int i = 0; i + 1 < s_Xs.Count; i += 2) into.Add(new Vector2(s_Xs[i], s_Xs[i + 1]));
         }
 
         // The shared floor and ceiling finishes, kept (DecorMaterials makes a key string on every ask).

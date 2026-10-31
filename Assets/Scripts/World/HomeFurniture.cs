@@ -140,11 +140,12 @@ namespace CloneZ
 
         #region Building
         /// <summary>Places a piece of furniture on the ground (or the house floor) at <paramref name="position"/> —
-        /// a surface item (<see cref="IsSurfaceItem"/>) on top of the furniture it stands on.</summary>
-        public static HomeFurniture Spawn(Transform parent, HomeFurnitureKind kind, Vector3 position, float yaw, int seed)
+        /// a surface item (<see cref="IsSurfaceItem"/>) on top of the furniture it stands on. With
+        /// <paramref name="floor"/>, on a floor at that height instead (a real building's upper floor or basement).</summary>
+        public static HomeFurniture Spawn(Transform parent, HomeFurnitureKind kind, Vector3 position, float yaw, int seed, float? floor = null)
         {
             SupportOf(kind, out float surface);
-            position.y = BuildPiece.FloorTopAt(position) + surface;
+            position.y = (floor ?? BuildPiece.FloorTopAt(position)) + surface;
             var go = new GameObject("Furniture_" + kind);
             go.transform.SetParent(parent, false);
             go.transform.SetPositionAndRotation(position, Quaternion.identity);

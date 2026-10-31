@@ -1,0 +1,18 @@
+{"version": 1, "id": "Nails", "baseHeight": 0.064, "name": "Nails", "model": "gpt-oss:120b", "notes": "Pile of 8 common nails, each 4 cm long (3 mm shaft diameter, 8 mm head diameter, 4 mm head thickness). Nails lie flat on the ground, slightly scattered, giving a recognisable metallic silhouette.", "score": 7, "parts": [
+  {"name":"Nail1_Shaft","shape":"cylinder","pos":[-0.0178,0.0,-0.0225],"rot":[0.0,5.0,90.0],"size":[0.003,0.036,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail1_Head","shape":"cylinder","pos":[-0.0378,0.0,-0.0225],"rot":[0.0,5.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail2_Shaft","shape":"cylinder","pos":[0.0122,0.0,-0.0175],"rot":[0.0,-3.0,90.0],"size":[0.003,0.036,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail2_Head","shape":"cylinder","pos":[-0.0078,0.0,-0.0175],"rot":[0.0,-3.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail3_Shaft","shape":"cylinder","pos":[-0.0128,0.0,0.0075],"rot":[0.0,10.0,90.0],"size":[0.003,0.036,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail3_Head","shape":"cylinder","pos":[-0.0328,0.0,0.0075],"rot":[0.0,10.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail4_Shaft","shape":"cylinder","pos":[0.0222,0.0,0.0175],"rot":[0.0,-7.0,90.0],"size":[0.003,0.036,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail4_Head","shape":"cylinder","pos":[0.0022,0.0,0.0175],"rot":[0.0,-7.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail5_Shaft","shape":"cylinder","pos":[-0.0028,0.0,0.0225],"rot":[0.0,2.0,90.0],"size":[0.003,0.036,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail5_Head","shape":"cylinder","pos":[-0.0228,0.0,0.0225],"rot":[0.0,2.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail6_Shaft","shape":"cylinder","pos":[0.0272,0.0,-0.0075],"rot":[0.0,-5.0,90.0],"size":[0.003,0.036,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail6_Head","shape":"cylinder","pos":[0.0072,0.0,-0.0075],"rot":[0.0,-5.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail7_Shaft","shape":"cylinder","pos":[0.0022,0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.003,0.036,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail7_Head","shape":"cylinder","pos":[-0.0178,0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail8_Shaft","shape":"cylinder","pos":[-0.0228,0.0,0.0025],"rot":[0.0,8.0,90.0],"size":[0.003,0.036,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nail8_Head","shape":"cylinder","pos":[-0.0428,0.0,0.0025],"rot":[0.0,8.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

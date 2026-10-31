@@ -1,0 +1,18 @@
+{"version": 1, "id": "Gloves_BoneGloves", "baseHeight": 0.073, "name": "Gloves Bone Gloves", "model": "gpt-oss:120b", "notes": "Flat pair of bone‑style gloves, each about 0.25 m long (palm + fingers), 0.12 m wide across the palm, 0.08 m across the hand, 0.025 m thick. Laid out side‑by‑side, palms up, with cuff at the wrist, four fingers, a thumb and a thin stitching line.", "score": 6, "parts": [
+  {"name":"L_Palm","shape":"cube","pos":[-0.15,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_Finger1","shape":"cube","pos":[-0.015,-0.0005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_Finger2","shape":"cube","pos":[-0.015,-0.0005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_Finger3","shape":"cube","pos":[-0.015,-0.0005,0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_Finger4","shape":"cube","pos":[-0.015,-0.0005,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_Thumb","shape":"cube","pos":[-0.215,-0.0005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_Cuff","shape":"cube","pos":[-0.2225,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_Stitch","shape":"cube","pos":[-0.15,0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.08],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"R_Palm","shape":"cube","pos":[0.15,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Finger1","shape":"cube","pos":[0.015,-0.0005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Finger2","shape":"cube","pos":[0.015,-0.0005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Finger3","shape":"cube","pos":[0.015,-0.0005,0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Finger4","shape":"cube","pos":[0.015,-0.0005,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Thumb","shape":"cube","pos":[0.215,-0.0005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Cuff","shape":"cube","pos":[0.2225,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Stitch","shape":"cube","pos":[0.15,0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.08],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

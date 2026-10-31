@@ -56,7 +56,7 @@ namespace CloneZ
         public WaterSource HouseSink(RaidRoom room, Place p)
         {
             TakeFloor(room, p, new Vector3(1.22f, 1.0f, 0.63f), "sink");
-            return WaterSource.Spawn(Root, At(p), WaterSourceKind.Tap, Yaw(p.Yaw));
+            return WaterSource.Spawn(Root, At(p), WaterSourceKind.Tap, Yaw(p.Yaw), Floor);
         }
 
         /// <summary>The starter home's gas range — a <see cref="CookingStation"/> with its <see cref="KitchenStove"/> (four burners,
@@ -64,7 +64,7 @@ namespace CloneZ
         public CookingStation HouseStove(RaidRoom room, Place p)
         {
             TakeFloor(room, p, new Vector3(0.76f, 1.08f, 0.62f), "stove");
-            return CookingStation.Spawn(Root, At(p), Yaw(p.Yaw));
+            return CookingStation.Spawn(Root, At(p), Yaw(p.Yaw), Floor);
         }
 
         /// <summary>Wall cupboards above a counter on a room wall (<paramref name="t"/>: the local coordinate of their middle
@@ -118,7 +118,7 @@ namespace CloneZ
         public SleepSpot HouseBed(RaidRoom room, Place p, Color quilt)
         {
             TakeFloor(room, p, new Vector3(SleepSpot.Width, 1.1f, SleepSpot.Length), "bed");
-            return SleepSpot.Spawn(Root, At(p), Yaw(p.Yaw), quilt);
+            return SleepSpot.Spawn(Root, At(p), Yaw(p.Yaw), quilt, Floor);
         }
 
         /// <summary>A two-door wooden wardrobe (1.0 × 1.95 × 0.6 m, front +Z): a body of its own with the doors hung on its outer

@@ -872,7 +872,7 @@ namespace CloneZ
                 InteriorBuild target = null;
                 foreach (InteriorPlan p in plans)
                 {
-                    InteriorBuild b = s.BuildOf(p.Id);
+                    InteriorBuild b = s.BuildOf(p.Id, p.Level);
                     if (b != null && b.Containers.Count >= 3) { target = b; break; }
                 }
                 if (target == null)
@@ -881,21 +881,23 @@ namespace CloneZ
                     return;
                 }
                 long id = target.Plan.Id;
+                int level = target.Plan.Level;
                 int n = target.Containers.Count;
                 var before = new string[n];
                 for (int i = 0; i < n; i++) before[i] = Contents(target.Containers[i]);
                 _fingerprint = Fingerprint(target);
                 _fingerprintId = id;
+                _fingerprintLevel = level;
                 // Carry the first off, empty the second.
                 Object.DestroyImmediate(target.Containers[0].gameObject);
                 target.Containers[1].Contents = new Inventory(999f);
                 target.Containers[1].Searched = true;
                 focus[0] = middle + new Vector3(2000f, 0f, 0f);
                 Pump(s, focus, 120, out _);
-                bool down = s.BuildOf(id) == null;
+                bool down = s.BuildOf(id, level) == null;
                 focus[0] = middle;
                 Pump(s, focus, 2400, out _);
-                InteriorBuild again = s.BuildOf(id);
+                InteriorBuild again = s.BuildOf(id, level);
                 var sb = new StringBuilder();
                 sb.Append("Loot memory: building ").Append(id).Append(" (").Append(target.Plan.Use).Append(", ").Append(n).Append(" containers): the first carried off, ")
                     .Append("the second emptied; walked 2 km away (").Append(down ? "taken down" : "**still standing**").Append(") and back (")
@@ -924,6 +926,7 @@ namespace CloneZ
 
             private string _fingerprint;
             private long _fingerprintId;
+            private int _fingerprintLevel;
 
             // The piece built again from scratch (a new streamer, its memory gone): the same building furnished again comes out
             // the same, object for object.
@@ -941,7 +944,7 @@ namespace CloneZ
                     return;
                 }
                 Pump(s, new List<Vector3> { middle }, 2400, out _);
-                InteriorBuild b = s.BuildOf(_fingerprintId);
+                InteriorBuild b = s.BuildOf(_fingerprintId, _fingerprintLevel);
                 string again = b != null ? Fingerprint(b) : null;
                 bool same = again == _fingerprint;
                 _md.Append("Determinism: the piece built again and building ").Append(_fingerprintId).Append(" furnished again: ")

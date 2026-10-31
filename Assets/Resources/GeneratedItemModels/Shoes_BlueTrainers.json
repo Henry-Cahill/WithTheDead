@@ -1,0 +1,18 @@
+{"version": 1, "id": "Shoes_BlueTrainers", "baseHeight": 0.1037, "name": "Shoes Blue Trainers", "model": "gpt-oss:120b", "notes": "Flat pair of blue trainer shoes, each about 0.28 m long × 0.10 m wide × 0.04 m thick, laid side‑by‑side as a product‑photo spread.  Shows rubber sole, fabric upper, tongue, crossed laces, metal eye‑lets and a small logo on the outer heel.", "score": 7, "parts": [
+  {"name":"LeftSole","shape":"cube","pos":[-0.15,-0.0287,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.28],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"LeftUpper","shape":"cube","pos":[-0.15,0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftTongue","shape":"cube","pos":[-0.15,0.0363,0.1],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLace1","shape":"cylinder","pos":[-0.15,0.0013,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"LeftLace2","shape":"cylinder","pos":[-0.15,0.0013,0.06],"rot":[0.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"LeftEyeletL","shape":"cylinder","pos":[-0.185,0.0013,0.08],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.5,0.5,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"LeftEyeletR","shape":"cylinder","pos":[-0.115,0.0013,0.08],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.5,0.5,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"LeftLogo","shape":"cube","pos":[-0.185,0.0013,-0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.02],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"RightSole","shape":"cube","pos":[0.15,-0.0287,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.28],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"RightUpper","shape":"cube","pos":[0.15,0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightTongue","shape":"cube","pos":[0.15,0.0363,0.1],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLace1","shape":"cylinder","pos":[0.15,0.0013,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"RightLace2","shape":"cylinder","pos":[0.15,0.0013,0.06],"rot":[0.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"RightEyeletL","shape":"cylinder","pos":[0.115,0.0013,0.08],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.5,0.5,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"RightEyeletR","shape":"cylinder","pos":[0.185,0.0013,0.08],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.5,0.5,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"RightLogo","shape":"cube","pos":[0.185,0.0013,-0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.02],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0}
+]}

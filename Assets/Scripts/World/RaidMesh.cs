@@ -200,6 +200,34 @@ namespace CloneZ
             _triCount[s] = k + 3;
         }
 
+        #region Reading it back (splitting a building's upper part by storey)
+        /// <summary>Sub-meshes (one per material) drawn so far.</summary>
+        internal int SubMeshCount => _matCount;
+        internal Material SubMaterial(int s) => _mats[s];
+        /// <summary>Indices in sub-mesh <paramref name="s"/> (three a triangle).</summary>
+        internal int SubIndexCount(int s) => _triCount[s];
+        internal int Index(int s, int k) => _tris[s][k];
+        /// <summary>A vertex's position (mesh space), normal and uv.</summary>
+        internal Vector3 VertexAt(int i) => _v[i];
+        internal Vector3 NormalAt(int i) => _n[i];
+        internal Vector2 UvAt(int i) => _uv[i];
+
+        /// <summary>A triangle with its vertices' own positions (mesh space: the frame doesn't apply), normals and uvs, into
+        /// <paramref name="mat"/>'s sub-mesh.</summary>
+        internal void RawTri(Material mat, Vector3 a, Vector3 b, Vector3 c, Vector3 na, Vector3 nb, Vector3 nc, Vector2 ua, Vector2 ub, Vector2 uc)
+        {
+            if (mat == null) return;
+            Reserve(3);
+            int sub = Sub(mat, 3);
+            int i0 = _count;
+            _v[i0] = a; _n[i0] = na; _uv[i0] = ua;
+            _v[i0 + 1] = b; _n[i0 + 1] = nb; _uv[i0 + 1] = ub;
+            _v[i0 + 2] = c; _n[i0 + 2] = nc; _uv[i0 + 2] = uc;
+            _count += 3;
+            Tri3(sub, i0, i0 + 1, i0 + 2);
+        }
+        #endregion
+
         // Two triangles over four vertices from <paramref name="b"/>: b, b+1, b+2 and b, b+2, b+3.
         private void Quad4(int s, int b)
         {

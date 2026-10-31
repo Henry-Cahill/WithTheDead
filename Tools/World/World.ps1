@@ -11,14 +11,18 @@
               own regions, at low priority so game servers aren't disturbed). Logs go to scratch/<machine>/.
     publish   Once every part of build -Id is done: checks it, writes its manifest and makes it the build the game
               and the servers load.
+    atlas     Opens the Kentucky Atlas in the browser (atlas\atlas.py, on this PC): the current build's buildings over
+              Kentucky's aerial photographs, to check each one's outline and kind and record corrections the game
+              applies (world/validation in the store). Ctrl+C stops it.
 
 .EXAMPLE
     .\World.ps1 connect
     .\World.ps1 build
     .\World.ps1 publish -Id ky-20261019-2310
+    .\World.ps1 atlas
 #>
 param(
-    [Parameter(Position = 0)][ValidateSet('connect', 'status', 'build', 'publish')][string]$Action = 'status',
+    [Parameter(Position = 0)][ValidateSet('connect', 'status', 'build', 'publish', 'atlas')][string]$Action = 'status',
     # The Linux machines that use the store: the Spark and the game servers.
     [string[]]$Machines = @('henrylawrencecahill@192.168.1.252', 'htsadmin@192.168.1.200', 'htsadmin@192.168.1.201',
         'htsadmin@192.168.1.202'),
@@ -90,6 +94,13 @@ echo "`$(hostname): part $k/$n started (log: `$log)"
     'publish' {
         if (-not $Id) { throw 'Say which build: -Id <name>' }
         Invoke-Remote $Builders[0] "$EnsureUv; uv run -q --python 3.12 /mnt/clonez/tools/worldbuild.py publish $Id"
+        exit $LASTEXITCODE
+    }
+    'atlas' {
+        $atlas = Join-Path $PSScriptRoot 'atlas\atlas.py'
+        if (Get-Command python -ErrorAction SilentlyContinue) { & python $atlas --store $Store }
+        elseif (Get-Command py -ErrorAction SilentlyContinue) { & py -3 $atlas --store $Store }
+        else { throw 'The atlas needs Python 3.10 or later (winget install Python.Python.3.12)' }
         exit $LASTEXITCODE
     }
 }

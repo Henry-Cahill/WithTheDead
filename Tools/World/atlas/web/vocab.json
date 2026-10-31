@@ -1,0 +1,28 @@
+{
+ "about": "What the atlas tools offer for checks and corrections. Kept in step with Assets/Scripts/World/Map/MapValidation.cs (checks, kinds, roofs, materials, facings), BuildingPass.Plan.cs (the Arch and HouseStyle enums) and worldbuild.py (BUILDING_KINDS) by Tools/World/tests/test_atlas.py.",
+ "checks": [
+  ["footprint", "Footprint", "The outline matches the building on the aerial photographs, and it is still there"],
+  ["kind", "Kind / use", "What it is and what it was used for"],
+  ["outside", "Outside", "How the game builds it: archetype, storeys, roof, walls"],
+  ["windows", "Windows", "Windows where they should be, and they work in the game"],
+  ["doors", "Doors", "Doors where they should be, and they can be gone through"],
+  ["inside", "Inside", "Rooms, furniture and loot in the game"]
+ ],
+ "kinds": ["house", "trailer", "apartments", "hotel", "commercial", "office", "retail", "industrial", "warehouse", "church",
+  "school", "hospital", "civic", "garage", "shed", "barn", "silo", "greenhouse", "canopy", "ruin"],
+ "roofs": ["flat", "gabled", "hipped", "pyramidal", "skillion", "gambrel", "mansard", "round"],
+ "materials": ["brick", "wood", "vinyl", "stone", "concrete", "metal", "glass", "stucco"],
+ "facings": ["N", "NE", "E", "SE", "S", "SW", "W", "NW"],
+ "archetypes": ["House", "Trailer", "Shed", "Garage", "Barn", "TobaccoBarn", "Silo", "Row", "Store", "Office", "Apartments",
+  "Motel", "Church", "School", "Civic", "Courthouse", "Hospital", "Warehouse", "Industrial", "Rickhouse", "Canopy",
+  "Greenhouse", "Ruin", "Parking"],
+ "styles": ["Ranch", "Cottage", "Bungalow", "Shotgun", "TwoStorey", "Foursquare", "Farmhouse", "Victorian", "Cape"],
+ "uses": ["none", "fuel", "police", "fire_station", "hospital", "clinic", "doctors", "dentist", "veterinary", "pharmacy",
+  "school", "kindergarten", "place_of_worship", "townhall", "courthouse", "library", "prison", "post_office", "bank",
+  "community_centre", "theatre", "cinema", "restaurant", "fast_food", "cafe", "bar", "pub", "car_wash", "shop:car_repair",
+  "shop:car_parts", "shop:tyres", "shop:car", "shop:supermarket", "shop:grocery", "shop:butcher", "shop:bakery",
+  "shop:convenience", "shop:general", "shop:alcohol", "shop:hardware", "shop:doityourself", "shop:farm", "shop:garden_centre",
+  "shop:weapons", "shop:sports", "shop:pawnbroker", "shop:clothes", "shop:shoes", "shop:second_hand", "shop:department_store",
+  "shop:variety_store", "shop:furniture", "shop:appliance", "shop:electronics", "shop:hairdresser", "shop:beauty",
+  "shop:pet", "shop:laundry", "shop:dry_cleaning", "shop:funeral_directors", "shop:storage_rental", "shop:vacant"]
+}

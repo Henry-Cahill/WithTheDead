@@ -1,0 +1,12 @@
+{"version": 1, "id": "Gloves_BoxingBlue", "baseHeight": 0.078, "name": "Gloves Boxing Blue", "model": "gpt-oss:120b", "notes": "Pair of blue boxing gloves laid flat side‑by‑side, each ~0.25 m long, 0.18 m wide and 0.02 m thick.  Main padded body, thumb extension, wrist seam, back strap and a small white logo are modelled for a clear silhouette.", "score": 6, "parts": [
+  {"name":"LeftBody","shape":"cube","pos":[-0.2,-0.008,0.03],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.25],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"RightBody","shape":"cube","pos":[0.2,-0.008,0.03],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.25],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"LeftThumb","shape":"cube","pos":[-0.33,-0.008,0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"RightThumb","shape":"cube","pos":[0.33,-0.008,0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"LeftWristSeam","shape":"cylinder","pos":[-0.2,-0.006,-0.09],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.18],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RightWristSeam","shape":"cylinder","pos":[0.2,-0.006,-0.09],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.18],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeftBackStrap","shape":"cylinder","pos":[-0.2,-0.006,0.15],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.06],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RightBackStrap","shape":"cylinder","pos":[0.2,-0.006,0.15],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.06],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLogo","shape":"sphere","pos":[-0.2,0.003,0.03],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.9,0.9,0.9],"smooth":0.8,"metal":0.0},
+  {"name":"RightLogo","shape":"sphere","pos":[0.2,0.003,0.03],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.9,0.9,0.9],"smooth":0.8,"metal":0.0}
+]}

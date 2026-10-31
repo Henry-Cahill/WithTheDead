@@ -1,15 +1,13 @@
 # Night Shift
 
 AI coding agents that work through [tasks.md](tasks.md) overnight (and into the day, until you stop them),
-so WithTheDead gets built while you sleep. [OpenCode](https://opencode.ai) is the agent. Its model is Big Pickle
-(`opencode/big-pickle`), a free model in OpenCode's cloud, until the network's free allowance runs out; then the rest of
-the night runs on `gpt-oss:120b` in Ollama on the DGX Spark, which spends no cloud tokens (see [Models](#models)).
-Everything else runs on your own machines:
+so WithTheDead gets built while you sleep. [OpenCode](https://opencode.ai) is the agent. Its model is `gpt-oss:120b`
+in Ollama on the DGX Spark, so no code leaves your machines and no cloud tokens are spent (OpenCode's free cloud model,
+Big Pickle, is an option; see [Models](#models)). Everything runs on your own machines:
 
 - **The Spark** runs the coordinator and the local model, inside the AI Workbench project container. In AI
   Workbench it is the **night-shift** toggle under *Applications*.
-- **Helper machines** (optional) run extra agents in parallel. They use the same model (the Spark's, over the LAN,
-  once the night is on the local one) and
+- **Helper machines** (optional) run extra agents in parallel. They use the same model (the Spark's, over the LAN) and
   do their own compile checks, so more tasks get done per night. They can be Linux or Windows (see
   [Windows helpers](#windows-helpers)); a helper can also be set to work through the documentation tasks only, and so
   can every worker, so the night shift writes nothing but comments (see [Documentation workers](#documentation-workers)).
@@ -257,9 +255,13 @@ only documentation tasks. It's read at every start.
 ### Models
 
 A model named `opencode/<id>` is one of OpenCode's own, run in its cloud; any other name is a model in Ollama on the
-Spark. The agents and the planner use Big Pickle (`NIGHTSHIFT_MODEL=opencode/big-pickle`; `NIGHTSHIFT_HELPER_MODEL`
-is empty, so the helpers use it too). Big Pickle can't run in Ollama: OpenCode hasn't published its weights, and the
-model behind the name changes from time to time. What that means:
+Spark. The agents and the planner use `gpt-oss:120b` in the Spark's Ollama (`NIGHTSHIFT_MODEL=gpt-oss:120b`;
+`NIGHTSHIFT_HELPER_MODEL` is empty, so the helpers use it too), so the project's code never leaves your machines.
+Ollama serves `qwen3.8` one request at a time, so helpers on it would only wait their turn, while `gpt-oss:120b` runs
+several at once (and is about twice as fast).
+
+Big Pickle (`NIGHTSHIFT_MODEL=opencode/big-pickle`) is one of OpenCode's own. It can't run in Ollama: OpenCode hasn't
+published its weights, and the model behind the name changes from time to time. What switching to it means:
 
 - **The project's code goes to OpenCode.** Each agent sends the scripts it reads, and the planner the script it plans
   for, to OpenCode's cloud. During Big Pickle's free period, OpenCode may use that data to improve the model.
@@ -272,9 +274,6 @@ model behind the name changes from time to time. What that means:
   planner switch to `NIGHTSHIFT_FALLBACK_MODEL` (`gpt-oss:120b`) for the rest of the night. The report and the log
   say when and why. If Big Pickle doesn't answer when the night starts, the night starts on the fallback. With
   `NIGHTSHIFT_FALLBACK_MODEL` empty, the workers on Big Pickle stop instead.
-- **Local only** again: set `NIGHTSHIFT_MODEL=gpt-oss:120b` (and `NIGHTSHIFT_HELPER_MODEL`, as you like). Ollama serves
-  `qwen3.8` one request at a time, so helpers on it would only wait their turn, while `gpt-oss:120b` runs several at
-  once (and is about twice as fast).
 
 Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (compile the project as it is),
 `state` (one line of JSON that `NightShift.ps1 pr` reads), `plan` (write one task with the planner now) and `chat`
@@ -287,6 +286,11 @@ Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (co
   auto-planning on, `idle: waiting for the planner's next task` means the planner is writing one; lines starting
   `planner:` say what it queued or why it skipped a script.
 - **"Unity's reference assemblies aren't on the Spark"**: run `.\NightShift.ps1 refs` on this PC.
+- **"The Spark is generating item meshes and has no room for the night shift's model"**: the asset pipeline's mesh
+  run ([Tools/AssetPipeline/mesh](../AssetPipeline/mesh/README.md)) has the Spark's memory to itself, around the
+  clock. Stop it (`AssetPipeline.bat`, **M** then **9**, or `.\AssetPipeline.ps1 mesh-stop`); the night shift can
+  start once the version in progress has finished, and the meshes stay stopped until you start them again (**M** then
+  **4**). A crashed run's lock (`.state/mesh-run.lock`) stops counting after 10 minutes.
 - **"opencode/big-pickle stopped answering (Free usage limit reached)"**: Big Pickle's free allowance has run out for
   now (OpenCode gives the same answer to a request that offers no tools, which the night shift never sends). The
   night carries on with `NIGHTSHIFT_FALLBACK_MODEL`, and the next start tries Big Pickle again. To leave more of the

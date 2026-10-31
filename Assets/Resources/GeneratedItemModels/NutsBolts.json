@@ -1,0 +1,14 @@
+{"version": 1, "id": "NutsBolts", "baseHeight": 0.0715, "name": "Nuts Bolts", "model": "gpt-oss:120b", "notes": "Pile of mixed nuts and bolts, about 0.12 m wide × 0.06 m tall. Includes 4 hex‑nut approximations (short cylinders) and 4 small bolts (head + shaft cylinders) overlapping in a random heap.", "score": 7, "parts": [
+  {"name":"Nut1","shape":"cylinder","pos":[-0.0412,-0.004,0.0332],"rot":[0.0,0.0,0.0],"size":[0.018,0.01,0.018],"color":[0.58,0.55,0.45],"smooth":0.45,"metal":0.9},
+  {"name":"Nut2","shape":"cylinder","pos":[0.0238,-0.003,-0.0368],"rot":[0.0,0.0,0.0],"size":[0.019,0.009,0.019],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"Nut3","shape":"cylinder","pos":[0.0437,-0.005,0.0232],"rot":[0.0,0.0,0.0],"size":[0.017,0.011,0.017],"color":[0.55,0.53,0.45],"smooth":0.45,"metal":0.9},
+  {"name":"Nut4","shape":"cylinder","pos":[-0.0163,-0.004,-0.0268],"rot":[0.0,0.0,0.0],"size":[0.018,0.01,0.018],"color":[0.59,0.57,0.48],"smooth":0.45,"metal":0.9},
+  {"name":"Bolt1Head","shape":"cylinder","pos":[0.0338,0.006,0.0332],"rot":[0.0,0.0,0.0],"size":[0.022,0.008,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Bolt1Shaft","shape":"cylinder","pos":[0.0338,-0.004,0.0332],"rot":[0.0,0.0,90.0],"size":[0.012,0.045,0.012],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":0.9},
+  {"name":"Bolt2Head","shape":"cylinder","pos":[-0.0363,0.005,-0.0168],"rot":[0.0,0.0,0.0],"size":[0.021,0.007,0.021],"color":[0.59,0.57,0.49],"smooth":0.55,"metal":0.9},
+  {"name":"Bolt2Shaft","shape":"cylinder","pos":[-0.0363,-0.005,-0.0168],"rot":[0.0,0.0,90.0],"size":[0.011,0.04,0.011],"color":[0.57,0.55,0.47],"smooth":0.55,"metal":0.9},
+  {"name":"Bolt3Head","shape":"cylinder","pos":[0.0187,0.007,-0.0418],"rot":[0.0,0.0,0.0],"size":[0.023,0.009,0.023],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Bolt3Shaft","shape":"cylinder","pos":[0.0187,-0.003,-0.0418],"rot":[0.0,0.0,90.0],"size":[0.012,0.05,0.012],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":0.9},
+  {"name":"Bolt4Head","shape":"cylinder","pos":[-0.0213,0.004,0.0432],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.59,0.57,0.49],"smooth":0.55,"metal":0.9},
+  {"name":"Bolt4Shaft","shape":"cylinder","pos":[-0.0213,-0.006,0.0432],"rot":[0.0,0.0,90.0],"size":[0.011,0.042,0.011],"color":[0.57,0.55,0.47],"smooth":0.55,"metal":0.9}
+]}

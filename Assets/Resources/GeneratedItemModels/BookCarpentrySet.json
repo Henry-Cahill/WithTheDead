@@ -1,0 +1,12 @@
+{"version": 1, "id": "BookCarpentrySet", "baseHeight": 0.1, "name": "Book Carpentry Set", "model": "gpt-oss:120b", "notes": "Carpentry set 0.5 m × 0.4 m spread on the floor: a brown‑tinted paperback, a hammer (wood handle, steel head), a hand‑saw (metal blade, wood handle), a coil tape‑measure with its lock, a small pile of nails and a single nail sticking out. All accessories rest directly on the book’s surface.", "score": 6, "parts": [
+  {"name":"BookCover","shape":"cube","pos":[0.0025,-0.02,0.01],"rot":[0.0,0.0,0.0],"size":[0.26,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"BookPages","shape":"cube","pos":[0.0025,-0.0225,0.01],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,0.18],"color":[0.78,0.76,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"HammerHandle","shape":"cylinder","pos":[-0.1475,-0.015,0.06],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"HammerHead","shape":"cube","pos":[-0.0675,-0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.55,0.55,0.55],"smooth":0.45,"metal":0.9},
+  {"name":"SawBlade","shape":"cylinder","pos":[0.1025,-0.025,-0.09],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.02],"color":[0.55,0.55,0.55],"smooth":0.45,"metal":0.9},
+  {"name":"SawHandle","shape":"cylinder","pos":[0.1225,-0.015,-0.09],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"TapeMeasureCoil","shape":"cylinder","pos":[0.1225,-0.01,0.01],"rot":[90.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.55,0.55],"smooth":0.45,"metal":0.9},
+  {"name":"TapeMeasureLock","shape":"cube","pos":[0.1225,0.0075,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"NailPile","shape":"cube","pos":[-0.1175,-0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.55,0.55,0.55],"smooth":0.4,"metal":0.8},
+  {"name":"Nail","shape":"cylinder","pos":[-0.1125,0.02,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.55,0.55,0.55],"smooth":0.45,"metal":0.9}
+]}

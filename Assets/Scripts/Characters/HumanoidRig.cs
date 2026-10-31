@@ -42,6 +42,10 @@ namespace CloneZ
         public float HeldLength { get; private set; }
 
         private HumanoidMesh _mesh;
+
+        // Picks which look of a generated item mesh this character holds (see SetHeldItem); 0 until first needed.
+        private static int s_NextLookSeed;
+        private uint _lookSeed;
         private Material[] _materials;
 
         /// <summary>Grip centre relative to the wrist of a right hand (mirror X for the left).</summary>
@@ -170,7 +174,14 @@ namespace CloneZ
             HeldLength = 0f;
             if (style == HoldStyle.None) return;
 
-            ItemMeshBaker.Baked baked = ItemMeshBaker.Get(def, ItemMeshBaker.Lod.Near);
+            // Characters holding the same kind of item show different looks of it, each keeping its own.
+            int looks = ItemMeshBaker.VariantCount(def);
+            if (_lookSeed == 0) _lookSeed = (uint)System.Threading.Interlocked.Increment(ref s_NextLookSeed) * 0x9E3779B1u | 1u;
+            uint pick = 2166136261u;
+            foreach (char ch in def.Id) pick = (pick ^ ch) * 16777619u;
+            pick ^= _lookSeed;
+            ItemMeshBaker.Baked baked = ItemMeshBaker.Get(def, ItemMeshBaker.Lod.Near,
+                looks > 1 ? (int)((pick ^ (pick >> 16)) % (uint)looks) : 0);
             if (baked == null || baked.Mesh == null) return;
 
             Bounds b = baked.Bounds;

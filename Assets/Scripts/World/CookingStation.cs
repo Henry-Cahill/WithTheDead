@@ -52,10 +52,11 @@ namespace CloneZ
         /// <summary>Builds a white enamel gas range (four burners under cast grates, a back-guard of knobs, a broiler
         /// drawer and an oven with a drop-down door, its back toward -Z, turned by <paramref name="yaw"/> degrees) standing
         /// on the floor at <paramref name="position"/>, fits its controls (<see cref="KitchenStove"/>) and returns its
-        /// CookingStation.</summary>
-        public static CookingStation Spawn(Transform parent, Vector3 position, float yaw = 0f)
+        /// CookingStation. With <paramref name="floor"/>, on a floor at that height (a real building's upper floor or
+        /// basement) rather than the ground or the house floor.</summary>
+        public static CookingStation Spawn(Transform parent, Vector3 position, float yaw = 0f, float? floor = null)
         {
-            position.y = BuildPiece.FloorTopAt(position);
+            position.y = floor ?? BuildPiece.FloorTopAt(position);
             var root = new GameObject("Stove");
             root.transform.SetParent(parent);
             root.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));

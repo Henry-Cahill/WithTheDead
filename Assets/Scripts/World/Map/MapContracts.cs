@@ -43,7 +43,10 @@ namespace CloneZ
             public float WallThickness;
             public int Seed;
             public readonly List<Doorway> Doors = new List<Doorway>();
+            /// <summary>Its windows on every storey (<see cref="WindowSpan.Storey"/>), as built.</summary>
             public readonly List<WindowSpan> Windows = new List<WindowSpan>();
+            /// <summary>Its floors above and below the ground one and the stairwell between them (null: the ground floor only).</summary>
+            public LevelLayout Levels;
         }
 
         internal struct Doorway { public int Edge; public Vector2 At; public Vector2 Outward; public float Width; }
@@ -84,6 +87,15 @@ namespace CloneZ
             /// <summary>Everything above the ground storey's walls: upper storeys, ceilings, roofs, eaves, chimneys,
             /// roof snow and icicles.</summary>
             public RaidMesh Upper;
+            /// <summary>A building with floors above or below the ground one (<see cref="EnterableBuilding.Levels"/>): each
+            /// level's floor, stairs and stairwell walls (index level - <see cref="LevelLayout.Lowest"/>), which the cutaway
+            /// hides with the level; null for the others.</summary>
+            public RaidMesh[] Structure;
+            /// <summary>The stairwell's own walls on each level (as <see cref="Structure"/>), objects of their own with
+            /// their colliders, which the isometric camera cuts away as it does the rooms' partitions; null for the others.</summary>
+            public GameObject[] Stairwells;
+            /// <summary>Its levels, when it has any (as <see cref="Structure"/>).</summary>
+            public LevelLayout Levels;
 
             /// <summary>0 when an outward face looks north (+z), 1 east (+x), 2 south, 3 west.</summary>
             public static int Facing(Vector2 outward)

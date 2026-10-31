@@ -211,6 +211,8 @@ namespace CloneZ
             {
                 Kind = Plan.Kind,
                 WallH = Plan.WallH,
+                // A level other than the ground floor is furnished where it stands.
+                BaseY = Plan.FloorY,
                 RegisterShelter = false,
                 FlatCeilings = false,
                 DoorWood = new Color(0.42f, 0.27f, 0.15f),
@@ -385,8 +387,10 @@ namespace CloneZ
         {
             var m = new RaidMesh();
             // Under the rooms, the whole outline in the biggest room's floor: what an irregular footprint's rectangles leave
-            // along its walls (and the exteriors' plain floor would show through).
-            if (Plan.Local != null && Plan.Local.Count >= 3)
+            // along its walls (and the exteriors' plain floor would show through). Only on the ground: the floors over a
+            // basement, and above, are the building's own (with the stairwell's shaft through them), as a basement's is.
+            LevelLayout levels = Plan.Record.Levels;
+            if (Plan.Local != null && Plan.Local.Count >= 3 && Plan.Level == 0 && (levels == null || !levels.Basement))
             {
                 PlanRoom main = Plan.Rooms[0];
                 foreach (PlanRoom r in Plan.Rooms) if (r.R.width * r.R.height > main.R.width * main.R.height) main = r;
@@ -401,6 +405,7 @@ namespace CloneZ
             for (int i = 0; i < Plan.Rooms.Count; i++)
             {
                 PlanRoom r = Plan.Rooms[i];
+                if (r.Role == RoomRole.Stair) continue;   // the landings and flights are the building's
                 Rect f = InteriorPass.FloorRect(Plan, i);
                 m.Flat(new Vector3(f.center.x, 0.03f, f.center.y), f.width, f.height, 0f, InteriorPass.FloorSurf(r));
             }
@@ -1045,12 +1050,14 @@ namespace CloneZ
             Root.GetComponentsInChildren(true, Containers);
             Root.GetComponentsInChildren(true, Furniture);
             Bounds b = new Bounds(World(Plan.Extent.center, Plan.WallH * 0.5f), Vector3.zero);
-            foreach (Vector2 p in Plan.Footprint.Pts) b.Encapsulate(new Vector3(p.x + _offset.x, 0f, p.y + _offset.z));
+            foreach (Vector2 p in Plan.Footprint.Pts) b.Encapsulate(new Vector3(p.x + _offset.x, Plan.FloorY, p.y + _offset.z));
             b.Encapsulate(b.center + Vector3.up * Plan.WallH * 0.5f);
             WorldBounds = b;
             if (_hidden) Root.SetActive(true);
             HangLamps();
             Objects = CountObjects(Root.transform) + (Town.Overhead != null ? CountObjects(Town.Overhead) : 0);
+            // A building with floors: its rooms go with their floor when the cutaway lifts it.
+            if (Plan.Record.Levels != null) MapCutaway.AddInterior(Plan.Id, Plan.Level, Root, Town.Overhead);
             Done = true;
         }
 
@@ -1169,6 +1176,7 @@ namespace CloneZ
         /// <summary>Takes the interior down: its objects, its overhead root and its meshes.</summary>
         public void Discard()
         {
+            if (Plan.Record.Levels != null) MapCutaway.RemoveInterior(Plan.Id, Root);
             if (Root != null) InteriorPass.Kill(Root);
             if (Town != null && Town.Overhead != null) InteriorPass.Kill(Town.Overhead.gameObject);
             for (int i = 0; i < Meshes.Count; i++) InteriorPass.Kill(Meshes[i]);

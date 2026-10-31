@@ -7,13 +7,15 @@ namespace CloneZ
     /// <summary>
     /// The insides of the real-world map's enterable buildings: what <see cref="BuildingPass"/> lists in
     /// <see cref="Site.Enterables"/> (footprint, storeys, doors, windows), furnished. Each building's ground floor is laid
-    /// out in rooms on its footprint's own axes by what it was for (<see cref="MakePlan"/>, from
+    /// out in rooms on its footprint's own axes by what it was for (<see cref="MakePlan(Site, EnterableBuilding)"/>, from
     /// <see cref="MapGameplay.PurposeOf(Site, Footprint)"/>: houses, trailers, flats, shops, diners, offices, banks, clinics,
     /// the jail, the firehouse, churches, schools, warehouses, barns...), with its rooms' loot pools and counts, lamps and
     /// lit rooms settled there and then (<see cref="Budget"/>); its outside walls lined room by room with paper, skirting
     /// and window dressing (into the shell's wall meshes, so they cut away with them); and its rooms raised and furnished
-    /// with the raid town's working pieces (<see cref="InteriorBuild"/>). The fixed square furnishes every building as
-    /// it's built; a streamed piece of the state only plans its buildings and leaves the plans with the
+    /// with the raid town's working pieces (<see cref="InteriorBuild"/>). A building with floors above or below the ground
+    /// one (<see cref="EnterableBuilding.Levels"/>) has each of them planned, lined and furnished as a building of its own,
+    /// where it stands, round the stairwell's landing hall (InteriorPass.Levels.cs). The fixed square furnishes every
+    /// building as it's built; a streamed piece of the state only plans its buildings and leaves the plans with the
     /// <see cref="InteriorStreamer"/>, which furnishes the ones near a survivor a few milliseconds a frame and takes them
     /// down again behind them. A building whose outline holds no room-sized rectangle gets loose loot
     /// (<see cref="MapGameplay.Loot"/>).
@@ -101,34 +103,33 @@ namespace CloneZ
                 else
                 {
                     // With a valid plan, try to retrieve its building shell for wall lining
-                    if (shells.TryGetValue(e.Footprint, out BuildingShell shell))
-                    {
-                        // Lined a wall at a time, so a big building's many windows don't hold up a frame.
-                        if (site.StepDue) yield return "interior plans";
-                        IEnumerator<bool> lining = Linings(plan, shell).GetEnumerator();
-                        // Iterate wall lining steps; each iteration may yield progress for streamed pieces
-                        while (true)
-                        {
-                            // Measure time for making the plan – used for performance diagnostics
-                            t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-                            // Attempt next wall‑lining step, catching errors to avoid aborting the whole interior pass
-                            bool more;
-                            try { more = lining.MoveNext(); }
-                            catch (System.Exception ex)
-                            {
-                                Debug.LogWarning("[CloneZ] Interiors: lining building " + plan.Id + " failed: " + ex);
-                                more = false;
-                            }
-                            NotePlan(t0, "a wall's lining of", plan);
-                            // If wall‑lining finished, exit the loop; otherwise possibly yield a step for streamed builds
-                            if (!more) break;
-                            if (site.StepDue) yield return "interior plans";
-                        }
-                    }
+                    shells.TryGetValue(e.Footprint, out BuildingShell shell);
+                    foreach (string step in Line(site, plan, shell)) yield return step;
                     // Add the successful plan to the list for later furnishing
                     plans.Add(plan);
                     // Accumulate total room count for final statistics
                     rooms += plan.Rooms.Count;
+                    // The building's other floors (its basement, its storeys above): planned, lined and furnished as its
+                    // ground floor is.
+                    LevelLayout levels = e.Levels;
+                    for (int level = levels != null ? levels.Lowest : 0; levels != null && level <= levels.Top; level++)
+                    {
+                        if (level == 0) continue;
+                        if (site.StepDue) yield return "interior plans";
+                        InteriorPlan other;
+                        t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                        try { other = MakePlan(site, e, level); }
+                        catch (System.Exception ex)
+                        {
+                            Debug.LogWarning("[CloneZ] Interiors: no plan for level " + level + " of building " + e.Footprint.Data.id + ": " + ex);
+                            other = null;
+                        }
+                        if (other == null) continue;
+                        NotePlan(t0, "the plan of", other);
+                        foreach (string step in Line(site, other, shell)) yield return step;
+                        plans.Add(other);
+                        rooms += other.Rooms.Count;
+                    }
                 }
                 if (site.StepDue) yield return "interior plans";
             }
@@ -188,6 +189,30 @@ namespace CloneZ
             Debug.Log("[CloneZ] " + LastStats);
         }
 
+        /// <summary>Lines the plan's outside walls into its building's shell (none without one), a wall at a time, so a big
+        /// building's many windows don't hold up a frame: yields when the site's step is due.</summary>
+        private static IEnumerable<string> Line(Site site, InteriorPlan plan, BuildingShell shell)
+        {
+            if (shell == null) yield break;
+            if (site.StepDue) yield return "interior plans";
+            IEnumerator<bool> lining = Linings(plan, shell).GetEnumerator();
+            while (true)
+            {
+                long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                // A wall that can't be lined leaves the rest of the building as far as it got, not the whole pass.
+                bool more;
+                try { more = lining.MoveNext(); }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning("[CloneZ] Interiors: lining building " + plan.Id + " (level " + plan.Level + ") failed: " + ex);
+                    more = false;
+                }
+                NotePlan(t0, "a wall's lining of", plan);
+                if (!more) break;
+                if (site.StepDue) yield return "interior plans";
+            }
+        }
+
         // Counts the loose containers standing in a footprint, and takes them away when it's furnished.
         /// <summary>Counts the loose containers standing in a footprint, and removes them when the building is furnished.</summary>
         private static int LooseIn(Site site, List<LootContainer> loose, Footprint f, bool furnished)
@@ -233,7 +258,9 @@ namespace CloneZ
                 if (placed >= 6) break;
                 if (r.Loot <= 0 || r.Pool == null || r.Pool.Length == 0 || r.R.width < 2f || r.R.height < 2f) continue;
                 Vector2 at = plan.ToSite(r.R.center);
-                LootContainer.Spawn(parent, r.Pool[0], new Vector3(at.x + offset.x, 0f, at.y + offset.z), rng.Next());
+                LootContainer box = LootContainer.Spawn(parent, r.Pool[0], new Vector3(at.x + offset.x, 0f, at.y + offset.z), rng.Next());
+                // On the plan's own floor (a building's upper floor or basement).
+                if (box != null && plan.FloorY != 0f) box.transform.position += Vector3.up * plan.FloorY;
                 placed++;
             }
         }

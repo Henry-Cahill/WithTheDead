@@ -44,7 +44,7 @@ namespace CloneZ.EditorTools
         }
 
         /// <summary>
-        /// Opens the game scene and enters play mode in a batch editor. Pair it with <c>-clonez-smoke solo|hunter|host|client</c>:
+        /// Opens the game scene and enters play mode in a batch editor. Pair it with <c>-clonez-smoke solo|hunter|host|client|lobby|wave</c>:
         /// the runtime <see cref="CloneZ.SmokeTest"/> plays the flows and exits the editor with its result.
         /// </summary>
         public static void SmokePlay()

@@ -32,9 +32,12 @@ namespace CloneZ
         private static readonly List<float> s_At = new List<float>(128);
 
         /// <summary>The plan's outside walls lined from inside and its windows dressed, into <paramref name="shell"/>'s walls:
-        /// a wall at a time (each step one wall, so the caller can spread a big building over frames).</summary>
+        /// a wall at a time (each step one wall, so the caller can spread a big building over frames). A ground floor's go
+        /// into the ground storey's walls, an upper floor's into the upper part's at its floor's height (the cutaway splits
+        /// that by level); a basement's walls are bare concrete.</summary>
         private static IEnumerable<bool> Linings(InteriorPlan plan, BuildingShell shell)
         {
+            if (plan.Level < 0) yield break;
             List<Vector2> p = plan.Footprint.Pts;
             int n = p.Count;
             float t = plan.Thick, h = plan.WallH;
@@ -50,7 +53,9 @@ namespace CloneZ
                 Vector2 prevD = (p[i] - p[(i + n - 1) % n]).normalized, nextD = (p[(i + 2) % n] - c).normalized;
                 float s0 = InnerEnd(prevD, d, t), s1 = len - InnerEnd(d, nextD, t);
                 if (s1 - s0 < 0.1f) continue;
-                RaidMesh m = shell.WallsFacing(outward);
+                RaidMesh m = plan.Level == 0 ? shell.WallsFacing(outward) : shell.Upper;
+                if (m == null) yield break;
+                if (plan.Level != 0) m.SetFrame(new Vector3(0f, plan.FloorY, 0f), 0f);
                 float yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
                 Vector3 inward = new Vector3(-outward.x, 0f, -outward.y);
 
@@ -86,7 +91,7 @@ namespace CloneZ
                 // The windows on this wall, from inside.
                 foreach (WindowSpan w in plan.Record.Windows)
                 {
-                    if (w.Storey != 0 || w.Edge != i) continue;
+                    if (w.Storey != plan.Level || w.Edge != i) continue;
                     Vector2 mid = a + d * ((w.From + w.To) * 0.5f) - outward * (t + 0.35f);
                     int room = plan.RoomAt(plan.ToLocal(mid));
                     if (room < 0) room = plan.NearestRoom(plan.ToLocal(mid));
@@ -94,6 +99,7 @@ namespace CloneZ
                     if (r != null && r.Design == null) continue;
                     Window(plan, m, r, a, d, inward, yaw, w, t, fabric, rng);
                 }
+                if (plan.Level != 0) m.ResetFrame();
             }
         }
 
@@ -139,8 +145,8 @@ namespace CloneZ
             Surf paper = DecorMaterials.WallInterior(design);
             Surf trim = DecorPalette.Matte(design.Trim);
             float cursor = from;
-            // The doorways along this stretch, in order.
-            for (int pass = 0; pass < 8; pass++)
+            // The doorways along this stretch, in order (the outside doors are the ground floor's).
+            for (int pass = 0; pass < 8 && plan.Level == 0; pass++)
             {
                 float nextDoor = float.MaxValue, doorHalf = 0f;
                 foreach (Doorway door in plan.Record.Doors)

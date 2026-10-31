@@ -48,12 +48,13 @@ namespace CloneZ
         /// <summary>Builds a bed — a wooden frame with headboard, made up with a quilt and pillows, head
         /// toward -Z (turned by <paramref name="yaw"/> degrees) — standing on the floor at
         /// <paramref name="position"/>, and returns its SleepSpot. <paramref name="quilt"/> colours the quilt
-        /// (the starter home's red by default).</summary>
-        public static SleepSpot Spawn(Transform parent, Vector3 position, float yaw = 0f, Color? quilt = null)
+        /// (the starter home's red by default). With <paramref name="floor"/>, on a floor at that height (a real building's
+        /// upper floor or basement) rather than the ground or the house floor.</summary>
+        public static SleepSpot Spawn(Transform parent, Vector3 position, float yaw = 0f, Color? quilt = null, float? floor = null)
         {
             // Stand on the house floor where there is one: the sleep pose lies on the mattress 0.51 m above
             // the bed's own position, so the position itself has to rise with the floor.
-            position.y = BuildPiece.FloorTopAt(position);
+            position.y = floor ?? BuildPiece.FloorTopAt(position);
             var root = new GameObject("Bed");
             root.transform.SetParent(parent);
             // The frame and bedding are drawn unturned round the position; the root's turn (which the sleep pose

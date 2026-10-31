@@ -1,0 +1,13 @@
+{"version": 1, "id": "JawboneBovide", "baseHeight": 0.16, "name": "Jawbone Bovide", "model": "gpt-oss:120b", "notes": "Jawbone Bovide – a 1.1 m long blunt bone club. Wooden grip runs from –X towards the centre, wrapped in dark leather. A metal band marks the joint, then a chunky bone head with a rounded front and a small metal tip. Two shallow bone ridges run along the top of the head for visual detail.", "score": 6, "parts": [
+  {"name":"GripWood","shape":"cylinder","pos":[-0.2625,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.7,0.07],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripLeather","shape":"cylinder","pos":[-0.2625,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.75,0.09],"color":[0.2,0.1,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.0875,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.04,0.12],"color":[0.7,0.7,0.75],"smooth":0.45,"metal":1.0},
+  {"name":"HeadBone","shape":"cylinder","pos":[0.2875,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.3,0.2],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"FrontSphere","shape":"sphere","pos":[0.5375,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.2,0.2],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"TipMetal","shape":"cylinder","pos":[0.6175,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.04,0.08],"color":[0.7,0.7,0.75],"smooth":0.45,"metal":1.0},
+  {"name":"RearCap","shape":"cylinder","pos":[0.1375,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.04,0.08],"color":[0.7,0.7,0.75],"smooth":0.45,"metal":1.0},
+  {"name":"RidgeTopL","shape":"cube","pos":[0.3875,0.06,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"RidgeTopR","shape":"cube","pos":[0.3875,0.06,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"SideNotchL","shape":"cylinder","pos":[0.2375,0.0,0.07],"rot":[0.0,90.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"SideNotchR","shape":"cylinder","pos":[0.2375,0.0,-0.07],"rot":[0.0,90.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0}
+]}

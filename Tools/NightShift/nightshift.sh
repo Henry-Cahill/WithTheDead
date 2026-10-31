@@ -28,6 +28,13 @@ case "${1:-status}" in
     exec 9>"$STATE/start.lock"
     flock -n 9 || { echo "The night shift is already starting."; exit 0; }
     if running; then echo "The night shift is already running (pid $(cat "$PIDFILE"))."; exit 0; fi
+    # The asset pipeline's mesh run (Tools/AssetPipeline/mesh/spark.sh) has the Spark to itself, since its models
+    # and gpt-oss:120b don't fit in memory together. It touches this file every minute; a stale one (a crashed run)
+    # stops counting after ten.
+    if [ -n "$(find "$STATE/mesh-run.lock" -mmin -10 2>/dev/null)" ]; then
+      msg="The Spark is generating item meshes and has no room for the night shift's model. Stop that run (AssetPipeline.bat, mesh stop) or let it finish, then start the night shift again."
+      echo "$msg"; echo "$(date '+%H:%M:%S') not starting: $msg" >>"$LOG"; exit 1
+    fi
     echo "===== $(date '+%Y-%m-%d %H:%M') start =====" >>"$LOG"
     nohup setsid "$PY" -u "$HERE/nightshift.py" run >>"$LOG" 2>&1 </dev/null 9>&- &
     for _ in 1 2 3 4 5; do sleep 1; running && break; done

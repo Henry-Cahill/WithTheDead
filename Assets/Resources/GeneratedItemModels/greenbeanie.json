@@ -1,0 +1,8 @@
+{"version": 1, "id": "greenbeanie", "baseHeight": 0.23, "name": "Green Beanie", "model": "gpt-oss:120b", "notes": "Flat‑lay beanie about 0.22 m wide, 0.12 m tall and 0.02 m thick. Main knitted body is a short cylinder (axis = X), a rounded dome at the front, a thin folded cuff at the back and a small pom‑pom on the top of the dome. All parts use the green tint (0.2, 0.42, 0.2) with a low gloss cloth finish.", "score": 6, "parts": [
+  {"name":"BodyCylinder","shape":"cylinder","pos":[-0.055,-0.06,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.02,0.22],"color":[0.2,0.42,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"FrontDome","shape":"sphere","pos":[0.005,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.22,0.22],"color":[0.2,0.42,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BackCuff","shape":"cylinder","pos":[-0.125,-0.06,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.02,0.22],"color":[0.15,0.35,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"PomPom","shape":"sphere","pos":[0.115,0.15,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.2,0.42,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cylinder","pos":[0.005,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.12,0.28,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cylinder","pos":[-0.125,-0.06,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.002,0.018],"color":[0.12,0.28,0.12],"smooth":0.05,"metal":0.0}
+]}

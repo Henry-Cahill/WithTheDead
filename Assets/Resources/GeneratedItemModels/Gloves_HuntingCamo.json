@@ -1,0 +1,20 @@
+{"version": 1, "id": "Gloves_HuntingCamo", "baseHeight": 0.071, "name": "Gloves Hunting Camo", "model": "gpt-oss:120b", "notes": "Two hunting‑camo gloves laid flat side‑by‑side, each ~0.25 m long (X), 0.18 m wide (Z) and 0.02 m thick (Y). Each glove consists of a palm block, four fingers, a thumb, a cuff at the wrist and a couple of dark camo‑pattern strips.", "score": 6, "parts": [
+  {"name":"LeftPalm","shape":"cube","pos":[-0.255,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftCuff","shape":"cube","pos":[-0.355,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftThumb","shape":"cylinder","pos":[-0.295,-0.001,-0.035],"rot":[90.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftFinger1","shape":"cylinder","pos":[-0.13,-0.001,-0.03],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftFinger2","shape":"cylinder","pos":[-0.13,-0.001,-0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftFinger3","shape":"cylinder","pos":[-0.13,-0.001,0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftFinger4","shape":"cylinder","pos":[-0.13,-0.001,0.03],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftPattern1","shape":"cube","pos":[-0.255,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.01],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LeftPattern2","shape":"cube","pos":[-0.255,0.01,0.04],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.01],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RightPalm","shape":"cube","pos":[0.205,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightCuff","shape":"cube","pos":[0.305,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightThumb","shape":"cylinder","pos":[0.245,-0.001,0.035],"rot":[90.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightFinger1","shape":"cylinder","pos":[0.33,-0.001,-0.03],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightFinger2","shape":"cylinder","pos":[0.33,-0.001,-0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightFinger3","shape":"cylinder","pos":[0.33,-0.001,0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightFinger4","shape":"cylinder","pos":[0.33,-0.001,0.03],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightPattern1","shape":"cube","pos":[0.205,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.01],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RightPattern2","shape":"cube","pos":[0.205,0.01,0.04],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.01],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

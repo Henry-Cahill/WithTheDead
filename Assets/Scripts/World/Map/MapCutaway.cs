@@ -145,8 +145,9 @@ namespace CloneZ
             s_Driver = null;
             // No longer in isometric view.
             s_Iso = false;
-            // Reset next scan/sweep timers.
+            // Reset the next scan/sweep timers.
             s_NextScan = s_NextSweep = s_NextEvict = 0f;
+            ResetLevelStatics();
         }
 
         #region Sites coming and going
@@ -175,6 +176,7 @@ namespace CloneZ
                     : new Rect(b.Bounds.xMin - CoverMargin, b.Bounds.yMin - CoverMargin, b.Bounds.width + 2f * CoverMargin, b.Bounds.height + 2f * CoverMargin);
                 // Insert the building into the spatial hash for fast lookup.
                 Hash(b);
+                RegisterLevels(b);
                 // Update the site's highest point for later scan range calculations.
                 site.MaxTop = Mathf.Max(site.MaxTop, b.Base + b.Top);
                 // Increment the global building count.
@@ -226,6 +228,7 @@ namespace CloneZ
                 Building b = list[i];
                 if (!ReferenceEquals(b.Site, site)) continue;
                 if (b.Applied != 0) Apply(b, 0);
+                ForgetLevels(b);
                 Unqueue(b);
                 ReleaseOverlay(b);
                 ShowDoors(b);
@@ -379,6 +382,8 @@ namespace CloneZ
                 if (b.Applied != 0) Apply(b, 0);
                 Reset(b, AllBits);
                 b.Occupied = false;
+                b.Level = int.MinValue;
+                if (b.Levels != null) ShowLevels(b, false);
                 b.Active = false;
             }
             // Remove any buildings currently marked as cut.
@@ -418,6 +423,7 @@ namespace CloneZ
             // Determine which cardinal directions face away from the camera enough to be considered.
             for (int g = 0; g < 4; g++)
                 if (Vector2.Dot(Cardinal(g), look) < 0.2f) facing |= 1 << g;
+            s_Facing = walls ? facing : 0;
             // How far ahead we need to scan, based on world top and camera pitch, with a little slack.
             float reach = Mathf.Clamp((s_MaxTop - y0) / tan, 0.5f, Mathf.Max(2f, camReach)) + Slack;
             // Half‑width of the scan corridor, based on survivor size and view width, plus slack.
@@ -464,7 +470,10 @@ namespace CloneZ
             bool inside = b.Bounds.Contains(s) && Contains(b.Pts, s);
             if (!inside && b.Occupied) inside = Near(b.Bounds, s, DoorwaySlack) && DistanceToEdges(b.Pts, s) <= DoorwaySlack;
             b.Occupied = inside;
-            if (inside) want |= UpperBit | (facing & b.Groups);
+            // Which of its floors they're on: the ground storey's walls stand between them and the camera only on the ground
+            // floor or below it (over it, their own floor's walls are lowered instead: MapCutaway.Levels.cs).
+            if (b.Levels != null) b.Level = inside ? LevelOf(b, y0) : int.MinValue;
+            if (inside) want |= UpperBit | (b.Levels == null || b.Level <= 0 ? facing & b.Groups : 0);
             else if (b.Upper != null && RoofHides(b, s, y0, back, side, tan, reach, far, wide)) want |= UpperBit;
             if (walls && b.Groups != 0)
             {
@@ -500,6 +509,7 @@ namespace CloneZ
                 if ((mask & WallBits) != 0) mask |= UpperBit;
                 mask = Ready(b, mask);
                 if (mask != b.Applied) Apply(b, mask);
+                if (b.Levels != null) ShowLevels(b, false);
                 if (mask != 0 || b.HoldFrame >= 0) continue;
                 b.Active = false;
                 b.Occupied = false;

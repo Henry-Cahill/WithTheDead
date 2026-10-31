@@ -37,6 +37,8 @@ namespace CloneZ
         {
             public Arch Arch;
             public HouseStyle Style;
+            /// <summary>A correction's house style (<see cref="BuildingFix.style"/>), or None for the game's own.</summary>
+            public HouseStyle ForcedStyle;
             public string Use = "", Name = "";
             public float Core, Town, Population, Density;
             public bool[] Party;
@@ -139,10 +141,15 @@ namespace CloneZ
                 p.RoadDir = toward;
             }
             p.Front = FrontWall(f, p);
+            // What the people checking the map corrected (MapValidation): the data's own fields were patched as the region
+            // was read; the choices the data can't carry are made here.
+            BuildingFix fix = b.fix;
+            if (fix != null && MapValidation.TryFacing(fix.facing, out Vector2 facing)) p.Front = FacingWall(f, p, facing);
 
             float area = f.Size, width = sh.Width, length = sh.Length, aspect = sh.Aspect;
             bool city = p.Population >= 60000f;
-            p.Arch = ArchOf(ctx, f, sh, p, land, area, width, length, aspect, rng);
+            p.Arch = fix != null && TryName(fix.arch, out Arch forced) ? forced : ArchOf(ctx, f, sh, p, land, area, width, length, aspect, rng);
+            if (fix != null && TryName(fix.style, out HouseStyle style) && style != HouseStyle.None) p.ForcedStyle = style;
             switch (p.Arch)
             {
                 case Arch.House: House(p, f, sh, rng); break;
@@ -170,8 +177,44 @@ namespace CloneZ
                 default: Ruin(p, rng); break;
             }
             Tags(p, b, sh);
+            if (fix != null && fix.storeys > 0 && p.Arch != Arch.Canopy)
+            {
+                // A correction's storeys stand, whatever the archetype or a mapped height would make of them.
+                p.Storeys = Mathf.Clamp(fix.storeys, 1, 40);
+                p.Eave = 0f;
+                p.TaggedHeight = 0f;
+            }
             Finish(p, b, sh, rng);
             return p;
+        }
+
+        // An enum value by its name (any case); never by number, which Enum.TryParse would also take.
+        private static bool TryName<T>(string name, out T value) where T : struct
+        {
+            value = default;
+            return !string.IsNullOrWhiteSpace(name) && !char.IsDigit(name.Trim()[0]) && System.Enum.TryParse(name.Trim(), true, out value)
+                && System.Enum.IsDefined(typeof(T), value);
+        }
+
+        // The wall a correction says the front faces: the one whose outside looks most that way (the longer of two that
+        // look much the same way), a wall shared with a neighbour only when there's no other.
+        private static int FacingWall(Footprint f, Plan p, Vector2 want)
+        {
+            List<Vector2> pts = f.Pts;
+            int best = -1;
+            float bestScore = float.MinValue;
+            for (int i = 0; i < pts.Count; i++)
+            {
+                Vector2 a = pts[i], c = pts[(i + 1) % pts.Count];
+                float len = Vector2.Distance(a, c);
+                if (len < 1.6f) continue;
+                Vector2 d = (c - a) / len, outward = new Vector2(d.y, -d.x);
+                float score = Vector2.Dot(outward, want) * 4f + Mathf.Min(len, 14f) * 0.05f - (p.Party[i] ? 10f : 0f);
+                if (score <= bestScore) continue;
+                bestScore = score;
+                best = i;
+            }
+            return best >= 0 ? best : p.Front;
         }
 
         // The wall the front door goes in: the longest facing the road, never one shared with a neighbour.
@@ -389,6 +432,7 @@ namespace CloneZ
             if (area < 62f && style != HouseStyle.Shotgun) style = HouseStyle.Cottage;
             else if (area > 240f && (style == HouseStyle.Cottage || style == HouseStyle.Bungalow)) style = HouseStyle.TwoStorey;
             if (style == HouseStyle.Farmhouse && frontIsEnd) style = HouseStyle.TwoStorey;
+            if (p.ForcedStyle != HouseStyle.None) style = p.ForcedStyle;
             p.Style = style;
 
             bool brick;

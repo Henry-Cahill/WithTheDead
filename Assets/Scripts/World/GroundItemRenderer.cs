@@ -111,7 +111,9 @@ namespace CloneZ
                     if (def == null) continue;
 
                     ItemMeshBaker.Lod lod = d2 <= nearSqr ? ItemMeshBaker.Lod.Near : ItemMeshBaker.Lod.Far;
-                    ItemMeshBaker.Baked baked = ItemMeshBaker.Get(def, lod);
+                    int looks = ItemMeshBaker.VariantCount(def);
+                    int variant = looks > 1 ? (int)(VariantHash(item, def) % (uint)looks) : 0;
+                    ItemMeshBaker.Baked baked = ItemMeshBaker.Get(def, lod, variant);
                     if (baked == null) continue;   // no bespoke model; nothing to draw here yet
 
                     float height = baked.BaseHeight;
@@ -134,7 +136,8 @@ namespace CloneZ
 
                     var trs = Matrix4x4.TRS(centre, Quaternion.Euler(0f, yaw, 0f), Vector3.one);
 
-                    int key = (item.TypeIndex << 1) | (int)lod;
+                    // One group per item type, look and level of detail (see Draw for the unpacking).
+                    int key = ((item.TypeIndex * GeneratedItemMeshes.MaxVariants + variant) << 1) | (int)lod;
                     if (!_groups.TryGetValue(key, out List<Matrix4x4> list))
                     {
                         list = new List<Matrix4x4>(64);
@@ -146,6 +149,36 @@ namespace CloneZ
                     DrawnLastFrame++;
                 }
             }
+        }
+
+        /// <summary>Which of an item's looks a ground item shows: a hash of its type and where it lies, so every
+        /// client and every reload agree without the choice being stored anywhere.</summary>
+        private uint VariantHash(in GroundItemStore.Item item, ItemDef def)
+        {
+            uint h = TypeHash(item.TypeIndex, def);
+            h ^= (uint)Mathf.RoundToInt(item.X * 4f) * 0x9E3779B1u;
+            h ^= (uint)Mathf.RoundToInt(item.Z * 4f) * 0x85EBCA77u;
+            h ^= h >> 15;
+            h *= 0x2C1B3C6Du;
+            h ^= h >> 12;
+            h *= 0x297A2D39u;
+            h ^= h >> 15;
+            return h;
+        }
+
+        // FNV-1a of each item type's id, kept per type index: the index differs between sessions, the id doesn't.
+        private uint[] _typeHashes = new uint[256];
+
+        private uint TypeHash(int typeIndex, ItemDef def)
+        {
+            if (typeIndex >= _typeHashes.Length) System.Array.Resize(ref _typeHashes, Mathf.Max(typeIndex + 1, _typeHashes.Length * 2));
+            uint h = _typeHashes[typeIndex];
+            if (h != 0) return h;
+            h = 2166136261u;
+            foreach (char c in def.Id) h = (h ^ c) * 16777619u;
+            if (h == 0) h = 1;   // 0 marks a type not hashed yet
+            _typeHashes[typeIndex] = h;
+            return h;
         }
 
         private bool InView(Vector3 centre, float radius)
@@ -169,8 +202,9 @@ namespace CloneZ
                 if (list.Count == 0) continue;
 
                 var lod = (ItemMeshBaker.Lod)(key & 1);
-                ItemDef def = GroundItemStore.TypeAt(key >> 1);
-                ItemMeshBaker.Baked baked = ItemMeshBaker.Get(def, lod);
+                int typeAndLook = key >> 1;
+                ItemDef def = GroundItemStore.TypeAt(typeAndLook / GeneratedItemMeshes.MaxVariants);
+                ItemMeshBaker.Baked baked = ItemMeshBaker.Get(def, lod, typeAndLook % GeneratedItemMeshes.MaxVariants);
                 if (baked == null) continue;
 
                 for (int sub = 0; sub < baked.Materials.Length; sub++)

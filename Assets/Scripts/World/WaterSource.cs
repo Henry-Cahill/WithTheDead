@@ -181,9 +181,9 @@ namespace CloneZ
         /// run of base cabinets with a steel bowl, drainer and mixer tap, its back toward -Z (turned by
         /// <paramref name="yaw"/> degrees), standing on the floor, fitted out as a <see cref="KitchenSink"/>.
         /// A barrel is fronted by a <see cref="RainBarrelFixture"/>.</summary>
-        public static WaterSource Spawn(Transform parent, Vector3 position, WaterSourceKind kind, float yaw = 0f)
+        public static WaterSource Spawn(Transform parent, Vector3 position, WaterSourceKind kind, float yaw = 0f, float? floor = null)
         {
-            position.y = BuildPiece.FloorTopAt(position);
+            position.y = floor ?? BuildPiece.FloorTopAt(position);
             var root = new GameObject(kind == WaterSourceKind.RainBarrel ? "RainBarrel" : "WaterTap");
             root.transform.SetParent(parent);
             root.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));

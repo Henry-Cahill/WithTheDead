@@ -201,8 +201,9 @@ namespace CloneZ
 
         // Snow banked along the foot of the walls of every building the building pass raised (its shells), drifting in and
         // out along the wall; none along a wall with a door (its walk shovelled, its porch and steps standing there), on the
-        // road or the sidewalk, on a lot, a driveway or under a parked car; squeezed between neighbours. What a wall's band
-        // could meet (a road, a sidewalk, a neighbour) is looked for once a wall, and its stations test only what's near.
+        // road or the sidewalk, on a lot, a driveway or under a parked car, or in a neighbour (an attached row's party wall
+        // drifts into nobody's rooms); squeezed between neighbours. What a wall's band could meet (a road, a sidewalk, a
+        // neighbour) is looked for once a wall, and its stations test only what's near.
         private static IEnumerable<string> WallDrifts(Site site, NaturePlan plan)
         {
             var seen = new HashSet<Footprint>();
@@ -247,7 +248,8 @@ namespace CloneZ
                         if (end < 0.9f) h *= Mathf.Lerp(0.3f, 1f, end / 0.9f);
                         Vector2 foot = at + outward * (d * 0.5f);
                         if (plan.NearDoor(at + outward, 1.8f) || (roads && plan.RoadClearance(foot, 1f) < 0.2f) || plan.LandAt(foot) == Land.Lot
-                            || plan.IsKept(foot, 0.3f) || (walks && plan.OnSidewalk(foot, 0.2f)))
+                            || plan.IsKept(foot, 0.3f) || (walks && plan.OnSidewalk(foot, 0.2f))
+                            || InNeighbour(near, f, at + outward * Mathf.Min(0.15f, d * 0.5f)) || InNeighbour(near, f, foot))
                             h = 0f;
                         else if (squeezed && plan.WallDistance(at + outward * (d + 0.3f), 0.6f) < 0.35f)
                         {
@@ -262,6 +264,14 @@ namespace CloneZ
                     if (site.StepDue) yield return "wall drifts";
                 }
             }
+        }
+
+        // True when a point lies in one of the buildings near a wall but its own.
+        private static bool InNeighbour(List<Footprint> near, Footprint own, Vector2 p)
+        {
+            foreach (Footprint o in near)
+                if (o != own && o.Bounds.Contains(p) && MapGeometry.Contains(o.Pts, p)) return true;
+            return false;
         }
 
         // Banks along the fences, walls and hedges on their lee side, coming and going with the noise; only where the

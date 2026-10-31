@@ -1,0 +1,9 @@
+{"version": 1, "id": "Vest_Leather_BarrelDogs", "baseHeight": 0.066, "name": "Vest Leather Barrel Dogs", "model": "gpt-oss:120b", "notes": "Flat leather sheet (vest‑leather) 0.45 m long × 0.35 m wide × 0.008 m thick, brown‑gray tint 0.6 0.58 0.5. Stitched leather edges and a small leather tag with a rivet for visual detail.", "score": 6, "parts": [
+  {"name":"Sheet","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.35],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.002,0.1755],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.002],"color":[0.48,0.44,0.36],"smooth":0.12,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.002,-0.1755],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.002],"color":[0.48,0.44,0.36],"smooth":0.12,"metal":0.0},
+  {"name":"StitchLeft","shape":"cube","pos":[-0.2255,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.35],"color":[0.48,0.44,0.36],"smooth":0.12,"metal":0.0},
+  {"name":"StitchRight","shape":"cube","pos":[0.2255,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.35],"color":[0.48,0.44,0.36],"smooth":0.12,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.18,-0.002,0.14],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.03],"color":[0.55,0.52,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.18,0.002,0.14],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0}
+]}

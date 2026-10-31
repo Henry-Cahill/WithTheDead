@@ -209,11 +209,19 @@ namespace CloneZ
             }
         }
 
+        /// <summary>The height of the floor the building's local heights count from: 0 for a ground floor, the floor's height
+        /// for one of a real-world building's other levels (furnished where it stands, so every fixture's points are its own).</summary>
+        public float BaseY;
+
+        /// <summary>The floor the pieces that otherwise find their own (on the ground, or a house floor built over it) stand
+        /// on instead: <see cref="BaseY"/> off the ground floor, else none.</summary>
+        public float? Floor => BaseY != 0f ? BaseY : (float?)null;
+
         /// <summary>Converts local (x, y, z) coordinates to world space.</summary>
         public Vector3 W(float lx, float y, float lz)
         {
             Vector2 p = P(lx, lz);
-            return new Vector3(p.x, y, p.y);
+            return new Vector3(p.x, BaseY + y, p.y);
         }
 
         /// <summary>A local yaw (degrees; 0 faces local +Z) in world terms.</summary>

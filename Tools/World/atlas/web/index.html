@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kentucky Atlas</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="atlas.css">
+</head>
+<body>
+<header id="bar">
+  <strong>Kentucky Atlas</strong>
+  <form id="find" autocomplete="off">
+    <input id="q" type="search" list="placeNames" placeholder="Town, building id, or lat, lon">
+    <datalist id="placeNames"></datalist>
+    <button type="submit">Go</button>
+  </form>
+  <label title="Draw only the buildings whose outline or kind hasn't been checked"><input type="checkbox" id="onlyOpen"> Only unchecked</label>
+  <span id="progress"></span>
+  <span id="build"></span>
+</header>
+<main>
+  <div id="map"></div>
+  <aside id="panel">
+    <section id="empty">
+      <h2>Check the buildings</h2>
+      <p>Zoom in to a town (the outlines show from zoom 15) and click a building. Compare its outline with the photograph,
+        say whether its <b>footprint</b> and <b>kind</b> are right, correct what's wrong, and save: the game builds it
+        the corrected way. <b>Save &amp; next</b> goes on to the nearest building not checked yet.</p>
+      <p>The editor's Kentucky Atlas (<i>WithTheDead ▸ Kentucky Atlas</i> in Unity) shares these checks, and checks what
+        a photograph can't: how the game builds it, its windows, doors and inside.</p>
+      <div class="legend">
+        <span><i class="unchecked"></i>not checked</span><span><i class="partial"></i>partly checked</span>
+        <span><i class="ok"></i>all good</span><span><i class="bad"></i>something wrong</span>
+        <span><i class="fixed"></i>corrected</span>
+      </div>
+    </section>
+    <section id="detail" hidden>
+      <h2 id="title"></h2>
+      <div id="sub"></div>
+      <div id="links"></div>
+      <table id="data"></table>
+      <div id="game"></div>
+      <h3>Checks</h3>
+      <div id="checks"></div>
+      <textarea id="note" rows="2" placeholder="Note (what's wrong, what it really is...)"></textarea>
+      <div id="actions">
+        <button id="save" title="S">Save</button>
+        <button id="saveNext" class="primary" title="Enter">Save &amp; next ▶</button>
+        <button id="skip" title="N">Next ▶</button>
+        <button id="clear" title="Forget everything recorded for this building">Clear</button>
+      </div>
+      <div id="state"></div>
+      <details id="fixBox">
+        <summary>Corrections <small>the game builds it this way</small></summary>
+        <div id="fix" class="grid">
+          <label class="wide"><input type="checkbox" id="fixHide"> Not there (pulled down, or never was): the game leaves it out</label>
+          <label>Kind <select id="fixKind"></select></label>
+          <label>Use <input id="fixUse" list="uses" placeholder="as mapped"></label>
+          <label class="wide">Name <input id="fixName" placeholder="as mapped"></label>
+          <label>Archetype <select id="fixArch"></select></label>
+          <label>House style <select id="fixStyle"></select></label>
+          <label>Storeys <input id="fixStoreys" type="number" min="0" max="40" placeholder="game's"></label>
+          <label>Roof <select id="fixRoof"></select></label>
+          <label>Walls <select id="fixMaterial"></select></label>
+          <label>Front faces <select id="fixFacing"></select></label>
+        </div>
+      </details>
+      <datalist id="uses"></datalist>
+    </section>
+    <footer>
+      <b>Keys</b> F / Shift+F footprint good / wrong, K / Shift+K kind good / wrong, H not there, Enter (Ctrl+Enter in a text
+      box) save &amp; next, N next, S save, Esc let go. Imagery KyFromAbove, Commonwealth of Kentucky. <span id="credit"></span>
+    </footer>
+  </aside>
+</main>
+<div id="toast" hidden></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="ky3088.js"></script>
+<script src="atlas.js"></script>
+</body>
+</html>

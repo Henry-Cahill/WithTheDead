@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shoes_LeatherWrap", "baseHeight": 0.0925, "name": "Shoes Leather Wrap", "model": "gpt-oss:120b", "notes": "Pair of low‑profile leather‑wrap shoes, laid flat side‑by‑side (≈0.28 m long, 0.12 m wide each).  Each shoe is built from a rubber sole, a leather upper, side‑straps, a front strap, a tongue and a decorative stitch line.", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.16,-0.0225,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.28],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[-0.16,0.0025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.24],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"SideStrapL_Left","shape":"cylinder","pos":[-0.185,0.025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"SideStrapL_Right","shape":"cylinder","pos":[-0.135,0.025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"FrontStrapL","shape":"cylinder","pos":[-0.16,0.025,0.115],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"TongueL","shape":"cube","pos":[-0.16,0.025,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"StitchL","shape":"cube","pos":[-0.16,0.0195,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.002],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.16,-0.0225,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.28],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[0.16,0.0025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.24],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"SideStrapR_Left","shape":"cylinder","pos":[0.135,0.025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"SideStrapR_Right","shape":"cylinder","pos":[0.185,0.025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"FrontStrapR","shape":"cylinder","pos":[0.16,0.025,0.115],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"TongueR","shape":"cube","pos":[0.16,0.025,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"StitchR","shape":"cube","pos":[0.16,0.0195,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.002],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0}
+]}

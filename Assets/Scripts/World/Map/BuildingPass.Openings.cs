@@ -265,8 +265,8 @@ namespace CloneZ
         {
             bool lit = j.P.Lit && Unit(id, edge, storey * 13 + Mathf.RoundToInt(s * 3f)) < 0.3f;
             j.Holes.Add(new Hole { Edge = edge, Storey = storey, S = s, W = w, Sill = sill, Head = sill + h, Win = kind, Lit = lit });
-            if (storey != 0 || j.Record == null) return;
-            j.Record.Windows.Add(new WindowSpan { Edge = edge, Storey = 0, From = s - w * 0.5f, To = s + w * 0.5f, Sill = sill, Head = sill + h });
+            if (j.Record == null) return;
+            j.Record.Windows.Add(new WindowSpan { Edge = edge, Storey = storey, From = s - w * 0.5f, To = s + w * 0.5f, Sill = sill, Head = sill + h });
         }
 
         private static void Size(Plan p, WindowKind kind, int storey, float len, out float w, out float h, out float sill, out float spacing)

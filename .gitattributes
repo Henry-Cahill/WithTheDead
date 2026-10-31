@@ -176,3 +176,8 @@ LightingData.asset     binary
 /Tools/NightShift/*.py  text eol=lf
 /Tools/World/*.sh       text eol=lf
 /Tools/World/*.py       text eol=lf
+# The asset pipeline's mesh stage runs on the DGX Spark; the item meshes it makes are binary (their textures are .jpg)
+/Tools/AssetPipeline/mesh/*.sh       text eol=lf
+/Tools/AssetPipeline/mesh/*.py       text eol=lf
+/Tools/AssetPipeline/mesh/Dockerfile text eol=lf
+/Assets/Resources/GeneratedItemMeshes/*.bytes lfs
