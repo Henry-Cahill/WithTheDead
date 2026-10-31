@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shoes_CowboyBoots_Black", "baseHeight": 0.225, "name": "Shoes Cowboy Boots Black", "model": "gpt-oss:120b", "notes": "Pair of black cowboy boots laid flat side‑by‑side (like a product photo). Each boot ~0.35 m long, 0.25 m tall shaft, 0.12 m wide at the shaft, 0.10 m wide at the sole, 3 cm thick sole. Main leather tint 0.55,0.5,0.6 with dark stitching.", "score": 6, "parts": [
+  {"name":"BootL_Sole","shape":"cube","pos":[0.005,-0.15,-0.15],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BootL_Heel","shape":"cube","pos":[-0.155,-0.15,-0.15],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BootL_Shaft","shape":"cube","pos":[0.005,-0.01,-0.15],"rot":[0.0,0.0,0.0],"size":[0.25,0.25,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BootL_ToeCap","shape":"cylinder","pos":[0.13,-0.01,-0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.25,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BootL_StitchV","shape":"cube","pos":[0.005,0.115,-0.15],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BootL_StitchH","shape":"cube","pos":[0.005,0.115,-0.15],"rot":[0.0,0.0,90.0],"size":[0.1,0.005,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BootR_Sole","shape":"cube","pos":[0.005,-0.15,0.15],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BootR_Heel","shape":"cube","pos":[-0.155,-0.15,0.15],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BootR_Shaft","shape":"cube","pos":[0.005,-0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.25,0.25,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BootR_ToeCap","shape":"cylinder","pos":[0.13,-0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.25,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BootR_StitchV","shape":"cube","pos":[0.005,0.115,0.15],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BootR_StitchH","shape":"cube","pos":[0.005,0.115,0.15],"rot":[0.0,0.0,90.0],"size":[0.1,0.005,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0}
+]}

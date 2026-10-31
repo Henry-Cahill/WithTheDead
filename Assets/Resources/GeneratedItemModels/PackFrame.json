@@ -1,0 +1,13 @@
+{"version": 1, "id": "PackFrame", "baseHeight": 0.0725, "name": "Pack Frame", "model": "gpt-oss:120b", "notes": "Pack frame 0.50 m wide × 0.30 m deep × 0.02 m thick, made of four wooden beams with two diagonal braces and a label on top.", "score": 7, "parts": [
+  {"name":"BeamFront","shape":"cube","pos":[0.0,-0.0025,0.14],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BeamBack","shape":"cube","pos":[0.0,-0.0025,-0.14],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BeamLeft","shape":"cube","pos":[-0.24,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BeamRight","shape":"cube","pos":[0.24,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BraceDiagPos","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,45.0,0.0],"size":[0.58,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BraceDiagNeg","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,-45.0,0.0],"size":[0.58,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.1],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"CornerRivetFL","shape":"sphere","pos":[0.24,0.0085,0.14],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRivetFR","shape":"sphere","pos":[0.24,0.0085,-0.14],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRivetBL","shape":"sphere","pos":[-0.24,0.0085,0.14],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRivetBR","shape":"sphere","pos":[-0.24,0.0085,-0.14],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0}
+]}

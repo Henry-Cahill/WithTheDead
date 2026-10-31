@@ -1,0 +1,12 @@
+{"version": 1, "id": "militarypack", "baseHeight": 0.095, "name": "Military Backpack", "model": "gpt-oss:120b", "notes": "Flat ALICE military backpack ~0.45 m wide × 0.60 m tall × 0.03 m thick, spread like a product photo. Main body, front flap, top flap, bottom strap, side straps, internal pocket, zip pull and side loops give the recognisable silhouette.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.015,-0.0638],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.6],"color":[0.29,0.32,0.21],"smooth":0.1,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[0.0,0.0075,0.2963],"rot":[0.0,0.0,0.0],"size":[0.44,0.015,0.12],"color":[0.32,0.35,0.24],"smooth":0.1,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0075,-0.0638],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.2],"color":[0.32,0.35,0.24],"smooth":0.1,"metal":0.0},
+  {"name":"BottomStrap","shape":"cube","pos":[0.0,-0.0225,-0.0638],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.2],"color":[0.25,0.28,0.18],"smooth":0.1,"metal":0.0},
+  {"name":"SideStrapL","shape":"cylinder","pos":[-0.235,-0.015,-0.0638],"rot":[90.0,0.0,0.0],"size":[0.04,0.6,0.04],"color":[0.25,0.28,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"SideStrapR","shape":"cylinder","pos":[0.235,-0.015,-0.0638],"rot":[90.0,0.0,0.0],"size":[0.04,0.6,0.04],"color":[0.25,0.28,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"InternalPocket","shape":"cube","pos":[0.0,-0.0075,0.0862],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.25],"color":[0.27,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"ZipPull","shape":"cylinder","pos":[0.0,0.015,0.3562],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SideLoopL","shape":"cylinder","pos":[-0.235,-0.015,0.1862],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.25,0.28,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"SideLoopR","shape":"cylinder","pos":[0.235,-0.015,0.1862],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.25,0.28,0.18],"smooth":0.15,"metal":0.0}
+]}

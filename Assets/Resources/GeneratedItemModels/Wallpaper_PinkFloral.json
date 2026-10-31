@@ -1,0 +1,8 @@
+{"version": 1, "id": "Wallpaper_PinkFloral", "baseHeight": 0.16, "name": "Wallpaper Pink Floral", "model": "gpt-oss:120b", "notes": "Rolled wallpaper 0.5 m long (width of sheet) × 0.20 m outer diameter, cardboard core 0.05 m diameter, lying on its side (axis +X). Main roll tinted muted pink‑beige, core brown, a few small pink floral motif spheres on the surface.", "score": 7, "parts": [
+  {"name":"RollBody","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.5,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Core","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.5,0.05],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"Floral1","shape":"sphere","pos":[-0.15,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.9,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Floral2","shape":"sphere","pos":[0.1,-0.015,0.12],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.9,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Floral3","shape":"sphere","pos":[0.05,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.9,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Floral4","shape":"sphere","pos":[0.2,0.025,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.9,0.5,0.6],"smooth":0.4,"metal":0.0}
+]}

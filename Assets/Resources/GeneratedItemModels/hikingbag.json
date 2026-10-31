@@ -1,0 +1,13 @@
+{"version": 1, "id": "hikingbag", "baseHeight": 0.085, "name": "Hiking Bag", "model": "gpt-oss:120b", "notes": "Flat hiking backpack laid out for a product‑photo view – about 0.50 m wide, 0.70 m tall and 0.02 m thick. Main torso panel with a front flap, left/right side pockets, two shoulder straps, a hip‑belt panel and three metal buckles.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.015,-0.045],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.7],"color":[0.55,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[0.0,0.0025,0.38],"rot":[0.0,0.0,0.0],"size":[0.52,0.015,0.15],"color":[0.55,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.31,-0.01,-0.045],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.4],"color":[0.55,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.31,-0.01,-0.045],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.4],"color":[0.55,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[0.0,0.01,0.155],"rot":[0.0,0.0,90.0],"size":[0.03,0.5,0.03],"color":[0.55,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.0,0.01,-0.245],"rot":[0.0,0.0,90.0],"size":[0.03,0.5,0.03],"color":[0.55,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"HipBelt","shape":"cube","pos":[0.0,0.0025,-0.395],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.12],"color":[0.55,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TopLid","shape":"cube","pos":[0.0,0.0025,0.305],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.12],"color":[0.55,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleStrapL","shape":"cube","pos":[0.2,0.02,0.155],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.015],"color":[0.6,0.6,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"BuckleStrapR","shape":"cube","pos":[0.2,0.02,-0.245],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.015],"color":[0.6,0.6,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"BuckleBelt","shape":"cube","pos":[0.0,0.02,-0.395],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.015],"color":[0.6,0.6,0.6],"smooth":0.45,"metal":1.0}
+]}

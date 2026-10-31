@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shoes_TireSandals", "baseHeight": 0.19, "name": "Shoes Tire Sandals", "model": "gpt-oss:120b", "notes": "Flat pair of tire‑rubber sandals. Each shoe 0.26 m long × 0.10 m wide × 0.03 m thick (including sole, heel, toe‑cap and two straps). Shoes lie side‑by‑side on the floor, left shoe at –Z, right shoe at +Z. Main colour is the tint 0.55 0.5 0.6 (rubber).", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[0.0,-0.06,-0.07],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[0.0,-0.045,-0.07],"rot":[0.0,0.0,0.0],"size":[0.26,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"HeelL","shape":"cube","pos":[-0.09,-0.03,-0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"ToeCapL","shape":"cube","pos":[0.09,-0.03,-0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"StrapL_Top","shape":"cylinder","pos":[0.0,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.26,0.015],"color":[0.4,0.35,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"StrapL_Front","shape":"cylinder","pos":[0.09,0.0,-0.07],"rot":[90.0,0.0,0.0],"size":[0.015,0.1,0.015],"color":[0.4,0.35,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.0,-0.06,0.07],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[0.0,-0.045,0.07],"rot":[0.0,0.0,0.0],"size":[0.26,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"HeelR","shape":"cube","pos":[-0.09,-0.03,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"ToeCapR","shape":"cube","pos":[0.09,-0.03,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"StrapR_Top","shape":"cylinder","pos":[0.0,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.26,0.015],"color":[0.4,0.35,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"StrapR_Front","shape":"cylinder","pos":[0.09,0.0,0.07],"rot":[90.0,0.0,0.0],"size":[0.015,0.1,0.015],"color":[0.4,0.35,0.45],"smooth":0.25,"metal":0.0}
+]}

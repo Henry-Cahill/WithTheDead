@@ -1,0 +1,18 @@
+{"version": 1, "id": "cargopants", "baseHeight": 0.0825, "name": "Cargo Pants", "model": "gpt-oss:120b", "notes": "Flat cargo pants 0.70 m wide × 1.00 m long × 0.03 m thick, laid out as a product‑photo spread: two leg panels, a waistband, front fly with metal button, side cargo pockets, rear pockets, six belt‑loops and a central seam line.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[-0.185,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.03,1.0],"color":[0.3,0.31,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.185,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.03,1.0],"color":[0.3,0.31,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0025,0.4],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.2],"color":[0.3,0.31,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"Fly","shape":"cube","pos":[0.375,-0.0075,0.3],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.2],"color":[0.3,0.31,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"FlyButton","shape":"cylinder","pos":[0.406,-0.0075,0.3],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"LeftCargoPocket","shape":"cube","pos":[-0.385,-0.0075,-0.2],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.25],"color":[0.25,0.26,0.2],"smooth":0.07,"metal":0.0},
+  {"name":"RightCargoPocket","shape":"cube","pos":[0.385,-0.0075,-0.2],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.25],"color":[0.25,0.26,0.2],"smooth":0.07,"metal":0.0},
+  {"name":"LeftBackPocket","shape":"cube","pos":[-0.05,-0.0075,-0.4],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.2],"color":[0.25,0.26,0.2],"smooth":0.07,"metal":0.0},
+  {"name":"RightBackPocket","shape":"cube","pos":[0.05,-0.0075,-0.4],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.2],"color":[0.25,0.26,0.2],"smooth":0.07,"metal":0.0},
+  {"name":"BeltLoop1","shape":"cylinder","pos":[-0.25,0.0125,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.25,0.26,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BeltLoop2","shape":"cylinder","pos":[-0.15,0.0125,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.25,0.26,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BeltLoop3","shape":"cylinder","pos":[-0.05,0.0125,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.25,0.26,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BeltLoop4","shape":"cylinder","pos":[0.05,0.0125,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.25,0.26,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BeltLoop5","shape":"cylinder","pos":[0.15,0.0125,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.25,0.26,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BeltLoop6","shape":"cylinder","pos":[0.25,0.0125,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.25,0.26,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,1.0],"color":[0.2,0.21,0.15],"smooth":0.05,"metal":0.0}
+]}

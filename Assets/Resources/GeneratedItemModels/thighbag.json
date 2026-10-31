@@ -1,0 +1,12 @@
+{"version": 1, "id": "thighbag", "baseHeight": 0.075, "name": "SWAT Thigh Bag", "model": "gpt-oss:120b", "notes": "SWAT thigh bag laid flat: overall size ≈0.20 m wide × 0.15 m deep × 0.03 m thick, with front flap, two crossing straps and metal buckles. Dark‑gray cloth (tint 0.12,0.12,0.13) with steel‑look buckles.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.15],"color":[0.12,0.12,0.13],"smooth":0.05,"metal":0.0},
+  {"name":"Flap","shape":"cube","pos":[0.0,0.0,0.075],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.04],"color":[0.12,0.12,0.13],"smooth":0.05,"metal":0.0},
+  {"name":"LeftStrap","shape":"cube","pos":[-0.11,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.15],"color":[0.15,0.15,0.16],"smooth":0.05,"metal":0.0},
+  {"name":"RightStrap","shape":"cube","pos":[0.11,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.15],"color":[0.15,0.15,0.16],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.11,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":0.9},
+  {"name":"BuckleR","shape":"cube","pos":[0.11,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":0.9},
+  {"name":"Divider","shape":"cube","pos":[0.0,0.001,-0.02],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.07],"color":[0.1,0.1,0.11],"smooth":0.05,"metal":0.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.0,0.013,-0.02],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.004],"color":[0.08,0.08,0.09],"smooth":0.05,"metal":0.0},
+  {"name":"BottomSeam","shape":"cube","pos":[0.0,-0.013,-0.02],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.004],"color":[0.08,0.08,0.09],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.002,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.15,0.15,0.16],"smooth":0.05,"metal":0.0}
+]}

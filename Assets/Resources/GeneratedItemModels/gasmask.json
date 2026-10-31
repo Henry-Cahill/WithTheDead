@@ -1,0 +1,12 @@
+{"version": 1, "id": "gasmask", "baseHeight": 0.2, "name": "Gas Mask", "model": "gpt-oss:120b", "notes": "Flat gas‑mask laid out like a product photo – overall ~0.28 m wide × 0.18 m tall × 0.04 m thick. Main front shell, dual lenses, right‑hand filter canister with cap, top & bottom straps, small valve, exhaust port and a nose‑bridge ridge.", "score": 6, "parts": [
+  {"name":"MaskBody","shape":"cube","pos":[-0.05,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.04,0.16],"color":[0.16,0.17,0.16],"smooth":0.05,"metal":0.0},
+  {"name":"LensL","shape":"cylinder","pos":[-0.13,0.005,0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.1,0.1,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[-0.13,0.005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.1,0.1,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"FilterCanister","shape":"cylinder","pos":[0.11,0.035,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.9},
+  {"name":"FilterCap","shape":"cylinder","pos":[0.15,0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.02,0.09],"color":[0.05,0.05,0.05],"smooth":0.3,"metal":0.9},
+  {"name":"StrapTop","shape":"cylinder","pos":[-0.01,-0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.28,0.01,0.01],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[-0.01,-0.0,-0.07],"rot":[0.0,0.0,90.0],"size":[0.28,0.01,0.01],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"Valve","shape":"cylinder","pos":[-0.13,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.3,0.3,0.3],"smooth":0.5,"metal":0.8},
+  {"name":"Exhaust","shape":"cylinder","pos":[-0.11,0.0025,0.06],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.3,0.3,0.3],"smooth":0.5,"metal":0.8},
+  {"name":"NoseBridge","shape":"cube","pos":[-0.1,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.02],"color":[0.25,0.25,0.25],"smooth":0.5,"metal":0.8}
+]}

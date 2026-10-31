@@ -1,0 +1,10 @@
+{"version": 1, "id": "Shoes_Wellies", "baseHeight": 0.085, "name": "Shoes Wellies", "model": "gpt-oss:120b", "notes": "Wellies laid flat side‑by‑side, each boot 0.30 m long × 0.15 m wide × 0.04 m thick.  Main body is a flat cube, with a rounded toe cylinder, a rounded heel cylinder and a thin top‑rim to hint at the cuff.  Boots are spaced a few centimetres apart for a clear product‑photo silhouette.", "score": 6, "parts": [
+  {"name":"LeftBody","shape":"cube","pos":[-0.2,-0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.15],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LeftHeel","shape":"cylinder","pos":[-0.31,-0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LeftToe","shape":"cylinder","pos":[-0.11,-0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LeftRim","shape":"cube","pos":[-0.2,0.02,-0.08],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.15],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RightBody","shape":"cube","pos":[0.2,-0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.15],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RightHeel","shape":"cylinder","pos":[0.09,-0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RightToe","shape":"cylinder","pos":[0.29,-0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RightRim","shape":"cube","pos":[0.2,0.02,0.08],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.15],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0}
+]}

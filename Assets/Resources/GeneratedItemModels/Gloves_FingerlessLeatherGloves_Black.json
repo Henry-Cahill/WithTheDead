@@ -1,0 +1,13 @@
+{"version": 1, "id": "Gloves_FingerlessLeatherGloves_Black", "baseHeight": 0.07, "name": "Gloves Fingerless Leather Gloves Black", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a pair of fingerless leather gloves, black tint (0.55,0.5,0.6). Each glove is 0.22 m long, 0.09 m wide, 0.02 m thick; the pair is spread side‑by‑side (≈0.20 m total width). Main parts: palm base, wrist cuff, thumb pad, stitching lines, and a centre seam between the two gloves.", "score": 6, "parts": [
+  {"name":"BaseL","shape":"cube","pos":[0.01,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.09],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BaseR","shape":"cube","pos":[0.01,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.09],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"CuffL","shape":"cylinder","pos":[-0.1,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"CuffR","shape":"cylinder","pos":[-0.1,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"ThumbPadL","shape":"cube","pos":[0.06,0.0,-0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"ThumbPadR","shape":"cube","pos":[0.06,0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"StitchTopL","shape":"cube","pos":[0.01,0.008,-0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.004],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTopR","shape":"cube","pos":[0.01,0.008,0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.004],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[0.01,0.0,-0.095],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.09],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.01,0.0,0.095],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.09],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBetweenGloves","shape":"cube","pos":[0.01,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.18],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

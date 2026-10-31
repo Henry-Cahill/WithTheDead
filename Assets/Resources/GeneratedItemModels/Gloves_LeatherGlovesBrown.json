@@ -1,0 +1,16 @@
+{"version": 1, "id": "Gloves_LeatherGlovesBrown", "baseHeight": 0.0675, "name": "Gloves Leather Gloves Brown", "model": "gpt-oss:120b", "notes": "Two leather gloves laid flat side‑by‑side, each ~0.25 m long (wrist‑to‑fingertip), 0.09 m wide across the palm and 0.015 m thick.  Each glove has a palm block, four fingers, a thumb and a cuff band.", "score": 6, "parts": [
+  {"name":"PalmL","shape":"cube","pos":[-0.07,0.0,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FingerL_Index","shape":"cube","pos":[-0.0925,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FingerL_Middle","shape":"cube","pos":[-0.0775,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FingerL_Ring","shape":"cube","pos":[-0.0625,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FingerL_Pinky","shape":"cube","pos":[-0.0475,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"ThumbL","shape":"cube","pos":[-0.13,0.0,0.0325],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"CuffL","shape":"cylinder","pos":[-0.07,0.0,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.09],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"PalmR","shape":"cube","pos":[0.07,0.0,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FingerR_Index","shape":"cube","pos":[0.0475,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FingerR_Middle","shape":"cube","pos":[0.0625,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FingerR_Ring","shape":"cube","pos":[0.0775,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FingerR_Pinky","shape":"cube","pos":[0.0925,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"ThumbR","shape":"cube","pos":[0.13,0.0,0.0325],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"CuffR","shape":"cylinder","pos":[0.07,0.0,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.09],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0}
+]}

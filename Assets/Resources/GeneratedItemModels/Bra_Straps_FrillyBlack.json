@@ -1,0 +1,15 @@
+{"version": 1, "id": "Bra_Straps_FrillyBlack", "baseHeight": 0.0732, "name": "Bra Straps Frilly Black", "model": "gpt-oss:120b", "notes": "Flat frilly black bra strap, about 0.30 m long × 0.04 m wide × 0.015 m thick, laid flat on the floor. Main strap is a cloth‑like rectangle; a series of small black frill “puffs” run along the top and bottom edges, with a little tube‑like frill at each end to hint at the decorative trim.", "score": 6, "parts": [
+  {"name":"StrapBase","shape":"cube","pos":[0.0,-0.0057,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillTopL","shape":"sphere","pos":[-0.12,0.0092,0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillTop2","shape":"sphere","pos":[-0.06,0.0092,0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillTop3","shape":"sphere","pos":[0.0,0.0092,0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillTop4","shape":"sphere","pos":[0.06,0.0092,0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillTopR","shape":"sphere","pos":[0.12,0.0092,0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillBotL","shape":"sphere","pos":[-0.12,0.0092,-0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillBot2","shape":"sphere","pos":[-0.06,0.0092,-0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillBot3","shape":"sphere","pos":[0.0,0.0092,-0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillBot4","shape":"sphere","pos":[0.06,0.0092,-0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillBotR","shape":"sphere","pos":[0.12,0.0092,-0.024],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillEndLeft","shape":"cylinder","pos":[-0.15,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillEndRight","shape":"cylinder","pos":[0.15,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}
