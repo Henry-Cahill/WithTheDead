@@ -659,6 +659,11 @@ namespace CloneZ
                 r.Flicker = !home && rng.NextDouble() < 0.2;
                 switch (r.Role)
                 {
+                    case RoomRole.Stair:
+                        // The stairwell's walls and treads are the building's own.
+                        r.Design = null;
+                        r.Lit = false;
+                        break;
                     case RoomRole.Living: case RoomRole.Guest:
                         r.Design = r.Unit >= 0 ? Pick(rng, RaidLayouts.Mustard, RaidLayouts.TealBeige, RaidLayouts.Rose, RaidLayouts.BrownGreen) : homeLiving;
                         r.Floor = rng.NextDouble() < 0.45 ? FloorKind.Wood : FloorKind.Carpet;

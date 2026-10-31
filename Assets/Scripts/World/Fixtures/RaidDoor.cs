@@ -106,6 +106,7 @@ namespace CloneZ
                 _oilNext = CloneZConfig.RaidDoorKickInterval * 0.4f;
             };
             _oilTick = OilTick;
+            _kickAct = KickIn;
             _kickBegin = c =>
             {
                 _kickClock = 0f;
@@ -190,7 +191,14 @@ namespace CloneZ
             }
 
             if (!_lubed && !_broken && IsLocked && _health >= _maxHealth)
-                }
+            {
+                var oil = new InteractAction("Oil door hinges", _oilAct)
+                    .Timed(CloneZConfig.RaidDoorKickSeconds, "Oiling the hinges", HumanoidActivity.Build);
+                oil.Begin = _oilBegin;
+                oil.Tick = _oilTick;
+                into.Add(oil);
+            }
+
             if (!_broken && _health < _maxHealth)
             {
                 var reinforce = new InteractAction("Reinforce door", _reinforceAct)
@@ -224,6 +232,9 @@ namespace CloneZ
             return (d - along * t).sqrMagnitude;
         }
 
+        // True when feet at p stand on the floor the door's on (a building with floors above has doors over doors).
+        private bool SameFloor(Vector3 p) => Mathf.Abs(p.y - transform.position.y) < 1.6f;
+
         /// <summary>Which side of the door (of its wall's normal) <paramref name="p"/> stands on: +1 or -1.</summary>
         public int SideOfDoor(Vector3 p)
         {
@@ -252,7 +263,7 @@ namespace CloneZ
             for (int i = 0; i < Registry.Count; i++)
             {
                 RaidDoor d = Registry[i];
-                if (d == null || !d.Obstructs) continue;
+                if (d == null || !d.Obstructs || !d.SameFloor(from)) continue;
                 float s = d.SqrDistance(from);
                 if (s > bestSqr) continue;
                 if (d.SideOfDoor(from) == d.SideOfDoor(towards)) continue;   // not between them
@@ -281,6 +292,7 @@ namespace CloneZ
                 RaidDoor d = Registry[i];
                 if (d == null || !d.Obstructs) continue;
                 if (!d.Holds(from) && !d.Holds(target)) continue;
+                if (!d.SameFloor(from) && !d.SameFloor(target)) continue;
                 if (d.SqrDistance(from) > rangeSqr) continue;
                 int side = -d.SideOfDoor(target);   // batter it from the side away from the target
                 Vector3 near = d.StandingPoint(side), far = d.StandingPoint(-side);

@@ -84,11 +84,13 @@ namespace CloneZ
             uvs.Clear();
             tris.Clear();
             for (int k = 0; k < points; k++) index[k] = -1;
+            bool[] open = HoleCells(g, half, cell, cells);
             for (int j = 0; j < cells; j++)
                 for (int i = 0; i < cells; i++)
                 {
                     int a = j * row + i, b = a + 1, c = a + row, d = c + 1;
                     if (Clean(tone[a]) && Clean(tone[b]) && Clean(tone[c]) && Clean(tone[d])) continue;
+                    if (open != null && open[j * cells + i]) continue;
                     int va = Vertex(a), vb = Vertex(b), vc = Vertex(c), vd = Vertex(d);
                     tris.Add(va); tris.Add(vc); tris.Add(vd);   // clockwise seen from above: the face looks up
                     tris.Add(va); tris.Add(vd); tris.Add(vb);
@@ -127,6 +129,30 @@ namespace CloneZ
         }
 
         private static bool Clean(Vector2 t) => Mathf.Abs(t.x - 0.5f) < 0.04f && Mathf.Abs(t.y) < 0.02f;
+
+        // The tone's cells over a basement, left out: the sheet would hang over it, seen into from above. Null when there are
+        // none.
+        private static bool[] HoleCells(Ground g, float half, float cell, int cells)
+        {
+            if (g.Holes == null || g.Holes.Count == 0) return null;
+            var open = new bool[cells * cells];
+            foreach (Vector2[] h in g.Holes)
+            {
+                float x0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, z1 = float.MinValue;
+                foreach (Vector2 p in h)
+                {
+                    x0 = Mathf.Min(x0, p.x); x1 = Mathf.Max(x1, p.x);
+                    z0 = Mathf.Min(z0, p.y); z1 = Mathf.Max(z1, p.y);
+                }
+                int i0 = Mathf.Max(0, Mathf.FloorToInt((x0 + half) / cell)), i1 = Mathf.Min(cells - 1, Mathf.FloorToInt((x1 + half) / cell));
+                int j0 = Mathf.Max(0, Mathf.FloorToInt((z0 + half) / cell)), j1 = Mathf.Min(cells - 1, Mathf.FloorToInt((z1 + half) / cell));
+                for (int j = j0; j <= j1; j++)
+                    for (int i = i0; i <= i1; i++)
+                        if (!open[j * cells + i] && CellOverHole(h, -half + i * cell, -half + j * cell, -half + (i + 1) * cell, -half + (j + 1) * cell))
+                            open[j * cells + i] = true;
+            }
+            return open;
+        }
 
         // Which owner's ground shows at each point of the tone's grid, from the partition's trapezoids (they don't
         // overlap, so each point gets the one it's in).

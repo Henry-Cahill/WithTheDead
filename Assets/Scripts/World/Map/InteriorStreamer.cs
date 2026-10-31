@@ -99,7 +99,7 @@ namespace CloneZ
         {
             foreach (InteriorPlan plan in plans)
             {
-                if (!_registered.Add(plan.Id)) continue;
+                if (!_registered.Add(plan.Key)) continue;
                 Rect b = plan.Footprint.Bounds;
                 _jobs.Add(new Job
                 {
@@ -191,18 +191,19 @@ namespace CloneZ
             }
         }
 
-        // How far the nearest survivor is from a building's outline (roughly: from its middle, less its reach).
+        // How far the nearest survivor is from a building's outline (roughly: from its middle, less its reach), a floor above
+        // or below the one they're on counting a couple of metres a metre of height (the floor they're on is furnished first).
         private float Distance(Job j)
         {
             if (_distCache.TryGetValue(j, out float c)) return c;
             Vector3 p = j.Parent.position;
-            float x = p.x + j.Centre.x, z = p.z + j.Centre.y, best = float.MaxValue;
+            float x = p.x + j.Centre.x, z = p.z + j.Centre.y, y = p.y + j.Plan.FloorY, best = float.MaxValue;
             for (int i = 0; i < _focus.Count; i++)
             {
                 float dx = _focus[i].x - x, dz = _focus[i].z - z;
-                best = Mathf.Min(best, dx * dx + dz * dz);
+                best = Mathf.Min(best, Mathf.Sqrt(dx * dx + dz * dz) + Mathf.Abs(_focus[i].y - y) * 2f);
             }
-            c = Mathf.Sqrt(best) - j.Radius;
+            c = best - j.Radius;
             _distCache[j] = c;
             return c;
         }
@@ -216,7 +217,7 @@ namespace CloneZ
                 if (j.Parent != null) continue;
                 if (_active == j) _active = null;
                 if (j.Build != null) TakeDown(j);
-                _registered.Remove(j.Plan.Id);
+                _registered.Remove(j.Plan.Key);
                 _jobs[i] = _jobs[_jobs.Count - 1];
                 _jobs.RemoveAt(_jobs.Count - 1);
             }
@@ -339,7 +340,8 @@ namespace CloneZ
         private void Restore(Job j)
         {
             List<LootContainer> boxes = j.Build.Containers;
-            long id = j.Plan.Id;
+            // A building's other floors are kept (and roll their loot) apart from its ground floor.
+            long id = j.Plan.Key;
             // Retrieve any previously saved memory for this building (containers, furniture, fixtures).
             _memory.TryGetValue(id, out Memory kept);
             // Furniture broken up while the building last stood comes down again, whole (its drawers with it), switched off
@@ -493,8 +495,8 @@ namespace CloneZ
                         if (!ReferenceEquals(b.Furniture[i], null) && b.Furniture[i] == null) m.FurnitureGone[i] = true;
                     m.Fixtures = CaptureFixtures(b);
                 }
-                _memory[j.Plan.Id] = m;
-                _memoryOrder.Enqueue((j.Plan.Id, m.Stamp));
+                _memory[j.Plan.Key] = m;
+                _memoryOrder.Enqueue((j.Plan.Key, m.Stamp));
                 while (_memory.Count > MemoryKept && _memoryOrder.Count > 0)
                 {
                     (long id, int stamp) = _memoryOrder.Dequeue();
@@ -521,17 +523,18 @@ namespace CloneZ
                     j.Build = null;
                     _live--;
                 }
-                _registered.Remove(j.Plan.Id);
+                _registered.Remove(j.Plan.Key);
                 _jobs[i] = _jobs[_jobs.Count - 1];
                 _jobs.RemoveAt(_jobs.Count - 1);
             }
         }
 
-        /// <summary>For tools: the building with id <paramref name="id"/>, as it stands now (null when it isn't furnished).</summary>
-        internal InteriorBuild BuildOf(long id)
+        /// <summary>For tools: the building with id <paramref name="id"/>, as it stands now (null when it isn't furnished):
+        /// its ground floor, or its level <paramref name="level"/>.</summary>
+        internal InteriorBuild BuildOf(long id, int level = 0)
         {
             foreach (Job j in _jobs)
-                if (j.Plan.Id == id) return j.Build != null && j.Build.Done ? j.Build : null;
+                if (j.Plan.Id == id && j.Plan.Level == level) return j.Build != null && j.Build.Done ? j.Build : null;
             return null;
         }
 

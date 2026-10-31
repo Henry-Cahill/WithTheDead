@@ -9,7 +9,7 @@ namespace CloneZ
         private static Shader s_UnlitShader;
 
         /// <summary>Gets the URP Lit shader, falling back to the Standard shader if URP is not active.</summary>
-        private static Shader LitShader
+        internal static Shader LitShader
         {
             get
             {

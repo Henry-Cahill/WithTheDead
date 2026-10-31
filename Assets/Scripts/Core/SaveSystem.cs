@@ -23,7 +23,11 @@ namespace CloneZ
         private const string FileName = "clonez_save.db";
 
         /// <summary>Gets the full file path of the save database.</summary>
-        public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+        public static string FilePath => Path.Combine(Application.persistentDataPath, PathOverride ?? FileName);
+
+        /// <summary>Test harnesses only (see <see cref="SmokeTest"/>): a different save file, so a test run never
+        /// writes over, loads or deletes the player's own wave-survival save. Set before anything saves or loads.</summary>
+        public static string PathOverride;
         /// <summary>Indicates whether a saved game file currently exists on disk.</summary>
         public static bool HasSave => File.Exists(FilePath);
 

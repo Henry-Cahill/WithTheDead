@@ -114,10 +114,6 @@ namespace CloneZ
                      float y = i * 0.5f;
                      low.Box(new Vector3(-ladderX, y, 0f), new Vector3(ladderX * 2f, 0.02f, 0.02f), RustSurf);
                  }
-                 {
-                     float y = i * 0.5f;
-                     low.Box(foot + new Vector3(-ladderX, y, 0f), new Vector3(ladderX*2f, 0.02f, 0.02f), RustSurf);
-                 }
                 for (int i = 0; i < legs; i++)
                 {
                     float a = i * Mathf.PI * 2f / legs;

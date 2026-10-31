@@ -175,12 +175,20 @@ namespace CloneZ
         public virtual void RestoreState(FixtureSave save) { }
 
         /// <summary>A save key from a fixture's kind and position (to the centimetre) and an index among
-        /// several of the same kind on one host: <c>"cupboard@143,437#1"</c>.</summary>
+        /// several of the same kind on one host: <c>"cupboard@143,437#1"</c>. A fixture off the ground floor (a real
+        /// building's upper floors and basement) has its height too, to the decimetre, so it never shares the key of the
+        /// one standing at the same spot a floor below or above: <c>"bed@143,437^34"</c>.</summary>
         public static string KeyFor(string kind, Vector3 position, int index = 0)
         {
             int x = Mathf.RoundToInt(position.x * 100f), z = Mathf.RoundToInt(position.z * 100f);
-            return index == 0 ? kind + "@" + x + "," + z : kind + "@" + x + "," + z + "#" + index;
+            string key = index == 0 ? kind + "@" + x + "," + z : kind + "@" + x + "," + z + "#" + index;
+            if (position.y >= UpperFloorKeys || position.y <= LowerFloorKeys) key += "^" + Mathf.RoundToInt(position.y * 10f);
+            return key;
         }
+
+        /// <summary>Fixtures this high (or this low) are on a floor above (or below) the ground floor: every storey is at
+        /// least 3 m, a basement's floor 2.7 m down.</summary>
+        private const float UpperFloorKeys = 2.9f, LowerFloorKeys = -0.3f;
 
         /// <summary>Puts every saved fixture state back on the live fixtures with the same key, and every saved
         /// fixture container's contents into the live container with the same <see cref="LootContainer.FixtureKey"/>.</summary>

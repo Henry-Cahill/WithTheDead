@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLONE-Z item meshes · live</title>
+<!--
+  The live view of a mesh run. spark.sh web serves it from the Spark beside status.json, which meshgen.py rewrites at
+  every step of a run (and every few seconds besides), and current.jpg, the reference picture being judged.
+-->
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #1e1f24; color: #ddd; font: 14px/1.45 system-ui, "Segoe UI", sans-serif; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; padding: 12px 20px;
+           background: #26272d; border-bottom: 1px solid #34353c; }
+  h1 { margin: 0; font-size: 18px; color: #fff; }
+  .badge { padding: 2px 10px; border-radius: 10px; font-size: 12px; font-weight: 600; color: #fff; background: #555; }
+  .running { background: #2e7d32; } .loading, .restarting { background: #9a7400; } .done { background: #1565c0; }
+  .failed, .stale, .offline { background: #b71c1c; }
+  header a { margin-left: auto; }
+  main { padding: 14px 20px 30px; }
+  .bar { height: 8px; background: #33343b; border-radius: 4px; overflow: hidden; }
+  .bar div { height: 100%; width: 0; background: #4caf50; transition: width .6s; }
+  .muted { color: #9a9ca5; }
+  #stats { margin-top: 6px; }
+  #now { display: flex; flex-wrap: wrap; gap: 22px; margin: 18px 0 8px; }
+  #picture { width: 400px; max-width: 100%; aspect-ratio: 1; object-fit: contain; background: #2a2b31; border-radius: 8px; }
+  #now .info { flex: 1; min-width: 300px; }
+  h2 { margin: 0 0 2px; font-size: 22px; color: #fff; }
+  #desc { margin: 8px 0 12px; }
+  #stage { font-size: 15px; color: #fff; }
+  ol { list-style: none; padding: 0; margin: 14px 0 0; }
+  ol li { position: relative; padding: 3px 0 3px 24px; color: #6d6f78; }
+  ol li.done { color: #8fbf8f; }
+  ol li.done::before { content: "\2713"; position: absolute; left: 4px; }
+  ol li.active { color: #fff; font-weight: 600; }
+  ol li.active::before { content: "\25B6"; position: absolute; left: 3px; color: #4caf50; }
+  .score { font-weight: 600; } .good { color: #81c784; } .poor { color: #e57373; }
+  #message { font-size: 15px; margin: 18px 0 0; }
+  h3 { margin: 26px 0 10px; font-size: 15px; color: #fff; }
+  #recent { display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 12px; }
+  figure { margin: 0; background: #26272d; border-radius: 8px; overflow: hidden; }
+  figure img { display: block; width: 100%; }
+  figcaption { padding: 6px 10px 8px; font-size: 12px; color: #b5b7bf; }
+  figcaption div { color: #8d8f98; margin-top: 2px; }
+  figure.failed figcaption { color: #ef9a9a; }
+  a { color: #8ab4f8; }
+</style>
+</head>
+<body>
+<header>
+  <h1>CLONE-Z item meshes</h1>
+  <span id="badge" class="badge">Connecting…</span>
+  <span id="headline" class="muted"></span>
+  <a href="index.html">Every finished mesh</a>
+</header>
+<main>
+  <div class="bar"><div id="bar"></div></div>
+  <div id="stats" class="muted"></div>
+  <section id="now" hidden>
+    <img id="picture" alt="The reference picture being worked on" hidden>
+    <div class="info">
+      <h2 id="name"></h2>
+      <div id="meta" class="muted"></div>
+      <div id="desc"></div>
+      <div id="stage"></div>
+      <div id="pictureNote" class="muted"></div>
+      <ol id="steps"></ol>
+    </div>
+  </section>
+  <p id="message" class="muted" hidden></p>
+  <h3>Just finished</h3>
+  <div id="recent" class="muted">Nothing yet.</div>
+</main>
+<script>
+"use strict";
+const STEPS = [
+  ["describe", "Describe the item's versions"],
+  ["picture", "Paint a reference photo (Z-Image-Turbo)"],
+  ["judge_picture", "Judge the photo"],
+  ["cutout", "Cut the item out of the photo (BiRefNet)"],
+  ["mesh", "Turn the photo into a 3D mesh (TRELLIS.2)"],
+  ["bake", "Bake the full-detail master and the game copy"],
+  ["normals", "Bake the detail into a normal map"],
+  ["fit", "Fit the mesh onto the item's model"],
+  ["render", "Render previews on the GPU"],
+  ["judge_mesh", "Judge the mesh"],
+  ["save", "Save (game copy, and the originals to the NAS)"],
+];
+const LABELS = { running: "Running", loading: "Loading the models", done: "Finished", stopped: "Stopped",
+                 failed: "Failed", idle: "Nothing running", restarting: "Stuck: starting again" };
+const $ = id => document.getElementById(id);
+let data = null, fetchedAt = 0, lastUpdated = null, lastChange = Date.now(), recentKey = null, pictureVersion = null;
+
+function duration(secs) {
+  if (secs == null || !isFinite(secs)) return "";
+  secs = Math.max(0, Math.round(secs));
+  if (secs < 90) return secs + " s";
+  const m = Math.round(secs / 60);
+  if (m < 90) return m + " min";
+  const h = Math.floor(m / 60), d = Math.floor(h / 24);
+  return d ? `${d} d ${h % 24} h` : `${h} h ${m % 60} min`;
+}
+
+function score(label, value) {
+  const s = document.createElement("span");
+  s.className = "score " + (value >= 7 ? "good" : value < 5 ? "poor" : "");
+  s.textContent = `${label} ${value}/10`;
+  return s;
+}
+
+function setBadge(cls, text) {
+  $("badge").className = "badge " + cls;
+  $("badge").textContent = text;
+}
+
+const isLive = d => d && (d.state === "running" || d.state === "loading");
+
+async function poll() {
+  try {
+    const r = await fetch("status.json?t=" + Date.now(), { cache: "no-store" });
+    if (r.status === 404) {
+      setBadge("idle", "Nothing yet");
+      $("message").hidden = false;
+      $("message").textContent = "No mesh run has reported here yet. Start one (AssetPipeline.bat, M) and it shows up within seconds.";
+      return;
+    }
+    data = await r.json();
+    fetchedAt = Date.now();
+    if (data.updated !== lastUpdated) { lastUpdated = data.updated; lastChange = Date.now(); }
+    render();
+  } catch (e) {
+    setBadge("offline", "Can't reach the Spark");
+  }
+}
+
+function render() {
+  const d = data, live = isLive(d);
+  // The run rewrites the file every few seconds; a file that stops changing means the run died without saying so.
+  const stale = live && Date.now() - lastChange > 20000;
+  setBadge(stale ? "stale" : d.state, stale ? "Not updating: has the run stopped?" : (LABELS[d.state] || d.state));
+
+  const total = d.total || 0, finished = (d.ok || 0) + (d.failed || 0);
+  $("bar").style.width = total ? (100 * finished / total).toFixed(2) + "%" : "0";
+  $("headline").textContent = total ? `${finished} of ${total} meshes` : "";
+  const bits = [];
+  if (total) bits.push(`${d.ok} done`, `${d.failed} failed`);
+  if (d.median_secs) bits.push(`${Math.round(d.median_secs)} s per mesh`);
+  if (live && d.eta_hours != null) bits.push(`about ${duration(d.eta_hours * 3600)} of running left`);
+  if (live && d.gpu_util != null) bits.push(`GPU ${d.gpu_util}%`);
+  if (live && d.memory_gb) bits.push(`memory ${d.memory_gb[0]} of ${d.memory_gb[1]} GB`);
+  if (d.res) bits.push(`photos ${d.image_size || "?"} px, TRELLIS.2 ${d.res}, ${d.style}${d.nas ? ", originals to the NAS" : ""}`);
+  $("stats").textContent = bits.join(" · ");
+
+  $("now").hidden = !live;
+  $("message").hidden = live;
+  if (live) {
+    const item = d.item;
+    $("name").textContent = item ? item.name : "Getting ready";
+    const version = item && item.variants > 1 ? ` · version ${item.variant} of ${item.variants}` : "";
+    $("meta").textContent = item ? `${item.category} · ${item.id}${version} · mesh ${d.index} of ${total}` : "";
+    $("desc").textContent = item && item.description ? item.description : "";
+
+    const pic = d.picture;
+    $("picture").hidden = !pic;
+    if (pic && pic.version !== pictureVersion) {
+      pictureVersion = pic.version;
+      $("picture").src = "current.jpg?v=" + pic.version;
+    }
+    const note = $("pictureNote");
+    note.textContent = "";
+    if (pic) {
+      note.append(`Reference picture ${pic.n} of up to ${pic.tries} · `);
+      if (pic.score == null) note.append("waiting for the critic");
+      else {
+        note.append(score("critic", pic.score));
+        if (pic.problems && pic.problems.toLowerCase() !== "none") note.append(` · ${pic.problems}`);
+      }
+    }
+
+    const steps = $("steps"), at = STEPS.findIndex(s => s[0] === d.step);
+    steps.textContent = "";
+    steps.hidden = !item;
+    STEPS.forEach(([key, label], i) => {
+      const li = document.createElement("li");
+      li.textContent = label;
+      if (at >= 0) li.className = i < at ? "done" : i === at ? "active" : "";
+      steps.append(li);
+    });
+    tick();
+  } else {
+    $("message").textContent = d.stage || "";
+  }
+
+  const key = JSON.stringify((d.recent || []).map(e => [e.key || e.id, e.ts, e.refit]));
+  if (key !== recentKey) {
+    recentKey = key;
+    drawRecent(d.recent || []);
+  }
+}
+
+// The step timer runs on between polls, from the run's own clock.
+function tick() {
+  if (!isLive(data)) return;
+  const secs = (data.updated - data.stage_started) + (Date.now() - fetchedAt) / 1000;
+  $("stage").textContent = `${data.stage} · ${duration(secs)}`;
+}
+
+function drawRecent(list) {
+  const box = $("recent");
+  box.textContent = list.length ? "" : "Nothing yet.";
+  for (const e of list) {
+    const fig = document.createElement("figure"), cap = document.createElement("figcaption");
+    if (e.status === "ok") {
+      const img = document.createElement("img");
+      img.src = `previews/${encodeURIComponent(e.key || e.id)}.jpg?v=${encodeURIComponent(e.refit || e.ts || "")}`;
+      img.alt = e.name || e.id;
+      fig.append(img);
+      cap.append(`${e.name || e.id}${e.variant ? " · version " + e.variant : ""} · `);
+      if (e.picture_score != null) cap.append(score("picture", e.picture_score), " · ");
+      if (e.mesh_score != null) cap.append(score("mesh", e.mesh_score), " · ");
+      cap.append(`fit ${e.fit} · ${e.tris ? e.tris[0] + " triangles · " : ""}${Math.round(e.secs || 0)} s`);
+      if (e.mesh_problems && e.mesh_problems.toLowerCase() !== "none") {
+        const p = document.createElement("div");
+        p.textContent = e.mesh_problems;
+        cap.append(p);
+      }
+    } else {
+      fig.className = "failed";
+      cap.textContent = `${e.name || e.id}: failed · ${e.error || ""}`;
+    }
+    fig.append(cap);
+    box.append(fig);
+  }
+}
+
+setInterval(poll, 2000);
+setInterval(tick, 1000);
+poll();
+</script>
+</body>
+</html>

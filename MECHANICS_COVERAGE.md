@@ -192,7 +192,7 @@ Each of these can be switched off from the sandbox rules where the doc suggests 
 
 ## How it's checked
 
-[SmokeTest.cs](Assets/Scripts/Dev/SmokeTest.cs) plays the game end to end. It stays inert unless the game or a batch-mode editor is started with `-clonez-smoke solo|hunter|host|client|lobby`.
+[SmokeTest.cs](Assets/Scripts/Dev/SmokeTest.cs) plays the game end to end. It stays inert unless the game or a batch-mode editor is started with `-clonez-smoke solo|hunter|host|client|lobby|wave`.
 
 * **Solo:** makes a throwaway character with its own save file, walks into the bar, and opens every hub screen. Then it deploys into Kestrel Flats, or the zone named with `-clonez-smoke-zone`, and checks:
   * the tablet;
@@ -217,9 +217,28 @@ Each of these can be switched off from the sandbox rules where the doc suggests 
   * extracting brings the survivor back into the bar.
 
   Add `-clonez-smoke-shots <dir>` to save pictures of the title, the loading card, the bar and the street. This mode needs graphics, so leave out `-nographics`.
+* **Wave:** plays Wave Survival through its own controls ([SmokeTest.Wave.cs](Assets/Scripts/Dev/SmokeTest.Wave.cs)). Keys and the mouse go through the Input System on a keyboard and a mouse of its own ([SmokeTest.Drive.cs](Assets/Scripts/Dev/SmokeTest.Drive.cs)), and UI controls get the pointer clicks the EventSystem sends. Every press is a check. From the title's **New run**, it covers:
+  * walking (WASD and the arrows), sprinting, sneaking, firing, reloading, shoving, the knife and bare hands;
+  * the four camera views (V), with turning, zoom, the aim line, the shoulder swap, aiming down the sights and holding a breath;
+  * F1, M and F3; the detector (O), a bolt (X) and a grenade (`), plus the keys that do nothing in a lone wave run;
+  * the flashlight (L) and night vision (N);
+  * build mode: every piece key, the wheel, building a barricade and demolishing it;
+  * farming (F), water (G), sleep (T, then waking with T or Space), a door (E), the supply crate (E and R), and dropping, inspecting (F) and picking up an item;
+  * every action of one fixture of each kind in the home and the yard, chosen by number key or by clicking its row in the action menu (Q);
+  * every control of the health and skills panels, the inventory (alone and with the crate open), the field menu (C), the map (P), the journal (J), the HUD, the pause menu, and the settings and field-manual screens;
+  * two waves cut down, F5, **Save & quit to menu**, **Continue** (the wave and kills restored), and a death: the game-over screen, the save deleted, and R back to the title.
+
+  It plays on its own save file (`smoke_wave_save.db`) and restores the settings its presses change. It runs with or without `-nographics`.
+
+  A batch run has no window. To watch the run, use **CloneZ ▸ Smoke Test ▸ Watch Wave Survival** in the editor: it plays in the Game view with a pause between presses. Its own keyboard and mouse drive the game, and the real ones are switched off until the run ends. When it's done, play mode stops and the `[Smoke]` lines are in the Console. Stopping play mode ends the run early, and the editor gets its own save, profile, settings and input back either way. Scripts changed during the run are reloaded once it ends, not mid-run. **Run Wave Survival (full speed)** skips the pauses. From the command line, `-clonez-smoke-pace <seconds>` adds the same pause, for a visible editor or a built player.
 
 Any error or exception the game logs fails the run.
 
     Unity.exe -batchmode -nographics -projectPath <project> -executeMethod CloneZ.EditorTools.CloneZBatch.SmokePlay -clonez-smoke solo -logFile smoke.log
+    Unity.exe -batchmode -projectPath <project> -executeMethod CloneZ.EditorTools.CloneZBatch.SmokePlay -clonez-smoke wave -logFile smoke-wave.log
 
-Results are the `[Smoke]` lines in the log, and the editor exits with 0 when everything passes. If the editor already has the project open, point the batch run at a copy of the project.
+Results are the `[Smoke]` lines in the log, and the editor exits with 0 when everything passes. If the editor already has the project open, point the batch run at a copy of the project. Delete the copy's `Library/ilpp.pid` and `Library/burst.pid` before you start it. Otherwise the copy's editor stops the processes they name, which are the open editor's own helpers.
+
+[Tools/Smoke/Smoke.ps1](Tools/Smoke/Smoke.ps1) does the same in one step for the single-player modes. It finds the project's editor version through the Unity Hub, refuses to start while the project is open, and prints the summary and anything that failed or was skipped:
+
+    powershell -ExecutionPolicy Bypass -File Tools\Smoke\Smoke.ps1 [-Mode wave|solo|hunter|lobby] [-NoGraphics]

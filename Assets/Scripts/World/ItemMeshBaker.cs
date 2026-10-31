@@ -49,9 +49,21 @@ namespace CloneZ
         private const int FarMinParts = 4;
 
         /// <summary>The baked model for an item, or null when the item has no bespoke model.</summary>
-        public static Baked Get(ItemDef def, Lod lod)
+        public static Baked Get(ItemDef def, Lod lod) => Get(def, lod, 0);
+
+        /// <summary>How many different looks an item has: its generated mesh versions, or 1.</summary>
+        public static int VariantCount(ItemDef def) => Mathf.Max(1, GeneratedItemMeshes.VariantCount(def));
+
+        /// <summary>One look of an item (see <see cref="VariantCount"/>; it wraps around), or null when the item has
+        /// no bespoke model. Only generated meshes come in more than one look.</summary>
+        public static Baked Get(ItemDef def, Lod lod, int variant)
         {
             if (def == null || string.IsNullOrEmpty(def.Id)) return null;
+
+            // A textured mesh generated offline on the DGX Spark (Tools/AssetPipeline/mesh) replaces every primitive
+            // model, hand-built ones included. GeneratedItemMeshes caches and owns those itself.
+            Baked generated = GeneratedItemMeshes.Get(def, lod, variant);
+            if (generated != null) return generated;
 
             var key = (def.Id, lod);
             if (s_Cache.TryGetValue(key, out Baked cached)) return cached;
@@ -86,6 +98,8 @@ namespace CloneZ
                 if (m != null) Object.Destroy(m);
             }
             s_Palette.Clear();
+
+            GeneratedItemMeshes.Clear();
         }
 
         // ── Baking ────────────────────────────────────────────────────────────────────────────────────

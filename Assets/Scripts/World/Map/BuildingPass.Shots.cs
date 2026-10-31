@@ -644,6 +644,10 @@ namespace CloneZ
             public float Top;
             public bool Scenery, Edge, Lite, Enterable;
             public string Use, Name;
+            /// <summary>Its doors and ground-floor windows as built (null when it has no door: not enterable).</summary>
+            public EnterableBuilding Record;
+            /// <summary>The wall its front door is in (an index into the footprint's points), or -1.</summary>
+            public int Front;
 
             /// <summary>Gets a short label for the building, using the house style for houses or the architecture name otherwise.</summary>
             public string Label => Arch == Arch.House ? "House/" + Style : Arch.ToString();
@@ -664,6 +668,7 @@ namespace CloneZ
             {
                 F = j.F, Arch = p.Arch, Style = p.Style, Roof = p.Roof, Wall = p.Wall, Storeys = p.Storeys, Top = j.Top,
                 Scenery = j.Scenery, Edge = j.Edge, Lite = j.Lite, Enterable = j.Record != null, Use = p.Use, Name = p.Name,
+                Record = j.Record, Front = j.DoorEdge >= 0 ? j.DoorEdge : p.Front,
             });
         }
     }

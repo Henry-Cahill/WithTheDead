@@ -143,6 +143,9 @@ namespace CloneZ
         public string colour, roofColour;
         /// <summary>Format 2: storeys in the roof (0 when not mapped), and the year it was built (0 unknown).</summary>
         public int roofLevels, year;
+        /// <summary>Not in the files: the correction applied to it when its region was read (<see cref="MapValidation"/>),
+        /// for the choices the data can't carry (archetype, style, facing); null when it has none.</summary>
+        [NonSerialized] public BuildingFix fix;
     }
 
     /// <summary>A land-use area (water, parking, forest, farmland, residential, park...; from format 2 also school,

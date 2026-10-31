@@ -393,7 +393,7 @@ namespace CloneZ
                         standing.Add(i1);
                         standing.Add(i2);
                     }
-                    Below(i0, i1, i2, StubHeight, s_Lists[Part(1, g, m, mats)], s_Cuts[g]);
+                    Below(i0, i1, i2, b.StubBase + StubHeight, s_Lists[Part(1, g, m, mats)], s_Cuts[g]);
                 }
             }
             return true;

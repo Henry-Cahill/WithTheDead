@@ -31,6 +31,7 @@ namespace CloneZ
         internal static bool UseHeights = true;
 
         private static readonly List<Vector3> s_HV = new List<Vector3>(8192);
+        private static readonly List<Vector3> s_BandV = new List<Vector3>(2048);
         private static readonly List<int> s_HI = new List<int>(16384);
         private static readonly List<int> s_HRead = new List<int>(8192);
         private static readonly List<Building> s_Rehash = new List<Building>(8);
@@ -63,6 +64,10 @@ namespace CloneZ
             Mesh wm = b.WallsMesh, um = b.UpperMesh;
             if (b.Walls != null && (wm == null || wm.vertexCount == 0)) return false;
             if (b.Upper != null && (um == null || um.vertexCount == 0)) return false;
+            // A building with floors has its upper part's storeys apart from its roof: all of them baked before it's read.
+            if (b.Bands != null)
+                for (int k = 0; k < b.Bands.Length; k++)
+                    if (b.Bands[k] != null && (b.BandMeshes[k] == null || b.BandMeshes[k].vertexCount == 0)) return false;
             float walls = wm != null ? wm.bounds.max.y : 0f;
             b.ClipWalls = b.Groups != 0 && b.ClipTop >= MinClip && walls > b.ClipTop + 0.02f;
             // The walls the sight line is tested against are what shows of them once the storeys above are lifted.
@@ -118,6 +123,10 @@ namespace CloneZ
             try
             {
                 Bounds mb = um.bounds;   // mesh space: x, z from the object (the footprint's middle), y from the base
+                // The storeys of a building with floors (their objects stand where the roof's does) are read with the roof.
+                if (b.BandMeshes != null)
+                    foreach (Mesh bm in b.BandMeshes)
+                        if (bm != null && bm.vertexCount > 0 && bm.isReadable) mb.Encapsulate(bm.bounds);
                 Vector3 o = b.Upper.transform.position;
                 float x0 = Mathf.Min(o.x + mb.min.x, b.Bounds.xMin), x1 = Mathf.Max(o.x + mb.max.x, b.Bounds.xMax);
                 float z0 = Mathf.Min(o.z + mb.min.z, b.Bounds.yMin), z1 = Mathf.Max(o.z + mb.max.z, b.Bounds.yMax);
@@ -143,6 +152,22 @@ namespace CloneZ
                     um.GetIndices(s_HRead, sm, true);
                     s_HI.AddRange(s_HRead);
                 }
+                if (b.BandMeshes != null)
+                    foreach (Mesh bm in b.BandMeshes)
+                    {
+                        if (bm == null || bm.vertexCount == 0 || !bm.isReadable) continue;
+                        int first = s_HV.Count;
+                        bm.GetVertices(s_BandV);
+                        s_HV.AddRange(s_BandV);
+                        s_BandV.Clear();
+                        for (int sm = 0; sm < bm.subMeshCount; sm++)
+                        {
+                            if (bm.GetTopology(sm) != MeshTopology.Triangles) continue;
+                            s_HRead.Clear();
+                            bm.GetIndices(s_HRead, sm, true);
+                            for (int q = 0; q < s_HRead.Count; q++) s_HI.Add(s_HRead[q] + first);
+                        }
+                    }
                 return true;
             }
             catch (System.Exception e)

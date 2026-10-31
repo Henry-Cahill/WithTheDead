@@ -258,48 +258,96 @@ namespace CloneZ
         #region The plan
         /// <summary>The ground floor of <paramref name="e"/> laid out in rooms, or null when there's nothing to lay out (no
         /// use for it, or no room-sized rectangle in its outline: such a building gets loose loot instead).</summary>
-        internal static InteriorPlan MakePlan(Site site, EnterableBuilding e)
+        internal static InteriorPlan MakePlan(Site site, EnterableBuilding e) => MakePlan(site, e, 0);
+
+        /// <summary>Level <paramref name="level"/> of <paramref name="e"/> laid out in rooms (see <see cref="LevelLayout"/>:
+        /// 0 the ground floor, -1 a basement, 1 the floor above...), or null when there's nothing to lay out there. A building
+        /// with levels keeps the stair band of its main block on every one (the stairwell itself, and the landing hall the
+        /// rooms open off) and lays out the rest by what the building is used as: its ground floor as a building without
+        /// levels would be, its upper floors as what's found over such a ground floor (bedrooms over a house, flats or
+        /// offices over a shop on a town street), its basement as a basement.</summary>
+        internal static InteriorPlan MakePlan(Site site, EnterableBuilding e, int level)
         {
             Footprint f = e.Footprint;
             if (f.Pts.Count < 3 || f.Size < 9f) return null;
+            LevelLayout L = e.Levels;
+            if (L == null ? level != 0 : level < L.Lowest || level > L.Top) return null;
             InteriorUse use = UseOf(site, e, out bool town, out string purpose);
             if (use == InteriorUse.None) return null;
             MapBuilding b = f.Data;
+            float wallH = L == null || level == 0
+                ? Mathf.Clamp((e.StoreyHeight > 1f ? e.StoreyHeight : 3f) - 0.15f, 2.4f, 4.2f)
+                : Mathf.Clamp(L.CeilingOf(level) - L.FloorOf(level) - 0.15f, 2.3f, 4.2f);
             var plan = new InteriorPlan
             {
                 Record = e, Use = use, Purpose = purpose, Kind = KindOf(use), Noun = NounOf(use), Town = town,
-                Name = "KY" + b.id, Seed = unchecked((int)MapStyle.Hash(b.id, SaltPlan)),
+                Name = "KY" + b.id + (level == 0 ? "" : level < 0 ? " B" + (-level) : " L" + level),
+                Seed = unchecked((int)MapStyle.Hash(b.id, SaltPlan + level * 0x3D)),
                 Thick = e.WallThickness > 0.05f ? e.WallThickness : 0.22f,
-                WallH = Mathf.Clamp((e.StoreyHeight > 1f ? e.StoreyHeight : 3f) - 0.15f, 2.4f, 4.2f),
+                WallH = wallH,
+                Level = level,
+                FloorY = L != null ? L.FloorOf(level) : 0f,
             };
-            ChooseFrame(e, out plan.Ex, out plan.Ez);
+            if (L != null)
+            {
+                // The levels' own frame, so the stair band's rectangles are the plan's.
+                plan.Origin = L.Origin;
+                plan.Ex = L.Ex;
+                plan.Ez = L.Ez;
+            }
+            else
+            {
+                ChooseFrame(e, out plan.Ex, out plan.Ez);
+                // The frame's origin in the middle of the footprint's extent along its own axes.
+                plan.Origin = f.Middle;
+            }
             plan.Yaw = Mathf.Atan2(plan.Ez.x, plan.Ez.y) * Mathf.Rad2Deg;
-            // The frame's origin in the middle of the footprint's extent along its own axes.
-            plan.Origin = f.Middle;
             var local = new List<Vector2>(f.Pts.Count);
             foreach (Vector2 p in f.Pts) local.Add(plan.ToLocal(p));
-            MapGeometry.Extent(local, out float x0, out float z0, out float x1, out float z1);
-            plan.Origin = plan.ToSite(new Vector2((x0 + x1) * 0.5f, (z0 + z1) * 0.5f));
-            for (int i = 0; i < f.Pts.Count; i++) local[i] = plan.ToLocal(f.Pts[i]);
+            if (L == null)
+            {
+                MapGeometry.Extent(local, out float x0, out float z0, out float x1, out float z1);
+                plan.Origin = plan.ToSite(new Vector2((x0 + x1) * 0.5f, (z0 + z1) * 0.5f));
+                for (int i = 0; i < f.Pts.Count; i++) local[i] = plan.ToLocal(f.Pts[i]);
+            }
             plan.Local = local;
 
             // Big plain sheds and halls are worth a coarser grid; the outside walls' inner faces bound the rooms.
             float margin = Mathf.Max(0.04f, plan.Thick - Half);
             List<Rect> blocks = Blocks(local, margin, 7f);
+            if (L != null) blocks = LevelBlocks(L, blocks, level);
             if (blocks.Count == 0 || blocks[0].width < 2.2f || blocks[0].height < 2.2f) return null;
 
-            foreach (Doorway d in e.Doors)
-            {
-                Vector2 outward = plan.DirToLocal(d.Outward).normalized;
-                plan.Entrances.Add(new PlanEntrance
+            // The outside doors open on the ground floor only.
+            if (level == 0)
+                foreach (Doorway d in e.Doors)
                 {
-                    At = plan.ToLocal(d.At) - outward * plan.Thick, Outward = outward, Width = d.Width > 0.5f ? d.Width : 1.2f, Room = -1,
-                });
-            }
+                    Vector2 outward = plan.DirToLocal(d.Outward).normalized;
+                    plan.Entrances.Add(new PlanEntrance
+                    {
+                        At = plan.ToLocal(d.At) - outward * plan.Thick, Outward = outward, Width = d.Width > 0.5f ? d.Width : 1.2f, Room = -1,
+                    });
+                }
             Vector2 door = plan.Entrances.Count > 0 ? plan.Entrances[0].At : new Vector2(blocks[0].center.x, blocks[0].yMin);
             var rng = new System.Random(plan.Seed);
-            Lay(plan, blocks, door, rng);
+            PlanRoom spine = null;
+            if (L == null || level == 0) Lay(plan, blocks, door, rng);
+            else if (level > 0) spine = LayUpper(plan, L, blocks, rng);
+            else spine = LayBasement(plan, L, blocks[0], rng);
             if (plan.Rooms.Count == 0) return null;
+            PlanRoom landing = null;
+            if (L != null)
+            {
+                // The stairwell (its flights and walls are the building's) and the landing hall it opens onto.
+                PlanRoom stair = Add(plan, RoomRole.Stair, L.Core);
+                stair.Name = "Stairs";
+                landing = Add(plan, RoomRole.Hall, L.Hall);
+                landing.Name = level == 0 ? "Stair Hall" : "Landing";
+                OpenLater(plan, landing, stair);
+                if (spine != null) OpenLater(plan, landing, spine);
+                // On the ground floor it opens onto the main room beside it, so the way in to the stairs isn't a doorway.
+                if (level == 0) OpenOnto(plan, landing);
+            }
             for (int i = 0; i < plan.Rooms.Count; i++) plan.Rooms[i].Index = i;
             foreach (PlanRoom r in plan.Rooms)
                 foreach (PlanRoom o in r.OpenRooms)
@@ -315,21 +363,23 @@ namespace CloneZ
                 plan.Entrances[k] = en;
                 if (en.Room >= 0) plan.Rooms[en.Room].Entry = true;
             }
-            if (plan.Entrances.Count == 0) plan.Rooms[0].Entry = true;
+            // A floor without outside doors is come into up (or down) the stairs.
+            if (plan.Entrances.Count == 0) (landing ?? plan.Rooms[0]).Entry = true;
             Partition(plan, rng);
             Windows(plan, e);
             Style(plan, new System.Random(unchecked(plan.Seed ^ SaltStyle)));
+            if (level < 0) Unfinished(plan);
             Budget(plan, site);
             return plan;
         }
 
-        // The ground floor's windows in the frame, on the inner face, each with the room it lights.
+        // The level's windows in the frame, on the inner face, each with the room it lights.
         private static void Windows(InteriorPlan plan, EnterableBuilding e)
         {
             List<Vector2> p = e.Footprint.Pts;
             foreach (WindowSpan w in e.Windows)
             {
-                if (w.Storey != 0 || w.Edge < 0 || w.Edge >= p.Count) continue;
+                if (w.Storey != plan.Level || w.Edge < 0 || w.Edge >= p.Count) continue;
                 Vector2 a = p[w.Edge], c = p[(w.Edge + 1) % p.Count];
                 float len = Vector2.Distance(a, c);
                 if (len < 0.05f) continue;

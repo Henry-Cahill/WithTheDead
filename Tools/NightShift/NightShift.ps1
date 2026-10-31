@@ -88,6 +88,11 @@ docker exec $Container bash /project/Tools/NightShift/nightshift.sh $Command
 # down (as when nobody has opened the Spark in the AI Workbench app since it last stopped).
 function Start-NightShift {
     return Invoke-Remote @"
+# The asset pipeline's mesh run has the Spark to itself (Tools/AssetPipeline/mesh/spark.sh touches this every minute).
+if [ -n "`$(find ~/$SparkProject/Tools/NightShift/.state/mesh-run.lock -mmin -10 2>/dev/null)" ]; then
+  echo "The Spark is generating item meshes and has no room for the night shift's model. Stop that run (AssetPipeline.bat, mesh stop) or let it finish, then start the night shift again."
+  exit 1
+fi
 NVWB="`$HOME/.nvwb/bin/nvwb-cli"
 wb_status() {  # "running" while AI Workbench is up on the Spark
   "`$NVWB" list contexts -o json 2>/dev/null | python3 -c 'import json, sys; print(next((c.get("status") or "" for c in json.load(sys.stdin).get("result") or [] if c.get("name") == "local"), ""))' 2>/dev/null

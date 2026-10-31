@@ -66,13 +66,14 @@ namespace CloneZ
                 r.End = r.AlongX ? r.B + Half : r.B - Half;
                 r.SkinA = r.A;
                 r.SkinB = r.B;
-                // An end that meets no other partition runs on into the outside wall (a slanting wall, a room stopping short).
-                if (!Joined(runs, r, r.A))
+                // An end that meets no other partition (nor a stairwell's side, whose walls are the building's) runs on into the
+                // outside wall (a slanting wall, a room stopping short), but never on into a stairwell.
+                if (!Joined(plan, runs, r, r.A))
                 {
                     float reach = Reach(plan, r, r.A, -1);
                     if (reach < r.Start) { r.Start = reach; r.SkinA = reach; }
                 }
-                if (!Joined(runs, r, r.B))
+                if (!Joined(plan, runs, r, r.B))
                 {
                     float reach = Reach(plan, r, r.B, 1);
                     if (reach > r.End) { r.End = reach; r.SkinB = reach; }
@@ -88,18 +89,26 @@ namespace CloneZ
             return runs;
         }
 
-        // True when another partition crosses or meets run `r` at `at` along it.
-        private static bool Joined(List<Run> runs, Run r, float at)
+        // True when another partition, or a stairwell's side, crosses or meets run `r` at `at` along it.
+        private static bool Joined(InteriorPlan plan, List<Run> runs, Run r, float at)
         {
             foreach (Run q in runs)
             {
                 if (q.AlongX == r.AlongX || Mathf.Abs(q.Coord - at) > 0.05f) continue;
                 if (r.Coord >= q.A - 0.05f && r.Coord <= q.B + 0.05f) return true;
             }
+            foreach (PlanRoom s in plan.Rooms)
+            {
+                if (s.Role != RoomRole.Stair) continue;
+                Rect R = s.R;
+                float lo = r.AlongX ? R.yMin : R.xMin, hi = r.AlongX ? R.yMax : R.xMax, s0 = r.AlongX ? R.xMin : R.yMin, s1 = r.AlongX ? R.xMax : R.yMax;
+                if (r.Coord >= lo - 0.05f && r.Coord <= hi + 0.05f && (Mathf.Abs(at - s0) < 0.05f || Mathf.Abs(at - s1) < 0.05f)) return true;
+            }
             return false;
         }
 
-        // Where a run's free end, carried on along its line, reaches the middle of the outside wall (at most 2 m on).
+        // Where a run's free end, carried on along its line, reaches the middle of the outside wall (at most 2 m on), or a
+        // stairwell's side, whichever comes first.
         private static float Reach(InteriorPlan plan, Run r, float at, int dir)
         {
             Vector2 o = r.AlongX ? new Vector2(at, r.Coord) : new Vector2(r.Coord, at);
@@ -117,6 +126,15 @@ namespace CloneZ
             }
             if (best == float.MaxValue) return at;
             float end = at + dir * Mathf.Clamp(best - plan.Thick * 0.5f, 0f, 2f);
+            foreach (PlanRoom s in plan.Rooms)
+            {
+                if (s.Role != RoomRole.Stair) continue;
+                Rect R = s.R;
+                float lo = r.AlongX ? R.yMin : R.xMin, hi = r.AlongX ? R.yMax : R.xMax, s0 = r.AlongX ? R.xMin : R.yMin, s1 = r.AlongX ? R.xMax : R.yMax;
+                if (r.Coord <= lo + 0.05f || r.Coord >= hi - 0.05f) continue;   // its line passes beside the stairwell
+                if (dir > 0 && s0 > at - 0.05f) end = Mathf.Max(at, Mathf.Min(end, s0));
+                else if (dir < 0 && s1 < at + 0.05f) end = Mathf.Min(at, Mathf.Max(end, s1));
+            }
             return end;
         }
 
@@ -544,6 +562,8 @@ namespace CloneZ
         /// <summary>Furnishes room <paramref name="index"/> of the build: its recipe, then its lights and its litter.</summary>
         internal static void Furnish(InteriorBuild build, int index)
         {
+            // The stairwell is the building's: nothing goes on the stairs.
+            if (build.Plan.Rooms[index].Role == RoomRole.Stair) return;
             RoomCtx c = Context(build, index);
 if (c.Inner.width >= 0.8f && c.Inner.height >= 0.8f) switch (c.P.Role)
             {

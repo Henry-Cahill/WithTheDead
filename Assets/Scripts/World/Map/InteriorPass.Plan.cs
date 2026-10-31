@@ -17,6 +17,8 @@ namespace CloneZ
         Narthex, Nave, Sacristy, Chapel,
         Classroom, Gym,
         Warehouse, Workshop, Barn, Greenhouse, Shed, Guest,
+        /// <summary>A stairwell: its landing and flights are the building's own (BuildingPass.Levels); nothing is put in it.</summary>
+        Stair,
     }
 
     /// <summary>What a real building's ground floor is used as, read from its mapped kind and use, its size and where it
@@ -75,6 +77,15 @@ namespace CloneZ
         public MapBuilding Data => Record.Footprint.Data;
         /// <summary>Unique identifier of the building.</summary>
         public long Id => Record.Footprint.Data.id;
+
+        /// <summary>The level of the building this plan lays out (0 the ground floor, -1 a basement, 1 the floor above it...)
+        /// and its floor's height: the rooms are planned and furnished on the ground and lifted there.</summary>
+        public int Level;
+        public float FloorY;
+
+        /// <summary>What tells this plan's level from the building's others (the streamer's jobs, what was left in it): the
+        /// building's id on the ground floor, the id with the level in its top bits on the others.</summary>
+        public long Key => Level == 0 ? Id : Id ^ ((long)(Level + 16) << 56);
 
         /// <summary>Converts a site‑space position to local frame coordinates.</summary>
         public Vector2 ToLocal(Vector2 site)
@@ -216,8 +227,12 @@ namespace CloneZ
         /// <summary>The footprint's own axes: the direction most of its outline runs along (or across), turned a quarter at a
         /// time until its main door looks out along local -Z.</summary>
         private static void ChooseFrame(EnterableBuilding e, out Vector2 ex, out Vector2 ez)
+            => ChooseFrame(e.Footprint.Pts, e.Doors.Count > 0 ? e.Doors[0].Outward : new Vector2(0f, -1f), out ex, out ez);
+
+        /// <summary>The frame of an outline (see <see cref="ChooseFrame(EnterableBuilding, out Vector2, out Vector2)"/>) with
+        /// its local -Z turned toward <paramref name="outward"/>: the levels' layout uses it before a building has doors.</summary>
+        internal static void ChooseFrame(List<Vector2> p, Vector2 outward, out Vector2 ex, out Vector2 ez)
         {
-            List<Vector2> p = e.Footprint.Pts;
             int n = p.Count;
             float bestScore = -1f, bestAngle = 0f;
             // Evaluate each edge of the footprint as a candidate frame direction – longer edges count more.
@@ -262,7 +277,6 @@ namespace CloneZ
             if (weight > 0f) bestAngle += sum / weight;
             float rad = bestAngle * Mathf.Deg2Rad;
             var baseX = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
-            Vector2 outward = e.Doors.Count > 0 ? e.Doors[0].Outward : new Vector2(0f, -1f);
             float best = float.MinValue;
             ex = baseX;
             ez = Perp(baseX);
@@ -301,7 +315,7 @@ namespace CloneZ
         #region Blocks: the rectangles rooms can fill
         // The largest rectangles of the footprint (less the outside walls), on a grid of `cell` in the frame: the biggest, and
         // a few more that share a doorway's worth of wall with one already taken (an L's leg, a porch room, a garage).
-        private static List<Rect> Blocks(List<Vector2> local, float margin, float minArea)
+        internal static List<Rect> Blocks(List<Vector2> local, float margin, float minArea)
         {
             var blocks = new List<Rect>(4);
             MapGeometry.Extent(local, out float x0, out float z0, out float x1, out float z1);
@@ -694,7 +708,10 @@ namespace CloneZ
                 }
             }
             if (w == null) return;
-            w.Open = plan.Rooms[a].OpenTo.Contains(b);
+            // A stairwell has its own walls (the building's): only its open side onto the landing hall is in the plan.
+            bool stair = plan.Rooms[a].Role == RoomRole.Stair || plan.Rooms[b].Role == RoomRole.Stair;
+            w.Open = plan.Rooms[a].OpenTo.Contains(b) || plan.Rooms[b].OpenTo.Contains(a);
+            if (stair && !w.Open) return;
             plan.Walls.Add(w);
         }
 

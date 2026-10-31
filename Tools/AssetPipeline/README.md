@@ -12,8 +12,8 @@ item catalogue ─► gpt-oss:120b ─► sanitise + geometry checks ─► rend
                                   Assets/Resources/GeneratedItemModels/<id>.json ─► GeneratedItemModels.cs
 ```
 
-In game, `ItemMeshBaker.Get` resolves a model as **hand-built C# → generated JSON → tinted
-fallback primitive**.
+In game, `ItemMeshBaker.Get` resolves a model as **generated textured mesh (`mesh/`) → hand-built C# →
+generated JSON → tinted fallback primitive**.
 
 ## One-click app
 
@@ -27,6 +27,7 @@ Double-click **`AssetPipeline.bat`** for a menu, or run `.\AssetPipeline.ps1 <ac
 | `pull`    | Copies finished models into `Assets/Resources/GeneratedItemModels` and previews into `out/`. Local files that are newer than the Spark's copies (hand fixes) are kept. |
 | `gallery` | Opens `out/index.html`, a filterable contact sheet of every preview. |
 | `stop`    | Stops gracefully: it finishes the items in flight, then exits. Starting again resumes. |
+| `mesh-*`  | The mesh stage: `mesh-build`, `mesh-prepare`, `mesh-pilot`, `mesh-start`, `mesh-status`, `mesh-watch`, `mesh-pull`, `mesh-gallery`, `mesh-stop` (menu: **M**). See [mesh/README.md](mesh/README.md). |
 
 The run lives on the Spark, so this PC can sleep or reboot. Items that already have a JSON file are
 skipped, so `start` always resumes where it left off.
@@ -108,6 +109,6 @@ items must keep one orientation:
 
 ## Next stage: real meshes
 
-Stage B is planned: text → image → 3D mesh (for example TRELLIS or Hunyuan3D-2) on the Spark,
-used for hero items. It needs a GLB import and render path alongside `ItemMeshBaker`, because the
-baker only understands primitives.
+The mesh stage in [mesh/](mesh/README.md) turns every item into a textured mesh on the Spark's GPU:
+Z-Image-Turbo paints a reference picture, TRELLIS.2 turns it into a mesh, and the mesh is fitted onto the
+item's primitive model from this stage, so it keeps the size and pose conventions above.

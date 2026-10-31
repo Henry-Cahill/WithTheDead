@@ -77,6 +77,9 @@ namespace CloneZ
             /// <summary>A streamed map piece builds this building whole and playable even where its outline reaches past
             /// the piece's edge (each building has exactly one owning piece).</summary>
             public bool Owned;
+            /// <summary>The main block the levels' layout stands on, worked out once (<see cref="Levels.MainBlock"/>): its
+            /// corners on the site, anticlockwise; an empty array when the outline has none.</summary>
+            internal Vector2[] LevelBlock;
 
             public Footprint(MapBuilding data, List<Vector2> pts)
             {

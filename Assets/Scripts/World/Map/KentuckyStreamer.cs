@@ -64,6 +64,11 @@ namespace CloneZ
         /// metres.</summary>
         public float FullReach => (FullRadius + 0.5f) * _chunk;
 
+        /// <summary>The grid point (EPSG:3088 metres east and north) at the world's origin: the start town's centre. A grid
+        /// point is at world (x - OriginX, z - OriginZ).</summary>
+        internal double OriginX => _originX;
+        internal double OriginZ => _originZ;
+
         private sealed class Chunk
         {
             public int Cx, Cz;
@@ -138,6 +143,10 @@ namespace CloneZ
         private bool _started;
         private Transform _streamed, _overhead;
         private GameObject _ground, _horizon;
+        private BoxCollider _groundBox;
+        private float _groundMovedAt;
+        private int _groundMoves, _groundLost;
+        private static readonly RaycastHit[] s_GroundHits = new RaycastHit[32];
         private Chunk _building;
 
         private readonly Dictionary<long, Chunk> _chunks = new Dictionary<long, Chunk>();
@@ -220,6 +229,7 @@ namespace CloneZ
             var col = _ground.AddComponent<BoxCollider>();
             col.center = new Vector3(0f, -0.5f, 0f);
             col.size = new Vector3(side, 1f, side);
+            _groundBox = col;
 
             _horizon = new GameObject("Horizon");
             _horizon.transform.SetParent(transform, false);
@@ -502,7 +512,10 @@ namespace CloneZ
                 {
                     _ground.transform.position = middle;
                     _horizon.transform.position = middle;
+                    _groundMovedAt = Time.unscaledTime;
+                    _groundMoves++;
                 }
+                if (!Simulated) KeepGroundFound(primary);
                 Travel(primary);
                 Plan();
                 BuildSome();
@@ -538,6 +551,44 @@ namespace CloneZ
                 Actor a = Actor.All[i];
                 if (a != null && a != local && a.IsPlayerControlled) _focus.Add(a.transform.position);
             }
+        }
+
+        // The snowfield is what everyone outdoors stands on (roads and sidewalks have no colliders), so the physics scene has
+        // to find it under the survivor. In this Unity it doesn't always: once per map, a few seconds after the box first
+        // follows the survivor, the physics scene loses it (rays and the survivor's body go straight through it, while the
+        // collider still reads as enabled and in place; a transform sync doesn't bring it back, and moving it while
+        // switched off doesn't prevent it), and outdoors that is a fall through the world. Taken out and put back in, it
+        // stays. So it is checked every frame (one short ray through its top) and put back the moment it goes.
+        private void KeepGroundFound(Vector3 at)
+        {
+            if (_groundBox == null) return;
+            // Through the snowfield's top only (y 0), so the few colliders at ground level are all this ray meets.
+            var ray = new Ray(new Vector3(at.x, 0.5f, at.z), Vector3.down);
+            if (GroundAnswers(ray)) return;
+            _groundLost++;
+            Physics.SyncTransforms();
+            bool synced = GroundAnswers(ray), back = synced;
+            if (!synced)
+            {
+                // Switched off and on again, a collider is taken out of the physics scene and put back in.
+                _groundBox.enabled = false;
+                _groundBox.enabled = true;
+                back = GroundAnswers(ray);
+            }
+            if (_groundLost > 10) return;
+            string line = "[CloneZ] The physics scene had lost the snowfield under the survivor at " + at.ToString("F1") + " ("
+                + Time.time.ToString("F1") + " s into play, " + (Time.unscaledTime - _groundMovedAt).ToString("F1") + " s after it last moved, "
+                + _groundMoves + " moves so far, loss " + _groundLost + "): ";
+            if (back) Debug.Log(line + (synced ? "a transform sync found it again." : "put back."));
+            else Debug.LogWarning(line + "STILL MISSING after a transform sync and a switch off and on.");
+        }
+
+        private bool GroundAnswers(Ray ray)
+        {
+            int n = Physics.RaycastNonAlloc(ray, s_GroundHits, 1f, 1 << _groundBox.gameObject.layer, QueryTriggerInteraction.Collide);
+            for (int i = 0; i < n; i++)
+                if (s_GroundHits[i].collider == _groundBox) return true;
+            return false;
         }
 
         // The local survivor's travel on the ground (smoothed over about half a second; a jump of 50 m or more in a frame

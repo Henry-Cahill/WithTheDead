@@ -7,8 +7,10 @@ namespace CloneZ
     // The land use as one partition of the ground: which area's ground shows where, drawn as trapezoids at one height.
     internal static partial class GroundPass
     {
-        // Where outlines overlap, a higher tier shows; within a tier, the smaller area.
-        private const int TierBroad = 0, TierCover = 1, TierFeature = 2;
+        // Where outlines overlap, a higher tier shows; within a tier, the smaller area. Over a basement, none does.
+        private const int TierBroad = 0, TierCover = 1, TierFeature = 2, TierHole = 3;
+        /// <summary>The kind of the owners standing for the basements (no area's ground shows over them).</summary>
+        private const string HoleKind = "basement";
 
         /// <summary>A land-use area cut to the square (or to a band of the scenery ring), and the part of it that shows.</summary>
         private sealed class Owner
@@ -116,7 +118,7 @@ namespace CloneZ
         /// <summary>Divides the square's ground into owners' partitions and fills their ground, handling water and parking.</summary>
         private static void Partition(Ground g)
         {
-            g.Owners = Collect(g.Site, g.Square);
+            g.Owners = Collect(g.Site, g.Square, g.Holes);
             foreach (Owner o in g.Owners)
             {
                 if (FillOf(o, out Surf surf)) Fill(g.Site.Town.Out, o, FillY, surf);
@@ -138,8 +140,9 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Collects owners whose patches intersect the given domain and prepares them for partitioning.</summary>
-        private static List<Owner> Collect(Site site, Rect domain)
+        /// <summary>Collects owners whose patches intersect the given domain and prepares them for partitioning; with
+        /// <paramref name="holes"/>, the basements over which no area's ground shows (the house's own floor is there).</summary>
+        private static List<Owner> Collect(Site site, Rect domain, List<Vector2[]> holes = null)
         {
             var owners = new List<Owner>();
             foreach (Patch p in site.Area.Areas)
@@ -152,6 +155,18 @@ namespace CloneZ
                 {
                     Patch = p, Kind = kind, Id = p.Data.id, Tier = TierOf(kind), FullArea = AreaOf(p.Data.pts, p.Pts),
                     Pts = pts, Bounds = MapGeometry.Bounds(pts),
+                });
+            }
+            for (int h = 0; holes != null && h < holes.Count; h++)
+            {
+                var outline = new List<Vector2>(holes[h]);
+                if (MapGeometry.SignedArea(outline) < 0f) outline.Reverse();
+                List<Vector2> pts = MapGeometry.ClipPolygon(outline, domain);
+                if (pts.Count < 3 || Mathf.Abs(MapGeometry.SignedArea(pts)) < 0.25f) continue;
+                owners.Add(new Owner
+                {
+                    Kind = HoleKind, Id = -1 - h, Tier = TierHole, FullArea = Mathf.Abs(MapGeometry.SignedArea(pts)), Pts = pts,
+                    Bounds = MapGeometry.Bounds(pts),
                 });
             }
             owners.Sort(ByPriority);
