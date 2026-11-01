@@ -22,6 +22,11 @@ namespace CloneZ
     /// save file) and never touches the player's. Results are logged as "[Smoke] ..." lines; the process exits with 0
     /// (clean) or 2 (errors). The editor's CloneZ ▸ Smoke Test menu plays a run in its own Game view instead, to watch it
     /// (stopping play mode when it's done), and <c>-clonez-smoke-pace &lt;seconds&gt;</c> leaves that pause between presses.
+    /// On the statewide map <c>solo</c> ends by setting two of the dead on the survivor through a building's partition, then
+    /// from outside through its outside wall (they must batter a hole through it and come through);
+    /// <c>-clonez-smoke-breach-only</c> goes straight there from the deploy. <c>client</c> with
+    /// <c>-clonez-smoke-join &lt;address[:port]&gt;</c> plays against a server already running, such as the in-house
+    /// dedicated server (Tools/Server), opening the raid on it itself.
     /// </summary>
     public sealed partial class SmokeTest : MonoBehaviour
     {
@@ -38,7 +43,7 @@ namespace CloneZ
         /// <summary>Session-state keys the editor's Smoke Test menu sets to play a mode in its own Game view, with a pace
         /// (seconds) between presses to watch it by.</summary>
         public const string MenuModeKey = "CloneZ.Smoke.Mode", MenuPaceKey = "CloneZ.Smoke.Pace";
-        private static bool s_FromMenu, s_Finished, s_RanInBackground;
+        private static bool s_FromMenu, s_Finished, s_RanInBackground, s_BreachOnly;
 
         public static bool Running => s_Mode != null;
 
@@ -60,6 +65,8 @@ namespace CloneZ
             s_Finished = false;
             s_FirstErrors.Clear();
             if (float.TryParse(ArgAfter(args, "-clonez-smoke-pace"), NumberStyles.Float, CultureInfo.InvariantCulture, out float pace)) s_Pace = pace;
+            // Solo straight from the deploy to the breakable walls' checks (the runner's and the state's passes left out).
+            s_BreachOnly = Array.IndexOf(args, "-clonez-smoke-breach-only") >= 0;
             s_ShotDir = ArgAfter(args, "-clonez-smoke-shots");
             if (s_ShotDir != null)
             {
@@ -304,8 +311,225 @@ namespace CloneZ
             yield return Deploy(hunter ? RaidKind.Monster : RaidKind.Operative);
             Census();
             if (hunter) { yield return HunterPass(); yield break; }
+            if (s_BreachOnly && KentuckyStreamer.Active != null)
+            {
+                yield return BreachPass(false);
+                yield return BreachPass(true);
+                yield break;
+            }
             yield return RunnerPass();
-            if (KentuckyStreamer.Active != null) yield return StatewidePass();
+            if (KentuckyStreamer.Active != null)
+            {
+                yield return StatewidePass();
+                yield return BreachPass(false);
+                yield return BreachPass(true);
+            }
+        }
+
+        // The statewide map's partitions and outside walls, as the starter house's walls: two of the dead set on the survivor
+        // through a wall of a furnished building (a partition, or with `outside` its outside wall, the dead outside and the
+        // survivor in), every door near it shut, batter a hole through it; the NavMesh takes the hole in and the dead come
+        // through it. (Two of them, side by side, as the dead come.)
+        private IEnumerator BreachPass(bool outside)
+        {
+            string what = outside ? "outside walls: " : "partitions: ";
+            KentuckyStreamer streamer = KentuckyStreamer.Active;
+            Actor me = Actor.LocalPlayer;
+            Vector3 home = me.transform.position;
+            // The dead must be able to hunt the survivor for this one (an earlier pass may have left them unseen or protected).
+            bool untargetable = me.Untargetable;
+            me.Untargetable = false;
+            yield return Until(() => !ExtractionManager.PlayerProtected, 180f);
+            BreakableWall wall = null;
+            float spot = 0f;
+            Vector3[] tries = { home, home + new Vector3(35f, 0f, 0f), home + new Vector3(-35f, 0f, 0f), home + new Vector3(0f, 0f, 35f),
+                home + new Vector3(0f, 0f, -35f), home + new Vector3(70f, 0f, 70f), home + new Vector3(-70f, 0f, -70f) };
+            foreach (Vector3 at in tries)
+            {
+                if (at != home) Teleport(me, at);
+                yield return Until(() => streamer.IsNavigableAt(at), 60f);
+                yield return new WaitForSeconds(6f);   // the interiors round it furnished, and the NavMesh taking them in
+                wall = BreachableWall(me.transform.position, outside, out spot);
+                if (wall != null) break;
+            }
+            Check(what + "a wall to break through near the survivor", wall != null, BreakableWall.All.Count + " breakable walls standing");
+            if (wall == null)
+            {
+                me.Untargetable = untargetable;
+                yield break;
+            }
+
+            float floor = wall.transform.position.y;
+            // A partition's +across side, or an outside wall's inside (its +across is outward), is the survivor's.
+            Vector3 across = (wall.WorldAt(0f, 0f, 1f) - wall.WorldAt(0f, 0f, 0f)).normalized * (outside ? -1f : 1f);
+            Vector3 centre = wall.WorldAt(spot, 0f, 0f), preyAt = Snap(centre + across * 1.4f, floor);
+            int doors = 0;
+            foreach (RaidDoor d in RaidDoor.Registry)
+                if (d != null && d.IsOpen && FlatDistance(d.transform.position, centre) < 30f)
+                {
+                    d.SetOpen(false, false);
+                    doors++;
+                }
+            Teleport(me, preyAt);
+            yield return new WaitForSeconds(2f);   // the shut doors' carves in
+            {
+                // Whether the survivor can be walked to at all from where the dead stand (the doors shut), for the log.
+                Vector3 from = Snap(centre - across * 0.9f, floor);
+                var way = new UnityEngine.AI.NavMeshPath();
+                bool got = UnityEngine.AI.NavMesh.CalculatePath(from, preyAt, UnityEngine.AI.NavMesh.AllAreas, way);
+                float len = 0f;
+                for (int c = 1; c < way.corners.Length; c++) len += Vector3.Distance(way.corners[c - 1], way.corners[c]);
+                string open = "";
+                foreach (RaidDoor d in RaidDoor.Registry)
+                    if (d != null && d.IsOpen && FlatDistance(d.transform.position, centre) < 80f)
+                        open += (open.Length > 0 ? ", " : "") + FlatDistance(d.transform.position, centre).ToString("0") + " m";
+                Debug.Log("[Smoke] breach setup: " + what + "the way from the dead's side to the survivor " + (got ? way.status + ", " + len.ToString("0.0") + " m, "
+                    + way.corners.Length + " corners" + (way.corners.Length > 0 ? ", ending " + FlatDistance(way.corners[way.corners.Length - 1], preyAt).ToString("0.0") + " m off" : "") : "none")
+                    + "; doors open within 80 m: " + (open.Length > 0 ? open : "none"));
+            }
+            var dead = new List<ZombieAI>();
+            for (int k = -1; k <= 1; k += 2)
+            {
+                GameObject z = ZombieSpawner.BuildZombie(Snap(centre - across * 0.9f + (wall.WorldAt(spot + k * 0.45f, 0f, 0f) - centre), floor));
+                var ai = z.GetComponent<ZombieAI>();
+                ai.Configure(ZombieType.Shambler);
+                dead.Add(ai);
+            }
+            yield return null;
+            // They know where the survivor is (as if they'd seen them go in), and keep at it as the dead keep at a door.
+            foreach (ZombieAI ai in dead) ai.Command(me);
+            float t0 = Time.time;
+            bool Open()
+            {
+                foreach (WallBreach h in wall.Holes)
+                    if (h != null && h.IsOpen) return true;
+                return false;
+            }
+            float traceAt = 0f;
+            yield return Until(() =>
+            {
+                if (Time.time - t0 >= traceAt)
+                {
+                    traceAt += Time.time - t0 < 12f ? 0.5f : 5f;
+                    Debug.Log("[Smoke] breach trace " + (Time.time - t0).ToString("0.0") + " s: " + Trace(dead) + "; holes " + wall.Holes.Count);
+                }
+                return Open();
+            }, 75f);
+            float took = Time.time - t0;
+            string blows = "";
+            foreach (WallBreach h in wall.Holes)
+                if (h != null) blows += (blows.Length > 0 ? ", " : "") + h.State + " at " + h.Health.ToString("0");
+            if (!Open())
+            {
+                // What the dead were at instead.
+                foreach (ZombieAI ai in dead)
+                {
+                    if (ai == null) { blows += "; a zombie gone"; continue; }
+                    var agent = ai.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                    Vector3 p = ai.transform.position;
+                    WallBreach pick = BreakableWall.NearestObstructing(p, me.transform.position, CloneZConfig.ZombieAttackRange + 0.8f);
+                    blows += "; zombie side " + wall.SideOf(p) + " " + FlatDistance(p, centre).ToString("0.0") + " m off the hole, prey "
+                        + (ai.Prey == null ? "none" : ai.Prey == me ? "the survivor" : ai.Prey.name) + ", path "
+                        + (agent != null && agent.enabled && agent.isOnNavMesh ? agent.pathStatus + (agent.pathPending ? " (pending)" : "") : "off the NavMesh")
+                        + ", the wall query: " + (pick == null ? "nothing (" + BreakableWall.LastMiss + ")" : pick.Wall == wall ? "this wall" : "another wall");
+                }
+                int open = 0;
+                foreach (RaidDoor d in RaidDoor.Registry)
+                    if (d != null && d.IsOpen && FlatDistance(d.transform.position, centre) < 30f) open++;
+                wall.SpotFor(spot, 1f, true, out _, out _, out string why);
+                blows += "; doors open now " + open + ", the spot: " + (why ?? "fine") + ", survivor " + FlatDistance(me.transform.position, centre).ToString("0.0")
+                    + " m off (side " + wall.SideOf(me.transform.position) + ")";
+            }
+            Check(what + "the dead batter a hole through the wall", Open(), took.ToString("0.0") + " s, " + doors + " doors shut; " + blows);
+            if (Open())
+            {
+                int side = wall.SideOf(preyAt);
+                yield return Until(() =>
+                {
+                    foreach (ZombieAI ai in dead)
+                        if (ai != null && wall.SideOf(ai.transform.position) == side && FlatDistance(ai.transform.position, me.transform.position) < 3f) return true;
+                    return false;
+                }, 30f);
+                bool through = false;
+                foreach (ZombieAI ai in dead)
+                    if (ai != null && wall.SideOf(ai.transform.position) == side) through = true;
+                Check(what + "the dead come through the hole", through, (Time.time - t0 - took).ToString("0.0") + " s after it gave way");
+            }
+            me.Untargetable = true;
+            foreach (ZombieAI ai in dead)
+                if (ai != null) ai.Kill();
+            Teleport(me, home);
+            yield return new WaitForSeconds(1f);
+            me.Untargetable = untargetable;
+        }
+
+        // What the dead are at (their brains' own state, read for the log).
+        private static string Trace(List<ZombieAI> dead)
+        {
+            var sb = new System.Text.StringBuilder();
+            const BindingFlags all = BindingFlags.Instance | BindingFlags.NonPublic;
+            foreach (ZombieAI ai in dead)
+            {
+                if (ai == null) { sb.Append("[gone] "); continue; }
+                object F(string name) => typeof(ZombieAI).GetField(name, all)?.GetValue(ai);
+                var agent = ai.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                sb.Append('[').Append(F("_state")).Append(" target ").Append(F("_hasTarget")).Append(" door ").Append(F("_door") != null ? "yes" : "no")
+                    .Append(" hole ").Append(F("_wallHole") is UnityEngine.Object h && h != null ? "yes" : "no")
+                    .Append(" cd ").Append(((float)F("_attackCooldown")).ToString("0.0"))
+                    .Append(" path ").Append(agent != null && agent.isOnNavMesh ? agent.pathStatus + (agent.pathPending ? "*" : "") : "off");
+                if (agent != null && agent.isOnNavMesh && agent.hasPath)
+                {
+                    Vector3[] corners = agent.path.corners;
+                    sb.Append(" (").Append(corners.Length).Append(" corners, ").Append(agent.remainingDistance.ToString("0.0")).Append(" m left");
+                    if (corners.Length > 0 && ai.Prey != null) sb.Append(", ends ").Append(FlatDistance(corners[corners.Length - 1], ai.Prey.transform.position).ToString("0.0")).Append(" m off the prey");
+                    sb.Append(')');
+                }
+                else if (agent != null && agent.isOnNavMesh) sb.Append(" (no path)");
+                sb.Append(" at ").Append(ai.transform.position.ToString("0.0")).Append("] ");
+            }
+            return sb.ToString();
+        }
+
+        // A breakable wall near `near` on a ground floor (a partition, or with `outside` an outside wall) with room for a hole that
+        // the NavMesh comes up to both sides of, and the hole's middle along it.
+        private static BreakableWall BreachableWall(Vector3 near, bool outside, out float spot)
+        {
+            spot = 0f;
+            BreakableWall best = null;
+            float bestD = float.MaxValue;
+            foreach (BreakableWall w in BreakableWall.All)
+            {
+                if (w == null || (outside ? !(w is OutsideWall) : !(w is PartitionWall))) continue;
+                if (Mathf.Abs(w.transform.position.y) > 0.5f) continue;
+                float d = FlatDistance(w.transform.position, near);
+                if (d > 45f || d >= bestD) continue;
+                for (float t = -w.Length * 0.5f + 1.2f; t <= w.Length * 0.5f - 1.2f; t += 0.5f)
+                {
+                    w.AimAt(w.WorldAt(t, 1f, 0f));
+                    if (!w.CanDemolish(out _) || !w.Walkable(w.Aimed)) continue;
+                    best = w;
+                    bestD = d;
+                    spot = w.Aimed;
+                    break;
+                }
+            }
+            return best;
+        }
+
+        // The NavMesh's point nearest `p` on the floor at `floor` (else `p`).
+        private static Vector3 Snap(Vector3 p, float floor)
+        {
+            p.y = floor + 0.1f;
+            return UnityEngine.AI.NavMesh.SamplePosition(p, out UnityEngine.AI.NavMeshHit hit, 1f, UnityEngine.AI.NavMesh.AllAreas) ? hit.position : p;
+        }
+
+        private static void Teleport(Actor me, Vector3 to)
+        {
+            var cc = me.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            me.transform.position = to;
+            if (cc != null) cc.enabled = true;
+            Physics.SyncTransforms();
         }
 
         // The statewide map: far across the state and back. The ground, the NavMesh and the dead follow the survivor; a
@@ -922,6 +1146,12 @@ namespace CloneZ
 
         private IEnumerator Client()
         {
+            // With -clonez-smoke-join <address[:port]> it plays against a server already running (the in-house dedicated
+            // server, say) rather than the host a paired run starts on this machine.
+            string address = "127.0.0.1";
+            ushort port = Port;
+            string join = ArgAfter(Environment.GetCommandLineArgs(), "-clonez-smoke-join");
+            if (join != null && !JoinAddress.TryParse(join, out address, out port)) Check("join address", false, join);
             // The host may still be starting up: keep knocking (a refused attempt drops back to the menu) until let in.
             yield return new WaitForSeconds(5f);
             float giveUp = Time.realtimeSinceStartup + 300f;
@@ -931,20 +1161,29 @@ namespace CloneZ
                 if (NetSession.Instance == null)
                 {
                     attempts++;
-                    MainMenuController.JoinAction("127.0.0.1", Port);
+                    MainMenuController.JoinAction(address, port);
                 }
                 yield return new WaitForSeconds(3f);
             }
-            Check("join", NetSession.Active, attempts + " attempt(s)");
+            Check("join", NetSession.Active, attempts + " attempt(s) at " + address + ":" + port);
             yield return Until(() => GameSession.IsHub && Actor.LocalPlayer != null && NetSession.Active, 180f);
             Check("client hub", GameSession.IsHub && NetSession.Active);
             Try("squad screen (networked)", () => { HubScreens.Open(HubScreens.Squad); if (UIScreen.Current != null) UIScreen.Current.Close(); });
-            yield return Until(() => NetSession.HostRaidZone != null, 300f);
-            Check("host raid open", NetSession.HostRaidZone != null, NetSession.HostRaidZone);
+            // A dedicated server plays nobody: the deploy below opens the raid on it (or joins the one under way).
+            bool dedicated = NetSession.ServerDedicated;
+            if (!dedicated)
+            {
+                yield return Until(() => NetSession.HostRaidZone != null, 300f);
+                Check("host raid open", NetSession.HostRaidZone != null, NetSession.HostRaidZone);
+            }
             GiveRaidKit();
             yield return Deploy(RaidKind.Operative);
-            yield return Until(() => NetPlayers.Proxies.Count > 0, 60f);
-            Check("client sees the host", NetPlayers.Proxies.Count > 0, NetPlayers.Proxies.Count + " proxies");
+            if (dedicated) Check("server opened the raid", NetSession.HostRaidZone != null, NetSession.HostRaidZone + " on build " + NetSession.ServerBuild);
+            else
+            {
+                yield return Until(() => NetPlayers.Proxies.Count > 0, 60f);
+                Check("client sees the host", NetPlayers.Proxies.Count > 0, NetPlayers.Proxies.Count + " proxies");
+            }
             yield return Until(() => FindObjectsByType<NetAgentProxy>().Length > 0, 60f);
             Check("AI replicated", FindObjectsByType<NetAgentProxy>().Length > 0, FindObjectsByType<NetAgentProxy>().Length + " agents");
             PlayerInventory inv = Actor.LocalPlayer.GetComponent<PlayerInventory>();

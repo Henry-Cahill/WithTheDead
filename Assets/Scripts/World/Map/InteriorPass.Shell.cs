@@ -137,52 +137,90 @@ namespace CloneZ
             return (sa + sb) * 0.5f;
         }
 
-        // Stretch the wall segment and insert door hardware after casing.
+        // Stretch the wall's paper from `from` to `to`, round the openings through it there: the outside doorways (the ground
+        // floor's, with their casings and hardware) and the working and fixed windows (their casings are Window's).
         private static void Stretch(InteriorPlan plan, RaidMesh m, PlanRoom room, int edge, Vector2 a, Vector2 d, Vector2 outward,
             Vector3 inward, float yaw, float from, float to, float t, float h)
         {
             WallDesign design = room.Design;
             Surf paper = DecorMaterials.WallInterior(design);
             Surf trim = DecorPalette.Matte(design.Trim);
-            float cursor = from;
-            // The doorways along this stretch, in order (the outside doors are the ground floor's).
-            for (int pass = 0; pass < 8 && plan.Level == 0; pass++)
-            {
-                float nextDoor = float.MaxValue, doorHalf = 0f;
+            // The openings along this stretch, (middle, half width, bottom, top), in order.
+            s_Openings.Clear();
+            if (plan.Level == 0)
                 foreach (Doorway door in plan.Record.Doors)
                 {
                     if (door.Edge != edge) continue;
                     float s = Vector2.Dot(door.At - a, d), half = (door.Width > 0.5f ? door.Width : 1.2f) * 0.5f;
-                    if (s + half <= cursor + 0.01f || s - half >= to) continue;
-                    if (s < nextDoor) { nextDoor = s; doorHalf = half; }
+                    if (s + half > from + 0.01f && s - half < to) s_Openings.Add(new Vector4(s, half, 0f, DoorTop));
                 }
-                if (nextDoor == float.MaxValue) break;
-                float d0 = Mathf.Max(cursor, nextDoor - doorHalf), d1 = Mathf.Min(to, nextDoor + doorHalf);
-                Panel(m, a, d, outward, inward, yaw, cursor, d0, 0f, h, t, paper, trim, design, true);
-                Panel(m, a, d, outward, inward, yaw, d0, d1, DoorTop, h, t, paper, trim, design, false);
-                DoorCasing(m, a, d, outward, inward, yaw, nextDoor, doorHalf, t, trim);
-                // Insert hardware after casing.
-                DoorHardware(m, a, d, outward, inward, yaw, nextDoor, doorHalf, t);
-                cursor = d1;
+            foreach (WindowSpan w in plan.Record.Windows)
+            {
+                if (!(w.Working || w.Clear) || w.Storey != plan.Level || w.Edge != edge || w.To <= from + 0.01f || w.From >= to) continue;
+                s_Openings.Add(new Vector4((w.From + w.To) * 0.5f, (w.To - w.From) * 0.5f, w.Sill, w.Head));
             }
-            Panel(m, a, d, outward, inward, yaw, cursor, to, 0f, h, t, paper, trim, design, true);
+            if (s_Openings.Count > 1) s_Openings.Sort(s_ByMiddle);
+            // The paper goes round the openings in panels; the skirting runs the stretch in one piece but for its doorways, the
+            // cornice in one but for an opening reaching up into it (a run of them costs no more than a plain wall's).
+            float cursor = from, skirt = from, cornice = from;
+            foreach (Vector4 o in s_Openings)
+            {
+                float o0 = Mathf.Max(cursor, o.x - o.y), o1 = Mathf.Min(to, o.x + o.y);
+                if (o1 <= o0) continue;
+                bool door = o.z <= 0.02f;
+                Panel(m, a, d, outward, inward, yaw, cursor, o0, 0f, h, t, paper, trim, design, false);
+                if (!door) Panel(m, a, d, outward, inward, yaw, o0, o1, 0f, o.z, t, paper, trim, design, true);   // its top trim the sill's
+                Panel(m, a, d, outward, inward, yaw, o0, o1, o.w, h, t, paper, trim, design, false);
+                if (door)
+                {
+                    Trim(m, a, d, outward, yaw, skirt, o0, Skirting, t, trim);
+                    skirt = o1;
+                    DoorCasing(m, a, d, outward, inward, yaw, o.x, o.y, t, trim);
+                    // Insert hardware after casing.
+                    DoorHardware(m, a, d, outward, inward, yaw, o.x, o.y, t);
+                }
+                if (o.w > h - 0.08f)
+                {
+                    Trim(m, a, d, outward, yaw, cornice, o0, new Vector4(h - 0.03f, 0.06f, 0.02f, 0.008f), t, trim);
+                    cornice = o1;
+                }
+                cursor = o1;
+            }
+            Panel(m, a, d, outward, inward, yaw, cursor, to, 0f, h, t, paper, trim, design, false);
+            Trim(m, a, d, outward, yaw, skirt, to, Skirting, t, trim);
+            Trim(m, a, d, outward, yaw, cornice, to, new Vector4(h - 0.03f, 0.06f, 0.02f, 0.008f), t, trim);
         }
-        
 
-        // Paper over the wall from `s0` to `s1` along it and from `y0` to `y1` up it, with the room's trims where they fall.
+        private static readonly List<Vector4> s_Openings = new List<Vector4>(8);
+        private static readonly Comparison<Vector4> s_ByMiddle = (x, y) => x.x.CompareTo(y.x);
+
+        /// <summary>The skirting's (middle height, height, depth, distance in front of the paper).</summary>
+        private static readonly Vector4 Skirting = new Vector4(0.06f, 0.12f, 0.016f, 0.008f);
+
+        // A trim run along the wall from `s0` to `s1`: `shape` its middle's height, its height, depth, and distance in front of
+        // the paper.
+        private static void Trim(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, float yaw, float s0, float s1, Vector4 shape, float t,
+            in Surf trim)
+        {
+            float len = s1 - s0;
+            if (len < 0.02f) return;
+            Vector2 at = a + d * ((s0 + s1) * 0.5f) - outward * (t + LiningOff + shape.w);
+            m.Box(KentuckyMap.To3(at, shape.x), new Vector3(len, shape.y, shape.z), yaw, trim);
+        }
+
+        // Paper over the wall from `s0` to `s1` along it and from `y0` to `y1` up it, with the room's rail where it falls and,
+        // with `top`, a trim along its top (under a window, the sill's); the skirting and cornice are the stretch's (Trim).
         private static void Panel(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, Vector3 inward, float yaw, float s0, float s1,
-            float y0, float y1, float t, in Surf paper, in Surf trim, WallDesign design, bool skirting)
+            float y0, float y1, float t, in Surf paper, in Surf trim, WallDesign design, bool top)
         {
             float len = s1 - s0;
             if (len < 0.02f || y1 - y0 < 0.02f) return;
             Vector2 mid = a + d * ((s0 + s1) * 0.5f) - outward * (t + LiningOff);
             m.Upright(KentuckyMap.To3(mid, (y0 + y1) * 0.5f), inward, len, y1 - y0, paper);
-            Vector2 trimAt = a + d * ((s0 + s1) * 0.5f) - outward * (t + LiningOff + 0.008f);
-            if (skirting && y0 < 0.1f) m.Box(KentuckyMap.To3(trimAt, 0.06f), new Vector3(len, 0.12f, 0.016f), yaw, trim);
             float rail = design.RailHeight;
             if (rail > y0 + 0.05f && rail < y1 - 0.3f)
                 m.Box(KentuckyMap.To3(a + d * ((s0 + s1) * 0.5f) - outward * (t + LiningOff + 0.012f), rail + 0.01f), new Vector3(len, 0.06f, 0.024f), yaw, trim);
-            m.Box(KentuckyMap.To3(trimAt, y1 - 0.03f), new Vector3(len, 0.06f, 0.02f), yaw, trim);
+            if (top) Trim(m, a, d, outward, yaw, s0, s1, new Vector4(y1 - 0.03f, 0.06f, 0.02f, 0.008f), t, trim);
         }
 
         // The inside casing round an outside doorway.
@@ -242,6 +280,8 @@ namespace CloneZ
         private static void Window(InteriorPlan plan, RaidMesh m, PlanRoom room, Vector2 a, Vector2 d, Vector3 inward, float yaw,
             WindowSpan w, float t, Color fabric, System.Random rng)
         {
+            // A tall building's upper floors' fixed windows (hundreds of them): the paper stops round the opening, no more.
+            if (w.Plain) return;
             float width = w.To - w.From, sill = Mathf.Max(0.2f, w.Sill), head = Mathf.Max(sill + 0.3f, w.Head);
             if (width < 0.3f) return;
             Vector2 outward = new Vector2(d.y, -d.x);
@@ -250,24 +290,28 @@ namespace CloneZ
             Vector3 along = new Vector3(d.x, 0f, d.y);
             RoomRole role = room != null ? room.Role : RoomRole.Stock;
             bool church = role == RoomRole.Nave || role == RoomRole.Narthex || role == RoomRole.Chapel;
-            Color glassTint = church ? StainedGlass[rng.Next(StainedGlass.Length)] : PaneTint;
-            m.Upright(c, inward, width, hgt, church ? DecorPalette.Gloss(glassTint) : DecorPalette.Glass(glassTint));
             Surf sash = DecorPalette.Matte(SashPaint);
-            // The sashes' frames and the meeting rail; a church's tall lights get leading instead.
-            Vector3 face = c + inward * 0.02f;
-            m.Box(face + Vector3.up * (hgt * 0.5f - 0.025f), new Vector3(width, 0.05f, 0.03f), yaw, sash);
-            m.Box(face - Vector3.up * (hgt * 0.5f - 0.03f), new Vector3(width, 0.06f, 0.03f), yaw, sash);
-            for (int e = -1; e <= 1; e += 2) m.Box(face + along * (e * (width * 0.5f - 0.025f)), new Vector3(0.05f, hgt, 0.03f), yaw, sash);
-            if (church)
+            // A fixed window's glass and bars are the shell's, in the opening (BuildingPass); a working one's its RaidWindow's.
+            if (!w.Working && !w.Clear)
             {
-                Surf lead = DecorPalette.Matte(new Color(0.12f, 0.12f, 0.12f));
-                for (int k = 1; k < 4; k++) m.Box(face + Vector3.up * (hgt * (k / 4f - 0.5f)), new Vector3(width, 0.02f, 0.015f), yaw, lead);
-                m.Box(face, new Vector3(0.02f, hgt, 0.015f), yaw, lead);
-            }
-            else
-            {
-                m.Box(face, new Vector3(width, 0.045f, 0.035f), yaw, sash);
-                m.Box(face, new Vector3(0.025f, hgt, 0.025f), yaw, sash);
+                Color glassTint = church ? StainedGlass[rng.Next(StainedGlass.Length)] : PaneTint;
+                m.Upright(c, inward, width, hgt, church ? DecorPalette.Gloss(glassTint) : DecorPalette.Glass(glassTint));
+                // The sashes' frames and the meeting rail; a church's tall lights get leading instead.
+                Vector3 face = c + inward * 0.02f;
+                m.Box(face + Vector3.up * (hgt * 0.5f - 0.025f), new Vector3(width, 0.05f, 0.03f), yaw, sash);
+                m.Box(face - Vector3.up * (hgt * 0.5f - 0.03f), new Vector3(width, 0.06f, 0.03f), yaw, sash);
+                for (int e = -1; e <= 1; e += 2) m.Box(face + along * (e * (width * 0.5f - 0.025f)), new Vector3(0.05f, hgt, 0.03f), yaw, sash);
+                if (church)
+                {
+                    Surf lead = DecorPalette.Matte(new Color(0.12f, 0.12f, 0.12f));
+                    for (int k = 1; k < 4; k++) m.Box(face + Vector3.up * (hgt * (k / 4f - 0.5f)), new Vector3(width, 0.02f, 0.015f), yaw, lead);
+                    m.Box(face, new Vector3(0.02f, hgt, 0.015f), yaw, lead);
+                }
+                else
+                {
+                    m.Box(face, new Vector3(width, 0.045f, 0.035f), yaw, sash);
+                    m.Box(face, new Vector3(0.025f, hgt, 0.025f), yaw, sash);
+                }
             }
             // The casing round the opening, and the stool under it.
             Vector2 at = a + d * mid - outward * (t + 0.012f);
@@ -276,7 +320,8 @@ namespace CloneZ
                 m.Box(KentuckyMap.To3(at + d * (e * (width * 0.5f + 0.035f)), cy), new Vector3(0.07f, hgt + 0.14f, 0.024f), yaw, wood);
             m.Box(KentuckyMap.To3(at, head + 0.035f), new Vector3(width + 0.14f, 0.07f, 0.024f), yaw, wood);
             m.Box(KentuckyMap.To3(a + d * mid - outward * (t + 0.03f), sill - 0.01f), new Vector3(width + 0.18f, 0.04f, 0.08f), yaw, wood);
-            if (room == null) return;
+            // A working window's sashes, glass and what hangs there are its RaidWindow's (InteriorBuild.FitWindows).
+            if (room == null || w.Working) return;
             // Add extra decorative details to the window opening.
             WindowExtras(m, a, d, outward, inward, yaw, w, t, fabric, rng);
 
@@ -336,17 +381,20 @@ namespace CloneZ
                 new Vector3(width + 0.04f, 0.02f, 0.025f),
                 yaw, wood);
             // ---- 3. Brass latch (small bar with a knob) on the left side ----
-            // Bar: short horizontal piece, centred at 0.4 m above the sill.
+            // Bar: short horizontal piece, centred at 0.4 m above the sill. A fixed window has none: nothing opens.
             float latchY = sill + 0.4f;
             float latchX = -width * 0.5f + 0.08f; // offset from left edge of opening
-            m.Box(
-                KentuckyMap.To3(a + d * (mid + latchX) - outward * (t + 0.012f), latchY),
-                new Vector3(0.12f, 0.015f, 0.018f),
-                yaw, metal);
-            // Knob: tiny cylinder projecting outward.
-            m.CylinderX(
-                KentuckyMap.To3(a + d * (mid + latchX + 0.07f) - outward * (t + 0.016f), latchY),
-                0.008f, 0.02f, 8, metal, yaw);
+            if (!w.Clear)
+            {
+                m.Box(
+                    KentuckyMap.To3(a + d * (mid + latchX) - outward * (t + 0.012f), latchY),
+                    new Vector3(0.12f, 0.015f, 0.018f),
+                    yaw, metal);
+                // Knob: tiny cylinder projecting outward.
+                m.CylinderX(
+                    KentuckyMap.To3(a + d * (mid + latchX + 0.07f) - outward * (t + 0.016f), latchY),
+                    0.008f, 0.02f, 8, metal, yaw);
+            }
             // ---- 4. Tiny potted‑plant on the sill, left side ----
             // Pot: small squat cylinder.
             float potY = sill - 0.015f; // sits on the sill‑cap

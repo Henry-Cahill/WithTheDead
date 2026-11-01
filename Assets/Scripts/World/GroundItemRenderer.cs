@@ -65,6 +65,8 @@ namespace CloneZ
 
         private void LateUpdate()
         {
+            // A device that can't instance (the dedicated server's, a -nographics run's) has nothing to draw them with.
+            if (!SystemInfo.supportsInstancing) return;
             if (_cachedMain == null || _cachedMain != Camera.main) _cachedMain = Camera.main;
             Camera cam = _cachedMain;
             if (cam == null) return;

@@ -55,7 +55,7 @@ namespace CloneZ
 
         private void CheckPower(InteractContext ctx)
         {
-            ctx.Notify(PowerGrid.HousePowered ? "The house is powered." : "No power: " + (PowerGrid.NoPowerReason ?? "unknown reason") + ".");
+            ctx.Notify(PowerGrid.PoweredAt(this) ? "The house is powered." : "No power: " + (PowerGrid.NoPowerReasonAt(this) ?? "unknown reason") + ".");
         }
 
         private void Tap(InteractContext ctx)
@@ -64,7 +64,7 @@ namespace CloneZ
             if (_lamp == null) ctx.Notify("Cold, dead glass. There's no bulb any more.");
             else if (_lamp.IsOn) ctx.Notify("The glass is warm. A moth bats at it, gives up, and tries again.");
             else if (!_lamp.SwitchedOn) ctx.Notify("Cold glass. It's switched off inside, by the door.");
-            else if (!PowerGrid.HousePowered) ctx.Notify("Cold glass. " + (PowerGrid.NoPowerReason ?? "There's no power") + ".");
+            else if (!PowerGrid.PoweredAt(this)) ctx.Notify("Cold glass. " + (PowerGrid.NoPowerReasonAt(this) ?? "There's no power") + ".");
             else ctx.Notify("Cold glass. Its little sensor is waiting for dusk.");
         }
         private void RepairLantern(InteractContext ctx)

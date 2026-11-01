@@ -27,7 +27,7 @@ namespace CloneZ
 
         private GameBootstrapper _boot;
         private Canvas _canvas;
-        private RectTransform _root, _panel;
+        private RectTransform _root, _panel, _updateNote;
         private string _joinAddress = "127.0.0.1";
         private string _port = "7777";
 
@@ -35,6 +35,8 @@ namespace CloneZ
         public void Bind(GameBootstrapper boot)
         {
             _boot = boot;
+            JoinAddress.Default(out _joinAddress, out ushort joinPort);
+            _port = joinPort.ToString(System.Globalization.CultureInfo.InvariantCulture);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             UIKit.EnsureEventSystem();
@@ -44,11 +46,39 @@ namespace CloneZ
             UIKit.Stretch(bg.rectTransform);
             WinterBackdrop.Build(_root, 160, true);
             ShowTitle();
+            ShowBuild();
+            UpdateCheck.Found += ShowUpdate;
+            UpdateCheck.Begin();
+            ShowUpdate();
         }
 
         private void OnEnable() => Showing = true;
 
         private void OnDisable() => Showing = false;
+
+        private void OnDestroy() => UpdateCheck.Found -= ShowUpdate;
+
+        // A release's build, small in the corner: the server lets in only its own (Tools/Server).
+        private void ShowBuild()
+        {
+            if (!BuildInfo.Stamped) return;
+            Text v = UIKit.Label(_root, "Build " + BuildInfo.Version, 13, new Color(0.55f, 0.58f, 0.64f), TextAnchor.MiddleLeft);
+            UIKit.Place(v.rectTransform, Vector2.zero, Vector2.zero, new Vector2(24f, 14f), new Vector2(560f, 20f));
+        }
+
+        // The download page hands out another build (UpdateCheck), the one the server runs: a card to go and get it.
+        private void ShowUpdate()
+        {
+            if (_updateNote != null || _root == null || UpdateCheck.NewVersion == null) return;
+            Image card = UIKit.Panel(_root, "New build", CardActive);
+            _updateNote = UIKit.Place(card.rectTransform, Vector2.one, Vector2.one, new Vector2(-24f, -20f), new Vector2(470f, 132f));
+            RectTransform col = UIKit.Column(card.rectTransform, 6f, 14);
+            UIKit.Stretch(col);
+            UIKit.Label(col, "A new build is out", 20, UIKit.Accent, TextAnchor.MiddleLeft, FontStyle.Bold);
+            UIKit.Label(col, "Build " + UpdateCheck.NewVersion + ". The server lets in only the newest.", 14, UIKit.TextDim);
+            Button get = UIKit.Button(col, "Download page", () => Application.OpenURL(UpdateCheck.Page), UIKit.Accent, 16);
+            UIKit.Size(get.gameObject, 200f, 34f);
+        }
 
         private void Clear()
         {
@@ -181,7 +211,13 @@ namespace CloneZ
             Big(row, "Host a server", HostAction != null, () => { ushort.TryParse(_port, out ushort p); HostAction(p == 0 ? (ushort)7777 : p); }, 200f);
             UIKit.Size(UIKit.Input(row, _joinAddress, "address", v => _joinAddress = v, 18).gameObject, 230f, 44f);
             UIKit.Size(UIKit.Input(row, _port, "port", v => _port = v, 18).gameObject, 96f, 44f);
-            Big(row, "Join", JoinAction != null, () => { ushort.TryParse(_port, out ushort p); JoinAction(_joinAddress, p == 0 ? (ushort)7777 : p); }, 150f);
+            Big(row, "Join", JoinAction != null, () =>
+            {
+                ushort.TryParse(_port, out ushort p);
+                if (p == 0) p = DedicatedServer.DefaultPort;
+                JoinAddress.Remember(_joinAddress, p);
+                JoinAction(_joinAddress, p);
+            }, 150f);
         }
 
         private void Waves(RectTransform parent)

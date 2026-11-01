@@ -53,6 +53,14 @@ namespace CloneZ
             KettleLobby.Reset();
             CentralEconomy.ForgetWorld();
 
+            // The dedicated server has no title screen and no runner of its own: it serves, and builds a raid's world only
+            // while one is open (see DedicatedServer).
+            if (DedicatedServer.Requested)
+            {
+                ServeStage();
+                return;
+            }
+
             // "Next Raid" / a deploy from the hub reloads the scene straight into a raid; a raid's end (or
             // "Return to hub") reloads straight into the hub.
             if (GameSession.AutoStartRaid)
@@ -76,6 +84,31 @@ namespace CloneZ
             LoadingScreen.Hide();
             var menu = new GameObject("MainMenu").AddComponent<MainMenuController>();
             menu.Bind(this);
+        }
+
+        // The dedicated server's stage: the raid a runner opened (NetSession), or no world at all while it waits for one.
+        private void ServeStage()
+        {
+            bool raid = GameSession.AutoStartRaid && GameSession.IsExtraction;
+            GameSession.AutoStartRaid = false;
+            GameSession.AutoStartHub = false;
+            if (!raid) GameSession.Mode = GameMode.Hub;
+            if (!DedicatedServer.EnsureServing()) return;
+            if (!raid)
+            {
+                Debug.Log("[Server] No raid open; waiting for a runner to deploy.");
+                return;
+            }
+            float started = Time.realtimeSinceStartup;
+            try { StartRaid(); }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                NetSession.CloseServedRaid("its world couldn't be built");
+                return;
+            }
+            Debug.Log("[Server] " + ZoneCatalog.Current.Name + " is open (seed " + GameSession.RaidSeed + "); built in "
+                + (Time.realtimeSinceStartup - started).ToString("0.0") + " s.");
         }
 
         /// <summary>Begins an extraction raid into <see cref="GameSession.ZoneId"/> as <see cref="GameSession.Raid"/>.
@@ -178,6 +211,15 @@ namespace CloneZ
             WorldHooks.RaiseRaidMapBuilt(world, map, zone, new System.Random(GameSession.RaidSeed ^ 0x2F6E));
             BakeNavMesh(world);
 
+            // The dedicated server plays nobody: the raid's world, its dead and its people, for the runners who come in.
+            if (DedicatedServer.Requested)
+            {
+                BuildRaidSpawner(null, zone);
+                WorldHooks.RaiseRaidStarted(world, map, zone);
+                GameEvents.RaiseRaidStarted(zone.Id, GameSession.Raid);
+                return;
+            }
+
             Vector3 spawn = map.PlayerSpawn;
             float yaw = map.PlayerSpawnYaw;
             bool heliInsertion = RaidWorldRules.PickInsertion(map, GameSession.InsertionPoint, ref spawn, ref yaw);
@@ -189,10 +231,7 @@ namespace CloneZ
 
             BuildSurvivorViews(player);
 
-            ZombieSpawner spawner = BuildSpawner(player.transform);
-            spawner.Mode = SpawnerMode.Ambient;
-            spawner.AmbientPopulation = Mathf.RoundToInt(CloneZConfig.RaidZombiePopulation * zone.ZombieDensity * SandboxSettings.Current.ZombiePopulation);
-            spawner.enabled = NetAuthority.IsServer;
+            BuildRaidSpawner(player.transform, zone);
 
             ExtractionManager.Begin(player, map.Exits, CloneZConfig.RaidSpawnProtectionSeconds);
             if (heliInsertion) RaidWorldRules.PlayInsertion(player, spawn);
@@ -805,6 +844,16 @@ namespace CloneZ
             var spawner = new GameObject("ZombieSpawner").AddComponent<ZombieSpawner>();
             spawner.Player = player;
             spawner.StartWave = GameManager.Instance != null ? GameManager.Instance.Wave : 0;
+            return spawner;
+        }
+
+        // A raid's dead: the ambient population the zone and the sandbox call for, run by the server only.
+        private ZombieSpawner BuildRaidSpawner(Transform player, ZoneDef zone)
+        {
+            ZombieSpawner spawner = BuildSpawner(player);
+            spawner.Mode = SpawnerMode.Ambient;
+            spawner.AmbientPopulation = Mathf.RoundToInt(CloneZConfig.RaidZombiePopulation * zone.ZombieDensity * SandboxSettings.Current.ZombiePopulation);
+            spawner.enabled = NetAuthority.IsServer;
             return spawner;
         }
 

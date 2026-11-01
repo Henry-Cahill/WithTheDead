@@ -382,10 +382,7 @@ namespace CloneZ
                     float sx = i % 2 == 0 ? -1f : 1f, sz = i < 2 ? -1f : 1f;
                     var at = mid + new Vector3(sx * 4.7f, 0f, sz * 4.7f);
                     float yaw = Mathf.Atan2(-sx, -sz) * Mathf.Rad2Deg;
-                    Prop(_town, at, yaw, new Vector3(1.8f, 0.9f, 0.6f), true, (m, r) => {
-                        DecorProps.Bench(m);
-                        AddBenchHardware(m, at);
-                    });
+                    Prop(_town, at, yaw, new Vector3(1.8f, 0.9f, 0.6f), true, (m, r) => DecorProps.Bench(m));
                     if (i == 0 || i == 3)
                         Prop(_town, at + Quaternion.Euler(0f, yaw, 0f) * new Vector3(1.4f, 0f, 0f), 0f, new Vector3(0.5f, 1f, 0.5f), true, (m, r) => DecorProps.LitterBin(m));
                     Tree(new Vector3(mid.x + sx * (p.width * 0.28f), 0f, mid.z + sz * (p.height * 0.3f)), i == 1 || i == 2);
@@ -504,35 +501,6 @@ namespace CloneZ
                 return -MainSt.Outer - 0.3f;
             }
             #endregion
-            // Slightly darker wood tone for bench wear – used for leg‑caps and back‑rest slats.
-            private static readonly Color BenchWood = new Color(0.55f, 0.48f, 0.38f);
-
-        /// <summary>Adds period‑correct hardware to a bench mesh: four leg‑caps, three back‑rest slats and a subtle wood‑tone overlay.</summary>
-        private void AddBenchHardware(RaidMesh m, Vector3 localOrigin)
-        {
-            // leg‑caps – tiny boxes at each corner of the bench seat
-            var capSize = new Vector3(0.07f, 0.07f, 0.07f);
-            var offsets = new[]
-            {
-                new Vector3(-0.85f, 0.45f, -0.25f), // front‑left
-                new Vector3( 0.85f, 0.45f, -0.25f), // front‑right
-                new Vector3(-0.85f, 0.45f,  0.25f), // back‑left
-                new Vector3( 0.85f, 0.45f,  0.25f) // back‑right
-            };
-            foreach (var o in offsets) m.Box(localOrigin + o, capSize, DecorPalette.Matte(BenchWood));
-
-            // back‑rest – three horizontal slats spaced vertically
-            var slatSize = new Vector3(1.6f, 0.04f, 0.04f);
-            for (int i = 0; i < 3; i++)
-            {
-                float y = 0.75f + i * 0.12f; // 0.75 m at low, then +0.12 m each
-                m.Box(localOrigin + new Vector3(0f, y, 0.28f), slatSize, DecorPalette.Matte(BenchWood));
-            }
-
-            // subtle wood‑tone overlay on the seat for wear
-            var seatOverlay = new Vector3(1.5f, 0.02f, 0.4f);
-            m.Box(localOrigin + new Vector3(0f, 0.48f, 0f), seatOverlay, DecorPalette.Matte(BenchWood));
-        }
         }
     }
 }

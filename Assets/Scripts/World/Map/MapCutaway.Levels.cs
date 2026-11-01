@@ -205,6 +205,7 @@ namespace CloneZ
                 if (w != null) w.forceRenderingOff = hide;
             }
             HideInteriors(b.Id, shown);
+            ShowWindows(b);
         }
 
         private static void HideInteriors(long id, int shown)
@@ -231,12 +232,20 @@ namespace CloneZ
         }
 
         /// <summary>A furnished level of a building with levels (its builder calls this once it's finished): its renderers,
-        /// under <paramref name="root"/> and <paramref name="overhead"/>, go with the level while it's lifted.</summary>
-        internal static void AddInterior(long id, int level, GameObject root, Transform overhead)
+        /// under <paramref name="root"/> and <paramref name="overhead"/>, go with the level while it's lifted (but those under
+        /// <paramref name="windows"/> and <paramref name="yard"/>: its working windows, and its front door's fittings outside,
+        /// the plate of which goes with its wall, MapCutaway.Windows.cs).</summary>
+        internal static void AddInterior(long id, int level, GameObject root, Transform overhead, Transform windows = null, Transform yard = null)
         {
             if (root == null) return;
             var li = new LevelInterior { Level = level, Root = root };
             root.GetComponentsInChildren(true, li.Renderers);
+            if (windows != null || yard != null)
+                for (int i = li.Renderers.Count - 1; i >= 0; i--)
+                {
+                    Transform t = li.Renderers[i] != null ? li.Renderers[i].transform : null;
+                    if (t != null && ((windows != null && t.IsChildOf(windows)) || (yard != null && t.IsChildOf(yard)))) li.Renderers.RemoveAt(i);
+                }
             if (overhead != null)
             {
                 overhead.GetComponentsInChildren(true, s_LevelScratch);
@@ -258,6 +267,25 @@ namespace CloneZ
             for (int i = list.Count - 1; i >= 0; i--)
                 if (list[i].Root == null || ReferenceEquals(list[i].Root, root)) list.RemoveAt(i);
             if (list.Count == 0) s_Interiors.Remove(id);
+        }
+
+        /// <summary>Renderers made in a furnished level after it was registered (a hole battered through one of its walls, the
+        /// boards nailed across it): from now on they go with the level as the rest of it does.</summary>
+        internal static void InteriorPartsAdded(long id, GameObject root, List<Renderer> added)
+        {
+            if (added == null || added.Count == 0 || !s_Interiors.TryGetValue(id, out List<LevelInterior> list)) return;
+            foreach (LevelInterior li in list)
+            {
+                if (!ReferenceEquals(li.Root, root)) continue;
+                li.Renderers.RemoveAll(r => r == null);
+                foreach (Renderer r in added)
+                {
+                    if (r == null || li.Renderers.Contains(r)) continue;
+                    li.Renderers.Add(r);
+                    if (li.Hidden) r.forceRenderingOff = true;
+                }
+                return;
+            }
         }
 
         /// <summary>For the harness: the level building <paramref name="id"/> is cut over now (<see cref="int.MaxValue"/>

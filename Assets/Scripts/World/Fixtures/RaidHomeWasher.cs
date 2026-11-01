@@ -72,10 +72,10 @@ namespace CloneZ
         private void Update()
         {
             if (!_running) return;
-            if (!PowerGrid.HousePowered || !WaterMains.MainsOn)
+            if (!PowerGrid.PoweredAt(this) || !WaterMains.MainsOn)
             {
                 Halt();
-                KitchenParts.NotifyNear(_point, 8f, !PowerGrid.HousePowered
+                KitchenParts.NotifyNear(_point, 8f, !PowerGrid.PoweredAt(this)
                     ? "The washing machine dies mid-cycle with a clunk. The power's gone."
                     : "The washing machine grinds round dry and gives up. The water's been shut off.");
                 return;
@@ -105,15 +105,15 @@ namespace CloneZ
                 into.Add(new InteractAction("Stop the wash", StopWash));
                 into.Add(new InteractAction("Drain the washer", DrainWash)
                     .DisabledIf(!WaterMains.MainsOn, "No water to drain")
-                    .DisabledIf(!PowerGrid.HousePowered, "No power to operate the valve"));
+                    .DisabledIf(!PowerGrid.PoweredAt(this), "No power to operate the valve"));
                 into.Add(new InteractAction("Check the dial", CheckDial));
                 into.Add(new InteractAction("Open the washing machine").DisabledIf(true, "The door's locked until the wash is done"));
                 return;
             }
-            bool power = PowerGrid.HousePowered, water = WaterMains.MainsOn, open = _drum != null && _drum.IsOpen;
+            bool power = PowerGrid.PoweredAt(this), water = WaterMains.MainsOn, open = _drum != null && _drum.IsOpen;
             into.Add(new InteractAction("Run a wash", StartWash)
                 .Timed(CloneZConfig.WasherSetSeconds, "Setting the dial", HumanoidActivity.Use)
-                .DisabledIf(!power, PowerGrid.NoPowerReason ?? "There's no power")
+                .DisabledIf(!power, PowerGrid.NoPowerReasonAt(this) ?? "There's no power")
                 .DisabledIf(power && !water, "There's no water to wash with \u2014 the water's been shut off")
                 .DisabledIf(power && water && open, "Shut the door first"));
             into.Add(new InteractAction("Read the dial", ReadDial));
@@ -135,7 +135,7 @@ into.Add(new InteractAction("Close washing machine", CloseDoor)
         private void StartWash(InteractContext ctx)
         {
             // Verify power and water are available before attempting to start the machine.
-            if (!PowerGrid.HousePowered || !WaterMains.MainsOn)
+            if (!PowerGrid.PoweredAt(this) || !WaterMains.MainsOn)
             {
                 ctx.Notify("The dial turns, and nothing happens.");
                 return;

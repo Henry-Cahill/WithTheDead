@@ -40,12 +40,20 @@ namespace CloneZ
             public bool Quick;
             /// <summary>Build the streamed chunks (the chunk tests and the Louisville block) in Lite detail.</summary>
             public bool Lite;
+            /// <summary>Leave the windows that don't work painted on, as before they were fixed windows of their own (the "before"
+            /// counts: see BuildingPass.FixedWindows).</summary>
+            public bool PaintedWindows;
             /// <summary>The game scene's Global Volume profile (its bloom, tonemapping and vignette).</summary>
             public VolumeProfile GameProfile;
         }
 
         /// <summary>Runs the harness; returns the process exit code (see the Exit constants).</summary>
-        public static int Run(Options options) => new Harness(options).Execute();
+        public static int Run(Options options)
+        {
+            BuildingPass.FixedWindows = !options.PaintedWindows;
+            try { return new Harness(options).Execute(); }
+            finally { BuildingPass.FixedWindows = true; }
+        }
 
         /// <summary>A report saying the harness couldn't even start, so a run always leaves one.</summary>
         public static void WriteFailure(string outDir, string error)

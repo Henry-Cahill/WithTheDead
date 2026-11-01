@@ -374,50 +374,77 @@ namespace CloneZ
             /// </summary>
             internal static RaidMesh[] SplitUpper(RaidMesh upper, LevelLayout L)
             {
-                int bands = L.Top + 2;
-                var parts = new RaidMesh[bands];
-                for (int i = 0; i < bands; i++) parts[i] = new RaidMesh();
-                var cuts = new float[bands - 1];   // cuts[i]: the bottom of band i + 1
-                for (int k = 1; k <= L.Top; k++) cuts[k - 1] = L.FloorOf(k);
-                cuts[bands - 2] = L.CeilingOf(L.Top);
-                var poly = new List<Vert>(8);
-                var below = new List<Vert>(8);
-                var above = new List<Vert>(8);
-                for (int s = 0; s < upper.SubMeshCount; s++)
+                var split = new UpperSplit(upper, L);
+                split.Step(int.MaxValue);
+                return split.Parts;
+            }
+
+            /// <summary><see cref="SplitUpper"/> a slice at a time: a tall building's upper part, its floors' windows and the
+            /// rooms' paper round them, runs to more triangles than a streamed piece's step should split at once.</summary>
+            internal sealed class UpperSplit
+            {
+                private readonly RaidMesh _upper;
+                private readonly float[] _cuts;
+                private readonly List<Vert> _poly = new List<Vert>(8), _below = new List<Vert>(8), _above = new List<Vert>(8);
+                private int _s, _t;
+
+                /// <summary>The bands, as <see cref="SplitUpper"/> returns them (whole once <see cref="Step"/> says so).</summary>
+                internal readonly RaidMesh[] Parts;
+
+                internal UpperSplit(RaidMesh upper, LevelLayout L)
                 {
-                    Material mat = upper.SubMaterial(s);
-                    int n = upper.SubIndexCount(s);
-                    for (int t = 0; t + 2 < n; t += 3)
-                    {
-                        int i0 = upper.Index(s, t), i1 = upper.Index(s, t + 1), i2 = upper.Index(s, t + 2);
-                        Vector3 a = upper.VertexAt(i0), b = upper.VertexAt(i1), c = upper.VertexAt(i2);
-                        float lo = Mathf.Min(a.y, Mathf.Min(b.y, c.y)), hi = Mathf.Max(a.y, Mathf.Max(b.y, c.y));
-                        int bandLo = BandOf(cuts, lo + 1e-4f), bandHi = BandOf(cuts, hi - 1e-4f);
-                        Vector3 normal = Vector3.Cross(b - a, c - a);
-                        bool wall = normal.sqrMagnitude > 1e-12f && Mathf.Abs(normal.normalized.y) < 0.35f;
-                        if (bandLo == bandHi || !wall)
-                        {
-                            int band = bandLo == bandHi ? bandLo : BandOf(cuts, (a.y + b.y + c.y) / 3f);
-                            parts[band].RawTri(mat, a, b, c, upper.NormalAt(i0), upper.NormalAt(i1), upper.NormalAt(i2),
-                                upper.UvAt(i0), upper.UvAt(i1), upper.UvAt(i2));
-                            continue;
-                        }
-                        // A wall across floor lines: cut at each, a band at a time from the bottom.
-                        poly.Clear();
-                        poly.Add(new Vert(a, upper.NormalAt(i0), upper.UvAt(i0)));
-                        poly.Add(new Vert(b, upper.NormalAt(i1), upper.UvAt(i1)));
-                        poly.Add(new Vert(c, upper.NormalAt(i2), upper.UvAt(i2)));
-                        for (int band = bandLo; band < bandHi && poly.Count >= 3; band++)
-                        {
-                            CutAt(poly, cuts[band], below, above);
-                            Fan(parts[band], mat, below);
-                            poly.Clear();
-                            poly.AddRange(above);
-                        }
-                        if (poly.Count >= 3) Fan(parts[bandHi], mat, poly);
-                    }
+                    _upper = upper;
+                    int bands = L.Top + 2;
+                    Parts = new RaidMesh[bands];
+                    for (int i = 0; i < bands; i++) Parts[i] = new RaidMesh();
+                    _cuts = new float[bands - 1];   // cuts[i]: the bottom of band i + 1
+                    for (int k = 1; k <= L.Top; k++) _cuts[k - 1] = L.FloorOf(k);
+                    _cuts[bands - 2] = L.CeilingOf(L.Top);
                 }
-                return parts;
+
+                /// <summary>Splits up to <paramref name="triangles"/> more; true once they're all split.</summary>
+                internal bool Step(int triangles)
+                {
+                    RaidMesh upper = _upper;
+                    float[] cuts = _cuts;
+                    for (; _s < upper.SubMeshCount; _s++, _t = 0)
+                    {
+                        Material mat = upper.SubMaterial(_s);
+                        int n = upper.SubIndexCount(_s);
+                        for (; _t + 2 < n; _t += 3)
+                        {
+                            if (triangles-- <= 0) return false;
+                            int i0 = upper.Index(_s, _t), i1 = upper.Index(_s, _t + 1), i2 = upper.Index(_s, _t + 2);
+                            Vector3 a = upper.VertexAt(i0), b = upper.VertexAt(i1), c = upper.VertexAt(i2);
+                            float lo = Mathf.Min(a.y, Mathf.Min(b.y, c.y)), hi = Mathf.Max(a.y, Mathf.Max(b.y, c.y));
+                            int bandLo = BandOf(cuts, lo + 1e-4f), bandHi = BandOf(cuts, hi - 1e-4f);
+                            Vector3 normal = Vector3.Cross(b - a, c - a);
+                            bool wall = normal.sqrMagnitude > 1e-12f && Mathf.Abs(normal.normalized.y) < 0.35f;
+                            if (bandLo == bandHi || !wall)
+                            {
+                                int band = bandLo == bandHi ? bandLo : BandOf(cuts, (a.y + b.y + c.y) / 3f);
+                                Parts[band].RawTri(mat, a, b, c, upper.NormalAt(i0), upper.NormalAt(i1), upper.NormalAt(i2),
+                                    upper.UvAt(i0), upper.UvAt(i1), upper.UvAt(i2));
+                                continue;
+                            }
+                            // A wall across floor lines: cut at each, a band at a time from the bottom.
+                            List<Vert> poly = _poly;
+                            poly.Clear();
+                            poly.Add(new Vert(a, upper.NormalAt(i0), upper.UvAt(i0)));
+                            poly.Add(new Vert(b, upper.NormalAt(i1), upper.UvAt(i1)));
+                            poly.Add(new Vert(c, upper.NormalAt(i2), upper.UvAt(i2)));
+                            for (int band = bandLo; band < bandHi && poly.Count >= 3; band++)
+                            {
+                                CutAt(poly, cuts[band], _below, _above);
+                                Fan(Parts[band], mat, _below);
+                                poly.Clear();
+                                poly.AddRange(_above);
+                            }
+                            if (poly.Count >= 3) Fan(Parts[bandHi], mat, poly);
+                        }
+                    }
+                    return true;
+                }
             }
 
             private static int BandOf(float[] cuts, float y)

@@ -207,7 +207,9 @@ Each of these can be switched off from the sandbox rules where the doc suggests 
     back: the pieces under the survivor get built and baked into the NavMesh, the dead come back around them, the stretch
     left behind is let go of, and a container emptied there is still empty when it's built again.
 * **Hunter:** plays a raid as a monster.
-* **Host and client:** play a networked raid together on port 7791.
+* **Host and client:** play a networked raid together on port 7791. With `-clonez-smoke-join <address[:port]>`, `client`
+  plays against a server already running instead, such as the in-house dedicated server
+  ([Tools/Server/README.md](Tools/Server/README.md)), and opens the raid on it itself.
 * **Lobby:** goes from the title screen into the Kettle and checks that:
   * the town goes up a step at a time under the loading card;
   * the bar stands on a clear lot in Bardstown;

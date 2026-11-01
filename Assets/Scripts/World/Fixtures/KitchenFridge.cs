@@ -44,7 +44,7 @@ namespace CloneZ
         private Action<InteractContext> _feelFridge, _feelFreezer, _readNote;
 
         /// <summary>True while it's keeping its contents cold.</summary>
-        public bool Cooling => PowerGrid.HousePowered;
+        public bool Cooling => PowerGrid.PoweredAt(this);
 
         /// <summary>Fits the fridge-freezer <paramref name="host"/> (its cabinet already drawn by
         /// <see cref="FurnitureBuilder.FridgeCabinet"/> in <paramref name="enamel"/>) with its doors, its two compartments
@@ -139,9 +139,9 @@ namespace CloneZ
         // How many of the hours from..to it had power: all of them while the house is powered; once the grid has failed
         // (as its shut-off day begins), only those before it went down. A breaker thrown at the panel is caught on the
         // next pass.
-        private static float PoweredHours(float from, float to)
+        private float PoweredHours(float from, float to)
         {
-            if (PowerGrid.HousePowered) return to - from;
+            if (PowerGrid.PoweredAt(this)) return to - from;
             PowerGrid grid = PowerGrid.Instance;
             if (grid == null || grid.IsOn) return 0f;
             float failed = (grid.ShutoffDay - 1) * 24f;
@@ -167,7 +167,7 @@ namespace CloneZ
         #region Lamp and feel
         private void RefreshLamp()
         {
-            bool on = _fridge != null && _fridge.IsOpen && PowerGrid.HousePowered;
+            bool on = _fridge != null && _fridge.IsOpen && PowerGrid.PoweredAt(this);
             if (on == _lampOn) return;
             _lampOn = on;
             if (_lamp != null) _lamp.On = on;
@@ -176,7 +176,7 @@ namespace CloneZ
 
         private string ColdReport(bool freezer)
         {
-            string reason = PowerGrid.NoPowerReason;
+            string reason = PowerGrid.NoPowerReasonAt(this);
             if (reason == null)
                 return freezer
                     ? "Frost nips at your fingertips. Anything in here will keep for a good long while."

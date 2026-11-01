@@ -204,13 +204,14 @@ namespace CloneZ
         public int Room;
     }
 
-    /// <summary>A ground-floor window in the frame, on the outside wall's inner face from <see cref="A"/> to
-    /// <see cref="B"/>, and the room it lights.</summary>
+    /// <summary>A window of the plan's floor in the frame, on the outside wall's inner face from <see cref="A"/> to
+    /// <see cref="B"/>, and the room it lights. <see cref="Working"/>: a real opening the build fits a RaidWindow in.</summary>
     internal struct PlanWindow
     {
         public Vector2 A, B, Outward;
         public float Sill, Head;
         public int Room;
+        public bool Working;
     }
 
     internal static partial class InteriorPass

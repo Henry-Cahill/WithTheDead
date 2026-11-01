@@ -71,11 +71,11 @@ namespace CloneZ
                 m.Box(l.P(mid + e * w * 0.25f, y0 + 0.03f, across + roomSide * (depth * 0.5f + 0.008f)), l.Size(0.05f, 0.015f, 0.016f), brass);
         }
 
-        /// <summary>The glass of a sash drawn by <see cref="OpeningSash"/> (the same measures).</summary>
+        /// <summary>The glass of a sash drawn by <see cref="OpeningSash"/> (the same measures): clear, seen through.</summary>
         public static void OpeningPane(RaidMesh m, in OpeningLine l, float mid, float w, float y0, float y1, float across, bool lower, Color tint)
         {
             float g0 = y0 + SashBottomRail(lower), g1 = y1 - SashTopRail(lower);
-            m.Box(l.P(mid, (g0 + g1) * 0.5f, across), l.Size(w - 0.09f, g1 - g0, 0.006f), Gs(tint));
+            m.Box(l.P(mid, (g0 + g1) * 0.5f, across), l.Size(w - 0.09f, g1 - g0, 0.006f), DecorPalette.WindowGlass(tint));
         }
 
         /// <summary>What a smashed sash keeps of its glass: jagged shards in the corners of the panes either side of its
@@ -113,39 +113,53 @@ namespace CloneZ
         }
 
         /// <summary>Planks nailed across the outside of a window (its <paramref name="outside"/> face), a little askew,
-        /// <paramref name="off"/> out from the wall line.</summary>
-        public static void OpeningBoards(RaidMesh m, System.Random rng, in OpeningLine l, float mid, float w, float sill, int outside, float off)
+        /// <paramref name="off"/> out from the wall line: three up from the sill, or, given the opening's
+        /// <paramref name="head"/>, as many as it takes to cover it.</summary>
+        public static void OpeningBoards(RaidMesh m, System.Random rng, in OpeningLine l, float mid, float w, float sill, int outside, float off,
+            float head = -1f)
         {
             Surf plank = DecorMaterials.Planks(PlankWood), nail = Mt(DarkSteel), steel = Mt(DarkSteel), brass = Mt(Brass); Color paint = PlankWood;
             Quaternion face = Quaternion.LookRotation(l.N(outside));
-            for (int i = 0; i < 3; i++)
+            int boards = 3;
+            float first = sill + 0.25f, step = 0.38f;
+            if (head > sill + 0.3f)
             {
-                float y = sill + 0.25f + i * 0.38f;
+                float span = head - sill - 0.3f;
+                boards = Mathf.Max(2, Mathf.RoundToInt(span / 0.38f) + 1);
+                first = sill + 0.15f;
+                step = span / (boards - 1);
+            }
+            for (int i = 0; i < boards; i++)
+            {
+                float y = first + i * step;
                 Quaternion q = face * Quaternion.Euler(0f, 0f, R(rng, -7f, 7f));
                 Vector3 c = l.P(mid, y, outside * off);
+                m.Box(c, new Vector3(w + 0.3f, 0.16f, 0.03f), q, plank);
+                for (int e = -1; e <= 1; e += 2)
+                    m.Box(c + q * new Vector3(e * (w * 0.5f + 0.06f), 0f, 0.016f), new Vector3(0.014f, 0.014f, 0.006f), q, nail);
                 // top strap, raised 0.08 m above board centre, flush with front face
-m.Box(c + q * new Vector3(0f, 0.08f, 0.03f), new Vector3(w + 0.3f, 0.005f, 0.015f), q, steel);
-// bottom strap
-m.Box(c + q * new Vector3(0f, -0.08f, 0.03f), new Vector3(w + 0.3f, 0.005f, 0.015f), q, steel);
-// left rivet top
-m.Box(c + q * new Vector3(-(w + 0.3f) * 0.5f, 0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
-// right rivet top
-m.Box(c + q * new Vector3((w + 0.3f) * 0.5f, 0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
-// left rivet bottom
-m.Box(c + q * new Vector3(-(w + 0.3f) * 0.5f, -0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
-// right rivet bottom
-m.Box(c + q * new Vector3((w + 0.3f) * 0.5f, -0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
-// occasional faded paint drip, 20 % chance per board
-if (rng.NextDouble() < 0.20)
-{
-    // random offset along board width, up to ±0.1 m, and a tiny vertical offset
-    float dripX = R(rng, -0.1f, 0.1f);
-    float dripY = R(rng, 0.05f, 0.13f);
-    // ellipsoid 0.02 m wide, 0.03 m tall, flush with front face
-    m.Ellipsoid(c + q * new Vector3(dripX, dripY, 0.03f + 0.001f),
-        new Vector3(0.02f, 0.03f, 0.004f),
-        M(paint * 0.9f), 6, 4);
-}
+                m.Box(c + q * new Vector3(0f, 0.08f, 0.03f), new Vector3(w + 0.3f, 0.005f, 0.015f), q, steel);
+                // bottom strap
+                m.Box(c + q * new Vector3(0f, -0.08f, 0.03f), new Vector3(w + 0.3f, 0.005f, 0.015f), q, steel);
+                // left rivet top
+                m.Box(c + q * new Vector3(-(w + 0.3f) * 0.5f, 0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
+                // right rivet top
+                m.Box(c + q * new Vector3((w + 0.3f) * 0.5f, 0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
+                // left rivet bottom
+                m.Box(c + q * new Vector3(-(w + 0.3f) * 0.5f, -0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
+                // right rivet bottom
+                m.Box(c + q * new Vector3((w + 0.3f) * 0.5f, -0.08f, 0.03f), new Vector3(0.008f, 0.008f, 0.015f), q, brass);
+                // occasional faded paint drip, 20 % chance per board
+                if (rng.NextDouble() < 0.20)
+                {
+                    // random offset along board width, up to ±0.1 m, and a tiny vertical offset
+                    float dripX = R(rng, -0.1f, 0.1f);
+                    float dripY = R(rng, 0.05f, 0.13f);
+                    // ellipsoid 0.02 m wide, 0.03 m tall, flush with front face
+                    m.Ellipsoid(c + q * new Vector3(dripX, dripY, 0.03f + 0.001f),
+                        new Vector3(0.02f, 0.03f, 0.004f),
+                        M(paint * 0.9f), 6, 4);
+                }
             }
         }
 

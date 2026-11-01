@@ -44,6 +44,26 @@ namespace CloneZ
         public const float RaidWindowLatchedChance = 0.7f;     // a fresh raid: an intact window's sash lock turned this often
         public const float RaidWindowOpenChance = 0.05f;       // .. its sash left up (a snowbound town shuts its windows)
         public const float RaidWindowDrawnChance = 0.35f;      // .. its curtains drawn (blind down) this often
+        public const float RaidWindowBoardSeconds = 7f;        // nailing planks across a window (it takes a hammer)
+        public const int RaidWindowBoardPlanks = 3;            // .. a plank to each board
+        public const int RaidWindowBoardNails = 6;             // .. and a nail at each end of it
+        public const float MapWindowSmashedChance = 0.06f;     // the statewide map's working windows: found smashed this often
+        public const float MapWindowBoardedChance = 0.05f;     // .. a ground-floor one boarded over outside this often
+
+        // ---- The statewide map's partitions (PartitionWall): battered through by the dead, knocked through and boarded up ----
+        public const float RaidPartitionHealth = 160f;         // studs under plaster: half again an inside door (a dozen blows or so)
+        public const float RaidPartitionBreachWidth = 2.0f;    // the hole a wall gives way in: wide enough that the map's agents (0.5 m
+                                                               // round, on 1/6 m voxels) always pass it, however the wall's turned
+        public const float RaidPartitionBreachHeight = 2.4f;   // .. as tall as the map's outside doorways (the whole wall when that's near it)
+        public const float RaidPartitionHitNoise = 10f;        // every blow on one carries as far as a blow on a door
+        public const float RaidPartitionBreakNoise = 20f;      // .. and the crash when it gives way a little further
+        public const float RaidPartitionPatchSeconds = 9f;     // nailing planks across a hole (it takes a hammer)
+        public const int RaidPartitionPatchPlanks = 4;         // .. that many planks
+        public const int RaidPartitionPatchNails = 8;          // .. and a nail at each end of each
+        public const float RaidPartitionPatchInterval = 0.9f;  // .. a hammer blow every this many seconds while at it
+        public const float RaidPartitionPatchHealth = 200f;    // the boards hold as long as a built wall would
+        public const float ZombieWallRethink = 0.35f;          // seconds between a stuck zombie's looks for a stretch of wall to batter
+        public const float ZombieWallForgetTime = 40f;         // while at a wall it keeps at it this long after last seeing its prey
 
         // ---- The depot's roll-up doors (RollUpShutter) ----
         public const float RollUpReach = 2.2f;                 // flat reach to the doorway's middle (the doorways are 3 m wide)

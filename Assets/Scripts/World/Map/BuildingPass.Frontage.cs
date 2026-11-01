@@ -67,8 +67,10 @@ namespace CloneZ
                 if (porch) { Porch(j); DrawPorchStep(j); }
                 else if (p.Stoop || p.Arch == Arch.House) Stoop(j);
                 Mark("porch");
-                if (p.Mailbox) WallMailbox(j);
+                Vector3 mailboxFront = default;
+                bool mailbox = p.Mailbox && WallMailbox(j, out mailboxFront);
                 if (p.PorchLight || porch) DoorLamp(j);
+                Yard(j, mailbox, mailboxFront);
                 Mark("lamp");
             }
             else
@@ -120,6 +122,7 @@ namespace CloneZ
             Vector3 deck = To3(mid, Deck * 0.5f);
             j.Site.Town.Out.Solid(deck).Box(deck, deckSize, yaw, wood);
             if (j.Solid) Collider(j, deck, deckSize, yaw);
+            j.DoorStep = Deck;
             Vector2 stepAt = j.At(e, j.DoorAt) + o * (depth + 0.18f);
             var stepSize = new Vector3(1.5f, Deck * 0.5f, 0.36f);
             Vector3 step = To3(stepAt, Deck * 0.25f);
@@ -290,6 +293,7 @@ namespace CloneZ
             float yaw = j.Yaw(e);
             j.Site.Town.Out.Solid(c).Box(c, size, yaw, surf);
             if (j.Solid) Collider(j, c, size, yaw);
+            j.DoorStep = h;
             if (p.Arch == Arch.Trailer)
             {
                 // A trailer's wooden steps and their rail.
@@ -302,14 +306,64 @@ namespace CloneZ
             j.Site.Take(at, depth * 0.5f + 0.5f);
         }
 
-        private static void WallMailbox(Job j)
+        private static bool WallMailbox(Job j, out Vector3 front)
         {
             int e = j.DoorEdge;
             float s = j.DoorAt + (j.DoorAt < j.Len[e] * 0.5f ? 1.0f : -1.0f);
-            if (s < 0.3f || s > j.Len[e] - 0.3f) return;
+            front = default;
+            if (s < 0.3f || s > j.Len[e] - 0.3f) return false;
             Color c = Of(MapStyle.Pick(j.Id, SaltPorch + 2, 3), new Color(0.08f, 0.08f, 0.09f), new Color(0.13f, 0.22f, 0.16f), new Color(0.55f, 0.55f, 0.53f));
             OnWallBox(j, j.Facing(e), e, s, 1.35f, 0.32f, 0.36f, 0.12f, DecorPalette.Metal(c));
             OnWallBox(j, j.Facing(e), e, s, 1.55f, 0.34f, 0.04f, 0.15f, DecorPalette.Metal(c * 0.8f));
+            Vector2 at = j.At(e, s) + j.Out[e] * 0.2f;
+            front = new Vector3(at.x, 1.35f, at.y);
+            return true;
+        }
+
+        // The front door's fittings, for the interiors to make work as the starter home's are once the ground floor is
+        // furnished (InteriorBuild.Yard): the door and the step before it (a doormat), the wall mailbox (its post), and a spot
+        // for the house-number plate beside the door across from the lamp and the mailbox, clear of any opening. Only where
+        // the building is owned (a copy over the square's edge is scenery).
+        private static void Yard(Job j, bool mailbox, Vector3 mailboxFront)
+        {
+            if (j.Record == null || j.Scenery) return;
+            int e = j.DoorEdge;
+            var yard = new YardSpots
+            {
+                Door = j.At(e, j.DoorAt), Outward = j.Out[e], Step = j.DoorStep, Mailbox = mailboxFront, HasMailbox = mailbox,
+            };
+            float side = j.DoorAt < j.Len[e] * 0.5f ? -1f : 1f, s = j.DoorAt + side * 0.85f;
+            const float PlateY = 1.6f;
+            if (s > 0.3f && s < j.Len[e] - 0.3f && ClearOfOpenings(j, e, s, 0.3f, PlateY))
+            {
+                Vector2 c = j.At(e, s);
+                yard.PlateNormal = To3(j.Out[e], 0f);
+                yard.Plate = new Vector3(c.x, PlateY, c.y) + yard.PlateNormal * 0.004f;
+                yard.Number = HouseNumber(j);
+            }
+            j.Record.Yard = yard;
+        }
+
+        // True when nothing in wall `e`'s ground storey (a door, a window) comes within `half` of `s` at height `y`.
+        private static bool ClearOfOpenings(Job j, int e, float s, float half, float y)
+        {
+            foreach (Hole h in j.Holes)
+                if (h.Edge == e && h.Storey == 0 && Mathf.Abs(h.S - s) < h.W * 0.5f + half + 0.1f && y > h.Sill - 0.25f && y < h.Head + 0.25f)
+                    return false;
+            return true;
+        }
+
+        // The number on the house: its mapped address's, else one of its own (the same every build).
+        private static string HouseNumber(Job j)
+        {
+            string address = j.F.Data != null ? j.F.Data.address : null;
+            if (!string.IsNullOrEmpty(address))
+            {
+                int n = 0;
+                while (n < address.Length && n < 6 && char.IsDigit(address[n])) n++;
+                if (n > 0) return address.Substring(0, n);
+            }
+            return (100 + (int)(MapStyle.Hash(j.Id, SaltPorch + 9) % 1900)).ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
         // A lamp by the door: its globe (lit when the building's lamp is on, and then its light, PorchLamp, while the

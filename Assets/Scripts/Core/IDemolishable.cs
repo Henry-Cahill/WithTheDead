@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace CloneZ
 {
     /// <summary>
@@ -23,5 +25,20 @@ namespace CloneZ
 
         /// <summary>Removes the object from the world (and its static registry).</summary>
         void Dismantle();
+    }
+
+    /// <summary>
+    /// Something the build tool's Demolish takes apart only where it's aimed (a stretch of a building's own wall, which is
+    /// broken through rather than taken down whole): told where the cursor meets it, it decides what that spot would take
+    /// (<see cref="IDemolishable.CanDemolish"/> says whether it can, <see cref="IDemolishable.Dismantle"/> takes it) and
+    /// shows it with <see cref="AimBox"/>.
+    /// </summary>
+    public interface IDemolishAim
+    {
+        /// <summary>The point (world) the cursor meets it at.</summary>
+        void AimAt(Vector3 point);
+
+        /// <summary>The box (world centre, turn and size) the aimed spot would take out; false when it can't be taken.</summary>
+        bool AimBox(out Vector3 centre, out Quaternion rotation, out Vector3 size);
     }
 }

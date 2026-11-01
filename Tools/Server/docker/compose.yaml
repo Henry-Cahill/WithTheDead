@@ -1,0 +1,47 @@
+# The WithTheDead dedicated server on hts-llm, and its download page. Tools/Server/Release.ps1 copies this file to
+# ~/clonez-server there, with the server build in ./server and the page in ./site, and runs it. By hand, in that folder:
+#   docker compose logs -f --tail 100     the server's log
+#   docker compose restart                restart it (a raid under way is lost)
+#   docker compose down                   stop it (up -d starts it again)
+name: clonez
+
+services:
+  server:
+    build: .
+    image: clonez-server:latest
+    container_name: clonez-server
+    restart: unless-stopped
+    command: ["-clonez-port", "${CLONEZ_PORT:-7777}"]
+    ports:
+      - "${CLONEZ_PORT:-7777}:${CLONEZ_PORT:-7777}/udp"
+    volumes:
+      - data:/home/clonez/.config/unity3d
+    # hts-llm runs other work too: the server gets a few cores and a memory cap.
+    cpus: 4
+    mem_limit: 8g
+    stop_grace_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # The download page (Tools/Server/README.md): the static files Release.ps1 publishes into ./site, on port 8077 for the
+  # edge Caddy on 2htswebserver, which serves them at https://withthedead.howto.software behind the shared login.
+  site:
+    image: caddy:2-alpine
+    container_name: clonez-site
+    restart: unless-stopped
+    command: ["caddy", "file-server", "--root", "/srv", "--listen", ":80"]
+    ports:
+      - "8077:80"
+    volumes:
+      - ./site:/srv:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  data:

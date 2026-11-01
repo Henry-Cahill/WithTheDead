@@ -180,4 +180,6 @@ LightingData.asset     binary
 /Tools/AssetPipeline/mesh/*.sh       text eol=lf
 /Tools/AssetPipeline/mesh/*.py       text eol=lf
 /Tools/AssetPipeline/mesh/Dockerfile text eol=lf
+# The dedicated server's image is built on hts-llm
+/Tools/Server/docker/*               text eol=lf
 /Assets/Resources/GeneratedItemMeshes/*.bytes lfs

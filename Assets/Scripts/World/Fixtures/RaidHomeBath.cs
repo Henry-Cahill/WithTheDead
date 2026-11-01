@@ -51,7 +51,7 @@ namespace CloneZ
         public bool Running => _running && WaterMains.MainsOn;
 
         // The water heater runs off the mains electricity.
-        private static bool HotSupply => PowerGrid.HousePowered;
+        private bool HotSupply => PowerGrid.PoweredAt(this);
 
         #region IWaterPoint
         public Vector3 WaterPosition => _spout;
@@ -130,7 +130,7 @@ namespace CloneZ
         {
             float dt = Time.deltaTime;
             bool waterOn = WaterMains.MainsOn;
-            bool housePower = PowerGrid.HousePowered;
+            bool housePower = PowerGrid.PoweredAt(this);
             bool running = Running;
             if (_stream != null && _stream.enabled != running) _stream.enabled = running;
 
@@ -216,7 +216,7 @@ namespace CloneZ
                 into.Add(new InteractAction("Check water temperature", CheckTemp));
                 into.Add(new InteractAction("Check water level", CheckLevel));
                 // New toggle for heating water with the stove when taps are off
-                if (PowerGrid.HousePowered && !_running && _level > 0.05f)
+                if (PowerGrid.PoweredAt(this) && !_running && _level > 0.05f)
                 {
                     if (_heating)
                         into.Add(new InteractAction("Stop heating water", ctx => ToggleHeat(ctx, false)));

@@ -39,6 +39,14 @@ namespace CloneZ
         public readonly List<string> LevelLines = new List<string>();
         /// <summary>For a building with floors: the levels whose landing a NavMesh path from outside the front door reaches.</summary>
         public int LevelsReached;
+        /// <summary>Its furnished floors' fixtures (doors, windows, switches, cupboards...), and those a survivor can't use from
+        /// anywhere they can stand (<see cref="KentuckyAtlas"/>'s reach check, by the game's own targeting rules).</summary>
+        public int Fixtures, FixturesOutOfReach;
+        /// <summary>For the survey's breach check: holes knocked through its partitions, and those the NavMesh then led through.</summary>
+        public int Breaches, BreachesThrough, OutsideBreaches, OutsideThrough;
+        /// <summary>For the survey's window check: its working windows, its fixed ones (real openings, clear glass) and its painted
+        /// ones; the working and fixed ones looked through, those the eye went through, and those boarded or curtained.</summary>
+        public int WindowsWorking, WindowsClear, WindowsPainted, WindowsLooked, WindowsSeen, WindowsScreened;
         /// <summary>What the checks found wrong, and what they found worth knowing.</summary>
         public readonly List<string> Problems = new List<string>();
         public readonly List<string> Notes = new List<string>();
@@ -186,6 +194,13 @@ namespace CloneZ
                 s_Root = new GameObject(RootName);
                 Transform world = new GameObject("Streamed").transform;
                 world.SetParent(s_Root.transform, false);
+                // The streamer's snowfield under every piece (KentuckyStreamer.MakeGround): the ground past the edge of the
+                // piece built here, where a neighbour's own would be in the game.
+                var under = new GameObject("Ground");
+                under.transform.SetParent(s_Root.transform, false);
+                var underBox = under.AddComponent<BoxCollider>();
+                underBox.center = new Vector3(0f, -0.5f, 0f);
+                underBox.size = new Vector3(size * 3f, 1f, size * 3f);
                 var overhead = new GameObject("RaidOverhead");
                 overhead.transform.SetParent(s_Root.transform, false);
                 overhead.AddComponent<CeilingVisibility>();
@@ -225,6 +240,9 @@ namespace CloneZ
                 Furnish(report, found.Value);
                 CheckOpenings(report, found.Value);
                 CheckLevels(report, found.Value);
+                CheckFixtures(report, found.Value);
+                if (BreachTest) CheckBreaches(report, found.Value);
+                if (WindowTest) CheckWindows(report, found.Value);
             }
             catch (Exception e)
             {
@@ -473,6 +491,7 @@ namespace CloneZ
         {
             EnterableBuilding rec = b.Record;
             if (rec == null || b.Lite) return;
+            if (s_Root != null) global::CloneZ.FixtureReach.Reinsert(s_Root.transform);
             Physics.SyncTransforms();
             for (int i = 0; i < rec.Doors.Count; i++)
             {
@@ -496,6 +515,897 @@ namespace CloneZ
             if (rec.Doors.Count == 0) r.Problems.Add("Listed as enterable, but it has no doorway");
             if (rec.Doors.Count > 0 && r.BlockedDoors == 0) r.Notes.Add("Every door can be reached from both sides");
         }
+
+        #region Fixtures within reach
+        // A building without floors above or below the ground one: its ground floor's fixtures (CheckLevels does every floor
+        // of one with them).
+        private static void CheckFixtures(AtlasReport r, BuildingPass.Inspected b)
+        {
+            if (!r.Furnished || (b.Record != null && b.Record.Levels != null)) return;
+            InteriorStreamer s = InteriorStreamer.Active;
+            InteriorBuild ib = s != null ? s.BuildOf(r.Id) : null;
+            if (ib != null) r.Notes.Add("Fixtures:" + FixturesOn(r, "Inside", ib, 0f).Substring(1));
+        }
+
+        // A floor's fixtures as the survivor reaches them (FixtureReach: PlayerInteractor's rules). A note for the floor's line;
+        // the fixtures nobody can use go in the problems.
+        private static string FixturesOn(AtlasReport r, string name, InteriorBuild ib, float floor)
+        {
+            if (ib == null || ib.Root == null) return "";
+            if (s_Root != null) global::CloneZ.FixtureReach.Reinsert(s_Root.transform);
+            var fixtures = new List<Interactable>();
+            ib.Root.GetComponentsInChildren(true, fixtures);
+            if (ib.Town != null && ib.Town.Overhead != null)
+            {
+                var over = new List<Interactable>();
+                ib.Town.Overhead.GetComponentsInChildren(true, over);
+                fixtures.AddRange(over);
+            }
+            Physics.SyncTransforms();
+            int total = 0, off = 0;
+            var bad = new List<string>();
+            foreach (Interactable f in fixtures)
+            {
+                if (f == null) continue;
+                total++;
+                if (!f.isActiveAndEnabled)
+                {
+                    off++;
+                    continue;
+                }
+                string why = global::CloneZ.FixtureReach.Why(f, floor);
+                if (why != null && why.StartsWith("no floor", StringComparison.Ordinal)) why += Where(ib.Plan, f.InteractPoint, floor);
+                if (why != null) bad.Add(global::CloneZ.FixtureReach.Name(f) + RoomOf(ib.Plan, f.InteractPoint) + ": " + why);
+            }
+            r.Fixtures += total;
+            r.FixturesOutOfReach += bad.Count;
+            if (bad.Count > 0)
+                r.Problems.Add("Fixtures: " + name + ": " + bad.Count + " of " + total + " can't be used from anywhere a survivor stands ("
+                    + string.Join("; ", bad.GetRange(0, Mathf.Min(4, bad.Count))) + (bad.Count > 4 ? "; ..." : "") + ")");
+            return "; " + total + " fixtures" + (bad.Count == 0 ? ", every one in a survivor's reach" : ", **" + bad.Count + " out of reach**")
+                + (off > 0 ? " (" + off + " switched off)" : "");
+        }
+
+        private static string RoomOf(InteriorPlan plan, Vector3 p)
+        {
+            if (plan == null) return "";
+            int i = plan.RoomAt(plan.ToLocal(new Vector2(p.x, p.z)));
+            return i >= 0 ? " in the " + plan.Rooms[i].Name : "";
+        }
+
+        // Where a fixture with no floor round it stands: in or out of its building's outline, and what's under it, looking
+        // down from well above its floor.
+        private static string Where(InteriorPlan plan, Vector3 p, float floor)
+        {
+            var at = new Vector2(p.x, p.z);
+            bool inside = plan != null && plan.Footprint != null && MapGeometry.Contains(plan.Footprint.Pts, at);
+            var sb = new StringBuilder(" [at ").Append(F1(p.x)).Append(", ").Append(F1(p.z)).Append(inside ? ", inside the outline" : ", **outside the outline**");
+            RaycastHit[] hits = Physics.RaycastAll(new Vector3(p.x, floor + 6f, p.z), Vector3.down, 12f, ~(1 << CloneZConfig.IgnoreRaycastLayer),
+                QueryTriggerInteraction.Ignore);
+            Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
+            sb.Append("; under it from above: ");
+            if (hits.Length == 0) sb.Append("nothing");
+            for (int i = 0; i < hits.Length && i < 3; i++)
+                sb.Append(i == 0 ? "" : ", ").Append(PathOf(hits[i].collider.transform)).Append(" at ").Append(F1(hits[i].point.y));
+            return sb.Append(']').ToString();
+        }
+        #endregion
+
+        #region Breaches
+        /// <summary>For the survey (<c>-clonez-atlas-breach</c>): each furnished floor's longest breakable partition knocked
+        /// through, and the NavMesh baked round the building again, checked (see <see cref="CheckBreaches"/>).</summary>
+        public static bool BreachTest;
+        /// <summary>Where the breach check leaves a picture of each hole the NavMesh doesn't lead through (null: none).</summary>
+        public static string BreachPictures;
+
+        // Every furnished floor: its longest partition with room for a hole at its middle knocked through, as the build tool
+        // does: the hole cut clean out of the wall's mesh and colliders, and a NavMesh baked round the building as the streamer
+        // bakes the map's leading through it (where before it went round by the doors, if at all); boards nailed across it
+        // close it, and taking them down opens it again. Then the next longest wall: the place the dead pressed against it
+        // with their prey beyond pick to batter (a survivor's blows do nothing to it, a blast's do). And the ground floor taken
+        // down and raised again, its holes with it.
+        private static void CheckBreaches(AtlasReport r, BuildingPass.Inspected b)
+        {
+            InteriorStreamer s = InteriorStreamer.Active;
+            if (s == null || !r.Furnished) return;
+            for (int level = -1; level <= 6; level++)
+            {
+                InteriorBuild ib = s.BuildOf(r.Id, level);
+                if (ib == null || ib.Root == null) continue;
+                string name = LevelName(level);
+                try { BreachLevel(r, b, ib, name, level == 0 && string.IsNullOrEmpty(r.Levels)); }
+                catch (Exception e)
+                {
+                    r.Problems.Add("Breach: " + name + ": the check threw " + e.GetType().Name + ": " + e.Message);
+                    Debug.LogException(e);
+                }
+            }
+        }
+
+        private static void BreachLevel(AtlasReport r, BuildingPass.Inspected b, InteriorBuild ib, string name, bool rebuild)
+        {
+            float floor = ib.Plan.FloorY;
+            BakeFloor(b, floor);
+            var walls = new List<PartitionWall>(ib.Root.GetComponentsInChildren<PartitionWall>(true));
+            walls.Sort((x, y) => y.Length.CompareTo(x.Length));
+            PartitionWall knock = null, batter = null;
+            int roomy = 0;
+            foreach (PartitionWall w in walls)
+            {
+                w.AimAt(w.transform.position + Vector3.up);
+                if (!w.CanDemolish(out _)) continue;
+                roomy++;
+                if (!w.Walkable(w.Aimed)) continue;
+                if (knock == null) knock = w;
+                else
+                {
+                    batter = w;
+                    break;
+                }
+            }
+            if (knock == null)
+            {
+                var why = new StringBuilder();
+                if (walls.Count > 0)
+                {
+                    PartitionWall longest = walls[0];
+                    BreakableWall.Explain = new List<string>();
+                    try { longest.AimAt(longest.transform.position + Vector3.up); }
+                    finally
+                    {
+                        why.Append(" (the longest, ").Append(F1(longest.Length)).Append(" m, from ").Append(F1(-longest.Length * 0.5f)).Append(" to ")
+                            .Append(F1(longest.Length * 0.5f)).Append(", blocked by ")
+                            .Append(string.Join(", ", BreakableWall.Explain.GetRange(0, Mathf.Min(14, BreakableWall.Explain.Count)))).Append(')');
+                        BreakableWall.Explain = null;
+                    }
+                }
+                r.Notes.Add("Breach: " + name + ": " + walls.Count + " breakable partitions, " + roomy + " with room for a hole at its middle, "
+                    + "none the NavMesh leads up to both sides there" + why + (ib.Plan.Level == 0 ? "; outside: " + Outside(r, b, ib, name) : ""));
+                return;
+            }
+            var line = new StringBuilder("Breach: ").Append(name).Append(": a ").Append(F1(knock.Length)).Append(" m partition knocked through");
+            knock.AimBox(out Vector3 centre, out _, out _);
+            Vector3 across = (knock.WorldAt(0f, 0f, 1f) - knock.WorldAt(0f, 0f, 0f)).normalized;
+            Vector3 one = centre + across * 1.1f, other = centre - across * 1.1f;
+            one.y = other.y = floor + 0.1f;
+            line.Append(" (from ").Append(RoomOf(ib.Plan, one)).Append(" to ").Append(RoomOf(ib.Plan, other)).Append(')');
+            float before = PathBetween(one, other);
+            knock.Dismantle();
+            WallBreach hole = null;
+            foreach (WallBreach h in knock.Holes)
+                if (h != null && h.IsOpen) hole = h;
+            if (hole == null)
+            {
+                r.Problems.Add("Breach: " + name + ": knocking the wall through made no hole");
+                return;
+            }
+            r.Breaches++;
+            Physics.SyncTransforms();
+            int left = knock.TrianglesIn(hole), solid = knock.CollidersAcross(hole);
+            if (left != 0) r.Problems.Add("Breach: " + name + ": " + left + " of the wall's triangles left inside the hole");
+            if (solid != 0) r.Problems.Add("Breach: " + name + ": " + solid + " of the wall's colliders still across the hole");
+            float through = BreachPath(b, floor, one, other);
+            bool ok = through > 0f && through < 3.6f;
+            if (ok) r.BreachesThrough++;
+            else
+            {
+                Vector3 mid = centre;
+                mid.y = floor + 0.1f;
+                var sources = new List<NavMeshBuildSource>();
+                foreach (GameObject piece in s_Pieces)
+                    if (piece != null) KentuckyStreamer.Collect(piece.transform, null, sources);
+                string there = Nearby(sources, mid, 0.2f);
+                // A building's outside wall standing along the partition (where the map's footprints overlap) is the map's.
+                if (there.Contains("Building shells/"))
+                    r.Notes.Add("Breach: " + name + ": an outside wall stands in the hole (" + there + "): the map's footprints overlap there");
+                else
+                    r.Problems.Add("Breach: " + name + ": the NavMesh doesn't lead through the hole (" + Way(before) + " before, " + Way(through)
+                        + " after; on one side " + Around(one, floor) + "; in the hole " + Around(mid, floor) + ", baked there: "
+                        + there + "; on the other " + Around(other, floor) + ")");
+                if (BreachPictures != null)
+                    BreachPicture(System.IO.Path.Combine(BreachPictures, "breach_" + r.Id + "_" + ib.Plan.Level + ".png"), mid, floor, one, other);
+            }
+            line.Append(": the NavMesh's way from one side to the other ").Append(Way(before)).Append(" before, ").Append(Way(through)).Append(" through the hole");
+            bool shots = BreachPictures != null && s_BreachShots < 3;
+            if (shots) Look(System.IO.Path.Combine(BreachPictures, "hole_" + r.Id + "_" + ib.Plan.Level + ".png"), centre, across, floor);
+
+            hole.BoardOver(1);
+            Physics.SyncTransforms();
+            if (shots)
+            {
+                s_BreachShots++;
+                Look(System.IO.Path.Combine(BreachPictures, "boarded_" + r.Id + "_" + ib.Plan.Level + ".png"), centre, across, floor);
+            }
+            float boarded = BreachPath(b, floor, one, other);
+            if (knock.CollidersAcross(hole) == 0) r.Problems.Add("Breach: " + name + ": nothing solid across the boarded hole");
+            if (boarded > 0f && boarded < 3.6f) r.Problems.Add("Breach: " + name + ": the NavMesh still leads through the boarded hole (" + Way(boarded) + ")");
+            hole.GetSalvage(out int planks, out _);
+            hole.Dismantle();
+            Physics.SyncTransforms();
+            float again = BreachPath(b, floor, one, other);
+            if (ok && !(again > 0f && again < 3.6f)) r.Problems.Add("Breach: " + name + ": taking the boards down didn't open it again (" + Way(again) + ")");
+            line.Append("; boarded ").Append(Way(boarded)).Append(", the boards down (").Append(planks).Append(" planks back) ").Append(Way(again));
+
+            if (batter != null) line.Append("; ").Append(Batter(r, name, batter));
+            else line.Append("; no second wall to batter");
+            if (ib.Plan.Level == 0) line.Append("; outside: ").Append(Outside(r, b, ib, name));
+            if (rebuild) line.Append("; ").Append(Rebuilt(r, name, ib));
+            r.Notes.Add(line.ToString());
+        }
+
+        // The ground floor's outside walls: the longest stretch with room somewhere along it for a hole that the NavMesh comes up
+        // to both sides of knocked through there (cut clean out of the shell's walls and the site's colliders, the NavMesh leading
+        // in through it from outside, boards closing it, their coming down opening it again); and the dead outside pressed
+        // against the next such stretch with their prey inside picking it to batter.
+        private static string Outside(AtlasReport r, BuildingPass.Inspected b, InteriorBuild ib, string name)
+        {
+            Transform site = ib.Root.transform.parent;
+            Transform walls = site != null ? site.Find("Building shells/Walls " + ib.Plan.Id) : null;
+            if (walls == null) return "no shell of its own";
+            var list = new List<OutsideWall>(walls.GetComponentsInChildren<OutsideWall>(true));
+            list.Sort((x, y) => y.Length.CompareTo(x.Length));
+            OutsideWall knock = null, batter = null;
+            int roomy = 0;
+            foreach (OutsideWall w in list)
+            {
+                if (!RoomAlong(w)) continue;
+                roomy++;
+                if (knock == null) knock = w;
+                else if (batter == null) batter = w;
+            }
+            if (knock == null)
+            {
+                string why = "";
+                if (list.Count > 0)
+                {
+                    OutsideWall longest = list[0];
+                    BreakableWall.Explain = new List<string>();
+                    try { longest.AimAt(longest.transform.position + Vector3.up); }
+                    finally
+                    {
+                        why = " (the longest, " + F1(longest.Length) + " m, from " + F1(-longest.Length * 0.5f) + " to " + F1(longest.Length * 0.5f)
+                            + ", blocked by " + string.Join(", ", BreakableWall.Explain.GetRange(0, Mathf.Min(14, BreakableWall.Explain.Count))) + ")";
+                        BreakableWall.Explain = null;
+                    }
+                }
+                return list.Count + " stretches, none with room for a hole the NavMesh comes up to both sides of" + why;
+            }
+            string room = roomy + " of " + list.Count + " stretches with room for a hole; ";
+            knock.AimBox(out Vector3 centre, out _, out _);
+            Vector3 across = (knock.WorldAt(0f, 0f, 1f) - knock.WorldAt(0f, 0f, 0f)).normalized;   // outward
+            Vector3 outside = centre + across * 1.2f, inside = centre - across * 1.2f;
+            outside.y = inside.y = 0.1f;
+            float before = PathBetween(outside, inside);
+            knock.Dismantle();
+            WallBreach hole = null;
+            foreach (WallBreach h in knock.Holes)
+                if (h != null && h.IsOpen) hole = h;
+            if (hole == null)
+            {
+                r.Problems.Add("Breach: " + name + ": knocking an outside wall through made no hole");
+                return "no hole";
+            }
+            r.OutsideBreaches++;
+            Physics.SyncTransforms();
+            int left = knock.TrianglesIn(hole), solid = knock.CollidersAcross(hole);
+            if (left != 0) r.Problems.Add("Breach: " + name + ": " + left + " of the outside wall's triangles left inside the hole");
+            if (solid != 0) r.Problems.Add("Breach: " + name + ": " + solid + " colliders still across the hole in the outside wall");
+            float through = BreachPath(b, 0f, outside, inside);
+            bool ok = through > 0f && through < 3.8f;
+            if (ok) r.OutsideThrough++;
+            else
+            {
+                r.Problems.Add("Breach: " + name + ": the NavMesh doesn't lead in through the hole in the outside wall (" + Way(before) + " before, "
+                    + Way(through) + " after; outside " + Around(outside, 0f) + "; inside " + Around(inside, 0f) + ")");
+                if (BreachPictures != null)
+                    BreachPicture(System.IO.Path.Combine(BreachPictures, "breach_" + r.Id + "_out.png"), new Vector3(centre.x, 0.1f, centre.z), 0f, outside, inside);
+            }
+            bool shots = BreachPictures != null && s_OutsideShots < 2;
+            if (shots)
+            {
+                s_OutsideShots++;
+                Look(System.IO.Path.Combine(BreachPictures, "outside_" + r.Id + ".png"), centre, across, 0f);
+                Look(System.IO.Path.Combine(BreachPictures, "outside_in_" + r.Id + ".png"), centre, -across, 0f);
+            }
+            hole.BoardOver(-1);
+            Physics.SyncTransforms();
+            float boarded = BreachPath(b, 0f, outside, inside);
+            if (knock.CollidersAcross(hole) == 0) r.Problems.Add("Breach: " + name + ": nothing solid across the boarded hole in the outside wall");
+            if (boarded > 0f && boarded < 3.8f) r.Problems.Add("Breach: " + name + ": the NavMesh still leads in through the boarded outside wall");
+            hole.Dismantle();
+            Physics.SyncTransforms();
+            float again = BreachPath(b, 0f, outside, inside);
+            if (ok && !(again > 0f && again < 3.8f)) r.Problems.Add("Breach: " + name + ": taking the boards off the outside wall didn't open it again");
+            string said = room + "a " + F1(knock.Length) + " m stretch knocked through, the way in " + Way(before) + " before, " + Way(through)
+                + " through the hole, " + Way(boarded) + " boarded, " + Way(again) + " with the boards down";
+            said += batter == null ? "; no second stretch to batter" : BatterOutside(r, name, batter);
+            // The game's view of the survivor just inside, the cutaway's stand-in of the walls up as another hole's knocked through.
+            if (shots) said += CutawayAfter(r, System.IO.Path.Combine(BreachPictures, "outside_cut_" + r.Id + ".png"), inside, batter, list);
+            return said;
+        }
+
+        // The dead outside against `batter` where it has room, their prey a couple of metres in: the place they pick to batter.
+        private static string BatterOutside(AtlasReport r, string name, OutsideWall batter)
+        {
+            batter.AimBox(out Vector3 at, out _, out _);
+            Vector3 o = (batter.WorldAt(0f, 0f, 1f) - batter.WorldAt(0f, 0f, 0f)).normalized;
+            Vector3 zombie = at + o * 0.7f, prey = at - o * 2.5f;
+            zombie.y = prey.y = 0.05f;
+            bool listed = BreakableWall.All.Contains(batter);
+            if (!listed) BreakableWall.All.Add(batter);
+            try
+            {
+                WallBreach spot = BreakableWall.NearestObstructing(zombie, prey, CloneZConfig.ZombieAttackRange + 0.8f);
+                if (spot == null || spot.Wall != batter)
+                {
+                    r.Problems.Add("Breach: " + name + ": the dead outside with their prey inside pick " + (spot == null ? "nowhere (" + BreakableWall.LastMiss + ")" : "another wall")
+                        + " to batter");
+                    return "; the dead outside pick nowhere to batter";
+                }
+                return "; the dead outside batter the next stretch";
+            }
+            finally
+            {
+                if (!listed) BreakableWall.All.Remove(batter);
+            }
+        }
+
+        // The game's isometric view of the survivor at `inside`, the building's walls cut away round them as the cutaway has it;
+        // with another hole knocked through its outside walls (in `then`, the stretch the dead were set on, else wherever one
+        // has room) while the cutaway's stand-in of the walls is up, so it's made again round the new hole, as it is when the
+        // dead break through with a survivor inside. Says how that went.
+        private static string CutawayAfter(AtlasReport r, string file, Vector3 inside, OutsideWall then, List<OutsideWall> walls)
+        {
+            return IsoView(r, file, new Vector3(inside.x, 0f, inside.z), () =>
+            {
+                int made = MapCutaway.OverlaysMade;
+                if (!KnockAnother(then, walls)) return "; no room for a second hole for the cutaway's picture";
+                if (MapCutaway.OverlaysMade > made) return "; the cutaway's stand-in made again round a second hole";
+                r.Problems.Add("Breach: the cutaway's stand-in of the walls wasn't made again when a second hole was knocked through them");
+                return "; the cutaway's stand-in not made again round a second hole";
+            }, "Breach: the cutaway's picture of a hole in an outside wall");
+        }
+
+        // The game's isometric view of a survivor (red) standing at `feet`, the walls round them cut away as the cutaway has
+        // them, lit by day, to a PNG; `whileCut` (if any) runs once the cut is made, before the picture, and what it says is
+        // returned. A failure is a problem of `what`.
+        private static string IsoView(AtlasReport r, string file, Vector3 feet, Func<string> whileCut, string what)
+        {
+            if (s_Root == null) return "";
+            foreach (MapCutawaySite site in s_Root.GetComponentsInChildren<MapCutawaySite>(true)) site.Register();
+            MapCutaway.ResolveAll();
+            var rig = new GameObject("[KentuckyAtlas] cutaway picture");
+            var iso = new IsoCutaway();
+            string said = "";
+            try
+            {
+                var numbers = new GameObject("numbers");
+                numbers.SetActive(false);
+                numbers.transform.SetParent(rig.transform, false);
+                IsoCameraFollow f = numbers.AddComponent<IsoCameraFollow>();
+                float yaw = f.IsoYaw, pitch = f.IsoPitch;
+                var cam = new GameObject("Camera").AddComponent<Camera>();
+                cam.transform.SetParent(rig.transform, false);
+                cam.enabled = false;
+                cam.orthographic = true;
+                cam.orthographicSize = 9f;
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = new Color(0.30f, 0.42f, 0.55f);
+                cam.nearClipPlane = 0.3f;
+                cam.farClipPlane = 400f;
+                var sun = new GameObject("Sun").AddComponent<Light>();
+                sun.transform.SetParent(rig.transform, false);
+                sun.type = LightType.Directional;
+                sun.shadows = LightShadows.Soft;
+                sun.intensity = 1.1f;
+                sun.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
+                RenderSettings.sun = sun;
+                RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+                RenderSettings.ambientLight = new Color(0.42f, 0.44f, 0.48f);
+                RenderSettings.fog = false;
+                GameObject figure = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                Object.DestroyImmediate(figure.GetComponent<Collider>());
+                figure.transform.SetParent(rig.transform, false);
+                figure.transform.localScale = new Vector3(0.5f, 0.9f, 0.5f);
+                Shader lit = Shader.Find("Universal Render Pipeline/Lit");
+                var mat = new Material(lit != null ? lit : Shader.Find("Standard"));
+                if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", new Color(0.75f, 0.12f, 0.10f));
+                figure.GetComponent<Renderer>().sharedMaterial = mat;
+                var feetMark = new GameObject("Feet").transform;
+                feetMark.SetParent(rig.transform, false);
+                MapCutaway.RestoreAll();
+                MapCutaway.Run(feet, yaw, pitch, 60f * Mathf.Cos(pitch * Mathf.Deg2Rad) + 1f, true, 5000f, true);
+                if (whileCut != null) said = whileCut();
+                figure.transform.position = feet + Vector3.up * 0.9f;
+                Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
+                cam.transform.SetPositionAndRotation(feet + Vector3.up * 1.2f - rot * Vector3.forward * 60f, rot);
+                feetMark.position = feet;
+                Physics.SyncTransforms();
+                iso.Tick(cam.transform.position, cam.transform.forward, true, feetMark, 1.3f, true);
+                Shoot(cam, file);
+            }
+            catch (Exception e)
+            {
+                r.Problems.Add(what + " threw " + e.GetType().Name + ": " + e.Message);
+                Debug.LogException(e);
+            }
+            finally
+            {
+                iso.RestoreAll();
+                MapCutaway.RestoreAll();
+                MapCutaway.Clear();
+                Object.DestroyImmediate(rig);
+            }
+            return said;
+        }
+
+        // Knocks a hole through `first` where it was aimed, else the first of `walls` with room for one anywhere along it (the
+        // build tool's say: the NavMesh needn't come up to it). False when none has room.
+        private static bool KnockAnother(OutsideWall first, List<OutsideWall> walls)
+        {
+            if (first != null && !float.IsNaN(first.Aimed))
+            {
+                first.AimAt(first.WorldAt(first.Aimed, 1f, 0f));
+                if (first.CanDemolish(out _))
+                {
+                    first.Dismantle();
+                    return true;
+                }
+            }
+            foreach (OutsideWall w in walls)
+            {
+                float reach = w.Length * 0.5f - BreakableWall.Width * 0.5f;
+                for (int k = 0; ; k++)
+                {
+                    float d = (k + 1) / 2 * (k % 2 == 0 ? -1f : 1f);
+                    if (Mathf.Abs(d) > reach + 0.6f) break;
+                    w.AimAt(w.WorldAt(d, 1f, 0f));
+                    if (!w.CanDemolish(out _)) continue;
+                    w.Dismantle();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static int s_OutsideShots;
+
+        // The first spot along `w` (its middle, then a metre either side at a time) with room for a hole that the NavMesh comes
+        // up to both sides of, the build tool left aimed there; false when there's none.
+        private static bool RoomAlong(OutsideWall w)
+        {
+            float reach = w.Length * 0.5f - BreakableWall.Width * 0.5f;
+            for (int k = 0; ; k++)
+            {
+                float d = (k + 1) / 2 * (k % 2 == 0 ? -1f : 1f);   // 0, +1, -1, +2, -2, ...
+                if (Mathf.Abs(d) > reach + 0.6f) return false;
+                w.AimAt(w.WorldAt(d, 1f, 0f));
+                if (w.CanDemolish(out _) && w.Walkable(w.Aimed)) return true;
+            }
+        }
+
+        // The dead pressed against `w` at its middle with their prey a couple of metres beyond it: the place they pick to batter,
+        // what a survivor's swing and a blast do to it, and that once it's broken through they pick it no more.
+        private static string Batter(AtlasReport r, string name, PartitionWall w)
+        {
+            w.AimBox(out Vector3 centre, out _, out _);
+            Vector3 across = (w.WorldAt(0f, 0f, 1f) - w.WorldAt(0f, 0f, 0f)).normalized;
+            Vector3 zombie = centre + across * 0.6f, prey = centre - across * 2.5f;
+            zombie.y = prey.y = w.transform.position.y + 0.05f;
+            bool listed = BreakableWall.All.Contains(w);
+            if (!listed) BreakableWall.All.Add(w);
+            try
+            {
+                WallBreach spot = BreakableWall.NearestObstructing(zombie, prey, CloneZConfig.ZombieAttackRange + 0.8f);
+                if (spot == null || spot.Wall != w)
+                {
+                    r.Problems.Add("Breach: " + name + ": the dead at a wall with their prey beyond it pick " + (spot == null ? "nowhere" : "another wall") + " to batter");
+                    return "the dead pick nowhere to batter";
+                }
+                float full = spot.Health;
+                spot.TakeDamage(new DamageInfo(500f, DamageKind.Melee, spot.transform.position, -across, null));
+                float swung = spot.Health;
+                spot.TakeDamage(new DamageInfo(50f, DamageKind.Explosion, spot.transform.position, -across, null));
+                float blasted = spot.Health;
+                if (swung != full) r.Problems.Add("Breach: " + name + ": a survivor's swing hurt the wall");
+                if (!(blasted < full) || spot.State != WallBreach.Intact) r.Problems.Add("Breach: " + name + ": a small blast didn't crack the wall");
+                bool same = BreakableWall.NearestObstructing(zombie, prey, CloneZConfig.ZombieAttackRange + 0.8f) == spot;
+                if (!same) r.Problems.Add("Breach: " + name + ": the dead don't keep at the place they were battering");
+                spot.BreakThrough(false);
+                bool done = BreakableWall.NearestObstructing(zombie, prey, CloneZConfig.ZombieAttackRange + 0.8f) == null;
+                if (!done) r.Problems.Add("Breach: " + name + ": the dead still batter where the wall's broken through");
+                Vector3 at = spot.transform.position;
+                float off = new Vector2(at.x - centre.x, at.z - centre.z).magnitude;
+                return "the dead batter the next wall " + F1(off) + " m from its middle (" + F1(full) + " sound, " + F1(blasted)
+                    + " after a small blast, a survivor's swing nothing)";
+            }
+            finally
+            {
+                if (!listed) BreakableWall.All.Remove(w);
+            }
+        }
+
+        // The ground floor taken down and raised again, as the streamer does behind and before the survivors: its holes kept.
+        private static string Rebuilt(AtlasReport r, string name, InteriorBuild ib)
+        {
+            int holes = 0;
+            foreach (PartitionWall w in ib.Root.GetComponentsInChildren<PartitionWall>(true))
+                foreach (WallBreach h in w.Holes)
+                    if (h != null && h.State != WallBreach.Intact) holes++;
+            Transform parent = ib.Root.transform.parent, overhead = ib.Town != null && ib.Town.Overhead != null ? ib.Town.Overhead.parent : null;
+            ib.Discard();
+            var again = new InteriorBuild(ib.Plan, parent, overhead, false);
+            List<Mesh> meshes = RaidMesh.CreatedMeshes;
+            RaidMesh.CreatedMeshes = again.Meshes;
+            try { while (again.Advance()) { } }
+            finally { RaidMesh.CreatedMeshes = meshes; }
+            s_Meshes.AddRange(again.Meshes);
+            int kept = 0;
+            foreach (PartitionWall w in again.Root.GetComponentsInChildren<PartitionWall>(true))
+                foreach (WallBreach h in w.Holes)
+                    if (h != null && h.State != WallBreach.Intact) kept++;
+            if (kept != holes) r.Problems.Add("Breach: " + name + ": raised again with " + kept + " of its " + holes + " holes");
+            return "raised again with " + kept + " of its " + holes + " holes";
+        }
+
+        // The NavMesh's way (its length, m) between two points either side of a wall on a NavMesh baked round the building now;
+        // -1 when there's none (or none walkable near either point).
+        private static float BreachPath(BuildingPass.Inspected b, float floor, Vector3 one, Vector3 other)
+            => BakeFloor(b, floor) ? PathBetween(one, other) : -1f;
+
+        // A NavMesh round the building's floor at `floor`, from the preview's render meshes as the streamer collects them.
+        private static bool BakeFloor(BuildingPass.Inspected b, float floor)
+        {
+            DropNav();
+            NavMeshBuildSettings settings = NavMesh.GetSettingsByID(0);
+            if (settings.agentTypeID == -1) settings.agentTypeID = 0;
+            settings.minRegionArea = 2f;
+            var sources = new List<NavMeshBuildSource>();
+            foreach (GameObject piece in s_Pieces)
+                if (piece != null) KentuckyStreamer.Collect(piece.transform, null, sources);
+            Rect f = b.F.Bounds;
+            var bounds = new Bounds(new Vector3(f.center.x, floor + 1f, f.center.y), new Vector3(f.width + 16f, 8f, f.height + 16f));
+            s_NavData = new NavMeshData(0) { name = "Kentucky Atlas" };
+            s_Nav = NavMesh.AddNavMeshData(s_NavData);
+            return NavMeshBuilder.UpdateNavMeshData(s_NavData, settings, sources, bounds);
+        }
+
+        // The way (m) between two points on the NavMesh as it is; -1 when there's none.
+        private static float PathBetween(Vector3 one, Vector3 other)
+        {
+            if (!NavMesh.SamplePosition(one, out NavMeshHit a, 0.8f, NavMesh.AllAreas) || !NavMesh.SamplePosition(other, out NavMeshHit c, 0.8f, NavMesh.AllAreas))
+                return -1f;
+            var path = new NavMeshPath();
+            return NavMesh.CalculatePath(a.position, c.position, NavMesh.AllAreas, path) && path.status == NavMeshPathStatus.PathComplete ? Length(path) : -1f;
+        }
+
+        private static string Way(float length) => length < 0f ? "none" : F1(length) + " m";
+
+        private static int s_BreachShots;
+
+        // A picture of a hole at eye height from a couple of metres out on its +across side (or `distance` out, `rise` over eye
+        // height), lit by a lamp over the shoulder and one beyond it.
+        private static void Look(string file, Vector3 hole, Vector3 across, float floor, float distance = 2.6f, float rise = 0.5f)
+        {
+            var rig = new GameObject("[KentuckyAtlas] hole picture");
+            try
+            {
+                var cam = new GameObject("Camera").AddComponent<Camera>();
+                cam.transform.SetParent(rig.transform, false);
+                cam.enabled = false;
+                cam.fieldOfView = 70f;
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = new Color(0.1f, 0.1f, 0.12f);
+                cam.nearClipPlane = 0.05f;
+                cam.farClipPlane = 60f;
+                Vector3 at = new Vector3(hole.x, floor + 1.1f, hole.z), eye = at + across * distance + Vector3.up * rise;
+                cam.transform.SetPositionAndRotation(eye, Quaternion.LookRotation(at - eye));
+                var lamp = new GameObject("Lamp").AddComponent<Light>();
+                lamp.transform.SetParent(rig.transform, false);
+                lamp.type = LightType.Point;
+                lamp.range = 12f;
+                lamp.intensity = 3f;
+                lamp.transform.position = eye + Vector3.up * 0.3f + Vector3.Cross(Vector3.up, across) * 0.6f;
+                var through = new GameObject("Beyond").AddComponent<Light>();
+                through.transform.SetParent(rig.transform, false);
+                through.type = LightType.Point;
+                through.range = 8f;
+                through.intensity = 2f;
+                through.transform.position = at - across * 2f + Vector3.up * 0.8f;
+                RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+                RenderSettings.ambientLight = new Color(0.35f, 0.35f, 0.37f);
+                RenderSettings.fog = false;
+                Shoot(cam, file);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[KentuckyAtlas] hole picture " + file + ": " + e.Message);
+            }
+            finally
+            {
+                Object.DestroyImmediate(rig);
+            }
+        }
+
+        // Straight down on a hole (from under the ceiling), the NavMesh green over the floor and the two points the way was
+        // looked for between marked (red), to a PNG.
+        private static void BreachPicture(string file, Vector3 hole, float floor, Vector3 one, Vector3 other)
+        {
+            var rig = new GameObject("[KentuckyAtlas] breach picture");
+            try
+            {
+                var cam = new GameObject("Camera").AddComponent<Camera>();
+                cam.transform.SetParent(rig.transform, false);
+                cam.enabled = false;
+                cam.orthographic = true;
+                cam.orthographicSize = 3.2f;
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = new Color(0.1f, 0.1f, 0.12f);
+                cam.nearClipPlane = 0.01f;
+                cam.farClipPlane = 4f;
+                cam.transform.SetPositionAndRotation(new Vector3(hole.x, floor + 2.1f, hole.z), Quaternion.Euler(90f, 0f, 0f));
+                var sun = new GameObject("Sun").AddComponent<Light>();
+                sun.transform.SetParent(rig.transform, false);
+                sun.type = LightType.Directional;
+                sun.intensity = 1.1f;
+                sun.transform.rotation = Quaternion.Euler(70f, -30f, 0f);
+                RenderSettings.sun = sun;
+                RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+                RenderSettings.ambientLight = new Color(0.5f, 0.5f, 0.52f);
+                RenderSettings.fog = false;
+                foreach (Vector3 p in new[] { one, other })
+                {
+                    GameObject mark = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    Object.DestroyImmediate(mark.GetComponent<Collider>());
+                    mark.transform.SetParent(rig.transform, false);
+                    mark.transform.position = new Vector3(p.x, floor + 0.3f, p.z);
+                    mark.transform.localScale = new Vector3(0.18f, 0.3f, 0.18f);
+                    Shader lit = Shader.Find("Universal Render Pipeline/Lit");
+                    var mat = new Material(lit != null ? lit : Shader.Find("Standard"));
+                    if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", new Color(0.85f, 0.1f, 0.1f));
+                    mark.GetComponent<Renderer>().sharedMaterial = mat;
+                }
+                NavOverlay(rig.transform, floor - 0.4f, floor + 1.5f);
+                Shoot(cam, file);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[KentuckyAtlas] breach picture " + file + ": " + e.Message);
+            }
+            finally
+            {
+                Object.DestroyImmediate(rig);
+            }
+        }
+        #endregion
+
+        #region Windows
+        /// <summary>For the survey (<c>-clonez-atlas-windows</c>): every furnished floor's windows fitted as the window streamer
+        /// fits them round a survivor, and each working and fixed one looked through (see <see cref="CheckWindows"/>).</summary>
+        public static bool WindowTest;
+        /// <summary>Where the window check leaves its pictures (null: none).</summary>
+        public static string WindowPictures;
+        private static int s_WindowShots, s_WindowIsoShots;
+        private static readonly RaycastHit[] s_SightHits = new RaycastHit[16];
+
+        // Every furnished floor's windows fitted (as the window streamer fits them round a survivor), and each working and fixed
+        // window (a real opening) looked through, straight through its middle: nothing solid stops the eye in the wall but the
+        // window's own boards or drawn curtains (meant to); its glass is see-through (alpha-blended: a fitted window's glazing,
+        // a fixed one's in the shell, the stand-in glass in the working ones); and on the ground floor the NavMesh doesn't lead
+        // through it. The painted ones (no floor at them) counted. The first few pictured from the street, from outside and
+        // from the room, and in the game's view from inside.
+        private static void CheckWindows(AtlasReport r, BuildingPass.Inspected b)
+        {
+            EnterableBuilding rec = b.Record;
+            if (rec == null || b.Lite || rec.Footprint == null) return;
+            InteriorStreamer s = InteriorStreamer.Active;
+            LevelLayout L = rec.Levels;
+            var fitted = new List<RaidWindow>();
+            var interiors = new List<Transform>();
+            Transform site = null;
+            for (int level = L != null ? L.Lowest : 0; s != null && level <= (L != null ? L.Top : 0); level++)
+            {
+                InteriorBuild ib = s.BuildOf(r.Id, level);
+                if (ib == null || ib.Root == null) continue;
+                site = ib.Root.transform.parent;
+                interiors.Add(ib.Root.transform);
+                ib.FitSomeWindows(int.MaxValue);
+                fitted.AddRange(ib.Root.GetComponentsInChildren<RaidWindow>(true));
+            }
+            Physics.SyncTransforms();
+            List<Vector2> p = rec.Footprint.Pts;
+            int n = p.Count;
+            float t = rec.WallThickness > 0.01f ? rec.WallThickness : 0.22f;
+            var problems = new List<string>();
+            var lookOnto = new List<string>();
+            bool clearLow = false, clearHigh = false, baked = false;
+            int through = 0;
+            WindowSpan pick = default;
+            Vector3 pickFace = Vector3.zero, pickOut = Vector3.zero;
+            float pickY = 0f, pickW = 0f;
+            foreach (WindowSpan w in rec.Windows)
+            {
+                if (w.Working) r.WindowsWorking++;
+                else if (w.Clear)
+                {
+                    r.WindowsClear++;
+                    if (w.Storey == 0) clearLow = true;
+                    else clearHigh = true;
+                }
+                else
+                {
+                    r.WindowsPainted++;
+                    continue;
+                }
+                if (site == null || w.Edge < 0 || w.Edge >= n) continue;
+                Vector2 a = p[w.Edge], c = p[(w.Edge + 1) % n];
+                float len = Vector2.Distance(a, c);
+                if (len < 0.05f) continue;
+                Vector2 d = (c - a) / len, o = new Vector2(d.y, -d.x);
+                float floor = L != null ? L.FloorOf(w.Storey) : 0f, along = (w.From + w.To) * 0.5f, y = floor + (w.Sill + w.Head) * 0.5f;
+                Vector2 q = a + d * along;
+                Vector3 face = site.TransformPoint(new Vector3(q.x, y, q.y)), outward = site.TransformDirection(new Vector3(o.x, 0f, o.y)).normalized;
+                string name = LevelName(w.Storey) + " " + (w.Working ? "working" : "fixed") + " window " + F1(along) + " m along wall " + w.Edge;
+                // Its fitted window, if it's a working one: boarded over, or its curtains drawn, it's meant to stop the eye.
+                RaidWindow win = null;
+                float best = 0.6f;
+                foreach (RaidWindow fw in fitted)
+                {
+                    if (fw == null) continue;
+                    float dist = Vector3.Distance(fw.InteractPoint, face - outward * (t * 0.5f));
+                    if (dist >= best) continue;
+                    best = dist;
+                    win = fw;
+                }
+                r.WindowsLooked++;
+                if (win != null && (win.IsBoarded || win.CurtainsDrawn))
+                {
+                    r.WindowsScreened++;
+                    continue;
+                }
+                // Five lines of sight across it at its middle height: through if any meets nothing in the wall but what's inside the
+                // building standing against it there (a partition's end, a flight of stairs), which is only what it looks onto.
+                bool clear = false;
+                Collider blocker = null;
+                for (int k = 0; k < 5 && !clear; k++)
+                {
+                    Vector2 sq = a + d * Mathf.Lerp(w.From, w.To, 0.1f + 0.2f * k);
+                    Vector3 sf = site.TransformPoint(new Vector3(sq.x, y, sq.y));
+                    int hits = Physics.RaycastNonAlloc(sf + outward, -outward, s_SightHits, t + 2f, ~(1 << CloneZConfig.IgnoreRaycastLayer), QueryTriggerInteraction.Ignore);
+                    Collider stop = null;
+                    for (int h = 0; h < hits; h++)
+                    {
+                        float depth = s_SightHits[h].distance - 1f;   // into the wall from its outer face
+                        if (depth > -0.08f && depth < t + 0.08f) stop = s_SightHits[h].collider;
+                    }
+                    if (stop == null) clear = true;
+                    else if (blocker == null || (Inside(blocker, interiors) && !Inside(stop, interiors))) blocker = stop;
+                }
+                if (clear) r.WindowsSeen++;
+                else if (Inside(blocker, interiors)) lookOnto.Add(name + " looks onto " + Owner(blocker));
+                else problems.Add(name + ": the eye's stopped in the wall by " + Owner(blocker));
+                if (w.Storey == 0)
+                {
+                    // The dead don't walk in through it.
+                    if (!baked) baked = BakeFloor(b, 0f);
+                    if (baked && LeadsThrough(site, a, d, o, t, w, face + outward * 1.2f, face - outward * (t + 1.2f)))
+                    {
+                        through++;
+                        problems.Add(name + ": the NavMesh leads in through it");
+                    }
+                    // The widest on the ground floor pictured, a fixed one before a working one.
+                    float width = w.To - w.From + (w.Clear ? 10f : 0f);
+                    if (width > pickW)
+                    {
+                        pickW = width;
+                        pick = w;
+                        pickFace = face;
+                        pickOut = outward;
+                        pickY = y;
+                    }
+                }
+            }
+            if (baked) DropNav();
+
+            // The glass: a fitted window's glazing, the shell's in its fixed windows and the stand-in glass in its working ones.
+            int opaque = 0;
+            foreach (RaidWindow fw in fitted)
+            {
+                if (fw == null || !fw.IsGlazed) continue;
+                foreach (Renderer rr in fw.GetComponentsInChildren<Renderer>(true))
+                    if (rr.name.EndsWith("Glazing", StringComparison.Ordinal) && !SeeThrough(rr, true)) opaque++;
+            }
+            if (opaque > 0) problems.Add(opaque + " of the fitted windows' glazing not see-through");
+            string id = r.Id.ToString(CultureInfo.InvariantCulture);
+            bool wallsClear = false, upperClear = false;
+            if (s_Root != null)
+                foreach (MeshRenderer mr in s_Root.GetComponentsInChildren<MeshRenderer>(true))
+                {
+                    string nm = mr.name;
+                    if (nm == "Walls " + id) wallsClear |= SeeThrough(mr, false);
+                    else if (nm == "Upper " + id || nm.StartsWith("Upper " + id + " L", StringComparison.Ordinal)) upperClear |= SeeThrough(mr, false);
+                    else if (nm.StartsWith("Panes " + id + " L", StringComparison.Ordinal) && !SeeThrough(mr, true))
+                        problems.Add("the stand-in glass " + nm + " not see-through");
+                }
+            if (clearLow && !wallsClear) problems.Add("the ground floor's fixed windows' glass not see-through");
+            if (clearHigh && !upperClear) problems.Add("the upper floors' fixed windows' glass not see-through");
+
+            if (r.WindowsWorking + r.WindowsClear + r.WindowsPainted == 0) return;
+            r.Notes.Add("Windows: " + r.WindowsWorking + " working (" + fitted.Count + " fitted), " + r.WindowsClear + " fixed, " + r.WindowsPainted
+                + " painted; the eye through " + r.WindowsSeen + " of the " + r.WindowsLooked + " looked through, " + r.WindowsScreened
+                + " boarded or curtained" + (lookOnto.Count > 0 ? ", " + string.Join(", ", lookOnto) : "")
+                + (through > 0 ? "; the NavMesh leads in through " + through : "")
+                + (problems.Count > 0 ? "; " + string.Join("; ", problems) : ""));
+            foreach (string problem in problems) r.Problems.Add("Windows: " + problem);
+
+            if (WindowPictures == null || pickW <= 0f) return;
+            if (s_WindowShots < 4)
+            {
+                s_WindowShots++;
+                Vector3 middle = pickFace - pickOut * (t * 0.5f);
+                string at = (pick.Clear ? "fixed" : "working") + "_" + id;
+                Look(System.IO.Path.Combine(WindowPictures, "window_" + at + "_out.png"), middle, pickOut, pickY - 1.1f);
+                Look(System.IO.Path.Combine(WindowPictures, "window_" + at + "_in.png"), middle, -pickOut, pickY - 1.1f);
+                Look(System.IO.Path.Combine(WindowPictures, "window_" + at + "_street.png"), middle, pickOut, pickY - 1.1f, 9f, 2.2f);
+            }
+            if (s_WindowIsoShots < 3)
+            {
+                s_WindowIsoShots++;
+                Vector3 feet = pickFace - pickOut * (t + 1.6f);
+                IsoView(r, System.IO.Path.Combine(WindowPictures, "window_" + id + "_iso.png"), new Vector3(feet.x, 0f, feet.z), null,
+                    "Windows: the game's view from inside");
+            }
+        }
+
+        // True when a NavMesh path from `outside` to `inside` (either side of window w on the footprint's wall from a along d,
+        // outward o, t thick) crosses the wall's line within the window.
+        private static bool LeadsThrough(Transform site, Vector2 a, Vector2 d, Vector2 o, float t, in WindowSpan w, Vector3 outside, Vector3 inside)
+        {
+            outside.y = inside.y = 0.1f;
+            if (!NavMesh.SamplePosition(outside, out NavMeshHit from, 0.6f, NavMesh.AllAreas) || !NavMesh.SamplePosition(inside, out NavMeshHit to, 0.6f, NavMesh.AllAreas))
+                return false;
+            var path = new NavMeshPath();
+            if (!NavMesh.CalculatePath(from.position, to.position, NavMesh.AllAreas, path) || path.status != NavMeshPathStatus.PathComplete) return false;
+            Vector3[] corners = path.corners;
+            Vector2 line = a - o * (t * 0.5f);
+            for (int k = 1; k < corners.Length; k++)
+            {
+                Vector3 l0 = site.InverseTransformPoint(corners[k - 1]), l1 = site.InverseTransformPoint(corners[k]);
+                Vector2 p0 = new Vector2(l0.x, l0.z), p1 = new Vector2(l1.x, l1.z);
+                float s0 = Vector2.Dot(p0 - line, o), s1 = Vector2.Dot(p1 - line, o);
+                if ((s0 > 0f) == (s1 > 0f)) continue;
+                Vector2 x = p0 + (p1 - p0) * (s0 / (s0 - s1));
+                float along = Vector2.Dot(x - a, d);
+                if (along > w.From - 0.05f && along < w.To + 0.05f) return true;
+            }
+            return false;
+        }
+
+        // True when the renderer's materials are all alpha-blended (`all`), or (else) when any of them is.
+        private static bool SeeThrough(Renderer r, bool all)
+        {
+            Material[] mats = r.sharedMaterials;
+            bool any = false;
+            foreach (Material m in mats)
+            {
+                bool clear = m != null && m.renderQueue >= (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                if (all && !clear) return false;
+                any |= clear;
+            }
+            return any;
+        }
+
+        private static string Owner(Collider c) => c.transform.parent != null ? c.transform.parent.name + "/" + c.name : c.name;
+
+        // True for a collider inside the building (under one of its floors' interiors, or its floors and stairs).
+        private static bool Inside(Collider c, List<Transform> interiors)
+        {
+            if (c == null) return false;
+            foreach (Transform root in interiors)
+                if (root != null && c.transform.IsChildOf(root)) return true;
+            return c.name.StartsWith("Levels ", StringComparison.Ordinal) || c.name.StartsWith("Stairwell ", StringComparison.Ordinal);
+        }
+        #endregion
 
         #region Levels
         private static NavMeshDataInstance s_Nav;
@@ -589,6 +1499,7 @@ namespace CloneZ
                         CheckHeights(r, name, ib, y0, y1);
                         if (ib.Troubles != null)
                             foreach (string t in ib.Troubles) r.Problems.Add("Levels: " + name + ": " + t);
+                        line.Append(FixturesOn(r, name, ib, y0));
                         if (baked) line.Append(Doorways(ib));
                     }
                     else if (r.Furnished)

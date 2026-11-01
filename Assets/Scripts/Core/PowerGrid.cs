@@ -34,6 +34,13 @@ namespace CloneZ
         /// <summary>Is there power at the house's sockets right now: the grid is up and the main breaker on.</summary>
         public static bool HousePowered => Instance == null || (Instance.IsOn && Instance.MainBreakerOn);
 
+        /// <summary>Is there power at the sockets where <paramref name="at"/> is: <see cref="HousePowered"/>, and on the statewide
+        /// map the main breaker of the building it stands in on too (<see cref="BuildingPower"/>).</summary>
+        public static bool PoweredAt(Component at) => HousePowered && BuildingPower.OnAt(at);
+
+        /// <summary>Why something electric at <paramref name="at"/> won't work right now, or null when it has power.</summary>
+        public static string NoPowerReasonAt(Component at) => NoPowerReason ?? (BuildingPower.OnAt(at) ? null : "The main breaker is off");
+
         /// <summary>Why something electric won't work right now, or null when the house has power.</summary>
         public static string NoPowerReason
         {

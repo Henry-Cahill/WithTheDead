@@ -1,0 +1,3 @@
+# The image needs only ./server: the download page's files (./site, the game's zips) and copies in transit stay out.
+site/
+*.tgz

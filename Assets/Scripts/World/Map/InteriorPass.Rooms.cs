@@ -107,13 +107,15 @@ namespace CloneZ
             return false;
         }
 
-        // Where a run's free end, carried on along its line, reaches the middle of the outside wall (at most 2 m on), or a
-        // stairwell's side, whichever comes first.
+        // Where a run's free end, carried on along its line, meets the outside wall (at most 2 m on), or a stairwell's side,
+        // whichever comes first: its corner on the wall's side a little into the wall's inner face, so a run meeting a
+        // slanting wall at a shallow angle stops short of it rather than running on along its inside (over its windows,
+        // and out through its face).
         private static float Reach(InteriorPlan plan, Run r, float at, int dir)
         {
             Vector2 o = r.AlongX ? new Vector2(at, r.Coord) : new Vector2(r.Coord, at);
             Vector2 d = r.AlongX ? new Vector2(dir, 0f) : new Vector2(0f, dir);
-            float best = float.MaxValue;
+            float best = float.MaxValue, sin = 1f, cos = 0f;
             List<Vector2> p = plan.Local;
             for (int i = 0, j = p.Count - 1; i < p.Count; j = i++)
             {
@@ -122,10 +124,17 @@ namespace CloneZ
                 if (Mathf.Abs(den) < 1e-6f) continue;
                 Vector2 ao = a - o;
                 float t = (ao.x * e.y - ao.y * e.x) / den, u = (ao.x * d.y - ao.y * d.x) / den;
-                if (t > -0.05f && u >= 0f && u <= 1f && t < best) best = t;
+                if (t > -0.05f && u >= 0f && u <= 1f && t < best)
+                {
+                    best = t;
+                    float len = e.magnitude;
+                    sin = Mathf.Abs(den) / len;
+                    cos = Mathf.Abs(Vector2.Dot(d, e)) / len;
+                }
             }
             if (best == float.MaxValue) return at;
-            float end = at + dir * Mathf.Clamp(best - plan.Thick * 0.5f, 0f, 2f);
+            float into = (plan.Thick - 0.03f + Half * cos) / Mathf.Max(sin, 0.05f);
+            float end = at + dir * Mathf.Clamp(best - into, 0f, 2f);
             foreach (PlanRoom s in plan.Rooms)
             {
                 if (s.Role != RoomRole.Stair) continue;

@@ -109,9 +109,9 @@ namespace CloneZ
             MakeNoise(CloneZConfig.LightSwitchNoise);
             // Basic feedback similar to individual flip when turning on.
             if (!on) return;
-            if (!PowerGrid.HousePowered)
+            if (!PowerGrid.PoweredAt(this))
             {
-                ctx.Notify(LightingFixtures.NothingHappens());
+                ctx.Notify(LightingFixtures.NothingHappens(this));
                 return;
             }
             // Count lamps on the first circuit for a simple notification.
@@ -131,9 +131,9 @@ namespace CloneZ
             Sync(false);
             MakeNoise(CloneZConfig.LightSwitchNoise);
             if (!on) return;
-            if (!PowerGrid.HousePowered)
+            if (!PowerGrid.PoweredAt(this))
             {
-                ctx.Notify(LightingFixtures.NothingHappens());
+                ctx.Notify(LightingFixtures.NothingHappens(this));
                 return;
             }
             // Show lamp count feedback similar to ToggleAll for this circuit.
@@ -178,7 +178,7 @@ namespace CloneZ
     // Checks if the house still has power and notifies the survivor.
     private void CheckPower(InteractContext ctx)
     {
-        ctx.Notify(PowerGrid.HousePowered ? "The house still has power." : LightingFixtures.NothingHappens());
+        ctx.Notify(PowerGrid.PoweredAt(this) ? "The house still has power." : LightingFixtures.NothingHappens(this));
     }
 
         public override void CaptureState(FixtureSave save)

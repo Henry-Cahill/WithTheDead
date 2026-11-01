@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>WithTheDead</title>
+<!-- Tools/Server/site/index.html: Release.ps1 fills in the {{...}} fields and publishes it with each build. -->
+<style>
+  :root { --bg: #05060a; --card: #0e1016; --line: #1f232c; --text: #e6e2da; --dim: #9aa0a8; --red: #db3d33; --place: #e0d4bd; --accent: #e6a04a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(ellipse at top, #141a26 0%, var(--bg) 60%); color: var(--text);
+         font: 16px/1.55 "Segoe UI", system-ui, -apple-system, sans-serif; min-height: 100vh; }
+  main { max-width: 860px; margin: 0 auto; padding: 56px 24px 40px; }
+  h1 { margin: 0; text-align: center; color: var(--red); font-size: clamp(48px, 9vw, 96px); letter-spacing: 1px; }
+  .place { text-align: center; color: var(--place); letter-spacing: .35em; font-size: 14px; margin: 6px 0 36px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 24px 28px; margin: 0 0 22px; }
+  h2 { font-size: 14px; letter-spacing: .25em; color: var(--accent); margin: 0 0 14px; text-transform: uppercase; }
+  .download { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+  .button { display: inline-block; background: var(--accent); color: #17110a; text-decoration: none; font-weight: 700;
+            padding: 14px 26px; border-radius: 8px; font-size: 18px; }
+  .button:hover { filter: brightness(1.1); }
+  .meta { color: var(--dim); font-size: 14px; }
+  .meta b { color: var(--text); font-weight: 600; }
+  .hash { font-family: Consolas, monospace; font-size: 12px; color: var(--dim); word-break: break-all; margin-top: 14px; }
+  ol { margin: 0; padding-left: 22px; }
+  li { margin: 6px 0; }
+  code { font-family: Consolas, monospace; background: #171a22; padding: 1px 6px; border-radius: 4px; color: var(--place); }
+  .keys { color: var(--dim); font-size: 14px; }
+  footer { text-align: center; color: var(--dim); font-size: 13px; margin-top: 30px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>WithTheDead</h1>
+  <div class="place">BARDSTOWN, KENTUCKY &nbsp;&middot;&nbsp; WINTER 1993</div>
+
+  <section class="card">
+    <h2>Download</h2>
+    <div class="download">
+      <a class="button" href="files/{{FILE}}">Download for Windows</a>
+      <div class="meta">Build <b>{{VERSION}}</b><br>Published {{DATE}} &middot; {{SIZE}}</div>
+    </div>
+    <div class="hash">SHA-256 {{SHA256}}</div>
+  </section>
+
+  <section class="card">
+    <h2>Playing together</h2>
+    <ol>
+      <li>Unzip it anywhere and run <code>WithTheDead.exe</code> (64-bit Windows 10 or 11). If Windows SmartScreen
+          stops it, choose <i>More info &rarr; Run anyway</i>.</li>
+      <li>Make a runner on the title screen.</li>
+      <li>Under <i>Play together</i>, press <i>Join</i>. The server's address, <code>{{SERVER}}</code>, is already
+          filled in.</li>
+      <li>In the bar, open the deploy screen from the front door, pick a Zone and press <i>Go</i>. If a raid is
+          already under way, you go into that one.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Updates</h2>
+    <p style="margin:0">The server lets in only the newest build. When a new one is out, the title screen says so:
+      download it here again and replace the old folder. Your runners are kept in
+      <code>%USERPROFILE%\AppData\LocalLow\DefaultCompany\WithTheDead</code>, so they carry over.</p>
+  </section>
+
+  <section class="card">
+    <h2>Controls</h2>
+    <div class="keys">WASD move &middot; LMB attack &middot; RMB shove &middot; R reload &middot; Shift sprint &middot;
+      Ctrl sneak &middot; E use &middot; Q actions &middot; I inventory &middot; B build &middot; F farm &middot; G water
+      &middot; H health &middot; K skills &middot; T sleep &middot; N night vision &middot; L light &middot; M exits
+      &middot; V camera view &middot; Esc pause &middot; F1 key hints</div>
+  </section>
+
+  <footer>WithTheDead is in development &middot; Map data &copy; OpenStreetMap contributors (ODbL)</footer>
+</main>
+</body>
+</html>

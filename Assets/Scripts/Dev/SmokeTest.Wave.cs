@@ -709,6 +709,8 @@ namespace CloneZ
         private IEnumerator HomePass()
         {
             yield return Calm();
+            yield return HomeWindows();
+            yield return Calm();
             yield return Farm();
             yield return Calm();
             yield return Water();
@@ -720,6 +722,107 @@ namespace CloneZ
             yield return Crate();
             yield return Calm();
             yield return Pickup();
+        }
+
+        // The home's windows are seen through: an outside one, shut with its curtains open, has see-through glass (no window of
+        // the home has the old opaque glass) and nothing solid across it, so the eye (and the dead's) goes straight through.
+        // With -clonez-smoke-shots, pictures of it from the yard and from the room.
+        private IEnumerator HomeWindows()
+        {
+            HomeWindow win = null;
+            int clear = 0, opaque = 0;
+            foreach (HomeWindow w in FindObjectsByType<HomeWindow>())
+            {
+                if (w == null || w is RaidWindow || w.transform.parent == null) continue;
+                foreach (Renderer r in w.transform.parent.GetComponentsInChildren<Renderer>(true))
+                    foreach (Material m in r.sharedMaterials)
+                    {
+                        if (m == null) continue;
+                        if (m.name.StartsWith("RaidPaletteWindowGlass", StringComparison.Ordinal) && m.renderQueue >= 3000) clear++;
+                        else if (m.name.StartsWith("RaidPaletteGlass", StringComparison.Ordinal)) opaque++;
+                    }
+                if (win == null && w.Outward.sqrMagnitude > 0.5f && !w.CurtainsDrawn && !w.IsOpen) win = w;
+            }
+            Check("windows: the home's glass is see-through", clear > 0 && opaque == 0, clear + " see-through, " + opaque + " opaque");
+            if (win == null)
+            {
+                Check("windows: an outside window of the home, shut, its curtains open", false);
+                yield break;
+            }
+            Vector3 at = win.InteractPoint, outward = win.Outward.normalized;
+            Vector3 outside = at + outward * 1.5f, inside = at - outward * 1.5f;
+            bool blocked = Physics.Linecast(outside, inside, out RaycastHit hit, ~(1 << CloneZConfig.IgnoreRaycastLayer), QueryTriggerInteraction.Ignore);
+            Check("windows: nothing solid across " + win.DisplayName.ToLowerInvariant() + ", shut, its curtains open", !blocked,
+                blocked ? hit.collider.name + " at " + hit.distance.ToString("0.00") + " m" : "the eye goes through");
+            float share = OpenShare(win, outward);
+            Check("windows: " + win.DisplayName.ToLowerInvariant() + "'s glass isn't covered", share >= 0.6f,
+                (share * 100f).ToString("0") + "% of it clear of anything opaque drawn across it");
+            ShotFrom("home-window-out", at + outward * 3.2f + Vector3.up * 0.4f, at, 55f);
+            ShotFrom("home-window-in", at - outward * 2.6f + Vector3.up * 0.2f, at + outward * 4f, 65f);
+            yield return null;
+        }
+
+        // How much of a window's opening (its curtains' screen), looked at square on from outside, nothing opaque is drawn
+        // across (its sashes' frames and bars take a little): rays over a grid against a stand-in collider made of the opaque
+        // triangles of every part of the window's piece that shows.
+        private static float OpenShare(HomeWindow win, Vector3 outward)
+        {
+            BoxCollider screen = null;
+            foreach (BoxCollider b in win.GetComponentsInChildren<BoxCollider>(true))
+                if (b.name == "Screen") screen = b;
+            if (screen == null || win.transform.parent == null) return 0f;
+            var made = new List<UnityEngine.Object>();
+            var stand = new List<MeshCollider>();
+            try
+            {
+                foreach (MeshRenderer r in win.transform.parent.GetComponentsInChildren<MeshRenderer>(false))
+                {
+                    var mf = r.GetComponent<MeshFilter>();
+                    Mesh mesh = mf != null ? mf.sharedMesh : null;
+                    if (!r.enabled || mesh == null || !mesh.isReadable) continue;
+                    var tris = new List<int>();
+                    Material[] mats = r.sharedMaterials;
+                    for (int s = 0; s < mesh.subMeshCount; s++)
+                        if (s < mats.Length && mats[s] != null && mats[s].renderQueue < 3000) tris.AddRange(mesh.GetTriangles(s));
+                    if (tris.Count == 0) continue;
+                    var solid = new Mesh { indexFormat = mesh.indexFormat };
+                    solid.SetVertices(mesh.vertices);
+                    solid.SetTriangles(tris, 0);
+                    var go = new GameObject("[Smoke] opaque");
+                    go.transform.SetPositionAndRotation(r.transform.position, r.transform.rotation);
+                    go.transform.localScale = r.transform.lossyScale;
+                    MeshCollider mc = go.AddComponent<MeshCollider>();
+                    mc.sharedMesh = solid;
+                    stand.Add(mc);
+                    made.Add(solid);
+                    made.Add(go);
+                }
+                Physics.SyncTransforms();
+                Vector3 size = screen.size, across = screen.transform.right, up = screen.transform.up;
+                if (Mathf.Abs(Vector3.Dot(across, outward)) > 0.7f)
+                {
+                    across = screen.transform.forward;
+                    size = new Vector3(size.z, size.y, size.x);
+                }
+                Vector3 middle = screen.transform.TransformPoint(screen.center);
+                int clear = 0, all = 0;
+                for (int i = 0; i < 8; i++)
+                    for (int k = 0; k < 6; k++)
+                    {
+                        Vector3 p = middle + across * (size.x * 0.8f * ((i + 0.5f) / 8f - 0.5f)) + up * (size.y * 0.8f * ((k + 0.5f) / 6f - 0.5f));
+                        var ray = new Ray(p + outward * 0.6f, -outward);
+                        bool covered = false;
+                        foreach (MeshCollider mc in stand)
+                            if (mc.Raycast(ray, out _, 1.2f)) { covered = true; break; }
+                        all++;
+                        if (!covered) clear++;
+                    }
+                return all > 0 ? clear / (float)all : 0f;
+            }
+            finally
+            {
+                foreach (UnityEngine.Object o in made) if (o != null) Destroy(o);
+            }
         }
 
         private IEnumerator Farm()

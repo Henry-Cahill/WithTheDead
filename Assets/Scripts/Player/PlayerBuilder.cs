@@ -59,14 +59,16 @@ public BuildSelection Selection { get; private set; } = BuildSelection.Barricade
         private Vector3 _houseCenter;      // occupancy centre from BuildPiece.CenterFor
         private float _houseYaw;
 
-        // Current frame's demolish target (the structure or world object under the cursor).
+        // Current frame's demolish target (the structure or world object under the cursor), and where the cursor meets it.
         private IDemolishable _demolishTarget;
+        private Vector3 _demolishPoint;
 
         // Frozen while a build is in progress.
         private BuildSelection _buildSelection;
         private bool _buildIsReinforce;
         private Barricade _buildReinforce;
         private IDemolishable _buildDemolishTarget;
+        private Vector3 _buildDemolishPoint;
         private Vector3 _buildPos;
         private Vector3 _buildForward;
         private float _buildTimer;
@@ -122,9 +124,11 @@ private readonly Collider[] _overlapBuf = new Collider[16];
 
             if (!BuildMode) { Prompt = ""; return; }
 
-            // Esc backs out: cancel the current job first, otherwise leave build mode.
+            // Esc backs out: cancel the current job first, otherwise leave build mode (and that press is spent: it doesn't
+            // also open the pause menu, whichever of the two sees it first).
             if (kb != null && kb.escapeKey.wasPressedThisFrame)
             {
+                UIState.EscapeConsumedFrame = Time.frameCount;
                 if (IsBuilding) CancelBuild(); else ExitBuildMode();
                 return;
             }
@@ -254,6 +258,7 @@ private readonly Collider[] _overlapBuf = new Collider[16];
             _reinforceTarget = null;
             _demolishTarget = null;
             IDemolishable hidden = null;   // a cut-away wall, roof or barricade the ray passed through
+            Vector3 hiddenPoint = default;
 
             Vector3 me = transform.position; me.y = 0f;
             float reach = CloneZConfig.HousePlaceReach + 1f;
@@ -276,15 +281,18 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
                 {
                     RaycastHit h = _rayBuf[i];
                     IDemolishable d = h.collider.GetComponentInParent<IDemolishable>();
+                    // A building's outside wall: its colliders are the site's own boxes, the wall it stands for found by place.
+                    if (d == null) d = BreakableWall.AtSiteBox(h.collider, h.point);
                     if (d == null || !WithinReach(h.point, me, reachSqr)) continue;
                     if (IsCutAway(d))
                     {
-                        if (h.distance < nearestHidden) { nearestHidden = h.distance; hidden = d; }
+                        if (h.distance < nearestHidden) { nearestHidden = h.distance; hidden = d; hiddenPoint = h.point; }
                     }
                     else if (h.distance < nearest)
                     {
                         nearest = h.distance;
                         _demolishTarget = d;
+                        _demolishPoint = h.point;
                     }
                 }
                 // The bed and the farm plots have no colliders, so test the ray against their meshes: they then
@@ -298,8 +306,14 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
             // to the cursor than a bed's own, so the pieces only count once nothing else is near.
             Vector3 cursor = GroundCursor();
             if (_demolishTarget == null) _demolishTarget = NearestThingNearCursor(cursor, me, reach);
-            if (_demolishTarget == null) _demolishTarget = hidden;
+            if (_demolishTarget == null && hidden != null)
+            {
+                _demolishTarget = hidden;
+                _demolishPoint = hiddenPoint;
+            }
             if (_demolishTarget == null) _demolishTarget = NearestPieceNearCursor(cursor, me, reach);
+            // A building's wall is broken through only where it's aimed (only a ray finds one).
+            if (_demolishTarget is IDemolishAim aimed) aimed.AimAt(_demolishPoint);
 
             _placeValid = _demolishTarget != null;
             UpdateGhost();
@@ -314,6 +328,9 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
         // A wall, roof or barricade the iso camera has cut away (see CutawayOccluder) stops drawing but stays solid.
         private static bool IsCutAway(IDemolishable d)
         {
+            // A building's outside wall (or the boards over a hole in one) lowered by the map's cutaway: its colliders still stand.
+            if (d is OutsideWall wall) return wall.CutAway;
+            if (d is WallBreach hole && hole.Wall is OutsideWall holed) return holed.CutAway;
             if (!(d is Component c)) return false;
             var cutaway = c.GetComponent<CutawayOccluder>();
             return cutaway != null && cutaway.IsCutAway;
@@ -646,8 +663,9 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
                 _buildIsReinforce = false;
                 _buildReinforce = null;
                 _buildDemolishTarget = _demolishTarget;
+                _buildDemolishPoint = _demolishPoint;
                 var mb = _demolishTarget as MonoBehaviour;
-                _buildPos = mb != null ? mb.transform.position : transform.position;
+                _buildPos = _demolishTarget is IDemolishAim ? _demolishPoint : mb != null ? mb.transform.position : transform.position;
                 _buildForward = Vector3.forward;
                 BuildLabel = "Dismantling " + (_demolishTarget != null ? _demolishTarget.DemolishName : "structure");
             }
@@ -740,10 +758,12 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
             Vector3 pos = _buildPos;
             bool trains = false;
 
+            // Something taken apart where it was aimed is taken where the job began, wherever the cursor's wandered since.
+            if (t is IDemolishAim aimed && !(t is UnityEngine.Object gone && gone == null)) aimed.AimAt(_buildDemolishPoint);
             if (t != null && t.CanDemolish(out _))
             {
                 t.GetSalvage(out plankBack, out nailBack);
-                if (t is MonoBehaviour mb && mb != null) pos = mb.transform.position;
+                if (t is MonoBehaviour mb && mb != null) pos = t is IDemolishAim ? _buildDemolishPoint : mb.transform.position;
                 trains = !(t is BuildPiece piece && piece.Prebuilt);
                 bool carves = t.CarvesNavMesh;
                 t.Dismantle();
@@ -830,6 +850,15 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
         private bool UpdateDemolishHighlight()
         {
             if (!(_demolishTarget is MonoBehaviour mb) || mb == null) return false;
+
+            // Something taken apart only where it's aimed shows just the part that would go.
+            if (_demolishTarget is IDemolishAim aimed)
+            {
+                if (!aimed.AimBox(out Vector3 centre, out Quaternion turn, out Vector3 size)) return false;
+                _ghost.transform.SetPositionAndRotation(centre, turn);
+                _ghost.transform.localScale = size;
+                return true;
+            }
 
             // Clear and reuse the temporary renderer list to avoid allocations.
             _rendererTmp.Clear();

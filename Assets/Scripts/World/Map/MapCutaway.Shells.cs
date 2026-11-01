@@ -102,6 +102,9 @@ namespace CloneZ
             /// <summary>How thick the outside walls are (for sorting the walls by facing).</summary>
             public float WallThickness;
             public MeshRenderer Walls, Upper;
+            /// <summary>Each storey's stand-in glass in its working windows (null when there's none): hidden with anything of
+            /// the building cut, so it never floats in a cut wall.</summary>
+            public MeshRenderer[] Panes;
             /// <summary>Their meshes: empty until baked when they were queued on the site's bake.</summary>
             public Mesh WallsMesh, UpperMesh;
 

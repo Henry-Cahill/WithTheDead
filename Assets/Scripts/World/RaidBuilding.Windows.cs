@@ -20,7 +20,7 @@ namespace CloneZ
         private const float BoardsOff = 0.075f;    // the boards' distance out from the wall's face (clear of any shutters)
 
         private static readonly Color SashPaint = new Color(0.70f, 0.68f, 0.62f);
-        private static readonly Color PaneTint = new Color(0.10f, 0.13f, 0.15f);
+        private static readonly Color PaneTint = DecorPalette.ClearTint;
 
         private static readonly Color[] CurtainFabrics =
         {
@@ -211,6 +211,208 @@ namespace CloneZ
             RaidWindow.Attach(root, setup, raid);
         }
 
+        /// <summary>The wood of the statewide map's window linings (its interiors' casing, a shade lighter, as the raid town's).</summary>
+        private static readonly Color MapWindowWood = new Color(0.40f, 0.26f, 0.15f);
+
+        /// <summary>The fixed part of a statewide map's working window, drawn into its wall's mesh as the building is raised (so it
+        /// stands whether the floor is furnished or not, and the cutaway takes it down with the wall): the linings of the
+        /// opening's reveal, and the upper sash in its outer track with the sash lock's keeper on its meeting rail.
+        /// <paramref name="middle"/> is the opening's middle on the wall's centre line at its floor and <paramref name="inward"/>
+        /// the way into the room; the rest as <see cref="FitWindowIn"/> takes them, which fits the parts that work.</summary>
+        internal static void MapWindowFrame(RaidMesh m, Vector3 middle, Vector3 inward, float width, float sill, float head, float face)
+        {
+            Vector3 was = m.FrameOrigin;
+            Quaternion wasTurn = m.FrameRotation;
+            m.SetFrame(middle, Quaternion.LookRotation(inward, Vector3.up));
+            var l = new OpeningLine(true, 0f);
+            float sashW = width - 0.05f, cy = (sill + head) * 0.5f, top = head - 0.024f, meet = (sill + 0.03f + top) * 0.5f, depth = face * 2f + 0.01f;
+            Surf wood = DecorPalette.Matte(MapWindowWood);
+            for (int e = -1; e <= 1; e += 2) m.Box(l.P(e * (width * 0.5f - 0.012f), cy, 0f), l.Size(0.024f, head - sill, depth), wood);
+            m.Box(l.P(0f, head - 0.012f, 0f), l.Size(width, 0.024f, depth), wood);
+            m.Box(l.P(0f, sill + 0.015f, 0f), l.Size(width, 0.03f, depth), wood);
+            FurnitureBuilder.OpeningSash(m, l, 0f, sashW, meet - 0.02f, top, -SashTrack, false, 1, SashPaint);
+            m.Box(l.P(0f, meet + 0.034f, -SashTrack), l.Size(0.04f, 0.008f, 0.03f), DecorPalette.Metal(FurnitureBuilder.Brass));
+            m.SetFrame(was, wasTurn);
+        }
+
+        /// <summary>A statewide map's working window, as <see cref="FitWindowIn"/> fits it.</summary>
+        internal struct MapWindow
+        {
+            /// <summary>The opening's middle on the wall's centre line at the room's floor, and the way into the room.</summary>
+            public Vector3 Middle, Inward;
+            /// <summary>The opening's width, its bottom and top over the floor, and half the wall's thickness.</summary>
+            public float Width, Sill, Head, Face;
+            /// <summary>How far the room's wall runs either way from the middle (where a curtain rod must stop), and where along
+            /// it from the middle the survivor reaches for the window (clear of a partition meeting the wall across it).</summary>
+            public float Lo, Hi, Handle;
+            /// <summary>The room it lights (null: none), what hangs there and the curtains' stuff.</summary>
+            public RaidRoom Room;
+            public RaidWindow.Dressing Dressing;
+            public Color Fabric;
+            /// <summary>How the town left it.</summary>
+            public RaidWindow.Glazing Glass;
+            public bool Boarded;
+            /// <summary>Its own random stream: the same window every time it's fitted.</summary>
+            public int Seed;
+        }
+
+        /// <summary>A curtain fabric for a room's windows on the statewide map, from the room's own seed.</summary>
+        internal static Color MapCurtainFabric(int seed)
+        {
+            var rng = new System.Random(seed);
+            return DecorPalette.Vary(CurtainFabrics[rng.Next(CurtainFabrics.Length)], 0.06f, rng);
+        }
+
+        /// <summary>
+        /// The working parts of a statewide map's window, fitted in an opening through a wall at any angle whose fixed part
+        /// (<see cref="MapWindowFrame"/>) the wall already has: the starter home's lower sash with its glass (or what's left of
+        /// it), the upper sash's glass, the boards (only while it's boarded: they're made when they're first nailed on), what
+        /// hangs on the room side, and the <see cref="RaidWindow"/> that works them, all under <paramref name="parent"/> —
+        /// as few objects as will do, none casting shadows. Everything it rolls comes from the window's own seed, so a window
+        /// taken out and fitted again (<see cref="WindowStreamer"/>) is the same window.
+        /// </summary>
+        internal static RaidWindow FitWindowIn(Transform parent, in MapWindow w, RaidBuildingKind kind)
+        {
+            var rng = new System.Random(w.Seed);
+            Vector3 middle = w.Middle;
+            float width = w.Width, sill = w.Sill, head = w.Head, face = w.Face;
+            RaidWindow.Dressing dressing = w.Dressing;
+            // Drawn in the wall's frame (x along it, z into the room), with the world as the meshes' space.
+            Quaternion turn = Quaternion.LookRotation(w.Inward, Vector3.up);
+            var l = new OpeningLine(true, 0f);
+            const int roomSide = 1, outside = -1;
+            float sashW = width - 0.05f, cy = (sill + head) * 0.5f;
+            float bottom = sill + 0.03f, top = head - 0.024f, meet = (bottom + top) * 0.5f;
+            float outer = -SashTrack, inner = SashTrack;
+            bool glazed = w.Glass == RaidWindow.Glazing.Intact;
+            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
+
+            var root = new GameObject("Window");
+            root.transform.SetParent(parent, false);
+            root.transform.SetPositionAndRotation(middle + Vector3.up * cy, Quaternion.identity);
+            root.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
+
+            // The lower sash in the inner track, sliding up behind the upper one, its lock's body on the meeting rail (and a
+            // smashed window's lever left turned on it: there's no working that sash any more).
+            RaidMesh lower = InFrame(middle, turn);
+            FurnitureBuilder.OpeningSash(lower, l, 0f, sashW, bottom, meet + 0.02f, inner, true, roomSide, SashPaint);
+            lower.Box(l.P(0f, meet + 0.024f, inner), l.Size(0.05f, 0.008f, 0.032f), brass);
+            if (!glazed) lower.Box(l.P(0f, meet + 0.042f, 0f), l.Size(0.02f, 0.008f, 0.06f), brass);
+            float lift = Mathf.Max(0.1f, top - meet - 0.04f);
+            FixturePart sash = FixturePart.Slide(root.transform, "LowerSash", lower, lower.ToMeshSpace(l.P(0f, bottom, inner)), Vector3.up * lift,
+                ShadowCastingMode.Off).WithSpeed(CloneZConfig.WindowSashSeconds);
+
+            // Each sash's glazing: glass, or the shards left in the frame. The lower one rides on its sash.
+            int seed = rng.Next();
+            var shards = new System.Random(seed);
+            MeshFilter upperGlass = FramedGlazing(root.transform, "UpperGlazing", middle, turn, l, sashW, meet - 0.02f, top, outer, false, glazed, shards);
+            MeshFilter lowerGlass = FramedGlazing(sash.transform, "LowerGlazing", middle, turn, l, sashW, bottom, meet + 0.02f, inner, true, glazed, shards);
+
+            Renderer boards = null;
+            if (w.Boarded)
+            {
+                RaidMesh planks = InFrame(middle, turn);
+                FurnitureBuilder.OpeningBoards(planks, new System.Random(seed ^ RaidWindow.BoardsSalt), l, 0f, width, sill, outside, face + BoardsOff, head);
+                boards = WindowPart(planks, "Boards", root.transform, planks.ToMeshSpace(l.P(0f, cy, outside * (face + BoardsOff))),
+                    ShadowCastingMode.On);
+            }
+
+            Renderer dressedBack = null, dressedAcross = null;
+            if (dressing != RaidWindow.Dressing.None)
+            {
+                RaidMesh back = InFrame(middle, turn), across = InFrame(middle, turn);
+                if (dressing == RaidWindow.Dressing.Curtains)
+                    FurnitureBuilder.OpeningCurtains(back, across, l, 0f, width, sill, head, face, w.Lo, w.Hi, roomSide, w.Fabric);
+                else
+                {
+                    bool cloth = dressing == RaidWindow.Dressing.Cloth;
+                    Color stuff = cloth ? (rng.NextDouble() < 0.5 ? new Color(0.24f, 0.26f, 0.16f) : new Color(0.10f, 0.10f, 0.11f))
+                        : kind == RaidBuildingKind.Clinic ? new Color(0.80f, 0.84f, 0.78f) : new Color(0.82f, 0.78f, 0.66f);
+                    FurnitureBuilder.OpeningBlind(back, across, l, 0f, width - 0.068f, bottom, head, BlindAcross, roomSide, stuff, cloth);
+                }
+                dressedBack = WindowPart(back, "DressingOpen", root.transform, middle, ShadowCastingMode.Off);
+                dressedAcross = WindowPart(across, "DressingDrawn", root.transform, middle, ShadowCastingMode.Off);
+            }
+            DecorPalette.Apply();
+
+            // As it was left: a whole window mostly shut and latched; its curtains drawn now and then.
+            bool open = glazed && rng.NextDouble() < CloneZConfig.RaidWindowOpenChance;
+            bool unlatched = glazed && (open || rng.NextDouble() >= CloneZConfig.RaidWindowLatchedChance);
+            bool drawn = dressing != RaidWindow.Dressing.None && rng.NextDouble() < CloneZConfig.RaidWindowDrawnChance;
+            RaidRoom room = w.Room;
+            float handle = w.Handle;
+            bool boarded = w.Boarded;
+
+            var setup = new HomeWindow.Setup
+            {
+                Name = room != null ? OpeningRoomTitle(room.Name) + " window" : "Window",
+                Sash = sash,
+                CurtainsOpen = dressedBack,
+                CurtainsDrawn = dressedAcross,
+                Screen = new Bounds(middle + Vector3.up * ((bottom + top) * 0.5f), new Vector3(sashW, top - bottom, 0.02f)),
+                ScreenTurn = turn,
+                Point = middle + turn * Vector3.right * handle + Vector3.up * cy,
+                Normal = w.Inward,
+                Along = turn * Vector3.right,
+                OutSide = outside,
+                Blind = dressing == RaidWindow.Dressing.Blind || dressing == RaidWindow.Dressing.Cloth,
+                Open = open,
+                Drawn = drawn,
+                Unlatched = unlatched,
+                Floor = middle.y,
+            };
+            var raid = new RaidWindow.Raid
+            {
+                Glass = glazed ? RaidWindow.Glazing.Intact : RaidWindow.Glazing.Smashed,
+                Boarded = boarded,
+                Dressing = dressing,
+                Upper = upperGlass,
+                Lower = lowerGlass,
+                Boards = boards,
+                Line = l,
+                Mid = 0f,
+                SashWidth = sashW,
+                UpperY0 = meet - 0.02f,
+                UpperY1 = top,
+                UpperAcross = outer,
+                LowerY0 = bottom,
+                LowerY1 = meet + 0.02f,
+                LowerAcross = inner,
+                Seed = seed,
+                Framed = true,
+                FrameAt = middle,
+                FrameTurn = turn,
+                Boardable = true,
+                OpeningWidth = width,
+                Sill = sill,
+                Head = head,
+                BoardsOff = face + BoardsOff,
+                BoardsSide = outside,
+            };
+            return RaidWindow.Attach(root, setup, raid);
+        }
+
+        /// <summary>A window in an opening a partition walls off from inside (its room stops short of the wall there), as
+        /// <see cref="FitWindowIn"/> takes them, whose fixed part the wall has (<see cref="MapWindowFrame"/>): its lower sash
+        /// shut, and both sashes' glass, nothing that works. Returns its root.</summary>
+        internal static GameObject FixedWindowIn(Transform parent, Vector3 middle, Vector3 inward, float width, float sill, float head)
+        {
+            Quaternion turn = Quaternion.LookRotation(inward, Vector3.up);
+            var l = new OpeningLine(true, 0f);
+            float sashW = width - 0.05f, cy = (sill + head) * 0.5f, bottom = sill + 0.03f, top = head - 0.024f, meet = (bottom + top) * 0.5f;
+            var root = new GameObject("Window (walled off)");
+            root.transform.SetParent(parent, false);
+            root.transform.SetPositionAndRotation(middle + Vector3.up * cy, Quaternion.identity);
+            root.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
+            RaidMesh m = InFrame(middle, turn);
+            FurnitureBuilder.OpeningSash(m, l, 0f, sashW, bottom, meet + 0.02f, SashTrack, true, 1, SashPaint);
+            FurnitureBuilder.OpeningPane(m, l, 0f, sashW, bottom, meet + 0.02f, SashTrack, true, PaneTint);
+            FurnitureBuilder.OpeningPane(m, l, 0f, sashW, meet - 0.02f, top, -SashTrack, false, PaneTint);
+            WindowPart(m, "Sashes", root.transform, middle, ShadowCastingMode.Off);
+            DecorPalette.Apply();
+            return root;
+        }
+
         // What hangs at a window, by what the building is: a house's curtains (a blind where furniture crowds the wall
         // beside it), an office's or a clinic's blind, the depot office's too, an army post's blackout cloth (or nothing),
         // nothing in a shop front.
@@ -290,6 +492,28 @@ namespace CloneZ
             if (go == null) return null;
             go.transform.rotation = Quaternion.identity;
             return go.GetComponent<Renderer>();
+        }
+
+        // A mesh drawn in a window's turned frame (FitWindowIn): from `at`, x along the wall and z into the room, with the
+        // world as its mesh space.
+        private static RaidMesh InFrame(Vector3 at, Quaternion turn)
+        {
+            var m = new RaidMesh();
+            m.SetFrame(at, turn);
+            return m;
+        }
+
+        // A sash's glazing in a window's turned frame, as an object of its own (so it can break): glass, or the shards left.
+        private static MeshFilter FramedGlazing(Transform parent, string name, Vector3 at, Quaternion turn, in OpeningLine l, float w,
+            float y0, float y1, float across, bool lower, bool glazed, System.Random rng)
+        {
+            RaidMesh m = InFrame(at, turn);
+            if (glazed) FurnitureBuilder.OpeningPane(m, l, 0f, w, y0, y1, across, lower, PaneTint);
+            else FurnitureBuilder.OpeningShards(m, rng, l, 0f, w, y0, y1, across, lower);
+            GameObject go = m.Emit(name, parent, m.ToMeshSpace(l.P(0f, (y0 + y1) * 0.5f, across)), ShadowCastingMode.Off);
+            if (go == null) return null;
+            go.transform.rotation = Quaternion.identity;
+            return go.GetComponent<MeshFilter>();
         }
     }
 }
