@@ -30,8 +30,15 @@ namespace CloneZ
             public Renderer CurtainsOpen, CurtainsDrawn;
             /// <summary>The sash lock's lever, turned onto its keeper and turned away (both ride with the sash).</summary>
             public Renderer LatchShut, LatchOpen;
-            /// <summary>The opening (world, axis-aligned), blocked while the curtains are drawn.</summary>
+            /// <summary>The opening (world, axis-aligned unless <see cref="ScreenTurn"/> turns it), blocked while the curtains are
+            /// drawn.</summary>
             public Bounds Screen;
+            /// <summary>The screen's turn about its middle, for a window in a wall at any angle (the statewide map's); unset,
+            /// the world's axes.</summary>
+            public Quaternion ScreenTurn;
+            /// <summary>The height of the floor on the room side, for a window up a storey of a building with floors: a climb in
+            /// lands on it, and above the ground floor there's no climbing out. Unset, the ground (or a built floor) both sides.</summary>
+            public float? Floor;
             /// <summary>The glazing's middle on the wall line (reached from either side).</summary>
             public Vector3 Point;
             /// <summary>The wall's normal toward its +1 side, and its run.</summary>
@@ -55,6 +62,7 @@ namespace CloneZ
         private CutawayOccluder _occluder;
         private Vector3 _point, _normal = Vector3.forward, _along = Vector3.right;
         private int _outSide;
+        private float? _floor;
         private bool _blind;
         private bool _open, _drawn, _latched = true, _broken;
 
@@ -75,6 +83,7 @@ namespace CloneZ
         private static readonly float[] LandAlong = { 0f, -0.45f, 0.45f, -0.9f, 0.9f };
         private const float BodyRadius = 0.4f;
         private const float WallFace = 0.1f;   // half the house walls' thickness
+        private const float HighestClimbOut = 0.5f;   // a floor higher than this is too far over the ground to climb out from
 
         /// <summary>True while the lower sash is up.</summary>
         public bool IsOpen => _open;
@@ -82,6 +91,8 @@ namespace CloneZ
         public bool CurtainsDrawn => _drawn;
         /// <summary>True while the sash lock is turned (only ever while shut).</summary>
         public bool IsLatched => _latched;
+        /// <summary>The way out of doors from the glazing (zero for a window with a room either side).</summary>
+        internal Vector3 Outward => _normal * _outSide;
 
         public override string DisplayName => _name;
         public override Vector3 InteractPoint => _point;
@@ -141,14 +152,21 @@ namespace CloneZ
             w._normal = s.Normal.sqrMagnitude > 1e-6f ? s.Normal.normalized : Vector3.forward;
             w._along = s.Along.sqrMagnitude > 1e-6f ? s.Along.normalized : Vector3.Cross(Vector3.up, w._normal);
             w._outSide = s.OutSide;
+            w._floor = s.Floor;
             w._blind = s.Blind;
 
-            // The screen sits in world axes (the window itself may be turned 90°).
-            var screen = new GameObject("Screen");
-            screen.transform.SetParent(root.transform, false);
-            screen.transform.SetPositionAndRotation(s.Screen.center, Quaternion.identity);
-            w._screen = screen.AddComponent<BoxCollider>();
-            w._screen.size = s.Screen.size;
+            // The screen sits in world axes unless it's turned with its wall (the window itself may be turned 90°); a window with
+            // nothing to draw across it has none.
+            Quaternion turn = s.ScreenTurn;
+            if (turn.x == 0f && turn.y == 0f && turn.z == 0f && turn.w == 0f) turn = Quaternion.identity;
+            if (s.CurtainsDrawn != null)
+            {
+                var screen = new GameObject("Screen");
+                screen.transform.SetParent(root.transform, false);
+                screen.transform.SetPositionAndRotation(s.Screen.center, turn);
+                w._screen = screen.AddComponent<BoxCollider>();
+                w._screen.size = s.Screen.size;
+            }
 
             w._open = s.Open;
             w._drawn = s.Drawn;
@@ -199,9 +217,15 @@ namespace CloneZ
             var a = new InteractAction(ClimbLabel(inside), _climbAct)
                 .Timed(CloneZConfig.WindowClimbSeconds, ClimbBusyLabel(inside), HumanoidActivity.Search);
             if (!CanClimb) a.DisabledIf(true, ClimbBlocked);
+            else if (TooFarDown(-side)) a.DisabledIf(true, TooFarDownReason);
             else if (!ClimbClear(ctx, side)) a.DisabledIf(true, "Something's blocking the other side");
             into.Add(a);
         }
+
+        private const string TooFarDownReason = "It's too far down";
+
+        // Out of a window up a storey: the ground's a long drop below.
+        private bool TooFarDown(int toSide) => _floor.HasValue && _floor.Value > HighestClimbOut && _outSide != 0 && toSide == _outSide;
 
         /// <summary>True while there's a way through to climb (the sash is up).</summary>
         protected virtual bool CanClimb => _open;
@@ -383,6 +407,11 @@ namespace CloneZ
             }
             int to = -SideOf(ctx.Position, _point, _normal);
             _climbCheckedAt = -1f;
+            if (TooFarDown(to))
+            {
+                ctx.Notify(TooFarDownReason);
+                return;
+            }
             if (!FindLanding(to, ctx.Transform, out Vector3 at))
             {
                 ctx.Notify("Something's blocking the other side");
@@ -396,10 +425,12 @@ namespace CloneZ
         }
 
         // The first clear spot on side `toSide` to land on: room to stand (nothing solid, none of the dead) and a clear
-        // reach to it from the opening over whatever stands under the window. Feet on the floor (or the ground) there.
+        // reach to it from the opening over whatever stands under the window. Feet on the floor (or the ground) there: a
+        // window up a storey's room side has its floor's height.
         private bool FindLanding(int toSide, Transform self, out Vector3 at)
         {
             Vector3 n = _normal * toSide;
+            bool room = _floor.HasValue && (_outSide == 0 || toSide != _outSide);
             var foot = new Vector3(_point.x, 0f, _point.z);
             Vector3 sill = foot + n * (WallFace + 0.03f) + Vector3.up * (_point.y - 0.25f);
             for (int d = 0; d < LandDepths.Length; d++)
@@ -407,7 +438,7 @@ namespace CloneZ
                 for (int a = 0; a < LandAlong.Length; a++)
                 {
                     Vector3 p = foot + n * LandDepths[d] + _along * LandAlong[a];
-                    p.y = BuildPiece.FloorTopAt(p);
+                    p.y = room ? _floor.Value + 0.03f : BuildPiece.FloorTopAt(p);
                     if (!RoomToStand(p, self)) continue;
                     if (Physics.Linecast(sill, p + Vector3.up * 1.2f, SightMask, QueryTriggerInteraction.Ignore)) continue;
                     at = p;

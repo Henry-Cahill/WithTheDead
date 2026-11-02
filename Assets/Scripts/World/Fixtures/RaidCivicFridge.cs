@@ -91,7 +91,7 @@ namespace CloneZ
         /// <summary>The fridge door opened or closed: the lamp follows it, if there's power to light it.</summary>
         internal void DoorMoved(bool open)
         {
-            bool on = open && PowerGrid.HousePowered;
+            bool on = open && PowerGrid.PoweredAt(this);
             if (on == _lampOn) return;
             _lampOn = on;
             if (_lamp != null) _lamp.On = on;
@@ -100,7 +100,7 @@ namespace CloneZ
 
         private string ColdReport(bool freezer)
         {
-            string reason = PowerGrid.NoPowerReason;
+            string reason = PowerGrid.NoPowerReasonAt(this);
             if (reason != null) return "It's no colder than the room in here \u2014 " + LivingFixtures.Lower(reason) + ".";
             if (freezer) return "Frost nips at your fingertips. Anything in here will keep for a good long while.";
             return _medical

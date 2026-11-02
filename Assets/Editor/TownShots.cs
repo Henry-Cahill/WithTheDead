@@ -12,8 +12,9 @@ namespace CloneZ.EditorTools
     /// <summary>
     /// The Introduction town's harness (see <see cref="global::CloneZ.TownShots"/>), run headless:
     /// <c>Unity.exe -batchmode -projectPath &lt;project&gt; -executeMethod CloneZ.EditorTools.TownShots.Run
-    /// -clonez-out &lt;outDir&gt; [-clonez-town-seed &lt;n&gt;] [-clonez-town-quick] -logFile &lt;log&gt;</c>. Writes &lt;outDir&gt;\*.png
-    /// and report.md and exits by itself: 0 ok, 1 harness failure, 2 the town logged errors or failed a check.
+    /// -clonez-out &lt;outDir&gt; [-clonez-town-seed &lt;n&gt;] [-clonez-town-quick] [-clonez-town-checks] -logFile &lt;log&gt;</c>. Writes
+    /// &lt;outDir&gt;\*.png and report.md and exits by itself: 0 ok, 1 harness failure, 2 the town logged errors or failed a check.
+    /// <c>-clonez-town-checks</c> runs the checks alone, without the pictures.
     /// </summary>
     public static class TownShots
     {
@@ -24,6 +25,7 @@ namespace CloneZ.EditorTools
             if (string.IsNullOrEmpty(outDir)) outDir = Path.Combine(Directory.GetCurrentDirectory(), "Temp", "TownShots");
             int? seed = int.TryParse(ArgValue(args, "-clonez-town-seed"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int s) ? s : (int?)null;
             bool quick = Array.IndexOf(args, "-clonez-town-quick") >= 0;
+            bool shoot = Array.IndexOf(args, "-clonez-town-checks") < 0;
             int code = global::CloneZ.TownShots.ExitHarness;
             bool asyncShaders = ShaderUtil.allowAsyncCompilation;
             try
@@ -31,7 +33,7 @@ namespace CloneZ.EditorTools
                 // Edit mode in a fresh, empty scene: play mode would boot the whole game.
                 EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 ShaderUtil.allowAsyncCompilation = false;   // never a picture of a shader still compiling
-                code = global::CloneZ.TownShots.Run(outDir, seed, GameVolumeProfile(), quick);
+                code = global::CloneZ.TownShots.Run(outDir, seed, GameVolumeProfile(), quick, shoot);
             }
             catch (Exception e)
             {

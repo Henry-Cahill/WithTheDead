@@ -135,9 +135,9 @@ namespace CloneZ
             /// <summary>The roof blocks of a pitched roof; null for a flat one.</summary>
             public List<RoofPart> Parts;
             public readonly List<Hole> Holes = new List<Hole>(48);
-            /// <summary>The front door's wall and where along it (or -1).</summary>
+            /// <summary>The front door's wall and where along it (or -1); the top of the step, porch or ground before it.</summary>
             public int DoorEdge = -1;
-            public float DoorAt;
+            public float DoorAt, DoorStep;
             /// <summary>The wall the big doors are in (or -1); how many shops a strip's front holds (0 for one).</summary>
             public int BigEdge = -1, Units;
             /// <summary>Porch lamps given a real light on this site so far (see MaxPorchLights).</summary>
@@ -166,6 +166,7 @@ namespace CloneZ
                 Holes.Clear();
                 DoorEdge = -1;
                 DoorAt = 0f;
+                DoorStep = 0f;
                 BigEdge = -1;
                 Units = 0;
                 _tris = null;
@@ -293,6 +294,13 @@ namespace CloneZ
             public bool IsDoor => Win == WindowKind.None;
             /// <summary>Indicates whether the opening is a gap (a door without a closed flag).</summary>
             public bool Gap => Win == WindowKind.None && !Closed;
+            /// <summary>A working window: a real opening through the wall, its fixed sash drawn in the wall and its working parts
+            /// a RaidWindow the interiors fit (see MarkWorking).</summary>
+            public bool Working;
+            /// <summary>A fixed window: a real opening through the wall too, clear glass fixed in it (see MarkClear).</summary>
+            public bool Clear;
+            /// <summary>Never a working window: a tall building's upper floors' (an office block's don't open).</summary>
+            public bool Fixed;
         }
 
         // The next stage of the job's building; false once it's done. A big building is raised in a few stages (its
@@ -315,7 +323,8 @@ namespace CloneZ
                     j.Shell.WallTop = Mathf.Min(GroundStorey, p.WallHeight);
                     j.Top = p.WallHeight;
                     PlanOpenings(j);
-                    PlanLevels(j);
+                    MarkWorking(j);
+                    MarkClear(j);
                     Walls(j);
                     return true;
                 case 1:
@@ -409,9 +418,15 @@ namespace CloneZ
         #region Walls
         private static readonly List<Vector3> s_Gaps = new List<Vector3>(8);
         private static readonly System.Comparison<Vector3> s_ByStart = (x, y) => x.x.CompareTo(y.x);
+        /// <summary>The openings through the wall being drawn: (start, end, bottom, top) along and up it.</summary>
+        private static readonly List<Vector4> s_Holes = new List<Vector4>(16);
+        private static readonly List<float> s_Cuts = new List<float>(32);
+        private static readonly List<Vector2> s_Ys = new List<Vector2>(8);
+        private static readonly System.Comparison<Vector2> s_ByBottom = (x, y) => x.x.CompareTo(y.x);
 
         // The walls, wall by wall and stretch by stretch: the ground storey's (with colliders) cut round its door
-        // openings, everything above in the upper part; then the foundation, the corner boards and the belt courses.
+        // openings, everything above in the upper part; then the foundation, the corner boards and the belt courses. The
+        // working and fixed windows are openings too, on whatever storey they light.
         private static void Walls(Job j)
         {
             Plan p = j.P;
@@ -426,21 +441,14 @@ namespace CloneZ
                 RaidMesh facing = j.Facing(i);
                 Vector2 inset = -o * (Thick * 0.5f);   // the wall stands just inside the mapped outline
                 Gaps(j, i);
+                HolesIn(j, i);
                 foreach (Seg seg in j.Tops[i])
                 {
                     float s0 = seg.S0 <= 1e-3f ? -j.Run0[i] : seg.S0, s1 = seg.S1 >= len - 1e-3f ? len + j.Run1[i] : seg.S1;
                     float ground = Mathf.Min(seg.Top, GroundStorey);
-                    float cur = s0;
-                    foreach (Vector3 g in s_Gaps)
-                    {
-                        if (g.y <= s0 || g.x >= s1) continue;
-                        WallBox(j, facing, a, d, inset, cur, g.x, 0f, ground, yaw, j.WallS, true);
-                        WallBox(j, facing, a, d, inset, Mathf.Max(g.x, s0), Mathf.Min(g.y, s1), g.z, ground, yaw, j.WallS, true);
-                        cur = g.y;
-                    }
-                    WallBox(j, facing, a, d, inset, cur, s1, 0f, ground, yaw, j.WallS, true);
+                    WallLess(j, facing, a, d, inset, s0, s1, 0f, ground, yaw, j.WallS, true);
                     if (seg.Top > GroundStorey + 0.01f)
-                        WallBox(j, j.Upper, a, d, inset, s0, s1, GroundStorey, seg.Top, yaw, j.WallS, upstairs);
+                        WallLess(j, j.Upper, a, d, inset, s0, s1, GroundStorey, seg.Top, yaw, j.WallS, upstairs);
                 }
                 if (j.Lite) continue;
                 Foundation(j, i, facing, yaw);
@@ -457,6 +465,144 @@ namespace CloneZ
             foreach (Hole h in j.Holes)
                 if (h.Edge == i && h.Storey == 0 && h.Gap) s_Gaps.Add(new Vector3(h.S - h.W * 0.5f, h.S + h.W * 0.5f, h.Head));
             if (s_Gaps.Count > 1) s_Gaps.Sort(s_ByStart);
+        }
+
+        // Every opening through wall i: its doorways (from the ground up), its working and fixed windows (from their sills to
+        // their heads, an arched one's to where its round head springs), as (start, end, bottom, top).
+        private static void HolesIn(Job j, int i)
+        {
+            s_Holes.Clear();
+            foreach (Hole h in j.Holes)
+            {
+                if (h.Edge != i) continue;
+                if (h.Storey == 0 && h.Gap) s_Holes.Add(new Vector4(h.S - h.W * 0.5f, h.S + h.W * 0.5f, 0f, h.Head));
+                else if (h.Working || h.Clear)
+                {
+                    float floor = j.FloorY(h.Storey);
+                    s_Holes.Add(new Vector4(h.S - h.W * 0.5f, h.S + h.W * 0.5f, floor + h.Sill, floor + OpenTop(h)));
+                }
+            }
+        }
+
+        // How high a window's opening goes over its storey's floor: an arched one's to the springing of its round head (the
+        // head stays coloured glass laid on the wall), the rest to their heads.
+        private static float OpenTop(in Hole h) => h.Win == WindowKind.Arched ? h.Head - h.W * 0.5f : h.Head;
+
+        // A run of wall from s0 to s1 along it and y0 to y1 up, less the openings in s_Holes: upright strips split at the
+        // openings' sides, each the wall below, between and above whatever openings cross it.
+        private static void WallLess(Job j, RaidMesh into, Vector2 a, Vector2 d, Vector2 inset, float s0, float s1, float y0, float y1,
+            float yaw, in Surf surf, bool solid)
+        {
+            s_Cuts.Clear();
+            foreach (Vector4 h in s_Holes)
+            {
+                if (h.y <= s0 || h.x >= s1 || h.w <= y0 || h.z >= y1) continue;
+                s_Cuts.Add(Mathf.Max(h.x, s0));
+                s_Cuts.Add(Mathf.Min(h.y, s1));
+            }
+            if (s_Cuts.Count == 0)
+            {
+                WallBox(j, into, a, d, inset, s0, s1, y0, y1, yaw, surf, solid);
+                return;
+            }
+            s_Cuts.Add(s0);
+            s_Cuts.Add(s1);
+            s_Cuts.Sort();
+            for (int k = 0; k + 1 < s_Cuts.Count; k++)
+            {
+                float c0 = s_Cuts[k], c1 = s_Cuts[k + 1];
+                if (c1 - c0 < 0.005f) continue;
+                float mid = (c0 + c1) * 0.5f, cur = y0;
+                s_Ys.Clear();
+                foreach (Vector4 h in s_Holes)
+                    if (h.x < mid && h.y > mid && h.w > y0 && h.z < y1) s_Ys.Add(new Vector2(Mathf.Max(h.z, y0), Mathf.Min(h.w, y1)));
+                if (s_Ys.Count > 1) s_Ys.Sort(s_ByBottom);
+                foreach (Vector2 g in s_Ys)
+                {
+                    if (g.x > cur) WallBox(j, into, a, d, inset, c0, c1, cur, g.x, yaw, surf, solid);
+                    cur = Mathf.Max(cur, g.y);
+                }
+                if (cur < y1) WallBox(j, into, a, d, inset, c0, c1, cur, y1, yaw, surf, solid);
+            }
+        }
+
+        /// <summary>Off: the windows that don't work stay glass painted on the walls, a tall building's upper floors' a painted
+        /// grid (the harness's "before" counts).</summary>
+        internal static bool FixedWindows = true;
+
+        // Which windows work (open and shut, smash, board up, climb through: a RaidWindow the interiors fit when their floor
+        // is furnished): an enterable building's sash, picture, small and narrow ribbon windows, on a storey with a floor to
+        // stand at them (the ground one, or one of its levels), and not into its stairwell; and only in a shell of its own
+        // (the stand-in glass in them must be able to go). They're real openings in the wall (HolesIn); so are the fixed
+        // windows (MarkClear) the rest of a building's with a floor at them are; any others stay glass drawn on it.
+        private static void MarkWorking(Job j)
+        {
+            if (j.Record == null || j.Lite || j.Shell == null || j.Shell.Batched) return;
+            LevelLayout L = j.Record.Levels;
+            int top = L != null ? L.Top : 0;
+            List<WindowSpan> spans = j.Record.Windows;
+            for (int i = 0; i < j.Holes.Count; i++)
+            {
+                Hole h = j.Holes[i];
+                if (!Works(j, L, top, h)) continue;
+                h.Working = true;
+                j.Holes[i] = h;
+                int k = SpanOf(j, h);
+                if (k < 0) continue;
+                WindowSpan w = spans[k];
+                w.Working = true;
+                spans[k] = w;
+            }
+        }
+
+        // Which of an enterable building's other windows are real openings too, clear glass fixed in them (a shop's front, a
+        // church's, an office's bands, the windows of a tall building's upper floors, those too small, too big or lighting the
+        // stairwell): every one on a storey with a floor to stand at it (else there's nothing but the shell to see in it), in a
+        // shell of its own; they're seen through from both sides, and so is whatever's beyond them.
+        private static void MarkClear(Job j)
+        {
+            if (!FixedWindows || j.Record == null || j.Lite || j.Shell == null || j.Shell.Batched) return;
+            LevelLayout L = j.Record.Levels;
+            int top = L != null ? L.Top : 0;
+            List<WindowSpan> spans = j.Record.Windows;
+            for (int i = 0; i < j.Holes.Count; i++)
+            {
+                Hole h = j.Holes[i];
+                if (h.IsDoor || h.Working || h.Storey < 0 || h.Storey > top || h.W < 0.3f || OpenTop(h) - h.Sill < 0.3f) continue;
+                h.Clear = true;
+                j.Holes[i] = h;
+                int k = SpanOf(j, h);
+                if (k < 0) continue;
+                WindowSpan w = spans[k];
+                w.Clear = true;
+                w.Plain = h.Fixed;
+                w.Head = OpenTop(h);   // the interiors line and case the opening, not an arched one's head over it
+                spans[k] = w;
+            }
+        }
+
+        // The record's span of window h (or -1).
+        private static int SpanOf(Job j, in Hole h)
+        {
+            List<WindowSpan> spans = j.Record.Windows;
+            float from = h.S - h.W * 0.5f;
+            for (int k = 0; k < spans.Count; k++)
+            {
+                WindowSpan w = spans[k];
+                if (w.Edge == h.Edge && w.Storey == h.Storey && Mathf.Abs(w.From - from) <= 0.01f) return k;
+            }
+            return -1;
+        }
+
+        private static bool Works(Job j, LevelLayout L, int top, in Hole h)
+        {
+            if (h.IsDoor || h.Fixed || h.Storey < 0 || h.Storey > top) return false;
+            if (h.Win != WindowKind.Sash && h.Win != WindowKind.Picture && h.Win != WindowKind.Small && h.Win != WindowKind.Ribbon) return false;
+            if (h.W < 0.5f || h.W > 2.6f || h.Head - h.Sill < 0.6f) return false;
+            if (L == null) return true;
+            // Not into the stairwell: nobody climbs out over the stairs.
+            Vector2 inside = j.At(h.Edge, h.S) - j.Out[h.Edge] * (Thick + 0.4f);
+            return !L.Core.Contains(L.ToLocal(inside));
         }
 
         // One run of wall into <paramref name="into"/>, from s0 to s1 along it and y0 to y1 up, with a collider when

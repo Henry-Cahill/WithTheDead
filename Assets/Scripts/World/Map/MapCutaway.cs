@@ -148,6 +148,7 @@ namespace CloneZ
             // Reset the next scan/sweep timers.
             s_NextScan = s_NextSweep = s_NextEvict = 0f;
             ResetLevelStatics();
+            ResetWindowStatics();
         }
 
         #region Sites coming and going
@@ -177,6 +178,7 @@ namespace CloneZ
                 // Insert the building into the spatial hash for fast lookup.
                 Hash(b);
                 RegisterLevels(b);
+                s_ById[b.Id] = b;
                 // Update the site's highest point for later scan range calculations.
                 site.MaxTop = Mathf.Max(site.MaxTop, b.Base + b.Top);
                 // Increment the global building count.
@@ -229,6 +231,7 @@ namespace CloneZ
                 if (!ReferenceEquals(b.Site, site)) continue;
                 if (b.Applied != 0) Apply(b, 0);
                 ForgetLevels(b);
+                if (s_ById.TryGetValue(b.Id, out Building known) && ReferenceEquals(known, b)) s_ById.Remove(b.Id);
                 Unqueue(b);
                 ReleaseOverlay(b);
                 ShowDoors(b);
@@ -531,6 +534,8 @@ namespace CloneZ
                 b.Upper.shadowCastingMode = (mask & UpperBit) != 0 ? ShadowCastingMode.ShadowsOnly : ShadowCastingMode.On;
             if (((was ^ mask) & WallBits) != 0 && b.Walls != null) Doors(b, mask & WallBits);
             ShowWalls(b);
+            ShowPanes(b);
+            ShowWindows(b);
         }
         #endregion
 

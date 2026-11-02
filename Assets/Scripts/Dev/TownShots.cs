@@ -28,15 +28,17 @@ namespace CloneZ
         public const int ExitOk = 0, ExitHarness = 1, ExitTown = 2;
 
         /// <summary>Runs the harness on the town built from <paramref name="seed"/> (null: the zone's layout seed);
-        /// <paramref name="quick"/> skips the night pictures but the plan's. Returns the process exit code.</summary>
-        public static int Run(string outDir, int? seed, VolumeProfile profile, bool quick) => new Harness(outDir, seed, profile, quick).Execute();
+        /// <paramref name="quick"/> skips the night pictures but the plan's, <paramref name="shoot"/> false every picture (the
+        /// checks alone). Returns the process exit code.</summary>
+        public static int Run(string outDir, int? seed, VolumeProfile profile, bool quick, bool shoot = true)
+            => new Harness(outDir, seed, profile, quick, shoot).Execute();
 
         private sealed class Harness
         {
             private readonly string _out;
             private readonly int? _seedArg;
             private readonly VolumeProfile _profile;
-            private readonly bool _quick;
+            private readonly bool _quick, _shoot;
             private readonly StringBuilder _md = new StringBuilder();
             private readonly StringBuilder _stages = new StringBuilder();
             private readonly Stopwatch _clock = Stopwatch.StartNew();
@@ -53,12 +55,13 @@ namespace CloneZ
             private double _buildMs, _bakeMs;
             private readonly List<string> _pictures = new List<string>();
 
-            public Harness(string outDir, int? seed, VolumeProfile profile, bool quick)
+            public Harness(string outDir, int? seed, VolumeProfile profile, bool quick, bool shoot)
             {
                 _out = string.IsNullOrEmpty(outDir) ? Path.Combine(Directory.GetCurrentDirectory(), "Temp", "TownShots") : outDir;
                 _seedArg = seed;
                 _profile = profile;
                 _quick = quick;
+                _shoot = shoot;
             }
 
             public int Execute()
@@ -71,8 +74,9 @@ namespace CloneZ
                     if (Stage("setup", Setup) && Stage("build the town", Build))
                     {
                         Stage("count", Count);
+                        Stage("fixtures in reach", Fixtures);
                         Stage("navmesh and paths", Paths);
-                        Stage("pictures", Pictures);
+                        if (_shoot) Stage("pictures", Pictures);
                     }
                 }
                 catch (Exception e)
@@ -227,6 +231,38 @@ namespace CloneZ
                 t.Colliders = root.GetComponentsInChildren<Collider>(true).Length;
                 t.Objects = root.GetComponentsInChildren<Transform>(true).Length;
                 return t;
+            }
+            #endregion
+
+            #region Fixtures in reach
+            private int _fixtures, _fixturesOff;
+            private readonly List<string> _outOfReach = new List<string>();
+
+            // Every fixture in the town as the survivor reaches it (FixtureReach: PlayerInteractor's rules), from the ground: the
+            // town is one storey.
+            private void Fixtures()
+            {
+                var all = new List<Interactable>();
+                var some = new List<Interactable>();
+                foreach ((string _, Transform root) in Roots())
+                {
+                    FixtureReach.Reinsert(root);
+                    root.GetComponentsInChildren(true, some);
+                    all.AddRange(some);
+                }
+                Physics.SyncTransforms();
+                foreach (Interactable f in all)
+                {
+                    if (f == null) continue;
+                    _fixtures++;
+                    if (!f.isActiveAndEnabled)
+                    {
+                        _fixturesOff++;
+                        continue;
+                    }
+                    string why = FixtureReach.Why(f, 0f);
+                    if (why != null) _outOfReach.Add(FixtureReach.Name(f) + " at " + V(f.InteractPoint) + " (" + FixtureReach.Path(f.transform) + "): " + why);
+                }
             }
             #endregion
 
@@ -800,6 +836,11 @@ namespace CloneZ
                     foreach (string d in _doorways) _md.Append("- ").Append(d).Append('\n');
                     _md.Append('\n');
                 }
+
+                _md.Append("## Fixtures\n\n").Append(_fixtures).Append(" fixtures (").Append(_fixturesOff).Append(" switched off); ")
+                    .Append(_outOfReach.Count).Append(" can't be used from anywhere a survivor stands.\n\n");
+                foreach (string u in _outOfReach) _md.Append("- ").Append(u).Append('\n');
+                if (_outOfReach.Count > 0) _md.Append('\n');
 
                 _md.Append("## Exits\n\n| exit | this raid | where | walk from the spawn |\n|---|---|---|--:|\n");
                 foreach (string row in _exitRows) _md.Append(row).Append('\n');

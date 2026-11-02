@@ -275,6 +275,7 @@ namespace CloneZ
                 if (target == null || target.IsDead || !_hitThisAction.Add(target)) continue;
                 if (target is BuildPiece piece && !ZoneCamps.CanBash(piece.Owner)) continue;   // walls are battered by the dead —
                 if (target is Barricade planks && !ZoneCamps.CanBash(planks.Owner)) continue;  // and by raiders breaking into someone else's camp
+                if (target is WallBreach) continue;   // a building's walls, and boards across a hole in one: the build tool's job
                 Actor other = target.Transform != null ? target.Transform.GetComponent<Actor>() : null;
                 if (other != null && Me != null && !CanHarm(other)) continue;
 

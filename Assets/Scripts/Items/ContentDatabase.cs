@@ -30,7 +30,10 @@ namespace CloneZ
         public const int SchemaVersion = 6;   // v6: gear columns (containers, devices, refills, grid footprint)
 
         private const string FileName = "clonez_content.db";
-        public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+        // A co-op release's game keeps a database of its own (re-seeded whenever its build changes, see HasUsableContent),
+        // so on the developer's PC it never touches the one the editor keeps in the same folder.
+        private const string ReleaseFileName = "clonez_content_release.db";
+        public static string FilePath => Path.Combine(Application.persistentDataPath, BuildInfo.Stamped ? ReleaseFileName : FileName);
 
         // The full column list for the item table, shared by the insert and the select so their
         // ordering can never drift apart. 72 columns; the placeholder count is derived from it.
@@ -215,11 +218,13 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
         /// carries the expected tables, its <see cref="SchemaVersion"/> matches this build, and it
         /// holds at least one item. When true the database is loaded as-is (it is the source of
         /// truth); the built-in seed is written only when this is false — a first run, a corrupt
-        /// file, or an incompatible schema.
+        /// file, or an incompatible schema. A co-op release's own game (<see cref="BuildInfo.Stamped"/>)
+        /// also re-seeds whenever its build changes, so a friend's game and the server always hold the
+        /// catalogue they were built with (item ids cross the network); the editor's is left alone.
         /// </summary>
         public static bool HasUsableContent(string path)
         {
-            if (!File.Exists(path)) return false;
+            if (!File.Exists(path) || !SeededByThisBuild(path)) return false;
             try
             {
                 using (var db = new SqliteConnection(path))
@@ -260,6 +265,21 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
                 }
             }
             Debug.Log("[CloneZ] Seeded content database \u2192 " + path);
+            if (BuildInfo.Stamped)
+            {
+                try { File.WriteAllText(StampPath(path), BuildInfo.Version); }
+                catch (System.Exception e) { Debug.LogWarning("[CloneZ] Could not note the content database's build: " + e.Message); }
+            }
+        }
+
+        // A release's game notes which build seeded its database beside it (see HasUsableContent).
+        private static string StampPath(string path) => path + ".build";
+
+        private static bool SeededByThisBuild(string path)
+        {
+            if (!BuildInfo.Stamped) return true;
+            try { return File.Exists(StampPath(path)) && File.ReadAllText(StampPath(path)).Trim() == BuildInfo.Version; }
+            catch { return false; }
         }
 
         private static void WriteMeta(SqliteConnection db)

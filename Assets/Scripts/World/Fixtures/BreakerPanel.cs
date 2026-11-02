@@ -8,7 +8,9 @@ namespace CloneZ
     /// breakers. With the door open the survivor can throw the main breaker (<see cref="PowerGrid.MainBreakerOn"/>):
     /// every light and appliance in the house goes dead at once — handy for silencing a set left blaring — and comes
     /// back when it's thrown again, as long as the grid is still up. "Check the power" reads the meter. The main
-    /// breaker's handle shows which way it's thrown. The door is saved here; the breaker is saved with the grid.
+    /// breaker's handle shows which way it's thrown. The door is saved here; the breaker is saved with the grid. A panel
+    /// in a building of the statewide map (under its <see cref="BuildingPower"/>) throws that building's own main breaker
+    /// instead, saved here too.
     /// </summary>
     [DisallowMultipleComponent]
     public class BreakerPanel : Interactable
@@ -19,6 +21,8 @@ namespace CloneZ
         private bool _open;
         private bool _locked;
         private float _nextSync;
+        private BuildingPower _building;
+        private bool _buildingLooked;
         private const string RepairActionLabel = "Repair breaker panel";
 
         public override string DisplayName => "Breaker panel";
@@ -26,8 +30,23 @@ namespace CloneZ
         public override bool IsAvailable => base.IsAvailable && LightingFixtures.SurvivorInFront(_face, _normal);
         public override string SaveKey => _key;
 
-        /// <summary>True while the house's main breaker is on (it is, before there's a grid to throw it on).</summary>
-        private static bool BreakerOn => PowerGrid.Instance == null || PowerGrid.Instance.MainBreakerOn;
+        // The statewide map's building the panel serves (its own main breaker), or null: the house's, whose breaker is the grid's.
+        private BuildingPower Building
+        {
+            get
+            {
+                if (!_buildingLooked)
+                {
+                    _building = BuildingPower.Of(this);
+                    _buildingLooked = true;
+                }
+                return _building;
+            }
+        }
+
+        /// <summary>True while the main breaker is on: the building's own, or the house's (it is, before there's a grid to throw
+        /// it on).</summary>
+        private bool BreakerOn => Building != null ? BuildingPower.On(Building.Id) : PowerGrid.Instance == null || PowerGrid.Instance.MainBreakerOn;
 
         /// <summary>A panel under <paramref name="host"/> (the wall piece). <paramref name="point"/> is where the survivor
         /// reaches, <paramref name="face"/> the box's spot on the wall face and <paramref name="normal"/> the way it faces.</summary>
@@ -72,7 +91,7 @@ namespace CloneZ
             bool on = BreakerOn;
             var breaker = new InteractAction(on ? "Switch off the main breaker" : "Switch on the main breaker", c => Throw(c, !on))
                 .DisabledIf(!_open, "The panel's door is shut")
-                .DisabledIf(_open && PowerGrid.Instance == null, "There's no supply to switch");
+                .DisabledIf(_open && Building == null && PowerGrid.Instance == null, "There's no supply to switch");
             into.Add(new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", c => SetOpen(!_open, false)).DisabledIf(_locked && !_open, "The panel is locked"));
             into.Add(breaker);
             // Offer repair when the grid is down and the panel door is open.
@@ -104,14 +123,15 @@ namespace CloneZ
 
         private void Throw(InteractContext ctx, bool on)
         {
-            PowerGrid grid = PowerGrid.Instance;
-            if (grid == null) return;
-            grid.MainBreakerOn = on;
+            BuildingPower building = Building;
+            if (building != null) BuildingPower.Set(building.Id, on);
+            else if (PowerGrid.Instance == null) return;
+            else PowerGrid.Instance.MainBreakerOn = on;
             SyncHandle(false);
             HomeLamp.RefreshAll();
             MakeNoise(CloneZConfig.BreakerNoise);
             if (!on) ctx.Notify("Clunk. The house goes quiet \u2014 every light and appliance is dead.");
-            else if (grid.IsOn) ctx.Notify("Clunk. Somewhere in the house, something hums back to life.");
+            else if (PowerGrid.GridOn) ctx.Notify("Clunk. Somewhere in the house, something hums back to life.");
             else ctx.Notify("Clunk. Nothing \u2014 the grid is down anyway.");
         }
         private void LockPanel(InteractContext ctx)
@@ -146,7 +166,7 @@ namespace CloneZ
             ctx.Notify("You tighten the panel’s fuse – the house hums back to life.");
         }
 
-        private static void CheckPower(InteractContext ctx)
+        private void CheckPower(InteractContext ctx)
         {
             bool grid = PowerGrid.GridOn, breaker = BreakerOn;
             if (grid && breaker) ctx.Notify("The meter is spinning \u2014 the grid is live.");
@@ -160,6 +180,7 @@ namespace CloneZ
             int state = 0;
             if (_open) state |= 1;
             if (_locked) state |= 2;
+            if (Building != null && !BuildingPower.On(Building.Id)) state |= 4;
             save.State = state;
         }
 
@@ -169,6 +190,7 @@ namespace CloneZ
             bool locked = (save.State & 2) != 0;
             SetOpen(open, true);
             _locked = locked;
+            if (Building != null) BuildingPower.Set(Building.Id, (save.State & 4) == 0);
             SyncHandle(true);
         }
     }

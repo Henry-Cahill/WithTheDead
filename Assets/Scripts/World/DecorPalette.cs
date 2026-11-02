@@ -20,7 +20,7 @@ namespace CloneZ
         private static int s_Count;
         private static bool s_Dirty;
 
-        private static Material s_Matte, s_Gloss, s_Metal, s_Glow, s_Glass;
+        private static Material s_Matte, s_Gloss, s_Metal, s_Glow, s_Glass, s_Clear, s_Stained;
 
         private static Texture2D Tex
         {
@@ -37,7 +37,7 @@ namespace CloneZ
                         hideFlags = HideFlags.DontUnloadUnusedAsset,
                     };
                     s_Dirty = true;
-                    s_Matte = s_Gloss = s_Metal = s_Glow = s_Glass = null;
+                    s_Matte = s_Gloss = s_Metal = s_Glow = s_Glass = s_Clear = s_Stained = null;
                 }
                 return s_Tex;
             }
@@ -108,11 +108,60 @@ namespace CloneZ
             return m;
         }
 
+        /// <summary>Makes a URP Lit material see-through glass, <paramref name="opacity"/> of what's behind it hidden: the render
+        /// state URP's inspector writes for Surface Transparent, Blend Alpha; and no shadow, depth or depth-normals pass, so
+        /// light and sight go through it. (An alpha-blended surface's emission is weighed by its opacity.)</summary>
+        internal static Material SeeThrough(Material m, float opacity)
+        {
+            if (m == null) return null;
+            SetIf(m, "_Surface", 1f);
+            SetIf(m, "_Blend", 0f);
+            SetIf(m, "_BlendModePreserveSpecular", 0f);
+            SetIf(m, "_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            SetIf(m, "_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            SetIf(m, "_SrcBlendAlpha", (float)UnityEngine.Rendering.BlendMode.One);
+            SetIf(m, "_DstBlendAlpha", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            SetIf(m, "_ZWrite", 0f);
+            if (m.HasProperty("_BaseColor"))
+            {
+                Color c = m.GetColor("_BaseColor");
+                c.a = opacity;
+                m.SetColor("_BaseColor", c);
+            }
+            if (m.HasProperty("_Color"))
+            {
+                Color c = m.GetColor("_Color");
+                c.a = opacity;
+                m.SetColor("_Color", c);
+            }
+            m.SetOverrideTag("RenderType", "Transparent");
+            m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            m.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            m.SetShaderPassEnabled("ShadowCaster", false);
+            m.SetShaderPassEnabled("DepthOnly", false);
+            m.SetShaderPassEnabled("DepthNormals", false);
+            return m;
+        }
+
+        private static void SetIf(Material m, string property, float value)
+        {
+            if (m.HasProperty(property)) m.SetFloat(property, value);
+        }
+
         private static Material MatteMat => s_Matte != null && s_Tex != null ? s_Matte : Make(ref s_Matte, false, 0.12f, 0f, "RaidPaletteMatte");
         private static Material GlossMat => s_Gloss != null && s_Tex != null ? s_Gloss : Make(ref s_Gloss, false, 0.55f, 0f, "RaidPaletteGloss");
         private static Material MetalMat => s_Metal != null && s_Tex != null ? s_Metal : Make(ref s_Metal, false, 0.5f, 0.65f, "RaidPaletteMetal");
         private static Material GlassMat => s_Glass != null && s_Tex != null ? s_Glass : Make(ref s_Glass, false, 0.9f, 0.1f, "RaidPaletteGlass");
         private static Material GlowMat => s_Glow != null && s_Tex != null ? s_Glow : Make(ref s_Glow, true, 0f, 0f, "RaidPaletteGlow");
+        private static Material ClearMat => s_Clear != null && s_Tex != null ? s_Clear : SeeThrough(Make(ref s_Clear, false, 0.95f, 0f, "RaidPaletteWindowGlass"), ClearOpacity);
+        private static Material StainedMat => s_Stained != null && s_Tex != null ? s_Stained : SeeThrough(Make(ref s_Stained, false, 0.9f, 0f, "RaidPaletteStainedGlass"), StainedOpacity);
+
+        /// <summary>How much of what's behind it a window's clear glass hides, and a church's coloured glass.</summary>
+        private const float ClearOpacity = 0.24f, StainedOpacity = 0.55f;
+
+        /// <summary>The faint grey-blue clear window glass lends what's seen through it.</summary>
+        public static readonly Color ClearTint = new Color(0.60f, 0.70f, 0.76f);
 
         /// <summary>A flat, dull colour (wood, fabric, paint, cardboard, snow).</summary>
         public static Surf Matte(Color c) => new Surf(MatteMat, UvOf(c), 0f);
@@ -122,6 +171,13 @@ namespace CloneZ
         public static Surf Metal(Color c) => new Surf(MetalMat, UvOf(c), 0f);
         /// <summary>Glass and screens: dark and mirror-smooth.</summary>
         public static Surf Glass(Color c) => new Surf(GlassMat, UvOf(c), 0f);
+        /// <summary>A window's glass, seen through: a faint tint (<paramref name="c"/>) and a sheen over what's behind it. It
+        /// casts no shadow and writes no depth, so the sun, the survivor's sight light and the eye all go through.</summary>
+        public static Surf WindowGlass(Color c) => new Surf(ClearMat, UvOf(c), 0f);
+        /// <summary>A window's clear glass in its usual tint (<see cref="ClearTint"/>).</summary>
+        public static Surf WindowGlass() => WindowGlass(ClearTint);
+        /// <summary>Coloured glass (a church's), seen through dimly.</summary>
+        public static Surf StainedGlass(Color c) => new Surf(StainedMat, UvOf(c), 0f);
         /// <summary>An unlit, self-lit colour (bulbs, lit diffusers, cooler back-lights).</summary>
         public static Surf Glow(Color c) => new Surf(GlowMat, UvOf(c), 0f);
 

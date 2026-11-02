@@ -787,6 +787,31 @@ private static float RoofPeriod(RoofCover cover)
         /// <summary>Stained glass lit from inside (tone as <see cref="Stained"/>).</summary>
         private static Surf StainedGlow(int tone) => PaneSurf(PaneTones + Mathf.Abs(tone) % PaneTones, 0);
 
+        /// <summary>A lit window's clear glass (a working window's stand-in, a fixed window), seen through, its lamplight
+        /// glowing through it after dark: <see cref="LitPane"/>'s tones.</summary>
+        private static Surf LitPaneClear(int tone) => PaneClearSurf(Mathf.Abs(tone) % PaneTones);
+
+        /// <summary>A fixed window's stained glass lit from inside, seen through dimly.</summary>
+        private static Surf StainedGlowClear(int tone) => PaneClearSurf(PaneTones + Mathf.Abs(tone) % PaneTones);
+
+        // The panes' palette as see-through glass: how much of what's behind it a lit pane hides (more than a dark one, so
+        // the room's light reads), and the one material, made from the opaque one's.
+        private const float PaneClearOpacity = 0.4f;
+        private static Material s_PaneClearMat;
+
+        private static Surf PaneClearSurf(int x)
+        {
+            if (s_PaneClearMat == null)
+            {
+                PaneSurf(0, 0);
+                s_PaneClearMat = new Material(s_PaneMat) { name = "Bldg_PanesClear", hideFlags = HideFlags.DontUnloadUnusedAsset };
+                DecorPalette.SeeThrough(s_PaneClearMat, PaneClearOpacity);
+                // Blended by its opacity, its glow is weighed by it too: made up for, so it glows as an opaque lit pane does.
+                Glowing(s_PaneClearMat, new Color(0.85f, 0.85f, 0.85f) / PaneClearOpacity);
+            }
+            return new Surf(s_PaneClearMat, new Vector2((x + 0.5f) / PaneColumns, 0.25f), 0f);
+        }
+
         /// <summary>A lamp's globe, lit.</summary>
         private static Surf LampGlobe(int tone) => PaneSurf(Mathf.Abs(tone) % PaneTones, 1);
 

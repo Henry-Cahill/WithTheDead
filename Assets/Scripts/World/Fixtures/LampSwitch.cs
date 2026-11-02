@@ -69,7 +69,7 @@ namespace CloneZ
         // Checks whether the house currently has electricity.
         private void CheckPower(InteractContext ctx)
         {
-            ctx.Notify(PowerGrid.HousePowered ? "The house has power." : "The house is without power.");
+            ctx.Notify(PowerGrid.PoweredAt(this) ? "The house has power." : "The house is without power.");
         }
 
         // Toggles the lamp's flicker effect.
@@ -102,7 +102,7 @@ namespace CloneZ
             if (_lamp == null) return;
             _lamp.SetSwitchedOn(on);
             MakeNoise(CloneZConfig.LightSwitchNoise);
-            if (on && !PowerGrid.HousePowered) ctx.Notify(LightingFixtures.NothingHappens());
+            if (on && !PowerGrid.PoweredAt(this)) ctx.Notify(LightingFixtures.NothingHappens(this));
             else if (on && _lamp.DeadBulb) ctx.Notify("Nothing happens. The bulb must have gone.");
         }
 

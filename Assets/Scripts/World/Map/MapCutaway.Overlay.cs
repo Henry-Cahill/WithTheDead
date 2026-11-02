@@ -6,7 +6,8 @@ using Debug = UnityEngine.Debug;
 
 namespace CloneZ
 {
-    // The walls' stand-in. A building's walls object is baked into the NavMesh, so it's never changed: while some of its
+    // The walls' stand-in. A building's walls object is baked into the NavMesh, so it's never changed (but for a hole battered
+    // through it, OutsideWall, after which its stand-in is made again: WallsChanged): while some of its
     // facings are cut, or the storeys above are lifted, it only casts shadows and a stand-in under the site's overhead root
     // shows the walls instead. The stand-in is a copy of the walls mesh with its triangles sorted by facing (each goes with
     // the wall it stands nearest to, measured to the middle of each wall's thickness, so a wall's end at a corner stays with
@@ -152,6 +153,18 @@ namespace CloneZ
             SubMeshDescriptor d = b.OverlayParts[sub];
             if (!on) d.indexCount = 0;
             b.OverlayMesh.SetSubMesh(sub, d, Toggle);
+        }
+
+        /// <summary>A building's walls mesh cut (a hole battered through one of its outside walls): its stand-in, a copy of the
+        /// walls as they were, let go of, and made again at once if its walls are cut now (else when they next are).</summary>
+        internal static void WallsChanged(long id)
+        {
+            if (!s_ById.TryGetValue(id, out Building b)) return;
+            bool showing = b.Applied != 0 && OverlayReady(b);
+            ReleaseOverlay(b);
+            if (!showing || !b.Measured || b.OverlayFailed) return;
+            MakeOverlayNow(b);
+            ShowWalls(b);
         }
 
         /// <summary>Lets go of a building's stand-in (its site is going, or the survivor has gone on).</summary>

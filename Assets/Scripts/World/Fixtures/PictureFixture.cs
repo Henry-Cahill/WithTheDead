@@ -107,13 +107,17 @@ namespace CloneZ
             _nextCheck = Time.time + CloneZConfig.SwitchSyncInterval;
             // A blow to the wall can knock the picture askew.
             float hp = _wall.Health;
-            float knockChance = _secured ? CloneZConfig.PictureKnockChance * 0.5f : CloneZConfig.PictureKnockChance;
-            if (hp < _wallHealth - 0.01f && Random.value < knockChance)
-            {
-                float knock = Random.Range(3f, 7f) * (Random.value < 0.5f ? -1f : 1f);
-                _roll = Mathf.Clamp(_roll + knock, -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
-            }
+            if (hp < _wallHealth - 0.01f) Jolt();
             _wallHealth = hp;
+        }
+
+        /// <summary>A blow to the wall it hangs on: now and then it's knocked askew (less often once it's been secured).</summary>
+        internal void Jolt()
+        {
+            float knockChance = _secured ? CloneZConfig.PictureKnockChance * 0.5f : CloneZConfig.PictureKnockChance;
+            if (Random.value >= knockChance) return;
+            float knock = Random.Range(3f, 7f) * (Random.value < 0.5f ? -1f : 1f);
+            _roll = Mathf.Clamp(_roll + knock, -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
         }
 
         private void Apply()

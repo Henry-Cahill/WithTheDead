@@ -39,13 +39,13 @@ namespace CloneZ
         protected override string SourceName => "TV";
         protected override float CaptionRange => CloneZConfig.TvCaptionRange;
         protected override float CalmPerSecond => CloneZConfig.WatchTvPanicEasePerSec;
-        protected override bool HasPower => PowerGrid.HousePowered;
+        protected override bool HasPower => PowerGrid.PoweredAt(this);
 
         protected override string DeathNotice
         {
             get
             {
-                string why = PowerGrid.NoPowerReason;
+                string why = PowerGrid.NoPowerReasonAt(this);
                 return "The TV dies \u2014 the picture shrinks to a bright dot and fades" + (why != null ? ". " + why + "." : ".");
             }
         }
@@ -110,7 +110,7 @@ namespace CloneZ
                 // Offer the turn‑on action, but disable it when the player is too far or the house lacks power.
                 into.Add(new InteractAction("Turn on the TV", TurnOn)
                     .DisabledIf(!near, TooFar)
-                    .DisabledIf(!PowerGrid.HousePowered, PowerGrid.NoPowerReason));
+                    .DisabledIf(!PowerGrid.PoweredAt(this), PowerGrid.NoPowerReasonAt(this)));
                 // No other actions make sense while the TV is off.
                 return;
             }
@@ -141,9 +141,9 @@ namespace CloneZ
         /// <summary>Turns the TV on, checking power and notifying the player.</summary>
         private void TurnOn(InteractContext ctx)
         {
-            if (!PowerGrid.HousePowered)
+            if (!PowerGrid.PoweredAt(this))
             {
-                ctx.Notify(PowerGrid.NoPowerReason);
+                ctx.Notify(PowerGrid.NoPowerReasonAt(this));
                 return;
             }
             Switch(true);

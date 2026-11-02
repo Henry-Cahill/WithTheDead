@@ -12,7 +12,8 @@ namespace CloneZ
     /// drawn on the footprint's own axes under a turned frame object so the boards and tiles run with the walls; the working
     /// doors (the raid town's <see cref="RaidDoor"/>s) in every doorway, the front door's too; a light switch by each room's
     /// door; then the rooms furnished one by one with the raid town's pieces (<see cref="RaidBuilding"/> on the building's own
-    /// turn); then the furniture's meshes and the fixtures hung on the walls. Everything goes under one root under the site's
+    /// turn); the working windows (<see cref="RaidWindow"/>s) in the outside walls' openings; then the furniture's meshes and
+    /// the fixtures hung on the walls. Everything goes under one root under the site's
     /// world root (the NavMesh bake reads it) and the ceiling fittings under the site's overhead root; <see cref="Discard"/>
     /// takes it all down again. Built inactive and switched on at the end, so a half-built interior never shows.
     /// </summary>
@@ -96,6 +97,8 @@ namespace CloneZ
                 yield return "interior doors";
             }
             Switches();
+            Breaker();
+            Yard();
             yield return "interior switches";
             RoomMs = new double[Plan.Rooms.Count];
             for (int i = 0; i < Plan.Rooms.Count; i++)
@@ -106,6 +109,12 @@ namespace CloneZ
                 catch (System.Exception e) { Trouble("room " + i + " (" + Plan.Rooms[i].Role + ")", e); }
                 RoomMs[i] = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
                 yield return "interior rooms";
+            }
+            // The working windows: in a harness, as the floor's built; in the game, by the window streamer once a survivor's near.
+            for (int k = 0; WindowStreamer.FitAtOnce && !WindowsFitted && k < 256; k++)
+            {
+                FitSomeWindows(WindowsPerStep);
+                yield return "interior windows";
             }
             EmitWalls();
             yield return "interior wall meshes";
@@ -204,6 +213,9 @@ namespace CloneZ
             // from the site's stream or depends on the order buildings are furnished in.
             Town = new RaidTown(Root.transform, Plan.Seed, new RaidMapInfo { HalfSize = 4f }, _overheadParent);
             Town.Overhead.name = "Interior " + Plan.Name;
+            // Its own main breaker (BuildingPower, thrown at its panel): the lights and appliances under either root go dead with it.
+            Root.AddComponent<BuildingPower>().Id = Plan.Id;
+            Town.Overhead.gameObject.AddComponent<BuildingPower>().Id = Plan.Id;
             if (Town.Scenery != null) Object.DestroyImmediate(Town.Scenery.gameObject);
             Vector2 centre = Plan.ToSite(Vector2.zero) + new Vector2(_offset.x, _offset.z);
             Rect ext = Plan.Extent;
@@ -749,8 +761,407 @@ namespace CloneZ
         }
         #endregion
 
+        #region Breaker panel
+        private const float BreakerTilt = 40f;   // the main breaker's handle, as the starter home's
+
+        // The building's breaker panel, one to a building on its lowest floor, as the starter home's store room has one: on a
+        // partition of the likeliest room (a laundry, a garage or back room, a kitchen, a hall...), well clear of its doorways
+        // and switches, the floor before it kept clear by the furnishing (a switch spot). It throws the building's own main
+        // breaker (BuildingPower). The box is drawn into the partition; the door and the handle hang under it, so they go with
+        // it in the cutaway.
+        private void Breaker()
+        {
+            int lowest = Plan.Record.Levels != null ? Plan.Record.Levels.Lowest : 0;
+            if (Plan.Level != lowest) return;
+            var rooms = new List<int>(Plan.Rooms.Count);
+            for (int i = 0; i < Plan.Rooms.Count; i++)
+                if (BreakerRank(Plan.Rooms[i].Role) >= 0) rooms.Add(i);
+            rooms.Sort((a, b) => BreakerRank(Plan.Rooms[a].Role).CompareTo(BreakerRank(Plan.Rooms[b].Role)));
+            foreach (int room in rooms)
+                foreach (InteriorPass.Piece p in Pieces)
+                {
+                    if (p.Door != null || p.Object == null || p.E - p.S < 2f) continue;
+                    for (float at = p.S + 0.95f; at <= p.E - 0.95f; at += 0.25f)
+                    {
+                        int side = SideOf(p.Run, at, room);
+                        if (side == 0 || !ClearOfSwitches(P(p.Run, at, 0f, side * (Half + 0.004f)))) continue;
+                        HangBreaker(p, at, side, room);
+                        return;
+                    }
+                }
+        }
+
+        // Where a building's breaker panel goes first: a laundry, then a garage, workshop or back room, a kitchen, a hall or
+        // an office; anywhere but a stairwell, a bathroom or a cell.
+        private static int BreakerRank(RoomRole role)
+        {
+            switch (role)
+            {
+                case RoomRole.Laundry: return 0;
+                case RoomRole.HomeGarage: case RoomRole.Workshop: case RoomRole.Stock: case RoomRole.BackOffice: case RoomRole.Warehouse:
+                case RoomRole.Bays: case RoomRole.Sorting: case RoomRole.Barn: case RoomRole.Shed: case RoomRole.Records:
+                    return 1;
+                case RoomRole.Kitchen: case RoomRole.CommercialKitchen: case RoomRole.Closet: case RoomRole.BreakRoom: return 2;
+                case RoomRole.Hall: case RoomRole.Den: case RoomRole.Office: case RoomRole.Lobby: case RoomRole.Squad: return 3;
+                case RoomRole.Stair: case RoomRole.Bathroom: case RoomRole.Restroom: case RoomRole.Vault: case RoomRole.Cells:
+                    return -1;
+                default: return 4;
+            }
+        }
+
+        // Which side of run `r` room `room` is on at `along` (+1/-1), or 0 when the partition there doesn't bound it.
+        private static int SideOf(InteriorPass.Run r, float along, int room)
+        {
+            foreach (PlanWall w in r.Walls)
+            {
+                if (along < w.A || along > w.B) continue;
+                if (w.Plus == room) return 1;
+                if (w.Minus == room) return -1;
+            }
+            return 0;
+        }
+
+        // True when a spot on a wall's face (frame) is a stride from every switch.
+        private bool ClearOfSwitches(Vector3 faceL)
+        {
+            foreach (KeyValuePair<int, Vector2> spot in SwitchSpots)
+                if ((spot.Value - new Vector2(faceL.x, faceL.z)).sqrMagnitude < 0.6f * 0.6f) return false;
+            return true;
+        }
+
+        private void HangBreaker(InteriorPass.Piece p, float at, int side, int room)
+        {
+            const float w = 0.32f, h = 0.42f, d = 0.09f, y = 1.45f;
+            Vector3 backL = P(p.Run, at, y, side * (Half + 0.004f)), nL = N(p.Run, side);
+            Vector3 pivotL = FurnitureBuilder.BreakerBox(p.Mesh, backL, nL, w, h, d);
+            Vector3 back = Frame.TransformPoint(backL), n = Frame.TransformDirection(nL), front = back + n * d;
+            Vector3 right = Vector3.Cross(n, Vector3.up).normalized, pivot = Frame.TransformPoint(pivotL);
+            BreakerPanel panel = BreakerPanel.Create(p.Object.transform, front + n * 0.05f, back, n);
+
+            var door = new RaidMesh();
+            FurnitureBuilder.BreakerDoor(door, front, n, right, w, h);
+            Vector3 hinge = front - right * (w * 0.5f + 0.003f) + n * 0.006f;
+            FixturePart doorPart = FixturePart.Hinge(panel.transform, "Door", door, hinge, Vector3.Cross(right, n), 105f, ShadowCastingMode.Off);
+            var handle = new RaidMesh();
+            FurnitureBuilder.BreakerHandle(handle, pivot, n, BreakerTilt);
+            FixturePart handlePart = FixturePart.Hinge(panel.transform, "MainBreaker", handle, pivot, Vector3.Cross(Vector3.up, n), BreakerTilt * 2f,
+                ShadowCastingMode.Off).WithSpeed(0.12f);
+            panel.SetParts(doorPart, handlePart);
+            SwitchSpots.Add(new KeyValuePair<int, Vector2>(room, new Vector2(backL.x, backL.z)));
+        }
+        #endregion
+
+        #region Yard
+        // The front door's fittings made to work as the starter home's are, where the exteriors pass placed them
+        // (BuildingPass.Frontage): the doormat on the step before the door (lift it to look under), the house-number plate
+        // beside the door (read from the yard), the wall mailbox's post (the box is the wall's). With the ground floor, so only
+        // near the survivors; the plate goes with its wall in the cutaway.
+        private Transform _yardRoot;
+
+        private void Yard()
+        {
+            KentuckyMap.YardSpots yard = Plan.Record.Yard;
+            if (yard == null || Plan.Level != 0) return;
+            var root = new GameObject("Yard").transform;
+            root.SetParent(Root.transform, false);
+            _yardRoot = root;
+            var rng = new System.Random(unchecked(Plan.Seed * 13 + 0x7A2D));
+            Vector2 o = yard.Outward;
+
+            // The doormat before the door, its near edge to the street.
+            const float d = FurnitureBuilder.DoormatDepth;
+            float yaw = Mathf.Atan2(-o.x, -o.y) * Mathf.Rad2Deg;
+            Quaternion q = Quaternion.Euler(0f, yaw, 0f);
+            Vector2 c = yard.Door + o * (0.08f + d * 0.5f);
+            Vector3 at = new Vector3(c.x, yard.Step + 0.006f, c.y) + _offset;
+            var mat = new RaidMesh();
+            mat.SetFrame(at, yaw);
+            FurnitureBuilder.Doormat(mat, rng);
+            mat.ResetFrame();
+            DoormatFixture doormat = DoormatFixture.Create(root, at + q * new Vector3(0f, 0.03f, 0.04f - d * 0.5f));
+            FixturePart lift = FixturePart.Hinge(doormat.transform, "Mat", mat, at + q * new Vector3(0f, 0f, d * 0.5f), q * Vector3.right, 65f,
+                ShadowCastingMode.Off).WithSpeed(0.25f);
+            doormat.SetMat(lift);
+
+            if (yard.HasMailbox) MailboxFixture.Create(root, yard.Mailbox + _offset, RaidHomeLiving.Post(rng));
+
+            if (yard.Number != null)
+            {
+                Vector3 plate = yard.Plate + _offset, n = yard.PlateNormal;
+                var m = new RaidMesh();
+                FurnitureBuilder.HouseNumberPlate(m, plate, n, yard.Number);
+                GameObject go = m.Emit("HouseNumber", root, plate, ShadowCastingMode.Off);
+                if (go != null)
+                {
+                    go.transform.rotation = Quaternion.identity;
+                    go.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
+                    MapCutaway.AddWindow(Plan.Id, 0, KentuckyMap.BuildingShell.Facing(o), go);
+                }
+                OutdoorHouseNumber.Create(root, yard.Number, plate + n * 0.04f, plate, n, RaidHomeLiving.NumberLine(yard.Number, rng));
+            }
+            DecorPalette.Apply();
+        }
+        #endregion
+
+        #region Windows
+        /// <summary>The working windows fitted (<see cref="FitSomeWindows"/>) and the facing of each one's wall, for the cutaway.</summary>
+        private readonly List<(GameObject root, int facing)> _windows = new List<(GameObject, int)>();
+        private Transform _windowsRoot;
+        private int _windowCursor;
+        /// <summary>Working windows fitted now (for the harness).</summary>
+        public int Windows => _windows.Count;
+        /// <summary>The floor's working windows are all in, or some of them are (<see cref="FitSomeWindows"/>).</summary>
+        public bool WindowsFitted, WindowsStarted;
+
+        private const int WindowsPerStep = 6;
+
+        /// <summary>Fits up to <paramref name="budget"/> more of the floor's working windows (the openings the exteriors pass left
+        /// through its outside walls, their fixed parts in the walls, the casing and the stool round each drawn by the shell's
+        /// linings): the starter home's sashes in each and what its room hangs there, under an object of their own apart from the
+        /// furniture, each into the cutaway with its wall and put back as it was left if it was in before. How many it fitted;
+        /// once they're all in, the floor's stand-in glass goes.</summary>
+        internal int FitSomeWindows(int budget)
+        {
+            if (WindowsFitted || Root == null || (Done && !Root.activeInHierarchy)) return 0;
+            WindowsStarted = true;
+            // Fitted after the floor was finished (by the window streamer): their meshes are theirs, gone with them, and their
+            // planar textures run on as the floor's did.
+            List<Mesh> meshes = RaidMesh.CreatedMeshes;
+            Vector3 uv = RaidMesh.PlanarOrigin;
+            if (Done)
+            {
+                RaidMesh.CreatedMeshes = null;
+                RaidMesh.PlanarOrigin = new Vector3(Wrapped(_offset.x) - _offset.x, 0f, Wrapped(_offset.z) - _offset.z);
+            }
+            int fitted = 0;
+            try
+            {
+                while (_windowCursor < Plan.Windows.Count && fitted < budget)
+                {
+                    int k = _windowCursor++;
+                    if (!Plan.Windows[k].Working) continue;
+                    int before = _windows.Count;
+                    try { FitWindow(Plan.Windows[k], k); }
+                    catch (System.Exception e) { Trouble("window " + k, e); }
+                    for (int i = before; i < _windows.Count; i++)
+                    {
+                        GameObject root = _windows[i].root;
+                        RaidWindow win = root.GetComponent<RaidWindow>();
+                        if (win != null) WindowStreamer.Restore(win);
+                        MapCutaway.AddWindow(Plan.Id, Plan.Level, _windows[i].facing, root);
+                    }
+                    fitted++;
+                }
+            }
+            finally
+            {
+                RaidMesh.CreatedMeshes = meshes;
+                RaidMesh.PlanarOrigin = uv;
+            }
+            if (_windowCursor >= Plan.Windows.Count)
+            {
+                WindowsFitted = true;
+                if (Done) ShowPanes(false);
+            }
+            return fitted;
+        }
+
+        /// <summary>Takes the floor's windows out (what each was left as kept by the window streamer), meshes and all, and puts
+        /// its stand-in glass back.</summary>
+        internal void DropWindows()
+        {
+            foreach ((GameObject root, int facing) in _windows)
+            {
+                RaidWindow win = root != null ? root.GetComponent<RaidWindow>() : null;
+                if (win != null) WindowStreamer.Keep(win);
+            }
+            if (_windowsRoot != null)
+            {
+                MapCutaway.RemoveWindows(Plan.Id, _windowsRoot.gameObject);
+                foreach (MeshFilter mf in _windowsRoot.GetComponentsInChildren<MeshFilter>(true)) InteriorPass.Kill(mf.sharedMesh);
+                InteriorPass.Kill(_windowsRoot.gameObject);
+            }
+            _windowsRoot = null;
+            _windows.Clear();
+            _windowCursor = 0;
+            bool were = WindowsStarted;
+            WindowsFitted = WindowsStarted = false;
+            if (were && Done) ShowPanes(true);
+        }
+
+        private static float Wrapped(float v)
+        {
+            double r = v % RaidMesh.PlanarPeriod;
+            return (float)(r < 0 ? r + RaidMesh.PlanarPeriod : r);
+        }
+
+        // One of the plan's windows (the `index`th), fitted: its working parts, or, walled off, its glass.
+        private void FitWindow(in PlanWindow w, int index)
+        {
+            float width = Vector2.Distance(w.A, w.B);
+            if (width < 0.4f || w.Head - w.Sill < 0.4f) return;
+            if (_windowsRoot == null)
+            {
+                _windowsRoot = new GameObject("Windows").transform;
+                _windowsRoot.SetParent(Root.transform, false);
+            }
+            Vector2 outward = w.Outward.normalized;
+            Vector3 middle = World((w.A + w.B) * 0.5f + outward * (Plan.Thick * 0.5f), 0f);   // on the wall's centre line
+            Vector3 inward = -WorldDir(outward).normalized;
+            Vector3 along = Vector3.Cross(Vector3.up, inward);
+            // Where the survivor reaches for it, and the room it lights: a partition may meet the outside wall across it, so
+            // the point along it nearest its middle with the floor in front of it clear of the partitions (the clearest there
+            // is, when none is), and the room in front of that. One a partition stands over all along (a room stopping short
+            // of the wall there) is walled off: glass that does nothing.
+            Vector2 u = (w.B - w.A) / width;
+            int facing = KentuckyMap.BuildingShell.Facing(Plan.DirToSite(outward));
+            float s = Handle((w.A + w.B) * 0.5f, u, -outward, width, out float clear);
+            if (clear < 0f)
+            {
+                GameObject walledOff = RaidBuilding.FixedWindowIn(_windowsRoot, middle, inward, width, w.Sill, w.Head);
+                if (walledOff != null) _windows.Add((walledOff, facing));
+                return;
+            }
+            Vector2 front = (w.A + w.B) * 0.5f + u * s - outward * 0.4f;
+            int room = Plan.RoomAt(front);
+            if (room < 0) room = Plan.NearestRoom(front);
+            if (room < 0) room = w.Room;
+            float lo = -width * 0.5f - 0.3f, hi = width * 0.5f + 0.3f;
+            if (room >= 0 && room < Plan.Rooms.Count) Extent(Plan.Rooms[room].R, middle, along, out lo, out hi);
+            // Its own random stream, and its room's curtains: the same window whenever it's fitted. As the town was left: whole,
+            // mostly; now and then smashed, or (on the ground floor) boarded over outside.
+            int seed = unchecked(Plan.Seed * 92821 + index * 7919 + 0x3B1);
+            var roll = new System.Random(seed ^ 0x2F7);
+            var mw = new RaidBuilding.MapWindow
+            {
+                Middle = middle,
+                Inward = inward,
+                Width = width,
+                Sill = w.Sill,
+                Head = w.Head,
+                Face = Plan.Thick * 0.5f,
+                Lo = Mathf.Min(lo, -width * 0.5f - 0.1f),
+                Hi = Mathf.Max(hi, width * 0.5f + 0.1f),
+                Handle = Vector3.Dot(WorldDir(u), along) * s,
+                Room = room >= 0 && room < Rooms.Count ? Rooms[room] : null,
+                Dressing = DressingFor(room >= 0 && room < Plan.Rooms.Count ? Plan.Rooms[room] : null),
+                Fabric = RaidBuilding.MapCurtainFabric(unchecked(Plan.Seed * 31 + room * 977 + 0x7A)),
+                Glass = roll.NextDouble() < CloneZConfig.MapWindowSmashedChance ? RaidWindow.Glazing.Smashed : RaidWindow.Glazing.Intact,
+                Boarded = Plan.Level == 0 && roll.NextDouble() < CloneZConfig.MapWindowBoardedChance,
+                Seed = seed,
+            };
+            RaidWindow win = RaidBuilding.FitWindowIn(_windowsRoot, mw, B.Kind);
+            if (win != null) _windows.Add((win.gameObject, facing));
+        }
+
+        // How far along a window's inner face from its middle (frame: `u` along it, `inward` into the room) the survivor
+        // reaches for it: the nearest the middle with the floor in front clear of the partitions by a body's width, else the
+        // clearest spot; `clear`, how clear (below 0, a partition stands on it).
+        private float Handle(Vector2 mid, Vector2 u, Vector2 inward, float width, out float clear)
+        {
+            float best = 0f;
+            clear = float.MinValue;
+            for (int k = 0; ; k++)
+            {
+                float s = (k + 1) / 2 * 0.05f * (k % 2 == 1 ? 1f : -1f);   // 0, +0.05, -0.05, +0.1...
+                if (k > 0 && Mathf.Abs(s) > width * 0.5f - 0.12f) break;
+                Vector2 q = mid + u * s;
+                float c = Clearance(q, q + inward * 0.9f);
+                if (c >= 0.4f)
+                {
+                    clear = c;
+                    return s;
+                }
+                if (c > clear)
+                {
+                    clear = c;
+                    best = s;
+                }
+            }
+            return best;
+        }
+
+        // How far the floor from a to b (frame) is from the nearest partition's face (doorways' heads, overhead, aside).
+        private float Clearance(Vector2 a, Vector2 b)
+        {
+            float clear = float.MaxValue;
+            foreach (InteriorPass.Piece p in Pieces)
+            {
+                if (p.Door != null) continue;
+                Vector2 p0 = p.AlongX ? new Vector2(p.S, p.Coord) : new Vector2(p.Coord, p.S);
+                Vector2 p1 = p.AlongX ? new Vector2(p.E, p.Coord) : new Vector2(p.Coord, p.E);
+                clear = Mathf.Min(clear, SegmentDistance(a, b, p0, p1) - Half);
+            }
+            return clear;
+        }
+
+        private static float SegmentDistance(Vector2 a0, Vector2 a1, Vector2 b0, Vector2 b1)
+        {
+            float c0 = Cross(b1 - b0, a0 - b0), c1 = Cross(b1 - b0, a1 - b0), c2 = Cross(a1 - a0, b0 - a0), c3 = Cross(a1 - a0, b1 - a0);
+            if ((c0 > 0f) != (c1 > 0f) && (c2 > 0f) != (c3 > 0f)) return 0f;
+            return Mathf.Min(Mathf.Min(PointSegment(a0, b0, b1), PointSegment(a1, b0, b1)), Mathf.Min(PointSegment(b0, a0, a1), PointSegment(b1, a0, a1)));
+        }
+
+        private static float PointSegment(Vector2 p, Vector2 a, Vector2 b)
+        {
+            Vector2 ab = b - a;
+            float t = ab.sqrMagnitude > 1e-8f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
+            return Vector2.Distance(p, a + ab * t);
+        }
+
+        private static float Cross(Vector2 a, Vector2 b) => a.x * b.y - a.y * b.x;
+
+        // A room's rectangle seen from a window: how far it runs either way along the wall from the window's middle.
+        private void Extent(Rect r, Vector3 middle, Vector3 along, out float a0, out float a1)
+        {
+            a0 = float.MaxValue;
+            a1 = float.MinValue;
+            for (int c = 0; c < 4; c++)
+            {
+                float d = Vector3.Dot(World(new Vector2((c & 1) == 0 ? r.xMin : r.xMax, (c & 2) == 0 ? r.yMin : r.yMax), 0f) - middle, along);
+                a0 = Mathf.Min(a0, d);
+                a1 = Mathf.Max(a1, d);
+            }
+        }
+
+        // What a room hangs at its windows, as the shell's glass-only windows had it: a home's curtains, a workplace's blind
+        // (a kitchen's and a bathroom's too), nothing in a shop, a shed or a hall.
+        private static RaidWindow.Dressing DressingFor(PlanRoom room)
+        {
+            if (room == null || room.Design == null) return RaidWindow.Dressing.None;
+            switch (room.Role)
+            {
+                case RoomRole.Living: case RoomRole.Bedroom: case RoomRole.Dining: case RoomRole.Den: case RoomRole.Guest:
+                case RoomRole.Sacristy: case RoomRole.Bar: case RoomRole.Eatery: case RoomRole.Chapel:
+                    return RaidWindow.Dressing.Curtains;
+                case RoomRole.Kitchen: case RoomRole.Bathroom:
+                case RoomRole.Office: case RoomRole.BackOffice: case RoomRole.OpenOffice: case RoomRole.Squad: case RoomRole.Classroom:
+                case RoomRole.Exam: case RoomRole.Ward: case RoomRole.Waiting: case RoomRole.Lobby: case RoomRole.Records:
+                case RoomRole.Meeting: case RoomRole.Stacks: case RoomRole.BreakRoom: case RoomRole.DayRoom: case RoomRole.Bunks:
+                    return RaidWindow.Dressing.Blind;
+                default:
+                    return RaidWindow.Dressing.None;
+            }
+        }
+
+        // Each storey's stand-in glass in the working windows goes while the floor stands furnished (its real windows fitted).
+        private void ShowPanes(bool show)
+        {
+            EnterableBuilding e = Plan.Record;
+            int k = Plan.Level;
+            if (e == null || k < 0) return;
+            int n = e.Levels != null ? e.Levels.Top + 1 : 1;
+            if (k >= n) return;
+            if (e.Furnished == null || e.Furnished.Length < n) System.Array.Resize(ref e.Furnished, n);
+            e.Furnished[k] = !show;
+            Renderer pane = e.Panes != null && k < e.Panes.Length ? e.Panes[k] : null;
+            if (pane != null) pane.enabled = show;
+        }
+        #endregion
+
         #region Finishing
-        // The partitions' meshes, switch plates and all; then their fittings (cupboards, mirror cabinets drawn on the wall).
+        // The partitions' meshes, switch plates and all; then their fittings (cupboards, mirror cabinets drawn on the wall); then
+        // the plain stretches made breakable (PartitionWall), any holes made in them while the building last stood put back.
         private void EmitWalls()
         {
             foreach (InteriorPass.Piece p in Pieces)
@@ -763,6 +1174,7 @@ namespace CloneZ
                 f.transform.rotation = Quaternion.identity;   // drawn in the world's axes
                 f.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
             }
+            foreach (InteriorPass.Piece p in Pieces) PartitionWall.Fit(this, p, Plan.WallH);
         }
 
         // The raid town's own output (its static furniture, floors and ceilings), then the loot kept to the budget.
@@ -1056,8 +1468,16 @@ namespace CloneZ
             if (_hidden) Root.SetActive(true);
             HangLamps();
             Objects = CountObjects(Root.transform) + (Town.Overhead != null ? CountObjects(Town.Overhead) : 0);
-            // A building with floors: its rooms go with their floor when the cutaway lifts it.
-            if (Plan.Record.Levels != null) MapCutaway.AddInterior(Plan.Id, Plan.Level, Root, Town.Overhead);
+            // A building with floors: its rooms go with their floor when the cutaway lifts it (its windows with their walls).
+            if (Plan.Record.Levels != null) MapCutaway.AddInterior(Plan.Id, Plan.Level, Root, Town.Overhead, _windowsRoot, _yardRoot);
+            if (WindowsFitted) ShowPanes(false);
+            else WindowStreamer.Add(this);
+            // Its ground storey's outside walls made breakable (once a shell: they stay with it), their holes put back.
+            if (Plan.Level == 0)
+            {
+                try { OutsideWall.FitAll(this); }
+                catch (System.Exception e) { Trouble("its outside walls", e); }
+            }
             Done = true;
         }
 
@@ -1177,6 +1597,9 @@ namespace CloneZ
         public void Discard()
         {
             if (Plan.Record.Levels != null) MapCutaway.RemoveInterior(Plan.Id, Root);
+            WindowStreamer.Remove(this);
+            DropWindows();
+            MapCutaway.RemoveWindows(Plan.Id, Root);
             if (Root != null) InteriorPass.Kill(Root);
             if (Town != null && Town.Overhead != null) InteriorPass.Kill(Town.Overhead.gameObject);
             for (int i = 0; i < Meshes.Count; i++) InteriorPass.Kill(Meshes[i]);

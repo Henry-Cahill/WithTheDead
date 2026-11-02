@@ -22,6 +22,9 @@ namespace CloneZ
         {
             Plan p = j.P;
             if (!j.Lite && (p.Enterable || j.Edge)) Doors(j);
+            // The floors next (they need the doors, not the windows): a tall building's upper storeys with floors to stand on
+            // get windows of their own rather than painted ones.
+            PlanLevels(j);
             Windows(j);
         }
 
@@ -202,8 +205,10 @@ namespace CloneZ
             Plan p = j.P;
             long id = j.Id;
             int front = j.DoorEdge >= 0 ? j.DoorEdge : p.Front;
-            // Painted windows for a cheap building's floors and a tall one's upper floors.
-            bool painted = j.Lite || p.Storeys >= TallStoreys;
+            // Painted windows for a cheap building's floors and a tall one's upper floors, unless there are floors there to
+            // stand at them (its levels): then they're windows of their own, fixed panes (an office block's don't open).
+            bool tall = p.Storeys >= TallStoreys, floored = FixedWindows && j.Record != null && j.Record.Levels != null;
+            bool painted = j.Lite || (tall && !floored);
             for (int i = 0; i < j.N; i++)
             {
                 j.GridLow[i] = j.GridHigh[i] = false;
@@ -240,10 +245,11 @@ namespace CloneZ
                     }
                     Size(p, kind, k, len, out float w, out float h, out float sill, out float spacing);
                     float floor = j.FloorY(k);
+                    bool fixedPane = tall && k > 0;
                     if (kind == WindowKind.Band)
                     {
                         if (j.TopAt(i, len * 0.5f) >= floor + sill + h + 0.2f && len > 2.4f)
-                            AddWindow(j, i, k, len * 0.5f, len - 1.2f, sill, h, kind, id);
+                            AddWindow(j, i, k, len * 0.5f, len - 1.2f, sill, h, kind, id, fixedPane);
                         continue;
                     }
                     int n = Mathf.Max(1, Mathf.RoundToInt(len / spacing));
@@ -253,7 +259,7 @@ namespace CloneZ
                         float s = len * (b + 0.5f) / n;
                         if (j.TopAt(i, s) < floor + sill + h + 0.2f) continue;
                         if (k == 0 && !Clear(j, i, s, w - 0.3f)) continue;
-                        AddWindow(j, i, k, s, w, sill, h, kind, id);
+                        AddWindow(j, i, k, s, w, sill, h, kind, id, fixedPane);
                     }
                 }
             }
@@ -261,10 +267,11 @@ namespace CloneZ
 
         private static float Unit(long id, int edge, int k) => MapStyle.Unit(id, SaltWindowsLit + edge * 31 + k * 7);
 
-        private static void AddWindow(Job j, int edge, int storey, float s, float w, float sill, float h, WindowKind kind, long id)
+        private static void AddWindow(Job j, int edge, int storey, float s, float w, float sill, float h, WindowKind kind, long id,
+            bool fixedPane = false)
         {
             bool lit = j.P.Lit && Unit(id, edge, storey * 13 + Mathf.RoundToInt(s * 3f)) < 0.3f;
-            j.Holes.Add(new Hole { Edge = edge, Storey = storey, S = s, W = w, Sill = sill, Head = sill + h, Win = kind, Lit = lit });
+            j.Holes.Add(new Hole { Edge = edge, Storey = storey, S = s, W = w, Sill = sill, Head = sill + h, Win = kind, Lit = lit, Fixed = fixedPane });
             if (j.Record == null) return;
             j.Record.Windows.Add(new WindowSpan { Edge = edge, Storey = storey, From = s - w * 0.5f, To = s + w * 0.5f, Sill = sill, Head = sill + h });
         }
@@ -389,24 +396,69 @@ namespace CloneZ
                 case WindowKind.Storefront: StorefrontShape(j, h, m); return;
                 case WindowKind.Arched: ArchedShape(j, h, m, y0, y1); return;
             }
-            OnWall(j, m, e, h.S, yc, h.W + 0.14f, height + 0.14f, 0.006f, frame);
-            OnWall(j, m, e, h.S, yc, h.W, height, 0.012f, glass);
-            switch (h.Win)
+            if (h.Working)
             {
-                case WindowKind.Sash:
-                    OnWall(j, m, e, h.S, y0 + height * 0.52f, h.W, 0.05f, 0.016f, frame);
-                    break;
-                case WindowKind.Picture:
-                    OnWall(j, m, e, h.S, yc, 0.06f, height, 0.016f, frame);
-                    break;
-                case WindowKind.Ribbon:
-                case WindowKind.Band:
+                // A working window: the opening through the wall with its frame round it, and its fixed part in the reveal
+                // (the linings, the upper sash); the lower sash, the glass and what hangs inside are the RaidWindow the
+                // interiors fit there. Till then clear glass stands in the opening, in its storey's stand-in mesh, which goes
+                // when the floor is furnished.
+                const float f = 0.07f;
+                FrameRound(j, m, e, h.S, y0, y1, h.W, f, frame);
+                Vector2 line = j.At(e, h.S) - j.Out[e] * (Thick * 0.5f);
+                RaidBuilding.MapWindowFrame(m, new Vector3(line.x, floor, line.y), To3(-j.Out[e], 0f), h.W, h.Sill, h.Head, Thick * 0.5f);
+                RaidMesh[] panes = j.Shell.Panes ??= new RaidMesh[Mathf.Max(1, j.Record.Levels != null ? j.Record.Levels.Top + 1 : 1)];
+                if (h.Storey < panes.Length) InPane(j, panes[h.Storey] ??= new RaidMesh(), e, h.S, yc, h.W, height, 0.006f, ClearPane(j, h));
+            }
+            else if (h.Clear)
+            {
+                // A fixed window: the opening through the wall with its frame round it and linings in its reveal, and clear
+                // glass fixed in the wall's middle with its bars through it, seen through from either side. A tall building's
+                // upper floors' (hundreds of them) just the frame and the glass.
+                FrameRound(j, m, e, h.S, y0, y1, h.W, 0.07f, frame);
+                InPane(j, m, e, h.S, yc, h.W, height, 0.008f, ClearPane(j, h));
+                if (h.Fixed) return;
+                Linings(j, m, e, h.S, y0, y1, h.W, frame);
+                float bar = Thick * 0.5f;
+                switch (h.Win)
                 {
-                    int bars = Mathf.Max(1, Mathf.RoundToInt(h.W / (h.Win == WindowKind.Band ? 1.6f : 0.75f)));
-                    for (int k = 1; k < bars; k++)
-                        OnWall(j, m, e, h.S - h.W * 0.5f + h.W * k / bars, yc, 0.06f, height, 0.016f, frame);
-                    OnWall(j, m, e, h.S, y0 + height * 0.68f, h.W, 0.06f, 0.016f, frame);
-                    break;
+                    case WindowKind.Sash:
+                        InPane(j, m, e, h.S, y0 + height * 0.52f, h.W, 0.05f, bar, frame);
+                        break;
+                    case WindowKind.Picture:
+                        InPane(j, m, e, h.S, yc, 0.06f, height, bar, frame);
+                        break;
+                    case WindowKind.Ribbon:
+                    case WindowKind.Band:
+                    {
+                        int bars = Mathf.Max(1, Mathf.RoundToInt(h.W / (h.Win == WindowKind.Band ? 1.6f : 0.75f)));
+                        for (int k = 1; k < bars; k++)
+                            InPane(j, m, e, h.S - h.W * 0.5f + h.W * k / bars, yc, 0.06f, height, bar, frame);
+                        InPane(j, m, e, h.S, y0 + height * 0.68f, h.W, 0.06f, bar, frame);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                OnWall(j, m, e, h.S, yc, h.W + 0.14f, height + 0.14f, 0.006f, frame);
+                OnWall(j, m, e, h.S, yc, h.W, height, 0.012f, glass);
+                switch (h.Win)
+                {
+                    case WindowKind.Sash:
+                        OnWall(j, m, e, h.S, y0 + height * 0.52f, h.W, 0.05f, 0.016f, frame);
+                        break;
+                    case WindowKind.Picture:
+                        OnWall(j, m, e, h.S, yc, 0.06f, height, 0.016f, frame);
+                        break;
+                    case WindowKind.Ribbon:
+                    case WindowKind.Band:
+                    {
+                        int bars = Mathf.Max(1, Mathf.RoundToInt(h.W / (h.Win == WindowKind.Band ? 1.6f : 0.75f)));
+                        for (int k = 1; k < bars; k++)
+                            OnWall(j, m, e, h.S - h.W * 0.5f + h.W * k / bars, yc, 0.06f, height, 0.016f, frame);
+                        OnWall(j, m, e, h.S, y0 + height * 0.68f, h.W, 0.06f, 0.016f, frame);
+                        break;
+                    }
                 }
             }
             Surf sill = masonry ? WallSurf(WallKind.Stone, 0) : j.TrimS;
@@ -422,7 +474,38 @@ namespace CloneZ
                 OnWall(j, m, e, h.S - off, yc, sw, height, 0.02f, j.AccentS);
                 OnWall(j, m, e, h.S + off, yc, sw, height, 0.02f, j.AccentS);
             }
-            if (h.Storey == 0) Inner(j, m, e, h.S, yc, h.W, height, glass);
+            if (h.Storey == 0 && !h.Working && !h.Clear) Inner(j, m, e, h.S, yc, h.W, height, glass);
+        }
+
+        // The glass in a working window's stand-in or a fixed window: clear, or, a lit one's, lamplight glowing through it.
+        private static Surf ClearPane(Job j, in Hole h) => h.Lit ? LitPaneClear(PaneTone(j, h)) : DecorPalette.WindowGlass();
+
+        // The frame round an opening on the wall's face: f wide, the jambs running past the head and sill.
+        private static void FrameRound(Job j, RaidMesh m, int e, float s, float y0, float y1, float w, float f, in Surf frame)
+        {
+            float yc = (y0 + y1) * 0.5f, height = y1 - y0;
+            OnWall(j, m, e, s - (w + f) * 0.5f, yc, f, height + f * 2f, 0.006f, frame);
+            OnWall(j, m, e, s + (w + f) * 0.5f, yc, f, height + f * 2f, 0.006f, frame);
+            OnWall(j, m, e, s, y1 + f * 0.5f, w, f, 0.006f, frame);
+            OnWall(j, m, e, s, y0 - f * 0.5f, w, f, 0.006f, frame);
+        }
+
+        // The linings of an opening's reveal: its jambs, head and sill, through the wall's depth.
+        private static void Linings(Job j, RaidMesh m, int e, float s, float y0, float y1, float w, in Surf surf)
+        {
+            const float t = 0.024f;
+            float depth = Thick + 0.01f;
+            InPane(j, m, e, s - (w - t) * 0.5f, (y0 + y1) * 0.5f, t, y1 - y0, depth, surf);
+            InPane(j, m, e, s + (w - t) * 0.5f, (y0 + y1) * 0.5f, t, y1 - y0, depth, surf);
+            InPane(j, m, e, s, y1 - t * 0.5f, w, t, depth, surf);
+            InPane(j, m, e, s, y0 + 0.015f, w, 0.03f, depth, surf);
+        }
+
+        // A box in the middle of wall e's thickness: w along it, h up, depth through it (glass, a bar, a lining).
+        private static void InPane(Job j, RaidMesh m, int e, float s, float y, float w, float h, float depth, in Surf surf)
+        {
+            Vector2 c = j.At(e, s) - j.Out[e] * (Thick * 0.5f);
+            m.Box(new Vector3(c.x, y, c.y), new Vector3(w, h, depth), j.Yaw(e), surf);
         }
 
         // The pane seen from inside, on the wall's inner face.
@@ -436,15 +519,31 @@ namespace CloneZ
         {
             int e = h.Edge;
             Surf frame = j.AccentS;
-            Surf glass = h.Lit ? LitPane(PaneTone(j, h)) : DecorPalette.Gloss(new Color(0.13f, 0.16f, 0.19f));
             float w = h.W;
+            int bars = Mathf.Max(1, Mathf.RoundToInt(w / 1.5f));
+            if (h.Clear)
+            {
+                // The opening over the kick plate, its display glass and transom fixed in the wall's middle, seen through; the
+                // transom bar, the bottom rail and the mullions run through it, so they frame it from inside too.
+                Surf pane = ClearPane(j, h);
+                float through = Thick + 0.12f;
+                OnWallBox(j, m, e, h.S, 0.25f, w, 0.5f, 0.09f, frame);                 // the kick plate
+                InPane(j, m, e, h.S, 1.5f, w, 1.92f, 0.01f, pane);                     // display glass
+                InPane(j, m, e, h.S, 2.68f, w, 0.34f, 0.01f, pane);                    // the transom
+                InPane(j, m, e, h.S, 2.5f, w + 0.1f, 0.08f, through, frame);
+                InPane(j, m, e, h.S, 0.53f, w, 0.06f, through + 0.08f, frame);
+                OnWallBox(j, m, e, h.S, 2.9f, w + 0.14f, 0.1f, 0.06f, frame);
+                for (int k = 0; k <= bars; k++)
+                    InPane(j, m, e, h.S - w * 0.5f + w * k / bars, 1.7f, 0.08f, 2.4f, through, frame);
+                return;
+            }
+            Surf glass = h.Lit ? LitPane(PaneTone(j, h)) : DecorPalette.Gloss(new Color(0.13f, 0.16f, 0.19f));
             OnWallBox(j, m, e, h.S, 0.25f, w, 0.5f, 0.09f, frame);                 // the kick plate
             OnWall(j, m, e, h.S, 1.5f, w, 1.92f, 0.015f, glass);                   // display glass
             OnWall(j, m, e, h.S, 2.68f, w, 0.34f, 0.015f, glass);                  // the transom
             OnWallBox(j, m, e, h.S, 2.5f, w + 0.1f, 0.08f, 0.06f, frame);
             OnWallBox(j, m, e, h.S, 2.9f, w + 0.14f, 0.1f, 0.06f, frame);
             OnWallBox(j, m, e, h.S, 0.53f, w, 0.06f, 0.1f, frame);
-            int bars = Mathf.Max(1, Mathf.RoundToInt(w / 1.5f));
             for (int k = 0; k <= bars; k++)
                 OnWallBox(j, m, e, h.S - w * 0.5f + w * k / bars, 1.7f, 0.08f, 2.4f, 0.06f, frame);
             Inner(j, m, e, h.S, 1.7f, w, 2.3f, glass);
@@ -461,10 +560,26 @@ namespace CloneZ
             Surf glass2 = h.Lit ? StainedGlow(other) : DecorPalette.Gloss(Stained[other] * 0.6f);
             Surf frame = j.P.Wall == WallKind.Siding ? j.TrimS : WallSurf(WallKind.Stone, 0);
             float rect = spring - y0;
-            OnWall(j, m, e, h.S, (y0 + spring) * 0.5f, w + 0.16f, rect, 0.006f, frame);
-            OnWall(j, m, e, h.S - w * 0.25f, (y0 + spring) * 0.5f, w * 0.5f, rect - 0.08f, 0.012f, glass);
-            OnWall(j, m, e, h.S + w * 0.25f, (y0 + spring) * 0.5f, w * 0.5f, rect - 0.08f, 0.012f, glass2);
-            OnWall(j, m, e, h.S, (y0 + spring) * 0.5f, 0.05f, rect, 0.016f, frame);
+            if (h.Clear)
+            {
+                // Up to the springing it's an opening: each half's coloured glass fixed in the wall's middle, seen through
+                // dimly, the mullion through it, the jambs' frame on the face; the round head stays laid on the wall.
+                Surf clearA = h.Lit ? StainedGlowClear(tone) : DecorPalette.StainedGlass(Stained[tone]);
+                Surf clearB = h.Lit ? StainedGlowClear(other) : DecorPalette.StainedGlass(Stained[other]);
+                OnWall(j, m, e, h.S - (w + 0.08f) * 0.5f, (y0 + spring) * 0.5f, 0.08f, rect, 0.006f, frame);
+                OnWall(j, m, e, h.S + (w + 0.08f) * 0.5f, (y0 + spring) * 0.5f, 0.08f, rect, 0.006f, frame);
+                Linings(j, m, e, h.S, y0, spring, w, frame);
+                InPane(j, m, e, h.S - w * 0.25f, (y0 + spring) * 0.5f, w * 0.5f, rect, 0.008f, clearA);
+                InPane(j, m, e, h.S + w * 0.25f, (y0 + spring) * 0.5f, w * 0.5f, rect, 0.008f, clearB);
+                InPane(j, m, e, h.S, (y0 + spring) * 0.5f, 0.05f, rect, Thick * 0.5f, frame);
+            }
+            else
+            {
+                OnWall(j, m, e, h.S, (y0 + spring) * 0.5f, w + 0.16f, rect, 0.006f, frame);
+                OnWall(j, m, e, h.S - w * 0.25f, (y0 + spring) * 0.5f, w * 0.5f, rect - 0.08f, 0.012f, glass);
+                OnWall(j, m, e, h.S + w * 0.25f, (y0 + spring) * 0.5f, w * 0.5f, rect - 0.08f, 0.012f, glass2);
+                OnWall(j, m, e, h.S, (y0 + spring) * 0.5f, 0.05f, rect, 0.016f, frame);
+            }
             // The round head: a fan of the frame, the glass in front of it.
             Vector2 c = j.At(e, h.S);
             Vector3 o = To3(j.Out[e], 0f), along = To3(j.Dir[e], 0f);
@@ -478,7 +593,7 @@ namespace CloneZ
                 Tri3(m, centre + o * 0.012f, centre + dir0 * (r - 0.04f) + o * 0.012f, centre + dir1 * (r - 0.04f) + o * 0.012f, o, k < Segs / 2 ? glass2 : glass);
             }
             OnWallBox(j, m, e, h.S, y0 - 0.05f, w + 0.3f, 0.09f, 0.1f, frame);
-            if (h.Storey == 0) Inner(j, m, e, h.S, (y0 + spring) * 0.5f, w, rect, glass);
+            if (h.Storey == 0 && !h.Clear) Inner(j, m, e, h.S, (y0 + spring) * 0.5f, w, rect, glass);
         }
 
         private static void DoorShape(Job j, Hole h)

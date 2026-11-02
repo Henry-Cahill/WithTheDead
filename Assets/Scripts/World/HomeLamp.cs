@@ -11,7 +11,8 @@ namespace CloneZ
     /// the store room's bulkhead, the bathroom's vanity light or the porch lantern: a warm <see cref="RoomLight"/>
     /// together with an optional glowing shell drawn just over the lamp's daytime shade or globe, shown only while the
     /// lamp is lit. Lamps are worked by hand, never by the clock: a lamp is lit while it's switched on and the house
-    /// has power (<see cref="PowerGrid.HousePowered"/>) — and, with a dusk sensor like the porch lantern's, only
+    /// has power (<see cref="PowerGrid.PoweredAt"/>: on the statewide map, its building's own breaker on too) — and, with a
+    /// dusk sensor like the porch lantern's, only
     /// while it's dark out. A wall light hangs on one of the house's circuits (<see cref="LightCircuits"/>) and is
     /// worked by that circuit's wall switch; a free-standing lamp has a switch of its own, a <see cref="LampSwitch"/>
     /// fixture the survivor reaches for. Created with <see cref="Attach"/>; it lives on the light's own object, so it
@@ -168,7 +169,7 @@ internal set
                 lamps++;
                 if (l.IsOn) lit++;
                 else if (l._deadBulb) dead++;
-                else if (l._duskSensor && !l._dark && l.SwitchedOn && PowerGrid.HousePowered) waiting++;
+                else if (l._duskSensor && !l._dark && l.SwitchedOn && PowerGrid.PoweredAt(l)) waiting++;
             }
         }
 
@@ -211,7 +212,7 @@ internal set
                 float level = tod != null ? tod.LightLevel : 0f;
                 _dark = _dark ? level < SwitchOnBelow + CloneZConfig.LampDuskHysteresis : level < SwitchOnBelow;
             }
-            bool lit = SwitchedOn && PowerGrid.HousePowered && (!_duskSensor || _dark) && !_deadBulb;
+            bool lit = SwitchedOn && PowerGrid.PoweredAt(this) && (!_duskSensor || _dark) && !_deadBulb;
             _lit = lit;
             if (_light != null && _light.On != lit) _light.On = lit;
             SyncGlow();

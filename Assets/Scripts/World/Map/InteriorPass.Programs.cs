@@ -390,7 +390,7 @@ namespace CloneZ
                 Vector2 mid = (la + lb) * 0.5f - lo * 0.4f;
                 int room = plan.RoomAt(mid);
                 if (room < 0) room = plan.NearestRoom(mid);
-                plan.Windows.Add(new PlanWindow { A = la, B = lb, Outward = lo, Sill = w.Sill, Head = w.Head, Room = room });
+                plan.Windows.Add(new PlanWindow { A = la, B = lb, Outward = lo, Sill = w.Sill, Head = w.Head, Room = room, Working = w.Working });
             }
         }
 

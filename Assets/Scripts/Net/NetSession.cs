@@ -131,6 +131,10 @@ namespace CloneZ
     public  int RadioChannel = -1;
         
     public  float LastShot;
+        /// <summary>Server: where the runner connects from ("address:port"; empty when the transport can't say).</summary>
+        public string Address = "";
+        /// <summary>Server: when the runner was let in, and when their body's last state arrived (unscaled time).</summary>
+        public float JoinedAt, StateAt;
     }
 
     /// <summary>
@@ -144,7 +148,7 @@ namespace CloneZ
     public  sealed class NetSession : MonoBehaviour
     {
         
-    public  const string Version = "clonez-1";
+    public  const string Version = "clonez-2";
         /// <summary>Singleton instance of the current NetSession, created by Create().</summary>
         
     public  static NetSession Instance { get; private set; }
@@ -162,6 +166,35 @@ namespace CloneZ
         
     public  static event Action<ulong> ClientLeft;
 
+        /// <summary>True when the session's server plays nobody (a <see cref="DedicatedServer"/>): known on the server from
+        /// the start, and on a client once the session's details arrive. Such a server opens the Zone the first runner
+        /// deploys into, where a host has to go in first.</summary>
+        public static bool ServerDedicated { get; private set; }
+        /// <summary>The build the session's server runs (its <see cref="BuildInfo.Version"/>).</summary>
+        public static string ServerBuild { get; private set; } = "";
+        /// <summary>A client asked the dedicated server for a raid and is waiting for it to open (then goes straight in).</summary>
+        public static bool OpeningRaid => s_Opening && Time.unscaledTime - s_OpeningAt < OpenRaidPatience;
+        /// <summary>Server (dedicated): when the open raid's world was built (unscaled time); -1 while none is open or it's
+        /// still being built.</summary>
+        public static float ServedRaidSince => s_RaidSince;
+
+        /// <summary>A runner's name for a toast. A dedicated server's toasts are its log, where runners who share a name need
+        /// telling apart: there it's <see cref="DedicatedServer.Who"/> ("Runner #3").</summary>
+        public static string ToastName(ulong id) => DedicatedServer.Requested ? DedicatedServer.Who(id)
+            : Clients.TryGetValue(id, out NetClientInfo c) ? c.Name : "A runner";
+
+        private const float OpenRaidPatience = 30f;
+        // Seconds an open raid on a dedicated server waits with nobody in it before it closes: time for the runner who
+        // opened it to load in, or for someone who dropped out to come back. A runner who has just set off for it counts
+        // as in it for a while longer, as a slow machine builds the map (their last state from the bar may even arrive
+        // after they've left it, and say they're not in the raid).
+        private const float EmptyRaidGrace = 90f, JoiningGrace = 240f;
+        private static bool s_Opening;
+        private static float s_OpeningAt;
+        private static int s_OpeningLz;
+        private static RaidKind s_OpeningKind;
+        private static float s_RaidSince = -1f, s_EmptySince = -1f, s_JoinedAt = -1000f;
+
         private NetworkManager _nm;
         private UnityTransport _utp;
         private static readonly Dictionary<string, Action<ulong, NetIn>> s_Handlers = new Dictionary<string, Action<ulong, NetIn>>();
@@ -176,6 +209,8 @@ namespace CloneZ
             Instance = go.AddComponent<NetSession>();
             Instance._nm = go.AddComponent<NetworkManager>();
             Instance._utp = go.AddComponent<UnityTransport>();
+            // A world is built on the main thread, for seconds on end; the packets that arrive meanwhile wait in this queue.
+            Instance._utp.MaxPacketQueueSize = 1024;
             Instance._nm.NetworkConfig = new NetworkConfig
             {
                 NetworkTransport = Instance._utp,
@@ -218,6 +253,31 @@ namespace CloneZ
             GameFlow.Reload();
         }
 
+        /// <summary>Serves a session on <paramref name="port"/> with nobody playing here: the <see cref="DedicatedServer"/>.
+        /// It stays on the stage it's on; the bootstrapper builds what that stage needs.</summary>
+        public static void Serve(ushort port)
+        {
+            NetSession s = Create();
+            s._utp.SetConnectionData("0.0.0.0", port, "0.0.0.0");
+            s._nm.ConnectionApprovalCallback = s.Approve;
+            s._nm.OnClientConnectedCallback += s.OnClientConnected;
+            s._nm.OnClientDisconnectCallback += s.OnClientDisconnected;
+            if (!s._nm.StartServer())
+            {
+                Stop();
+                return;
+            }
+            ServerDedicated = true;
+            ServerBuild = BuildInfo.Version;
+            // The server owns the AI, the clock and every hit, and has no body of its own (no entry in the roster).
+            NetAuthority.Set(true, true, true, s._nm.LocalClientId);
+            GameSession.Networked = true;
+            s.RegisterAll();
+            WorldHooks.RaidStarted -= OnServedRaidBuilt;
+            WorldHooks.RaidStarted += OnServedRaidBuilt;
+            Debug.Log("[CloneZ] Serving on port " + port);
+        }
+
         /// <summary>Joins a host; the session's stage (hub or raid, with its seed) arrives once connected.</summary>
         /// <summary>Joins a remote host at the address/port and moves the client into the hub when connected.</summary>
         
@@ -226,10 +286,11 @@ namespace CloneZ
             // Ensure a singleton NetSession exists for the client side.
             NetSession s = Create();
             // Use loopback if no address supplied; set the remote host address/port.
-            s._utp.SetConnectionData(string.IsNullOrEmpty(address) ? "127.0.0.1" : address, port);
-            // Encode version, player name, faction and level into the connection payload.
+            s._utp.SetConnectionData(Resolve(address), port);
+            // Encode version, player name, faction, level and this build (see Approve) into the connection payload.
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            s._nm.NetworkConfig.ConnectionData = Encoding.UTF8.GetBytes(Version + "|" + (c != null ? c.Name : "Runner") + "|" + (c != null ? c.Faction : Factions.Freehold) + "|" + (c != null ? c.Level : 1));
+            s._nm.NetworkConfig.ConnectionData = Encoding.UTF8.GetBytes(Version + "|" + (c != null ? c.Name : "Runner") + "|" + (c != null ? c.Faction : Factions.Freehold) + "|" + (c != null ? c.Level : 1)
+                + "|" + BuildInfo.Version + "|" + (Application.isEditor ? "editor" : "player"));
             // Register callbacks for connection events.
             s._nm.OnClientConnectedCallback += s.OnClientConnected;
             s._nm.OnClientDisconnectCallback += s.OnClientDisconnected;
@@ -241,6 +302,21 @@ namespace CloneZ
                 return;
             }
             GameEvents.RaiseToast("Connecting to " + address + ":" + port + "...");
+        }
+
+        // The transport takes an IP address only: a name (the in-house server's dynamic-DNS name, say) is looked up here.
+        private static string Resolve(string address)
+        {
+            if (string.IsNullOrWhiteSpace(address)) return "127.0.0.1";
+            address = address.Trim();
+            if (System.Net.IPAddress.TryParse(address, out _)) return address;
+            try
+            {
+                foreach (System.Net.IPAddress ip in System.Net.Dns.GetHostAddresses(address))
+                    if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) return ip.ToString();
+            }
+            catch (Exception e) { Debug.LogWarning("[CloneZ] Couldn't look up " + address + ": " + e.Message); }
+            return address;
         }
 
         /// <summary>Stops the current session, shuts down the network and clears all state.</summary>
@@ -259,6 +335,12 @@ namespace CloneZ
             s_Handlers.Clear();
             HostRaidZone = null;
             HostRaidSeed = 0;
+            ServerDedicated = false;
+            ServerBuild = "";
+            s_Opening = false;
+            s_RaidSince = s_EmptySince = -1f;
+            s_JoinedAt = -1000f;
+            WorldHooks.RaidStarted -= OnServedRaidBuilt;
             NetAuthority.Reset();
             GameSession.Networked = false;
             GameSession.RaidSeed = 0;
@@ -283,15 +365,27 @@ namespace CloneZ
             string[] p = payload.Split('|');
             // Verify that the client runs the same game version.
             bool versionOk = p.Length > 0 && p[0] == Version;
+            // And the same build: the netcode's messages change from one build to the next. The editor is the developer's,
+            // and joins (or hosts) whatever's running.
+            string build = p.Length > 4 ? p[4] : "an older one";
+            bool sameBuild = build == BuildInfo.Version || (p.Length > 5 && p[5] == "editor") || Application.isEditor;
             // Enforce player‑count limit defined in sandbox settings.
             bool room = Clients.Count < SandboxSettings.Current.MaxPlayers;
-            // Approve only if both version and capacity checks pass.
-            res.Approved = versionOk && room;
+            // Approve only if the version, the build and capacity checks pass.
+            res.Approved = versionOk && sameBuild && room;
             // The server creates player objects manually; no automatic prefab.
             res.CreatePlayerObject = false;
             res.Pending = false;
             // If rejected, give a short reason for the client.
-            if (!res.Approved) { res.Reason = !versionOk ? "Different game version." : "The server is full."; return; }
+            string address = AddressOf(req.ClientNetworkId);
+            if (!res.Approved)
+            {
+                res.Reason = !versionOk ? "Different game version."
+                    : !sameBuild ? "The server runs build " + BuildInfo.Version + " and you have " + build + ". Update WithTheDead, then join again."
+                    : "The server is full.";
+                if (ServerDedicated) Debug.Log("[Server] Turned away " + (p.Length > 1 ? p[1] : "a runner") + " from " + address + ": " + res.Reason);
+                return;
+            }
             // Record the new client’s basic info for the roster.
             Clients[req.ClientNetworkId] = new NetClientInfo
             {
@@ -299,7 +393,16 @@ namespace CloneZ
                 Name = p.Length > 1 ? p[1] : "Runner",
                 Faction = p.Length > 2 ? p[2] : Factions.Freehold,
                 Level = p.Length > 3 && int.TryParse(p[3], out int lv) ? lv : 1,
+                Address = address,
+                JoinedAt = Time.unscaledTime,
             };
+        }
+
+        // Where a client connects from, for the server's log.
+        private string AddressOf(ulong id)
+        {
+            var endpoint = _utp != null ? _utp.GetEndpoint(id) : default;
+            return endpoint.IsValid ? endpoint.Address : "an unknown address";
         }
 
         /// <summary>Handles a newly connected client, sending initial session data if this is the server or establishing authority on the local client.</summary>
@@ -318,11 +421,15 @@ namespace CloneZ
                     WriteHostStage(o);
                     o.F(TimeOfDay.Instance != null ? TimeOfDay.Instance.Hour : 12f);
                     o.S(CentralEconomy.ToJson());
+                    o.B(ServerDedicated).S(BuildInfo.Version);
                     // Send as a reliable, possibly fragmented message.
                     SendTo(id, "cz.session", o, NetworkDelivery.ReliableFragmentedSequenced);
                 }
-                // Notify everyone that a runner joined and broadcast the updated roster.
-                GameEvents.RaiseToast((Clients.TryGetValue(id, out NetClientInfo ci) ? ci.Name : "A runner") + " joined.");
+                // Notify everyone that a runner joined and broadcast the updated roster. A dedicated server's log also
+                // says from where, and how many are on.
+                GameEvents.RaiseToast(!DedicatedServer.Requested ? ToastName(id) + " joined."
+                    : ToastName(id) + " joined from " + (Clients.TryGetValue(id, out NetClientInfo ci) ? ci.Address : "an unknown address")
+                      + "; " + Clients.Count + " connected.");
                 BroadcastRoster();
             }
             // Client side: this is the local player joining a remote host.
@@ -342,7 +449,10 @@ namespace CloneZ
             // Server side: clean up client state and inform remaining players.
             if (_nm != null && _nm.IsServer)
             {
-                if (Clients.TryGetValue(id, out NetClientInfo ci)) GameEvents.RaiseToast(ci.Name + " left.");
+                // A dedicated server's log also says how long they were on, and how many are left.
+                if (Clients.TryGetValue(id, out NetClientInfo ci))
+                    GameEvents.RaiseToast(!DedicatedServer.Requested ? ci.Name + " left."
+                        : ToastName(id) + " left after " + DedicatedServer.Duration(Time.unscaledTime - ci.JoinedAt) + "; " + (Clients.Count - 1) + " connected.");
                 Clients.Remove(id);
                 NetPlayers.RemoveProxy(id);
                 BroadcastRoster();
@@ -379,11 +489,13 @@ namespace CloneZ
             }
             Register("cz.session", OnSession);
             Register("cz.hoststage", OnHostStage);
-            Register("cz.joinraid", (s, m) => { if (Clients.TryGetValue(s, out NetClientInfo c)) c.InRaid = true; });
-            Register("cz.leftraid", (s, m) => { if (Clients.TryGetValue(s, out NetClientInfo c)) c.InRaid = false; });
+            // A runner setting off for the raid will next be seen in it, far from the bar: not a move to flag (NetPlayers).
+            Register("cz.joinraid", (s, m) => { if (Clients.TryGetValue(s, out NetClientInfo c)) { c.InRaid = true; c.Position = Vector3.zero; } s_JoinedAt = Time.unscaledTime; });
+            Register("cz.leftraid", (s, m) => { if (Clients.TryGetValue(s, out NetClientInfo c)) { c.InRaid = false; c.Position = Vector3.zero; } });
             Register("cz.roster", OnRoster);
+            Register("cz.openraid", OnOpenRaid);
             // The built-ins above are added after the loop, so they need their own netcode registration.
-            foreach (string n in new[] { "cz.session", "cz.hoststage", "cz.joinraid", "cz.leftraid", "cz.roster" })
+            foreach (string n in new[] { "cz.session", "cz.hoststage", "cz.joinraid", "cz.leftraid", "cz.roster", "cz.openraid" })
             {
                 Action<ulong, NetIn> h = s_Handlers[n];
                 string name = n;
@@ -460,6 +572,9 @@ namespace CloneZ
             ReadHostStage(m);
             NetWorld.PendingHour = m.F();
             CentralEconomy.Adopt(m.S());
+            ServerDedicated = m.B();
+            ServerBuild = m.S();
+            if (ServerBuild != BuildInfo.Version) Debug.LogWarning("[CloneZ] The server runs build " + ServerBuild + "; this is " + BuildInfo.Version + ".");
             GameSession.AutoStartHub = true;
             GameSession.AutoStartRaid = false;
             GameFlow.Reload();
@@ -530,10 +645,29 @@ private static void ReadHostStage(NetIn m)
             // Client side – ensure we have host stage info.
             if (string.IsNullOrEmpty(HostRaidZone))
             {
+                // A dedicated server opens the Zone this runner picked, for everyone; in they go once it's open (OnHostStage).
+                if (ServerDedicated)
+                {
+                    if (OpeningRaid) return true;
+                    s_Opening = true;
+                    s_OpeningAt = Time.unscaledTime;
+                    s_OpeningLz = lz;
+                    s_OpeningKind = kind;
+                    using (var o = new NetOut(64)) { o.S(zone ?? "").By((byte)kind); ToServer("cz.openraid", o); }
+                    GameEvents.RaiseToast("Opening " + ZoneCatalog.Get(zone).Name + " on the server...");
+                    return true;
+                }
                 GameEvents.RaiseToast("The Zone runs on the host's machine: once they go in, you can follow them.");
                 return true;
             }
-            // Follow the host into the raid using the host‑provided seed.
+            Follow(lz, kind);
+            return true;
+        }
+
+        // Into the raid under way on the server, built from its seed, wherever this runner chose to come in.
+        private static void Follow(int lz, RaidKind kind)
+        {
+            s_Opening = false;
             HubKit.Commit();
             GameSession.RaidSeed = HostRaidSeed;
             GameFlow.PrepareRaid(HostRaidZone, lz, kind);
@@ -541,13 +675,84 @@ private static void ReadHostStage(NetIn m)
             GameSession.AutoStartHub = false;
             using (var o = new NetOut()) ToServer("cz.joinraid", o);
             GameFlow.Reload();
-            return true;
         }
 
         private void OnHostStage(ulong sender, NetIn m)
         {
             ReadHostStage(m);
-            GameEvents.RaiseToast(HostRaidZone != null ? "The host has gone into " + ZoneCatalog.Get(HostRaidZone).Name + ". You can follow from the door." : "The host is back at the bar.");
+            // This runner asked the dedicated server for the raid: it's open, so in they go.
+            if (HostRaidZone != null && OpeningRaid && GameSession.IsHub)
+            {
+                Follow(s_OpeningLz, s_OpeningKind);
+                return;
+            }
+            if (ServerDedicated)
+                GameEvents.RaiseToast(HostRaidZone != null ? "A raid into " + ZoneCatalog.Get(HostRaidZone).Name + " is open on the server. You can join it from the door." : "The server's raid is over.");
+            else
+                GameEvents.RaiseToast(HostRaidZone != null ? "The host has gone into " + ZoneCatalog.Get(HostRaidZone).Name + ". You can follow from the door." : "The host is back at the bar.");
+        }
+
+        // Server (dedicated): a runner deploying opens their Zone for everyone. One raid runs at a time, so while one is
+        // open they're pointed at it instead.
+        private void OnOpenRaid(ulong sender, NetIn m)
+        {
+            string zone = m.S();
+            var kind = (RaidKind)m.By();
+            if (_nm == null || !_nm.IsServer || !ServerDedicated) return;
+            if (GameSession.IsExtraction)
+            {
+                using (var o = new NetOut(64)) { WriteHostStage(o); SendTo(sender, "cz.hoststage", o); }
+                return;
+            }
+            ZoneDef z = ZoneCatalog.Get(zone);
+            GameSession.RaidSeed = UnityEngine.Random.Range(1, int.MaxValue);
+            // The raid's own rules are an operative raid's (or the open Zone's, with no dawn deadline); how each runner
+            // comes in (their runner, a scav, a hunter) is theirs.
+            GameFlow.PrepareRaid(z.Id, -1, kind == RaidKind.OpenZone ? RaidKind.OpenZone : RaidKind.Operative);
+            s_RaidSince = s_EmptySince = -1f;
+            BroadcastHostStage();
+            GameEvents.RaiseToast(ToastName(sender) + " opened " + z.Name + " (seed " + GameSession.RaidSeed + ").");
+            GameSession.AutoStartRaid = true;
+            GameSession.AutoStartHub = false;
+            GameFlow.Reload();
+        }
+
+        // Server (dedicated): the open raid's world is built; from now on it closes once it has stood empty a while.
+        private static void OnServedRaidBuilt(Transform world, RaidMapInfo map, ZoneDef zone)
+        {
+            if (ServerDedicated) s_RaidSince = Time.unscaledTime;
+        }
+
+        /// <summary>Server (dedicated): ends the open raid and goes back to waiting with no world built.</summary>
+        public static void CloseServedRaid(string why)
+        {
+            if (Instance == null || !ServerDedicated || !GameSession.IsExtraction) return;
+            Debug.Log("[Server] Closing " + ZoneCatalog.Current.Name + ": " + why + ".");
+            s_RaidSince = s_EmptySince = -1f;
+            s_JoinedAt = -1000f;
+            GameSession.Mode = GameMode.Hub;
+            Instance.BroadcastHostStage();
+            GameSession.AutoStartRaid = false;
+            GameSession.AutoStartHub = false;
+            GameFlow.Reload();
+        }
+
+        private void Update()
+        {
+            if (!ServerDedicated || _nm == null || !_nm.IsServer) return;
+            DedicatedServer.Tick();
+            // A dedicated server's raid closes once nobody has been in it (or on their way in) for a while.
+            if (!GameSession.IsExtraction || s_RaidSince < 0f) return;
+            float now = Time.unscaledTime;
+            bool anyone = now - s_JoinedAt < JoiningGrace;
+            foreach (NetClientInfo c in Clients.Values) anyone |= c.InRaid;
+            if (anyone)
+            {
+                s_EmptySince = -1f;
+                return;
+            }
+            if (s_EmptySince < 0f) s_EmptySince = Mathf.Max(now, s_RaidSince);
+            if (now - s_EmptySince >= EmptyRaidGrace) CloseServedRaid("nobody has been in it for " + Mathf.RoundToInt(EmptyRaidGrace) + " s");
         }
 
         private void BroadcastRoster()

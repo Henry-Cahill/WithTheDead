@@ -24,6 +24,13 @@ namespace CloneZ
             return reason == null ? null : "Nothing happens \u2014 " + char.ToLowerInvariant(reason[0]) + reason.Substring(1);
         }
 
+        /// <summary>As <see cref="NothingHappens()"/>, where <paramref name="at"/> is (its building's own breaker counts too).</summary>
+        public static string NothingHappens(Component at)
+        {
+            string reason = PowerGrid.NoPowerReasonAt(at);
+            return reason == null ? null : "Nothing happens \u2014 " + char.ToLowerInvariant(reason[0]) + reason.Substring(1);
+        }
+
         /// <summary>Eases the survivor's panic by <paramref name="amount"/> (0..100 scale).</summary>
         public static void Calm(InteractContext ctx, float amount)
         {

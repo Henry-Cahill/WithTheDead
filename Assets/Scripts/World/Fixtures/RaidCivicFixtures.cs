@@ -116,7 +116,7 @@ namespace CloneZ
         }
 
         private void Inspect(InteractContext ctx) => ctx.Notify("The " + _name + " is currently " + (_on ? "on" : "off") + (_locked ? " and locked." : "."));
-        private void PowerInfo(InteractContext ctx) => ctx.Notify(PowerGrid.HousePowered ? "The building has power." : "The building has no power.");
+        private void PowerInfo(InteractContext ctx) => ctx.Notify(PowerGrid.PoweredAt(this) ? "The building has power." : "The building has no power.");
 
         private void ToggleLock(InteractContext ctx)
         {
@@ -126,9 +126,9 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            bool dead = _needsPower && !_on && !PowerGrid.HousePowered;
+            bool dead = _needsPower && !_on && !PowerGrid.PoweredAt(this);
             bool locked = _locked;
-            into.Add(new InteractAction(_on ? _offLabel : _onLabel, _flip).DisabledIf(dead || locked, locked ? "The device is locked" : PowerGrid.NoPowerReason ?? "There's no power"));
+            into.Add(new InteractAction(_on ? _offLabel : _onLabel, _flip).DisabledIf(dead || locked, locked ? "The device is locked" : PowerGrid.NoPowerReasonAt(this) ?? "There's no power"));
             _extra?.Invoke(ctx, into);
         }
 

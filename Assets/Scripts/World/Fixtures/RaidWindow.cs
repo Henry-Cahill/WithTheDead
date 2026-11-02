@@ -16,7 +16,8 @@ namespace CloneZ
     /// <item>Smashed, the sash is past opening but the frame is a way through: over the shards (a cut, as often as not), or
     /// safely once the last of the glass has been knocked out.</item>
     /// <item>Boarded, there's no way through until the boards are pried off — slow and noisy, quicker with a crowbar or a claw
-    /// hammer — leaving whatever glass was behind them.</item>
+    /// hammer — leaving whatever glass was behind them. A window fitted with its boards ready (<see cref="Raid.Boardable"/>:
+    /// the statewide map's) can be boarded up again, with a hammer, planks and nails.</item>
     /// </list>
     /// From outside the survivor can peer in to count the dead (not past drawn curtains). Only the parts that move or change
     /// — the lower sash, the glazing of each sash, the lock's lever, the dressing, the boards — are objects of their own under
@@ -46,7 +47,21 @@ namespace CloneZ
             public OpeningLine Line;
             public float Mid, SashWidth, UpperY0, UpperY1, UpperAcross, LowerY0, LowerY1, LowerAcross;
             public int Seed;
+            /// <summary>A window in a wall at any angle (the statewide map's): <see cref="Line"/> and the heights are in the frame
+            /// at <see cref="FrameAt"/> turned by <see cref="FrameTurn"/> (its x along the wall); else in world axes.</summary>
+            public bool Framed;
+            public Vector3 FrameAt;
+            public Quaternion FrameTurn;
+            /// <summary>Planks and nails can be put across it: the boards are drawn when they're first nailed on (unless
+            /// <see cref="Boards"/> came made), across the opening <see cref="OpeningWidth"/> wide from <see cref="Sill"/> to
+            /// <see cref="Head"/> (in the frame), <see cref="BoardsOff"/> from the wall line on side <see cref="BoardsSide"/>.</summary>
+            public bool Boardable;
+            public float OpeningWidth, Sill, Head, BoardsOff;
+            public int BoardsSide;
         }
+
+        /// <summary>Mixed into a window's <see cref="Raid.Seed"/> for its boards' looks (the same whenever they're drawn).</summary>
+        internal const int BoardsSalt = 0x5B0A;
 
         private Glazing _glass;
         private bool _boarded;
@@ -57,9 +72,14 @@ namespace CloneZ
         private OpeningLine _line;
         private float _mid, _sashWidth, _upperY0, _upperY1, _upperAcross, _lowerY0, _lowerY1, _lowerAcross;
         private int _seed;
+        private bool _framed, _boardable;
+        private Vector3 _frameAt;
+        private Quaternion _frameTurn = Quaternion.identity;
+        private float _openingWidth, _sill, _head, _boardsOff;
+        private int _boardsSide;
         private float _pryClock, _pryNext;
 
-        private Action<InteractContext> _tryAct, _smashAct, _clearAct, _pryAct, _pryBegin, _lookInAct;
+        private Action<InteractContext> _tryAct, _smashAct, _clearAct, _pryAct, _pryBegin, _lookInAct, _boardAct;
         private Action<InteractContext, float, float> _pryTick;
 
         /// <summary>True while the glass is whole.</summary>
@@ -86,6 +106,7 @@ namespace CloneZ
             };
             _pryTick = PryTick;
             _lookInAct = LookIn;
+            _boardAct = BoardUp;
         }
 
         /// <summary>Makes <paramref name="root"/> (holding the sash, the glazing, the dressing and any boards, under the window's
@@ -111,6 +132,15 @@ namespace CloneZ
             w._lowerY1 = r.LowerY1;
             w._lowerAcross = r.LowerAcross;
             w._seed = r.Seed;
+            w._framed = r.Framed;
+            w._frameAt = r.FrameAt;
+            w._frameTurn = r.Framed ? r.FrameTurn : Quaternion.identity;
+            w._boardable = r.Boardable && (r.Boards != null || r.OpeningWidth > 0.1f);
+            w._openingWidth = r.OpeningWidth;
+            w._sill = r.Sill;
+            w._head = r.Head;
+            w._boardsOff = r.BoardsOff;
+            w._boardsSide = r.BoardsSide != 0 ? r.BoardsSide : -1;
             w.ShowGlass();
             w.ShowBoards();
             return w;
@@ -159,6 +189,7 @@ namespace CloneZ
             // Knock on the window from outside
             into.Add(new InteractAction("Knock on the window", KnockWindow)
                 .Timed(1f, "Knocking on the glass", HumanoidActivity.Use));
+            if (_boardable && !_boarded) into.Add(BoardAction(ctx, inside));
 
             // No way through yet (say why), or the climb out of an open window, further down the list.
             if (!climbFirst) AddClimb(ctx, side, inside, into);
@@ -283,6 +314,7 @@ namespace CloneZ
         {
             if (glazing == null) return;
             var m = new RaidMesh();
+            if (_framed) m.SetFrame(_frameAt, _frameTurn);
             FurnitureBuilder.OpeningShards(m, rng, _line, _mid, _sashWidth, y0, y1, across, lower);
             m.ApplyTo(glazing.gameObject, glazing.transform.position, ShadowCastingMode.Off);
         }
@@ -336,8 +368,61 @@ namespace CloneZ
 
         private void ShowBoards()
         {
+            if (_boarded) MakeBoards();
             if (_boards != null) _boards.enabled = _boarded;
             PartsChanged();
+        }
+
+        // Boards for a window fitted without them, drawn the first time they're nailed on: as its builder draws them, an object
+        // of their own under the window that the cutaway gathers with its other parts.
+        private void MakeBoards()
+        {
+            if (_boards != null || !_boardable) return;
+            var m = new RaidMesh();
+            if (_framed) m.SetFrame(_frameAt, _frameTurn);
+            FurnitureBuilder.OpeningBoards(m, new System.Random(_seed ^ BoardsSalt), _line, _mid, _openingWidth, _sill, _boardsSide, _boardsOff, _head);
+            GameObject go = m.Emit("Boards", transform, m.ToMeshSpace(_line.P(_mid, (_sill + _head) * 0.5f, _boardsSide * _boardsOff)));
+            if (go == null) return;
+            go.transform.rotation = Quaternion.identity;
+            _boards = go.GetComponent<Renderer>();
+            DecorPalette.Apply();
+            MapCutaway.WindowPartsChanged(gameObject);
+        }
+
+        // Planks nailed across the window, as a survivor shuts a house against the dead: nobody climbs through till they're
+        // pried off again. A hammer blow carries every so often while the job goes on (as a nail shrieks out of one pried).
+        private InteractAction BoardAction(InteractContext ctx, bool inside)
+        {
+            PlayerInventory inv = ctx.Inventory;
+            int planks = CloneZConfig.RaidWindowBoardPlanks, nails = CloneZConfig.RaidWindowBoardNails;
+            string why = inv == null ? "You've nothing to do it with"
+                : !inv.Has("hammer") ? "You need a hammer"
+                : !inv.Has("plank", planks) ? "You need " + planks + " planks"
+                : !inv.Has("nails", nails) ? "You need " + nails + " nails"
+                // The boards go on the outside: from in here that means reaching out past the sash.
+                : inside && _glass == Glazing.Intact && !IsOpen ? "Open the window first" : null;
+            var a = new InteractAction("Board up the window", _boardAct)
+                .Timed(CloneZConfig.RaidWindowBoardSeconds, "Nailing boards across", HumanoidActivity.Build)
+                .DisabledIf(why != null, why);
+            a.Begin = _pryBegin;
+            a.Tick = _pryTick;
+            return a;
+        }
+
+        private void BoardUp(InteractContext ctx)
+        {
+            if (_boarded || !_boardable) return;
+            PlayerInventory inv = ctx.Inventory;
+            int planks = CloneZConfig.RaidWindowBoardPlanks, nails = CloneZConfig.RaidWindowBoardNails;
+            if (inv == null || !inv.Has("hammer") || !inv.Has("plank", planks) || !inv.Has("nails", nails)) return;
+            inv.Consume("plank", planks);
+            inv.Consume("nails", nails);
+            inv.WearTool("hammer");
+            _boarded = true;
+            ShowBoards();
+            MakeNoise(CloneZConfig.RaidWindowPryNoise);
+            if (ctx.Stats != null) ctx.Stats.TryConsumeEndurance(CloneZConfig.RaidWindowPryEndurance);
+            ctx.Notify("You nail the planks across the window. Nothing's getting through it now.");
         }
         #endregion
 
@@ -390,7 +475,11 @@ namespace CloneZ
 
         public override void RestoreState(FixtureSave save)
         {
+            // The home window's own bits only: its "broken" bit (8) is the glass's here.
+            int state = save.State;
+            save.State = state & 7;
             base.RestoreState(save);
+            save.State = state;
             var glass = (Glazing)((save.State >> 3) & 3);
             if (glass != _glass && glass != Glazing.Intact)
             {
@@ -401,6 +490,11 @@ namespace CloneZ
             if (_boarded && (save.State & 32) == 0)
             {
                 _boarded = false;
+                ShowBoards();
+            }
+            else if (!_boarded && (save.State & 32) != 0 && _boardable)
+            {
+                _boarded = true;
                 ShowBoards();
             }
         }

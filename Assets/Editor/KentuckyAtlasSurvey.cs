@@ -16,7 +16,7 @@ namespace CloneZ.EditorTools
         /// <summary>
         /// <c>Unity.exe -batchmode -projectPath &lt;project&gt; -executeMethod CloneZ.EditorTools.KentuckyAtlasWindow.Survey
         /// -clonez-out &lt;dir&gt; [-clonez-atlas-place Bardstown] [-clonez-atlas-count 10] [-clonez-atlas-save]
-        /// [-clonez-atlas-levels] [-clonez-atlas-ids &lt;id,id,…&gt;] -logFile &lt;log&gt;</c>
+        /// [-clonez-atlas-levels] [-clonez-atlas-breach] [-clonez-atlas-windows] [-clonez-atlas-ids &lt;id,id,…&gt;] -logFile &lt;log&gt;</c>
         /// with <c>CLONEZ_WORLD</c> pointing at a world store. Builds the buildings nearest the place's middle, each in its
         /// piece with its interior, and writes report.md (what the game made of each, the doors, windows and inside the checks
         /// found wrong) and atlas-map.png (the map as the window draws it). With -clonez-atlas-save it also saves a record with
@@ -24,8 +24,15 @@ namespace CloneZ.EditorTools
         /// store's validation folder (so point CLONEZ_WORLD at a copy). With -clonez-atlas-levels it takes the nearest buildings
         /// likely to have floors above or below the ground one (mapped with storeys, or houses), checks every floor (furnished
         /// where it stands, reached from the front door on the NavMesh) and takes the cutaway's pictures of the first few,
-        /// a floor at a time. Exits 0, 1 when the survey failed, 2 when the game logged errors or a correction wasn't
-        /// applied, 3 with no world store.
+        /// a floor at a time. With -clonez-atlas-breach it knocks each furnished floor's longest partition through and checks the
+        /// hole (cut clean, the NavMesh leading through it, boards closing it), the place the dead pick to batter the next, and
+        /// (single-storey buildings) that a floor raised again keeps its holes; on the ground floor it does the same for the
+        /// longest stretch of outside wall with room for a hole (the NavMesh leading in from outside, the dead outside picking
+        /// the next stretch to get at their prey inside). With -clonez-atlas-windows it fits every furnished floor's windows
+        /// as the streamer does round a survivor and looks through each working and fixed one (nothing solid across it but its
+        /// own boards or drawn curtains, its glass see-through, the NavMesh not leading through it), counting the painted ones,
+        /// and pictures a few from outside and from the room. Exits 0, 1 when the survey failed, 2 when the
+        /// game logged errors or a correction wasn't applied, 3 with no world store.
         /// </summary>
         public static void Survey()
         {
@@ -35,6 +42,12 @@ namespace CloneZ.EditorTools
             int count = int.TryParse(Arg(args, "-clonez-atlas-count"), out int n) ? Mathf.Clamp(n, 1, 500) : 10;
             bool save = Array.IndexOf(args, "-clonez-atlas-save") >= 0;
             bool levels = Array.IndexOf(args, "-clonez-atlas-levels") >= 0;
+            // Each furnished floor's longest partition knocked through, boarded and opened again, and the dead's pick of the next.
+            KentuckyAtlas.BreachTest = Array.IndexOf(args, "-clonez-atlas-breach") >= 0;
+            KentuckyAtlas.BreachPictures = KentuckyAtlas.BreachTest ? outDir : null;
+            // Every furnished floor's windows fitted and looked through.
+            KentuckyAtlas.WindowTest = Array.IndexOf(args, "-clonez-atlas-windows") >= 0;
+            KentuckyAtlas.WindowPictures = KentuckyAtlas.WindowTest ? outDir : null;
             HashSet<long> only = null;
             string ids = Arg(args, "-clonez-atlas-ids");
             if (ids != null)
@@ -62,6 +75,10 @@ namespace CloneZ.EditorTools
             finally
             {
                 KentuckyAtlas.Clear();
+                KentuckyAtlas.BreachTest = false;
+                KentuckyAtlas.BreachPictures = null;
+                KentuckyAtlas.WindowTest = false;
+                KentuckyAtlas.WindowPictures = null;
             }
             EditorApplication.Exit(code);
         }
@@ -126,8 +143,11 @@ namespace CloneZ.EditorTools
                 .Append("| building | kind (use) | the game made | doors | windows | inside | floors | problems | ms |\n|---|---|---|--:|--:|---|---|---|--:|\n");
             var reports = new List<AtlasReport>();
             var levelLines = new StringBuilder();
+            var breachLines = new StringBuilder();
+            var windowLines = new StringBuilder();
             var pictures = new List<string>();
-            int built = 0, withProblems = 0, leveled = 0, pictured = 0;
+            int built = 0, withProblems = 0, leveled = 0, pictured = 0, fixtures = 0, outOfReach = 0, breaches = 0, through = 0, outside = 0, outsideThrough = 0;
+            int working = 0, fixedClear = 0, painted = 0, looked = 0, seen = 0, screened = 0;
             try
             {
                 foreach (KeyValuePair<double, MapBuilding> kv in near)
@@ -137,6 +157,25 @@ namespace CloneZ.EditorTools
                     reports.Add(r);
                     if (r.Built) built++;
                     if (r.Problems.Count > 0) withProblems++;
+                    fixtures += r.Fixtures;
+                    outOfReach += r.FixturesOutOfReach;
+                    breaches += r.Breaches;
+                    through += r.BreachesThrough;
+                    outside += r.OutsideBreaches;
+                    outsideThrough += r.OutsideThrough;
+                    working += r.WindowsWorking;
+                    fixedClear += r.WindowsClear;
+                    painted += r.WindowsPainted;
+                    looked += r.WindowsLooked;
+                    seen += r.WindowsSeen;
+                    screened += r.WindowsScreened;
+                    foreach (string note in r.Notes)
+                    {
+                        if (note.StartsWith("Breach:", StringComparison.Ordinal))
+                            breachLines.Append("- `").Append(b.id).Append("` ").Append(Md(note.Substring(7).Trim())).Append('\n');
+                        else if (note.StartsWith("Windows:", StringComparison.Ordinal))
+                            windowLines.Append("- `").Append(b.id).Append("` ").Append(Md(note.Substring(8).Trim())).Append('\n');
+                    }
                     string floors = "";
                     if (!string.IsNullOrEmpty(r.Levels))
                     {
@@ -160,8 +199,18 @@ namespace CloneZ.EditorTools
                         .Append(Math.Round(r.BuildMs + r.FurnishMs).ToString(CultureInfo.InvariantCulture)).Append(" |\n");
                 }
                 md.Append("\n").Append(built).Append(" of ").Append(near.Count).Append(" built; ").Append(withProblems).Append(" with something the checks found wrong; ")
-                    .Append(leveled).Append(" with floors above or below the ground one.\n\n");
+                    .Append(leveled).Append(" with floors above or below the ground one; ").Append(fixtures).Append(" fixtures furnished, ")
+                    .Append(outOfReach).Append(" of them out of a survivor's reach.\n\n");
                 if (levelLines.Length > 0) md.Append("## Floors\n\n").Append(levelLines);
+                if (KentuckyAtlas.BreachTest)
+                    md.Append("\n## Breaches\n\n").Append(breaches).Append(" partitions knocked through, the NavMesh leading through ").Append(through)
+                        .Append(" of the holes; ").Append(outside).Append(" outside walls knocked through, the NavMesh leading in through ")
+                        .Append(outsideThrough).Append(" of those.\n\n").Append(breachLines).Append('\n');
+                if (KentuckyAtlas.WindowTest)
+                    md.Append("\n## Windows\n\n").Append(working).Append(" working windows and ").Append(fixedClear)
+                        .Append(" fixed ones (real openings, clear glass); ").Append(painted).Append(" painted on (no floor at them). Looked through ")
+                        .Append(looked).Append(" of the working and fixed ones: the eye went through ").Append(seen).Append(", ").Append(screened)
+                        .Append(" boarded or with their curtains drawn.\n\n").Append(windowLines).Append('\n');
                 if (pictures.Count > 0)
                 {
                     md.Append("## Pictures\n\nThe game's isometric view, the survivor (red) on each floor's landing, after the cutaway's scan.\n\n")

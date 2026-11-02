@@ -191,7 +191,7 @@ namespace CloneZ
             rinse.Stopped = _endJob;
             into.Add(rinse);
 
-            var temp = new InteractAction("Check water temperature", ctx => { ctx.Notify(PowerGrid.HousePowered ? "The water feels warm." : "The water is icy‑cold."); })
+            var temp = new InteractAction("Check water temperature", ctx => { ctx.Notify(PowerGrid.PoweredAt(this) ? "The water feels warm." : "The water is icy‑cold."); })
                 .DisabledIf(!WaterMains.MainsOn, Dry);
             into.Add(temp);
 
@@ -290,7 +290,7 @@ namespace CloneZ
             WaterUse.Freshen(ctx, _clinical ? 1.2f : 1f);
             _cleanliness = Mathf.Min(_cleanliness + 1, 5); // cap at 5
             if (_clinical) ctx.Notify(ScrubLines[_scrub++ % ScrubLines.Length]);
-            else ctx.Notify(PowerGrid.HousePowered
+            else ctx.Notify(PowerGrid.PoweredAt(this)
                 ? "The water runs hot after a moment. You scrub your hands with the gritty soap and splash your face. Better."
                 : "Cold water, hard soap. You scrub your hands and splash your face. It wakes you up.");
         }

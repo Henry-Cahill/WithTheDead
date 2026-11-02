@@ -308,8 +308,12 @@ namespace CloneZ
             if (KettleLobby.Active)
                 HubUI.Para(zones, "You're in Bardstown: the Kettle's front door opens straight onto the town. Walk out of it for a raid as your runner, on foot. "
                     + "The other ways in start somewhere else, and take you there from here.", 15, UIKit.Good);
-            // Playing together, the Zone runs on the host: a client follows the host's raid (or waits for one).
-            bool follower = GameSession.Networked && !NetAuthority.IsServer;
+            // Playing together, the Zone runs on the server: a client follows the raid under way there, or waits for the host
+            // to go in. A dedicated server plays nobody, so while it has no raid running the Zone a runner picks opens for all.
+            bool opener = GameSession.Networked && !NetAuthority.IsServer && NetSession.ServerDedicated && NetSession.HostRaidZone == null;
+            bool follower = GameSession.Networked && !NetAuthority.IsServer && !opener;
+            if (opener)
+                HubUI.Para(zones, "No raid is running on the server. The Zone you pick opens for everyone, and the others can follow you in.", 15, UIKit.TextDim);
             if (follower)
             {
                 if (NetSession.HostRaidZone == null)
@@ -317,7 +321,7 @@ namespace CloneZ
                 else
                 {
                     s_Zone = NetSession.HostRaidZone;
-                    HubUI.Para(zones, "The host's raid is under way. You'll come in wherever you choose to enter.", 15, UIKit.TextDim);
+                    HubUI.Para(zones, (NetSession.ServerDedicated ? "A raid is under way on the server." : "The host's raid is under way.") + " You'll come in wherever you choose to enter.", 15, UIKit.TextDim);
                 }
             }
             // The featured zone first, the rest in the catalogue's order.
@@ -390,6 +394,7 @@ namespace CloneZ
             }
             HubUI.Btn(side, "Go — " + zone.Name, () =>
             {
+                if (NetSession.OpeningRaid) { Report(false, "Waiting for the server to open the raid."); return; }
                 if (s_Heli && s_Kind != RaidKind.Monster && !Money.TrySpend(heliCost, Carried)) { Report(false, "You can't pay the pilot."); return; }
                 HubKit.AfterChange();
                 if (s_Kind == RaidKind.Scav) c.ScavReadyUnix = ProfileStore.NowUnix + SandboxSettings.Current.ScavCooldownMinutes * 60L;

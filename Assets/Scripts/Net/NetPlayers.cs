@@ -139,8 +139,13 @@ namespace CloneZ
                 ulong owner = sender;
                 if (NetSession.Clients.TryGetValue(owner, out NetClientInfo ci))
                 {
-                    if (ci.Position != Vector3.zero && (pos - ci.Position).magnitude > 12f && owner != nm.LocalClientId)
-                        Debug.LogWarning("[CloneZ] " + ci.Name + " moved implausibly fast (" + (pos - ci.Position).magnitude.ToString("0") + " m).");
+                    // Only a move within one world, from the state just before, is checked: a runner going between the
+                    // bar and the raid comes from another world after seconds of loading, and the last state from one
+                    // side can arrive after the first from the other (or, setting off, say they're already in the raid).
+                    float now = Time.unscaledTime;
+                    if (ci.Position != Vector3.zero && ci.InRaid == inRaid && now - ci.StateAt < 1f && (pos - ci.Position).magnitude > 12f && owner != nm.LocalClientId)
+                        Debug.LogWarning("[CloneZ] " + ci.Name + " #" + owner + " moved implausibly fast (" + (pos - ci.Position).magnitude.ToString("0") + " m).");
+                    ci.StateAt = now;
                     ci.Position = pos;
                     ci.Eye = pos + Vector3.up * 1.6f;
                     ci.Alive = (flags & 4) == 0;
@@ -325,8 +330,8 @@ namespace CloneZ
             }
             RemotePlayer v = ProxyOf(victim);
             if (v != null) v.Die();
-            string vn = NetSession.Clients.TryGetValue(victim, out NetClientInfo vi) ? vi.Name : "A runner";
-            string kn = killer != ulong.MaxValue && NetSession.Clients.TryGetValue(killer, out NetClientInfo ki) ? ki.Name : null;
+            string vn = NetSession.ToastName(victim);
+            string kn = killer != ulong.MaxValue && NetSession.Clients.ContainsKey(killer) ? NetSession.ToastName(killer) : null;
             GameEvents.RaiseToast(kn != null ? kn + " killed " + vn : vn + " died");
             if (NetSession.NM != null && killer == NetSession.NM.LocalClientId && v != null)
                 GameEvents.RaiseActorKilled(new KillInfo { Victim = v.Actor, Killer = Actor.LocalPlayer, WeaponId = weapon, Position = v.transform.position, Surrendered = v.Actor.Surrendered });

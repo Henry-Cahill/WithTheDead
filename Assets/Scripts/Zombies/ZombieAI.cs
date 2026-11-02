@@ -71,6 +71,13 @@ namespace CloneZ
         private Vector3 _doorTarget;       // .. and where the target was then
         private static NavMeshPath s_DoorPath;
 
+        // The statewide map's partitions and outside walls: a zombie that can't get at its prey batters a hole through the
+        // stretch of wall between them (BreakableWall), if that's nearer than any door, looked for a few times a second at most;
+        // once it's taken to one it holds on to its prey as long as a wall's worth (_wallChase).
+        private WallBreach _wallHole;
+        private float _wallLookAt;
+        private bool _wallChase;
+
         // A lit flashlight draws the eye: a zombie standing in its beam spots the survivor from further off.
         private const float FlashlightBeamRange = 22f;
         private const float FlashlightVisionMultiplier = 1.6f;
@@ -221,6 +228,8 @@ namespace CloneZ
             _hasTarget = false;
             _investigating = false;
             _door = null;
+            _wallHole = null;
+            _wallChase = false;
             _prey = null;
             _lastSeenTime = -999f;
             EnterIdle();
@@ -467,12 +476,17 @@ namespace CloneZ
         {
             _agent.speed = _baseSpeed;
 
-            // A zombie set on a shut door keeps at it a while after its prey drops out of sight behind it.
-            bool lost = Time.time - _lastSeenTime > (_door != null ? CloneZConfig.ZombieDoorForgetTime : CloneZConfig.ZombieForgetTime);
+            // A zombie set on a shut door (or a stretch of wall, which holds out longer) keeps at it a while after its prey drops
+            // out of sight behind it (a wall: once it's taken to battering one, however its look for a way through comes out).
+            float forget = _wallHole != null || _wallChase ? CloneZConfig.ZombieWallForgetTime
+                : _door != null ? CloneZConfig.ZombieDoorForgetTime : CloneZConfig.ZombieForgetTime;
+            bool lost = Time.time - _lastSeenTime > forget;
             if (lost && !_hasTargetVisibleNow())
             {
                 _hasTarget = false;
                 _door = null;
+                _wallHole = null;
+                _wallChase = false;
                 _investigatePos = _lastKnownPos;
                 _investigating = true;
                 _state = State.Investigate;
@@ -508,7 +522,7 @@ namespace CloneZ
 
         // The nearest player-built structure (barricade or house wall/doorway) that blocks the
         // path to the target — whichever is closer if both are in reach — or, in a raid, a shut
-        // door standing in the way.
+        // door standing in the way, or a stretch of a building's partition.
         private IDamageable NearestObstruction(Vector3 targetPos)
         {
             float range = CloneZConfig.ZombieAttackRange + 0.8f;
@@ -523,12 +537,38 @@ namespace CloneZ
                 float dp = (piece.Position - transform.position).sqrMagnitude;
                 wall = db <= dp ? (IDamageable)bar : piece;
             }
+            if (BreakableWall.All.Count > 0)
+            {
+                WallBreach hole = PartitionInReach(targetPos, range);
+                if (hole != null && (wall == null
+                    || (hole.transform.position - transform.position).sqrMagnitude < (wall.Transform.position - transform.position).sqrMagnitude))
+                    wall = hole;
+            }
             if (RaidDoor.Registry.Count == 0) return wall;
 
             RaidDoor door = DoorInReach(targetPos, range);
             if (door == null) return wall;
             if (wall == null) return door;
             return door.SqrDistance(transform.position) <= (wall.Transform.position - transform.position).sqrMagnitude ? door : wall;
+        }
+
+        // The place in a partition or an outside wall to batter through toward the target: only while the target can't be
+        // reached (the path dead-ends, or this zombie is making for a shut door), and kept between looks while it's still
+        // standing and near; while the way's still being worked out (on the statewide map a search for somewhere out of reach
+        // runs over many frames) the last answer stands.
+        private WallBreach PartitionInReach(Vector3 targetPos, float range)
+        {
+            if (_wallHole != null && (_wallHole.IsDead
+                || (_wallHole.transform.position - transform.position).sqrMagnitude > (range + 1f) * (range + 1f))) _wallHole = null;
+            float now = Time.time;
+            if (now < _wallLookAt) return _wallHole;
+            bool settled = _agent.enabled && _agent.isOnNavMesh && !_agent.pathPending;
+            if (_door == null && !settled) return _wallHole;
+            _wallLookAt = now + CloneZConfig.ZombieWallRethink * Random.Range(0.8f, 1.2f);
+            bool stuck = _door != null || _agent.pathStatus == NavMeshPathStatus.PathPartial;
+            _wallHole = stuck ? BreakableWall.NearestObstructing(transform.position, targetPos, range) : null;
+            if (_wallHole != null) _wallChase = true;
+            return _wallHole;
         }
 
         // The shut raid door to batter: the one this zombie made for once it's within reach, or — while the target can't be
@@ -809,9 +849,25 @@ private void SafeStop()
             if (_agent.enabled && _agent.isOnNavMesh)
             {
                 _agent.isStopped = false;
+                // A way still being worked out is left to finish while the destination stays put: on the statewide map's
+                // NavMesh a search for somewhere out of reach (the dead's prey shut in behind a door) runs over several frames,
+                // and asking again every frame would restart it for ever. A settled way is kept a while (RepathInterval from
+                // when it settled, so the brain gets to see how it came out: a search can outlast the interval) and then asked
+                // for again, so a way the NavMesh has opened up since (a door, a hole battered through a wall) is found.
+                float now = Time.time;
+                bool same = (pos - _destination).sqrMagnitude < 0.25f;
+                if (same && _agent.pathPending) return;
+                if (_settledAt < _destinationAt) _settledAt = now;   // the first look since the way asked for last settled
+                if (same && now - _settledAt < RepathInterval) return;
+                _destination = pos;
+                _destinationAt = now;
                 _agent.SetDestination(pos);
             }
         }
+
+        private const float RepathInterval = 1f;
+        private Vector3 _destination = new Vector3(float.MaxValue, 0f, 0f);
+        private float _destinationAt, _settledAt;
 
         private static bool TryPickNavPoint(Vector3 center, float radius, out Vector3 result)
         {

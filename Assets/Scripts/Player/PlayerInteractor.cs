@@ -448,14 +448,26 @@ else if (kb.qKey.wasPressedThisFrame)
         }
 
         // Nothing solid between the survivor's chest and the point (short of it, so the fixture's own surface
-        // doesn't count) other than what belongs to the thing itself.
+        // doesn't count) other than what belongs to the thing itself. Down in a basement the ground's box overhead
+        // doesn't count either: the survivor's body passes through it there (LevelStructure.KeepUp), and so does sight.
         private bool InSight(Vector3 point, Transform own)
         {
             Vector3 from = transform.position + Vector3.up * 1.2f;
             Vector3 to = point - (point - from).normalized * 0.06f;
-            if (!Physics.Linecast(from, to, out RaycastHit hit, SightMask, QueryTriggerInteraction.Ignore)) return true;
-            Transform t = hit.collider.transform;
-            return t.IsChildOf(transform) || (own != null && t.IsChildOf(own));
+            bool basement = transform.position.y < -0.3f && LevelStructure.OverBasement(transform.position);
+            for (int pass = 0; pass < 3; pass++)
+            {
+                if (!Physics.Linecast(from, to, out RaycastHit hit, SightMask, QueryTriggerInteraction.Ignore)) return true;
+                Transform t = hit.collider.transform;
+                if (basement && hit.collider is BoxCollider && t.name == "Ground")
+                {
+                    if ((to - hit.point).sqrMagnitude < 1e-4f) return true;
+                    from = hit.point + (to - from).normalized * 0.01f;   // inside the box now: it isn't met again
+                    continue;
+                }
+                return t.IsChildOf(transform) || (own != null && t.IsChildOf(own));
+            }
+            return false;
         }
 
         /// <summary>True when nothing solid stands between the survivor and <paramref name="point"/> but parts of

@@ -42,7 +42,7 @@ namespace CloneZ
         public bool Running => _on && WaterMains.MainsOn;
 
         // The water heater runs off the mains electricity.
-        private static bool Hot => PowerGrid.HousePowered;
+        private bool Hot => PowerGrid.PoweredAt(this);
 
         #region IWarmthSource
         /// <summary>The world position that provides warmth from the shower.</summary>

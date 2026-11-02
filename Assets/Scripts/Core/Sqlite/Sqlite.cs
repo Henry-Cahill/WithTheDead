@@ -11,13 +11,17 @@ namespace CloneZ.Db
     ///
     /// The native library is resolved by <see cref="Lib"/>. On Windows this is the
     /// OS-provided <c>winsqlite3.dll</c> (present in System32 on Windows 10 1803+ and
-    /// Windows 11), so nothing has to ship with the project. To target another platform,
-    /// drop a native <c>sqlite3</c> library in <c>Assets/Plugins/&lt;platform&gt;</c> and
-    /// change <see cref="Lib"/> to "sqlite3".
+    /// Windows 11), so nothing has to ship with the project. Elsewhere it's the system's
+    /// <c>libsqlite3</c>: the Linux dedicated server's image provides <c>libsqlite3.so</c>
+    /// (Tools/Server/docker/Dockerfile).
     /// </summary>
     internal static class SqliteNative
     {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         private const string Lib = "winsqlite3";
+#else
+        private const string Lib = "sqlite3";
+#endif
 
         // Result codes.
         public const int OK = 0;

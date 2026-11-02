@@ -119,7 +119,7 @@ private static readonly string[] Jams =
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            string dead = LightingFixtures.NothingHappens();
+            string dead = LightingFixtures.NothingHappens(this);
             if (_jammed)
             {
                 into.Add(new InteractAction("Clear the paper jam", ClearJam)

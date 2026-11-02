@@ -9,13 +9,20 @@ namespace CloneZ
     /// <summary>
     /// The world store, where the build machines put the real-world map (Tools/World): <c>\\192.168.1.170\CLONE-Z</c>
     /// on Windows, <c>/mnt/clonez</c> on the Linux machines, or wherever the <c>CLONEZ_WORLD</c> environment variable
-    /// points (a local copy, say). Opens the build named in <c>world/current.json</c>. Nothing here throws at its
-    /// callers: a store that can't be read gives a reason, and the raid falls back to the procedural town.
+    /// points (a local copy, say). A co-op release carries its own copy beside the game (<see cref="BundledFolder"/>), so a
+    /// friend's game and the server build the same map without the NAS. Opens the build named in <c>world/current.json</c>.
+    /// Nothing here throws at its callers: a store that can't be read gives a reason, and the raid falls back to the
+    /// procedural town.
     /// </summary>
     public static class WorldStore
     {
         /// <summary>The environment variable that points the game at another copy of the store.</summary>
         public const string RootVariable = "CLONEZ_WORLD";
+
+        /// <summary>The folder beside a release's executable that holds its copy of the store (Tools/Server/Release.ps1).</summary>
+        public const string BundledFolder = "WorldStore";
+
+        private static string s_Bundled = null;
 
         /// <summary>Where the store is on this machine.</summary>
         public static string Root
@@ -24,9 +31,20 @@ namespace CloneZ
             {
                 string set = Environment.GetEnvironmentVariable(RootVariable);
                 if (!string.IsNullOrEmpty(set)) return set;
+                if (s_Bundled != null) return s_Bundled;
                 return Path.DirectorySeparatorChar == '\\' ? @"\\192.168.1.170\CLONE-Z" : "/mnt/clonez";
             }
         }
+
+#if !UNITY_EDITOR
+        // Looked for once, on the main thread (Application.dataPath can't be read from the region loaders' threads).
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void FindBundled()
+        {
+            string dir = Path.Combine(Path.GetDirectoryName(Application.dataPath) ?? "", BundledFolder);
+            s_Bundled = File.Exists(Path.Combine(dir, "world", "current.json")) ? dir : null;
+        }
+#endif
 
         /// <summary>The build the game should load, or null with the reason in <paramref name="why"/>.</summary>
         public static MapBuild OpenCurrent(out string why)

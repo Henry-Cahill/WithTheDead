@@ -48,8 +48,12 @@ namespace CloneZ
             yield return "interior plans";
             site.BeginStep();
             var thickness = new Dictionary<Footprint, float>();
+            var records = new Dictionary<Footprint, EnterableBuilding>();
             foreach (EnterableBuilding e in site.Enterables)
+            {
                 if (e.Footprint != null && e.WallThickness > 0.01f) thickness[e.Footprint] = e.WallThickness;
+                if (e.Footprint != null) records[e.Footprint] = e;
+            }
             DecorPalette.Matte(MapCutaway.CapColour);   // the cut walls' cap colour joins the palette with the build's
             Transform walls = Container("Building shells", site.Town.World), upper = Container("Building shells", site.Town.Overhead);
             var buildings = new List<MapCutaway.Building>(own);
@@ -57,8 +61,25 @@ namespace CloneZ
             {
                 BuildingShell shell = shells[i];
                 if (shell.Batched) continue;
+                // A building with floors has its upper part split by storey first, a slice at a time: a tall one's, with its
+                // floors' windows, runs to more than a step should take.
+                if (SplitsUpper(shell))
+                {
+                    var split = new Levels.UpperSplit(shell.Upper, shell.Levels);
+                    long ts = System.Diagnostics.Stopwatch.GetTimestamp();
+                    while (!split.Step(SplitSlice))
+                    {
+                        if (!site.StepDue) continue;
+                        EmitTicks += System.Diagnostics.Stopwatch.GetTimestamp() - ts;
+                        yield return "cutaway";
+                        site.BeginStep();
+                        ts = System.Diagnostics.Stopwatch.GetTimestamp();
+                    }
+                    EmitTicks += System.Diagnostics.Stopwatch.GetTimestamp() - ts;
+                    shell.UpperBands = split.Parts;
+                }
                 long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-                MapCutaway.Building b = Emit(site, shell, walls, upper, thickness);
+                MapCutaway.Building b = Emit(site, shell, walls, upper, thickness, records);
                 MapCutaway.Retire(site, shell);
                 if (b != null) buildings.Add(b);
                 Emitted++;
@@ -78,12 +99,26 @@ namespace CloneZ
             return t;
         }
 
+        /// <summary>Triangles of an upper part split between the pass's checks of its step's time.</summary>
+        private const int SplitSlice = 2048;
+
+        // True when Emit splits the shell's upper part by storey: a building with floors above the ground one, with an upper
+        // part of its own big enough to cut away.
+        private static bool SplitsUpper(BuildingShell shell)
+        {
+            LevelLayout levels = shell.Levels;
+            RaidMesh u = shell.Upper;
+            return levels != null && levels.Top >= 1 && u != null && u != shell.Walls[0] && !u.IsEmpty
+                && shell.Footprint.Size >= MapCutaway.OwnWallThreshold;
+        }
+
         private static MapCutaway.Building Emit(Site site, BuildingShell shell, Transform wallsRoot, Transform upperRoot,
-            Dictionary<Footprint, float> thickness)
+            Dictionary<Footprint, float> thickness, Dictionary<Footprint, EnterableBuilding> records)
         {
             Footprint f = shell.Footprint;
             Vector3 origin = To3(f.Middle, 0f);
             string id = f.Data != null ? f.Data.id.ToString(CultureInfo.InvariantCulture) : "";
+            MeshRenderer[] panes = Panes(site, shell, id, upperRoot, origin, records);
             RaidMesh w = shell.Walls[0], u = shell.Upper;
             // What the upper part covers in plan, from its vertices as drawn (before they're handed to the bake).
             Rect cover = f.Bounds;
@@ -93,9 +128,10 @@ namespace CloneZ
             // over the floor the survivor is on and keep what's under it: the roof stands for the upper part.
             LevelLayout levels = shell.Levels;
             RaidMesh[] bands = null;
-            if (levels != null && levels.Top >= 1 && u != null && u != w && !u.IsEmpty && f.Size >= MapCutaway.OwnWallThreshold)
+            if (SplitsUpper(shell))
             {
-                bands = Levels.SplitUpper(u, levels);
+                bands = shell.UpperBands ?? Levels.SplitUpper(u, levels);
+                shell.UpperBands = null;
                 u.Release();
                 u = bands[levels.Top + 1];
             }
@@ -121,6 +157,7 @@ namespace CloneZ
                 Upper = upperGo != null ? upperGo.GetComponent<MeshRenderer>() : null,
                 WallsMesh = wallsGo != null ? wallsGo.GetComponent<MeshFilter>().sharedMesh : null,
                 UpperMesh = upperGo != null ? upperGo.GetComponent<MeshFilter>().sharedMesh : null,
+                Panes = panes,
             };
             if (levels != null) MapCutaway.SetLevels(b, levels, bandGos, structure, shell.Stairwells);
             bool cuttable = wallsGo != null && shell.WallTop >= MinWalls;
@@ -136,6 +173,33 @@ namespace CloneZ
                 if (cuttable && d.sqrMagnitude > 0.0025f) b.Groups |= 1 << b.EdgeGroup[i];
             }
             return b;
+        }
+
+        // Each storey's stand-in glass for its working windows, an object of its own over the walls (out of the NavMesh's
+        // sources), handed to the building's record: a floor furnished before now has its real windows fitted already.
+        private static MeshRenderer[] Panes(Site site, BuildingShell shell, string id, Transform parent, Vector3 origin,
+            Dictionary<Footprint, EnterableBuilding> records)
+        {
+            RaidMesh[] meshes = shell.Panes;
+            shell.Panes = null;
+            if (meshes == null) return null;
+            records.TryGetValue(shell.Footprint, out EnterableBuilding e);
+            var panes = new MeshRenderer[meshes.Length];
+            for (int k = 0; k < meshes.Length; k++)
+            {
+                GameObject go = Place(site, meshes[k], "Panes " + id + " L" + k, parent, origin);
+                if (go == null) continue;
+                panes[k] = go.GetComponent<MeshRenderer>();
+                panes[k].shadowCastingMode = ShadowCastingMode.Off;
+            }
+            if (e != null)
+            {
+                e.Panes = panes;
+                if (e.Furnished != null)
+                    for (int k = 0; k < panes.Length && k < e.Furnished.Length; k++)
+                        if (panes[k] != null && e.Furnished[k]) panes[k].enabled = false;
+            }
+            return panes;
         }
 
         // A shell's mesh as an object of its own: baked now (and its arrays given back to the pool), or queued on the

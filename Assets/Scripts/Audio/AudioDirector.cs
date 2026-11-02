@@ -19,6 +19,8 @@ namespace CloneZ
 
         public void Init()
         {
+            // The dedicated server hears nothing: with no backend every sound is a silent no-op (Sfx) and none is rendered.
+            if (DedicatedServer.Requested) return;
             var synth = new SfxSynth();
             Sfx.Backend = synth;
             _ = GameSettings.Current;   // loading applies the saved master volume

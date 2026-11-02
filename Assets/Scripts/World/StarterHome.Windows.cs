@@ -12,7 +12,7 @@ namespace CloneZ
         private const float SashTrack = 0.024f;                // each sash's offset from the wall line (the lower one room-side)
         private const float SashLift = 0.48f;                  // how far the lower sash slides up
         private const float KitchenBlindBottom = 1.2f;         // the kitchen blind stops above the sink's backsplash
-        private static readonly Color SashGlass = new Color(0.13f, 0.17f, 0.19f);
+        private static readonly Color SashGlass = DecorPalette.ClearTint;
 
         // A working double-hung window in a finished window piece: the upper sash fixed in the outer track (drawn into
         // the wall), the lower sash in the inner track sliding up to open, with a sash lock on the meeting rails; on the
@@ -135,48 +135,10 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             // right bracket
             m.Box(f.P(s1 - 0.0225f, apronY, bracketZ), f.Size(bracketW, bracketH, bracketD), rustMetal);
 
-            // ---- exterior wooden shutters (period‑correct) ----
-            float shutterDepth = 0.02f; // metres
-            float shutterHeight = WindowHead - WindowSill; // metres
-            float shutterHalfWidth = (WindowWidth * 0.5f) - 0.01f; // metres, each panel ~ half the opening
-            float shutterY = (WindowSill + WindowHead) * 0.5f; // centre vertically
-            float shutterZ = outer - sillDepth * 0.5f - apronDepth * 0.5f - shutterDepth * 0.5f - 0.001f; // just outside the stone/apron
+            // The shutters are the louvred pair standing open beside the window (StarterHome.Shell's Shutters): nothing hangs
+            // across the glass outside, so it's seen through.
 
-            // left shutter panel
-            float leftX = f.Mid - WindowWidth * 0.25f; // centre of left panel
-            m.Box(f.P(leftX, shutterY, shutterZ), f.Size(shutterHalfWidth, shutterHeight, shutterDepth), wood);
-
-            // right shutter panel
-            float rightX = f.Mid + WindowWidth * 0.25f; // centre of right panel
-            m.Box(f.P(rightX, shutterY, shutterZ), f.Size(shutterHalfWidth, shutterHeight, shutterDepth), wood);
-
-            // top cross‑bars
-            float barHeight = 0.015f; // metres
-            // left top bar
-            m.Box(f.P(leftX, WindowHead - barHeight * 0.5f, shutterZ), f.Size(shutterHalfWidth, barHeight, shutterDepth), wood);
-            // right top bar
-            m.Box(f.P(rightX, WindowHead - barHeight * 0.5f, shutterZ), f.Size(shutterHalfWidth, barHeight, shutterDepth), wood);
-
-            // iron hinge plates
-            float hingeSize = 0.012f; // cubic metres (approx 12 mm)
-            float hingeOffsetX = shutterHalfWidth * 0.5f - hingeSize * 0.5f;
-            float hingeTopY = WindowHead - hingeSize * 0.5f;
-            float hingeBottomY = WindowSill + hingeSize * 0.5f;
-            // left shutter hinges
-            m.Box(f.P(leftX + hingeOffsetX, hingeTopY, shutterZ), f.Size(hingeSize, hingeSize, 0.004f), rustMetal);
-            m.Box(f.P(leftX + hingeOffsetX, hingeBottomY, shutterZ), f.Size(hingeSize, hingeSize, 0.004f), rustMetal);
-            // right shutter hinges
-            m.Box(f.P(rightX - hingeOffsetX, hingeTopY, shutterZ), f.Size(hingeSize, hingeSize, 0.004f), rustMetal);
-            m.Box(f.P(rightX - hingeOffsetX, hingeBottomY, shutterZ), f.Size(hingeSize, hingeSize, 0.004f), rustMetal);
-
-            // brass latch bolt (visual only)
-            float boltW = 0.008f, boltH = 0.012f, boltD = 0.004f;
-            float boltX = leftX - shutterHalfWidth * 0.25f; // a third of the way out from centre
-            m.Box(f.P(boltX, shutterY, shutterZ + shutterDepth * 0.5f + boltD * 0.5f), f.Size(boltW, boltH, boltD), brass);
-
-            // End of exterior shutter details – visual only, no colliders or interaction points added.
-
-            // nail‑head grid on the wooden apron (3 × 2)
+            // nail‑head grid on the wooden apron (3 × 2)
             float nailRadius = 0.0015f, nailHeight = 0.001f;
             int nailCols = 3, nailRows = 2;
             float nailSpacingX = (WindowWidth - 0.04f) / (nailCols - 1);
@@ -272,7 +234,7 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             float tintFactor = 0.9f + 0.2f * Random.value; // 0.9 – 1.1 range
             Color glassTint = new Color(SashGlass.r * tintFactor, SashGlass.g * tintFactor, SashGlass.b * tintFactor, SashGlass.a);
             m.Box(f.P(f.Mid, gy, across), f.Size(0.03f, glass, 0.03f), frame);
-            m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(glassTint));
+            m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.WindowGlass(glassTint));
             // period‑correct leaded‑glass pattern
             Surf lead = DecorPalette.Metal(new Color(0.55f, 0.55f, 0.48f)); // dark‑bronze, period‑correct for leaded glass
             int vertStrips = 2;
@@ -318,12 +280,15 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             m.Box(f.P(f.Mid, y1 - topRail * 0.5f, across), f.Size(w - 0.09f, beadThickness, lower ? SashDepth + 0.005f : SashDepth), bead);
             // bottom rail bead
             m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, beadThickness, lower ? SashDepth : SashDepth + 0.005f), bead);
-            // thin inner‑face wooden trim strip (period‑correct finish)
-            float trimThickness = 0.002f;
+            // thin inner‑face wooden bead round the glass (period‑correct finish): a strip along each edge, the pane left clear
+            float trimThickness = 0.002f, beadWidth = 0.012f;
             // position on inner face of sash
             // inner face is opposite the room side; subtract to move the trim inward
 float innerOffset = across - roomSide * (SashDepth * 0.5f + trimThickness * 0.5f);
-            m.Box(f.P(f.Mid, (y0 + y1) * 0.5f, innerOffset), f.Size(w - 0.09f, h, trimThickness), bead);
+            m.Box(f.P(f.Mid, y0 + bottomRail + beadWidth * 0.5f, innerOffset), f.Size(w - 0.09f, beadWidth, trimThickness), bead);
+            m.Box(f.P(f.Mid, y1 - topRail - beadWidth * 0.5f, innerOffset), f.Size(w - 0.09f, beadWidth, trimThickness), bead);
+            for (int e = -1; e <= 1; e += 2)
+                m.Box(f.P(f.Mid + e * ((w - 0.09f) * 0.5f - beadWidth * 0.5f), gy, innerOffset), f.Size(beadWidth, glass, trimThickness), bead);
 // material for cap rivets
 Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
 // rust‑tinted metal used for the exterior brackets (matches the material used elsewhere)
