@@ -103,7 +103,7 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
                 float offsetX = -WindowWidth * 0.5f + dentilSpacing * (i + 0.5f);
                 float dentilHeight = 0.006f + 0.001f * ((float)Random.value - 0.5f);
                 float dentilY = lintelY + lintelHeight * 0.5f + dentilHeight * 0.5f;
-                m.Box(f.P(offsetX, dentilY, outer - sillDepth * 0.5f), f.Size(dentilWidth, dentilHeight, dentilDepth), wood);
+                m.Box(f.P(f.Mid + offsetX, dentilY, outer - sillDepth * 0.5f), f.Size(dentilWidth, dentilHeight, dentilDepth), wood);
             }
 
             // decorative iron strap under the lintel (period‑correct hardware)
@@ -122,8 +122,7 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             }
             // brass strike-plate on latch lever
             float plateW = 0.04f, plateH = 0.02f, plateD = 0.005f;
-            Vector3 latchCenter = f.P(f.Mid, meet + 0.042f, 0f);
-            m.Box(f.P(latchCenter.x, latchCenter.y, -0.01f), f.Size(plateW, plateH, plateD), brass);
+            m.Box(f.P(f.Mid, meet + 0.042f, -0.01f), f.Size(plateW, plateH, plateD), brass);
 
             float w = SashWidth;
             float s0 = f.Mid - w * 0.5f;
