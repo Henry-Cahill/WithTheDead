@@ -192,6 +192,23 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Visits every item drawn last frame — its instance matrix, mesh and kind — for Debug Mode's picker,
+        /// which has to draw them too (they have no scene objects of their own).</summary>
+        internal void VisitDrawn(System.Action<Matrix4x4, Mesh, ItemDef> visit)
+        {
+            for (int g = 0; g < _liveGroups.Count; g++)
+            {
+                int key = _liveGroups[g];
+                var lod = (ItemMeshBaker.Lod)(key & 1);
+                int typeAndLook = key >> 1;
+                ItemDef def = GroundItemStore.TypeAt(typeAndLook / GeneratedItemMeshes.MaxVariants);
+                ItemMeshBaker.Baked baked = ItemMeshBaker.Get(def, lod, typeAndLook % GeneratedItemMeshes.MaxVariants);
+                if (baked == null) continue;
+                List<Matrix4x4> list = _groups[key];
+                for (int i = 0; i < list.Count; i++) visit(list[i], baked.Mesh, def);
+            }
+        }
+
         /// <summary>Issues one instanced draw per group, per submesh.</summary>
         private void Draw(Camera cam)
         {
