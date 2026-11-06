@@ -5,9 +5,11 @@ using UnityEngine.UI;
 namespace CloneZ
 {
     /// <summary>
-    /// The title screen: a winter night over a small Kentucky town, your runners (up to three per account) and making a
-    /// new one, playing together (hosting or joining a server), the original wave-survival mode, and the settings and the
-    /// field manual. Picking a runner takes you to their hub under the loading card — for a new runner, The Rusty Kettle
+    /// The title screen: a winter night over a small Kentucky town, and a main menu whose ways to play each open
+    /// their own screen — your runners (up to three per account, and making a new one) and playing together (hosting
+    /// or joining a server) — plus the settings and the field manual. The original wave-survival mode lives on as a
+    /// hidden debug feature: type "waves" into the quiet code field at the foot of the settings screen.
+    /// Picking a runner takes you to their hub under the loading card — for a new runner, The Rusty Kettle
     /// in Bardstown, whose front door opens onto the town; a dead runner's slot can take a new runner.
     /// </summary>
     public class MainMenuController : MonoBehaviour
@@ -53,9 +55,28 @@ namespace CloneZ
             ShowUpdate();
         }
 
-        private void OnEnable() => Showing = true;
+        private static MainMenuController s_Instance;
 
-        private void OnDisable() => Showing = false;
+        private void OnEnable()
+        {
+            Showing = true;
+            s_Instance = this;
+        }
+
+        private void OnDisable()
+        {
+            Showing = false;
+            if (s_Instance == this) s_Instance = null;
+        }
+
+        /// <summary>The only way into the hidden wave-survival debug mode: the settings screen's quiet code
+        /// field (and the wave smoke test) call this. False when the title screen isn't up.</summary>
+        public static bool ShowWavesDebug()
+        {
+            if (s_Instance == null) return false;
+            s_Instance.ShowWaves();
+            return true;
+        }
 
         private void OnDestroy() => UpdateCheck.Found -= ShowUpdate;
 
@@ -108,33 +129,17 @@ namespace CloneZ
             Clear();
             // Add title text with large font and bold styling
             Text title = UIKit.Label(_panel, "WithTheDead", 112, TitleRed, TextAnchor.MiddleCenter, FontStyle.Bold);
-            UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.885f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 140f));
+            UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.80f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 140f));
             Text place = UIKit.Label(_panel, Spaced("BARDSTOWN, KENTUCKY") + "      \u00b7      " + Spaced("WINTER 1993"), 22, PlaceColor, TextAnchor.MiddleCenter);
-            UIKit.Place(place.rectTransform, new Vector2(0.5f, 0.8f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 34f));
+            UIKit.Place(place.rectTransform, new Vector2(0.5f, 0.715f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 34f));
             AccountProfile a = ProfileStore.Account;
             Text season = UIKit.Label(_panel, "Season " + a.Season + (a.Wipes > 0 ? "  \u00b7  " + a.Wipes + " wipes survived" : ""), 16, UIKit.TextDim, TextAnchor.MiddleCenter);
-            UIKit.Place(season.rectTransform, new Vector2(0.5f, 0.765f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900f, 26f));
+            UIKit.Place(season.rectTransform, new Vector2(0.5f, 0.68f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900f, 26f));
 
-            // Runners.
-            Text runners = UIKit.Label(_panel, Spaced("YOUR RUNNERS"), 15, UIKit.Accent, TextAnchor.MiddleLeft, FontStyle.Bold);
-            UIKit.Place(runners.rectTransform, new Vector2(0.5f, 0.69f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1364f, 24f));
-            RectTransform slots = UIKit.Place(UIKit.Rect("Runners", _panel), new Vector2(0.5f, 0.555f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 250f));
-            var h = slots.gameObject.AddComponent<HorizontalLayoutGroup>();
-            h.spacing = 22f;
-            h.childAlignment = TextAnchor.MiddleCenter;
-            h.childControlWidth = h.childControlHeight = true;
-            h.childForceExpandWidth = h.childForceExpandHeight = false;
-            for (int i = 0; i < AccountProfile.MaxCharacters; i++) Slot(slots, i);
-
-            // The other ways to play: together, or the waves.
-            RectTransform modes = UIKit.Place(UIKit.Rect("Modes", _panel), new Vector2(0.5f, 0.3f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 124f));
-            var mh = modes.gameObject.AddComponent<HorizontalLayoutGroup>();
-            mh.spacing = 22f;
-            mh.childAlignment = TextAnchor.MiddleCenter;
-            mh.childControlWidth = mh.childControlHeight = true;
-            mh.childForceExpandWidth = mh.childForceExpandHeight = false;
-            Together(modes);
-            Waves(modes);
+            // The ways to play, each on its own screen. (Wave survival hides off the menu: the settings code field.)
+            RectTransform menu = UIKit.Place(UIKit.Column(_panel, 14f, 0), new Vector2(0.5f, 0.44f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(400f, 130f));
+            Main(menu, "Your runners", true, UIKit.Accent, ShowRunners);
+            Main(menu, "Play together", HostAction != null || JoinAction != null, UIKit.ButtonColor, ShowTogether);
 
             // The rest, small, along the foot.
             RectTransform foot = UIKit.Row(_panel, 40f, null, 12f, 0);
@@ -152,23 +157,115 @@ namespace CloneZ
             UIKit.Place(osm.rectTransform, new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-24f, 44f), new Vector2(520f, 22f));
         }
 
+        // A big entry on the title screen's main menu.
+        private static Button Main(Transform parent, string text, bool enabled, Color color, System.Action onClick)
+        {
+            Button b = UIKit.Button(parent, text, onClick, color, 22);
+            b.interactable = enabled;
+            UIKit.Size(b.gameObject, -1f, 58f);
+            return b;
+        }
+
+        // The small brand and a section heading at the top of a sub-screen.
+        private void Header(string heading)
+        {
+            Text brand = UIKit.Label(_panel, "WithTheDead", 44, TitleRed, TextAnchor.MiddleCenter, FontStyle.Bold);
+            UIKit.Place(brand.rectTransform, new Vector2(0.5f, 0.925f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(700f, 56f));
+            Text h = UIKit.Label(_panel, Spaced(heading), 26, UIKit.Accent, TextAnchor.MiddleCenter, FontStyle.Bold);
+            UIKit.Place(h.rectTransform, new Vector2(0.5f, 0.835f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 40f));
+        }
+
+        // The way back from a sub-screen.
+        private void BackRow(System.Action back = null)
+        {
+            RectTransform row = UIKit.Place(UIKit.Row(_panel, 50f, null, 20f, 0), new Vector2(0.5f, 0.12f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(230f, 50f));
+            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+            Big(row, "Back", true, back ?? ShowTitle);
+        }
+
+        // A rounded card centred on the screen; controls go into the returned column.
+        private RectTransform CenterCard(float width, float height, float y)
+        {
+            Image card = UIKit.Panel(_panel, "Card", CardColor);
+            UITheme.Round(card);
+            UITheme.Elevate(card);
+            UIKit.Place(card.rectTransform, new Vector2(0.5f, y), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(width, height));
+            RectTransform col = UIKit.Column(card.rectTransform, 10f, 18);
+            col.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+            UIKit.Stretch(col);
+            return col;
+        }
+
+        /// <summary>The runner roster: the three slots, each with its runner or room for a new one.</summary>
+        private void ShowRunners()
+        {
+            ResetCreateState();
+            Clear();
+            Header("YOUR RUNNERS");
+            Text hint = UIKit.Label(_panel, "Up to three runners to an account. A new runner starts at The Rusty Kettle, a roadhouse in Bardstown.",
+                16, UIKit.TextDim, TextAnchor.MiddleCenter);
+            UIKit.Place(hint.rectTransform, new Vector2(0.5f, 0.775f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 26f));
+            RectTransform slots = UIKit.Place(UIKit.Rect("Runners", _panel), new Vector2(0.5f, 0.55f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 250f));
+            var h = slots.gameObject.AddComponent<HorizontalLayoutGroup>();
+            h.spacing = 22f;
+            h.childAlignment = TextAnchor.MiddleCenter;
+            h.childControlWidth = h.childControlHeight = true;
+            h.childForceExpandWidth = h.childForceExpandHeight = false;
+            for (int i = 0; i < AccountProfile.MaxCharacters; i++) Slot(slots, i);
+            BackRow();
+        }
+
+        /// <summary>Hosting a server for friends, or joining one by address.</summary>
+        private void ShowTogether()
+        {
+            Clear();
+            Header("PLAY TOGETHER");
+            Text hint = UIKit.Label(_panel, "Host a server for your friends, or join one by its address. Your active runner comes along.",
+                16, UIKit.TextDim, TextAnchor.MiddleCenter);
+            UIKit.Place(hint.rectTransform, new Vector2(0.5f, 0.775f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 26f));
+            RectTransform col = CenterCard(860f, 92f, 0.58f);
+            RectTransform row = UIKit.Row(col, 48f, null, 12f, 0);
+            Big(row, "Host a server", HostAction != null, () => { ushort.TryParse(_port, out ushort p); HostAction(p == 0 ? (ushort)7777 : p); }, 200f);
+            UIKit.Size(UIKit.Input(row, _joinAddress, "address", v => _joinAddress = v, 18).gameObject, 230f, 44f);
+            UIKit.Size(UIKit.Input(row, _port, "port", v => _port = v, 18).gameObject, 96f, 44f);
+            Big(row, "Join", JoinAction != null, () =>
+            {
+                ushort.TryParse(_port, out ushort p);
+                if (p == 0) p = DedicatedServer.DefaultPort;
+                JoinAddress.Remember(_joinAddress, p);
+                JoinAction(_joinAddress, p);
+            }, 150f);
+            BackRow();
+        }
+
+        /// <summary>The original wave-survival mode, now a hidden debug feature (the settings screen's code field).</summary>
+        private void ShowWaves()
+        {
+            Clear();
+            Header("WAVE SURVIVAL");
+            Text hint = UIKit.Label(_panel, "The original mode, kept around for debugging \u2014 hold the line as the waves come, for as long as you can.",
+                16, UIKit.TextDim, TextAnchor.MiddleCenter);
+            UIKit.Place(hint.rectTransform, new Vector2(0.5f, 0.775f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 26f));
+            RectTransform col = CenterCard(560f, 92f, 0.58f);
+            RectTransform row = UIKit.Row(col, 48f, null, 12f, 0);
+            Big(row, "New run", true, () => { if (_boot != null) _boot.StartNewGame(); Destroy(gameObject); }, 230f);
+            Big(row, "Continue", SaveSystem.HasSave, () => { if (_boot != null) _boot.ContinueGame(); Destroy(gameObject); }, 230f);
+            BackRow();
+        }
+
         private void Slot(RectTransform parent, int i)
         {
             AccountProfile a = ProfileStore.Account;
             CharacterProfile c = i < a.Characters.Count ? a.Characters[i] : null;
             bool active = c != null && !c.Dead && i == a.ActiveIndex;
             Image card = UIKit.Panel(parent, "Slot", active ? CardActive : CardColor);
+            UITheme.Round(card);
+            UITheme.Elevate(card);
             UIKit.Size(card.gameObject, 440f, 250f);
             // A strip along the top: the accent for the runner you last played, else their faction's colour (red for the
             // dead, faint for an empty slot).
             Color strip = c == null ? new Color(1f, 1f, 1f, 0.08f) : c.Dead ? UIKit.Bad : active ? UIKit.Accent : Factions.Get(c.Faction).Color;
-            Image bar = UIKit.Panel(card.rectTransform, "Strip", strip);
-            RectTransform br = bar.rectTransform;
-            br.anchorMin = new Vector2(0f, 1f);
-            br.anchorMax = new Vector2(1f, 1f);
-            br.pivot = new Vector2(0.5f, 1f);
-            br.anchoredPosition = Vector2.zero;
-            br.sizeDelta = new Vector2(0f, active ? 6f : 4f);
+            UITheme.AddTopAccent(card.rectTransform, strip, active ? 6f : 4f, 10f);
             RectTransform col = UIKit.Column(card.rectTransform, 6f, 16);
             UIKit.Stretch(col, 0f, 0f, 0f, 4f);
             if (c == null)
@@ -205,41 +302,6 @@ namespace CloneZ
             UIKit.Size(delete.gameObject, -1f, -1f, 1f);
         }
 
-        private void Together(RectTransform parent)
-        {
-            RectTransform card = GroupCard(parent, "PLAY TOGETHER", 800f);
-            RectTransform row = UIKit.Row(card, 48f, null, 12f, 0);
-            Big(row, "Host a server", HostAction != null, () => { ushort.TryParse(_port, out ushort p); HostAction(p == 0 ? (ushort)7777 : p); }, 200f);
-            UIKit.Size(UIKit.Input(row, _joinAddress, "address", v => _joinAddress = v, 18).gameObject, 230f, 44f);
-            UIKit.Size(UIKit.Input(row, _port, "port", v => _port = v, 18).gameObject, 96f, 44f);
-            Big(row, "Join", JoinAction != null, () =>
-            {
-                ushort.TryParse(_port, out ushort p);
-                if (p == 0) p = DedicatedServer.DefaultPort;
-                JoinAddress.Remember(_joinAddress, p);
-                JoinAction(_joinAddress, p);
-            }, 150f);
-        }
-
-        private void Waves(RectTransform parent)
-        {
-            RectTransform card = GroupCard(parent, "WAVE SURVIVAL", 520f);
-            RectTransform row = UIKit.Row(card, 48f, null, 12f, 0);
-            Big(row, "New run", true, () => { if (_boot != null) _boot.StartNewGame(); Destroy(gameObject); }, 230f);
-            Big(row, "Continue", SaveSystem.HasSave, () => { if (_boot != null) _boot.ContinueGame(); Destroy(gameObject); }, 230f);
-        }
-
-        // A titled card in the row of other ways to play: its heading over a row of controls.
-        private static RectTransform GroupCard(RectTransform parent, string heading, float width)
-        {
-            Image card = UIKit.Panel(parent, heading, CardColor);
-            UIKit.Size(card.gameObject, width, 120f);
-            RectTransform col = UIKit.Column(card.rectTransform, 10f, 16);
-            UIKit.Stretch(col);
-            UIKit.Label(col, Spaced(heading), 15, UIKit.Accent, TextAnchor.MiddleLeft, FontStyle.Bold);
-            return col;
-        }
-
         // Off to the active runner's hub, under the loading card (the Kettle's town takes a while to build).
         private void EnterHub()
         {
@@ -258,8 +320,8 @@ namespace CloneZ
             Text t = UIKit.Label(_panel, "Delete " + c.Name + "? Their level, stash and hideout are gone for good.\n(What the account learned about the Zone stays.)", 24, UIKit.TextColor, TextAnchor.MiddleCenter);
             UIKit.Place(t.rectTransform, new Vector2(0.5f, 0.6f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 120f));
             RectTransform row = UIKit.Place(UIKit.Row(_panel, 54f, null, 20f, 0), new Vector2(0.5f, 0.42f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(600f, 54f));
-            Big(row, "Delete", true, () => { ProfileStore.DeleteCharacter(idx); ShowTitle(); });
-            Big(row, "Keep", true, ShowTitle);
+            Big(row, "Delete", true, () => { ProfileStore.DeleteCharacter(idx); ShowRunners(); });
+            Big(row, "Keep", true, ShowRunners);
         }
 
         #region Character creation
@@ -354,7 +416,7 @@ namespace CloneZ
             }
 
             RectTransform row = UIKit.Place(UIKit.Row(_panel, 54f, null, 20f, 0), new Vector2(0.5f, 0.04f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(700f, 54f));
-            Big(row, "Back", true, ShowTitle);
+            Big(row, "Back", true, ShowRunners);
             Big(row, "Into the Kettle", left >= 0 && _name.Trim().Length > 0, Create);
         }
 
