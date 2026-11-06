@@ -1,0 +1,26 @@
+# The WTD stream relay on hts-llm (Tools/Streaming/README.md). Tools/Streaming/Deploy-Relay.ps1 copies this folder to
+# ~/wtd-relay there and starts it. By hand, in that folder:
+#   docker compose logs -f --tail 100     what it's doing: Twitch and YouTube connecting, going live, dropping
+#   docker compose restart                restart it (if you're live, Twitch and YouTube drop for a few seconds)
+name: wtd-relay
+
+services:
+  relay:
+    build: .
+    image: wtd-relay:latest
+    container_name: wtd-relay
+    restart: unless-stopped
+    init: true
+    # The host's network: OBS streams to it on 127.0.0.1:1936, it reaches OBS's WebSocket on 127.0.0.1:4455, and its
+    # ffmpegs reach Twitch and YouTube directly.
+    network_mode: host
+    # htsadmin, who runs OBS: only they can read OBS's WebSocket config, which holds its password.
+    user: "1000:1000"
+    volumes:
+      - ${HOME}/.config/obs-studio/plugin_config/obs-websocket:/obs-websocket:ro
+    stop_grace_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

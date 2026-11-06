@@ -292,6 +292,12 @@ namespace CloneZ
             HubUI.Heading(b, "Controls", 20);
             UIKit.Slider(b, "Mouse sensitivity", 0.2f, 3f, g.MouseSensitivity, v => g.MouseSensitivity = v);
             HubUI.Btn(b, "Save", () => { g.Save(); Report(true, "Saved."); }, 200f, 40f, UIKit.Accent);
+            // The quiet code field: the only door into the hidden wave-survival debug mode. Typing its word
+            // here while the title screen is up opens that screen; anywhere else the field does nothing.
+            UIKit.Size(UIKit.Input(b, "", "", v =>
+            {
+                if (v.Trim().ToLowerInvariant() == "waves" && MainMenuController.ShowWavesDebug()) Close();
+            }, 14).gameObject, -1f, 30f);
         }
     }
 

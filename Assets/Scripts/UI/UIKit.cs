@@ -130,52 +130,23 @@ namespace CloneZ
             RectTransform rt = Rect("Button", parent);
             var img = rt.gameObject.AddComponent<Image>();
             img.color = c;
+            UITheme.Round(img);
             var btn = rt.gameObject.AddComponent<Button>();
             btn.targetGraphic = img;
             ColorBlock cb = btn.colors;
             cb.normalColor = Color.white;
-            cb.highlightedColor = new Color(1.25f, 1.25f, 1.25f, 1f);
-            cb.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+            cb.highlightedColor = new Color(1.28f, 1.20f, 1.04f, 1f);   // a warm lamp-light hover
+            cb.pressedColor = new Color(0.82f, 0.78f, 0.72f, 1f);
             cb.selectedColor = Color.white;
             cb.disabledColor = new Color(0.55f, 0.55f, 0.55f, 0.6f);
             cb.colorMultiplier = 1.2f;
             cb.fadeDuration = 0.06f;
             btn.colors = cb;
             if (onClick != null) btn.onClick.AddListener(() => onClick());
+            ButtonFx.Attach(btn);
             Text label = Label(rt, text, fontSize, Color.white, TextAnchor.MiddleCenter);
             Stretch(label.rectTransform, 6f, 2f, 6f, 2f);
             label.horizontalOverflow = HorizontalWrapMode.Overflow;
-
-            // Add subtle decorative rivets at the button corners (4×4 px) using Accent colour
-            // Top‑left
-            var rivetTL = Rect("RivetTL", rt);
-            rivetTL.sizeDelta = new Vector2(4f, 4f);
-            rivetTL.anchorMin = rivetTL.anchorMax = new Vector2(0f, 1f);
-            rivetTL.pivot = new Vector2(0f, 1f);
-            var imgTL = rivetTL.gameObject.AddComponent<Image>();
-            imgTL.color = Accent;
-            // Top‑right
-            var rivetTR = Rect("RivetTR", rt);
-            rivetTR.sizeDelta = new Vector2(4f, 4f);
-            rivetTR.anchorMin = rivetTR.anchorMax = new Vector2(1f, 1f);
-            rivetTR.pivot = new Vector2(1f, 1f);
-            var imgTR = rivetTR.gameObject.AddComponent<Image>();
-            imgTR.color = Accent;
-            // Bottom‑left
-            var rivetBL = Rect("RivetBL", rt);
-            rivetBL.sizeDelta = new Vector2(4f, 4f);
-            rivetBL.anchorMin = rivetBL.anchorMax = new Vector2(0f, 0f);
-            rivetBL.pivot = new Vector2(0f, 0f);
-            var imgBL = rivetBL.gameObject.AddComponent<Image>();
-            imgBL.color = Accent;
-            // Bottom‑right
-            var rivetBR = Rect("RivetBR", rt);
-            rivetBR.sizeDelta = new Vector2(4f, 4f);
-            rivetBR.anchorMin = rivetBR.anchorMax = new Vector2(1f, 0f);
-            rivetBR.pivot = new Vector2(1f, 0f);
-            var imgBR = rivetBR.gameObject.AddComponent<Image>();
-            imgBR.color = Accent;
-
             return btn;
         }
 
@@ -271,16 +242,19 @@ namespace CloneZ
             RectTransform box = Rect("Box", row);
             var bg = box.gameObject.AddComponent<Image>();
             bg.color = ButtonColor;
+            UITheme.Round(bg);
             Size(box.gameObject, 26f, 26f);
             RectTransform tick = Rect("Tick", box);
             Stretch(tick, 5f, 5f, 5f, 5f);
             var tickImg = tick.gameObject.AddComponent<Image>();
             tickImg.color = Accent;
+            UITheme.Round(tickImg);
             var toggle = box.gameObject.AddComponent<Toggle>();
             toggle.targetGraphic = bg;
             toggle.graphic = tickImg;
             toggle.isOn = value;
             if (onChanged != null) toggle.onValueChanged.AddListener(v => onChanged(v));
+            ButtonFx.Attach(toggle);
             Text t = Label(row, label, 17);
             Size(t.gameObject, -1f, 26f, 1f);
             return toggle;
@@ -296,11 +270,14 @@ namespace CloneZ
             Size(track.gameObject, -1f, 22f, 1f);
             var bg = track.gameObject.AddComponent<Image>();
             bg.color = new Color(0.16f, 0.18f, 0.21f);
+            UITheme.Round(bg);
             RectTransform fillArea = Rect("Fill Area", track);
             Stretch(fillArea, 2f, 2f, 2f, 2f);
             RectTransform fill = Rect("Fill", fillArea);
             Stretch(fill);
-            fill.gameObject.AddComponent<Image>().color = new Color(Accent.r * 0.7f, Accent.g * 0.7f, Accent.b * 0.7f);
+            var fillImg = fill.gameObject.AddComponent<Image>();
+            fillImg.color = new Color(Accent.r * 0.7f, Accent.g * 0.7f, Accent.b * 0.7f);
+            UITheme.Round(fillImg);
             RectTransform handleArea = Rect("Handle Area", track);
             Stretch(handleArea, 6f, 0f, 6f, 0f);
             RectTransform handle = Rect("Handle", handleArea);
@@ -327,6 +304,7 @@ namespace CloneZ
             RectTransform rt = Rect("Input", parent);
             var bg = rt.gameObject.AddComponent<Image>();
             bg.color = new Color(0.05f, 0.055f, 0.065f);
+            UITheme.Round(bg);
             Text text = Label(rt, value, fontSize, TextColor, TextAnchor.MiddleLeft);
             text.raycastTarget = false;
             Stretch(text.rectTransform, 8f, 2f, 8f, 2f);
@@ -424,8 +402,10 @@ namespace CloneZ
             UIKit.Stretch(shade.rectTransform);
 
             Image win = UIKit.Panel(root, "Window", UIKit.PanelColor);
+            UITheme.Round(win);
+            UITheme.Elevate(win);
             Window = UIKit.Place(win.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, WindowSize);
-            UITheme.AddTopAccent(Window, UIKit.Accent, 3f);
+            UITheme.AddTopAccent(Window, UIKit.Accent, 3f, 10f);
 
             TitleText = UIKit.Label(Window, Title, 30, UIKit.TextColor, TextAnchor.MiddleLeft, FontStyle.Bold);
             UIKit.Place(TitleText.rectTransform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(24f, -10f), new Vector2(WindowSize.x - 200f, 46f));
@@ -540,5 +520,60 @@ namespace CloneZ
         }
 
         private void OnDestroy() { if (s_Instance == this) s_Instance = null; }
+    }
+
+    /// <summary>
+    /// Pointer feedback for everything clickable built by <see cref="UIKit"/>: a warm hover outline, a small
+    /// press squash, and a click confirmation sound, so the whole game's UI answers the same way.
+    /// </summary>
+    public class ButtonFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
+    {
+        private Selectable _selectable;
+        private Image _outline;
+        private bool _hover;
+        private float _scale = 1f, _target = 1f;
+
+        /// <summary>Attaches the feedback to a button or toggle (once).</summary>
+        public static void Attach(Selectable s)
+        {
+            if (s == null || s.GetComponent<ButtonFx>() != null) return;
+            s.gameObject.AddComponent<ButtonFx>()._selectable = s;
+        }
+
+        private bool Usable => _selectable == null || _selectable.IsInteractable();
+
+        public void OnPointerEnter(PointerEventData e) { _hover = true; Refresh(); }
+        public void OnPointerExit(PointerEventData e) { _hover = false; Refresh(); }
+        public void OnPointerDown(PointerEventData e) { if (Usable) _target = 0.97f; }
+        public void OnPointerUp(PointerEventData e) { _target = _hover && Usable ? 1.02f : 1f; }
+
+        public void OnPointerClick(PointerEventData e)
+        {
+            if (Usable) Sfx.PlayUI(SfxIds.UiClick, 0.5f, UnityEngine.Random.Range(0.97f, 1.05f));
+        }
+
+        private void Refresh()
+        {
+            bool on = _hover && Usable;
+            _target = on ? 1.02f : 1f;
+            if (on && _outline == null)
+            {
+                RectTransform rt = UIKit.Rect("Hover", transform);
+                UIKit.Stretch(rt);
+                _outline = rt.gameObject.AddComponent<Image>();
+                _outline.sprite = UITheme.RoundOutlineSprite;
+                _outline.type = Image.Type.Sliced;
+                _outline.color = new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, 0.85f);
+                _outline.raycastTarget = false;
+            }
+            if (_outline != null) _outline.enabled = on;
+        }
+
+        private void Update()
+        {
+            if (Mathf.Approximately(_scale, _target)) { if (_scale != _target) { _scale = _target; transform.localScale = new Vector3(_scale, _scale, 1f); } return; }
+            _scale = Mathf.MoveTowards(_scale, _target, Time.unscaledDeltaTime * 0.4f);
+            transform.localScale = new Vector3(_scale, _scale, 1f);
+        }
     }
 }

@@ -244,3 +244,22 @@ Results are the `[Smoke]` lines in the log, and the editor exits with 0 when eve
 [Tools/Smoke/Smoke.ps1](Tools/Smoke/Smoke.ps1) does the same in one step for the single-player modes. It finds the project's editor version through the Unity Hub, refuses to start while the project is open, and prints the summary and anything that failed or was skipped:
 
     powershell -ExecutionPolicy Bypass -File Tools\Smoke\Smoke.ps1 [-Mode wave|solo|hunter|lobby] [-NoGraphics]
+
+### Debug Mode
+
+[DebugMode.cs](Assets/Scripts/Dev/DebugMode.cs) names whatever is on screen. It runs in the editor and in development builds. Press **F8** in any mode to turn it on or off. While it's on, gameplay input is blocked, the cursor is free and the camera holds still.
+
+Point at anything and the panel lists what is drawn under the cursor, nearest first. For each thing it shows the object's path, renderer type, material, submesh and the exact world point under the cursor. It finds things whether or not they have a collider or a readable mesh, and it finds the ground items, which are drawn instanced and have no objects of their own. It works by drawing every renderer the camera draws again, flat in an ID colour, into a small patch round the cursor, together with each pixel's world position ([DebugPick.shader](Assets/Resources/DebugPick.shader)). A point that lies outside its renderer's own bounds is flagged. If nothing is listed under something you can see, it isn't a renderer at all: it is UI, a gizmo or post-processing.
+
+* **Click** locks the nearest thing. In the editor it is selected in the Hierarchy, and it's always logged and copied to the clipboard. **Wheel** steps through everything under that spot and **right-click** lets go.
+* **Delete** hides the locked thing and **Backspace** shows everything again.
+* **1–6** hide a whole category: characters, the world, particles, lines, ground items, everything else.
+* **F9** freezes time, **F10** writes the floating-geometry report and **F11** draws the bounds of everything in view.
+
+The floating-geometry report ([FloatingGeometryReport.cs](Assets/Scripts/Dev/FloatingGeometryReport.cs), editor only, also at **CloneZ ▸ Debug ▸ Report Floating Geometry**) writes `Logs/FloatingGeometry.txt`, a capture of the Game view and close-ups of the nearest zombies. The text covers:
+
+* every character's body baked as it's posed, with any vertices hanging away from the body;
+* bones that have wandered off;
+* anything drawn wholly above the rooftops;
+* line renderers;
+* every scene's root objects.

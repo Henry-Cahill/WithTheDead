@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>WithTheDead release console</title>
+<!-- Tools/Server/Console/web/index.html: the release console's page (console.py serves it; console.js fills it in). -->
+<link rel="stylesheet" href="console.css">
+<script src="console.js" defer></script>
+</head>
+<body>
+<main>
+  <h1>WithTheDead</h1>
+  <div class="place">RELEASE CONSOLE &nbsp;&middot;&nbsp; <span id="host">&hellip;</span></div>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>Now</h2>
+      <button class="button quiet small" id="do-refresh" type="button">Refresh</button>
+    </div>
+    <div id="now" class="facts"><div class="sub">Asking the server, the download page and git&hellip;</div></div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Release</h2>
+      <p class="hint">Builds the game and its server, restarts the server on hts-llm with them and publishes the game on
+        the download page.</p>
+      <fieldset>
+        <legend>Code to send</legend>
+        <label class="choice"><input type="radio" name="source" value="working">
+          <span><b>This PC's working copy</b>, uncommitted changes included<span class="sub block" id="src-working"></span></span></label>
+        <label class="choice"><input type="radio" name="source" value="main">
+          <span><b>The latest commit on GitHub main</b>, from a clean checkout<span class="sub block" id="src-main"></span></span></label>
+      </fieldset>
+      <label class="check"><input type="checkbox" id="also-itch"> <span>Also push it to itch.io <span class="sub" id="itch-why"></span></span></label>
+      <div class="buttons">
+        <button class="button" id="do-release" type="button">Release</button>
+        <button class="button secondary" id="do-build" type="button">Build only</button>
+      </div>
+      <p class="hint">A GitHub-main build has only what's in git. The radio stations' music
+        (<code>Assets/StreamingAssets/Music</code>, kept out of git because it's gigabytes) comes over from this PC only
+        once main's <code>.gitignore</code> lists it too, that is once main has the radio. Until then main builds go
+        without it, as main's code doesn't play it.</p>
+    </section>
+
+    <section class="card">
+      <h2>Releases on this PC</h2>
+      <div class="table-wrap"><table id="releases"></table></div>
+      <div class="buttons">
+        <button class="button secondary" id="do-deploy" type="button">Deploy to the server</button>
+        <button class="button secondary" id="do-publish" type="button">Publish to the download page</button>
+        <button class="button secondary" id="do-itch" type="button">Push to itch.io</button>
+        <button class="button quiet" id="do-check" type="button">Check</button>
+      </div>
+      <p class="hint">These act on the release picked above. <b>Deploy</b> restarts the server with it: a raid under way
+        is lost. <b>Publish</b> uploads its game (about 1.2 GB) to the download page, whose players are then told a new
+        build is out. <b>Push to itch.io</b> sends the game to the itch.io project's <code>windows</code> channel and
+        leaves the download page alone. <b>Check</b> runs Release.ps1 with every step off: it names the release and the
+        address its game joins, and changes nothing.</p>
+    </section>
+  </div>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>Job</h2>
+      <button class="button danger small" id="do-cancel" type="button" hidden>Cancel</button>
+    </div>
+    <div id="job-head" class="job-head sub">No job yet. One runs at a time.</div>
+    <pre id="log" class="log"></pre>
+    <h3>History</h3>
+    <ul id="history" class="history"></ul>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Code</h2>
+      <div id="code" class="rows"></div>
+      <div class="buttons">
+        <button class="button secondary" id="do-fetch" type="button">Fetch from GitHub</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>itch.io and butler</h2>
+      <div id="butler" class="rows"></div>
+      <div class="buttons">
+        <button class="button secondary" id="do-butler" type="button">Install butler</button>
+        <button class="button secondary" id="do-login" type="button">Log in to itch.io</button>
+      </div>
+      <p class="hint">Logging in opens a browser on <b class="hostname">this PC</b>, not on the device you're using: log in
+        to itch.io there, and the job ends once butler has its login. Or give the console an API key from
+        <code>itch.io/user/settings/api-keys</code> instead.</p>
+      <form id="itch-form" class="inline">
+        <label>itch.io project<input type="text" id="itch-project" placeholder="user/game" autocomplete="off"
+          spellcheck="false" pattern="[A-Za-z0-9_\-]+/[A-Za-z0-9_\-]+"></label>
+        <button class="button secondary" type="submit">Save</button>
+      </form>
+      <form id="key-form" class="inline">
+        <label>itch.io API key<input type="password" id="api-key" placeholder="kept on this PC, never shown"
+          autocomplete="off"></label>
+        <button class="button secondary" type="submit">Save</button>
+        <button class="button quiet" type="button" id="forget-key">Forget</button>
+      </form>
+    </section>
+  </div>
+
+  <footer id="footer"></footer>
+</main>
+<div id="toast" class="toast" hidden></div>
+</body>
+</html>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using CloneZ.Java;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -1206,6 +1207,7 @@ namespace CloneZ
 
         private void Finish()
         {
+            CheckJava();
             Debug.Log("[Smoke] ---- " + s_Mode + ": " + _checks.Count + " checks, " + _failed + " failed, " + s_Errors + " logged errors ----");
             foreach (string c in _checks) Debug.Log("[Smoke] " + c);
             foreach (string e in s_FirstErrors) Debug.Log("[Smoke] error: " + e);
@@ -1225,6 +1227,25 @@ namespace CloneZ
 #else
             Application.Quit(code);
 #endif
+        }
+
+        // The Java scripts (Java/README.md) ran beside everything the run did: started, sent the game's events, no errors.
+        // A machine without the Java runtime (no JDK in the editor) can't run them, which isn't the game's fault.
+        private void CheckJava()
+        {
+            string detail = JavaScripting.Detail + "; " + JavaScripting.EventsSent + " game events sent";
+            switch (JavaScripting.Status)
+            {
+                case JavaScripting.State.Running:
+                    Check("java scripts", JavaScripting.Errors == 0, detail + (JavaScripting.Errors > 0 ? ", " + JavaScripting.Errors + " errors" : ""));
+                    break;
+                case JavaScripting.State.Failed:
+                    Check("java scripts", false, JavaScripting.Detail);
+                    break;
+                default:
+                    Skip("java scripts", JavaScripting.Detail.Length > 0 ? JavaScripting.Detail : "not running");
+                    break;
+            }
         }
 
         // Puts back what a run changed outside itself: its profile file, and for the waves its save file, the settings

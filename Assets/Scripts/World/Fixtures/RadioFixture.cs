@@ -5,8 +5,9 @@ namespace CloneZ
 {
     /// <summary>
     /// The kitchen radio on the worktop (see <see cref="LivingReceiver"/>): battery powered, so it plays on long after the
-    /// grid has failed. Three stations round the dial — easy listening that ends in dead air, a talk station that goes
-    /// off the air a few days in, and the highway advisory frequency that turns into the automated emergency broadcast —
+    /// grid has failed. Round the dial — easy listening that ends in dead air, a talk station that goes off the air a few
+    /// days in, the highway advisory frequency that turns into the automated emergency broadcast, and then whatever music
+    /// the player's folders hold (<see cref="MusicStations"/>), each folder a station of its own that actually plays —
     /// three volume steps, and a warm glow behind the dial while it's on. "Listen to the radio" settles the nerves; the
     /// dining table is close enough to listen from.
     /// </summary>
@@ -15,10 +16,11 @@ namespace CloneZ
     {
         private Renderer _dialLight;
         private int _broadcastCursor;
+        private StationPlayer _music;
 
         public override string DisplayName => "Kitchen radio";
         public override float Reach => CloneZConfig.RadioReach;
-        protected override BroadcastStation[] Dial => Broadcasts.RadioStations;
+        protected override BroadcastStation[] Dial => MusicStations.RadioDial(Broadcasts.RadioStations);
         protected override string SaveKind => "radio";
         protected override string SourceName => "Radio";
         protected override float CaptionRange => CloneZConfig.RadioCaptionRange;
@@ -96,6 +98,28 @@ namespace CloneZ
         protected override void ShowOn(bool on)
         {
             if (_dialLight != null) _dialLight.enabled = on;
+            SyncMusic(on);
+        }
+
+        protected override void Retuned() => SyncMusic(IsOn);
+
+        protected override void Animate(float dt)
+        {
+            if (_music != null) _music.SetLoudness(Volume);
+        }
+
+        // The music itself: a player streams the station's rotation while the set is on and the dial sits on one.
+        private void SyncMusic(bool on)
+        {
+            if (!on || !MusicStations.IsMusic(Station))
+            {
+                if (_music != null) Destroy(_music.gameObject);
+                _music = null;
+                return;
+            }
+            if (_music == null) _music = StationPlayer.Attach(transform, Station);
+            else _music.Tune(Station);
+            _music.SetLoudness(Volume);
         }
 
         // Persist broadcast cursor across saves

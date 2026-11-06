@@ -321,7 +321,7 @@ for (int r = 0; r < 4; r++) m.Box(new Vector3(0.43f, 0.6f + r * 0.25f, 0.97f), n
             m.Box(new Vector3(0f, 0.9f, -0.15f), new Vector3(0.88f, 1.8f, 0.02f), M(c * 0.7f));
             for (int s = 0; s < 5; s++)
             {
-                float y = 0.9f + 0.05f + s * 0.43f;
+                float y = 0.05f + s * 0.43f;
                 m.Box(new Vector3(0f, y, 0f), new Vector3(0.88f, 0.025f, 0.3f), M(c));
                 if (s == 4) break;
                 float u0 = (float)rng.NextDouble() * 0.5f;
