@@ -256,6 +256,8 @@ namespace CloneZ
             Check("title screen up", menu != null);
             if (menu == null) yield break;
             yield return null;
+            Check("title: the waves code opens the debug screen", MainMenuController.ShowWavesDebug());
+            yield return null;
             Button newRun = TitleButton(menu, "New run"), cont = TitleButton(menu, "Continue");
             Check("title: Wave survival offers New run", newRun != null && newRun.IsInteractable());
             Check("title: no Continue without a save", cont != null && !cont.IsInteractable(), cont == null ? "no Continue button" : "");
@@ -1532,6 +1534,8 @@ namespace CloneZ
             if (menu == null) yield break;
             yield return null;
 
+            MainMenuController.ShowWavesDebug();
+            yield return null;
             Button cont = TitleButton(menu, "Continue");
             Check("title: Continue offered with a save", cont != null && cont.IsInteractable());
             if (cont == null || !cont.IsInteractable()) yield break;
@@ -1572,6 +1576,8 @@ namespace CloneZ
             yield return Until(() => GameManager.Instance == null && (menu = FindAnyObjectByType<MainMenuController>()) != null, 60f);
             Did("key R after a death goes back to the title", b, menu != null);
             if (menu == null) yield break;
+            yield return null;
+            MainMenuController.ShowWavesDebug();
             yield return null;
             Button cont = TitleButton(menu, "Continue");
             Check("title: no Continue after a death", cont != null && !cont.IsInteractable());
