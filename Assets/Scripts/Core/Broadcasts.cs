@@ -288,14 +288,16 @@ Days(1, 2,
 
         private static Station Of(BroadcastStation s) => s_Stations[Mathf.Clamp((int)s, 0, s_Stations.Length - 1)];
 
+        // Values past the scripted stations are the music folders' (MusicStations), which answer for themselves.
+
         /// <summary>Where it is on the dial: "Channel 4", "91.3 FM".</summary>
-        public static string NameOf(BroadcastStation s) => Of(s).Name;
+        public static string NameOf(BroadcastStation s) => MusicStations.IsMusic(s) ? MusicStations.NameOf(s) : Of(s).Name;
 
         /// <summary>What it calls itself: "Newswatch 4", "Talk 1040".</summary>
-        public static string TitleOf(BroadcastStation s) => Of(s).Title;
+        public static string TitleOf(BroadcastStation s) => MusicStations.IsMusic(s) ? MusicStations.TitleOf(s) : Of(s).Title;
 
         /// <summary>The colour its captions are credited in.</summary>
-        public static Color CaptionColour(BroadcastStation s) => Of(s).Caption;
+        public static Color CaptionColour(BroadcastStation s) => MusicStations.IsMusic(s) ? MusicStations.CaptionColour(s) : Of(s).Caption;
 
         /// <summary>The cast a TV picture takes on this channel right now (a cold grey once it's off the air).</summary>
         public static Color ScreenTint(BroadcastStation s) => IsOnAir(s) ? Of(s).Screen : new Color(0.78f, 0.80f, 0.84f);
@@ -303,6 +305,7 @@ Days(1, 2,
         /// <summary>True while the station still broadcasts (false: dead air, static, a test card).</summary>
         public static bool IsOnAir(BroadcastStation s)
         {
+            if (MusicStations.IsMusic(s)) return MusicStations.OnAir(s);
             Clock(out int day, out float hour);
             Programme p = Current(Of(s), day, hour, out _);
             return p != null && !p.OffAir;
@@ -313,6 +316,7 @@ Days(1, 2,
         /// Returns null when there's nothing to hear.</summary>
         public static string NextLine(BroadcastStation s, ref int cursor)
         {
+            if (MusicStations.IsMusic(s)) return MusicStations.NowPlayingLine(s);
             Clock(out int day, out float hour);
             Programme p = Current(Of(s), day, hour, out int index);
             if (p == null || p.Lines == null || p.Lines.Length == 0) return null;

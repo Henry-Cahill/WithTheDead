@@ -176,3 +176,9 @@ cover/
 
 # Sound Board WAV exports
 /AudioExport/
+
+# The radio stations' music (StreamingAssets/Music ships in builds but is far too big for git)
+/[Aa]ssets/StreamingAssets/Music/
+/[Aa]ssets/StreamingAssets/Music.meta
+# and StreamingAssets' own .meta: the music is all that's in it, so a clone has no folder for the .meta to belong to
+/[Aa]ssets/StreamingAssets.meta
