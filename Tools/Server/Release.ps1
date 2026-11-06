@@ -7,9 +7,13 @@
     Build: mirrors this project into a copy beside it (..\CLONE-Z-build, so the editor you have open isn't disturbed) and
     runs CloneZ.EditorTools.CloneZBatch.BuildRelease there in a batch editor. The result is Builds\Release\<stamp>\client
     (WithTheDead.exe, for players) and \server (the Linux Dedicated Server), both stamped 0.1.0+<stamp>; a server lets in
-    only players on its own build (the editor always gets in). Both get a copy of the world store's current build
-    (WorldStore\), so everyone builds the same Kentucky without the NAS. The client gets server.txt, the address its Join
-    box starts at, and updates.txt, where it asks whether a new build is out. The build includes uncommitted changes.
+    only players on its own build (the editor always gets in). The game carries its Java scripts and the Java runtime they
+    run on (Java\README.md); the JDK they're built with is installed first if it isn't (Tools\Java\Install-Jdk.ps1).
+    Both get a copy of the world store's current build (WorldStore\), so everyone builds the same Kentucky without the
+    NAS. The client gets server.txt, the address its Join box starts at, and updates.txt, where it asks whether a new
+    build is out. The build includes uncommitted changes.
+    With -FromMain it builds GitHub's main instead: a clean checkout of origin/main beside the project (..\CLONE-Z-main, a
+    git worktree, made the first time), brought up to date first. -Source builds another checkout as it is.
 
     Deploy: copies the server to hts-llm and (re)starts it in Docker (docker\Dockerfile, docker\compose.yaml) as the
     container clonez-server on UDP -Port, beside the download page's file server (clonez-site). A raid under way on the
@@ -17,9 +21,14 @@
 
     Publish: zips the game and puts it on the download page (-SiteUrl, https://withthedead.howto.software): the page, the
     zip and latest.json, which the game reads to tell players a new build is out. With -Itch it also pushes the game to
-    that itch.io project with butler (downloaded the first time; it asks you to log in once, in the browser).
+    that itch.io project with butler (downloaded the first time; it asks you to log in once, in the browser). -NoSite
+    leaves the download page out, for an itch.io push alone.
+
+    -Butler Update installs butler or upgrades it, and -Butler Login logs it in to itch.io (a browser opens on this PC);
+    either does only that.
 
     The one-time setup (the router's port forwards, the DNS record, the edge Caddy's site) is in Tools\Server\README.md.
+    The release console (Tools\Server\Console) runs this script from a page on the LAN.
 
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File Tools\Server\Release.ps1
@@ -32,6 +41,14 @@
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File Tools\Server\Release.ps1 -NoBuild -NoDeploy
     Publishes the newest release's game again.
+
+.EXAMPLE
+    powershell -ExecutionPolicy Bypass -File Tools\Server\Release.ps1 -FromMain
+    Builds what's on GitHub's main rather than your working copy, redeploys the server and publishes the game.
+
+.EXAMPLE
+    powershell -ExecutionPolicy Bypass -File Tools\Server\Release.ps1 -NoBuild -NoDeploy -NoSite -Itch you/withthedead
+    Pushes the newest release's game to itch.io, leaving the download page alone.
 #>
 param(
     # The download page, or 'none'. Its host name is also the address the game joins unless -PublicAddress says otherwise.
@@ -49,9 +66,17 @@ param(
     [switch]$NoDeploy,
     [switch]$NoPublish,
     [string]$Stamp,
+    # Leave the download page out of publishing, for an itch.io push (-Itch) alone.
+    [switch]$NoSite,
+    # Build GitHub's main instead of this working copy, from a clean checkout brought up to date first; or build another
+    # checkout as it is. Either way the release lands in this project's Builds\Release.
+    [switch]$FromMain,
+    [string]$Source,
     # The Unity editor to build with (default: the Unity Hub install of the project's version) and the project copy.
     [string]$Unity,
-    [string]$BuildCopy
+    [string]$BuildCopy,
+    # Instead of releasing: install butler or upgrade it (Update), or log it in to itch.io in a browser on this PC (Login).
+    [ValidateSet('Update', 'Login')][string]$Butler
 )
 
 $ErrorActionPreference = 'Stop'
@@ -62,6 +87,17 @@ if (-not $BuildCopy) { $BuildCopy = Join-Path (Split-Path $project -Parent) ((Sp
 $serverIp = ($ServerHost -split '@')[-1]
 $site = if ($SiteUrl -and $SiteUrl -ne 'none') { $SiteUrl.TrimEnd('/') + '/' } else { $null }
 $utf8 = New-Object Text.UTF8Encoding $false
+# -FromMain's clean checkout of GitHub's main, a git worktree beside the project.
+$mainCheckout = Join-Path (Split-Path $project -Parent) ((Split-Path $project -Leaf) + '-main')
+# What git keeps out on purpose though the game ships it, so a clean checkout lacks it: the radio stations' music.
+$localOnly = 'Assets\StreamingAssets\Music', 'Assets\StreamingAssets\Music.meta'
+
+# Read by another program (the release console), the output is UTF-8 and has no progress bars: nobody sees them there,
+# and in Windows PowerShell 5 they slow downloads right down.
+if ([Console]::IsOutputRedirected) {
+    [Console]::OutputEncoding = $utf8
+    $ProgressPreference = 'SilentlyContinue'
+}
 
 # robocopy /MIR; its exit codes below 8 all mean success.
 function Copy-Tree([string]$From, [string]$To, [string[]]$Extra = @()) {
@@ -169,26 +205,129 @@ function Get-Butler {
     return $exe
 }
 
+# butler's version line ("v15.24.0, built on ..."), whichever stream it comes on.
+function Get-ButlerVersion([string]$Exe) {
+    $ErrorActionPreference = 'Continue'
+    $lines = @(& $Exe version 2>&1 | ForEach-Object { "$_".Trim() } | Where-Object { $_ })
+    if ($lines) { return $lines[0] }
+    return 'version unknown'
+}
+
+# Brings -FromMain's clean checkout up to origin/main, with its Git LFS files, making it the first time. What git keeps
+# out on purpose ($localOnly) comes over from this working copy, but only once main's .gitignore keeps it out too: until
+# then main's code doesn't use it (main has no radio yet, and the music would only add gigabytes to the download).
+function Update-MainCheckout {
+    Write-Host 'Fetching from GitHub...'
+    & git -C $project fetch origin
+    if ($LASTEXITCODE -ne 0) { throw "git fetch failed (exit $LASTEXITCODE)." }
+    if (-not (Test-Path (Join-Path $mainCheckout '.git'))) {
+        Write-Host "Making the clean checkout of GitHub's main in $mainCheckout (the first time only; it takes a while)..."
+        & git -C $project worktree add --detach $mainCheckout origin/main
+        if ($LASTEXITCODE -ne 0) { throw "git worktree add failed (exit $LASTEXITCODE)." }
+    }
+    Write-Host "Bringing $mainCheckout up to origin/main..."
+    & git -C $mainCheckout checkout --detach --force origin/main
+    if ($LASTEXITCODE -ne 0) { throw "git checkout in $mainCheckout failed (exit $LASTEXITCODE)." }
+    & git -C $mainCheckout clean -fd
+    if ($LASTEXITCODE -ne 0) { throw "git clean in $mainCheckout failed (exit $LASTEXITCODE)." }
+    & git -C $mainCheckout lfs pull
+    if ($LASTEXITCODE -ne 0) { throw "git lfs pull in $mainCheckout failed (exit $LASTEXITCODE)." }
+    $pointers = @(& git -C $mainCheckout lfs ls-files | Where-Object { $_ -match '^\S+ - ' })
+    if ($pointers) { throw "$($pointers.Count) Git LFS files in $mainCheckout are still pointers, not the files ($($pointers[0]))." }
+    foreach ($path in $localOnly) {
+        $from = Join-Path $project $path
+        # Asked about a file in it: git can't tell a folder that the checkout lacks from a file.
+        $probe = Get-ChildItem $from -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $probe) { continue }
+        $null = & git -C $mainCheckout check-ignore -q --no-index -- $probe.FullName.Substring($project.Length + 1).Replace('\', '/')
+        $ignored = $LASTEXITCODE -eq 0
+        $global:LASTEXITCODE = 0
+        if (-not $ignored) {
+            Write-Host "Leaving out $path, which main's .gitignore doesn't keep out of git (main doesn't use it yet)."
+            continue
+        }
+        Write-Host "Bringing $path over from this working copy..."
+        $to = Join-Path $mainCheckout $path
+        if (Test-Path $from -PathType Container) { Copy-Tree $from $to }
+        else {
+            New-Item -ItemType Directory -Force (Split-Path $to) | Out-Null
+            Copy-Item $from $to -Force
+        }
+    }
+    Write-Host "GitHub's main is at $((& git -C $mainCheckout log -1 --format='%h %s').Trim())"
+}
+
+#region Butler
+if ($Butler -eq 'Update') {
+    $found = Get-Command butler -ErrorAction SilentlyContinue
+    $ours = Join-Path $env:LOCALAPPDATA 'CloneZ\butler\butler.exe'
+    $exe = if ($found) { $found.Source } elseif (Test-Path $ours) { $ours } else { $null }
+    if (-not $exe) {
+        Write-Host "butler isn't installed."
+        $exe = Get-Butler
+    }
+    else {
+        Write-Host "Before: butler $(Get-ButlerVersion $exe) ($exe)"
+        # butler's own upgrade replaces it in place; a copy of ours that can't is downloaded again.
+        & $exe upgrade --assume-yes
+        if ($LASTEXITCODE -ne 0) {
+            if ($exe -ne $ours) { throw "butler upgrade failed (exit $LASTEXITCODE)." }
+            Write-Warning "butler upgrade failed (exit $LASTEXITCODE): downloading butler again."
+            Remove-Item $ours -Force
+            $exe = Get-Butler
+        }
+    }
+    Write-Host "After: butler $(Get-ButlerVersion $exe) ($exe)" -ForegroundColor Green
+    return
+}
+if ($Butler -eq 'Login') {
+    $exe = Get-Butler
+    if ($env:BUTLER_API_KEY) {
+        Write-Host 'butler uses the API key in BUTLER_API_KEY, so it needs no login.'
+        return
+    }
+    Write-Host "Log in to itch.io in the browser that opens on $env:COMPUTERNAME. If you're logged in already, butler checks that it still works."
+    & $exe login
+    if ($LASTEXITCODE -ne 0) { throw "butler login failed (exit $LASTEXITCODE)." }
+    return
+}
+#endregion
+
 #region Build
 if (-not $NoBuild) {
-    if (-not $Unity) {
-        $versionLine = Select-String -Path (Join-Path $project 'ProjectSettings\ProjectVersion.txt') -Pattern '^m_EditorVersion:\s*(\S+)'
-        $Unity = Join-Path $env:ProgramFiles "Unity\Hub\Editor\$($versionLine.Matches[0].Groups[1].Value)\Editor\Unity.exe"
-    }
-    if (-not (Test-Path $Unity)) { throw "No Unity editor at $Unity; pass -Unity <path to Unity.exe>." }
     # An open editor holds Temp\UnityLockfile exclusively; a leftover file from a closed one doesn't count.
     $lock = Join-Path $BuildCopy 'Temp\UnityLockfile'
     if (Test-Path $lock) {
         try { [IO.File]::Open($lock, 'Open', 'ReadWrite', 'None').Dispose() }
         catch { throw "The build copy at $BuildCopy is open in a Unity editor (an earlier build still running?)." }
     }
+    if ($FromMain -and $Source) { throw 'Pass -FromMain or -Source, not both.' }
+    $source = $project
+    if ($FromMain) {
+        Update-MainCheckout
+        $source = $mainCheckout
+    }
+    elseif ($Source) { $source = (Resolve-Path $Source).Path }
+    if (-not $Unity) {
+        $versionLine = Select-String -Path (Join-Path $source 'ProjectSettings\ProjectVersion.txt') -Pattern '^m_EditorVersion:\s*(\S+)'
+        $Unity = Join-Path $env:ProgramFiles "Unity\Hub\Editor\$($versionLine.Matches[0].Groups[1].Value)\Editor\Unity.exe"
+    }
+    if (-not (Test-Path $Unity)) { throw "No Unity editor at $Unity; pass -Unity <path to Unity.exe>." }
 
-    $commit = (& git -C $project rev-parse --short=8 HEAD).Trim()
+    $commit = (& git -C $source rev-parse --short=8 HEAD).Trim()
     $Stamp = (Get-Date -Format 'yyyyMMdd.HHmm') + '.' + $commit
     $release = Join-Path $releases $Stamp
 
-    Write-Host "Mirroring the project into $BuildCopy..."
-    foreach ($d in 'Assets', 'Packages', 'ProjectSettings') { Copy-Tree (Join-Path $project $d) (Join-Path $BuildCopy $d) }
+    # The game's Java scripts (Java\README.md) build with the JDK the source pins; installed the first time.
+    $installJdk = Join-Path $source 'Tools\Java\Install-Jdk.ps1'
+    if (Test-Path $installJdk) { & $installJdk }
+
+    Write-Host "Mirroring $source into $BuildCopy..."
+    foreach ($d in 'Assets', 'Packages', 'ProjectSettings', 'Java') {
+        $from = Join-Path $source $d
+        if (Test-Path $from) { Copy-Tree $from (Join-Path $BuildCopy $d) }
+        else { Remove-Item (Join-Path $BuildCopy $d) -Recurse -Force -ErrorAction SilentlyContinue }
+    }
     # The copy keeps its own Library; the first time it starts from this one's, so it doesn't import everything again. Files
     # the open editor holds can't be copied: the copy's editor rebuilds whatever is missing.
     if (-not (Test-Path (Join-Path $BuildCopy 'Library'))) {
@@ -207,7 +346,11 @@ if (-not $NoBuild) {
         '-clonez-release-out', "`"$release`"", '-clonez-release-stamp', $Stamp, '-logFile', "`"$log`"")
     Write-Host "Building release $Stamp (log: $log). The first build takes a while..."
     $started = Get-Date
-    $editor = Start-Process -FilePath $Unity -ArgumentList $arguments -PassThru -Wait -WindowStyle Hidden
+    # Waits for the editor alone: -Wait would wait for every process it started too, and the licensing client it leaves
+    # running can hold that up for good. Taking the handle at once keeps the exit code readable afterwards.
+    $editor = Start-Process -FilePath $Unity -ArgumentList $arguments -PassThru -WindowStyle Hidden
+    $null = $editor.Handle
+    $editor.WaitForExit()
     Select-String -Path $log -Pattern '^\[CloneZBatch\]' -ErrorAction SilentlyContinue | ForEach-Object { Write-Host $_.Line }
     $client = Join-Path $release 'client\WithTheDead.exe'
     $server = Join-Path $release 'server\WithTheDead.x86_64'
@@ -217,6 +360,11 @@ if (-not $NoBuild) {
         throw "The build failed (editor exit $($editor.ExitCode)); see $log."
     }
     Write-Host ("Built in {0:0} min." -f ((Get-Date) - $started).TotalMinutes)
+    # Without its Java runtime the game would play on without its Java scripts; that's no release.
+    $jvm = Join-Path $release 'client\WithTheDead_Data\Java\runtime\bin\server\jvm.dll'
+    if ((Test-Path (Join-Path $source 'Java')) -and -not (Test-Path $jvm)) {
+        throw "The game was built without its Java runtime ($jvm is missing); see $log."
+    }
 
     $worldCopy = Update-WorldCopy
     if ($worldCopy) {
@@ -244,6 +392,13 @@ Write-Host "Release $Stamp in $release (the game joins $((Get-Content (Join-Path
 if (-not $NoDeploy) {
     $tgzName = "clonez-server-$Stamp.tgz"
     $tgz = Join-Path $env:TEMP $tgzName
+    # The image links the server's Java runtime from what Java\runtime.env names; a server built before the game had Java
+    # scripts has none, and an empty one has the image link nothing.
+    $runtimeEnv = Join-Path $release 'server\WithTheDead_Data\Java\runtime.env'
+    if (-not (Test-Path $runtimeEnv)) {
+        New-Item -ItemType Directory -Force (Split-Path $runtimeEnv) | Out-Null
+        [IO.File]::WriteAllText($runtimeEnv, "JAVA_MODULES=`n", $utf8)
+    }
     Write-Host 'Packing the server...'
     & tar -czf $tgz -C (Join-Path $release 'server') --exclude '*_DoNotShip' --exclude '*_ButDontShipItWithYourGame' .
     if ($LASTEXITCODE -ne 0) { throw "tar failed (exit $LASTEXITCODE)." }
@@ -287,7 +442,7 @@ if [ "$up" != yes ]; then echo "The server didn't come up."; exit 1; fi
 #endregion
 
 #region Publish
-if (-not $NoPublish -and $site) {
+if (-not $NoPublish -and -not $NoSite -and $site) {
     $version = Get-ReleaseVersion
     $zipName = "WithTheDead-$Stamp.zip"
     $zipPath = Join-Path $release $zipName

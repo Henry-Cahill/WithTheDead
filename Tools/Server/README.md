@@ -3,7 +3,8 @@
 Play WithTheDead with friends over the internet while you develop it. A headless dedicated server runs in Docker on
 hts-llm (192.168.1.202), and your friends download the game from its own page on your domain,
 **https://withthedead.howto.software**, behind one shared login. The game tells them when a new build is out. One
-script builds both from your working copy, restarts the server and publishes the game: [Release.ps1](Release.ps1).
+script builds both from your working copy, restarts the server and publishes the game: [Release.ps1](Release.ps1). The
+[release console](#release-console) runs it from a web page on the LAN.
 
 ## How it works
 
@@ -61,17 +62,95 @@ The script does three things:
    beside them. The first build seeds the copy's `Library` from yours (4.4 GB) and takes a while; later builds only
    import what changed. Both get the map from `Builds\WorldStore`, a copy of the world store's current build that each
    release brings up to date from the NAS. The client also gets `server.txt` (`withthedead.howto.software:7777`), which
-   its Join box starts at, and `updates.txt`.
+   its Join box starts at, and `updates.txt`. With `-FromMain` it builds GitHub's main instead of your working copy
+   (see below).
 2. **Deploy:** it copies the server to `~/clonez-server` on hts-llm, builds the `clonez-server` image
    ([docker/Dockerfile](docker/Dockerfile)) and restarts the containers ([docker/compose.yaml](docker/compose.yaml)). It
    waits until the server says it's waiting for a runner. A raid under way on the old server is lost.
 3. **Publish:** it zips the game (about 1.2 GB, most of it the item models' textures), uploads it to the page with a new
    `latest.json` and page, and checks that the page hands out the new build. With `-Itch <user>/<game>` it also pushes the
-   game to that itch.io project with butler.
+   game to that itch.io project with butler. `-NoSite` leaves the page out, for an itch.io push alone; the release's
+   `server.txt` and `updates.txt` stay as they are.
 
 To run only some of the steps, use `-NoBuild`, `-NoDeploy` or `-NoPublish`. Without a build, the script uses the newest
 release, or the one named by `-Stamp <stamp>`. `-Port` changes the port everywhere: the server, the container and
 `server.txt`. `-SiteUrl` and `-PublicAddress` point the game at another page or address.
+
+**Building GitHub's main:** `-FromMain` fetches, then brings a clean checkout of `origin/main` beside the project,
+`..\CLONE-Z-main`, up to date (`git checkout --detach --force origin/main`, `git clean -fd` and its Git LFS files) and
+builds that. The checkout is a git worktree, made by the first such build. The build still happens in `..\CLONE-Z-build`
+and lands in this project's `Builds\Release`, stamped with main's commit. `-Source <folder>` builds another checkout as it
+is. Git keeps the radio stations' music (`Assets/StreamingAssets/Music`, gigabytes of it) out on purpose, so a clean
+checkout lacks it. `-FromMain` brings it over from your working copy only once main's `.gitignore` keeps it out too, that
+is once main has the radio. Until then a main build goes without it, as main's code doesn't play it. (`$localOnly` in the
+script lists such content.)
+
+**butler:** `-Butler Update` installs butler (from itch.io's broth into `%LOCALAPPDATA%\CloneZ\butler`, unless it's on
+the PATH) or upgrades it with `butler upgrade`. `-Butler Login` logs it in to itch.io in a browser on this PC. Either does
+only that.
+
+The build waits for the batch editor itself, not for every process it started: Unity's licensing client can linger after
+the editor quits and would hold `Start-Process -Wait` up for good. When its output goes to another program (the release
+console), the script writes UTF-8 and shows no progress bars.
+
+## Release console
+
+The release as a page for anyone on the LAN: **http://192.168.1.205:8095/** (or **http://hank-dev:8095/**), on a phone
+too. It runs on this PC, the only one that can build the game, from [Console/console.py](Console/console.py) (Python 3,
+standard library only). Every button is a job that runs this working copy's `Release.ps1`, one job at a time, with its log
+streaming to the page. There's no login: anyone on the LAN can use it. It answers only to this PC's own addresses and
+names, and takes actions only from its own page, so another web site can't work it through someone's browser.
+[Console/WALKTHROUGH.md](Console/WALKTHROUGH.md) goes through the buttons to press, in order.
+
+The page shows, refreshed every 10 seconds:
+
+- **Now:** the release the server runs (`~/clonez-server/server/release.txt`, over ssh), its container's state and its
+  last status line (who's connected, whether a raid is open). The build the download page hands out, from its own server
+  (`http://192.168.1.202:8077/latest.json`) and from the public address. The newest release here, and GitHub's main.
+- **Releases on this PC:** each one in `Builds\Release`, with whether it has the client and the server, its size and the
+  address its game joins. The buttons under the list act on the release picked in it, the newest at first.
+- **Code:** this working copy's branch, commit and uncommitted files, how far it is behind GitHub's main, main's newest
+  commit and the clean checkout that main builds use.
+- **itch.io and butler:** butler's version, whether it's logged in, and the itch.io project to push to.
+
+| | |
+|---|---|
+| **Release** | builds, deploys and publishes, from the code chosen above it; with *Also push it to itch.io*, it pushes to itch.io too. It asks first: the server restarts, and a raid under way on it is lost. |
+| **Build only** | builds (`-NoDeploy -NoPublish`). |
+| **Deploy to the server** | restarts the server with the picked release (`-NoBuild -NoPublish -Stamp`). It asks first, for the same reason. |
+| **Publish to the download page** | uploads the picked release's game to the page only (`-NoBuild -NoDeploy -Stamp`). |
+| **Push to itch.io** | pushes the picked release's game to the itch.io project's `windows` channel and leaves the page alone (`-NoBuild -NoDeploy -NoSite -Itch`). It waits until the project is set and butler is logged in. |
+| **Check** | runs `Release.ps1` with every step off: it names the release and the address its game joins, and changes nothing. |
+| **Install butler** / **Upgrade butler** | `-Butler Update`, showing butler's version before and after. |
+| **Log in to itch.io** | `-Butler Login`: a browser opens **on this PC**, not on the device you're using, and the job waits until you've logged in there. Or paste an API key (itch.io/user/settings/api-keys) into the page instead. |
+| **Fetch from GitHub** | `git fetch origin`, for the *Code* card. |
+| **Cancel** | stops the job and every process it started (`taskkill /PID <pid> /T /F`). |
+
+**Which code goes out:** *This PC's working copy* is what `Release.ps1` builds by itself, uncommitted changes included.
+*The latest commit on GitHub main* is `-FromMain`: none of your uncommitted work and, until main has the radio, none of
+the radio's music (see Releasing). Either way the release lands in `Builds\Release`.
+
+**Where things are:** the job history, every job's log and the console's own `console.log`, its settings
+(`settings.json`: the itch.io project and the code the page starts on) and the itch.io API key, if you gave it one
+(`itch-api-key.txt`), are in `%LOCALAPPDATA%\CloneZ\console`, outside git. butler is in `%LOCALAPPDATA%\CloneZ\butler`
+and its login in `%USERPROFILE%\.config\itch\butler_creds`. A job gets the console's environment without `CLONEZ_ITCH`, so
+it pushes to itch.io only when the page asks it to.
+
+**Starting and stopping:** [Console/Install.ps1](Console/Install.ps1) sets it up, once:
+
+    powershell -ExecutionPolicy Bypass -File Tools\Server\Console\Install.ps1
+
+It registers the scheduled task *WithTheDead release console*, which starts the console with no window (`pythonw.exe`)
+when you sign in to Windows, as you, so that ssh and Unity's licence work as they do in your own shell. It adds a Windows
+Firewall rule letting in TCP 8095 from the local subnet, for `pythonw.exe`, on the network profile the PC is on (Private),
+which takes one UAC prompt. Then it starts the console through the task. To restart the console, end and run that task
+(Task Scheduler, or `Stop-ScheduledTask` and `Start-ScheduledTask`); a job running at the time is stopped and marked
+interrupted. Run Install.ps1 again after moving the project or Python. [Console/Uninstall.ps1](Console/Uninstall.ps1)
+stops the console and removes the task and the rule (one more UAC prompt); the history, logs and settings stay unless you
+pass `-Purge`. To try it without any of that: `python Tools\Server\Console\console.py --port 8091`.
+
+[Console/SelfTest.ps1](Console/SelfTest.ps1) is a harmless job for trying the console out: it prints a line a second for
+ten minutes and changes nothing. Start it with a POST of `{"action": "selftest"}` to `/api/jobs`, then try *Cancel*.
 
 ## Playing
 
