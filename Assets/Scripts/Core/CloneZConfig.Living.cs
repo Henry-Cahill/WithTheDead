@@ -61,6 +61,10 @@ namespace CloneZ
         public const float TvLightIntensity = 0.9f;
         public const float TvFlickerInterval = 0.2f;         // the picture's brightness shifts this often
 
+        // ---- Real music on the radio (MusicStations) ----
+        public static readonly float[] MusicGain = { 0.4f, 0.65f, 1f };  // the music's volume, by the set's step: low / medium / loud
+        public const float MusicHeardRange = 12f;                        // the music itself carries this far at medium volume
+
         // ---- What the living room's, bedroom's and store room's furniture holds (the wave home stays lean) ----
         public const float DresserDrawerEmptyChance = 0.5f;
         public const int DresserDrawerMaxStacks = 1;

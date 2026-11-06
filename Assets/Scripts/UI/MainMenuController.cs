@@ -45,6 +45,7 @@ namespace CloneZ
             Image bg = UIKit.Panel(_root, "Backdrop", new Color(0.02f, 0.025f, 0.04f, 1f));
             UIKit.Stretch(bg.rectTransform);
             WinterBackdrop.Build(_root, 160, true);
+            MenuRadio.Build(_root);
             ShowTitle();
             ShowBuild();
             UpdateCheck.Found += ShowUpdate;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace CloneZ
 {
@@ -117,9 +118,12 @@ namespace CloneZ
         private Transform _jukebox;
         private AudioSource _jukeSrc;
         private AudioClip _jukeClip, _jukeNext;
+        // Indices below MusicRecords.Count are the pressed records; from there on, the music folders' tracks
+        // (MusicStations.JukeboxTracks), streamed off the disk. A streamed clip's request lives as long as its clip.
+        private UnityWebRequest _jukeLoad, _jukeClipReq, _jukeNextReq;
         private readonly List<HubNpc> _musicians = new List<HubNpc>();
         private readonly List<AudioSource> _scratch = new List<AudioSource>(8);
-        private readonly int[] _records = new int[MusicRecords.Count];
+        private int[] _records;
         private int _record, _jukeEpoch;
         private bool _jukeRendering, _jukePlaying, _musicianPlaying;
         private float _jukeGap, _jukeGain, _jukeSearch, _musicianCheck, _musicianQuiet, _musicianRefresh, _jukeRetryAt;
@@ -139,6 +143,7 @@ namespace CloneZ
             _theme = new Transport(MusicScore.ThemeSegment / (double)MusicScore.Rate, _themeLane);
             _theme.Seed = (uint)Random.Range(1, int.MaxValue);
             _theme.Next = Random.Range(0, 64) * MusicScore.ThemeSections;
+            _records = new int[MusicRecords.Count + MusicStations.JukeboxTracks.Count];
             for (int i = 0; i < _records.Length; i++) _records[i] = i;
             Shuffle(_records);
             foreach (string id in s_Stingers) Sfx.Request(id);
@@ -532,7 +537,8 @@ namespace CloneZ
             _dread.Target = world ? _dreadLevel : 0f;
             bool exploring = world && _phrase != Phrase.Rest;
             _explore.Target = exploring ? (1f - 0.6f * danger) * (1f - 0.7f * _dreadLevel) : 0f;
-            _themeLane.Active = _ctx == Context.Menu;
+            // The title theme stands aside while the menu's radio plays a station.
+            _themeLane.Active = _ctx == Context.Menu && !MenuRadio.Playing;
             _themeLane.Target = _themeLane.Active ? 1f : 0f;
             float duck = now < _duckUntil ? 0.35f : 1f;
             _duck = Mathf.MoveTowards(_duck, duck, dt * (duck < _duck ? 3f : 0.35f));
@@ -836,7 +842,28 @@ namespace CloneZ
                 StopJukebox();
                 return;
             }
-            if (_jukeNext == null && !_jukeRendering && Time.unscaledTime >= _jukeRetryAt) RenderRecord();
+            if (_jukeNext == null && !_jukeRendering && _jukeLoad == null && Time.unscaledTime >= _jukeRetryAt) RenderRecord();
+
+            // A streamed track arriving off the disk.
+            if (_jukeLoad != null && _jukeLoad.isDone)
+            {
+                UnityWebRequest req = _jukeLoad;
+                _jukeLoad = null;
+                AudioClip got = MusicStations.FinishLoad(req, out string error);
+                if (got == null)
+                {
+                    req.Dispose();
+                    _jukeRetryAt = Time.unscaledTime + 10f;
+                    Debug.LogWarning("[CloneZ] Jukebox track failed: " + error);
+                }
+                else
+                {
+                    if (_jukeNext != null) Destroy(_jukeNext);
+                    if (_jukeNextReq != null) _jukeNextReq.Dispose();
+                    _jukeNext = got;
+                    _jukeNextReq = req;
+                }
+            }
 
             _musicianCheck -= dt;
             if (_musicianCheck <= 0f)
@@ -864,6 +891,8 @@ namespace CloneZ
                     _jukeSrc.clip = null;
                     if (_jukeClip != null) Destroy(_jukeClip);
                     _jukeClip = null;
+                    if (_jukeClipReq != null) _jukeClipReq.Dispose();
+                    _jukeClipReq = null;
                     _jukeGap = _musicianPlaying ? Random.Range(3f, 8f) : Random.Range(8f, 20f);
                 }
                 else if (!_musicianPlaying) target = 1f;
@@ -875,6 +904,8 @@ namespace CloneZ
                 {
                     _jukeClip = _jukeNext;
                     _jukeNext = null;
+                    _jukeClipReq = _jukeNextReq;
+                    _jukeNextReq = null;
                     _jukeSrc.clip = _jukeClip;
                     _jukeSrc.Play();
                     _jukePlaying = true;
@@ -887,7 +918,8 @@ namespace CloneZ
             if (Mathf.Abs(Sfx.GetVolume(_jukeSrc) - v) > 0.0015f) Sfx.SetVolume(_jukeSrc, v);
         }
 
-        // The next record, pressed in the background (a new take every time it comes round).
+        // The next record or track in the rotation: a record is pressed in the background (a new take every time it
+        // comes round), a folder's track is streamed off the disk.
         private void RenderRecord()
         {
             int record = _records[_record % _records.Length];
@@ -896,6 +928,11 @@ namespace CloneZ
             {
                 Shuffle(_records);
                 if (_records[0] == record) (_records[0], _records[_records.Length - 1]) = (_records[_records.Length - 1], _records[0]);
+            }
+            if (record >= MusicRecords.Count)
+            {
+                _jukeLoad = MusicStations.BeginLoad(MusicStations.JukeboxTracks[record - MusicRecords.Count]);
+                return;
             }
             uint take = (uint)Random.Range(1, int.MaxValue);
             int epoch = _jukeEpoch;
@@ -922,6 +959,8 @@ namespace CloneZ
             AudioClip clip = AudioClip.Create("Record " + MusicRecords.Title(record), data.Length, 1, MusicRecords.Rate, false);
             clip.SetData(data, 0);
             if (_jukeNext != null) Destroy(_jukeNext);
+            if (_jukeNextReq != null) _jukeNextReq.Dispose();
+            _jukeNextReq = null;
             _jukeNext = clip;
         }
 
@@ -932,6 +971,10 @@ namespace CloneZ
             if (_jukeClip != null) Destroy(_jukeClip);
             if (_jukeNext != null) Destroy(_jukeNext);
             _jukeClip = _jukeNext = null;
+            if (_jukeLoad != null) _jukeLoad.Dispose();
+            if (_jukeClipReq != null) _jukeClipReq.Dispose();
+            if (_jukeNextReq != null) _jukeNextReq.Dispose();
+            _jukeLoad = _jukeClipReq = _jukeNextReq = null;
             _jukebox = null;
             _jukeEpoch++;
             _jukeRendering = _jukePlaying = _musicianPlaying = false;
