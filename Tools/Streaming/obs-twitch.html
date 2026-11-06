@@ -6,11 +6,14 @@
 <title>WTD · Stream control</title>
 <!--
   Controls the WithTheDead stream on the headless OBS through obs-websocket (v5, OBS 28+), the same connection obs-web
-  uses: goes live on Twitch and ends the stream, shows or hides the Windows screen (the "Windows Screen" RTMP-listener
-  source in MainStream; the BRB card shows while it's hidden), puts the Twitch stream key into OBS and runs Twitch's
-  private bandwidth test. It also sets the levels of the computer's sound and the headset mic on OBS on this PC
-  (ws://127.0.0.1:4455), which mixes them into the feed. Open this file in a browser; add #ws://host:port to the
-  address to point it at another OBS. The key goes from this page to OBS and nowhere else.
+  uses: goes live on Twitch and YouTube at once and ends the stream, shows or hides the Windows screen (the "Windows
+  Screen" RTMP-listener source in MainStream; the BRB card shows while it's hidden), keeps the Twitch and YouTube stream
+  keys and runs Twitch's private bandwidth test. OBS streams once, to the stream relay beside it (relay/relay.py), which
+  sends that stream on to each destination that's switched on. The keys live in OBS's persistent data, where the relay
+  reads them, and the relay reports how each destination is doing back through OBS. The page also sets the levels of
+  the computer's sound and the headset mic on OBS on this PC (ws://127.0.0.1:4455), which mixes them into the feed.
+  Open this file in a browser; add #ws://host:port to the address to point it at another OBS. The keys go from this
+  page to OBS and nowhere else. Tools/Streaming/README.md has the whole setup.
 -->
 <style>
   :root { --bg:#070b14; --panel:#0f1729; --line:#22324f; --text:#dfe7f0; --dim:#8fa1bb; --red:#db3d33; --ok:#4cc38a; --warn:#e8a33d; }
@@ -53,6 +56,12 @@
   .strip-foot { display:flex; justify-content:space-between; align-items:center; gap:8px; }
   .strip-foot .dev { font-size:12px; color:var(--dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   button.is-muted { border-color:var(--red); color:var(--red); }
+  .legs { display:grid; gap:4px; margin-top:12px; }
+  .leg b { display:inline-block; min-width:76px; }
+  .dests { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:14px; }
+  .dest { border:1px solid var(--line); border-radius:8px; padding:12px 14px; background:#0a1120; }
+  .dest-top { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .dest-top label { margin:0; color:var(--text); font-size:14px; }
   kbd { border:1px solid var(--line); border-radius:4px; padding:0 5px; color:var(--text); }
   #log { font:12px/1.5 Consolas, monospace; color:var(--dim); white-space:pre-wrap; max-height:160px; overflow:auto; }
   a { color:#8fb4ff; }
@@ -62,7 +71,7 @@
 <body>
 <main>
   <h1><b>WTD</b> · Stream control</h1>
-  <p class="sub">Go live, show or hide your Windows screen, set your computer and headset levels, and set up the Twitch key for the WithTheDead stream.</p>
+  <p class="sub">Go live on Twitch and YouTube, show or hide your Windows screen, set your computer and headset levels, and set up the stream keys for the WithTheDead stream.</p>
 
   <section>
     <h2>1 · Connect to OBS</h2>
@@ -85,8 +94,10 @@
       <div><div id="liveState" class="state">not connected</div><p class="note" id="liveInfo"></p></div>
       <div class="fit"><button id="liveToggle" class="bigbtn" disabled>Go live</button></div>
     </div>
-    <p class="note">Starts or ends the WithTheDead stream on Twitch from the OBS on 192.168.1.202. It asks first either
-      way, and tells you what viewers will see.</p>
+    <div id="legs" class="legs"></div>
+    <p class="note">Starts or ends the WithTheDead stream from the OBS on 192.168.1.202, on Twitch and YouTube at once
+      (whichever have a key and are switched on in section 6). It asks first either way, and tells you what viewers will
+      see.</p>
   </section>
 
   <section>
@@ -97,7 +108,7 @@
     </div>
     <p class="note"><button id="resync" class="ghost" disabled>Re-sync picture &amp; sound</button>
       If sound and picture drift apart (say, after this PC sleeps), this reconnects the feed from this PC. Viewers see
-      the BRB card for about 10 seconds; the Twitch stream keeps going. It works through section 4's connection.</p>
+      the BRB card for about 10 seconds; the stream keeps going. It works through section 4's connection.</p>
     <p class="note">Puts your main Windows display, with its sound, on the stream or takes it off. While it's hidden,
       viewers see the Be-right-back card. Shortcut: <kbd>S</kbd> on this page. The picture comes from OBS on this PC,
       which has to be open and streaming to <code>rtmp://192.168.1.202:1935/live</code> (it starts that way at login).</p>
@@ -120,28 +131,26 @@
   <section>
     <h2>5 · Status</h2>
     <dl id="status"><dt>OBS</dt><dd>not connected</dd></dl>
+    <dl id="relayStatus" style="margin-top:6px"></dl>
     <p class="note"><button id="refresh" class="ghost" disabled>Refresh</button></p>
   </section>
 
   <section>
-    <h2>6 · Twitch stream key</h2>
-    <p class="note" style="margin-top:0">Copy your <b>Primary Stream key</b> from
-      <a href="https://dashboard.twitch.tv/settings/stream" target="_blank" rel="noopener noreferrer">Twitch Creator Dashboard → Settings → Stream</a>.
-      Anyone with the key can stream to the channel, so never show it on stream.</p>
-    <div class="row">
-      <div><label for="key">Stream key</label><input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="live_…"></div>
-      <div class="fit" style="flex-basis:210px"><label for="server">Ingest server</label>
-        <select id="server"><option value="auto">Auto (recommended)</option></select></div>
-    </div>
-    <label><input type="checkbox" id="show">Show key</label>
-    <p class="note"><button id="save" disabled>Save to OBS</button></p>
+    <h2>6 · Twitch and YouTube</h2>
+    <p class="note" style="margin-top:0">The relay sends the stream to each one that has a key and is switched on.
+      Switching one on or off mid-stream starts or ends the stream there alone. Anyone with a key can stream to that
+      channel, so never show one on stream.</p>
+    <div id="dests" class="dests"></div>
+    <label><input type="checkbox" id="show">Show keys while typing</label>
   </section>
 
   <section>
-    <h2>7 · Bandwidth test (not public)</h2>
-    <p class="note" style="margin-top:0">Streams to Twitch for 15 seconds with <code>?bandwidthtest=true</code> on the key:
-      Twitch takes the video but never shows it, so nobody sees the channel go live. It proves the key and the
-      connection work and shows the bitrate that gets through.</p>
+    <h2>7 · Twitch bandwidth test (not public)</h2>
+    <p class="note" style="margin-top:0">Streams to Twitch alone for 15 seconds, through the relay, with
+      <code>?bandwidthtest=true</code> on the key: Twitch takes the video but never shows it, so nobody sees the channel
+      go live, and YouTube gets nothing. It proves the Twitch key, the relay and the connection work, and shows the
+      bitrate that gets through. YouTube has no such test: set the stream to Private in YouTube Studio to try it
+      unseen.</p>
     <p class="note"><button id="test" class="ghost" disabled>Run 15-second test</button></p>
     <div id="testOut"></div>
   </section>
@@ -156,10 +165,29 @@
 const $ = id => document.getElementById(id);
 const TEST_FLAG = "?bandwidthtest=true";
 const TEST_SECONDS = 15;
-const state = { connected: false, streaming: false, twitch: false, keySet: false, testing: false };
+// viaRelay: OBS's stream goes to the relay (not straight to one service, as before the relay); target says where it goes.
+const state = { connected: false, streaming: false, viaRelay: false, target: "" };
 let busy = false;
 const SCREEN_SCENE = "MainStream", SCREEN_SOURCE = "Windows Screen";
 const PW_KEY = "wtd-obs-password", PC_PW_KEY = "wtd-pc-obs-password", PC_URL = "ws://127.0.0.1:4455";
+// OBS streams once, to the relay beside it (relay/nginx.conf), which sends the stream on to each destination. The keys
+// live in OBS's persistent data, where the relay reads them.
+const RELAY_SERVER = "rtmp://127.0.0.1:1936/live", RELAY_KEY = "wtd";
+const SLOT = { realm: "OBS_WEBSOCKET_DATA_REALM_GLOBAL", slotName: "wtd-destinations" };
+const DESTS = [
+  { id: "twitch", name: "Twitch", placeholder: "live_…", looks: "they start with live_",
+    pattern: /^live_[A-Za-z0-9_]+$/,
+    help: 'Copy the <b>Primary Stream key</b> from <a href="https://dashboard.twitch.tv/settings/stream" target="_blank" ' +
+      'rel="noopener noreferrer">Twitch Creator Dashboard → Settings → Stream</a>.' },
+  { id: "youtube", name: "YouTube", placeholder: "xxxx-xxxx-xxxx-xxxx-xxxx", looks: "five groups of four, like abcd-efgh-…",
+    pattern: /^[A-Za-z0-9]{4}(-[A-Za-z0-9]{4}){4}$/,
+    help: 'Copy the <b>Stream key</b> from <a href="https://www.youtube.com/live_dashboard" target="_blank" ' +
+      'rel="noopener noreferrer">YouTube Studio → Go live → Stream</a>. Set the title and who can watch there too. A ' +
+      'channel can stream a day after live streaming is first turned on for it.' },
+];
+// What the slot says about each destination (whether it has a key, never the key), and the relay's latest report.
+const dest = {};
+const relay = { report: null, at: 0 };
 const winScreen = { id: null, visible: false, cursor: null, receiving: false };
 const live = { bytes: null, t: 0, kbps: 0 };
 // The computer's sound and the headset mic: OBS on this PC's special audio inputs, mixed there into the feed.
@@ -262,7 +290,7 @@ class Link {
   }
 }
 
-const obs = new Link();                    // the stream's OBS, on the Linux box
+const obs = new Link(1 << 0);              // the stream's OBS, on the Linux box: General events bring the relay's reports
 const pcObs = new Link((1 << 3) | (1 << 16)); // OBS on this PC: input changes, and live audio levels
 const call = (requestType, requestData) => obs.call(requestType, requestData);
 
@@ -279,11 +307,22 @@ function connect() {
       log("Connected to OBS.");
       setConnected(true);
       if ($("remember").checked && $("pw").value) remembered(PW_KEY, $("pw").value);
-      try { await cleanUpTestFlag(); await refresh(); await refreshScreen(); await refreshLive(); } catch (e) { log("Error: " + e.message); }
+      try {
+        await loadDests();
+        await migrate();
+        await refresh(); await refreshScreen(); await refreshLive();
+        await relayCommand("status");
+      } catch (e) { log("Error: " + e.message); }
     },
     down: (code, reason) => {
       setConnected(false);
       log(code === 4009 ? "Wrong WebSocket password." : "Disconnected from OBS" + (reason ? ": " + reason : "."));
+    },
+    event: (type, d) => {
+      if (type !== "CustomEvent" || !d.wtdRelay) return;
+      relay.report = d.wtdRelay;
+      relay.at = performance.now();
+      renderRelay();
     },
   });
 }
@@ -303,20 +342,26 @@ function setConnected(on) {
     $("status").replaceChildren(...row("OBS", "not connected"));
     winScreen.id = winScreen.cursor = null;
     live.bytes = null;
+    relay.report = null;
+    state.streaming = false;
     for (const id of ["screenState", "liveState"]) {
       $(id).textContent = "not connected";
       $(id).className = "state";
     }
     $("screenFeed").textContent = $("liveInfo").textContent = "";
   }
+  renderRelay();
   updateButtons();
 }
 
 function updateButtons() {
   const ready = state.connected && !busy;
   $("refresh").disabled = !ready;
-  $("save").disabled = !ready || state.streaming;
-  $("test").disabled = !ready || state.streaming || !state.twitch || !state.keySet;
+  for (const d of DESTS) {
+    $("save-" + d.id).disabled = !ready;
+    $("on-" + d.id).disabled = !ready || !(dest[d.id] && dest[d.id].keySet);
+  }
+  $("test").disabled = !ready || state.streaming || !(dest.twitch && dest.twitch.keySet) || !relayUp();
   $("screenToggle").disabled = !ready || winScreen.id === null;
   $("liveToggle").disabled = !ready;
   $("resync").disabled = busy || !pcObs.up;
@@ -371,7 +416,8 @@ async function toggleScreen() {
   }
 }
 
-// What's going out to Twitch right now; the bitrate comes from the bytes sent between two polls.
+// What OBS sends right now; the bitrate comes from the bytes sent between two polls. Through the relay that's the hop to
+// the relay: what reaches Twitch and YouTube is on their lines, from the relay's reports.
 async function refreshLive() {
   const st = await call("GetStreamStatus");
   const now = performance.now();
@@ -382,14 +428,16 @@ async function refreshLive() {
   live.bytes = st.outputActive ? st.outputBytes : null;
   live.t = now;
   state.streaming = st.outputActive;
+  const testing = relayTesting();
   const dropped = st.outputTotalFrames ? 100 * st.outputSkippedFrames / st.outputTotalFrames : 0;
   $("liveState").textContent = !st.outputActive ? "Off air" : st.outputReconnecting ? "● Reconnecting…"
-    : (state.testing ? "Bandwidth test (private) " : "● LIVE ") + String(st.outputTimecode || "").split(".")[0];
-  $("liveState").className = "state " + (!st.outputActive ? "" : st.outputReconnecting || state.testing ? "warn" : "bad");
-  $("liveInfo").textContent = !st.outputActive ? "Not streaming to Twitch." : live.kbps + " kbps · " +
+    : (testing ? "Bandwidth test (private) " : "● LIVE ") + String(st.outputTimecode || "").split(".")[0];
+  $("liveState").className = "state " + (!st.outputActive ? "" : st.outputReconnecting || testing ? "warn" : "bad");
+  $("liveInfo").textContent = !st.outputActive ? "Not streaming." : "OBS → " + (state.target || "…") + ": " + live.kbps + " kbps · " +
     dropped.toFixed(1) + "% frames dropped · congestion " + Math.round(100 * (st.outputCongestion || 0)) + "%";
   $("liveToggle").textContent = st.outputActive ? "End stream" : "Go live";
   $("liveToggle").classList.toggle("hide", st.outputActive);
+  renderRelay();
   updateButtons();
 }
 
@@ -399,40 +447,57 @@ async function toggleLive() {
   updateButtons();
   try {
     if ((await call("GetStreamStatus")).outputActive) {
-      if (!confirm("End the stream on Twitch now?")) return;
+      const on = state.viaRelay ? DESTS.filter(d => (legReport(d.id) || { state: "off" }).state !== "off") : [];
+      if (!confirm("End the stream" + (on.length ? " on " + names(on) : "") + " now?")) return;
       await call("StopStream");
       log("Stream ended.");
       return;
     }
-    // Going live: to Twitch and in public (no leftover test flag), saying first what viewers will see.
-    const svc = await call("GetStreamServiceSettings");
-    const ss = svc.streamServiceSettings || {};
-    if (svc.streamServiceType !== "rtmp_common" || ss.service !== "Twitch" || !ss.key) {
-      log("Save the Twitch stream key first (section 6).");
+    // Going live: through the relay, to each destination with a key that's switched on, saying first what viewers see.
+    await loadDests();
+    const going = DESTS.filter(d => dest[d.id].on && dest[d.id].keySet);
+    if (!going.length) {
+      log("Save a stream key for Twitch or YouTube and switch it on first (section 6).");
       return;
     }
-    if (ss.key.endsWith(TEST_FLAG)) await setTwitch(ss.key.slice(0, -TEST_FLAG.length), ss.server);
+    if (!relayUp()) {
+      log("The relay on the OBS box isn't answering, so the stream would go nowhere. Tools/Streaming/README.md says how to start it.");
+      return;
+    }
     await refreshScreen().catch(() => {});
     const sees = winScreen.id === null ? "the MainStream scene"
       : !winScreen.visible ? "the Be-right-back card (your screen is hidden)"
       : winScreen.receiving ? "your Windows screen, with its sound"
       : "the Be-right-back card (your screen is on, but its feed from this PC isn't arriving)";
-    if (!confirm("Go live on Twitch now?\n\nViewers will see " + sees + ".")) return;
+    if (!confirm("Go live on " + names(going) + " now?\n\nViewers will see " + sees + ".")) return;
+    await routeThroughRelay();
+    await relayCommand("endtest");   // a test set up but never started would make this stream private
     await call("StartStream");
+    state.streaming = true;
     log("Going live…");
-    for (let i = 1; i <= 15; i++) {
+    let up = [];
+    for (let i = 1; i <= 20; i++) {
       await sleep(1000);
       const st = await call("GetStreamStatus");
-      if (st.outputActive && !st.outputReconnecting && st.outputBytes > 0) {
-        log("You're live on Twitch.");
-        return;
-      }
       if (!st.outputActive && i >= 4) break;
+      up = relayUp() && relay.report.feeding ? going.filter(d => (legReport(d.id) || {}).state === "live") : [];
+      if (up.length === going.length) break;
       $("liveState").textContent = "Connecting… " + i + "s";
       $("liveState").className = "state warn";
     }
-    await call("StopStream").catch(() => {});
-    log("Twitch didn't take the stream. Check the key (section 6) and that the OBS box can reach the internet.");
+    if (!(await call("GetStreamStatus")).outputActive) {
+      log("OBS couldn't stream to the relay. Is it running on the OBS box? (Tools/Streaming/README.md)");
+      return;
+    }
+    if (!up.length) {
+      await call("StopStream").catch(() => {});
+      log("The stream didn't get through (" + going.map(d => d.name + ": " + legProblem(d)).join("; ") +
+        "). Check the keys (section 6) and that the OBS box can reach the internet.");
+      return;
+    }
+    const late = going.filter(d => !up.includes(d));
+    log("You're live on " + names(up) + "." + (late.length ? " " + late.map(d => d.name + " hasn't taken the stream yet (" +
+      legProblem(d) + ")").join("; ") + "; the relay keeps trying." : ""));
   } catch (e) {
     log("Couldn't switch the stream: " + e.message);
   } finally {
@@ -445,33 +510,36 @@ async function param(category, name) {
   return (await call("GetProfileParameter", { parameterCategory: category, parameterName: name })).parameterValue;
 }
 
-// Shows what OBS will stream to, and with what; never any part of the key.
+const setParam = (category, name, value) =>
+  call("SetProfileParameter", { parameterCategory: category, parameterName: name, parameterValue: value });
+
+// Shows where OBS streams, and with what; never any part of a key.
 async function refresh() {
   const [v, prof, svc, st, vid] = await Promise.all([call("GetVersion"), call("GetProfileList"),
     call("GetStreamServiceSettings"), call("GetStreamStatus"), call("GetVideoSettings")]);
   const ss = svc.streamServiceSettings || {};
-  const key = ss.key || "";
-  const testing = key.endsWith(TEST_FLAG);
-  state.testing = testing;
   state.streaming = st.outputActive;
-  state.twitch = svc.streamServiceType === "rtmp_common" && ss.service === "Twitch";
-  state.keySet = key.length > 0;
+  state.viaRelay = svc.streamServiceType === "rtmp_custom" && ss.server === RELAY_SERVER && ss.key === RELAY_KEY;
+  state.target = state.viaRelay ? "relay" : svc.streamServiceType === "rtmp_common"
+    ? (ss.service || "a service") + " directly" : ss.server || "nowhere";
   const mode = (await param("Output", "Mode")) || "Simple";
   const simple = mode === "Simple";
-  const encoder = simple ? await param("SimpleOutput", "StreamEncoder") : await param("AdvOut", "Encoder");
+  const encoder = simple ? (await param("SimpleOutput", "StreamEncoder")) || "x264" : await param("AdvOut", "Encoder");
   const kbps = simple ? await param("SimpleOutput", "VBitrate") : null;
-  const fps = vid.fpsDenominator ? Math.round(100 * vid.fpsNumerator / vid.fpsDenominator) / 100 : "?";
+  const opts = simple && (await param("SimpleOutput", "UseAdvanced")) === "true"
+    ? (await param("SimpleOutput", "x264Settings")) || "" : "";
+  const keyint = Number((opts.match(/(?:^|\s)keyint=(\d+)/) || [])[1]) || 0;
+  const rate = vid.fpsDenominator ? vid.fpsNumerator / vid.fpsDenominator : 0;
   const rows = [
     row("OBS", v.obsVersion + " on " + v.platformDescription),
     row("Profile", prof.currentProfileName),
-    row("Service", state.twitch ? "Twitch" : (ss.service || svc.streamServiceType || "none"), state.twitch ? "ok" : "bad"),
-    row("Server", ss.server === "auto" ? "Auto" : (ss.server || "none")),
-    row("Stream key", !state.keySet ? "not set" : testing ? "set (bandwidth-test flag on)" : "set",
-      !state.keySet ? "bad" : testing ? "warn" : "ok"),
+    row("Streams to", state.viaRelay ? "the relay, which sends it on"
+      : state.target + " (the relay takes over the next time you go live here)", state.viaRelay ? "ok" : "warn"),
     row("Streaming", !st.outputActive ? "off" : st.outputReconnecting ? "reconnecting" :
-      (testing ? "bandwidth test " : "LIVE ") + String(st.outputTimecode || "").split(".")[0], st.outputActive ? "warn" : ""),
-    row("Video out", vid.outputWidth + "×" + vid.outputHeight + " at " + fps + " fps"),
-    row("Encoder", mode + " output, " + encoder + (kbps ? ", " + kbps + " kbps" : "")),
+      (relayTesting() ? "bandwidth test " : "LIVE ") + String(st.outputTimecode || "").split(".")[0], st.outputActive ? "warn" : ""),
+    row("Video out", vid.outputWidth + "×" + vid.outputHeight + " at " + (rate ? Math.round(100 * rate) / 100 : "?") + " fps"),
+    row("Encoder", mode + " output, " + encoder + (kbps ? ", " + kbps + " kbps" : "") +
+      (keyint && rate ? ", a keyframe every " + Math.round(10 * keyint / rate) / 10 + " s" : "")),
   ];
   $("status").replaceChildren(...rows.flat());
   updateButtons();
@@ -484,73 +552,241 @@ function setTwitch(key, server) {
   });
 }
 
-// A test that never finished (the page closed mid-test) leaves the flag on the key, and every stream after it
-// would be a private test. Take it off while nothing is streaming.
-async function cleanUpTestFlag() {
+// Before the relay, OBS streamed straight to Twitch with the key in its own stream settings: the relay needs it in the
+// slot. A test that never finished then (the page closed mid-test) left ?bandwidthtest=true on that key, which would
+// make every stream after it a private test; take it off while nothing is streaming.
+async function migrate() {
   const [svc, st] = await Promise.all([call("GetStreamServiceSettings"), call("GetStreamStatus")]);
   const ss = svc.streamServiceSettings || {};
-  if (!st.outputActive && ss.service === "Twitch" && (ss.key || "").endsWith(TEST_FLAG)) {
-    await setTwitch(ss.key.slice(0, -TEST_FLAG.length), ss.server);
-    log("Took a leftover bandwidth-test flag off the stream key.");
+  if (svc.streamServiceType !== "rtmp_common" || ss.service !== "Twitch" || !ss.key) return;
+  const key = ss.key.endsWith(TEST_FLAG) ? ss.key.slice(0, -TEST_FLAG.length) : ss.key;
+  if (!st.outputActive && key !== ss.key) {
+    await setTwitch(key, ss.server);
+    log("Took a leftover bandwidth-test flag off OBS's Twitch key.");
+  }
+  if (!dest.twitch.keySet) {
+    await saveDests(saved => { saved.twitch = Object.assign({ on: true }, saved.twitch, { key }); });
+    log("Copied the Twitch key from OBS's stream settings, for the relay.");
   }
 }
 
-async function save() {
-  const key = $("key").value.trim();
-  if (!key) return log("Paste the stream key first.");
-  if (!/^live_[A-Za-z0-9_]+$/.test(key) &&
-      !confirm("That doesn't look like a Twitch stream key (they start with live_). Save it anyway?")) return;
+// Points OBS at the relay, with a keyframe every 2 seconds, which Twitch and YouTube both want. In Simple output mode
+// OBS takes the keyframe interval from the streaming service, and the relay is a custom server, which sets none: x264's
+// own default (about 8 seconds) is too far apart for YouTube.
+async function routeThroughRelay() {
+  const svc = await call("GetStreamServiceSettings");
+  const ss = svc.streamServiceSettings || {};
+  if (svc.streamServiceType !== "rtmp_custom" || ss.server !== RELAY_SERVER || ss.key !== RELAY_KEY) {
+    await call("SetStreamServiceSettings", { streamServiceType: "rtmp_custom",
+      streamServiceSettings: { server: RELAY_SERVER, key: RELAY_KEY, use_auth: false } });
+    log("OBS now streams to the relay, which sends it on.");
+  }
+  state.viaRelay = true;
+  state.target = "relay";
+  const encoder = (await param("SimpleOutput", "StreamEncoder")) || "x264";
+  if (((await param("Output", "Mode")) || "Simple") !== "Simple" || !encoder.startsWith("x264")) {
+    log("Check that OBS's keyframe interval is 2 s (Settings → Output): this page sets it only for x264 in Simple mode.");
+    return;
+  }
+  const vid = await call("GetVideoSettings");
+  const keyint = Math.max(1, Math.round(2 * vid.fpsNumerator / (vid.fpsDenominator || 1)));
+  const old = (await param("SimpleOutput", "x264Settings")) || "";
+  const opts = old.split(/\s+/).filter(o => o && !/^(keyint|scenecut)=/.test(o))
+    .concat("keyint=" + keyint, "scenecut=0").join(" ");
+  if (opts !== old) await setParam("SimpleOutput", "x264Settings", opts);
+  if ((await param("SimpleOutput", "UseAdvanced")) !== "true") await setParam("SimpleOutput", "UseAdvanced", "true");
+}
+
+// --- Twitch and YouTube: their keys in OBS's persistent data, and the relay's reports on them --------------------------
+
+const names = list => list.map(d => d.name).join(" and ");
+const relayCommand = command => call("BroadcastCustomEvent", { eventData: { wtdRelayCommand: command } });
+// The relay reports every 2 seconds: without a word for 7, it's taken as down.
+const relayUp = () => !!relay.report && performance.now() - relay.at < 7000;
+const relayTesting = () => relayUp() && relay.report.feeding && relay.report.test;
+const legReport = id => (relayUp() && relay.report.destinations && relay.report.destinations[id]) || null;
+const legProblem = d => { const r = legReport(d.id); return !r ? "no word from the relay" : r.error || r.state; };
+
+async function loadDests() {
+  const value = (await call("GetPersistentData", SLOT)).slotValue;
+  const saved = value && typeof value === "object" ? value : {};
+  for (const d of DESTS) {
+    const s = saved[d.id] && typeof saved[d.id] === "object" ? saved[d.id] : {};
+    dest[d.id] = { on: s.on !== false, keySet: !!String(s.key || "").trim() };
+  }
+  renderDests();
+  return saved;
+}
+
+// Reads, changes and writes back the whole slot, then has the relay read it again.
+async function saveDests(change) {
+  const saved = await loadDests();
+  change(saved);
+  await call("SetPersistentData", Object.assign({ slotValue: saved }, SLOT));
+  await relayCommand("reload");
+  await loadDests();
+}
+
+function buildDests() {
+  $("dests").replaceChildren(...DESTS.map(d => {
+    const el = document.createElement("div");
+    el.className = "dest";
+    el.innerHTML = '<div class="dest-top"><b></b><label><input type="checkbox" id="on-' + d.id + '" disabled>Go live here</label></div>' +
+      '<p class="note">' + d.help + '</p>' +
+      '<label for="key-' + d.id + '">Stream key: <span id="has-' + d.id + '">–</span></label>' +
+      '<input id="key-' + d.id + '" type="password" autocomplete="off" spellcheck="false" placeholder="' + d.placeholder + '">' +
+      '<p class="note"><button id="save-' + d.id + '" disabled>Save to OBS</button></p>';
+    el.querySelector("b").textContent = d.name;
+    return el;
+  }));
+  for (const d of DESTS) {
+    $("save-" + d.id).onclick = () => saveKey(d);
+    $("key-" + d.id).onkeydown = e => { if (e.key === "Enter" && !$("save-" + d.id).disabled) saveKey(d); };
+    $("on-" + d.id).onchange = () => switchDest(d);
+  }
+}
+
+function renderDests() {
+  for (const d of DESTS) {
+    const s = dest[d.id];
+    $("on-" + d.id).checked = !s || s.on;
+    $("has-" + d.id).textContent = !s ? "–" : s.keySet ? "saved" : "not saved yet";
+    $("has-" + d.id).className = !s ? "" : s.keySet ? "ok" : "warn";
+  }
+  renderRelay();
+}
+
+async function saveKey(d) {
+  const key = $("key-" + d.id).value.trim();
+  if (!key) return log("Paste the " + d.name + " stream key first.");
+  if (!d.pattern.test(key) &&
+      !confirm("That doesn't look like a " + d.name + " stream key (" + d.looks + "). Save it anyway?")) return;
+  if (state.streaming && state.viaRelay && dest[d.id].on && dest[d.id].keySet &&
+      !confirm("You're live: " + d.name + " drops for a few seconds while the relay switches to the new key. Save it now?")) return;
   busy = true;
   updateButtons();
   try {
-    await setTwitch(key, $("server").value);
-    $("key").value = "";
-    $("show").checked = false;
-    $("key").type = "password";
-    log("Saved: OBS now streams to Twitch (" + $("server").selectedOptions[0].text + ").");
+    await saveDests(saved => { saved[d.id] = Object.assign({ on: true }, saved[d.id], { key }); });
+    $("key-" + d.id).value = "";
+    log("Saved the " + d.name + " key in OBS, for the relay.");
   } catch (e) {
     log("Couldn't save: " + e.message);
   } finally {
     busy = false;
-    await refresh().catch(e => log("Error: " + e.message));
+    updateButtons();
   }
 }
 
+async function switchDest(d) {
+  const on = $("on-" + d.id).checked;
+  const streaming = state.streaming && state.viaRelay;
+  if (streaming && !confirm(on ? "Go live on " + d.name + " now too?" : "End the stream on " + d.name + " now? The rest keeps going.")) {
+    $("on-" + d.id).checked = !on;
+    return;
+  }
+  busy = true;
+  updateButtons();
+  try {
+    await saveDests(saved => { saved[d.id] = Object.assign({}, saved[d.id], { on }); });
+    log(d.name + " is switched " + (on ? "on" : "off") + (streaming ? (on ? ": going live there." : ": the stream there ends.") : "."));
+  } catch (e) {
+    log("Couldn't switch it: " + e.message);
+  } finally {
+    busy = false;
+    await loadDests().catch(() => {});
+  }
+}
+
+function clock(s) {
+  return Math.floor(s / 3600) + ":" + String(Math.floor(s / 60) % 60).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+}
+
+// A destination's line under Go live: what the slot says about it, and while streaming, the relay's word on it.
+function legLine(d) {
+  const s = dest[d.id], r = legReport(d.id);
+  if (!s) return ["–", ""];
+  if (!s.keySet) return ["no key yet (section 6)", "warn"];
+  if (!s.on) return ["switched off (section 6)", ""];
+  if (!state.streaming) return ["ready", "ok"];
+  if (!state.viaRelay) return d.id === "twitch" && state.target === "Twitch directly"
+    ? ["live straight from OBS, not through the relay", "bad"]
+    : ["not getting this stream (OBS streams to " + state.target + "): end it and go live again here", "warn"];
+  if (!r) return ["no word from the relay", "bad"];
+  if (r.state === "live") return [(relayTesting() ? "● Bandwidth test (private) " : "● LIVE ") + clock(r.liveFor) + " · " +
+    r.kbps.toLocaleString() + " kbps", relayTesting() ? "warn" : "bad"];
+  if (r.state === "connecting") return ["connecting…", "warn"];
+  if (r.state === "stalled") return ["stalled: nothing has gone out for a few seconds", "warn"];
+  if (r.state === "retrying") return ["dropped (" + r.error + "); trying again in " + r.retryIn + " s", "bad"];
+  return [relayTesting() ? "off during Twitch's bandwidth test" : "off", ""];
+}
+
+function renderRelay() {
+  const up = relayUp();
+  $("relayStatus").replaceChildren(...row("Relay", !state.connected ? "–" : up ? "running"
+    : "not answering: it runs in Docker on the OBS box (Tools/Streaming/README.md)", !state.connected ? "" : up ? "ok" : "bad"));
+  $("legs").replaceChildren(...DESTS.map(d => {
+    const [text, cls] = state.connected ? legLine(d) : ["–", ""];
+    const el = document.createElement("div");
+    el.className = "leg";
+    el.innerHTML = "<b></b><span></span>";
+    el.querySelector("b").textContent = d.name;
+    el.querySelector("span").textContent = text;
+    el.querySelector("span").className = cls;
+    return el;
+  }));
+  updateButtons();
+}
+
+// Twitch's private bandwidth test, through the relay: the relay sends the next stream to Twitch alone, with the test flag
+// on the key, and nothing to YouTube. What gets through is the relay's figure for Twitch; OBS's own is only the hop to
+// the relay, so comparing them shows whether the upload keeps up.
 async function bandwidthTest() {
   const out = $("testOut");
   out.className = "";
   out.textContent = "Starting…";
   busy = true;
   updateButtons();
-  let key, server, started = false, connected = false, failed = false, samples = [], last = null;
+  let started = false, connected = false, reason = "";
+  const sent = [], got = [];
+  let lastBytes = null, lastAt = 0;
   try {
-    const ss = (await call("GetStreamServiceSettings")).streamServiceSettings || {};
-    key = (ss.key || "").replace(TEST_FLAG, "");
-    server = ss.server;
-    await setTwitch(key + TEST_FLAG, server);
+    await loadDests();
+    if (!dest.twitch.keySet) throw new Error("Save the Twitch key first (section 6)");
+    if (!relayUp()) throw new Error("The relay on the OBS box isn't answering");
+    await routeThroughRelay();
+    await relayCommand("test");
+    for (let i = 0; i < 20 && !(relayUp() && relay.report.testArmed); i++) await sleep(250);
+    if (!(relayUp() && relay.report.testArmed)) throw new Error("The relay didn't take the test");
     await call("StartStream");
-    started = true;
-    log("Bandwidth test started (Twitch keeps it private).");
-    let lastBytes = null;
+    started = state.streaming = true;
+    log("Bandwidth test started (Twitch keeps it private, and YouTube gets nothing).");
     for (let t = 1; t <= TEST_SECONDS; t++) {
       await sleep(1000);
       const st = await call("GetStreamStatus");
-      if (!st.outputActive || st.outputReconnecting) {
-        if (connected || t >= 8) { failed = true; break; }   // dropped, or never came up
+      const r = relayUp() ? relay.report : null;
+      // Through the relay, a stream that isn't the test is public everywhere: stop it at once.
+      if (r && r.feeding && !r.test) { reason = "The relay took it as a real stream, so it was stopped at once"; break; }
+      const now = performance.now();
+      if (st.outputActive && lastBytes !== null && now > lastAt) sent.push((st.outputBytes - lastBytes) * 8 / (now - lastAt));
+      lastBytes = st.outputActive ? st.outputBytes : null;
+      lastAt = now;
+      const leg = r && r.feeding && r.destinations ? r.destinations.twitch : null;
+      if (!st.outputActive || !leg || leg.state !== "live") {
+        if (connected || t >= 10) {
+          reason = leg && leg.error ? "Twitch: " + leg.error : !st.outputActive ? "OBS couldn't stream to the relay"
+            : "Twitch didn't take the stream";
+          break;
+        }
         out.textContent = "Connecting… " + t + "s";
         continue;
       }
       connected = true;
-      if (lastBytes !== null) samples.push((st.outputBytes - lastBytes) * 8 / 1000);
-      lastBytes = st.outputBytes;
-      last = st;
-      const dropped = st.outputTotalFrames ? 100 * st.outputSkippedFrames / st.outputTotalFrames : 0;
-      out.textContent = t + "s · " + Math.round(samples[samples.length - 1] || 0) + " kbps · " + dropped.toFixed(1) +
-        "% frames dropped · congestion " + Math.round(100 * (st.outputCongestion || 0)) + "%";
+      got.push(leg.kbps);
+      out.textContent = t + "s · OBS sends " + Math.round(sent[sent.length - 1] || 0) + " kbps · " + leg.kbps +
+        " kbps reaching Twitch";
     }
   } catch (e) {
-    failed = true;
-    log("Test failed: " + e.message);
+    reason = e.message;
   } finally {
     if (started) {
       await call("StopStream").catch(() => {});
@@ -560,23 +796,27 @@ async function bandwidthTest() {
         await sleep(500);
       }
     }
-    if (key !== undefined) await setTwitch(key, server).catch(e => log("Couldn't take the test flag off: " + e.message));
+    await relayCommand("endtest").catch(() => {});
     busy = false;
     await refresh().catch(() => {});
   }
-  if (failed || !connected) {
+  if (reason || !connected) {
     out.className = "bad";
-    out.textContent = "✗ Twitch didn't take the stream. Copy the key from the dashboard again and save it, and check " +
-      "that the OBS machine can reach the internet.";
-    log("Bandwidth test failed.");
+    out.textContent = "✗ " + (reason || "Twitch didn't take the stream") + ". Check the Twitch key (section 6), that the " +
+      "relay is running, and that the OBS box can reach the internet.";
+    log("Bandwidth test failed: " + (reason || "Twitch didn't take the stream") + ".");
     return;
   }
-  const avg = samples.length ? Math.round(samples.reduce((a, b) => a + b, 0) / samples.length) : 0;
-  const dropped = last && last.outputTotalFrames ? 100 * last.outputSkippedFrames / last.outputTotalFrames : 0;
-  out.className = dropped > 1 ? "warn" : "ok";
-  out.textContent = "✓ Twitch took the stream: about " + avg + " kbps, " + dropped.toFixed(1) + "% frames dropped. " +
-    (dropped > 1 ? "Some frames were dropped: try a lower bitrate in OBS before going live." : "The key works; you're ready to go live.");
-  log("Bandwidth test passed: ~" + avg + " kbps, " + dropped.toFixed(1) + "% dropped.");
+  const avg = a => a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) : 0;
+  // The relay's figure is over its last 5 seconds, so its first few readings are still climbing.
+  const obsKbps = avg(sent), twitchKbps = avg(got.length > 4 ? got.slice(3) : got);
+  const short = obsKbps > 0 && twitchKbps < 0.9 * obsKbps;
+  out.className = short ? "warn" : "ok";
+  out.textContent = "✓ Twitch took the stream: about " + twitchKbps + " kbps of the " + obsKbps + " kbps OBS sent. " +
+    (short ? "Less got through than OBS sent: the upload may be too slow, so try a lower bitrate in OBS."
+      : "Going live on Twitch and YouTube together sends it twice, so the upload needs about " +
+        (2 * obsKbps / 1000).toFixed(1) + " Mbps.");
+  log("Bandwidth test passed: ~" + twitchKbps + " kbps to Twitch, of " + obsKbps + " kbps from OBS.");
 }
 
 // --- Audio: the computer's sound and the headset mic, on OBS on this PC ------------------------------------------------
@@ -707,7 +947,7 @@ async function toggleMute(key) {
 async function resync() {
   if (!pcObs.up || busy) return;
   if (!confirm("Re-sync your screen feed?\n\nViewers see the Be-right-back card for about 10 seconds while it reconnects. " +
-      "The Twitch stream keeps going.")) return;
+      "The stream keeps going.")) return;
   busy = true;
   updateButtons();
   try {
@@ -762,15 +1002,15 @@ function drawMeters() {
   requestAnimationFrame(drawMeters);
 }
 
+buildDests();
 $("connect").onclick = connect;
-$("refresh").onclick = () => Promise.all([refresh(), refreshScreen(), refreshLive()]).catch(e => log("Error: " + e.message));
-$("save").onclick = save;
+$("refresh").onclick = () => Promise.all([loadDests(), refresh(), refreshScreen(), refreshLive(), relayCommand("status")])
+  .catch(e => log("Error: " + e.message));
 $("test").onclick = bandwidthTest;
 $("screenToggle").onclick = toggleScreen;
 $("liveToggle").onclick = toggleLive;
 $("remember").onchange = () => { if (!$("remember").checked) remembered(PW_KEY, ""); };
-$("show").onchange = () => { $("key").type = $("show").checked ? "text" : "password"; };
-$("key").onkeydown = e => { if (e.key === "Enter" && !$("save").disabled) save(); };
+$("show").onchange = () => { for (const d of DESTS) $("key-" + d.id).type = $("show").checked ? "text" : "password"; };
 $("pw").onkeydown = e => { if (e.key === "Enter") connect(); };
 document.addEventListener("keydown", e => {
   if (e.key.toLowerCase() !== "s" || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
