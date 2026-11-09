@@ -6,6 +6,8 @@
 #   start [args]    generate meshes in tmux session clonez-mesh; args go to meshgen.py generate (e.g. --pilot)
 #   stop            finish the version in progress, then stop (and stay stopped until the next start)
 #   refit [args]    fit finished meshes again after a fitting change, without generating; args: --ids A,B
+#   redo ids        make versions again from new seeds (the worst ones, say): redo Ramen@2,Sugar@1; the run restarts
+#                   to pick them up
 #   status          whether it is running, the latest log lines and progress
 #   web             serve the live view (live.html: the item being made, its picture, the step, the latest meshes)
 #                   and the gallery on port 8765, in tmux session clonez-mesh-web; start does this too
@@ -217,6 +219,22 @@ case "${1:-status}" in
     in_container clonez-mesh-refit python -u meshgen.py refit "$@"
     ;;
 
+  redo)
+    shift
+    if [ $# -eq 0 ]; then echo "Name the versions to make again: redo Ramen@2,Sugar@1 (an item id redoes all of its versions)."; exit 2; fi
+    ids="$(IFS=,; echo "$*")"
+    python3 "$HERE/meshgen.py" redo --root "$ROOT" --ids "$ids" || exit $?
+    # The run lists what it will make when it starts, so it has to start again to see them. Interrupted without a stop
+    # request, it finishes the version in progress and exits, and keep-running starts it again.
+    if tmux has-session -t "=$SESSION" 2>/dev/null && docker kill --signal INT "$SESSION" >/dev/null 2>&1; then
+      if [ -f "$OUT/hold" ]; then echo "The run finishes the version in progress and stops; once released, the next start makes these."
+      elif scheduled; then echo "The run finishes the version in progress, then keep-running starts it again within 10 minutes and it makes these in their turn."
+      else echo "The run finishes the version in progress and stops; start it again to make these."; fi
+    else
+      echo "The next start makes them in their turn."
+    fi
+    ;;
+
   status)
     if tmux has-session -t "=$SESSION" 2>/dev/null; then echo '== RUNNING =='; else echo '== not running =='; fi
     if scheduled; then
@@ -281,6 +299,6 @@ case "${1:-status}" in
     ;;
 
   *)
-    sed -n '2,16p' "$0"; exit 2
+    sed -n '2,18p' "$0"; exit 2
     ;;
 esac

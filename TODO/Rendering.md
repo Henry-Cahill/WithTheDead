@@ -18,8 +18,8 @@ post-processing, item and ground-item rendering, the generated item meshes, and 
   distortion, vignette), flashlight and night vision.
 - Ground items are drawn instanced by `GroundItemRenderer`. Item looks come from `ItemMeshBaker`: a generated TRELLIS
   mesh if the item has one, otherwise its tinted primitive model, so nothing is ever invisible.
-- 798 of the ~3,639 catalogue items have generated meshes (2,335 mesh files, 1.29 GB). 659 of those files are not
-  committed yet.
+- 1,140 of the 3,681 catalogue items have generated meshes (3,320 of 11,043 versions), and 3,244 versions are
+  committed (Git LFS, about 1.5 GiB). The Spark makes the rest around the clock, about 24 days more.
 - Debug Mode (F8) names whatever is under the cursor, and F10 writes the floating-geometry report
   ([MECHANICS_COVERAGE.md](../MECHANICS_COVERAGE.md), "Debug Mode").
 
@@ -39,14 +39,20 @@ post-processing, item and ground-item rendering, the generated item meshes, and 
     profiled before and after.
 
 - [ ] **Finish the item meshes and commit them** · P1 · L · Content
-  - **Why:** About 2,840 catalogue items still draw as primitive models next to generated ones, which reads as two art
+  - **Progress (2026-11-08):** The hand-built items were already exported (2026-10-26; `ItemModels.cs` hasn't changed
+    since), and the Spark has all 94. The run goes around the clock: 3,320 of 11,043 versions made, about 24 days left.
+    `mesh-redo` makes a version again from new seeds (a plain re-run repeats the same photo and mesh), and the 15 worst
+    real versions are queued. The normal-bake check that failed 92 versions of thin things (grass, insects, sheaves) now
+    measures how far the game mesh lies from the full mesh, and those are being made again. So is `gasmaskfilter`,
+    whose model the Spark couldn't find (a case twin of `GasmaskFilter`). The Git LFS budget fits (the mesh README,
+    "Committing the meshes"), and 3,244 versions are committed. Left: the run itself, a commit every so often, the 8
+    versions given up on (out of memory, crashed or stuck; `--retry-failed`), and the 8 `Wound_*` versions the critic
+    scored below 5.
+  - **Why:** About 2,540 catalogue items still draw as primitive models next to generated ones, which reads as two art
     styles. The run also has 1,053 worn garments to do ([mesh README](../Tools/AssetPipeline/mesh/README.md), "What each
-    version costs"). The 94 items with a hand-built model in `ItemModels.cs` are skipped until they're exported ("Hand-built
-    items"), and 659 finished mesh files sit uncommitted in
-    [GeneratedItemMeshes](../Assets/Resources/GeneratedItemMeshes).
-  - **Do:** Export the hand-built items (**CloneZ → Asset…**, per the mesh README) and keep `mesh-start` running on the
-    Spark. Use `mesh-status` and the critic scores to re-run the worst versions. Commit the meshes in batches, after
-    checking the Git LFS budget (see the [index](README.md#cross-cutting)).
+    version costs").
+  - **Do:** Keep `mesh-start` running on the Spark. Use `mesh-status` and the critic scores to redo the worst versions
+    (`mesh-redo`). Commit the meshes in batches, as the mesh README's "Committing the meshes" says.
   - **Done when:** `mesh-status` shows every item made or deliberately skipped, and the meshes are in Git LFS.
 
 ## P2 — soon

@@ -121,10 +121,11 @@ Everything is in **AssetPipeline.bat → M** (or `.\AssetPipeline.ps1 mesh-<acti
 | `mesh-gallery` | Opens `out/mesh/index.html`. Each tile shows the reference photo and the mesh as the game will draw it, normal map included. |
 | `mesh-stop` | Finishes the version in progress, then stops. It stays stopped (the schedule doesn't restart it) until `mesh-start`, which resumes. |
 | `mesh-refit` | Fits the finished meshes onto their primitive models again and redraws their gallery tiles, without generating anything (for after a change to the fitting; `-Extra '--ids','Axe,Apple'` for some only). Beside a run it only takes named ids. |
+| `mesh-redo` | Makes versions again from new seeds: `-Extra 'Ramen@2,Sugar@1'` (an item id redoes all of its versions). See "Redoing the worst versions". |
 
 The live view and gallery are served from the Spark on port 8765 (`http://192.168.1.252:8765/live.html`). The run
 lives in tmux session `clonez-mesh` on the Spark, so this PC can sleep. On the Spark itself the same commands are
-`bash ~/clonez-pipeline/Tools/AssetPipeline/mesh/spark.sh build|prepare|start|stop|status|refit|web|hold|release|schedule`.
+`bash ~/clonez-pipeline/Tools/AssetPipeline/mesh/spark.sh build|prepare|start|stop|status|refit|redo|web|hold|release|schedule`.
 
 ### Around the clock
 
@@ -159,6 +160,22 @@ big beside it, another model in Ollama say.
 The 94 items with a C# model in `ItemModels.cs` have no JSON for the mesh to be fitted onto. Run **CloneZ → Asset
 Pipeline → Export Hand-Built Item Models** in Unity once (and again after changing one). It writes them to
 `out/handbuilt/`, and the next `mesh-start` uploads them. Until then those items are skipped, and the log says so.
+
+### Redoing the worst versions
+
+`mesh-status` ends with the versions the mesh critic scored lowest. Every seed is fixed by the item and the version,
+so making one again as it was would paint the same photo and make the same mesh. `mesh-redo` makes it again from new
+seeds instead:
+- It moves the version's game copy aside, with its log entry, to `out/mesh/replaced/<id>@<n>.<k>/` on the Spark, and
+  counts the redo in `out/mesh/redo.json`, which moves the version's seeds on.
+- The run lists what it will make when it starts, so `redo` has it finish the version in progress and exit, and
+  keep-running starts it again within 10 minutes. It then makes the version again in its turn (plain items first, as
+  ever). Until then, `mesh-status` and the gallery list the version as queued.
+- The new version replaces the old one, the original on the NAS included.
+- New seeds don't fix a wrong description. When all of an item's versions miss in the same way, check its three
+  descriptions in `out/mesh/descriptions.json` and correct them there first.
+- `mesh-pull` doesn't delete anything, so this PC keeps the old files until the new ones arrive. Leave queued versions
+  out of a commit (see "Committing the meshes"), so LFS doesn't store one that is about to be replaced.
 
 ## The originals on the NAS
 
@@ -202,6 +219,14 @@ The remesher in TRELLIS.2's export wraps every solid part in two skins, an outer
 `drop_inner_shells` removes the inner ones (half the triangles, never seen), and the previews cull back faces as the
 game does.
 
+The near level's normal map gives each texel the normal of the nearest point of TRELLIS.2's full-detail mesh, which is
+right only while the game copy lies on that mesh's surface. So before the bake, `Generator.surface_gap` measures how far
+the game copy's vertices lie from it. When a tenth of them lie more than 2% of the item's size away
+(`MAX_SURFACE_GAP`), as a frame mismatch would put them, the version fails. Thin things lose detail to the decimation
+(grass blades, insects' legs, a sheaf's stalks), which can leave the full mesh's box up to 16% bigger than the game
+copy's, but the game copy still lies within 0.3% of the full mesh. Comparing the two boxes, as the check first did,
+failed 92 versions of such things.
+
 ## Tuning
 
 | Flag (`-Extra`) | Default | Effect |
@@ -227,10 +252,34 @@ The game copy's sizes follow the item's real size (`budget` in `meshgen.py`, abo
 0.5 m get 1024 px maps and a 16,000-vertex target, items over 0.25 m 512 px and 8,000, smaller ones 256 px and 4,000;
 the metallic map is a quarter of the colour map's size. Vertices are stored compactly (18 bytes: positions to within
 0.01 mm, normals to 0.005°). Measured versions came to ~1.4 MB at 1024 px, ~0.43 MB at 512 and ~0.15 MB at 256,
-which puts all three versions of the catalogue at about 7 GB in Git LFS, most of it normal maps, which don't compress
-well without visibly shifting the normals. GitHub Pro includes 10 GiB of LFS
-storage and 10 GiB of downloads a month; every pushed change to a file counts again, so refit before committing, not
-after. The masters on the NAS keep the full detail, so bigger copies can be baked from them later.
+most of it normal maps, which don't compress well without visibly shifting the normals; what the whole catalogue comes
+to in Git LFS is under "Committing the meshes". The masters on the NAS keep the full detail, so bigger copies can be
+baked from them later.
+
+## Committing the meshes
+
+The game copies go to GitHub through Git LFS (`.gitattributes`). Their `.meta` files, which hold the maps' import
+settings (`GeneratedItemMeshImport.cs`), go to plain git beside them. The budget, measured on 2026-11-08:
+
+- **Storage.** GitHub Free and Pro both include 10 GiB of LFS storage for the account, all its repositories together
+  (GitHub's billing settings show what the others use). The first 3,255 versions take 1.48 GiB (0.14 MiB a version at
+  256 px, 0.40 at 512, 1.23 at 1024). Of the ~7,700 still to make, 2,770 are over 0.5 m (about a third of them
+  garments), which puts the whole catalogue at about **6.1 GiB**. Storage counts every version of a file ever pushed and
+  never goes down, so refit or redo before committing, not after: refitting the whole catalogue once it is pushed would
+  add every `.bytes` again, about 1.6 GiB.
+- **Downloads.** Also 10 GiB a month. Pushing costs nothing, but every LFS download counts. A fresh clone that fetches
+  LFS pulls everything (about 6 GiB at the end), so about one a month fits. The Night Shift's helpers never fetch LFS
+  files (`GIT_SAFE` in `nightshift.py`), and `Release.ps1 -FromMain` checks out a worktree that shares this clone's LFS
+  store, so neither counts. A clone that needs no meshes can leave them out:
+  `git clone -c lfs.fetchexclude=Assets/Resources/GeneratedItemMeshes <url>`.
+- **Over the quota.** Without a payment method, or with the account's LFS budget at $0, nothing is billed. Over the
+  storage quota, pushes of LFS files are refused. Over the download quota, LFS stops for the rest of the month. If the
+  catalogue outgrows the quota, the fallback is the NAS, which already holds the originals: keep the meshes out of git
+  and fetch them in a build step.
+
+A batch: `mesh-pull`, then let Unity import the new files (focus the editor) so that they get their `.meta` files.
+Commit `Assets/Resources/GeneratedItemMeshes` on its own, taking each version only once all five of its files and their
+`.meta`s are there and it isn't queued for a redo. Then push.
 
 ## Files
 
