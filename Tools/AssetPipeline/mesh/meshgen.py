@@ -17,11 +17,13 @@ Spark host runs it without the container.
   python meshgen.py prepare
   python meshgen.py generate [--pilot] [--ids A,B] [--category Firearm] [--limit N] [--force] [--no-nas]
   python meshgen.py refit [--ids A,B]
+  python meshgen.py redo --ids A@2,B
   python meshgen.py status
 """
 import argparse
 import base64
 import faulthandler
+import functools
 import html
 import io
 import json
@@ -249,11 +251,19 @@ class Layout:
 def reference_path(lay, item_id, handmade):
     """The primitive model a mesh is fitted to: the hand-built one (exported from Unity) for hand-built items, the
     LLM-generated one otherwise."""
-    if item_id in handmade:
-        p = lay.handbuilt / f"{item_id}.json"
-    else:
-        p = lay.generated / f"{item_id}.json"
-    return p if p.exists() else None
+    folder = lay.handbuilt if item_id in handmade else lay.generated
+    p = folder / f"{item_id}.json"
+    if p.exists():
+        return p
+    # Case twins (curated "gasmaskfilter", PZ "GasmaskFilter") share one model, filed under either spelling: Windows
+    # holds only one of the two names, and the Spark's filesystem tells them apart.
+    return _models_by_lower_name(str(folder)).get(p.name.lower())
+
+
+@functools.lru_cache(maxsize=None)
+def _models_by_lower_name(folder):
+    folder = Path(folder)
+    return {p.name.lower(): p for p in folder.glob("*.json")} if folder.exists() else {}
 
 
 def load_reference(path):
@@ -349,6 +359,27 @@ def write_attempts(lay, attempts):
     tmp = lay.out / f"attempts.json.{os.getpid()}.tmp"
     tmp.write_text(json.dumps(attempts, indent=0, sort_keys=True), encoding="utf-8")
     os.replace(tmp, lay.out / "attempts.json")
+
+
+# Every seed is fixed by the item and version (variant_seed), so making a version again would paint the same photo and
+# make the same mesh. A version that is redone (cmd_redo) moves its seeds on by this much per redo instead.
+REDO_SEED_STEP = 15_485_863
+
+
+def read_redo(lay):
+    """stem -> how many times the version has been redone; its seeds move on with each (REDO_SEED_STEP)."""
+    try:
+        data = json.loads((lay.out / "redo.json").read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def write_redo(lay, redo):
+    lay.out.mkdir(parents=True, exist_ok=True)
+    tmp = lay.out / f"redo.json.{os.getpid()}.tmp"
+    tmp.write_text(json.dumps(redo, indent=0, sort_keys=True), encoding="utf-8")
+    os.replace(tmp, lay.out / "redo.json")
 
 
 def choose(lay, args):
@@ -742,6 +773,12 @@ class Live:
         faulthandler.cancel_dump_traceback_later()
 
 
+# How far the game mesh may lie from the full-detail mesh it takes its normal map from (Generator.surface_gap), as a
+# fraction of its size. Measured: 0.2-0.3% on grass, insects and a wheat sheaf, whose game meshes thin out or drop their
+# blades, legs and stalks, so that the two meshes' boxes differ by up to 16% (comparing those failed 92 versions).
+MAX_SURFACE_GAP = 0.02
+
+
 class Generator:
     def __init__(self, args, live, masters):
         import torch
@@ -910,6 +947,17 @@ class Generator:
         near, far = lod(size["near_verts"], size["near_tex"]), lod(size["far_verts"], size["far_tex"])
         return master, near, far, meshpost.high_res_unity(m)
 
+    def surface_gap(self, v, high):
+        """How far the game mesh (its vertices v, in Unity's frame) lies from the full-detail mesh (high, from
+        meshpost.high_res_unity): the distance a tenth of its vertices reach or pass, as a fraction of its size."""
+        import cumesh
+        import numpy as np
+
+        v = np.asarray(v)
+        q = self.torch.tensor(v, dtype=self.torch.float32, device="cuda").contiguous()
+        dist = cumesh.cuBVH(*high).unsigned_distance(q, return_uvw=True)[0]
+        return float(self.torch.quantile(dist.float(), 0.9)) / max(float(np.ptp(v, axis=0).max()), 1e-9)
+
     # One variant
 
     def photos(self, item, visual, prompt, seed, pre, worn=None):
@@ -971,11 +1019,12 @@ class Generator:
         near_l = meshpost.drop_inner_shells(meshpost.unity_arrays(near))
         far_l = meshpost.drop_inner_shells(meshpost.unity_arrays(far))
         near_l, far_l = (*near_l, meshpost.tangents(*near_l)), (*far_l, meshpost.tangents(*far_l))
-        # The bake reads the full mesh through the game mesh's frame; check the two line up before trusting it.
-        hlo, hhi = (x.cpu().numpy() for x in (high[0].min(0).values, high[0].max(0).values))
-        llo, lhi = near_l[0].min(axis=0), near_l[0].max(axis=0)
-        if max(np.abs(hlo - llo).max(), np.abs(hhi - lhi).max()) > 0.05 * float((lhi - llo).max()):
-            raise RuntimeError("the full-detail mesh and the game mesh don't line up; the normal bake would be wrong")
+        # The bake gives each texel the normal of the nearest point of the full mesh, which is only right while the game
+        # mesh lies on the full mesh's surface; a frame mismatch would move all of it off.
+        gap = self.surface_gap(near_l[0], high)
+        if gap > MAX_SURFACE_GAP:
+            raise RuntimeError(f"the game mesh lies off the full-detail mesh (a tenth of it {gap:.1%} of its size away "
+                               "or more); the normal bake would be wrong")
         normal_map = Image.fromarray(meshpost.bake_normal_map(near_l, high, size["normal_tex"]))
         del high
         self.torch.cuda.empty_cache()
@@ -1068,7 +1117,10 @@ class Generator:
         shot = (worn_shot(wording) if kind == "rigid" else FLAT_SHOT if flat else THIN_SHOT if is_thin(parts)
                 else SHOT)
         prompt = f"{item.name}: {visual} {STYLES[args.style]} {shot}"
-        seed = variant_seed(item.id, variant)
+        redone = read_redo(lay).get(stem, 0)
+        if redone:
+            base["redo"] = redone
+        seed = variant_seed(item.id, variant) + REDO_SEED_STEP * redone
 
         best = None
         for k in range(args.mesh_tries):
@@ -1235,15 +1287,20 @@ def write_gallery(lay):
             rows.append(f'<figure><img loading="lazy" src="{html.escape(src)}">'
                         f'<figcaption>{note}<br><small>{problems}</small>{extra}</figcaption></figure>')
         else:
-            rows.append(f'<figure class="bad"><figcaption>{html.escape(key)}: '
+            # A version queued for a redo (cmd_redo) is waiting for its turn, not failing.
+            kind = "redo" if e.get("status") == "redo" else "bad"
+            rows.append(f'<figure class="{kind}"><figcaption>{html.escape(key)}: '
                         f'{html.escape(str(e.get("error", "failed")))[:300]}</figcaption></figure>')
+    queued = sum(1 for e in entries if e.get("status") == "redo")
     lay.out.mkdir(parents=True, exist_ok=True)
     tmp = lay.out / f"index.html.{os.getpid()}.tmp"  # per process: a refit may write beside a run
     tmp.write_text(
         "<!doctype html><meta charset=utf-8><title>CLONE-Z item meshes</title><style>"
         "body{background:#1e1f24;color:#ddd;font:13px sans-serif}figure{display:inline-block;margin:6px;width:960px}"
-        "img{width:960px}figure.bad{color:#f88;width:auto}small{color:#aaa}a{color:#8ab4f8}</style>"
-        f"<h1>Item meshes: {len(ok)} done, {len(entries) - len(ok)} failed</h1>"
+        "img{width:960px}figure.bad{color:#f88;width:auto}figure.redo{color:#fc6;width:auto}small{color:#aaa}"
+        "a{color:#8ab4f8}</style>"
+        f"<h1>Item meshes: {len(ok)} done, {len(entries) - len(ok) - queued} failed"
+        f"{f', {queued} queued for a redo' if queued else ''}</h1>"
         "<p>Each tile: the reference photo, then the mesh as the game will see it (three-quarter and top-down views, "
         "with its normal map, rendered on the Spark's GPU). <a href=\"live.html\">Watch the run live</a></p>"
         + "\n".join(rows), encoding="utf-8")
@@ -1411,6 +1468,58 @@ def cmd_refit(args):
         Live.idle(lay, f"Nothing is running. Refitted {done} mesh(es) at {time.strftime('%H:%M')}.")
 
 
+# ── redo ────────────────────────────────────────────────────────────────────────────────────────
+
+# A version's game copy beside its stem: the .bytes that marks it done, then its maps.
+GAME_FILES = (".bytes", "_tex0.jpg", "_tex1.jpg", "_nrm0.jpg", "_msk0.png")
+
+
+def cmd_redo(args):
+    """Queues versions to be made again from new seeds, the ones the critic scored worst, say (status lists them):
+    each one's game copy moves aside to out/mesh/replaced/<stem>.<n>/ with its log entry, so the run sees it as missing
+    and makes it in its turn, and its seeds move on (redo.json), so it gets a new photo and mesh rather than the same
+    ones. The new version replaces the old one, the original on the NAS included. Standard library only: spark.sh redo
+    runs it on the Spark itself, then has the run start again so that it picks them up."""
+    lay = Layout(args.root)
+    owner = item_owners(catalog.load_items(lay.resources), catalog.handmade_ids(lay.item_models_cs))
+    log, redo, attempts = read_log(lay), read_redo(lay), read_attempts(lay)
+    queued = []
+    for want in (i.strip() for i in args.ids.split(",") if i.strip()):
+        item_id, at, k = want.rpartition("@")
+        item = owner.get((item_id if at else want).lower())
+        if item is None:
+            print(f"{want}: not in the catalogue", flush=True)
+            continue
+        if at and not (k.isdigit() and 1 <= int(k) <= args.variants):
+            print(f"{want}: there is no version {k} (they are 1 to {args.variants})", flush=True)
+            continue
+        for variant in [int(k)] if at else range(1, args.variants + 1):
+            stem = stem_of(item.id, variant)
+            redone = redo.get(stem, 0)
+            files = [p for p in (lay.meshes / f"{stem}{s}" for s in GAME_FILES) if p.exists()]
+            if files:
+                aside = lay.out / "replaced" / f"{stem}.{redone}"
+                aside.mkdir(parents=True, exist_ok=True)
+                for p in files:
+                    os.replace(p, aside / p.name)
+                if stem in log:
+                    (aside / "log.json").write_text(json.dumps(log[stem], indent=1), encoding="utf-8")
+            redo[stem] = redone + 1
+            attempts.pop(stem, None)
+            entry = {"id": item.id, "key": stem, "variant": variant, "name": item.name, "category": item.category,
+                     "status": "redo", "error": f"queued for a redo from new seeds (redo {redone + 1})",
+                     "ts": time.strftime("%Y-%m-%d %H:%M:%S")}
+            with lay.log.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(entry) + "\n")
+            queued.append(stem)
+    write_redo(lay, redo)
+    write_attempts(lay, attempts)
+    write_gallery(lay)
+    print(f"Queued {len(queued)} version(s) for a redo from new seeds: {', '.join(queued)}." if queued
+          else "Nothing was queued.", flush=True)
+    return 0 if queued else 1
+
+
 # ── status ──────────────────────────────────────────────────────────────────────────────────────
 
 def cmd_status(args):
@@ -1426,10 +1535,14 @@ def cmd_status(args):
     total = args.variants * len(with_ref)
     complete = sum(1 for n in have.values() if n == args.variants)
     partly = sum(1 for n in have.values() if 0 < n < args.variants)
-    failed = [k for k, e in log.items() if e.get("status") != "ok" and k.lower() not in done]
+    failed = [k for k, e in log.items() if e.get("status") not in ("ok", "redo") and k.lower() not in done]
     print(f"Meshes: {made} of {total} made ({args.variants} versions of each of {len(with_ref)} items: {complete} "
           f"complete, {partly} partly), {len(failed)} failed; {len(unique) - len(with_ref)} item(s) have no model "
           f"to fit onto.")
+    queued = sorted(k for k, e in log.items() if e.get("status") == "redo" and k.lower() not in done)
+    if queued:
+        print(f"Queued for a redo from new seeds: {len(queued)} version(s): {', '.join(queued[:10])}"
+              f"{' ...' if len(queued) > 10 else ''}")
     gave_up = sorted(k for k, v in read_attempts(lay).items() if v >= GIVE_UP and k.lower() not in done)
     if gave_up:
         print(f"Given up on {len(gave_up)} version(s) after {GIVE_UP} failures in a row (start with --retry-failed to "
@@ -1445,6 +1558,11 @@ def cmd_status(args):
     if scores:
         low = sum(1 for s in scores if (s or 0) < 5)
         print(f"Mesh critic: median {statistics.median(scores)}/10, {low} below 5.")
+        worst = sorted((e for e in current if (e.get("mesh_score") or 0) < 5),
+                       key=lambda e: (e.get("mesh_score") or 0, e["key"]))
+        if worst:
+            print("Lowest (redo them with mesh-redo): " + ", ".join(f"{e['key']} ({e.get('mesh_score')})"
+                                                              for e in worst[:15]) + (" ..." if len(worst) > 15 else ""))
 
 
 def main():
@@ -1505,8 +1623,14 @@ def main():
     r.add_argument("--root", default=str(ROOT_DEFAULT))
     r.add_argument("--ids", help="comma-separated item ids or versions (id@2); default: every finished mesh")
 
+    d = sub.add_parser("redo", help="make versions again from new seeds, the worst ones say (standard library only)")
+    d.add_argument("--root", default=str(ROOT_DEFAULT))
+    d.add_argument("--ids", required=True, help="comma-separated versions (id@2), or item ids for all their versions")
+    d.add_argument("--variants", type=int, default=VARIANTS)
+
     args = ap.parse_args()
-    {"prepare": cmd_prepare, "generate": cmd_generate, "refit": cmd_refit, "status": cmd_status}[args.cmd](args)
+    sys.exit({"prepare": cmd_prepare, "generate": cmd_generate, "refit": cmd_refit, "status": cmd_status,
+              "redo": cmd_redo}[args.cmd](args))
 
 
 if __name__ == "__main__":

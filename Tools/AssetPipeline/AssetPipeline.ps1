@@ -11,17 +11,18 @@
   pulls them into Assets/Resources/GeneratedItemMeshes; its actions start with mesh-.
 
   Run with no arguments for a menu, or:  .\AssetPipeline.ps1 start|status|pull|stop|watch|gallery
-  or for meshes:  .\AssetPipeline.ps1 mesh-build|mesh-prepare|mesh-pilot|mesh-start|mesh-view|mesh-status|mesh-watch|mesh-pull|mesh-gallery|mesh-stop|mesh-refit|mesh-view-stop
+  or for meshes:  .\AssetPipeline.ps1 mesh-build|mesh-prepare|mesh-pilot|mesh-start|mesh-view|mesh-status|mesh-watch|mesh-pull|mesh-gallery|mesh-stop|mesh-refit|mesh-redo|mesh-view-stop
 
 .EXAMPLE
   .\AssetPipeline.ps1 start -Critic
   .\AssetPipeline.ps1 start -Extra '--category','Clothing'
   .\AssetPipeline.ps1 mesh-start -Extra '--category','Firearm'
+  .\AssetPipeline.ps1 mesh-redo -Extra 'Ramen@2,Sugar@1'
 #>
 param(
     [ValidateSet('menu', 'start', 'status', 'pull', 'stop', 'watch', 'gallery',
         'mesh-build', 'mesh-prepare', 'mesh-pilot', 'mesh-start', 'mesh-view', 'mesh-status', 'mesh-watch',
-        'mesh-pull', 'mesh-gallery', 'mesh-stop', 'mesh-refit', 'mesh-view-stop')]
+        'mesh-pull', 'mesh-gallery', 'mesh-stop', 'mesh-refit', 'mesh-redo', 'mesh-view-stop')]
     [string]$Action = 'menu',
     [string]$SparkHost = $(if ($env:CLONEZ_SPARK) { $env:CLONEZ_SPARK } else { 'henrylawrencecahill@192.168.1.252' }),
     [int]$Workers = 4,
@@ -194,7 +195,9 @@ function Get-MeshResults {
     $code = Invoke-Remote @"
 cd ~/$Remote
 mkdir -p Assets/Resources/GeneratedItemMeshes Tools/AssetPipeline/out/mesh
-tar -czf mesh-pull.tgz --exclude '*.tmp' Assets/Resources/GeneratedItemMeshes --exclude 'Tools/AssetPipeline/out/mesh/refs' Tools/AssetPipeline/out/mesh
+tar -czf mesh-pull.tgz --warning=no-file-changed --exclude '*.tmp' Assets/Resources/GeneratedItemMeshes --exclude 'Tools/AssetPipeline/out/mesh/refs' Tools/AssetPipeline/out/mesh
+# 1: a file changed while tar read it (beside a run, its log and live view always do); the archive is still whole.
+[ `$? -le 1 ]
 "@
     if ($code -ne 0) { throw 'Remote pack failed' }
     $tgz = Join-Path $env:TEMP 'clonez-mesh-pull.tgz'
@@ -229,6 +232,7 @@ function Show-MeshMenu {
         Write-Host ' 8) Open the gallery'
         Write-Host ' 9) Stop after the item in progress'
         Write-Host ' R) Refit finished meshes (after a fitting change; generates nothing)'
+        Write-Host ' D) Redo versions from new seeds (Status lists the worst)'
         Write-Host ' B) Back'
         switch ((Read-Host 'Choose').Trim().ToUpper()) {
             '1' { Sync-Pipeline; Invoke-Mesh 'build' | Out-Null }
@@ -242,6 +246,10 @@ function Show-MeshMenu {
             '8' { Open-MeshGallery }
             '9' { Invoke-Mesh 'stop' | Out-Null }
             'R' { Sync-Pipeline; Invoke-Mesh 'refit' | Out-Null }
+            'D' {
+                $ids = (Read-Host 'Versions to redo (e.g. Ramen@2,Sugar@1; an item id redoes all its versions)').Trim()
+                if ($ids) { Sync-Pipeline; Invoke-Mesh "redo '$ids'" | Out-Null }
+            }
             'B' { return }
         }
     }
@@ -293,5 +301,6 @@ switch ($Action) {
     'mesh-gallery' { Open-MeshGallery }
     'mesh-stop' { exit (Invoke-Mesh 'stop') }
     'mesh-refit' { Sync-Pipeline; exit (Invoke-Mesh ("refit " + (($Extra | ForEach-Object { "'$_'" }) -join ' '))) }
+    'mesh-redo' { Sync-Pipeline; exit (Invoke-Mesh ("redo " + (($Extra | ForEach-Object { "'$_'" }) -join ' '))) }
     default { Show-Menu }
 }

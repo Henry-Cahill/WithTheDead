@@ -97,7 +97,15 @@ These belong to no single category.
     smoke mode (`Tools\Smoke\Smoke.ps1`, plus host and client) and the Java self-test.
   - **Done when:** The project is on a non-alpha editor and every smoke mode passes.
 
-- [ ] **Check the Git LFS budget before pushing the meshes** · P1 · S · Repo
+- [x] **Check the Git LFS budget before pushing the meshes** · P1 · S · Repo
+  - **Done (2026-11-08):** It fits; the plan is the mesh README's "Committing the meshes". Measured per map size, the
+    whole catalogue comes to about 6.1 GiB (1.48 GiB for the first 3,255 versions) against 10 GiB of storage. Downloads
+    are 10 GiB a month, but the Night Shift's helpers never fetch LFS files (`GIT_SAFE` in
+    [nightshift.py](../Tools/NightShift/nightshift.py)) and `Release.ps1 -FromMain` shares this clone's LFS store, so
+    only fresh clones count: about one full clone a month, or any number with
+    `git clone -c lfs.fetchexclude=Assets/Resources/GeneratedItemMeshes`. The quota is the whole account's, and the gh
+    token can't read its usage (that needs the `user` scope), so check what other repositories use once in GitHub's
+    billing settings.
   - **Why:** Generated item meshes go to Git LFS ([.gitattributes](../.gitattributes)). They're 1.29 GB for 798 items
     so far, and the mesh README estimates about 7 GB for all three versions of the catalogue
     ([Tools/AssetPipeline/mesh/README.md](../Tools/AssetPipeline/mesh/README.md)). Every clone and every Night Shift
