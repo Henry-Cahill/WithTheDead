@@ -32,7 +32,8 @@ namespace CloneZ
             return true;
         }
 
-        /// <summary>Fits a mod from <paramref name="from"/> onto <paramref name="gun"/>, swapping out whatever filled the slot.</summary>
+        /// <summary>Fits a mod from <paramref name="from"/> onto <paramref name="gun"/>, swapping out whatever filled the slot.
+        /// A weapon light takes its battery with it: the item's charge becomes the gun's <see cref="ItemExtra.LightUsed"/>.</summary>
         public static void AttachTo(Inventory from, ItemStack gun, ItemStack modStack, PlayerInventory refresh = null)
         {
             ModStats mod = Ballistics.Mod(modStack.Def.Id);
@@ -47,11 +48,12 @@ namespace CloneZ
                 // Only remove mods that occupy the same slot as the new mod.
                 if (old == null || old.Slot != mod.Slot) continue;
                 // Return the old mod to the player's inventory before discarding it.
-                from.Add(ItemDatabase.Get(x.Mods[i]), 1, enforceWeight: false);
+                from.Add(ItemDatabase.Get(x.Mods[i]), 1, enforceWeight: false, condition: TakeLightCharge(x, old));
                 x.Mods.RemoveAt(i);
             }
             // Add the new mod ID to the gun's mod list.
             x.Mods.Add(mod.Id);
+            if (mod.Light) x.LightUsed = modStack.Def.UsesCharge ? 1f - modStack.Charge01 : 0f;
             // Remove one instance of the mod stack from the inventory, as it is now attached.
             from.Remove(modStack, 1);
             // Play a UI sound to give audible feedback for the attachment action.
@@ -70,7 +72,7 @@ namespace CloneZ
             return null;
         }
 
-        /// <summary>Takes every attachment off a gun and puts them in the pack.</summary>
+        /// <summary>Takes every attachment off a gun and puts them in the pack (a weapon light with its battery).</summary>
         public static int Strip(Inventory into, ItemStack gun)
         {
             if (gun == null || gun.Extra == null || gun.Extra.Mods.Count == 0) return 0;
@@ -79,11 +81,25 @@ namespace CloneZ
             {
                 ItemDef d = ItemDatabase.Get(id);
                 if (d == null) continue;
-                into.Add(d, 1, enforceWeight: false, extra: gun.IsFoundInRaid() ? new ItemExtra { FoundInRaid = true } : null);
+                into.Add(d, 1, enforceWeight: false, condition: TakeLightCharge(gun.Extra, Ballistics.Mod(id)),
+                    extra: gun.IsFoundInRaid() ? new ItemExtra { FoundInRaid = true } : null);
                 n++;
             }
             gun.Extra.Mods.Clear();
+            gun.Extra.LightUsed = 0f;
             return n;
+        }
+
+        // The condition a weapon light coming off a gun goes back into the pack with (its charge, from the gun's
+        // LightUsed, which is then cleared), or -1 (pristine) for any other mod.
+        private static int TakeLightCharge(ItemExtra gun, ModStats mod)
+        {
+            if (gun == null || mod == null || !mod.Light) return -1;
+            ItemDef d = ItemDatabase.Get(mod.Id);
+            if (d == null || !d.UsesCharge || d.MaxCondition <= 0) return -1;
+            int charge = Mathf.Clamp(Mathf.CeilToInt((1f - Mathf.Clamp01(gun.LightUsed)) * d.MaxCondition - 1e-3f), 0, d.MaxCondition);
+            gun.LightUsed = 0f;
+            return charge;
         }
         #endregion
 
@@ -199,13 +215,15 @@ namespace CloneZ
         {
             var sb = new StringBuilder();
             AmmoStats ammo = Ballistics.Ammo(d.Id);
-            // Ammo-specific tooltip lines – calibre, damage, penetration, bleeding and special currency flag.
+            // Ammo-specific tooltip lines – calibre, damage, penetration, bleeding, a special round's effect and the currency flag.
             if (ammo != null && d.Category == ItemCategory.Ammo)
             {
                 Line(sb, "Calibre", CaliberName(ammo.Caliber));
                 Line(sb, "Damage", Mathf.RoundToInt(ammo.Damage) + (ammo.Pellets > 1 ? " x" + ammo.Pellets : ""));
                 Line(sb, "Penetration", Mathf.RoundToInt(ammo.Penetration) + "  (beats class " + Mathf.Clamp(Mathf.FloorToInt(ammo.Penetration / 10f), 0, 6) + ")");
                 Line(sb, "Bleeding", Mathf.RoundToInt(ammo.Fragmentation * 100f) + "%");
+                if (ammo.Tracer) Line(sb, "Effect", "Tracer: a red streak marks each round's flight");
+                if (ammo.Incendiary) Line(sb, "Effect", "Incendiary: sets whoever it hits alight");
                 if (ammo.Currency) sb.Append("\n<color=#e0c060>The Zone's money: every shot spends it.</color>");
             }
             GunStats gun = Ballistics.Gun(d.Id);

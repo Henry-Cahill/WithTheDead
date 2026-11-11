@@ -170,17 +170,20 @@ namespace CloneZ
             switch (_act)
             {
                 case Act.Swing:
+                {
+                    float k = ActKeyT(SwingContact);
                     if (twoHand)
                     {
-                        right = Goal(At(KeyLerp(SwingT, Swing2Pos, t)), MeleeRot(Dir(KeyLerp(SwingT, Swing2Dir, t))), 1f);
+                        right = Goal(At(KeyLerp(SwingT, Swing2Pos, k)), MeleeRot(Dir(KeyLerp(SwingT, Swing2Dir, k))), 1f);
                         leftOnItem = true;
                     }
-                    else right = Goal(At(KeyLerp(SwingT, Swing1Pos, t)), MeleeRot(Dir(KeyLerp(SwingT, Swing1Dir, t))), env);
+                    else right = Goal(At(KeyLerp(SwingT, Swing1Pos, k)), MeleeRot(Dir(KeyLerp(SwingT, Swing1Dir, k))), env);
                     break;
+                }
 
                 case Act.Punch:
                 {
-                    float jab = Bell(t, 0f, 0.75f);
+                    float jab = Bell(ActKeyT(PunchContact), 0f, 0.75f);
                     Quaternion fist = HandRot(Dir(Vector3.forward), Dir(Vector3.down), true);
                     right = Goal(At(Vector3.Lerp(new Vector3(0.12f, 0.05f, 0.22f), new Vector3(0.03f, 0.18f, 0.6f), jab)), fist, env);
                     left = Goal(At(new Vector3(-0.12f, 0.08f, 0.2f)), HandRot(Dir(Vector3.forward), Dir(Vector3.right), false), env);

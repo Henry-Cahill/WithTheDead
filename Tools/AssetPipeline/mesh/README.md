@@ -122,10 +122,11 @@ Everything is in **AssetPipeline.bat → M** (or `.\AssetPipeline.ps1 mesh-<acti
 | `mesh-stop` | Finishes the version in progress, then stops. It stays stopped (the schedule doesn't restart it) until `mesh-start`, which resumes. |
 | `mesh-refit` | Fits the finished meshes onto their primitive models again and redraws their gallery tiles, without generating anything (for after a change to the fitting; `-Extra '--ids','Axe,Apple'` for some only). Beside a run it only takes named ids. |
 | `mesh-redo` | Makes versions again from new seeds: `-Extra 'Ramen@2,Sugar@1'` (an item id redoes all of its versions). See "Redoing the worst versions". |
+| `mesh-restart` | Uploads the pipeline and has the run finish the version in progress and start again, so it picks up items added since it started (menu: **N**). See "Items only code registers". |
 
 The live view and gallery are served from the Spark on port 8765 (`http://192.168.1.252:8765/live.html`). The run
 lives in tmux session `clonez-mesh` on the Spark, so this PC can sleep. On the Spark itself the same commands are
-`bash ~/clonez-pipeline/Tools/AssetPipeline/mesh/spark.sh build|prepare|start|stop|status|refit|redo|web|hold|release|schedule`.
+`bash ~/clonez-pipeline/Tools/AssetPipeline/mesh/spark.sh build|prepare|start|stop|status|refit|redo|restart|web|hold|release|schedule`.
 
 ### Around the clock
 
@@ -157,9 +158,24 @@ big beside it, another model in Ollama say.
 
 ### Hand-built items
 
-The 94 items with a C# model in `ItemModels.cs` have no JSON for the mesh to be fitted onto. Run **CloneZ → Asset
-Pipeline → Export Hand-Built Item Models** in Unity once (and again after changing one). It writes them to
-`out/handbuilt/`, and the next `mesh-start` uploads them. Until then those items are skipped, and the log says so.
+The items with a C# model in `ItemModels.cs` (94 of the catalogue's, and the period guns in `ItemModels.Guns.cs`) have no
+JSON for the mesh to be fitted onto. Run **CloneZ → Asset Pipeline → Export Hand-Built Item Models** in Unity once (and
+again after changing or adding one; headless, `-executeMethod CloneZ.EditorTools.ItemModelExport.ExportBatch`). It writes
+them to `out/handbuilt/`, and the next `mesh-start` uploads them. Until then those items are skipped, and the log says so.
+
+### Items only code registers
+
+The catalogue is the content database's INSERT scripts, but some items exist only in code: ZoneContent's guns, say, which
+the game registers at start-up. The export above also writes `out/handbuilt/catalogue.json`, every hand-built item as
+`catalog.py` describes items to the models (name, category, weight, tint, description, and traits such as a gun's
+calibre), and `catalog.py` adds the ones the scripts don't hold. They go first in the catalogue: they're the game's newest
+content and few, so a run makes them next rather than after the thousands queued before them.
+
+The run lists what it will make when it starts, so to add one: give it a hand-built model (a `case` in `ItemModels.cs`'s
+switch, which `catalog.handmade_ids` reads), export, then `mesh-restart`. It uploads the pipeline, and the run finishes the
+version in progress and exits; keep-running starts it again within 10 minutes, the new items first. When its versions are
+done, pull just those files (`<id>@<n>*` in `Assets/Resources/GeneratedItemMeshes` on the Spark) rather than the whole
+catalogue's with `mesh-pull`.
 
 ### Redoing the worst versions
 
@@ -251,7 +267,10 @@ The prompt is built in `Generator.make`: the item's name, the version's descript
 The game copy's sizes follow the item's real size (`budget` in `meshgen.py`, about 1,000 texels per metre): items over
 0.5 m get 1024 px maps and a 16,000-vertex target, items over 0.25 m 512 px and 8,000, smaller ones 256 px and 4,000;
 the metallic map is a quarter of the colour map's size. Vertices are stored compactly (18 bytes: positions to within
-0.01 mm, normals to 0.005°). Measured versions came to ~1.4 MB at 1024 px, ~0.43 MB at 512 and ~0.15 MB at 256,
+0.01 mm, normals to 0.005°). No game copy may reach more than 2.5 m from where its item lies (half its box's diagonal,
+plus the height it rests at, plus the bob): the game culls an item by that before it has loaded the item's mesh, so
+`write_mesh_file` refuses one that reaches further (the largest so far reaches 1.4 m). Measured versions came to
+~1.4 MB at 1024 px, ~0.43 MB at 512 and ~0.15 MB at 256,
 most of it normal maps, which don't compress well without visibly shifting the normals; what the whole catalogue comes
 to in Git LFS is under "Committing the meshes". The masters on the NAS keep the full detail, so bigger copies can be
 baked from them later.

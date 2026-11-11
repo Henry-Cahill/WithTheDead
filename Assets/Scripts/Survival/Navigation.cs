@@ -181,7 +181,7 @@ namespace CloneZ
                     var p = new Vector3(Mathf.Lerp(_centre.x - _half, _centre.x + _half, (x + 0.5f) / N), 0f,
                         Mathf.Lerp(_centre.z - _half, _centre.z + _half, (y + 0.5f) / N));
                     Color c = new Color(0.86f, 0.83f, 0.74f, 0f);
-                    if (Physics.Raycast(p + Vector3.up * 30f, Vector3.down, out RaycastHit hit, 40f, 1, QueryTriggerInteraction.Ignore))
+                    if (Physics.Raycast(p + Vector3.up * 30f, Vector3.down, out RaycastHit hit, 40f, CloneZConfig.WorldMask, QueryTriggerInteraction.Ignore))
                     {
                         if (hit.point.y > 2f) c = new Color(0.32f, 0.29f, 0.26f, 0.85f);                 // a roof
                         else if (ZoneForest.Density(p) > 0.4f) c = new Color(0.45f, 0.55f, 0.38f, 0.5f);

@@ -37,6 +37,18 @@ FLAG_MAPS = 2
 VERTEX = np.dtype([("p", "<u2", 3), ("n", "<i2", 2), ("t", "i1", 4), ("uv", "<u2", 2)])
 PREVIEW_BG = (46, 48, 54)  # the primitive pipeline's preview background, so both galleries look alike
 
+# GroundItemRenderer.UnknownReach and .BobHeight (Assets/Scripts/World/GroundItemRenderer.cs). Until the game has looked an
+# item's mesh up, it culls the item as if it reached UNKNOWN_REACH metres from where it lies, so a mesh reaching further
+# could be left undrawn at the edge of the view. Raise both limits together if an item really needs more.
+UNKNOWN_REACH = 2.5
+BOB_HEIGHT = 0.06
+
+
+def reach(v, base_height):
+    """How far a mesh with vertices v reaches from where its item lies, as the game culls it: half its box's diagonal,
+    plus the height it rests at, plus the bob."""
+    return float(np.linalg.norm(v.max(axis=0) - v.min(axis=0))) / 2.0 + abs(float(base_height)) + BOB_HEIGHT
+
 
 def _rotations():
     """The 24 rotations that map the axes onto the axes (signed permutation matrices with determinant +1)."""
@@ -496,6 +508,11 @@ def write_mesh_file(path, lods, base_height, smoothness, metallic, maps=False):
     for v, f, n, uv, t in lods:
         if len(v) > 65535:
             raise ValueError(f"{len(v)} vertices is past the 16-bit index limit; lower the decimation target")
+        far = reach(v, base_height)
+        if far > UNKNOWN_REACH:
+            raise ValueError(f"the mesh reaches {far:.2f} m from where it lies, past the {UNKNOWN_REACH} m the game culls an "
+                             f"item by before looking its mesh up (GroundItemRenderer.UnknownReach); check its fit, or raise "
+                             f"both limits together")
         lo = v.min(axis=0)
         size = np.maximum(v.max(axis=0) - lo, 1e-6)
         rec = np.zeros(len(v), dtype=VERTEX)

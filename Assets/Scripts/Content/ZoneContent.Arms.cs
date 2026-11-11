@@ -45,31 +45,30 @@ namespace CloneZ
             // 7.62x54R for the bolt-action rifle.
             Ammo(b, "ammo762r_lps", "7.62x54R LPS Rounds", "762r", 82f, 42f, 0.60f, 0.25f, "Full-power rifle rounds.", 1, 40);
             Ammo(b, "ammo762r_snb", "7.62x54R SNB Rounds", "762r", 76f, 58f, 0.75f, 0.20f, "Sniper armour-piercing. Goes through nearly anything.", 1, 40);
-            // Improvised 9mm FMJ – civilian surplus round, just a little better than the standard.
-            Ammo(b, "ammo9mm_fmj", "9mm FMJ", "9x19", 60f, 24f, 0.30f, 0.12f, "Full‑metal jacket. Pierces cheap kevlar, but still whines in soft steel.", 1, 60);
-            // 12‑gauge flechette shells – cheap “pigeon‑shot” for cutting through foliage and low‑grade armor.
-            Ammo(b, "ammo12g_flechette", "12g Flechette Shells", "12g", 45f, 18f, 0.25f, 0.30f, "Hundreds of tiny steel darts. Stabs rather than smashes.", 1, 30);
-            // 5.45×39 FMJ – the “budget” rifle round, mass‑produced for militia.
-            Ammo(b, "ammo545_fmj", "5.45x39 FMJ", "545", 52f, 32f, 0.38f, 0.18f, "Standard military bullet. Reliable, affordable, and surprisingly accurate.", 1, 120);
-            // 7.62×54R AP – hardened steel core, meant for anti‑material use.
-            Ammo(b, "ammo762r_ap", "7.62x54R AP", "762r", 90f, 68f, 0.70f, 0.10f, "Armour‑piercing. Designed to breach hardened plates, but the recoil hurts.", 1, 20);
-            // 5.45×39 tracer – flares the bullet’s path, useful for night fire or signaling.
-            Ammo(b, "ammo545_tracer", "5.45x39 Tracer", "545", 48f, 30f, 0.40f, 0.20f, "Brightly‑lit rounds. Leaves a short red tail, handy for spotting where you’ve shot.", 1, 90);
-            // 9×19 incendiary – burns in the cold, useful for lighting abandoned cabins.
+            // 9x19 FMJ: a hot factory load, a shade better than the plain rounds, with cleaner wounds.
+            Ammo(b, "ammo9mm_fmj", "9mm FMJ", "9x19", 60f, 24f, 0.30f, 0.12f,
+                "Factory full-metal-jacket, loaded hot. Hits a little harder than plain 9mm and gets through soft armour a little more often, but the wounds bleed less.", 1, 60);
+            // 12g flechette: a bundle of steel darts that flies as one projectile, not a spread of pellets.
+            Ammo(b, "ammo12g_flechette", "12g Flechette Shells", "12g", 45f, 18f, 0.25f, 0.30f,
+                "Steel darts that fly as one bundle: a single hit, not a spread, but it often gets through the soft armour that stops buckshot.", 1, 30);
+            // 5.45x39 FMJ: militia ball, a shade better than PS.
+            Ammo(b, "ammo545_fmj", "5.45x39 FMJ", "545", 52f, 32f, 0.38f, 0.18f,
+                "Militia ball ammunition. Hits and penetrates a shade better than PS, but wears armour down more slowly.", 1, 120);
+            // 7.62x54R AP: hardened steel core, the deepest-penetrating round there is.
+            Ammo(b, "ammo762r_ap", "7.62x54R AP", "762r", 90f, 68f, 0.70f, 0.10f,
+                "Hardened steel core. Gets through even the heaviest armour more often than not and hits harder than SNB, but the wounds seldom bleed.", 1, 20);
+            // The special rounds do something no plain round does, and their cards say what (WeaponItems' tooltip).
+            // 5.45x39 tracer: a red streak marks each round's flight (CombatFX.Tracer); no other round draws a trail.
+            Ammo(b, "ammo545_tracer", "5.45x39 Tracer", "545", 48f, 30f, 0.40f, 0.20f,
+                "A burning base marks each round's flight with a red streak to wherever it stops. Handy for walking fire onto a target.", 1, 90);
+            Ballistics.Ammo("ammo545_tracer").Tracer = true;
+            // 9x19 and 12g incendiary: whoever they hit catches fire (Aflame, as in a molotov's flames).
             Ammo(b, "ammo9mm_inc", "9mm Incendiary", "9x19", 55f, 25f, 0.40f, 0.45f,
-                "A paper‑cased round that bursts into flame on impact. Leaves a brief orange‑smoke plume.");
-            // 12 gauge incendiary – “fire‑slug” for clearing brush and freezing zombies in place.
+                "Whoever it hits catches fire and burns on for a few seconds. The dead keep coming while they burn, and set alight whoever they crowd against.");
+            Ballistics.Ammo("ammo9mm_inc").Incendiary = true;
             Ammo(b, "ammo12g_inc", "12g Incendiary Shells", "12g", 48f, 6f, 0.30f, 0.40f,
-                "A thin‑walled shell packed with a flammable mixture. Explodes with a puff of fire.");
-            // 5.45×39 “Cold‑Snap” – extra‑cold powder that contracts metal, improving penetration in sub‑zero temps.
-            Ammo(b, "ammo545_cold", "5.45×39 Cold‑Snap Rounds", "545", 58f, 48f, 0.55f, 0.12f,
-                "Specially formulated propellant that keeps its velocity in freezing air.");
-            // 7.62×54R “Heavy‑Velocity” – hand‑loaded with extra propellant, louder but dead‑lier.
-            Ammo(b, "ammo762r_hv", "7.62×54R Heavy‑Velocity", "762r", 95f, 70f, 0.75f, 0.15f,
-                "Over‑charged cartridge, rattles the barrel and tears through armor.");
-            // 9×19 “Fuel‑Gel” – a sticky, gel‑filled round that clings to surfaces, great for makeshift traps.
-            Ammo(b, "ammo9mm_fuel", "9mm Fuel‑Gel", "9x19", 50f, 20f, 0.45f, 0.50f,
-                "Gel‑filled bullet that splatters on impact, leaving a sticky residue.");
+                "One burning slug: whoever it hits catches fire. It hits far lighter than a lead slug; the fire does the rest.");
+            Ballistics.Ammo("ammo12g_inc").Incendiary = true;
             // Signal flares (the flare gun's "ammunition").
             ItemDef flare = b.Item("flare", "Signal Flare", ItemCategory.Ammo, 0.15f, 6, 1, 1,
                 "A red signal flare. Fire it at a landing zone and a helicopter comes — and everyone nearby sees where you are.");
@@ -94,6 +93,9 @@ namespace CloneZ
             ItemDef fg = Gun(b, "flaregun", "Flare Gun", "flare", "flare", 1, 1.5f, 2f, 40f, 2f, 20f, 0.6f, false, 40,
                 new ModSlot[0], 1f, 70f, false, "Calls the extraction helicopter when fired at a landing zone.", 2, 1);
             fg.Tint = new Color(0.85f, 0.35f, 0.15f);
+
+            RegisterKentuckyGuns(b);
+            RegisterZoneGuns(b);
 
             // Attachments.
             Mod(b, "mod_reddot", "Red Dot Sight", ModSlot.Sight, null, 0.15f, m => { m.AdsSpread = 0.6f; m.Ergonomics = 2f; m.Zoom = 1.1f; },
@@ -139,7 +141,7 @@ namespace CloneZ
 
         private static ItemDef Gun(ContentBuilder b, string id, string name, string caliber, string ammo, int mag, float cooldown,
             float reload, float range, float spread, float noise, float weight, bool twoHanded, int durability, ModSlot[] slots,
-            float recoil, float ergo, bool auto, string desc, int w, int h)
+            float recoil, float ergo, bool auto, string desc, int w, int h, System.Action<GunStats> tune = null)
         {
             ItemDef def = b.Item(id, name, ItemCategory.Firearm, weight, 1, w, h, desc);
             if (!b.InDatabase(id))
@@ -159,7 +161,9 @@ namespace CloneZ
                 def.ConditionLossChance = 30;
                 def.TwoHanded = twoHanded;
             }
-            Ballistics.Register(new GunStats { Id = id, Caliber = caliber, Slots = slots, Recoil = recoil, Ergonomics = ergo, FullAuto = auto });
+            var stats = new GunStats { Id = id, Caliber = caliber, Slots = slots, Recoil = recoil, Ergonomics = ergo, FullAuto = auto };
+            tune?.Invoke(stats);
+            Ballistics.Register(stats);
             return def;
         }
 
@@ -172,7 +176,115 @@ namespace CloneZ
             def.Tint = new Color(0.30f, 0.32f, 0.30f);
             var m = new ModStats { Id = id, Slot = slot, Caliber = caliber };
             set?.Invoke(m);
+            if (m.Light)
+            {
+                // A battery device like the flashlight: its charge is the stack's condition, and moves onto the gun it's fitted
+                // to (ItemExtra.LightUsed) and back off with it.
+                def.Gear = GearKind.WeaponLight;
+                def.MaxCondition = 100;
+                def.ChargeSeconds = WeaponLightBatterySeconds;
+            }
             Ballistics.Register(m);
+        }
+
+        /// <summary>How long a weapon light shines on one battery (seconds); the flashlight's lasts 20 minutes.</summary>
+        public const float WeaponLightBatterySeconds = 900f;
+
+        /// <summary>The Kentucky guns: what a farmhouse, a gun shop and a police station held in 1993 (see the loot in
+        /// ZoneContent.Gear.cs), and the civilian calibres they fire.</summary>
+        public static readonly string[] KentuckyGuns = { "rev38", "m1911", "rifle22", "riotgun", "rifle3006", "lever3030", "ar15" };
+
+        /// <summary>The Zone's Soviet guns, found in its military caches and sold by the traders' upper tiers.</summary>
+        public static readonly string[] ZoneGuns = { "svd", "pkm", "aks74u" };
+
+        private static void RegisterKentuckyGuns(ContentBuilder b)
+        {
+            Ammo(b, "ammo38", ".38 Special Rounds", "38sp", 48f, 14f, 0.3f, 0.25f,
+                "Lead round-nose .38 Special, fifty to the box. Slow and soft: it hits well and stops at kevlar.", 1, 50);
+            Ammo(b, "ammo45", ".45 ACP Rounds", "45acp", 64f, 16f, 0.35f, 0.22f,
+                "Fat, slow .45 ball. Knocks a man down; armour shrugs it off.", 1, 50);
+            ItemDef r22 = Ammo(b, "ammo22", ".22 LR Rounds", "22lr", 24f, 4f, 0.1f, 0.12f,
+                "Rimfire plinking rounds by the brick. Light, cheap and quiet — enough for a squirrel, or a careful head shot.", 1, 100);
+            if (r22 != null) { r22.Weight = 0.004f; r22.Tint = new Color(0.74f, 0.48f, 0.26f); }
+            ItemDef r3006 = Ammo(b, "ammo3006", ".30-06 Rounds", "3006", 90f, 36f, 0.6f, 0.4f,
+                "Soft-point deer loads for the '06. Terrible wounds, but plates still stop most of them.", 1, 40);
+            if (r3006 != null) r3006.Weight = 0.02f;
+            ItemDef r3030 = Ammo(b, "ammo3030", ".30-30 Rounds", "3030", 72f, 26f, 0.45f, 0.35f,
+                "Flat-nosed .30-30, safe in a tube magazine. The Kentucky deer round since grandpa's day.", 1, 40);
+            if (r3030 != null) r3030.Weight = 0.018f;
+            Ammo(b, "ammo556", "5.56x45 Rounds", "556", 50f, 30f, 0.45f, 0.3f,
+                "M193 ball. Light and fast; it tumbles and fragments in flesh.", 1, 60);
+            Ammo(b, "ammo556_m855", "5.56x45 M855 Rounds", "556", 47f, 42f, 0.55f, 0.18f,
+                "Green-tipped NATO rounds with a steel penetrator. Punches through soft armour.", 1, 60);
+
+            Tint(Gun(b, "rev38", ".38 Revolver", "38sp", "ammo38", 6, 0.32f, 3f, 22f, 0.7f, 30f, 0.9f, false, 160,
+                new[] { ModSlot.Sight, ModSlot.Tactical }, 1f, 72f, false,
+                "A six-shot service revolver in .38 Special: a deputy's sidearm, a farmhouse's nightstand gun. Simple and sure, " +
+                "slow to reload.", 2, 1,
+                s => { s.Sound = SfxIds.GunRevolver; s.ReloadSound = SfxIds.ReloadRevolver; s.Hold = new GunHold(0.141f, 0.371f, 0.141f, 0.371f); }),
+                new Color(0.16f, 0.16f, 0.18f));
+            Tint(Gun(b, "m1911", "M1911 Pistol", "45acp", "ammo45", 7, 0.26f, 1.7f, 24f, 0.65f, 34f, 1.1f, false, 140,
+                new[] { ModSlot.Sight, ModSlot.Muzzle, ModSlot.Tactical, ModSlot.Magazine }, 1.15f, 66f, false,
+                "Government-model .45, older than anyone who carried it. Seven fat rounds that hit hard and drop fast.", 2, 1,
+                s => { s.Sound = SfxIds.GunPistol45; s.ReloadSound = SfxIds.ReloadPistol; s.Hold = new GunHold(0.167f, 0.443f, 0.167f, 0.443f); }),
+                new Color(0.18f, 0.18f, 0.2f));
+            Tint(Gun(b, "rifle22", ".22 Rifle", "22lr", "ammo22", 10, 0.18f, 1.8f, 45f, 0.45f, 16f, 2.3f, true, 150,
+                new[] { ModSlot.Sight, ModSlot.Stock, ModSlot.Barrel, ModSlot.Magazine }, 0.35f, 68f, false,
+                "A semi-automatic .22 with a ten-round rotary magazine: every farm kid's first gun. Quiet enough not to bring the " +
+                "street down on you; the dead need a head shot.", 4, 1,
+                s => { s.Sound = SfxIds.GunRimfire; s.ReloadSound = SfxIds.ReloadRifle; s.Hold = new GunHold(0.297f, 0.496f, 0.58f, 0.617f); }),
+                new Color(0.6f, 0.43f, 0.26f));
+            Tint(Gun(b, "riotgun", "Police Pump Shotgun", "12g", "shotgunshells", 7, 0.75f, 3.2f, 14f, 7.5f, 42f, 3.4f, true, 180,
+                new[] { ModSlot.Sight, ModSlot.Stock, ModSlot.Barrel, ModSlot.Tactical }, 1.7f, 48f, false,
+                "The squad car's 12 gauge: a short barrel, an extended tube and a matte finish that won't shine at night. Seven " +
+                "shells of buckshot, and a lot of noise.", 4, 2,
+                s => { s.Sound = SfxIds.GunRiot; s.ReloadSound = SfxIds.ReloadShotgun; s.Hold = new GunHold(0.268f, 0.477f, 0.578f, 0.584f); }),
+                new Color(0.12f, 0.12f, 0.13f));
+            Tint(Gun(b, "rifle3006", ".30-06 Hunting Rifle", "3006", "ammo3006", 4, 1.15f, 3.4f, 140f, 0.22f, 58f, 3.6f, true, 180,
+                new[] { ModSlot.Sight, ModSlot.Stock, ModSlot.Barrel, ModSlot.Muzzle }, 1.7f, 34f, false,
+                "A walnut-stocked bolt action in .30-06, sighted in every November for deer season. Four in the magazine, and " +
+                "each one ends an argument.", 5, 1,
+                s => { s.Sound = SfxIds.GunHunting; s.ReloadSound = SfxIds.ReloadHunting; s.AdsZoom = 1.2f; s.Hold = new GunHold(0.277f, 0.315f, 0.515f, 0.65f); }),
+                new Color(0.42f, 0.25f, 0.13f));
+            Tint(Gun(b, "lever3030", ".30-30 Lever-Action", "3030", "ammo3030", 6, 0.7f, 3.8f, 100f, 0.35f, 52f, 3f, true, 170,
+                new[] { ModSlot.Sight, ModSlot.Barrel }, 1.35f, 52f, false,
+                "Brush gun of the Kentucky woods: a lever-action .30-30 with a six-round tube. Quick to work, slow to load.", 4, 1,
+                s => { s.Sound = SfxIds.GunLever; s.ReloadSound = SfxIds.ReloadLever; s.Hold = new GunHold(0.243f, 0.568f, 0.565f, 0.671f); }),
+                new Color(0.4f, 0.24f, 0.12f));
+            Tint(Gun(b, "ar15", "AR-15 Rifle", "556", "ammo556", 30, 0.13f, 2.4f, 85f, 0.6f, 46f, 3.2f, true, 150,
+                new[] { ModSlot.Sight, ModSlot.Muzzle, ModSlot.Stock, ModSlot.Grip, ModSlot.Magazine, ModSlot.Tactical, ModSlot.Barrel },
+                0.85f, 55f, false,
+                "A civilian AR-15 sporter: semi-automatic only, light and soft-shooting, with the carry-handle sights it left the " +
+                "factory with.", 4, 2,
+                s => { s.Sound = SfxIds.GunAr15; s.ReloadSound = SfxIds.ReloadRifle; s.Hold = new GunHold(0.293f, 0.496f, 0.55f, 0.72f); }),
+                new Color(0.11f, 0.11f, 0.12f));
+        }
+
+        private static void RegisterZoneGuns(ContentBuilder b)
+        {
+            Tint(Gun(b, "svd", "SVD Marksman Rifle", "762r", "ammo762r_lps", 10, 0.38f, 2.8f, 150f, 0.3f, 58f, 4.3f, true, 170,
+                new[] { ModSlot.Sight, ModSlot.Muzzle, ModSlot.Stock, ModSlot.Magazine }, 1.45f, 32f, false,
+                "The Soviet marksman's rifle: ten rounds of 7.62x54R, semi-automatic, out to as far as you can see. The Zone's " +
+                "quiet men carry them.", 5, 2,
+                s => { s.Sound = SfxIds.GunDmr; s.ReloadSound = SfxIds.ReloadRifle; s.DamageMult = 1.05f; s.AdsZoom = 1.25f; s.Hold = new GunHold(0.273f, 0.441f, 0.449f, 0.74f); }),
+                new Color(0.4f, 0.2f, 0.11f));
+            Tint(Gun(b, "pkm", "PKM Machine Gun", "762r", "ammo762r_lps", 100, 0.092f, 6.5f, 120f, 1.2f, 62f, 7.5f, true, 240,
+                new[] { ModSlot.Sight, ModSlot.Tactical }, 1.9f, 14f, true,
+                "A belt-fed machine gun with a hundred-round box. Heavy, loud and hungry, and nothing in the Zone walks through it.", 5, 2,
+                s => { s.Sound = SfxIds.GunMachineGun; s.ReloadSound = SfxIds.ReloadBelt; s.Hold = new GunHold(0.351f, 0.37f, 0.46f, 0.586f); }),
+                new Color(0.11f, 0.11f, 0.12f));
+            Tint(Gun(b, "aks74u", "AKS-74U Carbine", "545", "ammo545_ps", 30, 0.085f, 2.4f, 50f, 1.1f, 50f, 2.7f, true, 130,
+                new[] { ModSlot.Sight, ModSlot.Muzzle, ModSlot.Stock, ModSlot.Grip, ModSlot.Magazine, ModSlot.Tactical }, 1.35f, 58f, true,
+                "The short AK the tank crews and the special police carried: a 5.45 carbine with a folding stock. A fireball of a " +
+                "muzzle blast, and handy in a stairwell.", 3, 2,
+                s => { s.Sound = SfxIds.GunCarbine; s.ReloadSound = SfxIds.ReloadRifle; s.DamageMult = 0.94f; s.Hold = new GunHold(0.382f, 0.557f, 0.705f, 0.746f); }),
+                new Color(0.33f, 0.15f, 0.12f));
+        }
+
+        // The colour a gun shows as when its model can't be drawn (the tinted fallback, the inventory's swatch).
+        private static void Tint(ItemDef def, Color c)
+        {
+            if (def != null) def.Tint = c;
         }
         #endregion
 

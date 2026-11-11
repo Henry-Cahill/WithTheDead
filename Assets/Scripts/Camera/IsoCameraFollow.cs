@@ -134,6 +134,9 @@ namespace CloneZ
         /// <summary>How far the isometric camera currently sits from the survivor's chest along its view.</summary>
         public float IsoDistance => IsoCameraDistance(_isoSize);
 
+        /// <summary>The wall cutaway this camera runs (the smoke test reads what it hides and remembers).</summary>
+        internal IsoCutaway Cutaway => _cutaway;
+
         private Camera _cam;
         private IsoCutaway _cutaway;
         private ViewCrosshair _crosshair;

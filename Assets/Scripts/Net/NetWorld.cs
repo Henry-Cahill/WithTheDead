@@ -155,7 +155,14 @@ namespace CloneZ
                         if (cr != null && cr.Attacking) flags |= 16;
                         if (a.Surrendered) flags |= 32;
                         if (a.Cloaked) flags |= 64;
-                        o.U(a.NetId).V(a.transform.position).By((byte)(a.transform.eulerAngles.y / 360f * 255f)).By(flags);
+                        if (Aflame.IsOn(a)) flags |= 128;
+                        // The flags are full: what the dead do on the ground goes in a byte of its own.
+                        byte ground = 0;
+                        if (a.Downed) ground |= 1;
+                        if (z != null && z.IsGettingUp) ground |= 2;
+                        if (z != null && z.Type == ZombieType.Crawler) ground |= 4;
+                        if (z != null && z.FellForward) ground |= 8;
+                        o.U(a.NetId).V(a.transform.position).By((byte)(a.transform.eulerAngles.y / 360f * 255f)).By(flags).By(ground);
                     }
                     // Send the AI snapshot to the client.
                     NetSession.SendTo(client, "cz.ai", o, NetworkDelivery.UnreliableSequenced);
@@ -204,7 +211,8 @@ namespace CloneZ
                 Vector3 p = m.V();
                 float yaw = m.By() / 255f * 360f;
                 byte flags = m.By();
-                if (s_Agents.TryGetValue(id, out NetAgentProxy a) && a != null) a.Push(p, yaw, flags);
+                byte ground = m.By();
+                if (s_Agents.TryGetValue(id, out NetAgentProxy a) && a != null) a.Push(p, yaw, flags, ground);
             }
         }
         #endregion
@@ -420,6 +428,10 @@ namespace CloneZ
         private CreatureBody _beast;
         private Vector3 _prev;
         private byte _flags;
+        private byte _ground;
+        private bool _groundSeen;
+        private CapsuleCollider _standing;
+        private BoxCollider _lying;
 
                 /// <summary>Spawn a proxy GameObject representing a networked entity and initialise its visual representation.</summary>
         public static NetAgentProxy Spawn(uint id, byte code, ActorKind kind, string sub, string faction, string name, int seed)
@@ -476,7 +488,7 @@ namespace CloneZ
         }
 
                 /// <summary>Update the proxy's interpolation target position, rotation, and state flags received from the server.</summary>
-        public void Push(Vector3 pos, float yaw, byte flags)
+        public void Push(Vector3 pos, float yaw, byte flags, byte ground = 0)
         {
             // Adjust the interpolation interval based on time since last update, clamped to avoid extreme values.
             if (_last > 0f) _interval = Mathf.Clamp(Time.time - _last, 0.05f, 0.3f);
@@ -492,15 +504,62 @@ namespace CloneZ
             // Apply state flags to the underlying actor.
             Actor.Surrendered = (flags & 32) != 0;
             Actor.Cloaked = (flags & 64) != 0;
+            if ((flags & 128) != 0) Aflame.Show(Actor, 0.5f);   // alight on the server: shown until the snapshots stop saying so
             bool dead = (flags & 1) != 0;
             if (dead && !IsDead)
             {
                 IsDead = true;
                 if (_anim != null) _anim.Die(-transform.forward);
                 if (_beast != null) _beast.Die(-transform.forward);
-                var col = GetComponent<Collider>();
-                if (col != null) col.enabled = false;
+                foreach (Collider col in GetComponents<Collider>()) col.enabled = false;
             }
+            ShowGround(ground);
+        }
+
+        // One of the dead on the ground on the server is on the ground here too, so this runner can stomp it: it goes over the
+        // way it went there (ground bit 8: forward) and gets up as it does there, and its hit box lies along it as the server's
+        // does (see ZombieAI); a crawler (bit 4) crawls, its box along the ground too. A body first seen on the ground is shown
+        // lying there, not falling.
+        private void ShowGround(byte ground)
+        {
+            byte was = _ground;
+            bool first = !_groundSeen;
+            _ground = ground;
+            _groundSeen = true;
+            Actor.Downed = !IsDead && (ground & 1) != 0;
+            if (_anim == null || IsDead) return;
+            bool crawler = (ground & 4) != 0;
+            bool down = (ground & 1) != 0 && !crawler, rising = (ground & 2) != 0;
+            LieAlong(crawler ? HumanoidAnimator.CrawlShift + 0.9f : down ? ((ground & 8) != 0 ? 0.85f : -0.85f) : 0f, crawler || down);
+            if (crawler)
+            {
+                _anim.Gait = HumanoidGait.Crawler;
+                return;
+            }
+            bool wasDown = (was & 1) != 0, wasRising = (was & 2) != 0;
+            Vector3 blow = ((ground & 8) != 0 ? 1f : -1f) * transform.forward;
+            if (down && !_anim.IsDown) _anim.KnockDown(blow, first || rising);
+            else if (down && !rising && wasRising) _anim.KnockDown(blow);   // knocked back down as it got up
+            if (down && rising && (!wasRising || !wasDown)) _anim.GetUp(CloneZConfig.ZombieGetUpSeconds);
+            else if (!down && _anim.IsDown) _anim.GetUp(0.25f);   // up on the server already (the getting up was missed)
+        }
+
+        // The hit box: the standing capsule, or a box a metre tall along the ground centred `along` metres ahead of the feet.
+        private void LieAlong(float along, bool lying)
+        {
+            if (_standing == null) _standing = GetComponent<CapsuleCollider>();
+            if (_standing == null) return;
+            if (lying && _lying == null)
+            {
+                _lying = gameObject.AddComponent<BoxCollider>();
+                _lying.size = new Vector3(0.6f, 1f, 1.9f);
+            }
+            if (_lying != null)
+            {
+                if (lying) _lying.center = new Vector3(0f, 0.5f, along);
+                _lying.enabled = lying;
+            }
+            _standing.enabled = !lying;
         }
 
         private void Update()

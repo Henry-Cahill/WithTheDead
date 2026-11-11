@@ -14,11 +14,11 @@ is: Bug, Gap (designed or expected but missing), Content, Polish, Perf, Save, Co
 | Category | Items | P1 | P2 | P3 | Night Shift | Headline |
 |---|---:|---:|---:|---:|---:|---|
 | [Quests](Quests.md) | 14 | 4 | 4 | 5 | 1 | The Lodestar's wish is never made, and the first quest points away from where raids start |
-| [Rendering](Rendering.md) | 12 | 2 | 6 | 4 | 0 | Room-light shadows overflow the atlas; 2,840 items still wait for meshes |
+| [Rendering](Rendering.md) | 12 | 2 | 6 | 4 | 0 | 2,840 items still wait for meshes; the room-light shadows are on a budget now |
 | [Survival](Survival.md) | 15 | 3 | 4 | 5 | 3 | Cooking is instant, bags don't lighten loads, and the wave save forgets diseases |
 | [UI](UI.md) | 18 | 6 | 4 | 5 | 3 | No display settings, UI scale, gamepad, rebinding or hotbar; the theme rework is half-done |
 | [Vehicles](Vehicles.md) | 18 | 3 | 6 | 5 | 4 | The map's cars can't be driven, drivable cars have no trunk, and pumps don't pump |
-| [Weapons](Weapons.md) | 14 | 3 | 7 | 3 | 1 | Six guns, invisible attachments, and no molotovs or noise lures |
+| [Weapons](Weapons.md) | 15 | 3 | 8 | 3 | 1 | Sixteen guns, with period ones in the right buildings and at every trader tier; molotovs, pipe bombs and noise lures to throw; tracer and incendiary rounds that work; melee weapons that each handle their own way |
 | [World](World.md) | 15 | 3 | 8 | 4 | 0 | NaN furniture, a physics workaround, streaming hitches, and fixture state across streaming and co-op |
 | [Zombies](Zombies.md) | 14 | 5 | 5 | 4 | 0 | Two sandbox settings do nothing; no real hordes, and the dead ignore windows and fences |
 | [Zone](Zone.md) | 16 | 3 | 5 | 4 | 4 | Kentucky is a map but not yet a Zone; upkeep vs income is untested |
@@ -39,7 +39,7 @@ The items with the most value for the least risk, across categories:
 5. **Make cooking take time** and **give worn bags their weight reduction**: [Survival](Survival.md). P1, S each.
 6. **Fix the fresh-clone compile failure**: [below](#cross-cutting). P1, S.
 7. **Find what makes furniture with NaN vertices**: [World](World.md). P1, M.
-8. **Put the room lights' shadows on a budget**: [Rendering](Rendering.md). P1, M.
+8. **Put the room lights' shadows on a budget**: [Rendering](Rendering.md). P1, M. Done 2026-11-06.
 9. **Display and graphics settings**, then **finish the theme rework**: [UI](UI.md). P1, M each.
 10. **Finish the Lodestar**: [Quests](Quests.md). P1, L. It's the story's payoff.
 11. **Make Kentucky a Zone** and **check the upkeep against income**: [Zone](Zone.md). P1, L and M.

@@ -15,7 +15,7 @@ namespace CloneZ
     /// never on the individual item, so one description per item type serves every instance of it and
     /// is cached here for the life of the session.
     /// </summary>
-    public static class ItemModels
+    public static partial class ItemModels
     {
         private static readonly Dictionary<string, ItemModelDesc> s_Cache = new Dictionary<string, ItemModelDesc>(128);
 
@@ -136,6 +136,26 @@ namespace CloneZ
                     return BuildPistol(def, parent, out baseHeight);
                 case "shotgun":
                     return BuildShotgun(def, parent, out baseHeight);
+                case "rev38":
+                    return BuildRevolver38(def, parent, out baseHeight);
+                case "m1911":
+                    return BuildM1911(def, parent, out baseHeight);
+                case "rifle22":
+                    return BuildRifle22(def, parent, out baseHeight);
+                case "riotgun":
+                    return BuildRiotShotgun(def, parent, out baseHeight);
+                case "rifle3006":
+                    return BuildHuntingRifle(def, parent, out baseHeight);
+                case "lever3030":
+                    return BuildLeverAction(def, parent, out baseHeight);
+                case "ar15":
+                    return BuildAr15(def, parent, out baseHeight);
+                case "svd":
+                    return BuildSvd(def, parent, out baseHeight);
+                case "pkm":
+                    return BuildPkm(def, parent, out baseHeight);
+                case "aks74u":
+                    return BuildAks74u(def, parent, out baseHeight);
                 case "ammo9mm":
                     return BuildPistolAmmo(def, parent, out baseHeight);
                 case "shotgunshells":
@@ -254,6 +274,16 @@ namespace CloneZ
                     return BuildDressSmallGarbageStrapless(def, parent, out baseHeight);
                 case "Dress_SmallTarpStrapless":
                     return BuildDressSmallTarpStrapless(def, parent, out baseHeight);
+                case "molotov":
+                    return BuildMolotov(def, parent, out baseHeight);
+                case "pipebomb":
+                    return BuildPipeBomb(def, parent, out baseHeight);
+                case "firecrackers":
+                    return BuildFirecrackers(def, parent, out baseHeight);
+                case "alarmclock":
+                    return BuildAlarmClock(def, parent, out baseHeight);
+                case "radio_timer":
+                    return BuildTimerRadio(def, parent, out baseHeight);
                 default:
                     return null;
             }

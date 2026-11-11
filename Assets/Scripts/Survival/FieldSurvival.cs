@@ -482,6 +482,7 @@ if (Time.time > _until)
                 if (!r.Field) continue;
                 var sb = new System.Text.StringBuilder();
                 foreach ((string id, int n) in r.Inputs) sb.Append(n).Append("x ").Append(Trading.NameOf(id)).Append("  ");
+                if (r.FuelLitres > 0) sb.Append(Hideout.FuelNeeded(r)).Append("  ");
                 RectTransform row = HubUI.Row(craft, 52f, new Color(1f, 1f, 1f, 0.04f));
                 HubUI.Cell(row, Hideout.Describe(r) + "\n<size=13><color=#9aa0a8>" + sb + "</color></size>", 260f, 15);
                 Recipe pick = r;

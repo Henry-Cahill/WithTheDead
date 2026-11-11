@@ -133,6 +133,7 @@ namespace CloneZ
 
         private PlayerAvatar _avatar;
         private PlayerGearVisuals _gearVisuals;
+        private WeaponTactical _tactical;
         private PlayerGear _playerGear;
         private TimeOfDay _timeOfDay;
         private WeatherSystem _weather;
@@ -169,6 +170,7 @@ namespace CloneZ
             Controller = player != null ? player.GetComponent<PlayerController>() : null;
             _avatar = player != null ? player.GetComponent<PlayerAvatar>() : null;
             _gearVisuals = player != null ? player.GetComponent<PlayerGearVisuals>() : null;
+            _tactical = player != null ? player.GetComponent<WeaponTactical>() : null;
 CacheBones();
             _urpAsset = UniversalRenderPipeline.asset;
 
@@ -189,6 +191,8 @@ CacheBones();
             data.renderingLayers = ~VisionRig.SurvivorRenderingLayerMask;
             if (Application.isPlaying)
                 data.additionalLightsShadowResolutionTier = UniversalAdditionalLightData.AdditionalLightsShadowResolutionTierHigh;
+            // The shadow budget keeps the sight cone's shadows (and its atlas space) before any lamp's.
+            ShadowedLight.Add(_sight, pinned: true);
             ApplySightRange(SightRange);
 
             _periphery = NewLight("PeripheryLight", LightType.Spot);
@@ -264,14 +268,15 @@ CacheBones();
             float dt = Time.deltaTime;
             // Cached camera set in Awake; no per-frame lookup needed.
             if (HeadBone == null) CacheBones();
-            if (_gearVisuals == null)
+            if (_gearVisuals == null || _tactical == null)
             {
-                // The gear visuals are added by PlayerGear after the rig is installed; look now and then.
+                // The gear visuals and the gun's light are added by PlayerGear after the rig is installed; look now and then.
                 _gearLookup -= dt;
                 if (_gearLookup <= 0f)
                 {
                     _gearLookup = 1f;
-                    _gearVisuals = PlayerTransform.GetComponent<PlayerGearVisuals>();
+                    if (_gearVisuals == null) _gearVisuals = PlayerTransform.GetComponent<PlayerGearVisuals>();
+                    if (_tactical == null) _tactical = PlayerTransform.GetComponent<WeaponTactical>();
                 }
             }
 
@@ -407,7 +412,7 @@ CacheBones();
         {
             UniversalRenderPipelineAsset urp = _urpAsset;
             bool layers = urp != null && urp.useRenderingLayers;
-            bool hideShadows = !layers && (_sight.enabled || (Flashlight != null && Flashlight.IsOn));
+            bool hideShadows = !layers && (_sight.enabled || (Flashlight != null && Flashlight.IsOn) || (_tactical != null && _tactical.LightLit));
             _bodyRescan -= dt;
             int hierarchy = PlayerTransform.hierarchyCount;
             // Rescan now and then, and at once when something new (a drawn weapon, a backpack) joins the body.
@@ -518,6 +523,9 @@ CacheBones();
             SightDistance = Mathf.Lerp(daySight, nightSight, Night01);
 
             FlashlightFX beam = Flashlight;
+            // One beam counts for who is seen in it: the gun's light while it shines (it's where the survivor aims), else the torch.
+            WeaponTactical gun = _tactical;
+            bool rail = gun != null && gun.LightLit;
             _lastSight = new ZombieVisibility.Sight
             {
                 Eye = EyePosition,
@@ -526,11 +534,11 @@ CacheBones();
                 AwarenessRadius = AwarenessRadius,
                 SightDistance = SightDistance,
                 LitSightDistance = Mathf.Max(SightDistance, Mathf.Min(LitSightDistance, daySight)),
-                BeamOn = beam != null && beam.IsLit,
-                BeamOrigin = beam != null ? beam.Origin : EyePosition,
-                BeamDirection = beam != null ? beam.Direction : Facing,
-                BeamRange = FlashlightFX.Range,
-                BeamCosHalfAngle = beam != null ? beam.CosHalfAngle : 1f,
+                BeamOn = rail || beam != null && beam.IsLit,
+                BeamOrigin = rail ? gun.LightOrigin : beam != null ? beam.Origin : EyePosition,
+                BeamDirection = rail ? gun.LightDirection : beam != null ? beam.Direction : Facing,
+                BeamRange = rail ? WeaponTactical.LightRange : FlashlightFX.Range,
+                BeamCosHalfAngle = rail ? gun.LightCosHalfAngle : beam != null ? beam.CosHalfAngle : 1f,
             };
             _hasSight = true;
             ZombieVisibility.TickAll(in _lastSight, dt);

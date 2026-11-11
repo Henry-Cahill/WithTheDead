@@ -88,6 +88,7 @@ namespace CloneZ
             if (_combat != null)
             {
                 _combat.OnSwing += StandUpStartled;
+                _combat.OnStomp += StandUpStartled;
                 _combat.OnShove += StandUpStartled;
             }
         }
@@ -100,11 +101,12 @@ namespace CloneZ
             if (_combat != null)
             {
                 _combat.OnSwing -= StandUpStartled;
+                _combat.OnStomp -= StandUpStartled;
                 _combat.OnShove -= StandUpStartled;
             }
         }
 
-        // A blow, a swing or a shove: nobody stays sitting (or lying back) through that.
+        // A blow, a swing, a stomp or a shove: nobody stays sitting (or lying back) through that.
         private void StandUpStartled() => GetUpFromInput();
 
         /// <summary>True while the survivor sits on <paramref name="seat"/>.</summary>

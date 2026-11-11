@@ -50,6 +50,36 @@ namespace CloneZ
         public const float CritChanceFromBehind = 0.30f;           // ..._FROM_BEHIND (30%)
         public const float MeleeEnduranceCost = 0.03f;             // per swing (derived from ENDURANCE_LOSS_*)
 
+        // ---- Melee feel (see MeleeStats): wind-up, bodies a swing carries through, stagger and knockdown ----
+        public const float MeleeCarryThrough = 0.6f;     // share of a blow each further body in the swing takes (1, .6, .36)
+        public const float MeleeSkillSpeedPerLevel = 0.025f; // the weapon's skill quickens wind-up and recovery (+25% at 10)
+        public const float MeleeExhaustedSlowdown = 1.3f;    // tired arms: wind-up and recovery take this much longer
+        public const float MeleeDownedCritBonus = 0.25f; // a blow brought down on one of the dead on the ground finds its head (in reach)
+        public const float KnockdownPerStrength = 0.02f; // each Strength level adds this to a blow's or a shove's knockdown chance
+        public const float KnockdownReelingBonus = 0.25f;// a body already staggering goes over more easily
+        public const float KnockdownFromBehindBonus = 0.25f;
+        public const float MeleeStaggerBase = 0.3f;      // seconds a staggering blow holds one of the dead ..
+        public const float MeleeStaggerPerKnockback = 0.07f; // .. plus this per point of the weapon's knockback
+
+        // ---- Shove and stomp (PZ: a shove topples the dead, a stomp finishes them on the ground) ----
+        public const float ShoveKnockdownChance = 0.3f;  // a shove puts one of the dead down (more from behind or reeling)
+        public const float ShoveRecovery = 0.3f;         // after a shove, before a swing or a stomp
+        public const float StompDamage = 1.0f;           // raw, on the head of one of the dead on the ground
+        public const float StompBodyShare = 0.5f;        // .. and the share of it a stomp off the head does (its head out of reach)
+        public const float StompBootsMult = 1.25f;       // something on the feet puts more into it
+        public const float StompStrengthPerLevel = 0.05f;
+        public const float StompReach = 1.6f;            // the dead's own reach, so a crawler can be stomped before it bites
+        public const float StompArc = 100f;
+        public const float StompWindUp = 0.22f;
+        public const float StompRecovery = 0.38f;
+        public const float StompEnduranceCost = 0.02f;
+
+        // ---- The dead on the ground (knocked down by a blow or a shove) ----
+        public const float ZombieKnockdownMin = 2.2f;    // seconds lying there before it starts to get up ..
+        public const float ZombieKnockdownMax = 3.4f;
+        public const float ZombieGetUpSeconds = 0.9f;    // .. and getting up (still on the ground for a stomp)
+        public const float ZombiePinSeconds = 0.6f;      // a stomp keeps it down at least this much longer
+
         // ---- Firearms (PZ firearm to-hit: min 5, maxStart 95, max 100; move -5, run -15, sprint -25) ----
         // Aim "quality" (0..1) is derived from those PZ percentages, then mapped to a
         // spread cone: perfect aim = a tight cone, poor aim (running) = a wide one.
@@ -71,13 +101,16 @@ namespace CloneZ
         public const float FirearmJamConditionThreshold = 0.5f;  // guns below half condition can jam
         public const float FirearmJamChanceAtBroken = 0.35f;     // jam chance as condition nears zero
 
-        // Bare hands \u2014 the melee profile a survivor falls back to when a weapon breaks (mirrors
-        // the serialized defaults on PlayerCombat).
-        public const float BareHandDamage = 0.9f;
-        public const float BareHandRange = 2.4f;
-        public const float BareHandArc = 90f;
-        public const float BareHandCooldown = 0.55f;
-        public const float BareHandKnockback = 2.5f;
+        // Bare hands \u2014 the melee profile a survivor falls back to when a weapon breaks (MeleeStats.BareHands):
+        // a quick, short punch at one body, weaker than any weapon, that can rock one of the dead back.
+        public const float BareHandDamage = 0.6f;
+        public const float BareHandRange = 1.5f;
+        public const float BareHandArc = 70f;
+        public const float BareHandCooldown = 0.45f;   // press to press: the wind-up and the recovery
+        public const float BareHandWindUpShare = 0.27f;
+        public const float BareHandKnockback = 2f;
+        public const float BareHandStagger = 0.35f;
+        public const float BareHandKnockdown = 0.04f;
 
         // ---- Item repair (PZ diminishing repair: each patch restores less and caps lower) ----
         // A repair consumes one material (duct tape for gear, thread + a needle for clothing) and
@@ -110,6 +143,7 @@ namespace CloneZ
         public const float ZombieVisionAngle = 160f;   // degrees, full FOV
         public const float ZombieHearingRadius = 6f;   // added to a noise's own radius
         public const float ZombieForgetTime = 8f;      // seconds to give up after losing the target
+        public const float ZombieLureAfter = 2f;       // a lure (an alarm clock ringing) pulls one off a chase it hasn't seen its prey in this long
 
         // ---- Zombie attack (PZ: lunge when distToTarget >= 0.8; bite 85% / laceration 65%) ----
         public const float ZombieAttackRange = 1.6f;
@@ -563,5 +597,14 @@ namespace CloneZ
         // Built-in "Ignore Raycast" layer index. Zombies live here so line-of-sight
         // and aim raycasts pass through them, while obstacles (Default) still block.
         public const int IgnoreRaycastLayer = 2;
+
+        // "Sight Occluder" layer index: the solid world (walls, shells and floors, doors, furniture, cars, props,
+        // the ground), moved off Default by SightOccluders as the world is built. The survivor's line of sight is
+        // cast against this layer alone; every ray that used to test Default tests WorldMask, which includes it.
+        public const int SightOccluderLayer = 8;
+        /// <summary>What hides the dead from the survivor: the Sight Occluder layer alone.</summary>
+        public const int SightOccluderMask = 1 << SightOccluderLayer;
+        /// <summary>The solid world as rays that once tested Default alone see it: Default and the Sight Occluder layer.</summary>
+        public const int WorldMask = (1 << 0) | SightOccluderMask;
     }
 }

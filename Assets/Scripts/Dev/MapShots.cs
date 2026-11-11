@@ -1904,9 +1904,10 @@ namespace CloneZ
                     if (r != null) r.shadowCastingMode = show ? ShadowCastingMode.On : ShadowCastingMode.ShadowsOnly;
             }
 
-            // The lights as the game would have them around the survivor: RoomLight's budget (fittings past 45 m off, the four
-            // nearest that want shadows get them) and the street lamps' 64 m cull. No survivor (the night overview): all on,
-            // none shadowed.
+            // The lights as the game would have them around the survivor: RoomLight's cull (fittings past 45 m off), the shadow
+            // budget at its default quality (the nearest fittings that want shadows get them, as many as Medium allows; the
+            // game also ranks unseen ones lower and fits them to the atlas) and the street lamps' 64 m cull. No survivor (the
+            // night overview): all on, none shadowed.
             private void Budget(Vector3? survivor)
             {
                 foreach (MapLight m in _lights)
@@ -1933,7 +1934,8 @@ namespace CloneZ
                     if (m.Room != null && m.Room.CastShadows && m.Room.On) nearest.Add(new KeyValuePair<float, MapLight>(d, m));
                 }
                 nearest.Sort((a, b) => a.Key.CompareTo(b.Key));
-                for (int i = 0; i < nearest.Count && i < RoomLight.MaxShadowedLights; i++) nearest[i].Value.Light.shadows = LightShadows.Soft;
+                int lamps = ShadowBudget.LampsFor(ShadowQualityLevel.Medium);
+                for (int i = 0; i < nearest.Count && i < lamps; i++) nearest[i].Value.Light.shadows = LightShadows.Soft;
             }
 
             private Texture2D Capture(int w, int h)

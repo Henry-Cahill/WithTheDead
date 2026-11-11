@@ -225,6 +225,8 @@ namespace CloneZ
             public readonly List<Rect> Keep = new List<Rect>(6);
             public readonly List<Vector2>[] Gaps = { new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2) };
             public readonly List<Vector2>[] Panes = { new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2) };
+            /// <summary>The partitions on each wall (from..to along it): the rest of a wall is the outside wall's.</summary>
+            public readonly List<Vector2>[] Partitions = { new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2), new List<Vector2>(2) };
             /// <summary>The light switches on each wall (from..to along it): tall pieces keep off them as off the windows.</summary>
             public readonly List<Vector2>[] Plates = { new List<Vector2>(1), new List<Vector2>(1), new List<Vector2>(1), new List<Vector2>(1) };
             public readonly bool[] Inside = new bool[4];
@@ -495,6 +497,7 @@ namespace CloneZ
                     continue;
                 }
                 walled[side] += w.Length;
+                c.Partitions[side].Add(new Vector2(w.A, w.B));
                 if (!w.HasDoor) continue;
                 float a = w.DoorPos - w.DoorWidth * 0.5f, b = w.DoorPos + w.DoorWidth * 0.5f;
                 c.Gaps[side].Add(new Vector2(a - 0.12f, b + 0.12f));
@@ -711,6 +714,25 @@ if (c.Inner.width >= 0.8f && c.Inner.height >= 0.8f) switch (c.P.Role)
                     if (!c.AnyWall(sides, 0.8f, 0.6f, 1.9f, pref, out p, out _)) return false;
                     b.GunSafe(c.R, p, ContainerType.GunLocker, "Gun locker");
                     return true;
+                case ContainerType.PoliceLocker:
+                    if (!c.AnyWall(sides, 0.8f, 0.6f, 1.9f, pref, out p, out _)) return false;
+                    b.GunSafe(c.R, p, ContainerType.PoliceLocker, "Weapons locker");
+                    return true;
+                case ContainerType.GunCabinet:
+                    if (!c.AnyWall(sides, 0.9f, 0.45f, 1.9f, pref, out p, out _)) return false;
+                    b.GunCabinet(c.R, p, ContainerType.GunCabinet, "Gun cabinet");
+                    return true;
+                case ContainerType.GunCounter:
+                    // On a gun shop's floor, a glass counter of handguns; in its back rooms, the safe the long guns sleep in.
+                    if (c.P.Role != RoomRole.Sales)
+                    {
+                        if (!c.AnyWall(sides, 0.8f, 0.6f, 1.9f, pref, out p, out _)) return false;
+                        b.GunSafe(c.R, p, ContainerType.GunCounter, "Gun safe");
+                        return true;
+                    }
+                    if (!c.AnyWall(sides, 1.6f, 0.7f, 1.0f, pref, out p, out _)) return false;
+                    b.GunCounter(c.R, p, ContainerType.GunCounter, "Gun counter");
+                    return true;
                 case ContainerType.MedCabinet:
                     if (!c.AnyWall(sides, 0.9f, 0.42f, 1.8f, pref, out p, out _)) return false;
                     b.MedicineCabinet(c.R, p, ContainerType.MedCabinet, "Medicine cabinet");
@@ -788,6 +810,15 @@ if (c.Inner.width >= 0.8f && c.Inner.height >= 0.8f) switch (c.P.Role)
                     b.Furnish(c.R, p, new Vector3(1.0f, 1.95f, 0.6f), true, (m, r) => FurnitureBuilder.Wardrobe(m, r, wood), "Wardrobe");
                     return true;
                 }
+                case ContainerType.GunCabinet:
+                    if (!c.AnyWall(sides, 0.9f, 0.45f, 1.9f, pref, out p, out _)) return false;
+                    b.Furnish(c.R, p, new Vector3(0.9f, 1.9f, 0.45f), true,
+                        (m, r) => FurnitureBuilder.GunCabinetDoor(m, FurnitureBuilder.GunCabinetBody(m, r)), "Gun cabinet");
+                    return true;
+                case ContainerType.GunCounter:
+                    if (c.P.Role != RoomRole.Sales || !c.AnyWall(sides, 1.6f, 0.7f, 1.0f, pref, out p, out _)) return false;
+                    b.Furnish(c.R, p, new Vector3(1.6f, 1.0f, 0.7f), true, (m, r) => FurnitureBuilder.GunCounterBody(m, r), "Gun counter");
+                    return true;
                 default:
                     return false;
             }
@@ -801,7 +832,7 @@ if (c.Inner.width >= 0.8f && c.Inner.height >= 0.8f) switch (c.P.Role)
             for (int i = 0; i < count; i++)
             {
                 ContainerType? t = c.NextLoot();
-                if (t == null)             // Do not return here – allow the caller to place another decor piece
+                if (t == null) return;   // the room's pool holds nothing
                 LootPiece(c, t.Value, sides);
             }
         }
@@ -922,6 +953,10 @@ if (c.Inner.width >= 0.8f && c.Inner.height >= 0.8f) switch (c.P.Role)
                     float t = Mathf.Lerp(lo + 0.5f, hi - 0.5f, (float)c.Rng.NextDouble());
                     bool clear = true;
                     foreach (Vector2 g in c.Gaps[side]) if (t > g.x - 0.4f && t < g.y + 0.4f) clear = false;
+                    // On a partition itself: a wall that's mostly partition can run on along the outside wall, windows and all.
+                    bool partition = false;
+                    foreach (Vector2 p in c.Partitions[side]) if (t - 0.35f >= p.x && t + 0.35f <= p.y) partition = true;
+                    if (!partition) clear = false;
                     // Nothing tall in front of it.
                     Rect probe = c.Foot(side, t, 0.6f, 0.5f);
                     foreach (Rect r in c.Taken) if (r.Overlaps(probe) && Tall(c, r)) clear = false;

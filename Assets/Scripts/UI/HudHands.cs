@@ -158,12 +158,12 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Refreshes the flashlight slot (on/off glow and battery) based on gear state.</summary>
+        /// <summary>Refreshes the light slot (the flashlight, or the light on the gun in hand: on/off glow and battery).</summary>
         private void UpdateLight()
         {
             PlayerGear gear = _ctx.Gear;
-            bool has = gear != null && gear.HasFlashlight;
-            bool on = has && gear.FlashlightOn;
+            bool has = gear != null && gear.HasLight;
+            bool on = has && gear.LightOn;
             // Map presence+state to a small enum to avoid redundant UI updates when unchanged.
             int state = !has ? 0 : on ? 2 : 1;
             if (state != _lightState)
@@ -181,7 +181,7 @@ namespace CloneZ
             if (has)
             {
                 // Clamp charge in case of desync between gear state and HUD.
-                float c = Mathf.Clamp01(gear.FlashlightCharge01);
+                float c = Mathf.Clamp01(gear.LightCharge01);
                 _battFill.fillAmount = c;
                 _battFill.color = HudUI.Condition(c);
             }

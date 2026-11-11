@@ -113,6 +113,8 @@ namespace CloneZ
         {
             _family = "Weapons";
             RegisterWeapons();
+            _family = "Throwables";
+            RegisterThrowables();
             _family = "Footsteps";
             RegisterFootsteps();
             _family = "Foley";
@@ -130,6 +132,7 @@ namespace CloneZ
 
         // One per family file in Synth/Recipes (and Synth/Music); a family with no file simply registers nothing.
         partial void RegisterWeapons();
+        partial void RegisterThrowables();
         partial void RegisterFootsteps();
         partial void RegisterFoley();
         partial void RegisterCreatures();

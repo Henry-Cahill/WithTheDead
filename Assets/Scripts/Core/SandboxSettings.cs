@@ -149,10 +149,13 @@ public static SandboxSettings LoadFromDisk()
     /// <summary>The HUD style options available to the player.</summary>
     public enum HudMode { Full, Minimal, Diegetic, Hardcore }
 
+    /// <summary>How many lamps may cast shadows at once, and how sharp (see <see cref="ShadowBudget"/>).</summary>
+    public enum ShadowQualityLevel { Low, Medium, High }
+
     /// <summary>
     /// The player's own presentation and accessibility choices (tension 12's readability floor): brightness,
-    /// motion blur, lens distortion, camera shake, field of view, subtitles, the HUD style and audio. Stored in
-    /// PlayerPrefs, so they follow the machine rather than the profile.
+    /// motion blur, lens distortion, camera shake, field of view, subtitles, the HUD style, shadow quality and audio.
+    /// Stored in PlayerPrefs, so they follow the machine rather than the profile.
     /// </summary>
     [Serializable]
     public class GameSettings
@@ -166,6 +169,7 @@ public static SandboxSettings LoadFromDisk()
         public bool Subtitles = true;
         public HudMode Hud = HudMode.Full;
         public bool Crosshair = true;
+        public ShadowQualityLevel ShadowQuality = ShadowQualityLevel.Medium;   // lamps casting shadows: Low 2, Medium 4, High 8
         public float MasterVolume = 0.9f;
         public float VoiceVolume = 1f;
         public float MusicVolume = 0.65f;

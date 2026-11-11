@@ -191,8 +191,8 @@ namespace CloneZ
         private void UpdateGadgets()
         {
             PlayerGear gear = _ctx.Gear;
-            bool hasLight = gear != null && gear.HasFlashlight;
-            bool lightOn = hasLight && gear.FlashlightOn;
+            bool hasLight = gear != null && gear.HasLight;
+            bool lightOn = hasLight && gear.LightOn;
             int ls = !hasLight ? 0 : lightOn ? 2 : 1;
             if (ls != _lightState)
             {

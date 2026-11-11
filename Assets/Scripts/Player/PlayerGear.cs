@@ -7,16 +7,20 @@ namespace CloneZ
     /// <summary>
     /// The survivor's powered and protective gear: night-vision goggles worn in the Eyes slot (toggled
     /// with N, running their battery down), a flashlight carried in the pack (toggled with L — the
-    /// best-charged one is used), a gas mask worn in the Mask slot (burning filter inside a
+    /// best-charged one is used), the light or laser fitted to the gun in hand (L switches that instead
+    /// while the gun is held; the light runs its own battery down, kept on the gun), a gas mask worn in
+    /// the Mask slot (burning filter inside a
     /// <see cref="ToxicZone"/>; without one, or with the filter spent, the gas sickens and chokes) and the
     /// batteries / filters that top them up (<see cref="TryUseItem"/>, reached through
     /// <see cref="PlayerInventory.Use"/>).
     ///
     /// Charge lives on the items themselves — a worn piece's condition (<see cref="PlayerClothing.SetCondition"/>)
     /// or a carried stack's <see cref="ItemStack.Condition"/>, 0..MaxCondition — so it is saved, dropped
-    /// and looted with the item. This component keeps the precise charge as a float and writes the whole
+    /// and looted with the item; a fitted weapon light's lives on the gun (<see cref="ItemExtra.LightUsed"/>).
+    /// This component keeps the precise charge as a float and writes the whole
     /// number back only when it changes. It also adds <see cref="PlayerGearVisuals"/>, which draws the gear
-    /// on the body. The HUD and the night-vision / flashlight effects read the properties below.
+    /// on the body, and <see cref="WeaponTactical"/>, the gun's light and laser. The HUD and the night-vision /
+    /// flashlight effects read the properties below.
     /// </summary>
     [RequireComponent(typeof(PlayerStats))]
     public class PlayerGear : MonoBehaviour
@@ -48,6 +52,24 @@ namespace CloneZ
         /// <summary>Battery left in the flashlight in use, 0..1.</summary>
         public float FlashlightCharge01 { get; protected set; }
 
+        /// <summary>True when the gun in hand has a weapon light fitted.</summary>
+        public bool HasWeaponLight { get; protected set; }
+        /// <summary>True while the light on the gun in hand is switched on and shining.</summary>
+        public bool WeaponLightOn { get; protected set; }
+        /// <summary>Battery left in the light on the gun in hand, 0..1.</summary>
+        public float WeaponLightCharge01 { get; protected set; }
+        /// <summary>True when the gun in hand has a laser fitted.</summary>
+        public bool HasLaser { get; protected set; }
+        /// <summary>True while that laser is switched on (lasers start on).</summary>
+        public bool LaserOn { get; protected set; }
+
+        /// <summary>True with a light to switch on: a flashlight in the pack, or a light on the gun in hand.</summary>
+        public bool HasLight => HasFlashlight || HasWeaponLight;
+        /// <summary>True while either of the survivor's lights shines: the flashlight, or the light on the gun in hand.</summary>
+        public bool LightOn => FlashlightOn || WeaponLightOn;
+        /// <summary>The battery of the light the HUD shows: the gun's while it shines or the torch is off, else the torch's.</summary>
+        public float LightCharge01 => WeaponLightOn || (HasWeaponLight && !FlashlightOn) ? WeaponLightCharge01 : FlashlightCharge01;
+
         /// <summary>True when a gas mask is worn.</summary>
         public bool HasGasMask { get; protected set; }
         /// <summary>Filter left in the worn mask, 0..1.</summary>
@@ -58,9 +80,9 @@ namespace CloneZ
         /// <summary>True while the survivor breathes toxic gas unprotected (no mask, or a spent filter).</summary>
         public bool BreathingGas { get; protected set; }
 
-        /// <summary>Battery shown on the HUD's battery icon: the goggles if worn, else the flashlight;
+        /// <summary>Battery shown on the HUD's battery icon: the goggles if worn, else the light (<see cref="LightCharge01"/>);
         /// -1 when the survivor carries nothing battery-powered.</summary>
-        public float BatteryCharge01 => HasNightVision ? NightVisionCharge01 : HasFlashlight ? FlashlightCharge01 : -1f;
+        public float BatteryCharge01 => HasNightVision ? NightVisionCharge01 : HasLight ? LightCharge01 : -1f;
 
         /// <summary>The carried flashlight in use (the one switched on, else the best-charged one), or null.</summary>
         public ItemStack ActiveFlashlight => _flash;
@@ -96,6 +118,13 @@ namespace CloneZ
         private int _flashWritten;
         private bool _packDirty = true;
 
+        // The light or laser on the gun in hand: the switches (kept while the gun is put away), the gun, and its light's item.
+        private bool _weaponLightSwitch;
+        private bool _laserSwitch = true;
+        private ItemStack _tacticalGun;
+        private ItemDef _weaponLightDef;
+        private PlayerAvatar _avatar;
+
         private float _coughTimer;
         private float _gasWarnTimer;
 
@@ -108,6 +137,7 @@ namespace CloneZ
         Instance = this;
         _stats = GetComponent<PlayerStats>();
         if (GetComponent<PlayerGearVisuals>() == null) gameObject.AddComponent<PlayerGearVisuals>();
+        if (GetComponent<WeaponTactical>() == null) gameObject.AddComponent<WeaponTactical>();
         _keyboard = Keyboard.current;
     }
 
@@ -153,12 +183,17 @@ namespace CloneZ
 protected virtual void Update()
         {
             if (!_subscribed) Subscribe();
-            if (_stats != null && _stats.IsDead) return;
+            if (_stats != null && _stats.IsDead)
+            {
+                WeaponLightOn = LaserOn = false;   // the gun's devices go dark with the hands that held it
+                return;
+            }
             float dt = Time.deltaTime;
 
             if (_wornDirty) { SyncWorn(); _wornDirty = false; }
             if (_packDirty) SyncPack();
             else if (_flash != null && _flash.Condition != _flashWritten) LoadFlashCharge();   // recharged from outside
+            SyncTactical();
 
             if (!UIState.GameplayBlocked)
             {
@@ -166,7 +201,12 @@ protected virtual void Update()
                 if (_keyboard != null)
                 {
                     if (_keyboard.nKey.wasPressedThisFrame) ToggleNightVision();
-                    if (_keyboard.lKey.wasPressedThisFrame && DronePilot.Local == null) ToggleFlashlight();   // piloting: L is the drone's light
+                    // L: the light or laser on the gun in hand, else the flashlight. Piloting a drone, L is the drone's light.
+                    if (_keyboard.lKey.wasPressedThisFrame && DronePilot.Local == null)
+                    {
+                        if (HasWeaponLight || HasLaser) ToggleTactical();
+                        else ToggleFlashlight();
+                    }
                 }
             }
 
@@ -174,6 +214,7 @@ protected virtual void Update()
             {
                 DrainNightVision(dt);
                 DrainFlashlight(dt);
+                DrainWeaponLight(dt);
             }
             UpdateGas(dt);
             Publish();
@@ -202,7 +243,7 @@ protected virtual void Update()
         {
             if (!ChargeFlattest(1f, out string name))
             {
-                Say(_nvgDef != null || _flash != null || Carries(inv, GearKind.NightVision)
+                Say(_nvgDef != null || _flash != null || Carries(inv, GearKind.NightVision) || Carries(inv, GearKind.WeaponLight) || CarriesFittedLight(inv)
                     ? "Your batteries are all still full"
                     : "Nothing to put a battery in");
                 return false;
@@ -212,8 +253,9 @@ protected virtual void Update()
             return true;
         }
 
-        /// <summary>Puts <paramref name="fraction"/> of a full charge into the flattest battery device (worn goggles
-        /// or a carried flashlight / goggles): a fresh battery (1) or a few turns of a hand-crank. False when everything is full.</summary>
+        /// <summary>Puts <paramref name="fraction"/> of a full charge into the flattest battery device (worn goggles,
+        /// or carried flashlight / goggles / weapon light, a gun's fitted light included): a fresh battery (1) or a few
+        /// turns of a hand-crank. False when everything is full.</summary>
         public bool ChargeFlattest(float fraction, out string name)
         {
             name = null;
@@ -224,7 +266,7 @@ protected virtual void Update()
 
             // The flattest battery device that isn't already full.
             bool worn = false;
-            ItemStack target = null;
+            ItemStack target = null, fitted = null;
             float lowest = float.MaxValue;
             if (_nvgDef != null && _nvgDef.MaxCondition > 0 && _nvgWritten < _nvgDef.MaxCondition)
             {
@@ -236,13 +278,22 @@ protected virtual void Update()
             {
                 ItemStack s = stacks[i];
                 ItemDef d = s.Def;
-                if (d == null || s.Count <= 0 || d.MaxCondition <= 0 || s.Condition >= d.MaxCondition) continue;
-                if (d.Gear != GearKind.NightVision && d.Gear != GearKind.Flashlight) continue;
+                if (d == null || s.Count <= 0) continue;
+                // A gun carries its fitted light's charge (ItemExtra.LightUsed).
+                if (d.IsFirearm)
+                {
+                    if (s.Extra == null || s.Extra.LightUsed <= 0f || FittedLight(s) == null) continue;
+                    float left = 1f - s.Extra.LightUsed;
+                    if (left < lowest) { lowest = left; fitted = s; target = null; worn = false; }
+                    continue;
+                }
+                if (d.MaxCondition <= 0 || s.Condition >= d.MaxCondition) continue;
+                if (d.Gear != GearKind.NightVision && d.Gear != GearKind.Flashlight && d.Gear != GearKind.WeaponLight) continue;
                 float charge = (s == _flash ? _flashCharge : s.Condition) / d.MaxCondition;
-                if (charge < lowest) { lowest = charge; target = s; worn = false; }
+                if (charge < lowest) { lowest = charge; target = s; fitted = null; worn = false; }
             }
 
-            if (!worn && target == null) return false;
+            if (!worn && target == null && fitted == null) return false;
 
             if (worn)
             {
@@ -250,6 +301,13 @@ protected virtual void Update()
                 _nvgWritten = Mathf.CeilToInt(_nvgCharge);
                 if (Clothing != null) Clothing.SetCondition(ClothingSlot.Eyes, _nvgWritten, true);
                 name = _nvgDef.DisplayName;
+            }
+            else if (fitted != null)
+            {
+                fitted.Extra.LightUsed = Mathf.Max(0f, fitted.Extra.LightUsed - fraction);
+                name = FittedLight(fitted).DisplayName + " on the " + fitted.Def.DisplayName;
+                SyncTactical();
+                inv.RaiseChanged();
             }
             else
             {
@@ -334,6 +392,27 @@ protected virtual void Update()
                 if (stacks[i].Def != null && stacks[i].Def.Gear == kind) return true;
             return false;
         }
+
+        private static bool CarriesFittedLight(Inventory inv)
+        {
+            List<ItemStack> stacks = inv.Stacks;
+            for (int i = 0; i < stacks.Count; i++)
+                if (stacks[i].Def != null && stacks[i].Def.IsFirearm && FittedLight(stacks[i]) != null) return true;
+            return false;
+        }
+
+        /// <summary>The weapon light fitted to <paramref name="gun"/> (its item), or null.</summary>
+        public static ItemDef FittedLight(ItemStack gun)
+        {
+            if (gun == null || gun.Extra == null) return null;
+            List<string> mods = gun.Extra.Mods;
+            for (int i = 0; i < mods.Count; i++)
+            {
+                ModStats m = Ballistics.Mod(mods[i]);
+                if (m != null && m.Light) return ItemDatabase.Get(m.Id);
+            }
+            return null;
+        }
         #endregion
 
         #region Toggles
@@ -369,6 +448,26 @@ protected virtual void Update()
             if (_flashCharge <= 0f) { Say("The flashlight's battery is flat \u2014 use a battery"); return; }
             FlashlightOn = true;
             Publish();
+        }
+
+        /// <summary>Switches the device on the gun in hand (L while it's held): its light, which only comes on with charge, or
+        /// its laser. The switch stays where it's left when the gun is put away.</summary>
+        public virtual void ToggleTactical()
+        {
+            SyncTactical();
+            if (HasWeaponLight)
+            {
+                if (!_weaponLightSwitch && WeaponLightCharge01 <= 0f)
+                {
+                    Say("The weapon light's battery is flat \u2014 use a battery");
+                    return;
+                }
+                _weaponLightSwitch = !_weaponLightSwitch;
+            }
+            else if (HasLaser) _laserSwitch = !_laserSwitch;
+            else return;
+            Sfx.PlayUI(SfxIds.UiClick, 0.45f, 0.8f);   // the switch's click
+            SyncTactical();
         }
         #endregion
 
@@ -442,6 +541,59 @@ protected virtual void Update()
         {
             _flashWritten = _flash != null ? _flash.Condition : 0;
             _flashCharge = _flashWritten;
+        }
+
+        // Follows the gun in hand (the equipped firearm, while the figure holds it rather than a tool): whether it has a light
+        // or a laser fitted, and the light's charge, which lives on the gun.
+        private void SyncTactical()
+        {
+            ItemStack gun = Pack != null ? Pack.EquippedStack : null;
+            if (gun != null && (gun.Def == null || !gun.Def.IsFirearm || !InHand(gun.Def))) gun = null;
+            ItemDef light = null;
+            bool laser = false;
+            if (gun != null && gun.Extra != null)
+            {
+                List<string> mods = gun.Extra.Mods;
+                for (int i = 0; i < mods.Count; i++)
+                {
+                    ModStats m = Ballistics.Mod(mods[i]);
+                    if (m == null) continue;
+                    if (m.Light) light = ItemDatabase.Get(m.Id);
+                    laser |= m.Laser;
+                }
+            }
+            _tacticalGun = light != null || laser ? gun : null;
+            _weaponLightDef = light;
+            HasWeaponLight = light != null;
+            HasLaser = laser;
+            WeaponLightCharge01 = HasWeaponLight ? 1f - Mathf.Clamp01(gun.Extra.LightUsed) : 0f;
+            WeaponLightOn = HasWeaponLight && _weaponLightSwitch && WeaponLightCharge01 > 0f;
+            LaserOn = HasLaser && _laserSwitch;
+        }
+
+        // True while the figure holds `gun` (not a hammer, a trowel or a book in its place); true with no figure to ask.
+        private bool InHand(ItemDef gun)
+        {
+            if (_avatar == null) _avatar = GetComponent<PlayerAvatar>();
+            HumanoidRig rig = _avatar != null ? _avatar.Rig : null;
+            return rig == null || rig.HeldDef == gun && rig.HeldStyle == HoldStyle.Firearm;
+        }
+
+        // The light on the gun in hand runs its battery down while it shines (on the gun: ItemExtra.LightUsed), and the pack's
+        // readouts hear about it every tenth.
+        private void DrainWeaponLight(float dt)
+        {
+            if (!WeaponLightOn || _tacticalGun == null || _weaponLightDef == null || _weaponLightDef.ChargeSeconds <= 0f) return;
+            ItemExtra x = _tacticalGun.Ensure();
+            float before = x.LightUsed;
+            x.LightUsed = Mathf.Min(1f, before + dt / _weaponLightDef.ChargeSeconds);
+            WeaponLightCharge01 = 1f - x.LightUsed;
+            if (Mathf.CeilToInt((1f - before) * 10f) != Mathf.CeilToInt(WeaponLightCharge01 * 10f) && PackInventory != null)
+                PackInventory.RaiseChanged();
+            if (x.LightUsed < 1f) return;
+            _weaponLightSwitch = false;
+            WeaponLightOn = false;
+            Say("The weapon light's battery died");
         }
 
         private void DrainNightVision(float dt)

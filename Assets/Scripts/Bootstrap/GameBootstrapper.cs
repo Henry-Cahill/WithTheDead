@@ -217,6 +217,7 @@ namespace CloneZ
                 BuildRaidSpawner(null, zone);
                 WorldHooks.RaiseRaidStarted(world, map, zone);
                 GameEvents.RaiseRaidStarted(zone.Id, GameSession.Raid);
+                ClaimSightOccluders();
                 return;
             }
 
@@ -244,6 +245,7 @@ namespace CloneZ
             }
             WorldHooks.RaiseRaidStarted(world, map, zone);
             GameEvents.RaiseRaidStarted(zone.Id, GameSession.Raid);
+            ClaimSightOccluders();
 
             new GameObject("PauseMenu").AddComponent<PauseMenuController>();
             Cursor.visible = true;
@@ -283,6 +285,7 @@ namespace CloneZ
             BuildSurvivorViews(player);
 
             WorldHooks.RaiseHubBuilt(world);
+            ClaimSightOccluders();
             new GameObject("PauseMenu").AddComponent<PauseMenuController>();
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -427,6 +430,7 @@ namespace CloneZ
             _pauseMenu.AddComponent<PauseMenuController>();
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            ClaimSightOccluders();
 
             CharacterProfile c = ProfileStore.ActiveCharacter;
             GameEvents.RaiseToast("Welcome back to " + hub.Name + ", Bardstown. Day " + (c != null ? c.Day : 1) + ". The front door opens onto the town.");
@@ -470,6 +474,7 @@ namespace CloneZ
             KettleLobby.CloseUp();
             WorldHooks.RaiseRaidStarted(_lobbyWorld, _lobbyMap, zone);
             GameEvents.RaiseRaidStarted(zone.Id, GameSession.Raid);
+            ClaimSightOccluders();
             ProfileStore.Save();
 
             TimeOfDay tod = TimeOfDay.Instance;
@@ -562,6 +567,7 @@ namespace CloneZ
             BuildSurvivorViews(player);
             BuildSpawner(player.transform);
             WorldHooks.RaiseArenaBuilt(world);
+            ClaimSightOccluders();
 
             // The pause menu (Esc) freezes the world and offers save / quit-to-menu.
             new GameObject("PauseMenu").AddComponent<PauseMenuController>();
@@ -724,6 +730,17 @@ namespace CloneZ
             surface.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.RenderMeshes;
             surface.BuildNavMesh();
             WorldNavMesh.Register(surface);
+        }
+
+        // Everything the flow raised (the world, the cars and camps its start hooks set down) goes onto the Sight Occluder
+        // layer, the only one the survivor's line of sight is cast against (SightOccluders; characters stay where they are,
+        // and whatever is spawned later is swept up round the survivor).
+        private static void ClaimSightOccluders()
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            int moved = SightOccluders.ClaimScene();
+            Debug.Log("[CloneZ] Sight occluders: " + moved + " solid objects moved onto the Sight Occluder layer in "
+                + watch.Elapsed.TotalMilliseconds.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture) + " ms.");
         }
         #endregion
 

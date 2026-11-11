@@ -35,9 +35,51 @@ namespace CloneZ
             public float BaseHeight;
             public Bounds Bounds;
             public int VertexCount;
+
+            /// <summary>When it was last drawn or looked up (<see cref="Time.unscaledTime"/>). The generated meshes' cache
+            /// lets go of what has gone undrawn longest (<see cref="GeneratedItemMeshes.Trim"/>), so whatever draws one marks
+            /// it (<see cref="MarkUsed"/>) each frame it does.</summary>
+            public float LastUsed { get; private set; }
+
+            /// <summary>The frame it was last drawn or looked up in (<see cref="Time.frameCount"/>). The cache keeps what was
+            /// used in the frame before, however long that frame took.</summary>
+            public int LastUsedFrame { get; private set; }
+
+            /// <summary>How many hold on to it (<see cref="Hold"/>). The generated meshes' cache never lets go of a held
+            /// one.</summary>
+            public int Holders { get; internal set; }
+
+            /// <summary>Marks it as drawn, or looked up, at <paramref name="time"/> (<see cref="Time.unscaledTime"/>) in
+            /// <paramref name="frame"/> (<see cref="Time.frameCount"/>).</summary>
+            public void MarkUsed(float time, int frame)
+            {
+                LastUsed = time;
+                LastUsedFrame = frame;
+            }
         }
 
         private static readonly Dictionary<(string, Lod), Baked> s_Cache = new Dictionary<(string, Lod), Baked>(256);
+
+        /// <summary>Goes up whenever cached meshes are destroyed: <see cref="Clear"/> and <see cref="GeneratedItemMeshes.Clear"/>
+        /// (and so the start of every play session), and <see cref="GeneratedItemMeshes.Trim"/> letting go of the generated
+        /// meshes drawn least recently. Anything that keeps a <see cref="Baked"/> between frames has to look it up again
+        /// when this changes (as <see cref="GroundItemRenderer"/> does), or hold it (<see cref="Hold"/>) so the trim leaves it
+        /// alone. Anything else that destroys a cached mesh must bump it too.</summary>
+        public static int Generation { get; internal set; }
+
+        /// <summary>Keeps a model from being let go of while it's held on to beyond the frame, as a character's hand holds
+        /// its item's: <see cref="GeneratedItemMeshes.Trim"/> leaves a held one alone, however long it goes undrawn. Pair
+        /// each with <see cref="Release"/>.</summary>
+        public static void Hold(Baked baked)
+        {
+            if (baked != null) baked.Holders++;
+        }
+
+        /// <summary>Lets go of a model held with <see cref="Hold"/>.</summary>
+        public static void Release(Baked baked)
+        {
+            if (baked != null && baked.Holders > 0) baked.Holders--;
+        }
 
         /// <summary>Shared materials, keyed by quantised surface, so near-identical surfaces across all
         /// items collapse onto one material instead of one per part per item.</summary>
@@ -100,7 +142,13 @@ namespace CloneZ
             s_Palette.Clear();
 
             GeneratedItemMeshes.Clear();
+            Generation++;
         }
+
+        // Statics outlive a play session in the editor (domain reload is off), but the meshes and materials made in one are
+        // destroyed when it ends. Every session starts with nothing cached, so nothing hands out a destroyed mesh.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ForgetLastPlaySession() => Clear();
 
         // ── Baking ────────────────────────────────────────────────────────────────────────────────────
 

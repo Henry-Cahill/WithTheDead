@@ -7,13 +7,24 @@ namespace CloneZ
 {
     // The real map's loot, room by room. The game fills a container from the loot table of its type (ItemDatabase,
     // ContentDatabase: the Fridge holds perishables and drinks, the Pantry dry food, the MedCabinet medicine, the
-    // GunLocker firearms and ammunition, the ToolBench tools and parts, the Wardrobe clothes, the Shelf materials and
+    // GunLocker military firearms and ammunition, the ToolBench tools and parts, the Wardrobe clothes, the Shelf materials and
     // odds and ends, the Desk papers, books and small things, the Locker work clothes and kit, the Crate a bit of
     // everything), so a building's loot follows what it was through the types of container its rooms hold: a pharmacy's
-    // sales floor is mostly medicine cabinets, a gun shop's gun lockers, a feed store's crates and tool benches.
+    // sales floor is mostly medicine cabinets, a feed store's crates and tool benches. Guns go by the building too, each kind
+    // with guns of its own (ZoneContent.Gear.cs): a home's gun cabinet (a farmhouse's above all: the deer rifles and the
+    // .22), a gun shop's counters and safes (the AR, the .45), a police station's weapons lockers (the pump, the service
+    // revolver).
     internal static partial class MapGameplay
     {
         private static readonly ContainerType[] NoContainers = new ContainerType[0];
+
+        /// <summary>The loot profile of a home out in the country (<see cref="IsFarmhouse"/>); not a purpose of its own, as
+        /// everything else about such a building is a home's.</summary>
+        internal const string Farmhouse = "farmhouse";
+
+        /// <summary>How urban a farmhouse's surroundings are at most (<see cref="SettlementAt"/>): no town around it, the
+        /// line that also tells a barn from a store (<see cref="Analyse"/>).</summary>
+        private const float FarmCountry = 0.12f;
 
         /// <summary>One purpose's containers, room by room: the plain pools, and (rich) with the rarer finds a well
         /// stocked place adds.</summary>
@@ -138,16 +149,26 @@ namespace CloneZ
 
             // Homes. A Kentucky farmhouse keeps a gun cabinet and a basement of canned goods; town flats less so.
             P(Purposes.Home)
-                .Room(Living, Desk, Shelf, Wardrobe, Desk).Rare(GunLocker)
-                .Room(Bedroom, Wardrobe, Desk, Wardrobe).Rare(GunLocker, Locker)
-                .Room(Office, Desk, Shelf, Desk).Rare(GunLocker)
+                .Room(Living, Desk, Shelf, Wardrobe, Desk).Rare(GunCabinet)
+                .Room(Bedroom, Wardrobe, Desk, Wardrobe).Rare(GunCabinet, Locker)
+                .Room(Office, Desk, Shelf, Desk).Rare(GunCabinet)
                 .Room(Hall, Wardrobe)
                 .Rooms(work, ToolBench, Shelf, Crate, ToolBench).Rare(Fridge)
                 .Room(Storage, Pantry, Shelf, Crate, ToolBench).Rare(Pantry)
                 .Else(Wardrobe, Desk, Shelf, Pantry);
+            // Out in the country the gun cabinet is the living room's centrepiece, and turns up in the hall, the den and the
+            // bedrooms too.
+            P(Farmhouse)
+                .Room(Living, GunCabinet, Desk, Shelf, Wardrobe, Desk)
+                .Room(Bedroom, Wardrobe, Desk, Wardrobe, GunCabinet).Rare(Locker)
+                .Room(Office, Desk, GunCabinet, Shelf)
+                .Room(Hall, Wardrobe, GunCabinet)
+                .Rooms(work, ToolBench, Shelf, Crate, ToolBench).Rare(GunCabinet)
+                .Room(Storage, Pantry, Pantry, Shelf, Crate, ToolBench).Rare(Pantry)
+                .Else(Wardrobe, Desk, Shelf, Pantry, GunCabinet);
             P(Purposes.Trailer).Stocked(0.85f)
-                .Room(Living, Desk, Shelf).Rare(GunLocker)
-                .Room(Bedroom, Wardrobe, Desk).Rare(GunLocker)
+                .Room(Living, Desk, Shelf).Rare(GunCabinet)
+                .Room(Bedroom, Wardrobe, Desk).Rare(GunCabinet)
                 .Room(Storage, Shelf, Crate)
                 .Rooms(work, ToolBench, Crate)
                 .Else(Wardrobe, Desk, Pantry);
@@ -171,9 +192,9 @@ namespace CloneZ
             P(Purposes.Shed).Stocked(0.7f).Else(ToolBench, Crate, Shelf);
             P(Purposes.Garage).Else(ToolBench, Shelf, Crate).Rare(Fridge);
             P(Purposes.Barn)
-                .Rooms(new[] { Open, Storage }, Crate, ToolBench, Crate, Shelf).Rare(GunLocker)
+                .Rooms(new[] { Open, Storage }, Crate, ToolBench, Crate, Shelf).Rare(GunCabinet)
                 .Rooms(work, ToolBench, ToolBench, Shelf)
-                .Else(Crate, ToolBench, Crate, Shelf).Rare(GunLocker);
+                .Else(Crate, ToolBench, Crate, Shelf).Rare(GunCabinet);
             P(Purposes.Greenhouse).Stocked(0.6f).Else(Crate, ToolBench, Shelf);
 
             // Food and fuel.
@@ -188,7 +209,7 @@ namespace CloneZ
                 .Room(Office, Desk)
                 .Else(Pantry, Fridge);
             P(Purposes.GeneralStore).Stocked(1.2f)
-                .Room(Sales, Pantry, Shelf, ToolBench, Pantry, Wardrobe, Desk).Rare(GunLocker)
+                .Room(Sales, Pantry, Shelf, ToolBench, Pantry, Wardrobe, Desk).Rare(GunCounter)
                 .Room(Stock, Crate, Pantry, Shelf, ToolBench)
                 .Else(Pantry, Shelf, Crate);
             P(Purposes.Fuel).Stocked(1.1f)
@@ -207,7 +228,7 @@ namespace CloneZ
                 .Room(Office, Desk)
                 .Else(Pantry, Fridge);
             P(Purposes.Bar)
-                .Room(Sales, Fridge, Pantry, Desk, Fridge).Rare(GunLocker)
+                .Room(Sales, Fridge, Pantry, Desk, Fridge).Rare(GunCabinet)
                 .Room(Kitchen, Fridge, Pantry)
                 .Rooms(back, Crate, Fridge, Pantry)
                 .Room(Office, Desk)
@@ -232,16 +253,16 @@ namespace CloneZ
                 .Room(Office, Desk)
                 .Else(Shelf, ToolBench, Crate);
             P(Purposes.FarmSupply).Stocked(1.2f)
-                .Room(Sales, Shelf, Crate, ToolBench, Pantry, Desk).Rare(GunLocker)
+                .Room(Sales, Shelf, Crate, ToolBench, Pantry, Desk).Rare(GunCounter)
                 .Room(Stock, Crate, Crate, Shelf)
                 .Rooms(work, ToolBench, Crate)
                 .Else(Crate, Shelf, ToolBench);
             P(Purposes.Guns).Stocked(1.1f)
-                .Room(Sales, GunLocker, GunLocker, Shelf, Crate, Desk, Wardrobe).Rare(GunLocker)
-                .Room(Stock, GunLocker, Crate, Crate, Locker)
-                .Room(Office, Desk, GunLocker)
-                .Rooms(work, ToolBench, GunLocker)
-                .Else(GunLocker, Crate, Shelf);
+                .Room(Sales, GunCounter, GunCounter, Shelf, Crate, Desk, Wardrobe).Rare(GunCounter)
+                .Room(Stock, GunCounter, Crate, Crate, Locker)
+                .Room(Office, Desk, GunCounter)
+                .Rooms(work, ToolBench, GunCounter)
+                .Else(GunCounter, Crate, Shelf);
             P(Purposes.Auto)
                 .Rooms(work, ToolBench, ToolBench, Shelf, Crate).Rare(ToolBench)
                 .Room(Sales, Shelf, ToolBench, Desk, Shelf)
@@ -253,7 +274,7 @@ namespace CloneZ
                 .Room(Stock, Wardrobe, Crate, Locker)
                 .Else(Wardrobe, Shelf);
             P(Purposes.DepartmentStore).Stocked(1.3f)
-                .Room(Sales, Shelf, Pantry, Wardrobe, Shelf, MedCabinet, ToolBench, Desk, Fridge, Wardrobe).Rare(GunLocker)
+                .Room(Sales, Shelf, Pantry, Wardrobe, Shelf, MedCabinet, ToolBench, Desk, Fridge, Wardrobe).Rare(GunCounter)
                 .Room(Stock, Crate, Shelf, Pantry, Crate)
                 .Room(Office, Desk)
                 .Else(Shelf, Pantry, Wardrobe);
@@ -283,7 +304,7 @@ namespace CloneZ
                 .Else(Shelf, Desk);
             P(Purposes.Vacant).Stocked(0.3f).Else(Crate);
             P(Purposes.StorageRental).Stocked(1.3f)
-                .Rooms(new[] { Open, Storage, Stock }, Crate, Crate, Shelf, ToolBench, Wardrobe, Locker).Rare(GunLocker)
+                .Rooms(new[] { Open, Storage, Stock }, Crate, Crate, Shelf, ToolBench, Wardrobe, Locker).Rare(GunCabinet)
                 .Room(Office, Desk)
                 .Else(Crate, Shelf, ToolBench, Wardrobe);
             P(Purposes.Commercial)
@@ -294,9 +315,9 @@ namespace CloneZ
 
             // Money, mail, offices.
             P(Purposes.Bank)
-                .Room(Office, Desk, Desk, Locker).Rare(GunLocker)
+                .Room(Office, Desk, Desk, Locker).Rare(PoliceLocker)
                 .Room(Sales, Desk, Desk)
-                .Room(Storage, Locker, Locker, Desk).Rare(GunLocker)
+                .Room(Storage, Locker, Locker, Desk).Rare(PoliceLocker)
                 .Else(Desk, Locker);
             P(Purposes.PostOffice)
                 .Room(Sales, Desk, Shelf)
@@ -312,13 +333,13 @@ namespace CloneZ
 
             // Public safety: the armouries and the medicine.
             P(Purposes.Police).Stocked(1.1f)
-                .Room(Office, Desk, Desk, Locker, GunLocker).Rare(GunLocker)
-                .Room(Storage, GunLocker, Locker, GunLocker, Crate).Rare(GunLocker)
+                .Room(Office, Desk, Desk, Locker, PoliceLocker).Rare(PoliceLocker)
+                .Room(Storage, PoliceLocker, Locker, PoliceLocker, Crate).Rare(PoliceLocker)
                 .Room(Cells)
                 .Room(Sales, Desk, Locker)
                 .Room(Hall, Locker)
                 .Rooms(work, ToolBench, Locker)
-                .Else(Desk, Locker, GunLocker);
+                .Else(Desk, Locker, PoliceLocker);
             P(Purposes.FireStation).Stocked(1.1f)
                 .Room(Garage, Locker, Locker, ToolBench, MedCabinet).Rare(ToolBench)
                 .Room(Workshop, ToolBench, Locker)
@@ -329,14 +350,14 @@ namespace CloneZ
                 .Else(Locker, ToolBench, MedCabinet);
             P(Purposes.Prison)
                 .Room(Cells, Locker)
-                .Room(Office, Desk, GunLocker, Locker)
-                .Room(Storage, GunLocker, Locker, Crate)
+                .Room(Office, Desk, PoliceLocker, Locker)
+                .Room(Storage, PoliceLocker, Locker, Crate)
                 .Room(Kitchen, Pantry, Fridge, Pantry)
                 .Room(Ward, MedCabinet, Locker)
                 .Else(Locker, Desk);
             P(Purposes.Courthouse)
-                .Room(Office, Desk, Desk, Shelf, Locker).Rare(GunLocker)
-                .Room(Storage, Shelf, Locker, Shelf).Rare(GunLocker)
+                .Room(Office, Desk, Desk, Shelf, Locker).Rare(PoliceLocker)
+                .Room(Storage, Shelf, Locker, Shelf).Rare(PoliceLocker)
                 .Room(Cells)
                 .Room(Hall, Shelf)
                 .Else(Desk, Shelf);
@@ -485,8 +506,15 @@ namespace CloneZ
         internal static ContainerType[] ContainersFor(Site site, Footprint f, string room)
         {
             Prepare(site);
-            return PoolFor(PurposeOf(site, f), room, RichnessOf(site, f) >= RichFrom);
+            return PoolFor(LootProfileOf(site, f), room, RichnessOf(site, f) >= RichFrom);
         }
+
+        /// <summary>True for a home out in the country, a farmhouse: no town around it (<see cref="FarmCountry"/>).</summary>
+        internal static bool IsFarmhouse(Site site, Footprint f)
+            => PurposeOf(site, f) == Purposes.Home && SettlementAt(site, f.Middle) < FarmCountry;
+
+        // The profile a building's pools come from: its purpose's, but a farmhouse's for a home out in the country.
+        private static string LootProfileOf(Site site, Footprint f) => IsFarmhouse(site, f) ? Farmhouse : PurposeOf(site, f);
 
         /// <summary>Richness from which a pool adds its rarer finds.</summary>
         private const float RichFrom = 1.15f;
@@ -679,11 +707,11 @@ namespace CloneZ
                 case Purposes.Liquor:
                     return type == Pantry ? "Liquor shelf" : type == Fridge ? "Beer cooler" : type == Desk ? "Counter" : null;
                 case Purposes.Police:
-                    return type == GunLocker ? "Armory locker" : type == Locker ? "Evidence locker" : null;
+                    return type == PoliceLocker ? "Armory locker" : type == Locker ? "Evidence locker" : null;
                 case Purposes.Courthouse:
-                    return type == GunLocker ? "Bailiff's locker" : type == Shelf ? "Records shelf" : null;
+                    return type == PoliceLocker ? "Bailiff's locker" : type == Shelf ? "Records shelf" : null;
                 case Purposes.Guns:
-                    return type == GunLocker ? "Gun case" : type == Crate ? "Ammunition crate" : null;
+                    return type == GunCounter ? "Gun case" : type == Crate ? "Ammunition crate" : null;
                 case Purposes.FireStation:
                     return type == Locker ? "Turnout locker" : type == MedCabinet ? "First-aid cabinet" : null;
                 case Purposes.Hospital: case Purposes.Clinic: case Purposes.Care:
@@ -701,13 +729,13 @@ namespace CloneZ
                 case Purposes.Church:
                     return type == Pantry ? "Food pantry shelf" : type == Wardrobe ? "Clothes closet" : null;
                 case Purposes.Bank:
-                    return type == Locker ? "Safe-deposit locker" : type == Desk ? "Teller's drawer" : null;
+                    return type == Locker ? "Safe-deposit locker" : type == Desk ? "Teller's drawer" : type == PoliceLocker ? "Guard's locker" : null;
                 case Purposes.PostOffice:
                     return type == Crate ? "Mail sack bin" : null;
                 case Purposes.Barn:
-                    return type == Crate ? "Feed bin" : type == ToolBench ? "Workbench" : type == GunLocker ? "Gun cabinet" : null;
+                    return type == Crate ? "Feed bin" : type == ToolBench ? "Workbench" : type == GunCabinet ? "Gun cabinet" : null;
                 case Purposes.Home: case Purposes.Trailer:
-                    return type == GunLocker ? "Gun cabinet" : null;
+                    return type == GunCabinet ? "Gun cabinet" : null;
                 case Purposes.Distillery:
                     return type == Crate ? "Barrel rack" : type == Pantry ? "Bottle shelf" : null;
                 case Purposes.StorageRental:
@@ -727,7 +755,7 @@ namespace CloneZ
             string purpose = PurposeOf(site, f);
             Profile profile = ProfileOf(purpose);
             float richness = RichnessOf(site, f);
-            ContainerType[] kinds = PoolFor(purpose, null, richness >= RichFrom);
+            ContainerType[] kinds = PoolFor(LootProfileOf(site, f), null, richness >= RichFrom);
             if (kinds.Length == 0 || profile.Stock <= 0f) return;
             int count = Mathf.Min(7, LootBudget(site, f));
             var placed = new List<Vector2>(count);

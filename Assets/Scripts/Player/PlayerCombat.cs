@@ -6,8 +6,15 @@ using UnityEngine.InputSystem;
 namespace CloneZ
 {
     /// <summary>
-    /// Melee and firearms. Melee: a wide swing (left mouse) that damages whatever hostile thing is in the arc, and a
-    /// shove that staggers and shoves back. Damage and crit maths follow Project Zomboid's CombatConfig values.
+    /// Melee and firearms. Melee (left mouse) swings the weapon in hand as its <see cref="MeleeStats"/> say: a wind-up before
+    /// the blow lands (whatever is in its reach and arc then is struck) and a recovery after it before the next; a stab or a
+    /// short chop meets one body, a wider swing carries through two or three, each taking less of it; each blow may stagger
+    /// one of the dead (spoiling its lunge) or knock it down, by the weapon's chances, else it only flinches and keeps
+    /// coming. An attack with one of the dead on the ground nearest at the feet (knocked down, or a crawler) is a stomp
+    /// instead, on its head if that's in reach, else on its body for less; with nothing standing in a swing, the swing comes
+    /// down on the nearest one on the ground. The shove
+    /// staggers and shoves back, and may knock the dead down for a stomp. Damage and crit maths follow Project Zomboid's
+    /// CombatConfig values.
     ///
     /// Firearms (Tarkov's lesson: the round matters more than the gun): every shot leaves the muzzle — never the
     /// camera, so cover blocks a round even when the camera sees past it — and is resolved by
@@ -25,13 +32,6 @@ namespace CloneZ
         private const float ShoulderMuzzleHeight = 1.35f;
         private const float DirtPerShot = 0.0022f;
 
-        [Header("Melee weapon")]
-        public float WeaponDamage = 0.9f;   // raw; the zombie applies the x1.5 received multiplier
-        public float WeaponRange = 2.4f;
-        public float WeaponArc = 90f;        // degrees of the swing cone
-        public float SwingCooldown = 0.55f;
-        public float SwingKnockback = 2.5f;
-
         [Header("Shove")]
         public float ShoveRange = 2.0f;
         public float ShoveArc = 120f;
@@ -42,8 +42,8 @@ namespace CloneZ
         private PlayerStats _stats;
         private PlayerInventory _inventory;
         private PlayerSkills _skills;
+        private PlayerClothing _clothing;
         private Actor _actor;
-        private float _swingTimer;
         private float _shoveTimer;
         private float _fireTimer;
         private float _reloadTimer;
@@ -51,11 +51,36 @@ namespace CloneZ
         private bool _attackPressOnUi;   // the held left button went down over the UI
         private bool _shovePressOnUi;    // the held right button went down over the UI
         private readonly HashSet<IDamageable> _hitThisAction = new HashSet<IDamageable>();
-        private readonly List<IDamageable> _targets = new List<IDamageable>();
+        private readonly List<Struck> _struck = new List<Struck>();
         // Cache for the last equipped item stack used to compute weapon build
         private ItemStack _lastEquippedStack;
         private float _lastDirt;
         private bool _buildDirty = true;
+
+        // A melee blow under way: wound up at the press, it lands when _strikeTimer runs out (with the weapon it was swung
+        // with), and nothing else — another blow, a stomp, a shove — can start until _busyTimer has run out too (its recovery).
+        private enum Blow : byte { None, Swing, Stomp }
+        private Blow _blow;
+        private float _strikeTimer;
+        private float _busyTimer;
+        private MeleeStats _blowStats;
+        private IDamageable _stompTarget;
+        // A click while the last blow (or a shove) is still recovering isn't lost: it's kept this long and swings as soon as it can.
+        private const float AttackBuffer = 0.3f;
+        private float _attackQueued;
+
+        /// <summary>How the melee weapon in hand handles (bare hands when there's none; see <see cref="MeleeStats"/>).</summary>
+        public MeleeStats Melee { get; private set; } = MeleeStats.BareHands;
+        /// <summary>Press to press of a swing with the melee weapon in hand.</summary>
+        public float SwingCooldown => Melee.Cycle;
+        /// <summary>The wind-up and the recovery of the last blow begun (a swing or a stomp), as quickened by skill and slowed
+        /// by exhaustion: the avatar times its swing to them.</summary>
+        public float BlowWindUp { get; private set; }
+        public float BlowRecovery { get; private set; }
+        /// <summary>True from the press until the blow lands.</summary>
+        public bool WindingUp => _blow != Blow.None;
+        /// <summary>True until the blow under way (or a shove) is over and another can begin.</summary>
+        public bool MeleeBusy => _busyTimer > 0f;
 
         /// <summary>The equipped firearm, or null when using melee / bare hands.</summary>
         public ItemDef EquippedFirearm { get; private set; }
@@ -72,6 +97,8 @@ namespace CloneZ
         public WeaponBuild Build { get; private set; }
 
         public event System.Action OnSwing;
+        /// <summary>Raised when a stomp begins (on one of the dead on the ground at the survivor's feet).</summary>
+        public event System.Action OnStomp;
         public event System.Action OnShove;
         public event System.Action OnFire;
         public event System.Action OnReload;
@@ -82,9 +109,12 @@ namespace CloneZ
         public event System.Action OnJam;
         /// <summary>Raised for each melee blow that lands (the target, and whether it killed): the HUD's hit marker.</summary>
         public event System.Action<IDamageable, bool> OnMeleeHit;
+        /// <summary>Raised as a wound-up blow (a swing or a stomp) lands, with how many bodies it struck (0: thin air).</summary>
+        public event System.Action<int> OnBlowLanded;
 
         private PlayerInventory Inv => _inventory != null ? _inventory : (_inventory = GetComponent<PlayerInventory>());
         private PlayerSkills Skills => _skills != null ? _skills : (_skills = GetComponent<PlayerSkills>());
+        private PlayerClothing Clothing => _clothing != null ? _clothing : (_clothing = GetComponent<PlayerClothing>());
         private Actor Me => _actor != null ? _actor : (_actor = GetComponent<Actor>());
 
         private void Awake()
@@ -110,8 +140,9 @@ namespace CloneZ
         private void Update()
         {
             float dt = Time.deltaTime;
-            _swingTimer -= dt;
             _shoveTimer -= dt;
+            _busyTimer -= dt;
+            _attackQueued -= dt;
             _fireTimer -= dt;
             _reloadTimer -= dt;
             _bloom = Mathf.Max(0f, _bloom - dt * 1.6f);
@@ -119,12 +150,22 @@ namespace CloneZ
             Mouse mouse = Mouse.current;
             TrackUiPresses(mouse);                 // before the early-outs, so a click on a menu is remembered
             AimingDownSights = false;
-            if (_stats.IsDead || _stats.Incapacitated) return;
+            Actor self = Actor.LocalPlayer;
+            bool handsTied = self != null && self.gameObject == gameObject && (self.Surrendered || self.Restrained);
+            if (_stats.IsDead || _stats.Incapacitated || handsTied)
+            {
+                CancelBlow();
+                return;
+            }
+            // A blow already wound up lands whatever the survivor does meanwhile (a menu opened, the build tool taken up).
+            if (_blow != Blow.None)
+            {
+                _strikeTimer -= dt;
+                if (_strikeTimer <= 0f) LandBlow();
+            }
             if (UIState.GameplayBlocked) return;   // don't act while clicking in the inventory UI
             if (UIState.BuildMode) return;         // in build mode the mouse places barricades, not attacks
             if (HubRules.SafeZone) return;         // no fighting in the hub
-            Actor self = Actor.LocalPlayer;
-            if (self != null && self.gameObject == gameObject && (self.Surrendered || self.Restrained)) return;   // hands up or cuffed
             if (mouse == null) return;
 
             bool attackHeld = mouse.leftButton.isPressed && !_attackPressOnUi;
@@ -145,8 +186,14 @@ namespace CloneZ
                 return;
             }
 
-            if (attackHeld && _swingTimer <= 0f) Swing();
-            else if (shove && _shoveTimer <= 0f) Shove();
+            // Held, the attack swings again as soon as the last blow is over; a click during its recovery is kept a moment.
+            if (attackPressed && _busyTimer > 0f) _attackQueued = AttackBuffer;
+            if ((attackHeld || _attackQueued > 0f) && _busyTimer <= 0f)
+            {
+                _attackQueued = 0f;
+                Attack();
+            }
+            else if (shove && _shoveTimer <= 0f && _busyTimer <= 0f) Shove();
         }
 
         // A press that begins on the UI belongs to the UI, not to the weapon: clicking a HUD button under the
@@ -175,91 +222,282 @@ namespace CloneZ
         }
 
         #region Melee
-        private void Swing()
+        /// <summary>Takes up a melee weapon (bare hands for null): leaves ranged mode, and drops a blow under way.</summary>
+        public void EquipMelee(ItemDef weapon)
         {
-            _swingTimer = SwingCooldown;
-            _stats.TryConsumeEndurance(CloneZConfig.MeleeEnduranceCost);
-            OnSwing?.Invoke();
-            NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeSwing);
-            Sfx.Play(SfxIds.MeleeSwing, transform.position + Vector3.up * 1.2f, 0.6f, Random.Range(0.9f, 1.1f), 12f);
+            EquipMeleeMode();
+            Melee = MeleeStats.For(weapon);
+        }
 
-            bool exhausted = _stats.Endurance < CloneZConfig.EnduranceDanger;
-            bool landedHit = false;
-            _hitThisAction.Clear();
+        // One body a blow can reach: which way it is and how far (flat), how far off the line of the aim, whether it's on the
+        // ground, and where a blow meets it (one on the ground: the nearest of its body).
+        private struct Struck
+        {
+            public IDamageable Target;
+            public Actor Body;
+            public Vector3 To, Point;
+            public float Distance, Angle;
+            public bool Downed;
+        }
 
-            PlayerSkills.Skill weaponSkill = PlayerSkills.WeaponSkillFor(Inv != null ? Inv.EquippedWeapon : null);
-            float skillDamageMult = Skills != null ? Skills.MeleeDamageMult(weaponSkill) : 1f;
-            skillDamageMult *= PlayerModifiers.Current.MeleeDamage;
-
-            FindTargets(WeaponRange, WeaponArc, _targets);
-            for (int i = 0; i < _targets.Count; i++)
+        // An attack: a stomp when, of everything it could strike, the nearest is one of the dead on the ground at the feet;
+        // else a swing of the weapon in hand.
+        private void Attack()
+        {
+            MeleeStats m = Melee;
+            Gather(Mathf.Max(m.Reach, CloneZConfig.StompReach), Mathf.Max(m.Arc, CloneZConfig.StompArc), false, _struck);
+            int nearest = -1;
+            for (int i = 0; i < _struck.Count; i++)
             {
-                IDamageable target = _targets[i];
-                landedHit = true;
-                Transform tt = target.Transform;
-                Vector3 toTarget = CloneZUtil.Flat(tt.position - transform.position);
+                Struck s = _struck[i];
+                bool reachable = s.Downed
+                    ? s.Distance <= CloneZConfig.StompReach && s.Angle <= CloneZConfig.StompArc * 0.5f
+                    : s.Distance <= m.Reach + 0.5f && s.Angle <= m.Arc * 0.5f;
+                if (reachable && (nearest < 0 || s.Distance < _struck[nearest].Distance)) nearest = i;
+            }
+            if (nearest >= 0 && _struck[nearest].Downed) BeginStomp(_struck[nearest].Target);
+            else BeginSwing(m);
+        }
 
-                // Crit chance: base 5%, +30% when striking from behind (PZ).
-                bool fromBehind = Vector3.Dot(tt.forward, toTarget) > 0.25f;
-                float critChance = CloneZConfig.CritChanceDefault + (fromBehind ? CloneZConfig.CritChanceFromBehind : 0f);
+        private void BeginSwing(MeleeStats m)
+        {
+            float speed = BlowSpeed(m.Skill);
+            BeginBlow(Blow.Swing, m, m.WindUp / speed, m.Recovery / speed, m.Endurance);
+            OnSwing?.Invoke();
+        }
+
+        private void BeginStomp(IDamageable target)
+        {
+            float speed = BlowSpeed(PlayerSkills.Skill.Strength);
+            _stompTarget = target;
+            BeginBlow(Blow.Stomp, Melee, CloneZConfig.StompWindUp / speed, CloneZConfig.StompRecovery / speed, CloneZConfig.StompEnduranceCost);
+            OnStomp?.Invoke();
+        }
+
+        private void BeginBlow(Blow kind, MeleeStats m, float windUp, float recovery, float endurance)
+        {
+            _blow = kind;
+            _blowStats = m;
+            BlowWindUp = windUp;
+            BlowRecovery = recovery;
+            _strikeTimer = windUp;
+            _busyTimer = windUp + recovery;
+            _stats.TryConsumeEndurance(endurance);
+            NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeSwing);
+        }
+
+        // Skill with the weapon (Strength, for a stomp) quickens a blow; tired arms slow it.
+        private float BlowSpeed(PlayerSkills.Skill skill)
+        {
+            float speed = 1f + (Skills != null ? Skills.GetLevel(skill) * CloneZConfig.MeleeSkillSpeedPerLevel : 0f);
+            if (_stats.Endurance < CloneZConfig.EnduranceDanger) speed /= CloneZConfig.MeleeExhaustedSlowdown;
+            return speed;
+        }
+
+        // A weapon put away, a gun taken up, the survivor downed: the blow under way never lands (nor one clicked for).
+        private void CancelBlow()
+        {
+            _blow = Blow.None;
+            _stompTarget = null;
+            _attackQueued = 0f;
+        }
+
+        private void LandBlow()
+        {
+            Blow kind = _blow;
+            _blow = Blow.None;
+            if (kind == Blow.Stomp) StompLands();
+            else SwingLands(_blowStats ?? Melee);
+        }
+
+        private void SwingLands(MeleeStats m)
+        {
+            Sfx.Play(SfxIds.MeleeSwing, transform.position + Vector3.up * 1.2f, 0.6f, Random.Range(0.9f, 1.1f), 12f);
+            bool exhausted = _stats.Endurance < CloneZConfig.EnduranceDanger;
+            float felling = exhausted ? 0.5f : 1f;                // a tired swing rocks nothing back
+            float skillDamageMult = (Skills != null ? Skills.MeleeDamageMult(m.Skill) : 1f) * PlayerModifiers.Current.MeleeDamage;
+            int strength = Skills != null ? Skills.GetLevel(PlayerSkills.Skill.Strength) : 0;
+
+            Gather(m.Reach, m.Arc, false, _struck);
+            int hits = MeetInSwing(m, _struck);
+            for (int i = 0; i < hits; i++)
+            {
+                Struck s = _struck[i];
+                IDamageable target = s.Target;
+                Transform tt = target.Transform;
+                float share = MeleeStats.Carry(i);   // each body further along the swing takes less of it
+
+                // Crit chance: base 5%, +30% when striking from behind (PZ); a crit is a blow to the head. Brought down on one on
+                // the ground, the blow finds the head if it's in reach (likelier to crit there; where it then lands), else the
+                // nearest of the body, and no crit.
+                Transform head = s.Downed ? HeadOf(s.Body) : null;
+                bool atHead = s.Downed && (head == null || FlatDistance(head.position, transform.position) <= m.Reach);
+                bool fromBehind = !s.Downed && Vector3.Dot(tt.forward, s.To) > 0.25f;
+                float critChance = s.Downed && !atHead ? 0f
+                    : CloneZConfig.CritChanceDefault + (fromBehind ? CloneZConfig.CritChanceFromBehind : 0f) + (atHead ? CloneZConfig.MeleeDownedCritBonus : 0f);
                 bool crit = Random.value < critChance;
 
-                float raw = WeaponDamage * skillDamageMult * Random.Range(0.85f, 1.15f);
+                float raw = m.Damage * skillDamageMult * share * Random.Range(0.85f, 1.15f);
                 if (exhausted) raw *= 0.5f;                       // tired swings are feeble
                 raw *= _stats.PainCombatMultiplier;               // pain saps the strength from a blow
                 if (crit) raw *= CloneZConfig.HeadHitDamageSplitModifier;
 
-                var info = new DamageInfo(raw, DamageKind.Melee, tt.position + Vector3.up * 1.2f, toTarget, gameObject)
+                float knockdown = m.Knockdown > 0f ? (m.Knockdown + strength * CloneZConfig.KnockdownPerStrength) * share * felling : 0f;
+                Vector3 at = !s.Downed ? tt.position + Vector3.up * 1.2f : OnTheGround(atHead && head != null ? head.position : s.Point, tt);
+                var info = new DamageInfo(raw, DamageKind.Melee, at, s.To, gameObject)
                 {
                     FromBehind = fromBehind,
-                    Knockback = SwingKnockback,
-                    WeaponId = Inv != null && Inv.EquippedWeapon != null ? Inv.EquippedWeapon.Id : "fists",
-                    BleedChance = weaponSkill == PlayerSkills.Skill.Blade ? 0.35f : 0.1f,
-                    FractureChance = weaponSkill == PlayerSkills.Skill.Blunt ? 0.15f : 0.05f,
+                    Knockback = m.Knockback * share,
+                    WeaponId = m.Id,
+                    BleedChance = m.BleedChance,
+                    FractureChance = m.FractureChance,
+                    Stagger = Mathf.Clamp01(m.Stagger * share * felling),
+                    Knockdown = Mathf.Clamp01(knockdown),
                 }.WithZone(crit ? BodyZone.Head : BodyZones.RandomStrike());
                 info.IsHeadshot = crit;
                 bool killed = CombatResolver.Apply(target, info, Me);
                 OnMeleeHit?.Invoke(target, killed);
-                Sfx.Play(SfxIds.MeleeHit, tt.position + Vector3.up * 1.2f, 0.8f, Random.Range(0.9f, 1.1f), 16f);
+                Sfx.Play(SfxIds.MeleeHit, info.HitPoint, 0.8f * Mathf.Lerp(0.6f, 1f, share), Random.Range(0.9f, 1.1f), 16f);
 
                 if (Skills != null)
                 {
-                    Skills.AddXp(weaponSkill, CloneZConfig.XpMeleeHit);
+                    Skills.AddXp(m.Skill, CloneZConfig.XpMeleeHit);
                     Skills.AddXp(PlayerSkills.Skill.Strength, CloneZConfig.XpStrengthPerHit);
-                    if (killed) Skills.AddXp(weaponSkill, CloneZConfig.XpMeleeKill);
+                    if (killed) Skills.AddXp(m.Skill, CloneZConfig.XpMeleeKill);
                 }
             }
 
-            if (landedHit) NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeHit);
-            if (landedHit && Inv != null) Inv.WearEquippedWeapon();   // a connecting blow wears the weapon
+            if (hits > 0) NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeHit);
+            if (hits > 0 && Inv != null && m == Melee) Inv.WearEquippedWeapon();   // a connecting blow wears the weapon
+            OnBlowLanded?.Invoke(hits);
         }
 
+        // The bodies a swing meets, first to last, put at the front of `found`; returns how many. It carries through the
+        // standing (the one nearest the line of the swing first, then outward) up to the weapon's count, passing over any on
+        // the ground; with nothing standing in it, it comes down on the nearest one on the ground.
+        private static int MeetInSwing(MeleeStats m, List<Struck> found)
+        {
+            s_SwingHalfArc = Mathf.Max(1f, m.Arc * 0.5f);
+            found.Sort(s_SwingOrder);
+            int standing = 0;
+            while (standing < found.Count && !found[standing].Downed) standing++;
+            if (standing > 0) return Mathf.Min(standing, Mathf.Max(1, m.MaxTargets));
+            return found.Count > 0 ? 1 : 0;
+        }
+
+        private static float s_SwingHalfArc = 45f;
+        private static readonly System.Comparison<Struck> s_SwingOrder = (a, b) =>
+            a.Downed != b.Downed ? (a.Downed ? 1 : -1) : SwingScore(a).CompareTo(SwingScore(b));
+
+        // Near and on the line of the swing first: a body at the edge of the arc counts half as far again.
+        private static float SwingScore(in Struck s) => s.Distance * (1f + 0.5f * s.Angle / s_SwingHalfArc);
+
+        // The heel comes down on the one picked at the press, if it's still on the ground under the foot (it may have got up,
+        // or been knocked away, during the wind-up): on its head if that's in reach, stood over it; else on the nearest of its
+        // body, a stomp that does StompBodyShare as much. Harder in boots and with Strength.
+        private void StompLands()
+        {
+            IDamageable target = _stompTarget;
+            _stompTarget = null;
+            int hits = 0;
+            Actor body = target != null && !target.IsDead && target.Transform != null ? target.Transform.GetComponent<Actor>() : null;
+            if (body != null && body.Downed)
+            {
+                Vector3 feet = transform.position;
+                Transform head = HeadOf(body);
+                bool onHead = head == null || FlatDistance(head.position, feet) <= CloneZConfig.StompReach;
+                Vector3 underfoot = onHead && head != null ? head.position : NearestOf(target, feet);
+                Vector3 d = underfoot - feet;
+                d.y = 0f;
+                if (d.magnitude <= CloneZConfig.StompReach + 0.4f)
+                {
+                    hits = 1;
+                    int strength = Skills != null ? Skills.GetLevel(PlayerSkills.Skill.Strength) : 0;
+                    float raw = CloneZConfig.StompDamage * (1f + strength * CloneZConfig.StompStrengthPerLevel)
+                        * PlayerModifiers.Current.MeleeDamage * Random.Range(0.9f, 1.1f);
+                    if (!onHead) raw *= CloneZConfig.StompBodyShare;
+                    if (Clothing != null && Clothing.GetWorn(ClothingSlot.Feet) != null) raw *= CloneZConfig.StompBootsMult;
+                    if (_stats.Endurance < CloneZConfig.EnduranceDanger) raw *= 0.5f;
+                    raw *= _stats.PainCombatMultiplier;
+                    Vector3 at = OnTheGround(underfoot, target.Transform);
+                    // Off the head, the heel lands on the chest or the belly near it, else on the legs.
+                    BodyZone zone = onHead ? BodyZone.Head
+                        : FlatDistance(underfoot, head.position) <= 0.8f ? BodyZone.Thorax
+                        : FlatDistance(underfoot, head.position) <= 1.1f ? BodyZone.Stomach
+                        : Random.value < 0.5f ? BodyZone.LeftLeg : BodyZone.RightLeg;
+                    var info = new DamageInfo(raw, DamageKind.Melee, at, CloneZUtil.Flat(d), gameObject)
+                    {
+                        WeaponId = StompId,
+                        FractureChance = 0.2f,
+                        Stagger = 0f,
+                    }.WithZone(zone);
+                    bool killed = CombatResolver.Apply(target, info, Me);
+                    OnMeleeHit?.Invoke(target, killed);
+                    Sfx.Play(SfxIds.MeleeHit, at, 0.9f, Random.Range(0.68f, 0.78f), 16f);
+                    NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeHit);
+                    if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Strength, CloneZConfig.XpStrengthPerHit);
+                }
+            }
+            OnBlowLanded?.Invoke(hits);
+        }
+
+        /// <summary>The "weapon" a stomp kills with (kill feeds, quests).</summary>
+        public const string StompId = "stomp";
+
+        /// <summary>Where a downed body's head is, if it has one to find: the actor's head bone (a networked body's), else its
+        /// humanoid rig's (one of the dead's).</summary>
+        public static Transform HeadOf(Actor body)
+        {
+            if (body == null) return null;
+            if (body.Head != null) return body.Head;
+            ZombieAvatar avatar = body.GetComponent<ZombieAvatar>();
+            return avatar != null && avatar.Rig != null ? avatar.Rig.Bone(HumanBone.Head) : null;
+        }
+
+        // A point of a body lying on the ground, just above the ground it lies on (for where a blow is heard and shown).
+        private static Vector3 OnTheGround(Vector3 p, Transform body) => new Vector3(p.x, body.position.y + 0.2f, p.z);
+
+        private static float FlatDistance(Vector3 a, Vector3 b)
+        {
+            a.y = b.y = 0f;
+            return Vector3.Distance(a, b);
+        }
+
+        // A shove staggers what's standing in front and shoves it back, and may put one of the dead down (more with Strength,
+        // more from behind or into one already reeling): the opening for a stomp.
         private void Shove()
         {
+            CancelBlow();
             _shoveTimer = ShoveCooldown;
+            _busyTimer = Mathf.Max(_busyTimer, CloneZConfig.ShoveRecovery);
             _stats.TryConsumeEndurance(CloneZConfig.MeleeEnduranceCost * 0.5f);
             OnShove?.Invoke();
             NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeSwing * 0.5f);
 
-            _hitThisAction.Clear();
-            FindTargets(ShoveRange, ShoveArc, _targets);
-            for (int i = 0; i < _targets.Count; i++)
+            int strength = Skills != null ? Skills.GetLevel(PlayerSkills.Skill.Strength) : 0;
+            float knockdown = CloneZConfig.ShoveKnockdownChance + strength * CloneZConfig.KnockdownPerStrength;
+            if (_stats.Endurance < CloneZConfig.EnduranceDanger) knockdown *= 0.5f;
+            Gather(ShoveRange, ShoveArc, true, _struck);
+            for (int i = 0; i < _struck.Count; i++)
             {
-                IDamageable target = _targets[i];
-                Vector3 dir = CloneZUtil.Flat(target.Transform.position - transform.position);
-                var info = new DamageInfo(0f, DamageKind.Shove, target.Transform.position, dir, gameObject)
+                Struck s = _struck[i];
+                var info = new DamageInfo(0f, DamageKind.Shove, s.Target.Transform.position, s.To, gameObject)
                 {
-                    Knockback = ShoveKnockback
+                    Knockback = ShoveKnockback,
+                    FromBehind = Vector3.Dot(s.Target.Transform.forward, s.To) > 0.25f,
+                    Knockdown = Mathf.Clamp01(knockdown),
                 };
-                target.TakeDamage(info);
+                s.Target.TakeDamage(info);
             }
         }
 
-        /// <summary>Living hostile things inside a cone in front of the aim direction: the dead, mutants, animals,
-        /// hostile stalkers — and other players when PvP is on.</summary>
-        private void FindTargets(float range, float arcDegrees, List<IDamageable> into)
+        /// <summary>Living hostile things within <paramref name="range"/> inside a cone of <paramref name="arcDegrees"/> about the
+        /// aim: the dead, mutants, animals, hostile stalkers — and other players when PvP is on. Each one on the ground is
+        /// marked, or left out with <paramref name="standingOnly"/>.</summary>
+        private void Gather(float range, float arcDegrees, bool standingOnly, List<Struck> into)
         {
             into.Clear();
+            _hitThisAction.Clear();
             Vector3 origin = transform.position + Vector3.up * 1f;
             float cos = Mathf.Cos(arcDegrees * 0.5f * Mathf.Deg2Rad);
             Vector3 aim = _controller.AimDirection;
@@ -278,12 +516,55 @@ namespace CloneZ
                 if (target is WallBreach) continue;   // a building's walls, and boards across a hole in one: the build tool's job
                 Actor other = target.Transform != null ? target.Transform.GetComponent<Actor>() : null;
                 if (other != null && Me != null && !CanHarm(other)) continue;
+                bool downed = other != null && other.Downed;
+                if (downed && standingOnly) continue;
 
-                Vector3 to = CloneZUtil.Flat(target.Transform.position - transform.position);
-                if (to == Vector3.zero || Vector3.Dot(aim, to.normalized) >= cos)
-                    into.Add(target);
+                // One on the ground is measured to the nearest of its body (stood over its head, it's at the feet), the rest
+                // to where they stand.
+                Vector3 point = downed ? NearestOf(target, transform.position) : target.Transform.position;
+                Vector3 d = point - transform.position;
+                d.y = 0f;
+                float distance = d.magnitude;
+                Vector3 to = distance > 1e-3f ? d / distance : Vector3.zero;
+                if (to != Vector3.zero && Vector3.Dot(aim, to) < cos) continue;
+                into.Add(new Struck
+                {
+                    Target = target,
+                    Body = other,
+                    To = to,
+                    Point = point,
+                    Distance = distance,
+                    Angle = to != Vector3.zero ? Vector3.Angle(aim, to) : 0f,
+                    Downed = downed,
+                });
             }
         }
+
+        // The point of a body nearest `from`, on whichever of its colliders are on (one of the dead on the ground lies along a
+        // box, see ZombieAI), else where it stands.
+        private static Vector3 NearestOf(IDamageable target, Vector3 from)
+        {
+            Transform t = target.Transform;
+            t.GetComponents(s_Colliders);
+            Vector3 best = t.position;
+            float bestSqr = float.MaxValue;
+            for (int i = 0; i < s_Colliders.Count; i++)
+            {
+                Collider c = s_Colliders[i];
+                if (c == null || !c.enabled) continue;
+                Vector3 q = c.ClosestPoint(from);
+                Vector3 flat = q - from;
+                flat.y = 0f;
+                if (flat.sqrMagnitude < bestSqr)
+                {
+                    bestSqr = flat.sqrMagnitude;
+                    best = q;
+                }
+            }
+            return best;
+        }
+
+        private static readonly List<Collider> s_Colliders = new List<Collider>(4);
 
         // Squadmates are never hit unless friendly fire is on; other players only with PvP on.
         private bool CanHarm(Actor other)
@@ -295,12 +576,12 @@ namespace CloneZ
             return true;
         }
         #endregion
-
         #region Firearm
         /// <summary>Switches to ranged mode with the given gun, chambering a magazine if ammo is on hand.</summary>
         public void EquipFirearm(ItemDef gun)
         {
             if (gun == null || !gun.IsFirearm) return;
+            CancelBlow();
             ReturnLoadedAmmo();          // hand the old gun's rounds back to the pack first
             EquippedFirearm = gun;
             LoadedAmmo = 0;
@@ -310,9 +591,10 @@ namespace CloneZ
             TryReload();                 // top up from the pack
         }
 
-        /// <summary>Leaves ranged mode (called when a melee weapon or bare hands are equipped).</summary>
+        /// <summary>Leaves ranged mode (called when a melee weapon or bare hands are equipped); a blow under way never lands.</summary>
         public void EquipMeleeMode()
         {
+            CancelBlow();
             ReturnLoadedAmmo();
             EquippedFirearm = null;
         }
@@ -321,7 +603,8 @@ namespace CloneZ
         /// from the pack (the saved magazine count is authoritative — see <see cref="SaveSystem"/>).</summary>
         public void RestoreFirearm(ItemDef gun, int loaded)
         {
-            if (gun == null || !gun.IsFirearm) { EquipMeleeMode(); return; }
+            if (gun == null || !gun.IsFirearm) { EquipMelee(null); return; }
+            CancelBlow();
             EquippedFirearm = gun;
             ItemStack st = Inv != null ? Inv.EquippedStack : null;
             string chosen = st != null && st.Extra != null ? st.Extra.AmmoChoice : null;
@@ -430,16 +713,7 @@ namespace CloneZ
                 
                 FoulBarrel();
 
-            Vector3 aim = _controller.AimDirection;
-            Vector3 muzzle, shotAim;
-            if (ViewState.MouseLook) AimThroughCrosshair(aim, out muzzle, out shotAim);
-            else
-            {
-                // Cast from just below chest height so shots still connect with short crawlers,
-                // while staying clear of the ground (aim is flat on the XZ plane).
-                muzzle = transform.position + Vector3.up * 0.95f + aim * 0.7f;
-                shotAim = aim;
-            }
+            ShotLine(out Vector3 muzzle, out Vector3 shotAim);
 
             if (gun.Id == "flaregun") { FireFlare(muzzle, shotAim); return; }
 
@@ -476,7 +750,7 @@ namespace CloneZ
                 ShotResult r = CombatResolver.Fire(req);
                 if (r.Target != null) anyHit = true;
                 if (r.Killed) anyKill = true;
-                CombatFX.Tracer(muzzle, r.End, build.Suppressed ? new Color(1f, 0.9f, 0.5f, 0.4f) : new Color(1f, 0.9f, 0.5f));
+                if (ammo != null && ammo.Tracer) CombatFX.Tracer(muzzle, r.End);   // only a tracer round draws a trail
                 if (NetAuthority.IsClientOnly) WeaponAudio.Shot(req, r);   // the server resolves it; hear where it went here
             }
 
@@ -490,27 +764,13 @@ namespace CloneZ
             float noise = gun.FirearmNoise * build.Noise;
             NoiseSystem.Emit(transform.position, noise);   // gunfire draws the horde
             GameEvents.RaiseWorldEvent(transform.position, noise, "shot");
-            string report = GunSound(gun, build);
+            string report = WeaponAudio.ShotSound(gun, build.Suppressed);
             Sfx.Play(report, muzzle, build.Suppressed ? 0.45f : 1f, Random.Range(0.96f, 1.04f), WeaponAudio.Reach(report));
 
             float kick = build.Recoil * PlayerModifiers.Current.Recoil * (AimingDownSights ? 0.75f : 1f);
             _bloom = Mathf.Min(6f, _bloom + kick * 0.6f);
             OnRecoil?.Invoke(kick);
             if (Inv != null) Inv.WearEquippedWeapon();   // the shot may cost a condition point; at 0 the gun breaks
-        }
-
-        private static string GunSound(ItemDef gun, WeaponBuild build)
-        {
-            string caliber = Ballistics.CaliberOfGun(gun);
-            if (build.Suppressed) return caliber == "545" || caliber == "762r" ? SfxIds.GunSuppressedRifle : SfxIds.GunSuppressed;
-            switch (caliber)
-            {
-                case "12g": return SfxIds.GunShotgun;
-                case "545": return SfxIds.GunRifle;
-                case "762r": return SfxIds.GunSniper;
-                case "flare": return SfxIds.GunFlare;
-                default: return SfxIds.GunPistol;
-            }
         }
 
         // Every shot fouls the barrel a little; a cleaning kit (or the workbench) clears it.
@@ -533,6 +793,23 @@ namespace CloneZ
             GameEvents.RaiseWorldEvent(transform.position, 160f, "flare");
             bool answered = ExtractionManager.Instance != null && ExtractionManager.Instance.CallHelicopter(transform.position);
             if (!answered) GameEvents.RaiseToast("The flare burns red over the Zone. No landing zone in range — everyone saw it, though.");
+        }
+
+        /// <summary>Where the next shot leaves from and which way it goes, before spread: through the crosshair in the
+        /// shoulder and first-person views, flat along the aim from just below chest height in the isometric one. A laser on
+        /// the gun shows where it ends (<see cref="WeaponTactical"/>).</summary>
+        public void ShotLine(out Vector3 muzzle, out Vector3 direction)
+        {
+            Vector3 aim = _controller.AimDirection;
+            if (ViewState.MouseLook)
+            {
+                AimThroughCrosshair(aim, out muzzle, out direction);
+                return;
+            }
+            // Cast from just below chest height so shots still connect with short crawlers,
+            // while staying clear of the ground (aim is flat on the XZ plane).
+            muzzle = transform.position + Vector3.up * 0.95f + aim * 0.7f;
+            direction = aim;
         }
 
         private void AimThroughCrosshair(Vector3 flatAim, out Vector3 muzzle, out Vector3 shotAim)

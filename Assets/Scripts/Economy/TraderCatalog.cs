@@ -56,6 +56,8 @@ namespace CloneZ
             O(bar, "vodka", 120, 1, 6); O(bar, "bandage", 60, 1, 10); O(bar, "lighter", 80, 1, 5); O(bar, "bait", 10, 1, 30);
             O(bar, "purifytabs", 35, 1, 20); O(bar, "cookedmeat", 110, 2, 6); O(bar, "animalfeed", 60, 2, 10); O(bar, "gascan", 450, 2, 3);
             O(bar, "book_cooking", 900, 2, 1); O(bar, "book_metabolism", 1100, 3, 1); O(bar, "fuseblock", 600, 3, 2);
+            // Things to throw for the dead to chase: the bar keeps a box of firecrackers and a few old clocks.
+            O(bar, Throwables.Firecrackers, 70, 1, 8); O(bar, Throwables.AlarmClock, 180, 1, 3); O(bar, Throwables.TimerRadio, 520, 2, 2);
 
             var fence = Def(Fence, "Vasko", "Fence", "He buys anything, sells whatever fell off a truck, and never asks where it came from.", Factions.Lantern, false, 0.6f);
             fence.BuysArtifacts = true;
@@ -65,8 +67,13 @@ namespace CloneZ
             O(fence, "grenade", 900, 2, 4); O(fence, "breachcharge", 2400, 3, 2); O(fence, "gps", 3500, 3, 1);
             O(fence, "zone_permit", 1500, 1, 2); O(fence, "handcuffs", 300, 1, 3); O(fence, "drone_fpv", 6500, 3, 1);
             O(fence, "leadcase", 2200, 2, 1); O(fence, "carkey", 800, 2, 1);
+            O(fence, Throwables.Molotov, 260, 1, 4); O(fence, Throwables.PipeBomb, 650, 2, 3);
             B(fence, "mod_suppressor545", 2, ("goldchain", 2), ("circuitboard", 1));
             B(fence, "suit_halo", 3, ("art_coldspark", 1), ("art_greywax", 1), ("circuitboard", 2));
+            // The Zone's guns, off the books.
+            O(fence, "aks74u", 4900, 2, 1);
+            B(fence, "svd", 3, ("goldchain", 3), ("circuitboard", 2));
+            B(fence, "pkm", 4, ("goldchain", 4), ("circuitboard", 3), ("fuseblock", 2));
 
             var inst = Def(Institute, "Dr. Brandt", "The Institute", "Legal, polite and cheap. She pays a fixed price for artifacts and tells you exactly what they do.", Factions.Institute, true, 0.35f);
             inst.BuysArtifacts = true;
@@ -83,9 +90,19 @@ namespace CloneZ
             guns.Buys = new[] { ItemCategory.Firearm, ItemCategory.Weapon, ItemCategory.Ammo, ItemCategory.Clothing, ItemCategory.Misc };
             guns.Repairs = true; guns.Upgrades = true;
             O(guns, "pistol", 1800, 1, 2); O(guns, "shotgun", 2600, 1, 2); O(guns, "smg9", 3900, 2, 2); O(guns, "ak74", 4800, 2, 2); O(guns, "mosin", 4200, 2, 1);
+            // Every loyalty level has guns of its own: Kentucky's cheap civilian guns first, then the .45, the deer guns, the
+            // police pump and the short AK; the hunting rifle, the AR and the SVD at the third; the PKM at the top.
+            O(guns, "rev38", 1400, 1, 2); O(guns, "rifle22", 1100, 1, 2);
+            O(guns, "m1911", 2200, 2, 2); O(guns, "lever3030", 3300, 2, 1); O(guns, "riotgun", 3000, 2, 1); O(guns, "aks74u", 4300, 2, 1);
+            O(guns, "rifle3006", 5200, 3, 1); O(guns, "ar15", 6400, 3, 1); O(guns, "svd", 9800, 3, 1);
+            O(guns, "pkm", 19500, 4, 1);
+            O(guns, "ammo22", 1, 1, 500); O(guns, "ammo38", 3, 1, 200); O(guns, "ammo45", 4, 2, 200); O(guns, "ammo3030", 9, 2, 100);
+            O(guns, "ammo3006", 13, 3, 80); O(guns, "ammo556", 6, 3, 300); O(guns, "ammo556_m855", 10, 4, 150);
             O(guns, "ammo9mm", 3, 1, 300); O(guns, "shotgunshells", 6, 1, 120); O(guns, "ammo9mm_ap", 7, 2, 150); O(guns, "ammo9mm_hp", 5, 2, 150);
             O(guns, "slug12", 12, 2, 60); O(guns, "ammo545_ps", 6, 2, 300); O(guns, "ammo545_bp", 12, 3, 150); O(guns, "ammo762r_lps", 14, 2, 80);
             O(guns, "ammo762r_snb", 26, 4, 40); O(guns, "flaregun", 900, 1, 2); O(guns, "flare", 140, 1, 10);
+            // The special rounds: tracers from the second loyalty level, the incendiaries from the third.
+            O(guns, "ammo545_tracer", 7, 2, 200); O(guns, "ammo9mm_inc", 24, 3, 60); O(guns, "ammo12g_inc", 40, 3, 30);
             O(guns, "mod_reddot", 1100, 1, 2); O(guns, "mod_foregrip", 450, 1, 3); O(guns, "mod_weaponlight", 400, 1, 3);
             O(guns, "mod_suppressor9", 1600, 2, 1); O(guns, "mod_compensator", 700, 2, 2); O(guns, "mod_stock_tactical", 800, 2, 2);
             O(guns, "mod_stock_folding", 600, 2, 2); O(guns, "mod_mag_extended", 650, 2, 2); O(guns, "mod_laser", 750, 2, 2);

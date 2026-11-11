@@ -202,7 +202,8 @@ public static Vehicle Spawn(int spot, Vector3 at, float yaw, int seed)
 public void RefreshParts()
         {
             for (int i = 0; i < 4; i++) if (_wheels[i] != null) _wheels[i].gameObject.SetActive(i < Wheels);
-            if (_bodyRoot != null) _bodyRoot.localPosition = Wheels < 4 ? new Vector3(0f, -0.22f, 0f) : Vector3.zero;
+            // Short of a wheel it sits down on the rest; with none, right down on its belly (whose underside is 0.345 m up).
+            if (_bodyRoot != null) _bodyRoot.localPosition = Wheels == 0 ? new Vector3(0f, -0.34f, 0f) : Wheels < 4 ? new Vector3(0f, -0.22f, 0f) : Vector3.zero;
         }
 
         /// <summary>Capture the car's current state for saving.</summary>

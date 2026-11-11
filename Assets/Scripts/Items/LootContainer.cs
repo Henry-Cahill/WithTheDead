@@ -4,7 +4,11 @@ using UnityEngine;
 
 namespace CloneZ
 {
-    public enum ContainerType { Crate, Locker, Fridge, MedCabinet, Desk, ToolBench, Wardrobe, Pantry, GunLocker, Shelf, Corpse }
+    /// <summary>The kinds of loot container, each filled from its own loot table. The last three are the gun stores of
+    /// particular buildings, so each holds guns of its own: a home's (a farmhouse's above all) gun cabinet, a gun shop's
+    /// counter and racks, and a police station's (or a cruiser's) weapons locker. <see cref="GunLocker"/> is the
+    /// military and Zone one. Saved as their int, so new kinds only ever go on the end.</summary>
+    public enum ContainerType { Crate, Locker, Fridge, MedCabinet, Desk, ToolBench, Wardrobe, Pantry, GunLocker, Shelf, Corpse, GunCabinet, GunCounter, PoliceLocker }
 
     /// <summary>
     /// A searchable world container. It registers itself in a static list so the
@@ -80,6 +84,9 @@ namespace CloneZ
                 case ContainerType.Wardrobe:
                 case ContainerType.Fridge:
                 case ContainerType.GunLocker:
+                case ContainerType.GunCabinet:
+                case ContainerType.GunCounter:
+                case ContainerType.PoliceLocker:
                 case ContainerType.Locker: return 6;
                 case ContainerType.Corpse: return 5;
                 default: return 4;
@@ -160,35 +167,6 @@ if (!All.Contains(this)) All.Add(this);
             position.y = size.y * 0.5f;   // rest the box on the ground
 
             GameObject go = CloneZUtil.Box(name, position, size, color, parent);
-            // Compute floor Y for potential handle placement
-            var floor = position;
-            floor.y = BuildPiece.FloorTopAt(floor);
-
-            // Deterministic random to optionally add a small metal front‑handle
-                var rng = new System.Random(seed);
-            if (rng.NextDouble() < 0.7)
-            {
-                var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                handle.name = "Handle";
-                handle.transform.SetParent(go.transform, false);
-                // Position at the front centre of the container
-                handle.transform.localPosition = new Vector3(0f, size.y * 0.5f, size.z * 0.5f + 0.02f);
-                handle.transform.localScale = new Vector3(0.04f, 0.02f, 0.04f);
-                // Use the same material as the container box
-                var rend = handle.GetComponent<Renderer>();
-                if (rend != null) rend.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;
-            }
-            // Add a small metal knob to fridges with 50% chance
-            if (type == ContainerType.Fridge && rng.NextDouble() < 0.5)
-            {
-                var knob = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                knob.name = "Knob";
-                knob.transform.SetParent(go.transform, false);
-                knob.transform.localPosition = new Vector3(0f, size.y * 0.32f, size.z * 0.5f + 0.018f);
-                knob.transform.localScale = new Vector3(0.06f, 0.02f, 0.06f);
-                var rendKnob = knob.GetComponent<Renderer>();
-                if (rendKnob != null) rendKnob.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;
-            }
             var c = go.AddComponent<LootContainer>();
             c.DisplayName = name;
             c.Type = type;
@@ -376,7 +354,9 @@ c.SearchTime = 0f; c.Searched = searched;
             }
             else
             {
-                var type = (ContainerType)Mathf.Clamp(kind, 0, (int)ContainerType.Shelf);
+                // A world container: any kind but the corpse (handled above); past the last kind (a damaged save), a shelf.
+                var type = kind > (int)ContainerType.PoliceLocker || kind == (int)ContainerType.Corpse
+                    ? ContainerType.Shelf : (ContainerType)Mathf.Max(0, kind);
                 Style(type, out Vector3 size, out Color color, out string name);
                 position.y = size.y * 0.5f;
                 GameObject go = CloneZUtil.Box(name, position, size, color, parent);
@@ -432,6 +412,12 @@ c.SearchTime = 0f; c.Searched = searched;
                     size = new Vector3(1.0f, 1.7f, 0.6f); color = new Color(0.62f, 0.50f, 0.36f); name = "Pantry"; break;
                 case ContainerType.GunLocker:
                     size = new Vector3(0.8f, 1.9f, 0.6f); color = new Color(0.24f, 0.26f, 0.30f); name = "Gun Locker"; break;
+                case ContainerType.GunCabinet:
+                    size = new Vector3(0.9f, 1.9f, 0.45f); color = new Color(0.40f, 0.26f, 0.15f); name = "Gun Cabinet"; break;
+                case ContainerType.GunCounter:
+                    size = new Vector3(1.6f, 1.0f, 0.7f); color = new Color(0.30f, 0.30f, 0.32f); name = "Gun Counter"; break;
+                case ContainerType.PoliceLocker:
+                    size = new Vector3(0.8f, 1.9f, 0.6f); color = new Color(0.20f, 0.22f, 0.27f); name = "Weapons Locker"; break;
                 case ContainerType.Shelf:
                     size = new Vector3(1.4f, 1.8f, 0.5f); color = new Color(0.50f, 0.46f, 0.40f); name = "Shelf"; break;
                 default:

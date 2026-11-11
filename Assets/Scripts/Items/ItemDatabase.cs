@@ -14,8 +14,9 @@ namespace CloneZ
 
     /// <summary>What special job an item does beyond its category. Containers (backpacks, rigs, thigh
     /// bags) are worn and add a carry section; devices run down a charge stored in the stack's
-    /// <see cref="ItemStack.Condition"/> (see <see cref="ItemDef.UsesCharge"/>); refills top them up.</summary>
-    public enum GearKind { None, Container, NightVision, Flashlight, GasMask, Battery, Filter }
+    /// <see cref="ItemStack.Condition"/> (see <see cref="ItemDef.UsesCharge"/>); refills top them up. A weapon light is a
+    /// device too: fitted to a gun, its charge moves onto the gun (<see cref="ItemExtra.LightUsed"/>) and back off with it.</summary>
+    public enum GearKind { None, Container, NightVision, Flashlight, GasMask, Battery, Filter, WeaponLight }
 
     /// <summary>Freshness of a perishable food item, from newly-found to spoiled.</summary>
     public enum FoodState { Fresh, Stale, Rotten }
@@ -129,7 +130,8 @@ namespace CloneZ
         /// <summary>A device whose <see cref="ItemStack.Condition"/> is its charge (battery or filter,
         /// 0..<see cref="MaxCondition"/>) rather than wear: it never breaks, can sit at 0 (flat / spent)
         /// and is topped up with a refill rather than repaired.</summary>
-        public bool UsesCharge => Gear == GearKind.NightVision || Gear == GearKind.Flashlight || Gear == GearKind.GasMask;
+        public bool UsesCharge => Gear == GearKind.NightVision || Gear == GearKind.Flashlight || Gear == GearKind.GasMask
+                                  || Gear == GearKind.WeaponLight;
 
         /// <summary>A battery or filter that tops up a device's charge when used.</summary>
         public bool IsRefill => Gear == GearKind.Battery || Gear == GearKind.Filter;
@@ -222,12 +224,17 @@ if (IsSeed && HasId(CropId))
             // Indicate that the item calms panic when used.
             if (CalmsPanic) StatLine(sb, "Calms", "panic");
 
-            // Show weapon stats: damage, reach, and attack speed.
+            // Show weapon stats: damage, reach, attack speed, and how it handles (MeleeStats).
             if (IsWeapon)
             {
+                MeleeStats m = MeleeStats.For(this);
                 StatLine(sb, "Damage", WeaponDamage.ToString("0.0"));
                 StatLine(sb, "Reach", WeaponRange.ToString("0.0") + " m");
-                StatLine(sb, "Speed", (1f / Mathf.Max(0.01f, SwingCooldown)).ToString("0.0") + " /s");
+                StatLine(sb, "Speed", (1f / Mathf.Max(0.01f, m.Cycle)).ToString("0.0") + " /s");
+                StatLine(sb, "Swing", Mathf.RoundToInt(m.Arc) + "\u00b0 \u00b7 " + Mathf.RoundToInt(m.WindUp * 1000f) + " ms wind-up \u00b7 "
+                    + Mathf.RoundToInt(m.Recovery * 1000f) + " ms recovery");
+                StatLine(sb, "Hits", m.MaxTargets == 1 ? "one body" : "up to " + m.MaxTargets + " bodies a swing");
+                StatLine(sb, "Staggers", Pct(m.Stagger) + " \u00b7 knocks down " + Pct(m.Knockdown));
             }
             // Show firearm stats: damage (account for pellets), range, magazine size, and ammo type.
             if (IsFirearm)
@@ -269,13 +276,17 @@ if (IsSeed && HasId(CropId))
                 case GearKind.Flashlight:
                     StatLine(sb, "Battery", Mathf.RoundToInt(ChargeSeconds / 60f) + " min \u00b7 toggle with L");
                     break;
+                // A weapon light shines from the gun it's fitted to; L switches it while that gun is in hand.
+                case GearKind.WeaponLight:
+                    StatLine(sb, "Battery", Mathf.RoundToInt(ChargeSeconds / 60f) + " min \u00b7 L with the gun in hand");
+                    break;
                 // Show filter duration for gas‑mask gear.
                 case GearKind.GasMask:
                     StatLine(sb, "Filter", Mathf.RoundToInt(ChargeSeconds / 60f) + " min in toxic gas");
                     break;
                 // Explain battery’s purpose.
                 case GearKind.Battery:
-                    StatLine(sb, "Use", "recharges night vision or a flashlight");
+                    StatLine(sb, "Use", "recharges night vision, a flashlight or a weapon light");
                     break;
                 // Explain filter’s purpose.
                 case GearKind.Filter:
@@ -518,6 +529,14 @@ public static ItemDef Get(string id)
         public class LootTable
         {
             public int MinRolls; public int MaxRolls; public int EmptyWeight; public LootEntry[] Entries;
+        }
+
+        /// <summary>The loot table a container of <paramref name="type"/> rolls from, or null when it has none (for tools and
+        /// tests to read; don't change it).</summary>
+        public static LootTable TableOf(ContainerType type)
+        {
+            EnsureInit();
+            return s_Tables != null && s_Tables.TryGetValue(type, out LootTable t) ? t : null;
         }
 
         /// <summary>Fills <paramref name="dest"/> with a random draw from the container's loot table. In a raid every

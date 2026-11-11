@@ -17,8 +17,8 @@ accessibility, localization readiness and UI performance.
   hints, subtitles and a loading card.
 - The Settings screen ([HomeScreens.cs](../Assets/Scripts/Hub/Screens/HomeScreens.cs#L258)) has picture effects, field
   of view, HUD style, crosshair, subtitles, the five audio buses (each applied by `SfxMixer`), microphone and mouse
-  sensitivity. It has nothing for the display: no resolution, window mode, vsync, frame cap or quality, and no code in
-  the game sets any of them.
+  sensitivity, and **Shadows** (the shadow budget's quality, `GameSettings.ShadowQuality`). It has nothing for the
+  display: no resolution, window mode, vsync, frame cap or quality level, and no code in the game sets any of them.
 - Input is the Input System with one map per camera view, keyboard and mouse only
   ([GameInput.cs](../Assets/Scripts/Core/GameInput.cs#L49)). Only the pause menu reads a gamepad
   ([PauseMenuController.cs](../Assets/Scripts/UI/PauseMenuController.cs#L359)).
@@ -44,8 +44,9 @@ accessibility, localization readiness and UI performance.
     `QualitySettings.SetQualityLevel` or `Application.targetFrameRate`. On a laptop or a 144 Hz monitor that's the first
     thing people look for.
   - **Do:** Add a **Display** section to Settings: window mode, resolution (from `Screen.resolutions`), vsync, frame
-    cap, render scale, shadow quality (it drives the shadow budget in [Rendering.md](Rendering.md)) and a preset. Store
-    them in `GameSettings`, apply them at boot and on change, and have a "keep these settings?" countdown for
+    cap, render scale and a preset, and move **Shadows** there from the picture card (`GameSettings.ShadowQuality`, which
+    drives the shadow budget in [Rendering.md](Rendering.md); already applied at once and saved). Store them in
+    `GameSettings`, apply them at boot and on change, and have a "keep these settings?" countdown for
     resolution changes.
   - **Done when:** Every option applies at once, survives a restart, and a bad resolution reverts by itself.
 

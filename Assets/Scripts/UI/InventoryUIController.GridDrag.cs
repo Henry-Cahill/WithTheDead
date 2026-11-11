@@ -969,6 +969,8 @@ namespace CloneZ
             else if (d.IsDamageable)
                 InfoLine(sb, "Wear", ItemConditionTiers.Label(s.Condition01) + "  \u00b7  " + Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
                     + (s.TimesRepaired > 0 ? "  \u00b7  repaired \u00d7" + s.TimesRepaired : ""));
+            // A gun carries the battery of the light fitted to it.
+            if (d.IsFirearm && PlayerGear.FittedLight(s) != null) InfoLine(sb, "Light battery", Pct(1f - Mathf.Clamp01(s.Extra.LightUsed)));
             if (d.Perishable)
                 InfoLine(sb, "Freshness", s.State + "  \u00b7  " + Mathf.RoundToInt(s.AgeHours) + "h old of ~" + Mathf.RoundToInt(d.ShelfLifeHours) + "h");
             InfoLine(sb, "Size", t.W + "\u00d7" + t.H + (t.Rotated ? "  (turned)" : ""));

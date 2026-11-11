@@ -13,7 +13,7 @@ namespace CloneZ
     public static class WeaponAudio
     {
         private const float WhizRadius = 4f, MuzzleClear = 3f, ImpactRange = 45f, SpeedOfSound = 343f;
-        private const int WorldMask = 1 << 0;
+        private const int WorldMask = CloneZConfig.WorldMask;
         private const string Unknown = "";
 
         private static bool s_Hooked;
@@ -51,10 +51,12 @@ namespace CloneZ
             NearMiss(from, to, null, weaponId);
         }
 
-        /// <summary>The reload for a gun: magazine (9 mm), rifle magazine and charging handle, shotgun tube and pump,
-        /// stripper clip and bolt; the generic one for anything else.</summary>
+        /// <summary>The reload for a gun: its own (<see cref="GunStats.ReloadSound"/>), else by calibre: magazine (9 mm), rifle
+        /// magazine and charging handle, shotgun tube and pump, stripper clip and bolt; the generic one for anything else.</summary>
         public static string ReloadSound(ItemDef gun)
         {
+            GunStats stats = gun != null ? Ballistics.Gun(gun.Id) : null;
+            if (stats != null && !string.IsNullOrEmpty(stats.ReloadSound)) return stats.ReloadSound;
             switch (gun != null ? Ballistics.CaliberOfGun(gun) : null)
             {
                 case "9x19": return SfxIds.ReloadPistol;
@@ -66,6 +68,31 @@ namespace CloneZ
         }
 
         /// <summary>
+        /// The report of a shot from <paramref name="gun"/>: through a can, the suppressed cough (a rifle's, whose round still
+        /// cracks, for the full-power calibres); otherwise the gun's own (<see cref="GunStats.Sound"/>), else its calibre's.
+        /// The one place the survivor's shots, the people's and a co-op peer's pick their sound.
+        /// </summary>
+        public static string ShotSound(ItemDef gun, bool suppressed = false)
+        {
+            string caliber = gun != null ? Ballistics.CaliberOfGun(gun) : null;
+            if (suppressed) return RifleCalibre(caliber) ? SfxIds.GunSuppressedRifle : SfxIds.GunSuppressed;
+            GunStats stats = gun != null ? Ballistics.Gun(gun.Id) : null;
+            if (stats != null && !string.IsNullOrEmpty(stats.Sound)) return stats.Sound;
+            switch (caliber)
+            {
+                case "12g": return SfxIds.GunShotgun;
+                case "545": case "556": return SfxIds.GunRifle;
+                case "762r": case "3006": case "3030": return SfxIds.GunSniper;
+                case "flare": return SfxIds.GunFlare;
+                default: return SfxIds.GunPistol;
+            }
+        }
+
+        // Rounds that stay supersonic, so a suppressor leaves their crack.
+        private static bool RifleCalibre(string caliber) =>
+            caliber == "545" || caliber == "556" || caliber == "762r" || caliber == "3006" || caliber == "3030";
+
+        /// <summary>
         /// The range to play a gun's report at. Up close it is loud and falls away over this; beyond 55–80 m the distant
         /// version takes over (see the Weapons recipes), which carries 450–650 m on its own.
         /// </summary>
@@ -73,10 +100,20 @@ namespace CloneZ
         {
             switch (gunSound)
             {
-                case SfxIds.GunPistol: return 110f;
+                case SfxIds.GunPistol:
+                case SfxIds.GunRevolver:
+                case SfxIds.GunPistol45: return 110f;
+                case SfxIds.GunRimfire: return 70f;
                 case SfxIds.GunRifle:
-                case SfxIds.GunShotgun: return 130f;
-                case SfxIds.GunSniper: return 160f;
+                case SfxIds.GunShotgun:
+                case SfxIds.GunRiot:
+                case SfxIds.GunAr15:
+                case SfxIds.GunCarbine: return 130f;
+                case SfxIds.GunLever: return 145f;
+                case SfxIds.GunSniper:
+                case SfxIds.GunHunting:
+                case SfxIds.GunDmr:
+                case SfxIds.GunMachineGun: return 160f;
                 case SfxIds.GunSuppressed: return 35f;
                 case SfxIds.GunSuppressedRifle: return 55f;
                 case SfxIds.GunFlare: return 90f;
@@ -157,7 +194,7 @@ namespace CloneZ
                 Random.Range(0.93f, 1.07f), 30f);
         }
 
-        // Rifle and sniper rounds (and slugs) break the sound barrier and crack past; 9 mm, buckshot and flares zip.
+        // Rifle and sniper rounds (and slugs) break the sound barrier and crack past; handgun rounds, .22s, buckshot and flares zip.
         private static bool Supersonic(string ammoId, string weaponId)
         {
             AmmoStats a = Ballistics.Ammo(ammoId);
@@ -168,7 +205,7 @@ namespace CloneZ
                 cal = gun != null ? Ballistics.CaliberOfGun(gun) : null;
             }
             if (cal == null) return true;
-            if (cal == "9x19" || cal == "flare") return false;
+            if (cal == "9x19" || cal == "38sp" || cal == "45acp" || cal == "22lr" || cal == "flare") return false;
             if (cal == "12g") return a != null && a.Pellets <= 1;
             return true;
         }

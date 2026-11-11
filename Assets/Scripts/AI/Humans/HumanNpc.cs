@@ -121,6 +121,7 @@ namespace CloneZ
                 _handLight.intensity = 2f;
                 _handLight.color = new Color(1f, 0.95f, 0.8f);
                 _handLight.shadows = LightShadows.Soft;
+                ShadowedLight.Add(_handLight);   // cast while the shadow budget grants them
             }
             _handLight.enabled = true;
             _handFlashOff = Time.time + seconds;
@@ -551,16 +552,8 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Utility method that returns the appropriate sound ID for a gun type.</summary>
-        public static string GunSound(ItemDef gun)
-        {
-            if (gun == null) return SfxIds.GunPistol;
-            string cal = Ballistics.CaliberOfGun(gun) ?? "";
-            if (gun.Id.Contains("mosin") || cal == "762r" || cal.Contains("7.62x54")) return SfxIds.GunSniper;
-            if (gun.Id.Contains("shotgun") || cal.Contains("12")) return SfxIds.GunShotgun;
-            if (gun.Id.Contains("pistol") || cal.Contains("9x")) return SfxIds.GunPistol;
-            return SfxIds.GunRifle;
-        }
+        /// <summary>The report of a shot from <paramref name="gun"/> (see <see cref="WeaponAudio.ShotSound"/>).</summary>
+        public static string GunSound(ItemDef gun) => gun == null ? SfxIds.GunPistol : WeaponAudio.ShotSound(gun);
 
         /// <summary>Stops any ongoing reload; resets the gun's magazine from reserve ammo.</summary>
         private void Reload()
@@ -883,7 +876,21 @@ namespace CloneZ
             Animator = Rig.gameObject.AddComponent<HumanoidAnimator>();
             Animator.AutoUpdate = false;
             Animator.Gait = HumanoidGait.Survivor;
-            if (npc.Gun != null) Rig.SetHeldItem(npc.Gun, HoldStyle.Firearm);
+            if (npc.Gun != null)
+            {
+                Rig.SetHeldItem(npc.Gun, HoldStyle.Firearm);
+                Rig.SetHeldMods(GunMods(npc));   // the attachments rolled onto the gun show on it
+            }
+        }
+
+        // The mods on the NPC's gun (the stack in its pack), or null.
+        private static List<string> GunMods(HumanNpc npc)
+        {
+            if (npc.Pack == null || npc.Gun == null) return null;
+            List<ItemStack> stacks = npc.Pack.Stacks;
+            for (int i = 0; i < stacks.Count; i++)
+                if (stacks[i].Def == npc.Gun) return stacks[i].Extra != null ? stacks[i].Extra.Mods : null;
+            return null;
         }
 
         private static void Dress(HumanoidLook look, ClothingSlot slot, string[] ids, float chance, System.Random rng)

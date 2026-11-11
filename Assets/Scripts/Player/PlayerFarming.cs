@@ -224,7 +224,7 @@ public string WorkLabel { get; private set; } = "";
             float h = CloneZConfig.FarmPlotSize * 0.5f + 0.05f;
             Vector3 center = pos + Vector3.up * 0.6f;              // clears the ground slab (top at y=0)
             Vector3 half = new Vector3(h, 0.5f, h);
-            int mask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+            int mask = CloneZConfig.WorldMask | (1 << CloneZConfig.IgnoreRaycastLayer);
 
             int n = Physics.OverlapBoxNonAlloc(center, half, _overlapBuf, Quaternion.identity, mask, QueryTriggerInteraction.Ignore);
             for (int i = 0; i < n; i++)

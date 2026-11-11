@@ -80,7 +80,7 @@ namespace CloneZ
         private Action<InteractContext> _openAct, _closeAct, _lockAct, _unlockAct, _rattleAct, _peepAct, _knockAct, _listenAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
-        private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+        private static readonly int BodyMask = CloneZConfig.WorldMask | (1 << CloneZConfig.IgnoreRaycastLayer);
         private static readonly Color KnockCaption = new Color(0.86f, 0.74f, 0.52f);
 
         /// <summary>True while the door stands open.</summary>

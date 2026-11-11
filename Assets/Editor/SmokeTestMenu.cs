@@ -15,6 +15,7 @@ namespace CloneZ.EditorTools
     {
         private const string WatchItem = "CloneZ/Smoke Test/Watch Wave Survival";
         private const string RunItem = "CloneZ/Smoke Test/Run Wave Survival (full speed)";
+        private const string WatchMeleeItem = "CloneZ/Smoke Test/Watch Melee (knife, bat and axe in a corridor)";
         private const float WatchPace = 0.3f;
 
         [MenuItem(WatchItem)]
@@ -23,8 +24,12 @@ namespace CloneZ.EditorTools
         [MenuItem(RunItem)]
         private static void RunWave() => Play("wave", 0f);
 
+        [MenuItem(WatchMeleeItem)]
+        private static void WatchMelee() => Play("melee", WatchPace);
+
         [MenuItem(WatchItem, true)]
         [MenuItem(RunItem, true)]
+        [MenuItem(WatchMeleeItem, true)]
         private static bool CanPlay() => !EditorApplication.isPlayingOrWillChangePlaymode;
 
         private static void Play(string mode, float pace)

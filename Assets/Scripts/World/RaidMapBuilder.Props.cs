@@ -68,7 +68,7 @@ namespace CloneZ
                 {
                     Noun = back.ToLowerInvariant(),
                     LookLabel = truck || pickup ? "Search the truck bed" : "Pop the trunk",
-                    LootType = police ? ContainerType.GunLocker : ContainerType.Crate,
+                    LootType = police ? ContainerType.PoliceLocker : ContainerType.Crate,
                     EmptyChance = police ? CloneZConfig.RaidTrunkEmptyChance + 0.1f : CloneZConfig.RaidTrunkEmptyChance,
                     MaxStacks = police ? 1 : CloneZConfig.RaidTrunkMaxStacks,
                     SearchTime = CloneZConfig.RaidTrunkSearchSeconds,

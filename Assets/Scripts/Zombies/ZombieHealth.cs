@@ -61,10 +61,13 @@ namespace CloneZ
         {
             if (IsDead) return;
 
-            // A shove deals no damage but reliably staggers and shoves back (PZ).
+            // A shove deals no damage but reliably staggers and shoves back (PZ), and may put it down: likelier from behind
+            // or into one already reeling. One on the ground has nothing left to shove.
             if (info.Kind == DamageKind.Shove)
             {
-                AI.Stagger(0.7f, info.HitDirection, info.Knockback);
+                if (AI.IsDowned) return;
+                if (RollKnockdown(info)) AI.KnockDown(info.HitDirection, info.Knockback * 0.5f);
+                else AI.Stagger(0.7f, info.HitDirection, info.Knockback);
                 ZombieVoices.Hurt(this);
                 return;
             }
@@ -82,10 +85,39 @@ namespace CloneZ
                 return;
             }
 
-            // Survived the blow: brief stagger scaled by how hard it hit.
-            float stun = info.IsHeadshot ? 0.5f : 0.25f;
-            AI.Stagger(stun, info.HitDirection, info.Knockback);
+            // Fire doesn't stop them: a burning one keeps coming (PZ), so a burn neither staggers it nor makes it cry out.
+            if (info.Kind == DamageKind.Burn) return;
+
+            // On the ground: a blow (a stomp) keeps it there a moment longer.
+            if (AI.IsDowned)
+            {
+                if (info.Kind == DamageKind.Melee) AI.Pin(info.HitDirection);
+                ZombieVoices.Hurt(this);
+                return;
+            }
+
+            // Survived the blow: it may go down, or reel for a moment (longer the harder the weapon shoves), or only flinch
+            // and keep coming — a melee weapon carries its own chances (MeleeStats); a round always staggers, briefly.
+            if (RollKnockdown(info)) AI.KnockDown(info.HitDirection, info.Knockback * 0.5f);
+            else if (info.Stagger >= 1f || UnityEngine.Random.value < info.Stagger)
+            {
+                float stun = info.Kind == DamageKind.Melee
+                    ? CloneZConfig.MeleeStaggerBase + CloneZConfig.MeleeStaggerPerKnockback * info.Knockback + (info.IsHeadshot ? 0.2f : 0f)
+                    : info.IsHeadshot ? 0.5f : 0.25f;
+                AI.Stagger(stun, info.HitDirection, info.Knockback);
+            }
+            else AI.Flinch(info.HitDirection, info.Knockback);
             ZombieVoices.Hurt(this);
+        }
+
+        // A blow's knockdown chance, more against a body already reeling or struck from behind; a crawler is down already.
+        private bool RollKnockdown(in DamageInfo info)
+        {
+            float chance = info.Knockdown;
+            if (chance <= 0f || AI.Type == ZombieType.Crawler) return false;
+            if (AI.IsStaggered) chance += CloneZConfig.KnockdownReelingBonus;
+            if (info.FromBehind) chance += CloneZConfig.KnockdownFromBehindBonus;
+            return UnityEngine.Random.value < Mathf.Min(0.95f, chance);
         }
 
         private void Die(Vector3 hitDirection)

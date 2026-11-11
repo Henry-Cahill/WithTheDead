@@ -186,7 +186,8 @@ namespace CloneZ
         /// <inheritdoc cref="ForeignWallMesh"/>
         public System.Func<Vector3, Transform> ForeignWallObject;
 
-        /// <summary>False for ceiling fittings that never ask for shadows (the real-world map's: a town's worth of them).</summary>
+        /// <summary>False for ceiling fittings that never ask for shadows. True (as on the real-world map, a town's worth of
+        /// them) leaves it to the <see cref="ShadowBudget"/>, which gives shadows to the few nearest the survivor.</summary>
         public bool CeilingShadows = true;
 
         /// <summary>When set, <see cref="CeilingLight"/> lists its lamps here instead of hanging them from the ceiling at once:

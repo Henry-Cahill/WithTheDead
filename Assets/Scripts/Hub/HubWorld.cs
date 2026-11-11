@@ -648,11 +648,13 @@ namespace CloneZ
                 go.transform.SetParent(world, false);
                 go.transform.position = at + Vector3.down * 0.15f;
                 var l = go.AddComponent<Light>();
-                l.type = LightType.Point;
+                // A shaded pendant shines down: a downlight, its shadows the budget's to give (the few nearest the survivor).
+                RoomLight.MakeDownlight(l);
                 l.color = i == 7 ? new Color(0.9f, 0.5f, 0.25f) : st.Light;
                 l.intensity = i == 7 ? st.LightIntensity * 0.5f : st.LightIntensity;
                 l.range = 7.5f;
-                l.shadows = i < 4 ? LightShadows.Soft : LightShadows.None;
+                l.shadows = LightShadows.Soft;
+                ShadowedLight.Add(l);
                 // A green enamel pendant on its cord, the bulb under it (drawn where it hangs: the globes once all
                 // rendered at the room's origin).
                 Deco(world, "Lamp", m =>

@@ -227,6 +227,108 @@ namespace CloneZ
         }
         #endregion
 
+        #region Gun cabinet
+        internal const float CabinetDoorFront = 0.215f, CabinetHingeX = -0.43f;
+        internal const float CabinetDoorY0 = 0.53f, CabinetDoorY1 = 1.86f;
+
+        /// <summary>A farmhouse's walnut gun cabinet without its door (0.9 wide, 0.45 deep, 1.9 high): a cased upper half with a
+        /// green felt back and a notched rack holding a few long guns upright, over a drawer case for the shells, under a crown
+        /// moulding. The glazed door is drawn by <see cref="GunCabinetDoor"/>. Returns the wood.</summary>
+        public static Color GunCabinetBody(RaidMesh m, System.Random rng)
+        {
+            Color c = V(new Color(0.40f, 0.25f, 0.14f), rng, 0.06f);
+            Surf wood = M(c), dark = M(c * 0.7f), felt = M(new Color(0.16f, 0.24f, 0.14f));
+            const float t = 0.03f, back = -0.225f, front = 0.2f;
+            const float zc = (back + front) * 0.5f, d = front - back;
+            m.Box(new Vector3(0f, 0.95f, back + t * 0.5f), new Vector3(0.9f, 1.9f, t), wood);
+            m.Box(new Vector3(-0.45f + t * 0.5f, 0.95f, zc), new Vector3(t, 1.9f, d), wood);
+            m.Box(new Vector3(0.45f - t * 0.5f, 0.95f, zc), new Vector3(t, 1.9f, d), wood);
+            m.Box(new Vector3(0f, 1.87f, zc), new Vector3(0.9f, t, d), wood);
+            m.Box(new Vector3(0f, 1.9f, zc + 0.01f), new Vector3(0.96f, 0.04f, d + 0.04f), dark);
+            m.Box(new Vector3(0f, 0.03f, zc), new Vector3(0.9f, 0.06f, d), dark);
+
+            // The drawer case below: a shelf over two drawer fronts with brass pulls.
+            m.Box(new Vector3(0f, 0.505f, zc), new Vector3(0.84f, 0.03f, d), wood);
+            for (int i = 0; i < 2; i++)
+            {
+                float y = 0.16f + i * 0.17f;
+                m.Box(new Vector3(0f, y, front - 0.01f), new Vector3(0.82f, 0.15f, 0.02f), wood);
+                m.Box(new Vector3(0f, y, front + 0.003f), new Vector3(0.12f, 0.02f, 0.012f), Mt(Brass));
+            }
+
+            // The rack: a notched sill for the butts and a bar for the barrels, and the long guns standing in it.
+            m.Box(new Vector3(0f, 1.2f, back + t + 0.003f), new Vector3(0.84f, 1.3f, 0.006f), felt);
+            m.Box(new Vector3(0f, 0.545f, -0.05f), new Vector3(0.82f, 0.05f, 0.18f), dark);
+            m.Box(new Vector3(0f, 1.55f, -0.17f), new Vector3(0.82f, 0.04f, 0.06f), dark);
+            Surf stock = M(new Color(0.36f, 0.22f, 0.12f)), steel = Mt(new Color(0.12f, 0.12f, 0.13f));
+            int guns = 2 + rng.Next(3);
+            for (int i = 0; i < guns; i++)
+            {
+                float x = -0.3f + i * 0.15f;
+                Quaternion lean = Quaternion.Euler(-8f, 0f, R(rng, -2f, 2f));
+                m.Box(new Vector3(x, 0.72f, -0.06f), new Vector3(0.05f, 0.3f, 0.11f), lean, stock);
+                m.Box(new Vector3(x, 0.95f, -0.08f), new Vector3(0.04f, 0.18f, 0.06f), lean, stock);
+                m.Box(new Vector3(x, 1.25f, -0.13f), new Vector3(0.03f, 0.75f, 0.04f), lean, steel);
+            }
+            return c;
+        }
+
+        /// <summary>The gun cabinet's door, shut (it hinges on its left edge at <see cref="CabinetHingeX"/>): a walnut frame
+        /// round a tall pane of glass over the rack, and a little brass escutcheon for the key nobody could find.</summary>
+        public static void GunCabinetDoor(RaidMesh m, Color c)
+        {
+            Surf frame = G(c * 1.05f);
+            const float z = CabinetDoorFront - 0.0125f, x0 = -0.43f, x1 = 0.43f;
+            const float cy = (CabinetDoorY0 + CabinetDoorY1) * 0.5f, h = CabinetDoorY1 - CabinetDoorY0, w = x1 - x0;
+            m.Box(new Vector3(x0 + 0.03f, cy, z), new Vector3(0.06f, h, 0.025f), frame);
+            m.Box(new Vector3(x1 - 0.03f, cy, z), new Vector3(0.06f, h, 0.025f), frame);
+            m.Box(new Vector3(0f, CabinetDoorY1 - 0.035f, z), new Vector3(w - 0.12f, 0.07f, 0.025f), frame);
+            m.Box(new Vector3(0f, CabinetDoorY0 + 0.035f, z), new Vector3(w - 0.12f, 0.07f, 0.025f), frame);
+            m.Box(new Vector3(0f, cy, z), new Vector3(w - 0.1f, h - 0.12f, 0.004f), KitchenParts.Water);
+            m.Box(new Vector3(x1 - 0.05f, 1.15f, CabinetDoorFront + 0.004f), new Vector3(0.02f, 0.035f, 0.006f), Mt(Brass));
+        }
+
+        /// <summary>A gun shop's glass display counter (1.6 wide, 0.7 deep, 1.0 high): a dark wooden base on a black kick plate,
+        /// and a glass case on top with handguns laid out on red felt beside their price tags, a box of rounds among them.</summary>
+        public static void GunCounterBody(RaidMesh m, System.Random rng)
+        {
+            Color wood = V(new Color(0.24f, 0.17f, 0.11f), rng, 0.05f);
+            Surf trim = Mt(new Color(0.55f, 0.56f, 0.58f)), felt = M(new Color(0.42f, 0.08f, 0.07f)), glass = KitchenParts.Water;
+            m.Box(new Vector3(0f, 0.04f, 0f), new Vector3(1.56f, 0.08f, 0.66f), M(Black));
+            m.Box(new Vector3(0f, 0.36f, 0f), new Vector3(1.6f, 0.56f, 0.7f), M(wood));
+            m.Box(new Vector3(0f, 0.645f, 0f), new Vector3(1.6f, 0.01f, 0.7f), trim);
+            m.Box(new Vector3(0f, 0.652f, 0f), new Vector3(1.54f, 0.006f, 0.64f), felt);
+
+            // The case: glass top, sides and ends on thin aluminium edges.
+            m.Box(new Vector3(0f, 0.995f, 0f), new Vector3(1.6f, 0.01f, 0.7f), glass);
+            m.Box(new Vector3(0f, 0.825f, 0.345f), new Vector3(1.6f, 0.34f, 0.01f), glass);
+            m.Box(new Vector3(0f, 0.825f, -0.345f), new Vector3(1.6f, 0.34f, 0.01f), glass);
+            m.Box(new Vector3(-0.795f, 0.825f, 0f), new Vector3(0.01f, 0.34f, 0.7f), glass);
+            m.Box(new Vector3(0.795f, 0.825f, 0f), new Vector3(0.01f, 0.34f, 0.7f), glass);
+            foreach (float x in new[] { -0.795f, 0.795f })
+                foreach (float z in new[] { -0.345f, 0.345f })
+                    m.Box(new Vector3(x, 0.825f, z), new Vector3(0.015f, 0.35f, 0.015f), trim);
+            m.Box(new Vector3(0f, 0.995f, 0.345f), new Vector3(1.6f, 0.015f, 0.015f), trim);
+            m.Box(new Vector3(0f, 0.995f, -0.345f), new Vector3(1.6f, 0.015f, 0.015f), trim);
+
+            // The handguns in two rows, each with its tag, and now and then a box of rounds.
+            Surf blued = Mt(new Color(0.12f, 0.12f, 0.13f)), grips = M(new Color(0.30f, 0.18f, 0.10f)), tag = M(Paper);
+            for (int row = 0; row < 2; row++)
+                for (int i = 0; i < 5; i++)
+                {
+                    if (!Chance(rng, 0.75)) continue;
+                    var at = new Vector3(-0.6f + i * 0.3f + R(rng, -0.03f, 0.03f), 0.665f, row == 0 ? 0.13f : -0.12f);
+                    Quaternion yaw = Yaw(R(rng, -12f, 12f));
+                    m.Box(at, new Vector3(0.2f, 0.02f, 0.035f), yaw, blued);
+                    m.Box(at + yaw * new Vector3(-0.07f, 0f, -0.05f), new Vector3(0.04f, 0.022f, 0.08f), yaw, grips);
+                    m.Box(at + yaw * new Vector3(0.06f, -0.008f, -0.07f), new Vector3(0.05f, 0.002f, 0.03f), yaw, tag);
+                }
+            if (Chance(rng, 0.6))
+                m.Box(new Vector3(R(rng, -0.6f, 0.6f), 0.69f, -0.25f), new Vector3(0.1f, 0.07f, 0.06f), Yaw(R(rng, -20f, 20f)),
+                    M(new Color(0.62f, 0.52f, 0.26f)));
+        }
+        #endregion
+
         #region Medicine cabinet
         internal const float MedDoorFront = 0.17f;
         internal const float MedUpperY0 = 0.90f, MedUpperY1 = 1.78f, MedLowerY0 = 0.08f, MedLowerY1 = 0.86f;

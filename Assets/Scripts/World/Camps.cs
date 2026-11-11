@@ -618,37 +618,24 @@ into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", c =>
     }
 
     /// <summary>
-    /// Things that go bang: a frag grenade (the grenade key, or "Throw" from the pack — a lob that bounces and goes
-    /// off three and a half seconds later) and a breaching charge (armed against the nearest wall or gate: ten
-    /// seconds of beeping, then a hole).
+    /// Things that go bang: a frag grenade and a pipe bomb (thrown, <see cref="Throwables"/> — a lob that bounces and goes
+    /// off a few seconds later) and a breaching charge (armed against the nearest wall or gate: ten seconds of beeping, then
+    /// a hole).
     /// </summary>
     public static class Explosives
     {
         public const float GrenadeFuse = 3.5f, GrenadeRadius = 6f, GrenadeDamage = 260f;
+        /// <summary>A pipe bomb: a longer fuse, a smaller blast with more fragments (more bleeding) than a frag's.</summary>
+        public const float PipeBombFuse = 4.5f, PipeBombRadius = 5f, PipeBombDamage = 220f;
         public const float BreachFuse = 10f, BreachRadius = 2.5f, BreachDamage = 650f;
 
         internal static void Register()
         {
-            ItemActions.RegisterUse("grenade", (inv, s) => { Throw(inv); return true; });
             ItemActions.RegisterUse("breachcharge", (inv, s) => { Arm(inv); return true; });
         }
 
         /// <summary>Throws a grenade from the given inventory.</summary>
-        public static void Throw(PlayerInventory inv)
-        {
-            if (inv == null || HubRules.SafeZone || inv.Consume("grenade", 1) <= 0) { if (inv != null && !inv.Has("grenade")) GameEvents.RaiseToast("No grenades."); return; }
-            Transform t = inv.transform;
-            PlayerController ctrl = inv.GetComponent<PlayerController>();
-            Vector3 aim = ctrl != null ? ctrl.AimDirection : t.forward;
-            aim.y = 0f;
-            if (aim.sqrMagnitude < 0.01f) aim = t.forward;
-            aim.Normalize();
-            Camera cam = Camera.main;
-            float lift = ViewState.MouseLook && cam != null ? Mathf.Clamp(cam.transform.forward.y + 0.35f, 0.1f, 0.9f) : 0.45f;
-            Vector3 v = (aim + Vector3.up * lift).normalized * 13f;
-            Sfx.Play(SfxIds.Grenade, t.position, 0.8f, 1f, 12f);
-            Grenade.Spawn(t.position + Vector3.up * 1.6f + aim * 0.5f, v, inv.gameObject);
-        }
+        public static void Throw(PlayerInventory inv) => Throwables.Throw(inv, Throwables.Grenade);
 
         /// <summary>Arms a breach charge from the given inventory.</summary>
         public static void Arm(PlayerInventory inv)
@@ -661,15 +648,32 @@ into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", c =>
         }
     }
 
-    /// <summary>A thrown frag: physics, a fuse, then a server-side blast.</summary>
+    /// <summary>A thrown frag or pipe bomb: physics, a fuse, then a server-side blast.</summary>
     public sealed class Grenade : MonoBehaviour
     {
-        private float _fuse = Explosives.GrenadeFuse;
+        private float _fuse = Explosives.GrenadeFuse, _radius = Explosives.GrenadeRadius, _damage = Explosives.GrenadeDamage;
+        private string _weapon = Throwables.Grenade;
         private GameObject _thrower;
+        private ParticleSystem _fizz;
 
-        /// <summary>Spawns a grenade object with the given parameters.</summary>
-public static void Spawn(Vector3 at, Vector3 velocity, GameObject thrower)
+        /// <summary>Spawns a frag in flight.</summary>
+        public static void Spawn(Vector3 at, Vector3 velocity, GameObject thrower) => Spawn(at, velocity, thrower, Throwables.Grenade);
+
+        /// <summary>Spawns a frag, or a pipe bomb (<paramref name="kind"/>; its fuse fizzing), in flight.</summary>
+        public static Grenade Spawn(Vector3 at, Vector3 velocity, GameObject thrower, string kind)
         {
+            if (kind == Throwables.PipeBomb)
+            {
+                GameObject pipe = Throwables.Body(kind, at, velocity, thrower, 0.7f, true);
+                var p = pipe.AddComponent<Grenade>();
+                p._fuse = Explosives.PipeBombFuse;
+                p._radius = Explosives.PipeBombRadius;
+                p._damage = Explosives.PipeBombDamage;
+                p._weapon = kind;
+                p._thrower = thrower;
+                p._fizz = FireFx.Sparks(pipe.transform, at, 35f);
+                return p;
+            }
             var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             go.name = "Grenade";
             go.transform.position = at;
@@ -686,13 +690,15 @@ public static void Spawn(Vector3 at, Vector3 velocity, GameObject thrower)
             g._thrower = thrower;
             if (thrower != null)
                 foreach (Collider c in thrower.GetComponentsInChildren<Collider>()) Physics.IgnoreCollision(go.GetComponent<Collider>(), c);
+            return g;
         }
 
         private void Update()
         {
             _fuse -= Time.deltaTime;
+            if (_fizz != null) _fizz.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
             if (_fuse > 0f) return;
-            NetExplosions.Detonate(transform.position, Explosives.GrenadeRadius, Explosives.GrenadeDamage, _thrower, "grenade");
+            NetExplosions.Detonate(transform.position, _radius, _damage, _thrower, _weapon);
             Destroy(gameObject);
         }
 
@@ -747,7 +753,8 @@ public static void Place(Vector3 at, GameObject owner)
         }
     }
 
-    /// <summary>Wires camps (save, restore, gates, net), structural blasts and the explosives in.</summary>
+    /// <summary>Wires camps (save, restore, gates, net), structural blasts and the explosives (the breaching charge, the
+    /// grenade key) in; the throwables wire themselves (<see cref="ThrowablesModule"/>).</summary>
     public sealed class CampModule : IGameModule
     {
         /// <summary>Order of execution for the camp module during bootstrap.</summary>
@@ -781,7 +788,8 @@ public void Init()
         }
     }
 
-    /// <summary>The grenade key throws the next frag from the pack.</summary>
+    /// <summary>The grenade key throws another of whatever was thrown last (a frag until something else has been), else the
+    /// first throwable in the pack (<see cref="Throwables.NextFor"/>).</summary>
     public sealed class GrenadeKey : MonoBehaviour
     {
         private PlayerInventory _inv;
@@ -794,7 +802,9 @@ public void Init()
             if (_inv == null || Time.time < _ready || !GameInput.Pressed(GameAction.Grenade)) return;
             if (GameSession.IsMonsterRun) return;
             _ready = Time.time + 1f;
-            Explosives.Throw(_inv);
+            string last = Throwables.Readied, next = Throwables.NextFor(_inv);
+            if (next != last && _inv.Has(next)) GameEvents.RaiseToast("Throwing: " + Throwables.NameOf(next) + ".");
+            Throwables.Throw(_inv, next);
         }
     }
 }

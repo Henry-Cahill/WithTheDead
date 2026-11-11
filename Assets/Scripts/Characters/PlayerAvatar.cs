@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneZ
@@ -6,7 +7,8 @@ namespace CloneZ
     /// The survivor's body. Builds the survivor's <see cref="HumanoidRig"/> on the player and drives its
     /// <see cref="HumanoidAnimator"/> from the gameplay components: walking, sneaking and sprinting
     /// from the real ground speed; swings, shoves, shots and reloads from <see cref="PlayerCombat"/>;
-    /// the clothes from <see cref="PlayerClothing"/>; the weapon in hand from the inventory (or the
+    /// the clothes from <see cref="PlayerClothing"/>; the weapon in hand from the inventory, with the gun's
+    /// attachments (or the
     /// hammer, trowel or watering can while working, or empty hands while working a fixture or
     /// reading); sitting on a chair, the edge of the bed or the toilet and lying on the bed to rest
     /// from <see cref="PlayerSeat"/>; sleep in the nearest bed; the head turned to the fixture being
@@ -120,6 +122,7 @@ namespace CloneZ
             if (_combat != null)
             {
                 _combat.OnSwing += HandleSwing;
+                _combat.OnStomp += HandleStomp;
                 _combat.OnShove += HandleShove;
                 _combat.OnFire += HandleFire;
                 _combat.OnDryFire += HandleDryFire;
@@ -145,6 +148,7 @@ namespace CloneZ
             if (_combat != null)
             {
                 _combat.OnSwing -= HandleSwing;
+                _combat.OnStomp -= HandleStomp;
                 _combat.OnShove -= HandleShove;
                 _combat.OnFire -= HandleFire;
                 _combat.OnDryFire -= HandleDryFire;
@@ -196,7 +200,8 @@ namespace CloneZ
             a.Sneaking = _controller != null && _controller.IsSneaking;
             a.Activity = activity;
             a.Reloading = _combat != null && _combat.IsReloading;
-            a.Aiming = _aimHold > 0f || a.Reloading;
+            // Raised after a shot, while reloading, and while aiming down the sights (the light and laser follow it up).
+            a.Aiming = _aimHold > 0f || a.Reloading || (_combat != null && _combat.AimingDownSights);
             a.Seated = seated;
             if (driving)
             {
@@ -300,6 +305,15 @@ namespace CloneZ
                     break;
             }
             Rig.SetHeldItem(def, style);
+            Rig.SetHeldMods(style == HoldStyle.Firearm ? HeldMods(def) : null);
+        }
+
+        // The attachments on the gun in hand: the equipped stack's mods.
+        private List<string> HeldMods(ItemDef def)
+        {
+            if (_inventory == null || def == null || def != _inventory.EquippedWeapon) return null;
+            ItemStack s = _inventory.EquippedStack;
+            return s != null && s.Extra != null ? s.Extra.Mods : null;
         }
 
         private void MarkLookDirty() => _lookDirty = true;
@@ -332,11 +346,19 @@ namespace CloneZ
             return bed != null ? bed.transform : null;
         }
 
+        // The swing is drawn to the blow's own timing: the backswing through the wind-up, the weapon meeting its target as the
+        // blow lands, the follow-through through the recovery.
         private void HandleSwing()
         {
             ItemDef weapon = _inventory != null ? _inventory.EquippedWeapon : null;
-            float cooldown = _combat != null ? _combat.SwingCooldown : 0.55f;
-            Animator.Swing(Mathf.Clamp(cooldown * 0.8f, 0.35f, 0.7f), weapon != null && weapon.TwoHanded);
+            bool twoHanded = weapon != null && weapon.TwoHanded;
+            if (_combat != null) Animator.Swing(_combat.BlowWindUp, _combat.BlowRecovery, twoHanded);
+            else Animator.Swing(0.44f, twoHanded);
+        }
+
+        private void HandleStomp()
+        {
+            if (_combat != null) Animator.Stomp(_combat.BlowWindUp, _combat.BlowRecovery);
         }
 
         private void HandleShove() => Animator.Shove();

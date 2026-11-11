@@ -505,6 +505,7 @@ namespace CloneZ
                 if (standing) Touch(b.WorldBounds);
             }
             b.Discard();
+            IsoCutaway.LetGo();   // the camera's cutaway forgets the furniture and partitions it met
             _prune = true;
         }
 

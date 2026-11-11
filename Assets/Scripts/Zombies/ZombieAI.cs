@@ -16,7 +16,7 @@ namespace CloneZ
     [RequireComponent(typeof(ZombieHealth))]
     public class ZombieAI : MonoBehaviour
     {
-        private enum State { Idle, Wander, Investigate, Chase, Attack, Stagger, Dead }
+        private enum State { Idle, Wander, Investigate, Chase, Attack, Stagger, Down, Dead }
 
         [Header("Type")]
         public ZombieType Type = ZombieType.Shambler;
@@ -25,6 +25,14 @@ namespace CloneZ
         public bool IsHunting => _state == State.Chase || _state == State.Attack;
         /// <summary>True once the zombie has died and its brain is switched off.</summary>
         public bool IsDeadState => _state == State.Dead;
+        /// <summary>True while it reels from a blow (a lunge it was making is spoiled).</summary>
+        public bool IsStaggered => _state == State.Stagger;
+        /// <summary>True while it's knocked down, getting up included (it can be stomped).</summary>
+        public bool IsDowned => _state == State.Down;
+        /// <summary>True while it's getting back up off the ground.</summary>
+        public bool IsGettingUp => _state == State.Down && _rising;
+        /// <summary>Which way it went over when last knocked down: forward (struck from behind) or, false, onto its back.</summary>
+        public bool FellForward { get; private set; }
         /// <summary>Direction the killing blow travelled (zero if unknown), so the body falls away from it.</summary>
         public Vector3 DeathDirection { get; private set; }
 
@@ -32,6 +40,12 @@ namespace CloneZ
         public event System.Action<bool> AttackStarted;
         /// <summary>Raised when the zombie is knocked back: the push and how long it reels.</summary>
         public event System.Action<Vector3, float> Staggered;
+        /// <summary>Raised when a blow lands that neither staggers nor fells it: the way the blow travelled.</summary>
+        public event System.Action<Vector3> Flinched;
+        /// <summary>Raised when it's knocked off its feet (or knocked back down as it got up): the way the blow travelled.</summary>
+        public event System.Action<Vector3> KnockedDown;
+        /// <summary>Raised as it starts to get up: how long getting up takes.</summary>
+        public event System.Action<float> GettingUp;
 
         private NavMeshAgent _agent;
         private Renderer _renderer;
@@ -60,6 +74,13 @@ namespace CloneZ
         // Stagger / knockback
         private float _staggerTimer;
         private Vector3 _knockback;
+
+        // On the ground: how long until it's back on its feet (the last ZombieGetUpSeconds of it spent getting up), and the
+        // upright hit box swapped for one lying along the body (a metre tall, as a crawler's, so a shot at the hips connects).
+        private float _downTimer;
+        private bool _rising;
+        private CapsuleCollider _standingBox;
+        private BoxCollider _lyingBox;
 
         // A raid's shut doors: a chase that dead-ends against them (a partial path) makes for the nearest one in the way and
         // batters it, rather than milling against a wall. Nothing of this runs where there are no raid doors.
@@ -126,6 +147,7 @@ namespace CloneZ
                 SetColor(tint);
                 if (type == ZombieType.Crawler) transform.localScale = new Vector3(1f, 0.5f, 1f);
             }
+            if (_self != null) _self.Downed = type == ZombieType.Crawler;   // already on the ground: stomped, not swung at
 
         _agent.speed = _baseSpeed * 0.5f;
             _agent.acceleration = 12f;
@@ -149,6 +171,7 @@ namespace CloneZ
 
 
             if (_state == State.Stagger) { TickStagger(); return; }
+            if (_state == State.Down) { TickDown(); return; }
 
             _attackCooldown -= Time.deltaTime;
             // A survivor under a raid's spawn protection is invisible to the dead: anyone already on
@@ -171,6 +194,21 @@ namespace CloneZ
             _prey = null;
             _lastSeenTime = -999f;
             EnterIdle();
+        }
+
+        // Gives a chase up for somewhere to go and look (a lure's call), dropping a lunge or a bash under way and the door or
+        // wall it was set on. The prey is kept in mind: seen again, it's taken up again.
+        private void DropChaseFor(Vector3 at)
+        {
+            StopAllCoroutines();
+            _hasTarget = false;
+            _door = null;
+            _wallHole = null;
+            _wallChase = false;
+            _investigatePos = at;
+            _investigating = true;
+            _state = State.Investigate;
+            SafeResume();
         }
 
         #region Perception
@@ -236,6 +274,15 @@ namespace CloneZ
                 _lastKnownPos = _prey.transform.position;
                 _lastSeenTime = Time.time;
                 _investigating = false;
+                return;
+            }
+
+            // A lure (an alarm clock ringing, firecrackers, a radio left playing) carries one off a chase whose prey it has lost
+            // sight of a while — off the door it was battering, away from the house its prey hides in — as no other noise does.
+            if ((_state == State.Chase || _state == State.Attack) && Time.time - _lastSeenTime > CloneZConfig.ZombieLureAfter
+                && NoiseSystem.TryHearLure(transform.position, CloneZConfig.ZombieHearingRadius, out Vector3 lurePos))
+            {
+                DropChaseFor(lurePos);
                 return;
             }
 
@@ -319,13 +366,13 @@ namespace CloneZ
             return Mathf.Max(CloneZConfig.ZombieAttackRange + 0.5f, CloneZConfig.ZombieVisionRadius * m);
         }
 
-        /// <summary>True when the survivor's flashlight is on and this zombie stands in its beam: within
-        /// range and inside the cone around the aim direction. <paramref name="fromPlayer"/> is the vector
+        /// <summary>True when the survivor's flashlight (or the light on their gun) is on and this zombie stands in its beam:
+        /// within range and inside the cone around the aim direction. <paramref name="fromPlayer"/> is the vector
         /// from the survivor to this zombie.</summary>
         private bool InFlashlightBeam(Vector3 fromPlayer)
         {
 
-            if (_playerGear == null || !_playerGear.FlashlightOn || _playerController == null) return false;
+            if (_playerGear == null || !_playerGear.LightOn || _playerController == null) return false;
             fromPlayer.y = 0f;
             float sqr = fromPlayer.sqrMagnitude;
             if (sqr > FlashlightBeamRange * FlashlightBeamRange) return false;
@@ -384,7 +431,9 @@ namespace CloneZ
 
         private void TickInvestigate()
         {
-            if (BecomeAggressiveIfPossible()) return;
+            // Only a target seen breaks off a look: BecomeAggressiveIfPossible answers yes to the investigation itself as well,
+            // which used to stop it here before it ever set off (a zombie that heard a noise froze where it stood).
+            if (_hasTarget && BecomeAggressiveIfPossible()) return;
             _agent.speed = _baseSpeed * 0.7f;
             SafeSetDestination(_investigatePos);
             if (!_agent.pathPending && _agent.remainingDistance <= 1.2f)
@@ -660,16 +709,56 @@ namespace CloneZ
         #endregion
 
         #region Stagger & death
-        /// <summary>Applies a stagger effect, stopping movement and notifying listeners.</summary>
+        /// <summary>Applies a stagger effect, stopping movement and notifying listeners. Nothing on the ground reels.</summary>
         public void Stagger(float duration, Vector3 direction, float force)
         {
-            if (_state == State.Dead) return;
+            if (_state == State.Dead || _state == State.Down) return;
             StopAllCoroutines();
             _state = State.Stagger;
             _staggerTimer = duration;
             _knockback = CloneZUtil.Flat(direction) * force;
             SafeStop();
             Staggered?.Invoke(CloneZUtil.Flat(direction) * Mathf.Max(force, 0.1f), duration);
+        }
+
+        /// <summary>A blow that neither staggers nor fells it: a jolt back of a few centimetres, and it keeps coming (a lunge
+        /// under way still lands).</summary>
+        public void Flinch(Vector3 direction, float force)
+        {
+            if (_state == State.Dead || _state == State.Down) return;
+            Vector3 dir = CloneZUtil.Flat(direction);
+            if (_agent.enabled && _agent.isOnNavMesh && force > 0f) _agent.Move(dir * Mathf.Min(0.2f, force * 0.04f));
+            Flinched?.Invoke(dir);
+        }
+
+        /// <summary>Knocks it off its feet: it slides back with the blow, lies there a few seconds, then gets up (a crawler is
+        /// on the ground already). Knocked again while getting up, it goes back down.</summary>
+        public void KnockDown(Vector3 direction, float force)
+        {
+            if (_state == State.Dead || Type == ZombieType.Crawler) return;
+            if (_state == State.Down && !_rising) return;
+            StopAllCoroutines();
+            _state = State.Down;
+            _rising = false;
+            _downTimer = Random.Range(CloneZConfig.ZombieKnockdownMin, CloneZConfig.ZombieKnockdownMax) + CloneZConfig.ZombieGetUpSeconds;
+            _knockback = CloneZUtil.Flat(direction) * force;
+            SafeStop();
+            if (_self != null) _self.Downed = true;
+            LieDown(CloneZUtil.Flat(direction));
+            KnockedDown?.Invoke(CloneZUtil.Flat(direction));
+        }
+
+        /// <summary>A stomp or a blow while it's on the ground keeps it there a moment longer, and puts one that was getting up
+        /// back down.</summary>
+        public void Pin(Vector3 direction)
+        {
+            if (_state != State.Down) return;
+            if (_rising)
+            {
+                KnockDown(direction, 0f);
+                return;
+            }
+            _downTimer = Mathf.Max(_downTimer, CloneZConfig.ZombiePinSeconds + CloneZConfig.ZombieGetUpSeconds);
         }
 
         private void TickStagger()
@@ -687,11 +776,65 @@ namespace CloneZ
             }
         }
 
+        private void TickDown()
+        {
+            _downTimer -= Time.deltaTime;
+            if (_agent.isOnNavMesh && _knockback.sqrMagnitude > 0.01f)
+                _agent.Move(_knockback * Time.deltaTime);
+            _knockback = Vector3.Lerp(_knockback, Vector3.zero, Time.deltaTime * 8f);
+
+            if (!_rising && _downTimer <= CloneZConfig.ZombieGetUpSeconds)
+            {
+                _rising = true;
+                GettingUp?.Invoke(Mathf.Max(0.1f, _downTimer));
+            }
+            if (_downTimer > 0f) return;
+
+            _rising = false;
+            if (_self != null) _self.Downed = false;
+            StandUp();
+            _state = _hasTarget ? State.Chase : State.Idle;
+            SafeResume();
+            if (_state == State.Idle) EnterIdle();
+        }
+
+        // The hit box lies down with the body: a box along the ground the way it fell (backward unless the blow came from
+        // behind, as the body's own fall goes), a metre tall so a shot fired level from the hip still connects. Knocked back
+        // down while getting up, it stays lying the way it was.
+        private void LieDown(Vector3 blow)
+        {
+            if (_standingBox == null) _standingBox = GetComponent<CapsuleCollider>();
+            if (_standingBox == null) return;
+            if (_lyingBox == null)
+            {
+                _lyingBox = gameObject.AddComponent<BoxCollider>();
+                _lyingBox.size = new Vector3(0.6f, 1f, 1.9f);
+                _lyingBox.enabled = false;
+            }
+            if (!_lyingBox.enabled)
+            {
+                bool backward = blow == Vector3.zero || Vector3.Dot(blow, CloneZUtil.Flat(transform.forward)) <= 0.3f;
+                FellForward = !backward;
+                _lyingBox.center = new Vector3(0f, 0.5f, backward ? -0.85f : 0.85f);
+                _lyingBox.enabled = true;
+            }
+            _standingBox.enabled = false;
+        }
+
+        private void StandUp()
+        {
+            if (_lyingBox == null) return;
+            _lyingBox.enabled = false;
+            if (_standingBox != null) _standingBox.enabled = true;
+        }
+
         /// <summary>Ends the zombie's life, records death direction, stops physics and triggers fall animation.</summary>
         public void Kill(Vector3 hitDirection = default)
         {
             if (_state == State.Dead) return;
             _state = State.Dead;
+            _rising = false;
+            if (_self != null) _self.Downed = false;
             DeathDirection = CloneZUtil.Flat(hitDirection);
             StopAllCoroutines();
             if (_agent.isOnNavMesh) _agent.isStopped = true; // ensure the agent is halted before disabling
@@ -771,6 +914,9 @@ private void SafeStop()
         {
             AttackStarted = null;
             Staggered = null;
+            Flinched = null;
+            KnockedDown = null;
+            GettingUp = null;
         }
 
         /// <summary>
@@ -780,6 +926,9 @@ private void SafeStop()
         {
             AttackStarted = null;
             Staggered = null;
+            Flinched = null;
+            KnockedDown = null;
+            GettingUp = null;
         }
 
         private void SafeSetDestination(Vector3 pos)

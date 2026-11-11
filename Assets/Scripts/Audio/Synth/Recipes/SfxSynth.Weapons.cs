@@ -37,6 +37,39 @@ namespace CloneZ
             Add(SfxIds.GunSuppressedRifle, g => WeaponKit.Suppressed(g, true), 4)
                 .Peak(0.9f).Range(55f).Then(SfxIds.ShellCasing, 0.6f, 0.15f, 0.3f).Reverb(0.6f).Priority(36);
             Add(SfxIds.GunFlare, g => WeaponKit.Flare(g), 2).Peak(0.75f).Duck(-2f, 20f).Reverb(0.6f).Priority(40);
+
+            // The guns with a report of their own. Kentucky's: the service revolver (no brass flies: it stays in the cylinder),
+            // the .45, the .22 (barely a crack), the police pump, the deer rifles (a bolt, a lever) and the AR. The Zone's:
+            // the SVD, the PKM (the belt's links fall with the brass) and the short AK's fireball.
+            Add(SfxIds.GunRevolver, g => WeaponKit.Shot(g, WeaponKit.Revolver()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarLight, 55f).Duck(-3f, 25f, 0.3f, 1.5f).Reverb(0.4f).Priority(30);
+            Add(SfxIds.GunPistol45, g => WeaponKit.Shot(g, WeaponKit.Pistol45()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarLight, 55f).Then(SfxIds.ShellCasing, 0.5f, 0.12f, 0.25f)
+                .Duck(-3.5f, 25f, 0.3f, 1.5f).Reverb(0.4f).Priority(30);
+            Add(SfxIds.GunRimfire, g => WeaponKit.Shot(g, WeaponKit.Rimfire()), 4)
+                .Peak(0.62f).Far(SfxIds.GunFarLight, 35f).Then(SfxIds.ShellCasing, 0.45f, 0.1f, 0.12f)
+                .Reverb(0.35f).Priority(34);
+            Add(SfxIds.GunRiot, g => WeaponKit.Shot(g, WeaponKit.Riot()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarHeavy, 65f).Then(SfxIds.ShellShotgun, 0.72f, 0.08f, 0.35f)
+                .Duck(-5f, 25f, 0.35f, 1.8f).Reverb(0.4f).Priority(30);
+            Add(SfxIds.GunHunting, g => WeaponKit.Shot(g, WeaponKit.Hunting()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarHeavy, 80f).Then(SfxIds.ShellCasing, 1.3f, 0.12f, 0.25f)
+                .Duck(-5f, 30f, 0.45f, 2f).Reverb(0.35f).Priority(28);
+            Add(SfxIds.GunLever, g => WeaponKit.Shot(g, WeaponKit.Lever()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarHeavy, 70f).Then(SfxIds.ShellCasing, 0.55f, 0.1f, 0.25f)
+                .Duck(-4.5f, 28f, 0.4f, 1.9f).Reverb(0.38f).Priority(29);
+            Add(SfxIds.GunAr15, g => WeaponKit.Shot(g, WeaponKit.Ar15()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarHeavy, 65f).Then(SfxIds.ShellCasing, 0.55f, 0.15f, 0.2f)
+                .Duck(-4f, 25f, 0.35f, 1.8f).Reverb(0.4f).Priority(30);
+            Add(SfxIds.GunDmr, g => WeaponKit.Shot(g, WeaponKit.Dmr()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarHeavy, 80f).Then(SfxIds.ShellCasing, 0.62f, 0.12f, 0.25f)
+                .Duck(-5f, 30f, 0.45f, 2f).Reverb(0.35f).Priority(28);
+            Add(SfxIds.GunMachineGun, g => WeaponKit.Shot(g, WeaponKit.MachineGun()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarHeavy, 80f).Then(SfxIds.ShellCasing, 0.58f, 0.15f, 0.22f)
+                .Duck(-5f, 30f, 0.45f, 2f).Reverb(0.35f).Priority(28);
+            Add(SfxIds.GunCarbine, g => WeaponKit.Shot(g, WeaponKit.Carbine()), 4)
+                .Peak(0.95f).Far(SfxIds.GunFarHeavy, 65f).Then(SfxIds.ShellCasing, 0.6f, 0.15f, 0.22f)
+                .Duck(-4.5f, 25f, 0.35f, 1.8f).Reverb(0.4f).Priority(30);
             // The distant versions' peaks are set so they meet the near shots at the same loudness where they take over.
             Add(SfxIds.GunFarLight, g => WeaponKit.FarLight(g), 3, BedRate).Peak(0.27f).Range(450f).Dry().Priority(70);
             Add(SfxIds.GunFarHeavy, g => WeaponKit.FarHeavy(g), 4, BedRate).Peak(0.4f).Range(650f).Dry().Priority(64);
@@ -51,6 +84,10 @@ namespace CloneZ
             Add(SfxIds.ReloadRifle, g => WeaponKit.Reload(g, WeaponKit.Reloads.Rifle), 2).Priority(100);
             Add(SfxIds.ReloadShotgun, g => WeaponKit.Reload(g, WeaponKit.Reloads.Shotgun), 2).Priority(100);
             Add(SfxIds.ReloadBolt, g => WeaponKit.Reload(g, WeaponKit.Reloads.Bolt), 2).Priority(100);
+            Add(SfxIds.ReloadRevolver, g => WeaponKit.Reload(g, WeaponKit.Reloads.Revolver), 2).Priority(100);
+            Add(SfxIds.ReloadLever, g => WeaponKit.Reload(g, WeaponKit.Reloads.Lever), 2).Priority(100);
+            Add(SfxIds.ReloadHunting, g => WeaponKit.Reload(g, WeaponKit.Reloads.Hunting), 2).Priority(100);
+            Add(SfxIds.ReloadBelt, g => WeaponKit.Reload(g, WeaponKit.Reloads.Belt), 2).Priority(100);
             Add(SfxIds.BoltThrow, g => WeaponKit.BoltThrow(g), 3).Peak(0.85f).Priority(140);
             Add(SfxIds.BoltLand, g => WeaponKit.BoltLand(g), 4).Peak(0.9f).Priority(140);
             Add(SfxIds.Grenade, g => WeaponKit.GrenadePin(g), 2).Peak(0.75f).Priority(90);
@@ -510,6 +547,309 @@ namespace CloneZ
                 Clack(x, g, down, Db(-27f), g.Range(2400f, 3000f), 0.007f);
             }
 
+            /// <summary>.38 Special from a four-inch revolver: a subsonic round, so little crack, but the gap between the
+            /// cylinder and the barrel spits a sharp side-blast; no slide, no brass, only the cylinder stop clicking home.</summary>
+            internal static ShotSpec Revolver() => new ShotSpec
+            {
+                Length = 1.4f,
+                Crack = 0.32f, NWaveMs = 0.2f, Sizzle = 0.55f, SizzleTau = 0.0009f, SizzleHp = 3400f,
+                BlastLevel = 0.9f, BlastMs = 0.55f,
+                Bright = 0.8f, BrightTau = 0.0042f, BrightLp = 9500f, BrightHp = 600f,
+                Body = 0.85f, BodyTau = 0.009f, BodyHz = 980f, BodyQ = 0.85f,
+                Low = 0.55f, LowTau = 0.02f, LowLp = 520f,
+                Drive = 2.1f, Threshold = -12f, Release = 22f,
+                Thump = 0.38f, ThumpHz0 = 205f, ThumpHz1 = 85f, ThumpGlide = 0.012f, ThumpTau = 0.026f,
+                Mechanism = RevolverAction,
+                Place = new Surround
+                {
+                    Early = 7, EarlyTo = 0.12f, EarlyDb = -10f, EarlyLp0 = 5000f, EarlyLp1 = 1500f, EarlyTau = 0.009f,
+                    Echoes = 2, EchoFrom = 0.18f, EchoTo = 0.7f, EchoDb = -17f, EchoLp = 1300f, EchoTau = 0.05f,
+                    LateDb = -15f, LateTau = 0.42f, LateLp0 = 2500f, LateLp1 = 520f, LateTilt = 650f, Roll = 0.35f, RollHz = 5f,
+                },
+            };
+
+            /// <summary>.45 ACP: a big, slow, subsonic bullet — a deep, round boom more than a snap, and a heavy slide.</summary>
+            internal static ShotSpec Pistol45() => new ShotSpec
+            {
+                Length = 1.5f,
+                Crack = 0.38f, NWaveMs = 0.25f, Sizzle = 0.4f, SizzleTau = 0.0007f, SizzleHp = 2800f,
+                BlastLevel = 0.9f, BlastMs = 0.62f,
+                Bright = 0.55f, BrightTau = 0.004f, BrightLp = 7000f, BrightHp = 380f,
+                Body = 0.95f, BodyTau = 0.011f, BodyHz = 820f, BodyQ = 0.8f,
+                Low = 0.62f, LowTau = 0.024f, LowLp = 480f,
+                Drive = 2.2f, Threshold = -13f, Release = 24f,
+                Thump = 0.45f, ThumpHz0 = 185f, ThumpHz1 = 78f, ThumpGlide = 0.013f, ThumpTau = 0.03f,
+                Mechanism = Pistol45Action,
+                Place = new Surround
+                {
+                    Early = 7, EarlyTo = 0.13f, EarlyDb = -9.5f, EarlyLp0 = 4600f, EarlyLp1 = 1400f, EarlyTau = 0.01f,
+                    Echoes = 2, EchoFrom = 0.2f, EchoTo = 0.75f, EchoDb = -16f, EchoLp = 1200f, EchoTau = 0.055f,
+                    LateDb = -14f, LateTau = 0.45f, LateLp0 = 2400f, LateLp1 = 480f, LateTilt = 600f, Roll = 0.38f, RollHz = 4.5f,
+                },
+            };
+
+            /// <summary>.22 Long Rifle: a dry little snap, a tiny blast and a short tail — the quietest gun there is that
+            /// isn't wearing a can.</summary>
+            internal static ShotSpec Rimfire() => new ShotSpec
+            {
+                Length = 0.9f,
+                Crack = 0.45f, NWaveMs = 0.14f, Sizzle = 0.35f, SizzleTau = 0.0005f, SizzleHp = 4200f,
+                BlastLevel = 0.6f, BlastMs = 0.22f,
+                Bright = 0.5f, BrightTau = 0.0018f, BrightLp = 10000f, BrightHp = 900f,
+                Body = 0.5f, BodyTau = 0.0035f, BodyHz = 2100f, BodyQ = 1.1f,
+                Low = 0.15f, LowTau = 0.007f, LowLp = 700f,
+                Drive = 1.6f, Threshold = -10f, Release = 15f,
+                Thump = 0.12f, ThumpHz0 = 420f, ThumpHz1 = 210f, ThumpGlide = 0.006f, ThumpTau = 0.01f,
+                Mechanism = RimfireAction,
+                Place = new Surround
+                {
+                    Early = 5, EarlyTo = 0.09f, EarlyDb = -14f, EarlyLp0 = 5500f, EarlyLp1 = 1800f, EarlyTau = 0.006f,
+                    Echoes = 1, EchoFrom = 0.15f, EchoTo = 0.5f, EchoDb = -24f, EchoLp = 1600f, EchoTau = 0.04f,
+                    LateDb = -22f, LateTau = 0.25f, LateLp0 = 2800f, LateLp1 = 700f, LateTilt = 900f, Roll = 0.3f, RollHz = 6f,
+                },
+            };
+
+            /// <summary>12 gauge from an 18-inch police barrel: sharper and louder than the field gun's boom, and a quicker
+            /// pump.</summary>
+            internal static ShotSpec Riot() => new ShotSpec
+            {
+                Length = 2f,
+                Crack = 0.5f, NWaveMs = 0.3f, Sizzle = 0.35f, SizzleTau = 0.0008f, SizzleHp = 2400f,
+                BlastLevel = 1f, BlastMs = 1.1f,
+                Bright = 0.72f, BrightTau = 0.0065f, BrightLp = 7200f, BrightHp = 260f,
+                Body = 0.95f, BodyTau = 0.02f, BodyHz = 510f, BodyQ = 0.65f,
+                Low = 0.85f, LowTau = 0.045f, LowLp = 380f,
+                Drive = 2.8f, Threshold = -15f, Release = 42f,
+                Thump = 0.52f, ThumpHz0 = 145f, ThumpHz1 = 60f, ThumpGlide = 0.018f, ThumpTau = 0.055f,
+                Mechanism = RiotAction,
+                Place = new Surround
+                {
+                    Early = 9, EarlyTo = 0.2f, EarlyDb = -8f, EarlyLp0 = 4600f, EarlyLp1 = 1300f, EarlyTau = 0.015f,
+                    Echoes = 3, EchoFrom = 0.26f, EchoTo = 1.15f, EchoDb = -15f, EchoLp = 1050f, EchoTau = 0.075f,
+                    LateDb = -11f, LateTau = 0.58f, LateLp0 = 2300f, LateLp1 = 420f, LateTilt = 450f, Roll = 0.45f, RollHz = 3.5f,
+                },
+            };
+
+            /// <summary>.30-06 from a sporting bolt action: a long, tearing crack and a big blast rolling round the hollows of
+            /// deer country, then the bolt worked slowly, the way a hunter does.</summary>
+            internal static ShotSpec Hunting() => new ShotSpec
+            {
+                Length = 2.8f,
+                Crack = 1f, NWaveMs = 0.46f, Sizzle = 0.75f, SizzleTau = 0.0022f, SizzleHp = 2600f, Tear = 4,
+                BlastLevel = 0.9f, BlastMs = 1f,
+                Bright = 0.75f, BrightTau = 0.0075f, BrightLp = 8800f, BrightHp = 260f,
+                Body = 0.9f, BodyTau = 0.019f, BodyHz = 610f, BodyQ = 0.7f,
+                Low = 0.85f, LowTau = 0.05f, LowLp = 420f,
+                Drive = 2.7f, Threshold = -15f, Ratio = 3.5f, Release = 48f,
+                Thump = 0.55f, ThumpHz0 = 125f, ThumpHz1 = 50f, ThumpGlide = 0.024f, ThumpTau = 0.065f,
+                Mechanism = HuntingBolt,
+                Place = new Surround
+                {
+                    Early = 11, EarlyTo = 0.3f, EarlyDb = -9f, EarlyLp0 = 4800f, EarlyLp1 = 1100f, EarlyTau = 0.02f,
+                    Echoes = 4, EchoFrom = 0.45f, EchoTo = 2.1f, EchoDb = -13f, EchoLp = 900f, EchoTau = 0.11f,
+                    LateDb = -10f, LateTau = 0.9f, LateLp0 = 2400f, LateLp1 = 360f, LateTilt = 420f, Roll = 0.55f, RollHz = 2.6f,
+                },
+            };
+
+            /// <summary>.30-30 from a carbine-length lever gun: a flat-nosed round with less crack than the '06, a hard blast,
+            /// then the lever thrown down and back up.</summary>
+            internal static ShotSpec Lever() => new ShotSpec
+            {
+                Length = 2.4f,
+                Crack = 0.85f, NWaveMs = 0.38f, Sizzle = 0.6f, SizzleTau = 0.0016f, SizzleHp = 2600f, Tear = 3,
+                BlastLevel = 0.9f, BlastMs = 0.9f,
+                Bright = 0.7f, BrightTau = 0.0065f, BrightLp = 8500f, BrightHp = 280f,
+                Body = 0.9f, BodyTau = 0.016f, BodyHz = 680f, BodyQ = 0.75f,
+                Low = 0.75f, LowTau = 0.042f, LowLp = 430f,
+                Drive = 2.5f, Threshold = -14f, Release = 40f,
+                Thump = 0.5f, ThumpHz0 = 140f, ThumpHz1 = 58f, ThumpGlide = 0.02f, ThumpTau = 0.05f,
+                Mechanism = LeverAction,
+                Place = new Surround
+                {
+                    Early = 10, EarlyTo = 0.26f, EarlyDb = -9f, EarlyLp0 = 5000f, EarlyLp1 = 1200f, EarlyTau = 0.017f,
+                    Echoes = 3, EchoFrom = 0.35f, EchoTo = 1.6f, EchoDb = -14f, EchoLp = 950f, EchoTau = 0.09f,
+                    LateDb = -11f, LateTau = 0.75f, LateLp0 = 2500f, LateLp1 = 400f, LateTilt = 450f, Roll = 0.5f, RollHz = 3f,
+                },
+            };
+
+            /// <summary>5.56 from a 20-inch AR: a smaller, higher, whip-like crack than the 5.45, a crisp blast, and the
+            /// buffer spring's ring in the stock.</summary>
+            internal static ShotSpec Ar15() => new ShotSpec
+            {
+                Length = 2f,
+                Crack = 1f, NWaveMs = 0.24f, Sizzle = 0.85f, SizzleTau = 0.0009f, SizzleHp = 3300f, Tear = 2,
+                BlastLevel = 0.78f, BlastMs = 0.6f,
+                Bright = 0.82f, BrightTau = 0.0045f, BrightLp = 11000f, BrightHp = 340f,
+                Body = 0.8f, BodyTau = 0.011f, BodyHz = 900f, BodyQ = 0.85f,
+                Low = 0.5f, LowTau = 0.026f, LowLp = 470f,
+                Drive = 2.3f, Threshold = -14f, Release = 28f,
+                Thump = 0.35f, ThumpHz0 = 190f, ThumpHz1 = 80f, ThumpGlide = 0.013f, ThumpTau = 0.03f,
+                Mechanism = ArAction,
+                Place = new Surround
+                {
+                    Early = 9, EarlyTo = 0.18f, EarlyDb = -9f, EarlyLp0 = 6200f, EarlyLp1 = 1600f, EarlyTau = 0.011f,
+                    Echoes = 3, EchoFrom = 0.25f, EchoTo = 1.1f, EchoDb = -14f, EchoLp = 1150f, EchoTau = 0.07f,
+                    LateDb = -12f, LateTau = 0.58f, LateLp0 = 2700f, LateLp1 = 460f, LateTilt = 520f, Roll = 0.45f, RollHz = 4f,
+                },
+            };
+
+            /// <summary>7.62x54R from the SVD: the Mosin's tearing crack and huge blast, with a gas-operated carrier slamming
+            /// back and home instead of a bolt worked by hand.</summary>
+            internal static ShotSpec Dmr() => new ShotSpec
+            {
+                Length = 2.7f,
+                Crack = 1f, NWaveMs = 0.5f, Sizzle = 0.8f, SizzleTau = 0.0024f, SizzleHp = 2500f, Tear = 5,
+                BlastLevel = 0.88f, BlastMs = 1.05f,
+                Bright = 0.78f, BrightTau = 0.0075f, BrightLp = 9000f, BrightHp = 250f,
+                Body = 0.9f, BodyTau = 0.019f, BodyHz = 575f, BodyQ = 0.7f,
+                Low = 0.85f, LowTau = 0.052f, LowLp = 400f,
+                Drive = 2.8f, Threshold = -15f, Ratio = 3.5f, Release = 48f,
+                Thump = 0.55f, ThumpHz0 = 122f, ThumpHz1 = 48f, ThumpGlide = 0.024f, ThumpTau = 0.068f,
+                Mechanism = DmrAction,
+                Place = new Surround
+                {
+                    Early = 10, EarlyTo = 0.25f, EarlyDb = -8f, EarlyLp0 = 5500f, EarlyLp1 = 1300f, EarlyTau = 0.018f,
+                    Echoes = 4, EchoFrom = 0.35f, EchoTo = 1.8f, EchoDb = -13f, EchoLp = 1000f, EchoTau = 0.1f,
+                    LateDb = -10f, LateTau = 0.8f, LateLp0 = 2600f, LateLp1 = 380f, LateTilt = 450f, Roll = 0.5f, RollHz = 3f,
+                },
+            };
+
+            /// <summary>7.62x54R from the PKM's long barrel: a full-power crack and blast cut short (the next round is 90 ms
+            /// behind), the heavy carrier and the feed pawl ratcheting the belt across.</summary>
+            internal static ShotSpec MachineGun() => new ShotSpec
+            {
+                Length = 1.8f,
+                Crack = 1f, NWaveMs = 0.48f, Sizzle = 0.8f, SizzleTau = 0.0022f, SizzleHp = 2500f, Tear = 4,
+                BlastLevel = 0.9f, BlastMs = 1f,
+                Bright = 0.78f, BrightTau = 0.007f, BrightLp = 9000f, BrightHp = 260f,
+                Body = 0.92f, BodyTau = 0.017f, BodyHz = 590f, BodyQ = 0.7f,
+                Low = 0.85f, LowTau = 0.045f, LowLp = 410f,
+                Drive = 2.8f, Threshold = -15f, Ratio = 3.5f, Release = 40f,
+                Thump = 0.55f, ThumpHz0 = 125f, ThumpHz1 = 50f, ThumpGlide = 0.022f, ThumpTau = 0.06f,
+                Mechanism = BeltAction,
+                Place = new Surround
+                {
+                    Early = 10, EarlyTo = 0.22f, EarlyDb = -8.5f, EarlyLp0 = 5500f, EarlyLp1 = 1300f, EarlyTau = 0.017f,
+                    Echoes = 3, EchoFrom = 0.3f, EchoTo = 1.4f, EchoDb = -14f, EchoLp = 1000f, EchoTau = 0.09f,
+                    LateDb = -11f, LateTau = 0.62f, LateLp0 = 2500f, LateLp1 = 390f, LateTilt = 450f, Roll = 0.5f, RollHz = 3.2f,
+                },
+            };
+
+            /// <summary>5.45 from the AKS-74U's eight-inch barrel: powder still burning at the muzzle, so the blast is a harsh,
+            /// ear-splitting fireball out of all proportion to the crack.</summary>
+            internal static ShotSpec Carbine() => new ShotSpec
+            {
+                Length = 2f,
+                Crack = 0.82f, NWaveMs = 0.26f, Sizzle = 0.6f, SizzleTau = 0.0009f, SizzleHp = 2900f, Tear = 1,
+                BlastLevel = 1f, BlastMs = 0.92f,
+                Bright = 0.95f, BrightTau = 0.0072f, BrightLp = 9200f, BrightHp = 280f,
+                Body = 0.95f, BodyTau = 0.015f, BodyHz = 700f, BodyQ = 0.75f,
+                Low = 0.72f, LowTau = 0.036f, LowLp = 440f,
+                Drive = 3f, Threshold = -15f, Release = 32f,
+                Thump = 0.45f, ThumpHz0 = 160f, ThumpHz1 = 65f, ThumpGlide = 0.016f, ThumpTau = 0.04f,
+                Mechanism = CarbineAction,
+                Place = new Surround
+                {
+                    Early = 9, EarlyTo = 0.18f, EarlyDb = -8.5f, EarlyLp0 = 5600f, EarlyLp1 = 1450f, EarlyTau = 0.013f,
+                    Echoes = 3, EchoFrom = 0.25f, EchoTo = 1.1f, EchoDb = -13.5f, EchoLp = 1100f, EchoTau = 0.07f,
+                    LateDb = -11.5f, LateTau = 0.6f, LateLp0 = 2600f, LateLp1 = 440f, LateTilt = 500f, Roll = 0.45f, RollHz = 4f,
+                },
+            };
+
+            // The revolver's hand and cylinder stop clicking home as the trigger comes forward again.
+            private static void RevolverAction(float[] x, SynthGen g, float t0)
+            {
+                float reset = t0 + g.Range(0.08f, 0.12f);
+                Clack(x, g, reset, Db(-31f), g.Range(3600f, 4400f), 0.003f, 0.5f);
+                Clack(x, g, reset + g.Range(0.012f, 0.02f), Db(-34f), g.Range(4600f, 5400f), 0.002f, 0.4f);
+            }
+
+            // A 1911's slide: longer and heavier than a nine's, so it rings lower and comes home a little later.
+            private static void Pistol45Action(float[] x, SynthGen g, float t0)
+            {
+                float back = t0 + g.Range(0.004f, 0.007f), home = t0 + g.Range(0.038f, 0.05f);
+                Clack(x, g, back, Db(-27f), g.Range(2300f, 2900f), 0.006f);
+                Scrape(x, g, back + 0.002f, home - back - 0.002f, Db(-33f), g.Range(2900f, 3700f));
+                Clack(x, g, home, Db(-22f), g.Range(1800f, 2300f), 0.009f, 0.8f);
+            }
+
+            // The .22's light blowback bolt: a quick tick back and forward.
+            private static void RimfireAction(float[] x, SynthGen g, float t0)
+            {
+                Clack(x, g, t0 + g.Range(0.004f, 0.007f), Db(-26f), g.Range(3400f, 4200f), 0.003f, 0.5f);
+                Clack(x, g, t0 + g.Range(0.022f, 0.03f), Db(-24f), g.Range(2800f, 3400f), 0.004f, 0.6f);
+            }
+
+            // A police pump racked fast, the way it's trained.
+            private static void RiotAction(float[] x, SynthGen g, float t0)
+            {
+                float back = t0 + g.Range(0.28f, 0.36f), fwd = back + g.Range(0.09f, 0.13f);
+                Scrape(x, g, back - 0.04f, 0.045f, Db(-29f), g.Range(1900f, 2600f), 2f);
+                Clack(x, g, back, Db(-22f), g.Range(1350f, 1750f), 0.011f, 0.75f);
+                Scrape(x, g, fwd - 0.04f, 0.04f, Db(-30f), g.Range(2000f, 2700f), 2f);
+                Clack(x, g, fwd, Db(-20f), g.Range(1550f, 1950f), 0.011f, 0.85f);
+            }
+
+            // A sporting bolt worked deliberately once the shot is gone: up, a long smooth pull, forward, down.
+            private static void HuntingBolt(float[] x, SynthGen g, float t0)
+            {
+                float up = t0 + g.Range(0.8f, 1f);
+                float back = up + g.Range(0.08f, 0.11f), fwd = back + g.Range(0.2f, 0.26f), down = fwd + g.Range(0.07f, 0.1f);
+                Clack(x, g, up, Db(-31f), g.Range(2800f, 3400f), 0.005f);
+                Scrape(x, g, up + 0.01f, back - up - 0.01f, Db(-35f), g.Range(2600f, 3300f), 3f);
+                Clack(x, g, back, Db(-27f), g.Range(1700f, 2100f), 0.009f, 0.6f);
+                Scrape(x, g, back + 0.03f, fwd - back - 0.03f, Db(-35f), g.Range(2600f, 3300f), 3f);
+                Clack(x, g, fwd, Db(-26f), g.Range(1900f, 2400f), 0.009f, 0.7f);
+                Clack(x, g, down, Db(-28f), g.Range(2500f, 3100f), 0.006f);
+            }
+
+            // The lever thrown down (the hammer cocked, the empty flicked out) and snapped back up.
+            private static void LeverAction(float[] x, SynthGen g, float t0)
+            {
+                float down = t0 + g.Range(0.32f, 0.4f), up = down + g.Range(0.11f, 0.15f);
+                Scrape(x, g, down - 0.05f, 0.05f, Db(-31f), g.Range(1700f, 2300f), 2.2f);
+                Clack(x, g, down, Db(-24f), g.Range(1400f, 1800f), 0.01f, 0.7f);
+                Clack(x, g, down + 0.012f, Db(-30f), g.Range(3000f, 3600f), 0.004f, 0.5f);
+                Scrape(x, g, up - 0.045f, 0.045f, Db(-31f), g.Range(1800f, 2400f), 2.2f);
+                Clack(x, g, up, Db(-21f), g.Range(1600f, 2000f), 0.011f, 0.85f);
+            }
+
+            // The AR's bolt carrier back and home, and the buffer spring ringing in the receiver extension behind the cheek.
+            private static void ArAction(float[] x, SynthGen g, float t0)
+            {
+                Clack(x, g, t0 + g.Range(0.006f, 0.009f), Db(-28f), g.Range(1900f, 2400f), 0.007f);
+                float home = t0 + g.Range(0.045f, 0.058f);
+                Clack(x, g, home, Db(-23f), g.Range(2200f, 2800f), 0.009f, 0.8f);
+                float hz = g.Range(950f, 1250f);
+                Dsp.Modes(x, g.Rate, t0 + g.Range(0.012f, 0.018f), Db(-31f), new[] { hz, hz * g.Range(2.6f, 2.9f), hz * g.Range(4.9f, 5.4f) },
+                    new[] { 1f, 0.45f, 0.2f }, new[] { g.Range(0.07f, 0.1f), 0.05f, 0.03f });
+            }
+
+            // The SVD's carrier: a heavier slam back and home than an AK's.
+            private static void DmrAction(float[] x, SynthGen g, float t0)
+            {
+                Clack(x, g, t0 + g.Range(0.008f, 0.012f), Db(-26f), g.Range(1500f, 1900f), 0.01f);
+                Clack(x, g, t0 + g.Range(0.065f, 0.08f), Db(-21f), g.Range(1800f, 2300f), 0.012f, 0.85f);
+            }
+
+            // The PKM's carrier, the feed pawl dragging the belt across and the spent link dropping out.
+            private static void BeltAction(float[] x, SynthGen g, float t0)
+            {
+                Clack(x, g, t0 + g.Range(0.008f, 0.012f), Db(-26f), g.Range(1400f, 1800f), 0.01f);
+                float pawl = t0 + g.Range(0.03f, 0.04f);
+                Scrape(x, g, pawl, 0.025f, Db(-30f), g.Range(2400f, 3000f), 2.5f);
+                Clack(x, g, pawl + 0.025f, Db(-25f), g.Range(2600f, 3200f), 0.004f, 0.5f);
+                Clack(x, g, t0 + g.Range(0.07f, 0.085f), Db(-22f), g.Range(1700f, 2200f), 0.011f, 0.8f);
+                Clack(x, g, t0 + g.Range(0.2f, 0.3f), Db(-33f), g.Range(4200f, 5400f), 0.02f, 0.3f);
+            }
+
+            // The short AK's carrier, quicker than the long gun's.
+            private static void CarbineAction(float[] x, SynthGen g, float t0)
+            {
+                Clack(x, g, t0 + g.Range(0.006f, 0.009f), Db(-27f), g.Range(1800f, 2300f), 0.008f);
+                Clack(x, g, t0 + g.Range(0.045f, 0.058f), Db(-22f), g.Range(2200f, 2800f), 0.01f, 0.8f);
+            }
+
             /// <summary>Through a can: a subsonic cough, the action loud beside it (a rifle's supersonic round still cracks).</summary>
             internal static float[] Suppressed(SynthGen g, bool rifle)
             {
@@ -738,7 +1078,7 @@ namespace CloneZ
                 return x;
             }
 
-            internal enum Reloads { Generic, Pistol, Rifle, Shotgun, Bolt }
+            internal enum Reloads { Generic, Pistol, Rifle, Shotgun, Bolt, Revolver, Lever, Hunting, Belt }
 
             /// <summary>A reload, by kind of gun, compressed into a second or so (it plays as the reload starts).</summary>
             internal static float[] Reload(SynthGen g, Reloads kind)
@@ -815,6 +1155,91 @@ namespace CloneZ
                         Scrape(x, g, home - 0.1f, 0.1f, 0.35f, g.Range(2300f, 2800f));
                         Clack(x, g, home, 0.9f, g.Range(1900f, 2200f), 0.01f, 0.8f);
                         Clack(x, g, home + g.Range(0.08f, 0.12f), 0.7f, g.Range(2500f, 2900f), 0.007f);
+                        break;
+                    }
+                    case Reloads.Revolver:
+                    {
+                        // The latch thumbed, the cylinder swung out; the ejector rod punched and six empties rattling down;
+                        // fresh rounds dropped into the chambers; the cylinder snapped shut.
+                        x = g.Buffer(1.7f);
+                        Clack(x, g, T0, 0.4f, g.Range(3800f, 4400f), 0.003f);
+                        Scrape(x, g, T0 + 0.03f, 0.05f, 0.25f, g.Range(2600f, 3200f));
+                        Clack(x, g, T0 + 0.09f, 0.6f, g.Range(2200f, 2700f), 0.008f, 0.6f);
+                        float eject = g.Range(0.22f, 0.27f);
+                        Clack(x, g, eject, 0.7f, g.Range(1800f, 2200f), 0.006f, 0.7f);
+                        for (int i = 0; i < 6; i++)
+                        {
+                            float f = g.Range(3600f, 5200f);
+                            Clack(x, g, eject + 0.05f + i * g.Range(0.015f, 0.03f), g.Range(0.15f, 0.3f), f, g.Range(0.02f, 0.04f), 0.3f);
+                        }
+                        for (int i = 0; i < 6; i++)
+                        {
+                            float t = g.Range(0.68f, 0.72f) + i * g.Range(0.07f, 0.09f);
+                            Scrape(x, g, t - 0.02f, 0.02f, 0.12f, g.Range(2400f, 3000f));
+                            Clack(x, g, t, 0.25f, g.Range(3000f, 3600f), 0.004f, 0.4f);
+                        }
+                        float shut = g.Range(1.32f, 1.4f);
+                        Scrape(x, g, shut - 0.04f, 0.04f, 0.25f, g.Range(2200f, 2800f));
+                        Clack(x, g, shut, 1f, g.Range(2000f, 2500f), 0.01f, 0.85f);
+                        break;
+                    }
+                    case Reloads.Lever:
+                    {
+                        // Rounds pushed one by one through the loading gate into the tube, then the lever worked.
+                        x = g.Buffer(1.6f);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            float t = T0 + 0.04f + i * g.Range(0.2f, 0.24f);
+                            Scrape(x, g, t, 0.06f, 0.28f, g.Range(1500f, 1900f), 1.6f);
+                            Clack(x, g, t + 0.06f, 0.5f, g.Range(2800f, 3300f), 0.005f, 0.5f);
+                        }
+                        float down = g.Range(1.08f, 1.14f), up = down + g.Range(0.13f, 0.17f);
+                        Scrape(x, g, down - 0.05f, 0.05f, 0.3f, g.Range(1700f, 2200f), 2.2f);
+                        Clack(x, g, down, 0.8f, g.Range(1400f, 1800f), 0.01f, 0.7f);
+                        Scrape(x, g, up - 0.045f, 0.045f, 0.3f, g.Range(1800f, 2300f), 2.2f);
+                        Clack(x, g, up, 1f, g.Range(1600f, 2000f), 0.011f, 0.85f);
+                        break;
+                    }
+                    case Reloads.Hunting:
+                    {
+                        // Bolt up and back, four rounds pressed down into the magazine one at a time, bolt home and down.
+                        x = g.Buffer(1.7f);
+                        Clack(x, g, T0, 0.5f, g.Range(2700f, 3200f), 0.005f);
+                        Scrape(x, g, T0 + 0.05f, 0.1f, 0.3f, g.Range(2500f, 3100f), 3f);
+                        Clack(x, g, T0 + 0.15f, 0.7f, g.Range(1700f, 2000f), 0.009f, 0.6f);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            float t = 0.34f + i * g.Range(0.17f, 0.2f);
+                            Scrape(x, g, t, 0.05f, 0.22f, g.Range(1900f, 2400f), 1.8f);
+                            Clack(x, g, t + 0.05f, 0.45f, g.Range(3000f, 3600f), 0.005f, 0.5f);
+                        }
+                        float home = g.Range(1.3f, 1.36f);
+                        Scrape(x, g, home - 0.12f, 0.12f, 0.3f, g.Range(2500f, 3100f), 3f);
+                        Clack(x, g, home, 0.9f, g.Range(1900f, 2300f), 0.009f, 0.75f);
+                        Clack(x, g, home + g.Range(0.08f, 0.11f), 0.7f, g.Range(2500f, 3000f), 0.006f);
+                        break;
+                    }
+                    case Reloads.Belt:
+                    {
+                        // The feed cover unlatched and flipped up, the empty box off and a full one on, the belt laid across the
+                        // tray with a rattle of links, the cover slammed down, the charging handle hauled back.
+                        x = g.Buffer(2f);
+                        Clack(x, g, T0, 0.5f, g.Range(2400f, 2900f), 0.006f);
+                        Scrape(x, g, T0 + 0.02f, 0.08f, 0.3f, g.Range(1600f, 2000f));
+                        Clack(x, g, T0 + 0.11f, 0.6f, g.Range(1300f, 1600f), 0.012f, 0.6f);
+                        float box = g.Range(0.38f, 0.44f);
+                        Clack(x, g, box, 0.7f, g.Range(900f, 1200f), 0.015f, 0.6f);
+                        Noise(x, g, box, 0.3f, 0.0005f, 0.012f, 900f, 70f);
+                        float belt = g.Range(0.72f, 0.78f);
+                        for (int i = 0; i < 12; i++)
+                            Clack(x, g, belt + i * g.Range(0.018f, 0.03f), g.Range(0.1f, 0.25f), g.Range(3200f, 4800f), 0.006f, 0.3f);
+                        float shut = g.Range(1.25f, 1.32f);
+                        Clack(x, g, shut, 1f, g.Range(1100f, 1400f), 0.014f, 0.85f);
+                        Noise(x, g, shut, 0.45f, 0.0004f, 0.01f, 800f, 60f);
+                        float rack = g.Range(1.6f, 1.66f);
+                        Scrape(x, g, rack, 0.08f, 0.35f, g.Range(1800f, 2300f));
+                        Clack(x, g, rack + 0.08f, 0.8f, g.Range(1500f, 1900f), 0.011f, 0.8f);
+                        Clack(x, g, rack + g.Range(0.16f, 0.2f), 0.9f, g.Range(1900f, 2300f), 0.012f, 0.85f);
                         break;
                     }
                     default:
@@ -1428,6 +1853,13 @@ namespace CloneZ
 
         /// <summary>Reloads by kind of gun (<see cref="Reload"/> stays as the generic one).</summary>
         public const string ReloadPistol = "reload_pistol", ReloadRifle = "reload_rifle", ReloadShotgun = "reload_shotgun",
-            ReloadBolt = "reload_bolt";
+            ReloadBolt = "reload_bolt", ReloadRevolver = "reload_revolver", ReloadLever = "reload_lever",
+            ReloadHunting = "reload_hunting", ReloadBelt = "reload_belt";
+
+        /// <summary>The reports of the guns with a sound of their own (<see cref="GunStats.Sound"/>): Kentucky's civilian and
+        /// police guns and the Zone's Soviet ones.</summary>
+        public const string GunRevolver = "gun_revolver", GunPistol45 = "gun_pistol45", GunRimfire = "gun_rimfire",
+            GunRiot = "gun_riot", GunHunting = "gun_hunting", GunLever = "gun_lever", GunAr15 = "gun_ar15",
+            GunDmr = "gun_dmr", GunMachineGun = "gun_mg", GunCarbine = "gun_carbine";
     }
 }
