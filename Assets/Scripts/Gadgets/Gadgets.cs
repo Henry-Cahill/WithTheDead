@@ -375,6 +375,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         private PlayerInteractor _interactor;
         private PlayerStats _stats;
         private Camera _main;
+        private float _farLimit;
         private CursorLockMode _lock;
         private bool _visible;
         private float _since;
@@ -419,6 +420,8 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             if (_stats != null) _stats.OnDamaged += Snap;
             _main = Camera.main;
             if (_main != null) _main.enabled = false;
+            _farLimit = _main != null ? _main.farClipPlane : d.Cam.farClipPlane;
+            FrameCamera();
             d.Cam.enabled = true;
             _lock = Cursor.lockState;
             _visible = Cursor.visible;
@@ -428,6 +431,19 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         }
 
         private void Snap() { GameEvents.RaiseToast("You're hit — you drop the controller."); End(); }
+
+        // The drone's camera draws no further than the game's own, nor past the end of the weather's linear fog: beyond
+        // that everything is the fog's colour, so the camera clears to it instead. Drawn to its full reach, a ground
+        // drone's view along the street was the whole streamed town every frame, about 9 million triangles that the fog
+        // hid, more than the render thread's command ring holds ("Ran out of Graphics Ring Buffer space").
+        private void FrameCamera()
+        {
+            Camera cam = Drone.Cam;
+            bool fogged = RenderSettings.fog && RenderSettings.fogMode == FogMode.Linear;
+            cam.clearFlags = fogged ? CameraClearFlags.SolidColor : CameraClearFlags.Skybox;
+            if (fogged) cam.backgroundColor = RenderSettings.fogColor;
+            cam.farClipPlane = fogged ? Mathf.Min(_farLimit, Mathf.Max(RenderSettings.fogEndDistance, cam.nearClipPlane) + 1f) : _farLimit;
+        }
 
         private void Update()
         {
@@ -441,6 +457,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             float yaw = mouse != null ? mouse.delta.ReadValue().x * 0.12f * GameSettings.Current.MouseSensitivity : 0f;
             if (blocked) { move = Vector2.zero; lift = 0f; yaw = 0f; }
             Drone.Fly(move, lift, yaw, Time.deltaTime);
+            FrameCamera();
             DroneNet.Send(Drone);
             if (!blocked && mouse != null && mouse.leftButton.wasPressedThisFrame && Drone.DropGrenade(gameObject)) GameEvents.RaiseToast("Grenade away.");
             if (!blocked && kb.lKey.wasPressedThisFrame) Drone.ToggleLight();

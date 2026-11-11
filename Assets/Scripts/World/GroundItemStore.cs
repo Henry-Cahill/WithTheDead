@@ -56,10 +56,26 @@ namespace CloneZ
             public readonly List<Item> Items = new List<Item>(16);
             public bool Dirty;         // changed since it was last written to the save
 
+            /// <summary>Goes up every time the chunk's items change, so something that keeps its own copy of them
+            /// (<see cref="GroundItemRenderer"/>) can tell when that copy is out of date.</summary>
+            public int Version { get; private set; }
+
             public Chunk(long key) { Key = key; }
+
+            internal void Changed()
+            {
+                Version++;
+                s_Version++;
+            }
         }
 
         private static readonly Dictionary<long, Chunk> s_Chunks = new Dictionary<long, Chunk>(256);
+
+        private static int s_Version;
+
+        /// <summary>Goes up whenever anything in the store changes: an item added, taken or removed anywhere, or the
+        /// store cleared. One number to compare to learn whether anything changed at all since the last look.</summary>
+        public static int Version => s_Version;
 
         // Item types are interned so the per-item record can hold a small integer instead of a string.
         private static readonly List<ItemDef> s_Types = new List<ItemDef>(256);
@@ -155,6 +171,7 @@ namespace CloneZ
             chunk.Items.Add(item);
             // Mark dirty so persistence knows this chunk changed
             chunk.Dirty = true;
+            chunk.Changed();
             return item.Id;
         }
 
@@ -200,6 +217,7 @@ namespace CloneZ
 
             // Still has items: write modified struct back
             chunk.Items[index] = item;
+            chunk.Changed();
             return false;
         }
 
@@ -221,6 +239,7 @@ namespace CloneZ
             chunk.Items.RemoveAt(last);
             // Chunk contents changed
             chunk.Dirty = true;
+            chunk.Changed();
 
             // Drop the chunk once nothing is left in it. A sandbox world is explored and looted
             // indefinitely, so keeping an empty entry for every square of ground anything was ever
@@ -382,6 +401,7 @@ namespace CloneZ
             s_Chunks.Clear();
             s_Extras.Clear();
             s_NextId = 1;
+            s_Version++;
         }
 
         /// <summary>Restores an item exactly as it was saved, keeping its identity.</summary>
@@ -390,6 +410,7 @@ namespace CloneZ
         {
             Chunk chunk = GetOrCreate(KeyOf(item.X, item.Z));
             chunk.Items.Add(item);
+            chunk.Changed();
             if (item.Id >= s_NextId) s_NextId = item.Id + 1;
         }
     }

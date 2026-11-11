@@ -130,6 +130,8 @@ namespace CloneZ
             It("carwheel", 8, 2); It("carbattery", 3, 1); It("sparkplug", 5, 2); It("radiator", 3, 1); It("gascan", 4, 1);
             It("handcuffs", 4, 1); It("combolock", 4, 1); It("radio_walkie", 4, 1); It("gps", 2, 0); It("bloodbag_o_neg", 1, 0);
             It("ivkit", 4, 1); It("surgicalkit", 2, 0); It("antirad", 6, 2); It("gasmask_filter", 8, 2);
+            It("pkm", 2, 0); It("svd", 4, 1);
+            It("molotov", 4, 1); It("pipebomb", 3, 0); It("firecrackers", 8, 2); It("alarmclock", 8, 2); It("radio_timer", 4, 1);
             return c;
         }
 

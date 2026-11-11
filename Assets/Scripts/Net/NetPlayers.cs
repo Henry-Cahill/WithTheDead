@@ -201,7 +201,8 @@ namespace CloneZ
         #endregion
 
         #region Shots, hits and damage
-        // On a client every shot goes to the server; the local result only draws the tracer.
+        // On a client every shot goes to the server; the local result only shows where it went (a tracer round's streak, and
+        // where it's heard landing).
         private static bool Route(ShotRequest req)
         {
             NetworkManager nm = NetSession.NM;
@@ -235,14 +236,15 @@ namespace CloneZ
             RemotePlayer shooter = ProxyOf(sender);
             if (shooter != null) { req.Shooter = shooter.gameObject; req.ShooterActor = shooter.Actor; }
             ShotResult r = CombatResolver.Resolve(req);
+            AmmoStats ammo = Ballistics.Ammo(req.AmmoId);
             using (var o = new NetOut(64))
             {
-                o.UL(sender).V(req.Origin).V(r.End).B(r.Hit && r.Target != null).S(req.WeaponId);
+                o.UL(sender).V(req.Origin).V(r.End).B(r.Hit && r.Target != null).S(req.WeaponId).B(ammo != null && ammo.Tracer);
                 NetSession.ToClients("cz.shotfx", o, NetworkDelivery.UnreliableSequenced, sender, includeHost: true);
             }
         }
 
-        // Everyone else sees and hears the shot.
+        // Everyone else sees and hears the shot (a tracer round's streak too; no other round draws a trail).
         private static void OnShotFx(ulong sender, NetIn m)
         {
             ulong shooter = m.UL();
@@ -250,10 +252,11 @@ namespace CloneZ
             Vector3 from = m.V(), to = m.V();
             bool flesh = m.B();
             string weapon = m.S();
+            bool tracer = m.B();
             WeaponAudio.Report(HumanNpc.GunSound(ItemDatabase.Get(weapon)), from, 1f, Random.Range(0.96f, 1.04f));
             // The server heard (and hit-thudded) it as it resolved it; a client hears where it went from here.
             if (NetAuthority.IsClientOnly) WeaponAudio.RemoteShot(from, to, flesh, weapon);
-            NetTracer.Draw(from, to);
+            if (tracer) CombatFX.Tracer(from, to);
             RemotePlayer p = ProxyOf(shooter);
             if (p != null) p.Fired();
         }
@@ -261,12 +264,14 @@ namespace CloneZ
         /// <summary>Server: damage that landed on a remote runner's body goes to the runner who owns it.</summary>
         internal static void SendDamage(ulong owner, in DamageInfo info, Actor attacker)
         {
+            RemotePlayer body = ProxyOf(owner);
             using (var o = new NetOut(96))
             {
                 o.F(info.Amount).By((byte)info.Kind).V(info.HitPoint).V(info.HitDirection).By((byte)info.Zone).B(info.ZoneKnown)
                     .F(info.Penetration).F(info.ArmorDamage).F(info.BleedChance).F(info.FractureChance).S(info.WeaponId).B(info.HpScale)
                     .UL(attacker != null && attacker.OwnerClientId != ulong.MaxValue ? attacker.OwnerClientId : ulong.MaxValue)
-                    .U(attacker != null ? attacker.NetId : 0u);
+                    .U(attacker != null ? attacker.NetId : 0u)
+                    .B(body != null && Aflame.IsOn(body.Actor));   // the body alight here (its burns are on their way): the owner shows it
                 NetSession.SendTo(owner, "cz.dmg", o);
             }
         }
@@ -281,19 +286,25 @@ namespace CloneZ
                 WeaponId = m.S(), HpScale = m.B(), AttackerClientId = m.UL(),
             };
             uint attackerNet = m.U();
+            bool alight = m.B();
             RemotePlayer killer = info.AttackerClientId != ulong.MaxValue ? ProxyOf(info.AttackerClientId) : null;
             if (killer != null) info.Source = killer.gameObject;
             NetSocial.NoteAttacker(info.AttackerClientId, attackerNet, info.WeaponId);
             me.TakeDamage(info);
             if (me.IsDead) NetSocial.ReportDeath(info.AttackerClientId, attackerNet, info.WeaponId);
+            // The server has this runner burning (an incendiary round, a burning body pressed against them): show it until its
+            // burns, every half second, stop coming.
+            else if (alight) Aflame.Show(Actor.LocalPlayer, 0.6f);
         }
 
-        /// <summary>A client's melee (or anything else applied locally) on something the server owns: ask the server.</summary>
+        /// <summary>A client's melee (or anything else applied locally) on something the server owns: ask the server. The blow
+        /// carries how hard it shoves and its chances to stagger and to knock down, which the server's dead roll.</summary>
         public static void RequestHit(uint targetNetId, in DamageInfo info)
         {
-            using (var o = new NetOut(96))
+            using (var o = new NetOut(112))
             {
-                o.U(targetNetId).F(info.Amount).By((byte)info.Kind).V(info.HitPoint).V(info.HitDirection).By((byte)info.Zone).B(info.ZoneKnown).B(info.HpScale).S(info.WeaponId);
+                o.U(targetNetId).F(info.Amount).By((byte)info.Kind).V(info.HitPoint).V(info.HitDirection).By((byte)info.Zone).B(info.ZoneKnown).B(info.HpScale).S(info.WeaponId)
+                 .F(info.Knockback).F(info.Stagger).F(info.Knockdown).B(info.FromBehind);
                 NetSession.ToServer("cz.hit", o);
             }
         }
@@ -303,6 +314,11 @@ namespace CloneZ
             if (!NetSession.NM.IsServer) return;
             uint target = m.U();
             var info = new DamageInfo(m.F(), (DamageKind)m.By(), m.V(), m.V(), null) { Zone = (BodyZone)m.By(), ZoneKnown = m.B(), HpScale = m.B(), WeaponId = m.S(), AttackerClientId = sender };
+            info.Knockback = Mathf.Clamp(m.F(), 0f, 12f);
+            info.Stagger = Mathf.Clamp01(m.F());
+            info.Knockdown = Mathf.Clamp01(m.F());
+            info.FromBehind = m.B();
+            info.IsHeadshot = info.ZoneKnown && info.Zone == BodyZone.Head;
             info.Amount = Mathf.Min(info.Amount, info.HpScale ? 400f : 15f);
             Actor a = Actor.FindByNetId(target);
             RemotePlayer from = ProxyOf(sender);
@@ -391,26 +407,6 @@ namespace CloneZ
             NetPlayers.Tick();
             NetWorld.Tick();
             NetSocial.Tick();
-        }
-    }
-
-    /// <summary>A brief tracer line for a shot seen over the network.</summary>
-    public static class NetTracer
-    {
-        /// <summary>Draw a brief line segment representing a shot across the network.</summary>
-        public static void Draw(Vector3 from, Vector3 to)
-        {
-            var go = new GameObject("Tracer");
-            var lr = go.AddComponent<LineRenderer>();
-            lr.positionCount = 2;
-            lr.SetPosition(0, from);
-            lr.SetPosition(1, to);
-            lr.widthMultiplier = 0.015f;
-            lr.material = ZoneKit.BeamMaterial();
-            lr.startColor = new Color(1f, 0.9f, 0.6f, 0.7f);
-            lr.endColor = new Color(1f, 0.9f, 0.6f, 0f);
-            lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            Object.Destroy(go, 0.06f);
         }
     }
 

@@ -2,11 +2,17 @@
 
 The game seeds its content DB from Assets/Resources/curated_items.txt and pz_items.txt, so those are
 the source of truth here too. Executing them into an in-memory SQLite table avoids hand-parsing SQL.
+Items that only the game's code registers (ZoneContent's guns, say) are added, ahead of the rest, from the
+catalogue Unity's hand-built model export writes beside those models (out/handbuilt/catalogue.json).
 """
+import json
 import re
 import sqlite3
 from dataclasses import dataclass
 from pathlib import Path
+
+# Written by Unity's CloneZ > Asset Pipeline > Export Hand-Built Item Models (Assets/Editor/ItemModelExport.cs).
+CODE_ITEMS = Path(__file__).resolve().parent / "out" / "handbuilt" / "catalogue.json"
 
 # Mirrors ItemCategory, ClothingSlot, GearKind and PlayerSkills.Skill (enum order matters), phrased
 # for the prompt.
@@ -119,6 +125,35 @@ def load_items(resources: Path) -> list:
             tint=tuple(float(_num(row[c])) for c in ("tintR", "tintG", "tintB")),
             description=(row["description"] or "").strip(),
             traits=_traits(row),
+        ))
+    known = {it.id for it in items}
+    # The items only the code registers go first: they're the game's newest content and few, so a run reaches them soon
+    # rather than after the thousands of catalogue items queued before them.
+    return [it for it in code_items() if it.id not in known] + items
+
+
+def code_items(path: Path = CODE_ITEMS) -> list:
+    """The hand-built items as the export describes them (none when it hasn't been run). load_items keeps the ones the
+    INSERT scripts don't hold: those only the game's code registers."""
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    items = []
+    entries = data.get("items") if isinstance(data, dict) else None
+    for e in entries or []:
+        if not isinstance(e, dict) or not e.get("id"):
+            continue
+        tint = list(e.get("tint") or [0.6, 0.6, 0.62]) + [0.6, 0.6, 0.62]
+        category = e.get("category") if e.get("category") in CATEGORIES else "Misc"
+        items.append(Item(
+            id=e["id"],
+            name=e.get("name") or e["id"],
+            category=category,
+            weight=float(e.get("weight") or 0),
+            tint=tuple(float(c) for c in tint[:3]),
+            description=(e.get("description") or "").strip(),
+            traits=[str(t) for t in e.get("traits") or []],
         ))
     return items
 

@@ -76,6 +76,7 @@ The only per-instance item state today is `ItemStack.SpawnHours` (freshness). An
 - **PZ grounding:** molotov / aerosol bomb / pipe bomb with fire, explosive or noise effects.
 - **Data model:** `ItemDef.IsThrowable`, `ThrowDamage`, `ThrowRadius`, `ThrowKind` (Fire/Explosive/Noise).
 - **Wiring:** a `PlayerThrow` component (aim + arc), an AoE effect reusing the `CombatFX` self-destruct pattern, and a `NoiseSystem` pulse for lures.
+- **Status:** shipped as `Throwables` (`Assets/Scripts/Weapons/Throwables.cs`): the frag, a crafted pipe bomb, a crafted molotov whose fire spreads and sets the dead alight (`FirePatch`, `Aflame` in `Fire.cs`), and three noise lures — firecrackers, a wind-up alarm clock and a timer radio (`NoiseLure.cs`) — whose `NoiseSystem` pulses pull the dead off a chase they've lost sight of. No `ItemDef` flags were needed: each throwable is an item id with a "Throw" use.
 
 ## H. Inventory UX — split / hotbar / favourites / context menu  *(medium — pure QoL)*
 

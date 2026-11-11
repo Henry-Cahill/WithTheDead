@@ -54,7 +54,8 @@ namespace CloneZ
             for (int i = 0; i < shelves; i++)
             {
                 ContainerType t = c.NextLoot() ?? ContainerType.Shelf;
-                if (t != ContainerType.Shelf && t != ContainerType.Pantry && t != ContainerType.MedCabinet && t != ContainerType.Crate) t = ContainerType.Shelf;
+                if (t != ContainerType.Shelf && t != ContainerType.Pantry && t != ContainerType.MedCabinet && t != ContainerType.Crate
+                    && t != ContainerType.GunCounter) t = ContainerType.Shelf;
                 if (!LootPiece(c, t, walls, i % 2 == 0 ? 0.2f : 0.8f)) break;
             }
             if (use == InteriorUse.Convenience || use == InteriorUse.GasStation || use == InteriorUse.BigStore || use == InteriorUse.Store && c.Plan.Town)

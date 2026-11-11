@@ -12,12 +12,30 @@ namespace CloneZ
 {
     /// <summary>
     /// An automated smoke test, inert unless the game (or a batch-mode editor in play mode) is started with
-    /// <c>-clonez-smoke solo|hunter|host|client|lobby|wave</c>. It plays through the real flows — makes a character, walks into
+    /// <c>-clonez-smoke solo|hunter|host|client|lobby|nightwalk|grounditems|meshcache|horde|cutaway|attachments|guns|rounds|melee|throwables|wave</c>. It plays through the real flows — makes a character, walks into
     /// the bar, deploys into a Zone — and pokes the systems (a grenade, a drone, a car, a camp gate and a breaching
     /// charge, the tablet, cuffs, the economy; as a hunter, claws and a trick; as host and client, a networked raid),
     /// counting every error and exception the game logs. <c>lobby</c> plays the starter lobby in the town instead: into
     /// the Kettle from the title screen, out of its front door into the raid where you stand, and back through an exit;
-    /// with <c>-clonez-smoke-shots &lt;dir&gt;</c> it photographs each step. <c>wave</c> plays Wave Survival through its own
+    /// with <c>-clonez-smoke-shots &lt;dir&gt;</c> it photographs each step. <c>nightwalk</c> profiles a night walk through
+    /// the town's lit rooms and fails on any squeeze of the lamps' shadow atlas (see SmokeTest.NightWalk.cs). <c>grounditems</c>
+    /// loads the ground with items and profiles their renderer standing still, against what it drew and cost before it kept
+    /// anything between frames (see SmokeTest.GroundItems.cs). <c>meshcache</c> walks across the statewide map dropping items
+    /// nothing has drawn yet, and fails unless the generated item meshes' memory levels off at its budget (see
+    /// SmokeTest.MeshCache.cs). <c>horde</c> raises 200 of the dead round the survivor and fails if any in view goes more than
+    /// 0.2 s between visibility checks at 60, 30 or 20 frames a second, or if the Sight Occluder layer hides them behind
+    /// anything other than what the whole world did (see SmokeTest.Horde.cs). <c>cutaway</c> profiles what the isometric
+    /// cutaway's hidden pieces cost in shadows in the densest block near the start, and fails if the cutaway still remembers
+    /// colliders of a streamed piece, interior or window once it has been let go of (see SmokeTest.Cutaway.cs). <c>attachments</c>
+    /// kits out the gun in hand by night and fails unless each attachment builds onto it, the light lights (L, its battery)
+    /// and the laser's dot lands where the gun points (see SmokeTest.Attachments.cs). <c>rounds</c> fails unless only a tracer
+    /// round draws a trail and an incendiary round sets the zombie it hits burning (see SmokeTest.Rounds.cs). <c>melee</c> swings
+    /// the knife, the bat and the axe at the dead in a corridor and fails unless each blow lands its wind-up after the press,
+    /// strikes as many bodies as the weapon's arc carries through, staggers and fells as often as its chances say, and a shove
+    /// then a stomp finishes one of the dead on the ground (see SmokeTest.Melee.cs). <c>throwables</c> shuts the survivor in a
+    /// house with the dead outside and fails unless a thrown alarm clock pulls them off it, a molotov thrown into a doorway burns
+    /// the dead coming through it, and the pipe bomb, firecrackers and timer radio do what they're for (see
+    /// SmokeTest.Throwables.cs). <c>wave</c> plays Wave Survival through its own
     /// controls: every key and mouse action, every fixture action, every button of every panel, the pause menu, waves,
     /// saving, Continue and a death (see SmokeTest.Wave.cs). It uses its own profile file (and, for <c>wave</c>, its own
     /// save file) and never touches the player's. Results are logged as "[Smoke] ..." lines; the process exits with 0
@@ -27,7 +45,12 @@ namespace CloneZ
     /// from outside through its outside wall (they must batter a hole through it and come through);
     /// <c>-clonez-smoke-breach-only</c> goes straight there from the deploy. <c>client</c> with
     /// <c>-clonez-smoke-join &lt;address[:port]&gt;</c> plays against a server already running, such as the in-house
-    /// dedicated server (Tools/Server), opening the raid on it itself.
+    /// dedicated server (Tools/Server), opening the raid on it itself. With <c>-force-gfx-mt</c> and
+    /// <c>-clonez-smoke-view &lt;w&gt;x&lt;h&gt;</c> (Smoke.ps1 -Threaded), a batch run draws the screen's cameras that size
+    /// every frame as the Game view would, and fails if the main thread ever waited for room in the render thread's
+    /// command ring (see SmokeTest.Ring.cs). In the editor, <c>lobby</c> and <c>wave</c> also fail on floating geometry: the
+    /// floating-geometry report, run twice on the world as played, must flag nothing but known false positives
+    /// (see SmokeTest.Floating.cs); <c>-clonez-smoke-floating-prop</c> hangs a test prop in the air for those checks.
     /// </summary>
     public sealed partial class SmokeTest : MonoBehaviour
     {
@@ -73,10 +96,12 @@ namespace CloneZ
             {
                 try { Directory.CreateDirectory(s_ShotDir); } catch { s_ShotDir = null; }
             }
+            ReadView(args);
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
             ProfileStore.PathOverride = "smoke_" + s_Mode + "_profile.json";
             try { if (File.Exists(ProfileStore.FilePath)) File.Delete(ProfileStore.FilePath); } catch { }
             if (s_Mode == "wave") PrepareWave();
+            if (s_Mode == "attachments" || s_Mode == "guns" || s_Mode == "rounds" || s_Mode == "melee") InstallInput();   // keys and buttons, pressed as a player presses them
             Application.logMessageReceived += OnLog;
             s_RanInBackground = Application.runInBackground;
             Application.runInBackground = true;
@@ -121,6 +146,7 @@ namespace CloneZ
         private static void OnLog(string message, string stack, LogType type)
         {
             if (message.StartsWith("[CloneZ] Game saved", StringComparison.Ordinal)) s_Saves++;
+            CountAtlasMessage(message);
             if (type != LogType.Exception && type != LogType.Error && type != LogType.Assert) return;
             if (message.StartsWith("[Smoke]")) return;
             // The editor's own AI Assistant relay complains in batch mode, its search indexer throws on startup in this Unity,
@@ -239,6 +265,16 @@ namespace CloneZ
                 case "host": yield return Host(); break;
                 case "client": yield return Client(); break;
                 case "lobby": yield return Lobby(); break;
+                case "nightwalk": yield return NightWalk(); break;
+                case "grounditems": yield return GroundItemsRun(); break;
+                case "meshcache": yield return MeshCacheRun(); break;
+                case "horde": yield return HordeRun(); break;
+                case "cutaway": yield return CutawayRun(); break;
+                case "attachments": yield return AttachmentsRun(); break;
+                case "guns": yield return GunsRun(); break;
+                case "rounds": yield return RoundsRun(); break;
+                case "melee": yield return MeleeRun(); break;
+                case "throwables": yield return ThrowablesRun(); break;
                 case "wave": yield return WaveRun(); break;
                 default: yield return Solo(s_Mode == "hunter"); break;
             }
@@ -292,12 +328,13 @@ namespace CloneZ
             });
         }
 
-        private IEnumerator Deploy(RaidKind kind)
+        // Into the zone named with -clonez-smoke-zone, else `zone`, else the default one.
+        private IEnumerator Deploy(RaidKind kind, string zone = null)
         {
             if (kind == RaidKind.Monster) HunterForms.Chosen = CreatureCatalog.Shade;
             string[] args = Environment.GetCommandLineArgs();
             int z = Array.IndexOf(args, "-clonez-smoke-zone");
-            string zone = z >= 0 && z + 1 < args.Length ? args[z + 1] : ZoneCatalog.DefaultZone;
+            zone = z >= 0 && z + 1 < args.Length ? args[z + 1] : zone ?? ZoneCatalog.DefaultZone;
             GameFlow.Deploy(zone, RaidWorldRules.OnFoot, kind);
             yield return Until(() => GameSession.IsExtraction && Actor.LocalPlayer != null && ExtractionManager.Instance != null, 240f);
             Check("raid built (" + kind + ")", GameSession.IsExtraction && Actor.LocalPlayer != null);
@@ -886,6 +923,7 @@ namespace CloneZ
             yield return Until(() => ZombiesNear(me.transform.position, 200f) > 0, 90f);
             Check("the dead roam the town", ZombiesNear(me.transform.position, 200f) > 0, ZombiesNear(me.transform.position, 200f) + " within 200 m");
             Census();
+            CheckFloating("in the town");
 
             // Back through an exit, and so to the bar again (its town built afresh).
             ExtractionManager em = ExtractionManager.Instance;
@@ -918,6 +956,7 @@ namespace CloneZ
                 && FindAnyObjectByType<KettleDoor>() == null);
             yield return new WaitForSeconds(2f);
             Shot("08-standalone-iso", null);
+            CheckFloating("the hub on its own");
             KettleLobby.Disabled = false;
         }
 
@@ -1035,7 +1074,7 @@ namespace CloneZ
         }
 
         // A picture from a place of our own choosing (the bar from the street, from above).
-        private static void ShotFrom(string name, Vector3 eye, Vector3 at, float fov)
+        private static void ShotFrom(string name, Vector3 eye, Vector3 at, float fov, float near = 0.2f)
         {
             if (string.IsNullOrEmpty(s_ShotDir)) return;
             var go = new GameObject("[SmokeShot]");
@@ -1044,7 +1083,7 @@ namespace CloneZ
             if (main != null) shot.CopyFrom(main);
             shot.orthographic = false;
             shot.fieldOfView = fov;
-            shot.nearClipPlane = 0.2f;
+            shot.nearClipPlane = near;
             shot.farClipPlane = 800f;
             shot.cullingMask = ~0;
             go.transform.position = eye;
@@ -1208,6 +1247,7 @@ namespace CloneZ
         private void Finish()
         {
             CheckJava();
+            CheckRing();
             Debug.Log("[Smoke] ---- " + s_Mode + ": " + _checks.Count + " checks, " + _failed + " failed, " + s_Errors + " logged errors ----");
             foreach (string c in _checks) Debug.Log("[Smoke] " + c);
             foreach (string e in s_FirstErrors) Debug.Log("[Smoke] error: " + e);
@@ -1254,6 +1294,14 @@ namespace CloneZ
         {
             try { if (File.Exists(ProfileStore.FilePath)) File.Delete(ProfileStore.FilePath); } catch { }
             if (s_Mode == "wave") EndWave();
+            if (s_Mode == "attachments" || s_Mode == "guns" || s_Mode == "rounds" || s_Mode == "melee")
+            {
+                ReleaseAll();
+                RemoveInput();
+            }
+            if (s_Mode == "meshcache") GeneratedItemMeshes.Budget = 0;   // back to the default, should the run have stopped mid-squeeze
+            if (s_Mode == "horde") Time.captureDeltaTime = 0f;   // the real frame time back, should it have stopped mid-rate
+            ReleaseView();
         }
 
 #if UNITY_EDITOR

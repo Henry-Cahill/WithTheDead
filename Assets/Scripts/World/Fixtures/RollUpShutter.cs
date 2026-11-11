@@ -47,7 +47,7 @@ namespace CloneZ
         private Action<InteractContext> _raiseAct, _lowerAct, _bangAct, _inspectAct, _obstructAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
-        private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+        private static readonly int BodyMask = CloneZConfig.WorldMask | (1 << CloneZConfig.IgnoreRaycastLayer);
 
         /// <summary>True while the curtain is rolled up.</summary>
         public bool IsOpen => _open;

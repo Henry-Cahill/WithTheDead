@@ -66,7 +66,7 @@ namespace CloneZ
 
         private const int Directions = 8;
         private const float ProbeRange = 40f, CycleSeconds = 0.25f;
-        private const int WorldMask = 1 << 0;
+        private const int WorldMask = CloneZConfig.WorldMask;
 
         private static SfxAcoustics s_Instance;
         private static readonly List<Bounds> s_Shelters = new List<Bounds>(8);

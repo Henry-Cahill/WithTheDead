@@ -9,13 +9,15 @@ namespace CloneZ
     /// <summary>
     /// A room's light fitting — a ceiling bulb or a desk lamp: a warm point light with a small glowing
     /// bulb, optionally flickering like a failing tube (random dips and the odd brief outage). In the
-    /// pitch-dark raid nights these are the warm yellow pools of light in a black world.
+    /// pitch-dark raid nights these are the warm yellow pools of light in a black world. A shaded ceiling
+    /// fitting is a downlight instead (<see cref="MakeDownlight"/>): a wide spot shining down, one shadow
+    /// map where a point light needs six.
     ///
-    /// Every fitting is listed in <see cref="All"/>, and together they keep to a budget: only the
-    /// <see cref="MaxShadowedLights"/> fittings nearest the survivor cast shadows (a shadowed point light
-    /// renders six shadow maps), and fittings more than <see cref="CullDistance"/> away switch off
-    /// entirely, so a whole town of lamps stays cheap. The bulb has no collider and is excluded from the
-    /// NavMesh bake, so fittings can be spawned anywhere under the world root.
+    /// Every fitting is listed in <see cref="All"/>, and together they keep to a budget: fittings more than
+    /// <see cref="CullDistance"/> away switch off entirely, so a whole town of lamps stays cheap, and the
+    /// shadows of those that want them are the <see cref="ShadowBudget"/>'s to hand out (the few nearest
+    /// the survivor). The bulb has no collider and is excluded from the NavMesh bake, so fittings can be
+    /// spawned anywhere under the world root.
     /// </summary>
     [DisallowMultipleComponent]
     public class RoomLight : MonoBehaviour
@@ -31,11 +33,13 @@ namespace CloneZ
         /// <summary>Suggested intensity for a desk / table lamp.</summary>
         public const float LampIntensity = 1.6f;
 
-        /// <summary>How many fittings (the nearest to the survivor) may cast shadows at once.</summary>
-        public const int MaxShadowedLights = 4;
         /// <summary>Fittings farther than this from the survivor are switched off.</summary>
         public const float CullDistance = 45f;
-        private const float BudgetInterval = 0.25f;
+        private const float CullInterval = 0.25f;
+        /// <summary>A downlight's cone (degrees): the floor and the walls below the fitting, fading out towards the ceiling.</summary>
+        public const float DownlightAngle = 150f;
+        /// <summary>A downlight's full-strength inner cone (degrees).</summary>
+        public const float DownlightInnerAngle = 100f;
 
         private const float BulbDiameter = 0.11f;
         private const float BulbGlow = 4f;               // HDR multiplier, so the bulb catches the bloom
@@ -43,6 +47,9 @@ namespace CloneZ
         // Point-light shadows use URP's "Low" tier (256 px per cube face); URP ignores normal bias for points.
         private const float ShadowDepthBias = 0.9f;
         private const float ShadowNearPlane = 0.1f;
+        // A downlight's bias, in URP's spot texels: sized where the cone meets its range, far coarser than on the floor
+        // under it, so these are a third of a point light's.
+        private const float DownlightDepthBias = 0.35f, DownlightNormalBias = 0.3f;
 
         // Flicker
         private const float FlickerWobble = 0.12f;       // constant shimmer, fraction of full output
@@ -58,17 +65,15 @@ namespace CloneZ
         private const float LitRangeFraction = 0.7f;     // how far into its range a point counts as lit
 
         private static readonly List<RoomLight> s_All = new List<RoomLight>();
-        private static readonly RoomLight[] s_Nearest = new RoomLight[MaxShadowedLights];
-        private static readonly float[] s_NearestSqr = new float[MaxShadowedLights];
-        private static float s_NextBudget;
-        private static int s_BudgetFrame = -1;
-        // Cached survivor transform to avoid per‑budget lookups.
+        private static float s_NextCull;
+        private static int s_CullFrame = -1;
+        // Cached survivor transform to avoid per-pass lookups (only the survivor's: the camera stands in uncached).
         private static Transform _survivorTransform;
 
         /// <summary>Every live fitting (iterate with a for loop to stay allocation free).</summary>
         public static IReadOnlyList<RoomLight> All => s_All;
 
-        /// <summary>The fitting's point light.</summary>
+        /// <summary>The fitting's light: a point light, or a spot shining down for a downlight.</summary>
         public Light Light { get; private set; }
         /// <summary>The light colour.</summary>
         public Color Color { get; private set; }
@@ -76,12 +81,23 @@ namespace CloneZ
         public float Range { get; private set; }
         /// <summary>The light's full (unflickered) intensity.</summary>
         public float Intensity { get; private set; }
-        /// <summary>True when the caller asked for shadows (the budget decides whether it gets them).</summary>
+        /// <summary>True when the caller asked for shadows (the <see cref="ShadowBudget"/> decides whether it gets them).</summary>
         public bool CastShadows { get; private set; }
+        /// <summary>True for a downlight: a spot shining straight down (see <see cref="MakeDownlight"/>).</summary>
+        public bool Downlight { get; private set; }
         /// <summary>Flickering (dips and brief outages) on or off.</summary>
         public bool Flicker { get; set; }
         /// <summary>The switch: false turns the fitting off.</summary>
-        public bool On { get; set; } = true;
+        public bool On
+        {
+            get => _on;
+            set
+            {
+                if (_on == value) return;
+                _on = value;
+                WantShadows();
+            }
+        }
         /// <summary>Draw the small glowing bulb (turn it off when the fitting's own mesh already glows).</summary>
         public bool ShowBulb
         {
@@ -98,16 +114,18 @@ namespace CloneZ
         public float Level { get; private set; } = 1f;
         /// <summary>True while the fitting is switched on, within range of the survivor and not in a flicker dip.</summary>
         public bool IsLit => On && !_culled && Light != null && Level > LitThreshold;
-        /// <summary>True while this fitting holds one of the shadow-casting slots.</summary>
-        public bool IsCastingShadows => _shadowed;
+        /// <summary>True while the <see cref="ShadowBudget"/> lets this fitting cast shadows.</summary>
+        public bool IsCastingShadows => _shadow != null && _shadow.Granted;
 
         private MeshRenderer _bulb;
         private Material _bulbShared;
         private Material _bulbInstance;   // own copy, only once the bulb has to dim (flicker / switch)
+        private ShadowedLight _shadow;    // the light under the shadow budget (null when it never casts shadows)
+        private bool _on = true;
         private bool _showBulb = true;
         private bool _lightEnabledCache = false;
         private bool _culled;
-        private bool _shadowed;
+        private float _coneCos = -1f;     // a downlight's cone, as the cosine of its half angle (-1: all round)
         private float _applied = -1f;
         private float _seed;
         private float _dipTimer, _dipLeft, _dipDepth;
@@ -118,17 +136,39 @@ namespace CloneZ
         /// Suggested values: <see cref="DefaultColor"/>; a ceiling bulb <see cref="CeilingRange"/> /
         /// <see cref="CeilingIntensity"/> about 2.4 m up (keep it at least 0.15 m below any ceiling slab);
         /// a desk lamp <see cref="LampRange"/> / <see cref="LampIntensity"/>. A lamp shade around the
-        /// bulb casts real shadows, so leave it open at the bottom.
+        /// bulb casts real shadows, so leave it open at the bottom. A shaded ceiling fitting (a dome, a panel,
+        /// a shop lamp) is best a <paramref name="downlight"/>; a bare bulb lights the ceiling too, so it stays
+        /// a point light.
         /// </summary>
         public static RoomLight Spawn(Transform parent, Vector3 position, Color color, float range, float intensity,
-            bool flicker = false, bool castShadows = true)
+            bool flicker = false, bool castShadows = true, bool downlight = false)
         {
             var go = new GameObject("RoomLight");
             go.transform.SetParent(parent, false);
             go.transform.position = position;
             var fitting = go.AddComponent<RoomLight>();
-            fitting.Build(color, range, intensity, flicker, castShadows);
+            fitting.Build(color, range, intensity, flicker, castShadows, downlight);
             return fitting;
+        }
+
+        /// <summary>
+        /// Makes <paramref name="light"/> a downlight, as a shaded ceiling fitting shines: a spot pointing straight
+        /// down with a <see cref="DownlightAngle"/> cone, lighting the floor in full and the walls below the fitting,
+        /// fading out towards the ceiling. It renders one shadow map where a point light renders six. Set its colour,
+        /// range and intensity as for a point light.
+        /// </summary>
+        public static void MakeDownlight(Light light)
+        {
+            light.type = LightType.Spot;
+            light.spotAngle = DownlightAngle;
+            light.innerSpotAngle = DownlightInnerAngle;
+            light.transform.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward);
+            light.shadowBias = DownlightDepthBias;
+            light.shadowNormalBias = DownlightNormalBias;
+            light.shadowNearPlane = ShadowNearPlane;
+            UniversalAdditionalLightData data = light.GetUniversalAdditionalLightData();
+            data.usePipelineSettings = false;
+            data.softShadowQuality = SoftShadowQuality.Medium;
         }
 
         /// <summary>True when <paramref name="point"/> is well inside the pool of a lit fitting
@@ -140,18 +180,24 @@ namespace CloneZ
                 RoomLight l = s_All[i];
                 if (l == null || !l.IsLit) continue;
                 float r = l.Range * LitRangeFraction;
-                if ((point - l.transform.position).sqrMagnitude <= r * r) return true;
+                Vector3 to = point - l.transform.position;
+                float d = to.sqrMagnitude;
+                if (d > r * r) continue;
+                // A downlight's pool is its cone.
+                if (l._coneCos > -1f && Vector3.Dot(to, l.transform.forward) < l._coneCos * Mathf.Sqrt(d)) continue;
+                return true;
             }
             return false;
         }
 
-        private void Build(Color color, float range, float intensity, bool flicker, bool castShadows)
+        private void Build(Color color, float range, float intensity, bool flicker, bool castShadows, bool downlight)
         {
             Color = color;
             Range = Mathf.Clamp(range, 0.5f, 40f);
             Intensity = Mathf.Max(0f, intensity);
             Flicker = flicker;
             CastShadows = castShadows;
+            Downlight = downlight;
 
             _seed = Random.value * 100f;
             _dipTimer = Random.Range(DipMinInterval, DipMaxInterval);
@@ -163,7 +209,6 @@ namespace CloneZ
             light.color = color;
             light.range = Range;
             light.intensity = Intensity;
-            // Shadows start off; the budget hands them to the fittings nearest the survivor.
             light.shadows = LightShadows.None;
             light.shadowStrength = 1f;
             light.shadowBias = ShadowDepthBias;
@@ -175,14 +220,33 @@ namespace CloneZ
             data.renderingLayers = uint.MaxValue;   // includes the survivor's layer (see VisionRig)
             if (Application.isPlaying)
                 data.additionalLightsShadowResolutionTier = UniversalAdditionalLightData.AdditionalLightsShadowResolutionTierLow;
+            if (downlight)
+            {
+                MakeDownlight(light);
+                _coneCos = Mathf.Cos(DownlightAngle * 0.5f * Mathf.Deg2Rad);
+            }
             Light = light;
+            // The shadow budget hands shadows to the fittings nearest the survivor; a flicker's blackouts don't give them up.
+            if (castShadows)
+            {
+                light.shadows = LightShadows.Soft;   // the type it's granted; the budget turns it off until then
+                _shadow = ShadowedLight.Add(light);
+                _shadow.OnlyWhileEnabled = false;
+                WantShadows();
+            }
 
             BuildBulb();
             _applied = -1f;
             ApplyState();
 
-            // A fitting created after a budget pass shouldn't wait for the next one to be culled / shadowed.
-            s_NextBudget = 0f;
+            // A fitting created after a cull pass shouldn't wait for the next one to be culled.
+            s_NextCull = 0f;
+        }
+
+        // A fitting wants its shadows while it's switched on and near enough to be lit.
+        private void WantShadows()
+        {
+            if (_shadow != null) _shadow.Wants = _on && !_culled;
         }
 
         private void BuildBulb()
@@ -227,11 +291,11 @@ namespace CloneZ
         private void Update()
         {
             float now = Time.time;
-            if (Time.frameCount != s_BudgetFrame && (now >= s_NextBudget || s_NextBudget - now > BudgetInterval))
+            if (Time.frameCount != s_CullFrame && (now >= s_NextCull || s_NextCull - now > CullInterval))
             {
-                s_BudgetFrame = Time.frameCount;
-                s_NextBudget = now + BudgetInterval;
-                RefreshBudget();
+                s_CullFrame = Time.frameCount;
+                s_NextCull = now + CullInterval;
+                RefreshCulling();
             }
 
             if (Light == null) return;
@@ -317,80 +381,33 @@ namespace CloneZ
             _culled = culled;
             _applied = -1f;
             ApplyState();
+            WantShadows();
         }
 
-        private void SetShadowed(bool shadowed)
+        // Switches off the fittings far from the survivor (and back on as they come near).
+        private static void RefreshCulling()
         {
-            _shadowed = shadowed;
-            if (Light == null) return;
-            LightShadows want = shadowed ? LightShadows.Soft : LightShadows.None;
-            if (Light.shadows != want) Light.shadows = want;
-        }
-
-        // Culls far fittings and hands the shadow slots to the nearest ones that want them.
-        private static void RefreshBudget()
-        {
-            // Get the survivor's position; if we can't, abort the budget pass.
             if (!TryGetSurvivor(out Vector3 center)) return;
-
-            // Reset the nearest‑lights arrays for this frame.
-            for (int i = 0; i < MaxShadowedLights; i++)
-            {
-                s_Nearest[i] = null;
-                s_NearestSqr[i] = float.MaxValue;
-            }
-
-            // Determine which lights are beyond the cull distance.
             float cullSqr = CullDistance * CullDistance;
             for (int i = 0; i < s_All.Count; i++)
             {
                 RoomLight l = s_All[i];
                 if (l == null || l.Light == null) continue;
-                float d = (l.transform.position - center).sqrMagnitude;
-                bool culled = d > cullSqr;
-                l.SetCulled(culled);
-                // If within range and wants shadows, consider it for the nearest‑lights list.
-                if (!culled && l.CastShadows && l.On) InsertNearest(l, d);
-            }
-
-            // Now assign shadow‑casting slots based on the nearest‑lights list.
-            for (int i = 0; i < s_All.Count; i++)
-            {
-                RoomLight l = s_All[i];
-                if (l == null) continue;
-                bool shadowed = false;
-                for (int k = 0; k < MaxShadowedLights; k++)
-                    if (s_Nearest[k] == l) { shadowed = true; break; }
-                l.SetShadowed(shadowed);
-            }
-        }
-
-        private static void InsertNearest(RoomLight l, float sqr)
-        {
-            for (int i = 0; i < MaxShadowedLights; i++)
-            {
-                if (sqr >= s_NearestSqr[i]) continue;
-                for (int j = MaxShadowedLights - 1; j > i; j--)
-                {
-                    s_Nearest[j] = s_Nearest[j - 1];
-                    s_NearestSqr[j] = s_NearestSqr[j - 1];
-                }
-                s_Nearest[i] = l;
-                s_NearestSqr[i] = sqr;
-                return;
+                l.SetCulled((l.transform.position - center).sqrMagnitude > cullSqr);
             }
         }
 
         private static bool TryGetSurvivor(out Vector3 position)
         {
             // Use cached transform if still valid.
-            if (_survivorTransform != null && _survivorTransform.gameObject != null)
+            if (_survivorTransform != null)
             {
                 position = _survivorTransform.position;
                 return true;
             }
 
-            // Resolve anew.
+            // Resolve anew: the survivor, cached; until there is one, the camera stands in (not cached, so the survivor
+            // takes over as soon as they're there).
             GameManager gm = GameManager.Instance;
             if (gm != null && gm.Player != null)
             {
@@ -401,8 +418,7 @@ namespace CloneZ
             Camera cam = Camera.main;
             if (cam != null)
             {
-                _survivorTransform = cam.transform;
-                position = _survivorTransform.position;
+                position = cam.transform.position;
                 return true;
             }
             position = default;

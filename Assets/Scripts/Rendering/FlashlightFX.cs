@@ -93,6 +93,8 @@ namespace CloneZ
             data.shadowRenderingLayers = ~VisionRig.SurvivorRenderingLayerMask;
             if (Application.isPlaying)
                 data.additionalLightsShadowResolutionTier = UniversalAdditionalLightData.AdditionalLightsShadowResolutionTierMedium;
+            // The shadow budget keeps the beam's atlas space even while it's off, so switching it on never overfills it.
+            ShadowedLight.Add(_light, pinned: true);
             _light.enabled = false;
         }
 

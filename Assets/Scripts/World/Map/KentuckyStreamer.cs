@@ -1010,6 +1010,8 @@ namespace CloneZ
                 _upgraded++;
                 if (_stats != null) _stats.Upgraded++;
             }
+            // Its solids onto the Sight Occluder layer while it's still asleep, so the physics scene never sees them move.
+            SightOccluders.Claim(c.Root.transform);
             c.Root.SetActive(true);
             c.Overhead.SetActive(true);
             c.Ready = true;
@@ -1062,7 +1064,7 @@ namespace CloneZ
         }
 
         // Everything a piece made, gone: its objects, its meshes (once no NavMesh update is reading them), its shelters and
-        // its signs.
+        // its signs, and what the camera's cutaway learned of its colliders.
         private void Release(Chunk c)
         {
             Shelter.Forget(c);
@@ -1070,6 +1072,7 @@ namespace CloneZ
             DestroyMaterialCopies(c.Overhead);
             Kill(c.Root);
             Kill(c.Overhead);
+            IsoCutaway.LetGo();
             _deadMeshes.AddRange(c.Meshes);
             c.Meshes.Clear();
             ReleaseSigns(c);

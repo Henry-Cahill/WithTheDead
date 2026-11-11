@@ -8,7 +8,8 @@ namespace CloneZ
     /// <summary>
     /// Per-instance data an item can carry beyond its count, freshness and wear: whether it was
     /// <see cref="FoundInRaid"/>, whether it is <see cref="Insured"/>, the attachments bolted onto a gun
-    /// (<see cref="Mods"/>), how fouled a gun is (<see cref="Dirt"/>), the technician
+    /// (<see cref="Mods"/>) and how much of a fitted weapon light's battery is used (<see cref="LightUsed"/>), how fouled
+    /// a gun is (<see cref="Dirt"/>), the technician
     /// <see cref="Upgrades"/> fitted to a weapon or suit, the round a gun prefers
     /// (<see cref="AmmoChoice"/>) and a free-form <see cref="Note"/> (a PDA's stash tip, a map's zone, a
     /// car key's vehicle). It travels with the stack through every transfer, drop, pick-up and save.
@@ -22,6 +23,9 @@ namespace CloneZ
         public bool Insured;
         public List<string> Mods = new List<string>();
         public float Dirt;
+        /// <summary>How much of the battery of the weapon light among <see cref="Mods"/> is used up: 0 fresh .. 1 flat. The
+        /// light item's own charge moves here when it's fitted and back onto it when it comes off (see WeaponItems).</summary>
+        public float LightUsed;
         public List<string> Upgrades = new List<string>();
         public string AmmoChoice;
         public string Note;
@@ -30,7 +34,7 @@ namespace CloneZ
         public bool OnBelt;
 
         /// <summary>True when nothing beyond the defaults is recorded.</summary>
-        public bool IsEmpty => !FoundInRaid && !Insured && Mods.Count == 0 && Dirt <= 0f && !OnBelt
+        public bool IsEmpty => !FoundInRaid && !Insured && Mods.Count == 0 && Dirt <= 0f && LightUsed <= 0f && !OnBelt
                                && Upgrades.Count == 0 && string.IsNullOrEmpty(AmmoChoice) && string.IsNullOrEmpty(Note);
 
         /// <summary>A deep copy of these extras (lists duplicated) so the original stays untouched.</summary>
@@ -41,6 +45,7 @@ namespace CloneZ
                 FoundInRaid = FoundInRaid,
                 Insured = Insured,
                 Dirt = Dirt,
+                LightUsed = LightUsed,
                 AmmoChoice = AmmoChoice,
                 Note = Note,
                 OnBelt = OnBelt,
@@ -66,7 +71,8 @@ namespace CloneZ
             return a.FoundInRaid == b.FoundInRaid && a.Insured == b.Insured && !a.OnBelt && !b.OnBelt
                 && a.Mods.Count == 0 && b.Mods.Count == 0 && a.Upgrades.Count == 0 && b.Upgrades.Count == 0
                 // Use tolerance when comparing dirt; exact float equality fails after rounding/serialization.
-                && Mathf.Abs(a.Dirt - b.Dirt) <= DirtTolerance && string.Equals(a.AmmoChoice, b.AmmoChoice)
+                && Mathf.Abs(a.Dirt - b.Dirt) <= DirtTolerance && Mathf.Abs(a.LightUsed - b.LightUsed) <= DirtTolerance
+                && string.Equals(a.AmmoChoice, b.AmmoChoice)
                 && string.IsNullOrEmpty(a.Note) && string.IsNullOrEmpty(b.Note);
         }
 
@@ -76,7 +82,7 @@ namespace CloneZ
         public bool HasUpgrade(string id) => Upgrades.Contains(id);
 
         #region Compact text form (saves, kit files, network)
-        /// <summary>Encodes to a short text form: <c>f;i;m=a,b;d=0.25;u=x,y;a=ammo;n=note</c>. Null when empty.</summary>
+        /// <summary>Encodes to a short text form: <c>f;i;m=a,b;d=0.25;l=0.4;u=x,y;a=ammo;n=note</c>. Null when empty.</summary>
         public static string Serialize(ItemExtra e)
         {
             if (e == null || e.IsEmpty) return null;
@@ -86,6 +92,7 @@ namespace CloneZ
             if (e.OnBelt) sb.Append("b;");
             if (e.Mods.Count > 0) sb.Append("m=").Append(Join(e.Mods)).Append(';');
             if (e.Dirt > 0f) sb.Append("d=").Append(e.Dirt.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)).Append(';');
+            if (e.LightUsed > 0f) sb.Append("l=").Append(e.LightUsed.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture)).Append(';');
             if (e.Upgrades.Count > 0) sb.Append("u=").Append(Join(e.Upgrades)).Append(';');
             if (!string.IsNullOrEmpty(e.AmmoChoice)) sb.Append("a=").Append(Uri.EscapeDataString(e.AmmoChoice)).Append(';');
             if (!string.IsNullOrEmpty(e.Note)) sb.Append("n=").Append(Uri.EscapeDataString(e.Note)).Append(';');
@@ -123,6 +130,10 @@ namespace CloneZ
                         case "m": Split(v, e.Mods); break;
                         // Dirt serialized with limited precision; parse in InvariantCulture to avoid locale issues.
                         case "d": float.TryParse(v, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out e.Dirt); break;
+                        case "l":
+                            float.TryParse(v, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out e.LightUsed);
+                            e.LightUsed = Mathf.Clamp01(e.LightUsed);
+                            break;
                         case "u": Split(v, e.Upgrades); break;
                         // Free-form strings were escaped on write to survive delimiters/special chars.
                         case "a": e.AmmoChoice = Uri.UnescapeDataString(v); break;

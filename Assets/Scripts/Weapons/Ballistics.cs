@@ -17,6 +17,8 @@ namespace CloneZ
         public float SpreadMult = 1f;
         public float RangeMult = 1f;
         public bool Currency;                // the military-grade rounds that double as money
+        public bool Tracer;                  // draws a red trail to wherever it stops; no other round draws one (CombatFX.Tracer)
+        public bool Incendiary;              // sets whoever it hits alight, as a molotov's flames do (Aflame)
     }
 
     /// <summary>A firearm's handling and which attachment slots it has.</summary>
@@ -29,6 +31,46 @@ namespace CloneZ
         public bool FullAuto;
         public float DamageMult = 1f;
         public float AdsZoom = 1.15f;        // iron-sight magnification
+        /// <summary>The report it fires with (an <see cref="SfxIds"/> gun sound; see <see cref="WeaponAudio.ShotSound"/>).
+        /// Null takes its calibre's.</summary>
+        public string Sound;
+        /// <summary>The reload it plays (an <see cref="SfxIds"/> reload; see <see cref="WeaponAudio.ReloadSound"/>). Null takes
+        /// its calibre's.</summary>
+        public string ReloadSound;
+        /// <summary>Where the hands go on it; unset takes the usual hold for its length (<see cref="GunHold.Usual"/>).</summary>
+        public GunHold Hold;
+    }
+
+    /// <summary>
+    /// Where the hands go on a gun, as shares of its model's box in gun space (see <see cref="GunShape"/>): along X from the
+    /// butt (0) to the muzzle (1), along Z from the bottom (0) to the top (1). The right fist closes on the grip; the off hand
+    /// takes the forend, the pump or the handguard (on a handgun it cups the right one, wherever the support is set).
+    /// <see cref="HumanoidRig.SetHeldItem"/> seats the model in the fist by the grip and hands <see cref="WeaponHandIK"/> the
+    /// support. Shares rather than metres, because a generated mesh is fitted to the primitive model's box: the hands land
+    /// on every look of a gun alike, and where a look's box runs past the gun (a bipod's legs, a sling) a hand that would
+    /// close on air is moved onto the gun's outline there. The stance seats the butt in the shoulder
+    /// (<c>HumanoidAnimator.GunHold</c>), and from there the off hand reaches about 0.55 m along the gun: on a long gun the
+    /// support goes no further, at the back of a long forend (further out, the hand stops short of it).
+    /// </summary>
+    public struct GunHold
+    {
+        public float GripX, GripZ, SupportX, SupportZ;
+
+        public GunHold(float gripX, float gripZ, float supportX, float supportZ)
+        {
+            GripX = gripX;
+            GripZ = gripZ;
+            SupportX = supportX;
+            SupportZ = supportZ;
+        }
+
+        /// <summary>True when the hold has been set (a grip somewhere along the gun).</summary>
+        public bool IsSet => GripX > 0f;
+
+        /// <summary>The hold for a gun that has none of its own: a handgun by its grip, a long gun at about a third of its length
+        /// with the off hand at two thirds, a little below the middle.</summary>
+        public static GunHold Usual(bool handgun) =>
+            handgun ? new GunHold(0.2f, 0.45f, 0.2f, 0.45f) : new GunHold(0.3f, 0.4f, 0.66f, 0.4f);
     }
 
     /// <summary>An attachment and what it does to the gun it's on.</summary>
@@ -99,6 +141,8 @@ namespace CloneZ
 
         /// <summary>All registered ammo definitions.</summary>
         public static IEnumerable<AmmoStats> AllAmmo => s_Ammo.Values;
+        /// <summary>All registered gun definitions.</summary>
+        public static IEnumerable<GunStats> AllGuns { get { ItemDatabase.EnsureInit(); return s_Guns.Values; } }
         /// <summary>All registered mod definitions.</summary>
         public static IEnumerable<ModStats> AllMods => s_Mods.Values;
 

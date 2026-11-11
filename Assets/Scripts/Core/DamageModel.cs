@@ -151,6 +151,12 @@ namespace CloneZ
         public float FractureChance;   // 0..1 extra chance a limb hit breaks the bone
         public string WeaponId;        // what dealt it (kill feed, quests)
         public ulong AttackerClientId; // networked attacker (ulong.MaxValue = AI / environment)
+        /// <summary>0..1 chance the blow staggers what it hits, where that can stagger (the dead): 1 (the default) always,
+        /// as rounds and claws do; a melee weapon's own chance (see <see cref="MeleeStats"/>). One that doesn't stagger only
+        /// flinches and keeps coming.</summary>
+        public float Stagger;
+        /// <summary>0..1 chance the blow knocks what it hits off its feet, where that can be knocked down (the dead).</summary>
+        public float Knockdown;
         /// <summary>True when <see cref="Amount"/> is in hit points of a limb model (bullets, claws, explosions:
         /// a 9 mm round ~55). False is the original zombie-arena scale (a knife ~1.1); receivers convert with
         /// <see cref="DamageScale"/>.</summary>
@@ -187,6 +193,9 @@ namespace CloneZ
             WeaponId = null;
             // Max ulong signals no specific player (environment or AI) dealt the damage.
             AttackerClientId = ulong.MaxValue;
+            // Every blow staggers what it can, unless a melee weapon says how likely; none knocks anything down unless it says so.
+            Stagger = 1f;
+            Knockdown = 0f;
             // Default to arena scale; HpScale toggles when damage is already in HP units.
             HpScale = false;
         }

@@ -93,8 +93,8 @@ namespace CloneZ
             }
             if (ignoring == null) s_Ignoring[body] = ignoring = new List<Collider>(4);
             // The ground boxes under this spot: what's there half a metre below the ground's top.
-            int n = Physics.OverlapBoxNonAlloc(new Vector3(at.x, -0.5f, at.z), new Vector3(0.6f, 0.3f, 0.6f), s_Hits, Quaternion.identity, 1,
-                QueryTriggerInteraction.Ignore);
+            int n = Physics.OverlapBoxNonAlloc(new Vector3(at.x, -0.5f, at.z), new Vector3(0.6f, 0.3f, 0.6f), s_Hits, Quaternion.identity,
+                CloneZConfig.WorldMask, QueryTriggerInteraction.Ignore);
             for (int i = 0; i < n; i++)
             {
                 Collider c = s_Hits[i];

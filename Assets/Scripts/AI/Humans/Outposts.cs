@@ -383,7 +383,7 @@ Taken(me.Faction, ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds, true, 
         public static StashCache Spawn(BuriedStash data, bool open)
         {
             Vector3 p = data.Position;
-            if (Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out RaycastHit hit, 40f, 1, QueryTriggerInteraction.Ignore)) p.y = hit.point.y;
+            if (Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out RaycastHit hit, 40f, CloneZConfig.WorldMask, QueryTriggerInteraction.Ignore)) p.y = hit.point.y;
             var go = new GameObject("Stash " + data.Id);
             go.transform.position = p;
             var m = new RaidMesh();

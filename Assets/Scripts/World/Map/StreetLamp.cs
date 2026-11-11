@@ -10,7 +10,7 @@ namespace CloneZ
     /// blocks the reach for its own switch) with its glowing lens up top. The lamps keep no Update and, in play, no lights
     /// of their own: one driver (<see cref="StreetLampDriver"/>) works them all, a few times a second lending its pool of
     /// <see cref="MaxLit"/> spot lights to the burning lamps nearest the survivor (the nearest within
-    /// <see cref="ShadowReach"/> with shadows), however many lamps the streamed pieces hold, and putting every lamp out by day
+    /// <see cref="ShadowReach"/> asking the <see cref="ShadowBudget"/> for shadows), however many lamps the streamed pieces hold, and putting every lamp out by day
     /// (photocells); each frame it flickers the failing ones it lights, and blinks the map's flashing signal lenses and
     /// aviation beacons (<see cref="Blinkers"/>). A map built in the editor (previews, the map harness) has no driver
     /// running, so a few of its lamps (the builder's cap) get a light of their own instead. The survivor can switch a lamp,
@@ -24,7 +24,7 @@ namespace CloneZ
         public const int MaxLit = 8;
         /// <summary>Lamps farther than this from the survivor only glow.</summary>
         public const float LightReach = 64f;
-        /// <summary>The nearest lit lamp within this casts shadows.</summary>
+        /// <summary>The nearest lit lamp within this asks the <see cref="ShadowBudget"/> for shadows.</summary>
         public const float ShadowReach = 22f;
         private const float BlockRadius = 30f;   // how far "the block's lamps" reach
         private const float ClickNoise = 2f;
@@ -108,8 +108,8 @@ namespace CloneZ
             return lamp;
         }
 
-        // What every street light shares: a spot, no shadows until the driver says, on every rendering layer (the
-        // survivor's too, see VisionRig).
+        // What every street light shares: a spot, no shadows until the driver says (in play, until the shadow budget
+        // grants them), on every rendering layer (the survivor's too, see VisionRig).
         private static void Setup(Light spot)
         {
             spot.type = LightType.Spot;
@@ -428,8 +428,8 @@ namespace CloneZ
                 l._lent = pool;
                 pool.transform.SetPositionAndRotation(l._head.position, l._head.rotation);
                 Shine(pool, l._colour, l._range, l._intensity * (l._flicker ? l._level : 1f) * l.Power, l._angle);
-                LightShadows want = i == 0 && shadow ? LightShadows.Soft : LightShadows.None;
-                if (pool.shadows != want) pool.shadows = want;
+                // The nearest lamp wants shadows; the shadow budget decides (ShadowedLight, given in Pool).
+                if (pool.TryGetComponent(out ShadowedLight shadowed)) shadowed.Wants = i == 0 && shadow;
                 if (!pool.enabled) pool.enabled = true;
             }
         }
@@ -444,6 +444,8 @@ namespace CloneZ
             l = go.AddComponent<Light>();
             Setup(l);
             l.enabled = false;
+            l.shadows = LightShadows.Soft;
+            ShadowedLight.Add(l).Wants = false;   // until it's the nearest lamp's
             s_Pool[i] = l;
             return l;
         }

@@ -55,7 +55,7 @@ namespace CloneZ
         public static event Action<ShotRequest, ShotResult> ShotResolved;
 
         /// <summary>Layers bullets interact with: the world and characters.</summary>
-        public static int ShotMask => (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+        public static int ShotMask => CloneZConfig.WorldMask | (1 << CloneZConfig.IgnoreRaycastLayer);
 
         private static readonly RaycastHit[] s_Hits = new RaycastHit[24];
 
@@ -64,7 +64,7 @@ namespace CloneZ
         {
             if (ShotRouter != null && ShotRouter(req))
             {
-                // The server will resolve it; draw the tracer to where the round would reach locally.
+                // The server will resolve it; cast locally only to show where the round would reach (a tracer round's streak).
                 return Cast(req, applyDamage: false);
             }
             return Resolve(req);
@@ -116,10 +116,23 @@ namespace CloneZ
                     DamageInfo info = BulletDamage(req, h.point, zone);
                     if (box != null) info.Amount *= box.DamageMult;
                     result.Killed = Apply(target, info, req.ShooterActor);
+                    Ignite(req, actor);
                 }
                 break;
             }
             return result;
+        }
+
+        // An incendiary round sets whoever it hits alight (Aflame, as a molotov's flames do), its burns counting as the gun's.
+        // A runner's body keeps the friendly-fire rule it keeps for the round itself (RemotePlayer.TakeDamage).
+        private static void Ignite(in ShotRequest req, Actor victim)
+        {
+            AmmoStats ammo = Ballistics.Ammo(req.AmmoId);
+            if (victim == null || ammo == null || !ammo.Incendiary) return;
+            Actor shooter = req.ShooterActor;
+            if (shooter != null && shooter.IsPlayerControlled && victim.IsPlayerControlled && !shooter.IsHostileTo(victim)
+                && !ServerRules.FriendlyFire) return;
+            Aflame.Ignite(victim, req.Shooter, req.WeaponId);
         }
 
         /// <summary>The damage a round of <paramref name="req"/>'s ammunition does on a zone.</summary>

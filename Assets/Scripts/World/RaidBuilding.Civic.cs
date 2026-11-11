@@ -161,6 +161,33 @@ namespace CloneZ
                 new[] { door }, t, Rng.Next(), o);
         }
 
+        /// <summary>A walnut gun cabinet (0.9 × 1.9 × 0.45 m) stocked from <paramref name="loot"/>: a glazed door over a rack of
+        /// long guns, and drawers below for the shells. A farmhouse's, mostly.</summary>
+        public StorageFixture GunCabinet(RaidRoom room, Place p, ContainerType loot, string name)
+        {
+            var size = new Vector3(0.9f, 1.9f, 0.45f);
+            Color wood = default;
+            Transform t = FixtureBody(room, p, size, true, (m, r) => wood = FurnitureBuilder.GunCabinetBody(m, r), name);
+            KitchenFrame f = FrameOf(p);
+            FixturePart door = KitchenParts.Door(t, "CabinetDoor", f, d => FurnitureBuilder.GunCabinetDoor(d, wood),
+                new Vector3(FurnitureBuilder.CabinetHingeX, 1.2f, FurnitureBuilder.CabinetDoorFront), Vector3.right, Vector3.forward,
+                CloneZConfig.CivicCabinetDoorAngle);
+            return StorageFixture.Create(t, name, Interactable.KeyFor("guncabinet", t.position), f.P(0f, 1.2f, FurnitureBuilder.CabinetDoorFront + 0.04f),
+                new[] { door }, t, Rng.Next(), MainStock(loot, name.ToLowerInvariant()));
+        }
+
+        /// <summary>A gun shop's display counter (1.6 × 1.0 × 0.7 m) stocked from <paramref name="loot"/>: handguns on red felt
+        /// under a glass top, and the shelves behind the sliding back.</summary>
+        public StorageFixture GunCounter(RaidRoom room, Place p, ContainerType loot, string name)
+        {
+            var size = new Vector3(1.6f, 1.0f, 0.7f);
+            Transform t = FixtureBody(room, p, size, true, (m, r) => FurnitureBuilder.GunCounterBody(m, r), name);
+            StorageOptions o = MainStock(loot, name.ToLowerInvariant());
+            o.LookLabel = "Look in the case";
+            return StorageFixture.Create(t, name, Interactable.KeyFor("guncounter", t.position), At(p, 0f, 0.95f, size.z * 0.5f + 0.02f),
+                null, t, Rng.Next(), o);
+        }
+
         private static void CivicSafeActions(InteractContext ctx, List<InteractAction> into)
         {
             if (s_CivicSpinDial == null) s_CivicSpinDial = c =>
@@ -782,11 +809,12 @@ namespace CloneZ
         }
 
         /// <summary>A rack of long guns drawn by <paramref name="draw"/>, chained up: look it over (there's seldom anything loose
-        /// on it), or try to lift a rifle out.</summary>
-        public StorageFixture WeaponRack(RaidRoom room, Place p, Vector3 size, System.Action<RaidMesh, System.Random> draw, string name)
+        /// on it, from <paramref name="loot"/>'s table), or try to lift a rifle out.</summary>
+        public StorageFixture WeaponRack(RaidRoom room, Place p, Vector3 size, System.Action<RaidMesh, System.Random> draw, string name,
+            ContainerType loot = ContainerType.GunLocker)
         {
             Transform t = FixtureBody(room, p, size, true, draw, name);
-            StorageOptions o = SmallStock(ContainerType.GunLocker, "weapon rack");
+            StorageOptions o = SmallStock(loot, "weapon rack");
             o.EmptyChance = CloneZConfig.CivicRackEmptyChance;
             o.MaxStacks = 1;
             o.LookLabel = "Look over the rack";

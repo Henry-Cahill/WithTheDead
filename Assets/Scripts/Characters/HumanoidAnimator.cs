@@ -45,10 +45,12 @@ namespace CloneZ
         [System.NonSerialized] public float SeatRecline;         // 0 sat up straight .. 1 sunk back in an armchair
         [System.NonSerialized] public bool AutoUpdate = true;
         [System.NonSerialized] public bool ProbeGround = true;   // raycast for the floor under the feet
-        [System.NonSerialized] public int GroundMask = 1;        // Default layer: floors and terrain
+        [System.NonSerialized] public int GroundMask = CloneZConfig.WorldMask;   // Default and Sight Occluder layers: floors and terrain
 
         /// <summary>True when the character is dead.</summary>
         public bool IsDead => _dead;
+        /// <summary>True while knocked down, getting up included.</summary>
+        public bool IsDown => _down;
         /// <summary>True while lying in bed asleep.</summary>
         public bool IsSleeping => _lying && !_lyingAwake;
         /// <summary>True while lying in bed, asleep or awake.</summary>
@@ -83,7 +85,7 @@ namespace CloneZ
         private bool _groundDirty = true;
 
         // One-shot actions.
-        private enum Act : byte { None, Swing, Punch, Shove, Lunge, Bash }
+        private enum Act : byte { None, Swing, Punch, Shove, Lunge, Bash, Stomp }
         private Act _act;
         private float _actT, _actDur, _actWindup;
         private bool _actTwoHanded;
@@ -91,6 +93,11 @@ namespace CloneZ
         private Vector3 _flinchDir;
         private float _stagger, _staggerDur;
         private Vector3 _staggerDir;
+
+        // Knocked down: how far over the body is (0 standing .. 1 flat on the ground), which way it went, and the rise.
+        private bool _down, _downBackward, _rising;
+        private float _downF, _riseDur = 0.9f;
+        private const float KnockdownFallSeconds = 0.4f;
 
         // Whole-body states.
         private bool _dead, _fallBackward, _diedLying;
@@ -142,6 +149,52 @@ namespace CloneZ
             _actTwoHanded = twoHanded && !bare;
         }
 
+        /// <summary>A melee swing timed to the blow: the backswing takes <paramref name="windup"/> seconds, so the weapon (or
+        /// the fist) meets its target as the blow lands, and the follow-through and the return take <paramref name="recovery"/>.</summary>
+        public void Swing(float windup, float recovery, bool twoHanded)
+        {
+            if (_dead) return;
+            bool bare = _rig != null && _rig.HeldStyle != HoldStyle.Melee;
+            windup = Mathf.Max(0.04f, windup);
+            StartAct(bare ? Act.Punch : Act.Swing, windup + Mathf.Max(0.1f, recovery), windup);
+            _actTwoHanded = twoHanded && !bare;
+        }
+
+        /// <summary>A stomp: the right knee comes up through <paramref name="windup"/> seconds, the heel drives down, and the
+        /// foot comes back to the ground through <paramref name="recovery"/>.</summary>
+        public void Stomp(float windup, float recovery)
+        {
+            if (_dead || _down) return;
+            StartAct(Act.Stomp, Mathf.Max(0.05f, windup) + Mathf.Max(0.1f, recovery), Mathf.Max(0.05f, windup));
+        }
+
+        /// <summary>Knocked off its feet: the body goes over away from <paramref name="hitDirection"/> (the way the blow travelled;
+        /// backward if that's unknown) and lies there until <see cref="GetUp"/>. Knocked back down while getting up, it goes
+        /// down the way it was lying. <paramref name="lying"/>: already on the ground, with no fall to show (a body first seen
+        /// that way).</summary>
+        public void KnockDown(Vector3 hitDirection, bool lying = false)
+        {
+            if (_dead || !Bind()) return;
+            if (!_down)
+            {
+                Vector3 fwd = Flat(_root.forward);
+                _downBackward = hitDirection.sqrMagnitude < 1e-6f || Vector3.Dot(Flat(hitDirection), fwd) <= 0.3f;
+            }
+            _down = true;
+            _rising = false;
+            _act = Act.None;
+            _stagger = 0f;
+            if (lying) _downF = 1f;
+        }
+
+        /// <summary>Gets back up off the ground over <paramref name="seconds"/>.</summary>
+        public void GetUp(float seconds)
+        {
+            if (!_down || _dead) return;
+            _rising = true;
+            _riseDur = Mathf.Max(0.1f, seconds);
+        }
+
         /// <summary>Pushes the character's shoulder into a shove (used by zombies).</summary>
         public void Shove() { if (!_dead) StartAct(Act.Shove, 0.38f, 0f); }
 
@@ -183,6 +236,14 @@ namespace CloneZ
             Vector3 fwd = Flat(_root.forward);
             _fallBackward = hitDirection.sqrMagnitude < 1e-6f || Vector3.Dot(Flat(hitDirection), fwd) <= 0.3f;
             if (_crawlW > 0.5f) _fallBackward = false;
+            if (_down)
+            {
+                // Killed on the ground (or partway over): it stays the way it was going, the fall picked up where it is.
+                _fallBackward = _downBackward;
+                _deathT = 0.12f + 0.7f * Mathf.Sqrt(Mathf.SmoothStep(0f, 1f, _downF));
+                _down = _rising = false;
+                _downF = 0f;
+            }
             _diedLying = _lieW > 0.5f;   // dying in bed: stay in bed
         }
 
@@ -232,6 +293,19 @@ namespace CloneZ
             _actWindup = windup;
         }
 
+        // How far through a swing's or a punch's keys (0..1) the act is. Timed to a blow (a wind-up given), the backswing fills
+        // the wind-up and the weapon meets its target at `contact` just as the blow lands; the follow-through and the return fill
+        // the recovery. Untimed, evenly.
+        private float ActKeyT(float contact)
+        {
+            if (_actWindup <= 0f) return Mathf.Clamp01(_actT / Mathf.Max(0.01f, _actDur));
+            if (_actT < _actWindup) return contact * (_actT / _actWindup);
+            return contact + (1f - contact) * Mathf.Clamp01((_actT - _actWindup) / Mathf.Max(0.01f, _actDur - _actWindup));
+        }
+
+        private const float SwingContact = 0.48f;   // between the backswing (key .32) and the strike across the front (key .56)
+        private const float PunchContact = 0.375f;  // the jab at full stretch
+
         // ── Evaluation ───────────────────────────────────────────────────────────────────────────────
 
         /// <summary>Poses the rig for this frame. Called from LateUpdate unless <see cref="AutoUpdate"/>
@@ -253,8 +327,9 @@ namespace CloneZ
             if (_crawlW > 0.001f) { PoseCrawl(); Blend(_crawlW); }
             float sit = Mathf.SmoothStep(0f, 1f, _sitW);
             if (sit > 0.001f) { PoseSitting(); Blend(sit); }
-            if (_dead && !_diedLying) { PoseDead(); Blend(Mathf.SmoothStep(0f, 1f, _deathT / 0.85f)); }
+            if (_dead && !_diedLying) { PoseDead(_fallBackward); Blend(Mathf.SmoothStep(0f, 1f, _deathT / 0.85f)); }
             else if (_lieW > 0.001f) { PoseLying(); Blend(Mathf.SmoothStep(0f, 1f, _lieW)); }
+            else if (_downF > 0.001f) { PoseDead(_downBackward); Blend(Mathf.SmoothStep(0f, 1f, _downF)); }
 
             Write();
 
@@ -263,7 +338,7 @@ namespace CloneZ
             if (upright > 0.01f) Arms(upright);
             else if (_crawlW > 0.01f && !_dead) CrawlArms(_crawlW);
             if (!_dead && _lieW > 0.01f && _awakeW > 0.01f) RestArms(Mathf.SmoothStep(0f, 1f, _lieW) * Mathf.SmoothStep(0f, 1f, _awakeW));
-            if (!_dead) Look(dt, 1f - _lieW);
+            if (!_dead) Look(dt, (1f - _lieW) * (1f - fall));
         }
 
         private void Tick(float dt)
@@ -271,7 +346,7 @@ namespace CloneZ
             Transform frame = _root.parent != null ? _root.parent : _root;
             Vector3 v = Velocity;
             v.y = 0f;
-            float raw = _dead || _lying || Seated ? 0f : v.magnitude;
+            float raw = _dead || _lying || Seated || _down ? 0f : v.magnitude;
             _groundDirty = _groundDirty || raw > 0.01f;
             _speed = Mathf.Lerp(_speed, raw, 1f - Mathf.Exp(-dt * 8f));
             if (raw > 0.05f)
@@ -294,6 +369,12 @@ namespace CloneZ
             if (_flinch > 0f) _flinch = Mathf.Max(0f, _flinch - dt / _flinchDur);
             if (_stagger > 0f) _stagger = Mathf.Max(0f, _stagger - dt);
             if (_dead) _deathT += dt;
+            if (_down)
+            {
+                // Over in a moment; up again as fast as the getting up takes.
+                _downF = _rising ? Mathf.MoveTowards(_downF, 0f, dt / _riseDur) : Mathf.MoveTowards(_downF, 1f, dt / KnockdownFallSeconds);
+                if (_rising && _downF <= 0f) _down = _rising = false;
+            }
 
             float k = 1f - Mathf.Exp(-dt * 7f);
             _aimW = Mathf.Lerp(_aimW, Aiming ? 1f : 0f, 1f - Mathf.Exp(-dt * 12f));
@@ -400,6 +481,13 @@ namespace CloneZ
                 LiePose(parent, out Vector3 lpos, out Quaternion lrot);
                 pos = Vector3.Lerp(_lying ? _lieFromPos : pos, lpos, w);
                 rot = Quaternion.Slerp(_lying ? _lieFromRot : rot, lrot, w);
+            }
+            else if (_downF > 0.001f)
+            {
+                // Knocked down: over on the back (or the front) about the feet, as a death fall goes, and back up the same way.
+                fall = Mathf.SmoothStep(0f, 1f, _downF);
+                rot = Quaternion.Euler(90f * fall * (_downBackward ? -1f : 1f), 0f, 0f);
+                pos.y += (_downBackward ? BackLift : FrontLift) * fall;
             }
 
             if (_carryW > 0.001f && parent != null)

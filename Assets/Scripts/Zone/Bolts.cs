@@ -221,7 +221,7 @@ private Rigidbody _rb;
                 if (cam != null)
                 {
                     Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-                    if (Physics.Raycast(ray, out RaycastHit hit, 30f, 1, QueryTriggerInteraction.Ignore)) return hit.point;
+                    if (Physics.Raycast(ray, out RaycastHit hit, 30f, CloneZConfig.WorldMask, QueryTriggerInteraction.Ignore)) return hit.point;
                     return cam.transform.position + cam.transform.forward * 12f;
                 }
             }

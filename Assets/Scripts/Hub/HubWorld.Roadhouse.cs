@@ -50,6 +50,7 @@ namespace CloneZ
             l.intensity = intensity;
             l.range = range;
             l.shadows = shadows ? LightShadows.Soft : LightShadows.None;
+            if (shadows) ShadowedLight.Add(l);   // cast while the shadow budget grants them
         }
 
         private static void BuildRoadhouse(Transform root, Transform overhead, Style st)

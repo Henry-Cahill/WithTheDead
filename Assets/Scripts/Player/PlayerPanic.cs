@@ -30,7 +30,7 @@ namespace CloneZ
         private float _betaTimer;   // seconds of beta-blocker cover remaining
         private TimeOfDay _timeOfDay;
         private readonly int _ignoreRaycastMask = 1 << CloneZConfig.IgnoreRaycastLayer;
-        private readonly int _defaultRaycastMask = 1 << 0;
+        private readonly int _worldRaycastMask = CloneZConfig.WorldMask;
         private Transform _tr;
         // Cached panic level and descriptor; updated only when panic value changes
         private int _cachedLevel;
@@ -197,7 +197,7 @@ namespace CloneZ
                 Vector3 dir = (zp - _tr.position) / dist;
                 Vector3 zeye = zp + Vector3.up * 1f;
                 if (Physics.Raycast(eye + dir * 0.6f, (zeye - (eye + dir * 0.6f)).normalized,
-                        Vector3.Distance(eye + dir * 0.6f, zeye), _defaultRaycastMask, QueryTriggerInteraction.Ignore))
+                        Vector3.Distance(eye + dir * 0.6f, zeye), _worldRaycastMask, QueryTriggerInteraction.Ignore))
                     continue;
 
                 visible++;

@@ -6,7 +6,8 @@
     The relay takes the one stream the headless OBS makes and sends it on to Twitch and YouTube at once
     (Tools\Streaming\README.md). This copies relay\ to ~/wtd-relay on -ServerHost, builds its image there and starts the
     container wtd-relay, which comes back by itself after a reboot. It also has OBS's service (obs-headless) start after
-    Docker and wait for the relay, because OBS goes live the moment it starts.
+    Docker and wait for the relay, because OBS goes live the moment it starts, and put OBS's scenes back before it
+    starts if it has lost them (a reboot that stops it mid-save can), because it would go live with a black picture.
 
     Running it again redeploys. If you're live through the relay then, Twitch and YouTube drop for a few seconds while it
     restarts, and OBS reconnects by itself.
@@ -66,7 +67,21 @@ Wants=docker.service
 [Service]
 ExecStartPre=/bin/bash -c 'for i in {1..60}; do (exec 3<>/dev/tcp/127.0.0.1/1936) 2>/dev/null && exit 0; sleep 1; done; exit 0'
 EOF
+sudo -n tee /etc/systemd/system/obs-headless.service.d/keep-mainstream.conf >/dev/null <<'EOF'
+# Tools/Streaming/Deploy-Relay.ps1 puts this here. OBS can lose its scene collection when it's stopped mid-save (a
+# reboot kills its X server under it), and then starts on a new, empty one and goes live with a black picture. So before
+# every start, keep a copy of the collection while it has MainStream, and put that copy back when it hasn't.
+[Service]
+ExecStartPre=/bin/sh -c 'f="$$HOME/.config/obs-studio/basic/scenes/Untitled.json" k="$$HOME/wtd/Untitled.json.last-good"; \
+  if grep -qs MainStream "$$f"; then cp -f "$$f" "$$k"; \
+  elif [ -s "$$k" ]; then cp -f "$$k" "$$f" && echo "MainStream was missing from $$f: put back $$k"; fi; exit 0'
+EOF
 sudo -n systemctl daemon-reload
+# Keep the first copy now too, so that a reboot before OBS next starts is covered.
+if grep -qs MainStream ~/.config/obs-studio/basic/scenes/Untitled.json; then
+  mkdir -p ~/wtd
+  cp -f ~/.config/obs-studio/basic/scenes/Untitled.json ~/wtd/Untitled.json.last-good
+fi
 for i in $(seq 30); do
   if docker logs wtd-relay 2>&1 | grep -q 'Connected to OBS'; then break; fi
   sleep 1

@@ -31,6 +31,7 @@ namespace CloneZ
         public (string Id, int Count)[] Outputs = new (string, int)[0];
         public float Minutes;                 // real minutes
         public bool Field;                    // can be crafted from the backpack in the field (Metro)
+        public int FuelLitres;                // poured out of a gas can in the pack (a molotov's petrol); field crafts only
     }
 
     /// <summary>
@@ -115,6 +116,9 @@ namespace CloneZ
             R("field_medkit", null, 0, 0.1f, new[] { ("chemicals", 2), ("rag", 1) }, new[] { ("bandage", 2) }, field: true);
             R("field_ammo", null, 0, 0.1f, new[] { ("chemicals", 1), ("scrap", 2) }, new[] { ("ammo9mm", 12) }, field: true);
             R("field_bolts", null, 0, 0.1f, new[] { ("scrap", 1) }, new[] { ("bolt", 8) }, field: true);
+            // Things to throw: a bottle of petrol with a rag in its neck, and a capped pipe of powder with a fuse.
+            R("field_molotov", null, 0, 0.1f, new[] { ("emptybottle", 1), ("rag", 1) }, new[] { (Throwables.Molotov, 1) }, field: true).FuelLitres = 1;
+            R("field_pipebomb", null, 0, 0.1f, new[] { ("scrap", 2), ("chemicals", 2), ("ducttape", 1) }, new[] { (Throwables.PipeBomb, 1) }, field: true);
         }
 
         private static ModuleDef M(string id, string name, string blurb, bool power)
@@ -127,8 +131,12 @@ namespace CloneZ
         private static void L(ModuleDef d, int level, int money, (string, int)[] items, (string, int)[] requires, int minLevel, string effect)
             => d.Levels.Add(new ModuleLevel { Level = level, Money = money, Items = items ?? new (string, int)[0], Requires = requires ?? new (string, int)[0], MinCharacterLevel = minLevel, Effect = effect });
 
-        private static void R(string id, string module, int level, float minutes, (string, int)[] inputs, (string, int)[] outputs, bool field = false)
-            => Recipes.Add(new Recipe { Id = id, Module = module, ModuleLevel = level, Minutes = minutes, Inputs = inputs, Outputs = outputs, Field = field });
+        private static Recipe R(string id, string module, int level, float minutes, (string, int)[] inputs, (string, int)[] outputs, bool field = false)
+        {
+            var r = new Recipe { Id = id, Module = module, ModuleLevel = level, Minutes = minutes, Inputs = inputs, Outputs = outputs, Field = field };
+            Recipes.Add(r);
+            return r;
+        }
 
         /// <summary>Returns the module definition with the given identifier.</summary>
         public static ModuleDef Get(string id) => Modules.Find(m => m.Id == id);
@@ -251,11 +259,29 @@ namespace CloneZ
             if (r == null || !r.Field || inv == null) return false;
             foreach ((string id, int n) in r.Inputs)
                 if (Trading.Count(inv.Inventory, id) < n) { message = "Needs " + n + "x " + Trading.NameOf(id); return false; }
+            ItemStack can = r.FuelLitres > 0 ? FuelCan(inv.Inventory, r.FuelLitres) : null;
+            if (r.FuelLitres > 0 && can == null) { message = "Needs " + FuelNeeded(r); return false; }
             foreach ((string id, int n) in r.Inputs) Trading.Take(inv.Inventory, id, n);
+            if (can != null)
+            {
+                can.Condition -= r.FuelLitres;
+                inv.Inventory.RaiseChanged();
+            }
             foreach ((string id, int n) in r.Outputs) inv.Inventory.Add(ItemDatabase.Get(id), n, enforceWeight: false);
             GameEvents.RaiseItemCrafted(r.Outputs[0].Id, r.Outputs[0].Count);
             message = "Crafted " + Describe(r);
             return true;
+        }
+
+        /// <summary>The fuel a recipe pours out of a gas can, as the craft lists it ("1 L of fuel from a gas can"), or null.</summary>
+        public static string FuelNeeded(Recipe r) => r == null || r.FuelLitres <= 0 ? null : r.FuelLitres + " L of fuel from a gas can";
+
+        // A gas can in `inv` with at least `litres` in it (its condition is its litres).
+        private static ItemStack FuelCan(Inventory inv, int litres)
+        {
+            foreach (ItemStack s in inv.Stacks)
+                if (s != null && s.Def != null && s.Def.Id == "gascan" && s.Condition >= litres) return s;
+            return null;
         }
 
         /// <summary>Creates a human‑readable description of a recipe’s outputs.</summary>

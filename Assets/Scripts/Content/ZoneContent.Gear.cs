@@ -119,6 +119,7 @@ namespace CloneZ
             Tool(b, "drone_ground", "Ground Drone", 2.6f, 1, "A tracked scout with a camera. Quiet, slow, brave.", "Deploy", 3, 2);
             Tool(b, "tablet", "Field Tablet", 0.6f, 1, "Loadouts, gun builds and the map, on a cracked screen.", "Open", 2, 1);
             Tool(b, "grenade", "Frag Grenade", 0.6f, 4, "Pull, throw, count.", "Throw");
+            RegisterThrowables(b);
             Tool(b, "carkey", "Car Key", 0.02f, 1, "Opens and starts one particular car.", null);
             Mat(b, "carwheel", "Car Wheel", 9f, 1, "A whole wheel, tyre and all.", 3, 3);
             Mat(b, "carbattery", "Car Battery", 12f, 1, "Lead-acid. Might still hold a charge.", 2, 2);
@@ -137,6 +138,27 @@ string[] titles = { "Marksman's Notebook", "Field Medicine Vol. 1", "Engines for
 
         private static ItemDef Mat(ContentBuilder b, string id, string name, float w, int stack, string desc, int sw = 1, int sh = 1)
             => b.Item(id, name, ItemCategory.Material, w, stack, sw, sh, desc);
+
+        /// <summary>What's thrown besides the frag (<see cref="Throwables"/>): the molotov and the pipe bomb (both crafted in the
+        /// field, <see cref="Hideout"/>), and the noise lures that pull the dead off somewhere (<see cref="NoiseLure"/>).</summary>
+        private static void RegisterThrowables(ContentBuilder b)
+        {
+            Tool(b, Throwables.Molotov, "Molotov Cocktail", 0.9f, 3,
+                "A bottle of petrol with a rag in its neck. Light it, throw it: whatever stands there burns, and the dead keep walking while they do.",
+                "Light and throw", 1, 2).Tint = new Color(0.78f, 0.52f, 0.2f);
+            Tool(b, Throwables.PipeBomb, "Pipe Bomb", 0.8f, 3,
+                "A capped length of pipe packed with powder and nails, and a fuse. A grenade for people who don't have grenades.",
+                "Light and throw").Tint = new Color(0.46f, 0.47f, 0.48f);
+            Tool(b, Throwables.Firecrackers, "Firecrackers", 0.1f, 5,
+                "A string of bangers. Thrown lit, they crackle like a firefight for a few seconds, and every dead thing for blocks comes to look.",
+                "Light and throw").Tint = new Color(0.78f, 0.16f, 0.12f);
+            Tool(b, Throwables.AlarmClock, "Wind-up Alarm Clock", 0.35f, 2,
+                "Twin bells and a hammer. Wind it and throw it: it rings a few seconds later, for half a minute, and the dead go to it. It still works after, if you can get it back.",
+                "Set and throw").Tint = new Color(0.72f, 0.15f, 0.13f);
+            Tool(b, Throwables.TimerRadio, "Timer Radio", 0.6f, 1,
+                "A transistor radio taped to a kitchen timer. Set it and throw it: it comes on a little later and blares for a whole minute. Pick it up after.",
+                "Set and throw", 2, 1).Tint = new Color(0.32f, 0.36f, 0.3f);
+        }
 
         private static ItemDef Tool(ContentBuilder b, string id, string name, float w, int stack, string desc, string verb, int sw = 1, int sh = 1)
         {
@@ -222,6 +244,8 @@ string[] titles = { "Marksman's Notebook", "Field Medicine Vol. 1", "Engines for
         /// <summary>Populate loot tables for containers throughout the world.</summary>
         private static void RegisterLoot(ContentBuilder b)
         {
+            RegisterGunLoot(b);
+
             // Gun lockers and the dead soldiers' corpses carry the military kit.
             b.Loot(ContainerType.GunLocker, "ak74", 3);
             b.Loot(ContainerType.GunLocker, "mosin", 2);
@@ -231,6 +255,8 @@ string[] titles = { "Marksman's Notebook", "Field Medicine Vol. 1", "Engines for
             b.Loot(ContainerType.GunLocker, Currency, 3, 10, 40);
             b.Loot(ContainerType.GunLocker, "ammo762r_lps", 3, 5, 15);
             b.Loot(ContainerType.GunLocker, "ammo9mm_ap", 3, 10, 25);
+            b.Loot(ContainerType.GunLocker, "ammo545_tracer", 3, 10, 30);
+            b.Loot(ContainerType.GunLocker, "ammo9mm_inc", 1, 5, 15);
             b.Loot(ContainerType.GunLocker, "slug12", 2, 4, 10);
             b.Loot(ContainerType.GunLocker, "armor_vest_c2", 3);
             b.Loot(ContainerType.GunLocker, "armor_vest_c3", 2);
@@ -317,6 +343,114 @@ string[] titles = { "Marksman's Notebook", "Field Medicine Vol. 1", "Engines for
             b.Loot(ContainerType.Corpse, Currency, 3, 3, 15);
             b.Loot(ContainerType.Corpse, "ammo545_ps", 2, 5, 15);
             b.Loot(ContainerType.Corpse, "warden_tag", 1);
+
+            // The throwables: alarm clocks off nightstands and desks, firecrackers left over from the Fourth, a radio someone
+            // taped to a kitchen timer, and the odd molotov or pipe bomb that someone made and never got to throw.
+            b.Loot(ContainerType.Desk, Throwables.AlarmClock, 3);
+            b.Loot(ContainerType.Wardrobe, Throwables.AlarmClock, 2);
+            b.Loot(ContainerType.Shelf, Throwables.AlarmClock, 2);
+            b.Loot(ContainerType.Shelf, Throwables.Firecrackers, 2, 1, 3);
+            b.Loot(ContainerType.Desk, Throwables.Firecrackers, 1, 1, 2);
+            b.Loot(ContainerType.Crate, Throwables.Firecrackers, 1, 1, 3);
+            b.Loot(ContainerType.Shelf, Throwables.TimerRadio, 1);
+            b.Loot(ContainerType.ToolBench, Throwables.TimerRadio, 1);
+            b.Loot(ContainerType.Crate, Throwables.Molotov, 1, 1, 2);
+            b.Loot(ContainerType.Corpse, Throwables.Molotov, 1);
+            b.Loot(ContainerType.ToolBench, Throwables.PipeBomb, 1);
+            b.Loot(ContainerType.Corpse, Throwables.PipeBomb, 1);
+        }
+
+        /// <summary>The farmhouse guns: what a Kentucky home's gun cabinet keeps (only farms have the .22 and the lever gun).</summary>
+        public static readonly string[] FarmhouseGuns = { "rifle22", "lever3030", "rifle3006", "shotgun", "rev38" };
+
+        /// <summary>The gun shop's guns (only it sells the AR-15 and the .45).</summary>
+        public static readonly string[] GunShopGuns = { "ar15", "m1911", "rifle3006", "rev38", "pistol", "shotgun" };
+
+        /// <summary>The police station's guns (only it has the riot pump).</summary>
+        public static readonly string[] PoliceGuns = { "riotgun", "rev38", "pistol" };
+
+        /// <summary>Each kind of building's guns of its own (MapGameplay.Loot puts the containers in them), and the Zone's
+        /// Soviet guns in its military gun lockers, with the rounds for all of them.</summary>
+        private static void RegisterGunLoot(ContentBuilder b)
+        {
+            // A home's gun cabinet, a farmhouse's above all: the family's deer rifles, the .22 and the old pump, the revolver
+            // from the nightstand, a box or two of everything they shoot.
+            b.LootRolls(ContainerType.GunCabinet, 1, 3, 6);
+            b.Loot(ContainerType.GunCabinet, "rifle22", 5);
+            b.Loot(ContainerType.GunCabinet, "lever3030", 4);
+            b.Loot(ContainerType.GunCabinet, "shotgun", 4);
+            b.Loot(ContainerType.GunCabinet, "rifle3006", 3);
+            b.Loot(ContainerType.GunCabinet, "rev38", 3);
+            b.Loot(ContainerType.GunCabinet, "ammo22", 6, 20, 60);
+            b.Loot(ContainerType.GunCabinet, "ammo3030", 4, 6, 18);
+            b.Loot(ContainerType.GunCabinet, "shotgunshells", 5, 4, 12);
+            b.Loot(ContainerType.GunCabinet, "slug12", 2, 2, 6);
+            b.Loot(ContainerType.GunCabinet, "ammo3006", 3, 5, 15);
+            b.Loot(ContainerType.GunCabinet, "ammo38", 3, 6, 18);
+            b.Loot(ContainerType.GunCabinet, "cleaningkit", 2);
+            b.Loot(ContainerType.GunCabinet, "mod_scope4x", 1);
+            b.Loot(ContainerType.GunCabinet, "flashlight", 1);
+
+            // A gun shop's counters and safes: the modern guns, ammunition of every calibre on the shelves, and the optics,
+            // lights and furniture to hang on them.
+            b.LootRolls(ContainerType.GunCounter, 2, 4, 5);
+            b.Loot(ContainerType.GunCounter, "m1911", 4);
+            b.Loot(ContainerType.GunCounter, "ar15", 3);
+            b.Loot(ContainerType.GunCounter, "rifle3006", 3);
+            b.Loot(ContainerType.GunCounter, "rev38", 3);
+            b.Loot(ContainerType.GunCounter, "pistol", 2);
+            b.Loot(ContainerType.GunCounter, "shotgun", 2);
+            b.Loot(ContainerType.GunCounter, "ammo556", 5, 20, 60);
+            b.Loot(ContainerType.GunCounter, "ammo556_m855", 1, 10, 30);
+            b.Loot(ContainerType.GunCounter, "ammo45", 4, 14, 50);
+            b.Loot(ContainerType.GunCounter, "ammo3006", 3, 10, 20);
+            b.Loot(ContainerType.GunCounter, "ammo38", 3, 18, 50);
+            b.Loot(ContainerType.GunCounter, "ammo9mm", 3, 15, 50);
+            b.Loot(ContainerType.GunCounter, "shotgunshells", 3, 10, 25);
+            b.Loot(ContainerType.GunCounter, "slug12", 1, 5, 10);
+            b.Loot(ContainerType.GunCounter, "ammo12g_inc", 1, 3, 10);   // novelty fire shells, sold over the counter
+            b.Loot(ContainerType.GunCounter, "ammo22", 4, 50, 100);
+            b.Loot(ContainerType.GunCounter, "ammo3030", 2, 10, 20);
+            b.Loot(ContainerType.GunCounter, "mod_scope4x", 2);
+            b.Loot(ContainerType.GunCounter, "mod_reddot", 1);
+            b.Loot(ContainerType.GunCounter, "mod_weaponlight", 1);
+            b.Loot(ContainerType.GunCounter, "mod_laser", 1);
+            b.Loot(ContainerType.GunCounter, "mod_mag_extended", 1);
+            b.Loot(ContainerType.GunCounter, "mod_stock_tactical", 1);
+            b.Loot(ContainerType.GunCounter, "mod_foregrip", 1);
+            b.Loot(ContainerType.GunCounter, "cleaningkit", 3);
+
+            // A police station's weapons lockers and a cruiser's trunk: the pump, the service revolver and the nine, buckshot
+            // and slugs, and the soft vests.
+            b.LootRolls(ContainerType.PoliceLocker, 1, 3, 6);
+            b.Loot(ContainerType.PoliceLocker, "riotgun", 5);
+            b.Loot(ContainerType.PoliceLocker, "rev38", 4);
+            b.Loot(ContainerType.PoliceLocker, "pistol", 3);
+            b.Loot(ContainerType.PoliceLocker, "shotgunshells", 5, 8, 20);
+            b.Loot(ContainerType.PoliceLocker, "slug12", 2, 4, 10);
+            b.Loot(ContainerType.PoliceLocker, "ammo38", 4, 12, 30);
+            b.Loot(ContainerType.PoliceLocker, "ammo9mm", 4, 15, 45);
+            b.Loot(ContainerType.PoliceLocker, "armor_vest_c2", 3);
+            b.Loot(ContainerType.PoliceLocker, "helmet_c2", 1);
+            b.Loot(ContainerType.PoliceLocker, "handcuffs", 2);
+            b.Loot(ContainerType.PoliceLocker, "flashlight", 2);
+            b.Loot(ContainerType.PoliceLocker, "mod_weaponlight", 1);
+            b.Loot(ContainerType.PoliceLocker, "cleaningkit", 1);
+
+            // The Zone's military caches: the short AK, and now and then the SVD or the PKM (the Central Economy keeps those
+            // two scarce).
+            b.Loot(ContainerType.GunLocker, "aks74u", 3);
+            b.Loot(ContainerType.GunLocker, "svd", 1);
+            b.Loot(ContainerType.GunLocker, "pkm", 1);
+            b.Loot(ContainerType.GunLocker, "ammo762r_snb", 1, 5, 15);
+
+            // A few civilian rounds wherever people kept them: the desk drawer, the work locker, the shed, the dead.
+            b.Loot(ContainerType.Desk, "ammo38", 1, 3, 8);
+            b.Loot(ContainerType.Locker, "ammo38", 1, 4, 10);
+            b.Loot(ContainerType.Crate, "ammo22", 1, 10, 30);
+            b.Loot(ContainerType.Crate, "ammo3030", 1, 4, 10);
+            b.Loot(ContainerType.Corpse, "ammo38", 2, 2, 6);
+            b.Loot(ContainerType.Corpse, "ammo22", 1, 5, 15);
         }
         #endregion
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -18,7 +19,10 @@ namespace CloneZ
     /// in the way, and everything comes back at once when the view leaves isometric. The ground, the
     /// survivor and the zombies are never touched. Allocation-free per frame: non-alloc casts into a fixed
     /// buffer, and each collider is classified once and cached (a marked piece's renderers are gathered
-    /// again only when its parts are rebuilt — see <see cref="CutawayOccluder.PartsChanged"/>).
+    /// again only when its parts are rebuilt — see <see cref="CutawayOccluder.PartsChanged"/>). What it
+    /// classified of a streamed piece, a furnished interior or a floor's working windows is forgotten once
+    /// that is let go of (<see cref="LetGo"/>), so a long trip across the statewide map doesn't keep every
+    /// collider it passed.
     /// </summary>
     public sealed class IsoCutaway
     {
@@ -54,8 +58,16 @@ namespace CloneZ
         private const int MaxFallbackRenderers = 24;
         // ...nor any renderer reaching more than this far (each side) beyond the object's colliders.
         private const float MaxFallbackOverhang = 2f;
-        // Classified colliders are forgotten past this many (only while nothing is cut away).
+        // Classified colliders are forgotten past this many (only while nothing is cut away): a backstop, as what a
+        // streamed piece, interior or window took with it goes when it's let go of.
         private const int CacheLimit = 4096;
+
+        /// <summary>The profiler sample round forgetting what was let go of (the smoke test reads it).</summary>
+        internal const string ForgetProfilerName = "IsoCutaway.Forget";
+        private static readonly ProfilerMarker s_ForgetMarker = new ProfilerMarker(ForgetProfilerName);
+
+        // Moves on whenever a streamed piece, an interior or a floor's windows are let go of (LetGo), and the frame it last did.
+        private static int s_LetGo, s_LetGoFrame = -1;
 
         /// <summary>What hides and returns as one: a marked occluder, or one unmarked collider's object.</summary>
         private sealed class Piece
@@ -87,7 +99,10 @@ namespace CloneZ
         private readonly List<Renderer> _found = new List<Renderer>(32);
         private readonly List<Renderer> _keep = new List<Renderer>(32);
         private readonly List<Collider> _solids = new List<Collider>(8);
+        private readonly List<Collider> _goneColliders = new List<Collider>(64);
+        private readonly List<GameObject> _goneRoots = new List<GameObject>(32);
         private readonly RaycastHit[] _hits = new RaycastHit[32];
+        private int _letGoSeen;
 
         private Transform _target;
         private Vector3 _eye;
@@ -135,6 +150,7 @@ namespace CloneZ
                 if (gone) _byRoot.Remove(p.Root);
             }
 
+            if (_letGoSeen != s_LetGo && Time.frameCount > s_LetGoFrame) ForgetDestroyed();
             if (_byCollider.Count > CacheLimit && _hidden.Count == 0)
             {
                 _byCollider.Clear();
@@ -149,6 +165,73 @@ namespace CloneZ
             _hidden.Clear();
             foreach (KeyValuePair<Renderer, HiddenRenderer> kv in _renderers) Restore(kv.Key, kv.Value);
             _renderers.Clear();
+        }
+
+        /// <summary>
+        /// A streamed piece, a furnished interior or a floor's working windows are being let go of
+        /// (<see cref="KentuckyStreamer"/>, <see cref="InteriorStreamer"/>, <see cref="WindowStreamer"/>). Their objects are
+        /// destroyed at the end of the frame, so on a later one each cutaway forgets the colliders and pieces that went with
+        /// them.
+        /// </summary>
+        internal static void LetGo()
+        {
+            s_LetGo++;
+            s_LetGoFrame = Application.isPlaying ? Time.frameCount : -1;   // edit mode destroys at once
+        }
+
+        // Play mode keeps statics from one session to the next (no domain reload): start each one clean, so a frame noted in
+        // the last one can't hold off forgetting in this one.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics()
+        {
+            s_LetGo = 0;
+            s_LetGoFrame = -1;
+        }
+
+        // Forgets the colliders destroyed since they were classified, and the pieces whose objects went with them. One still
+        // cut away stays in _hidden, so Tick brings it back all the same.
+        private void ForgetDestroyed()
+        {
+            _letGoSeen = s_LetGo;
+            using (s_ForgetMarker.Auto())
+            {
+                foreach (KeyValuePair<Collider, Piece> kv in _byCollider)
+                    if (kv.Key == null) _goneColliders.Add(kv.Key);
+                foreach (KeyValuePair<GameObject, Piece> kv in _byRoot)
+                    if (kv.Key == null) _goneRoots.Add(kv.Key);
+                for (int i = 0; i < _goneColliders.Count; i++) _byCollider.Remove(_goneColliders[i]);
+                for (int i = 0; i < _goneRoots.Count; i++) _byRoot.Remove(_goneRoots[i]);
+                Forgotten += _goneColliders.Count + _goneRoots.Count;
+                _goneColliders.Clear();
+                _goneRoots.Clear();
+            }
+        }
+
+        /// <summary>For the smoke test: the colliders and pieces remembered now.</summary>
+        internal int CachedColliders => _byCollider.Count;
+        internal int CachedPieces => _byRoot.Count;
+
+        /// <summary>For the smoke test: the entries forgotten so far because what they named was let go of.</summary>
+        internal int Forgotten { get; private set; }
+
+        /// <summary>For the smoke test: something was let go of that this cutaway hasn't forgotten yet.</summary>
+        internal bool ForgetPending => _letGoSeen != s_LetGo;
+
+        /// <summary>For the smoke test: the entries remembered now whose collider or piece has been destroyed.</summary>
+        internal int StaleEntries()
+        {
+            int n = 0;
+            foreach (KeyValuePair<Collider, Piece> kv in _byCollider) if (kv.Key == null) n++;
+            foreach (KeyValuePair<GameObject, Piece> kv in _byRoot) if (kv.Key == null) n++;
+            return n;
+        }
+
+        /// <summary>For the smoke test: the renderers this cutaway hides that still cast their shadows (switched to
+        /// <see cref="ShadowCastingMode.ShadowsOnly"/>, rather than switched off or left to whoever hid them first).</summary>
+        internal void ShadowCasters(List<Renderer> into)
+        {
+            foreach (KeyValuePair<Renderer, HiddenRenderer> kv in _renderers)
+                if (kv.Key != null && !kv.Value.Foreign && !kv.Value.ForcedOff) into.Add(kv.Key);
         }
 
         /// <summary>Scans for occluding geometry by casting probes from the survivor toward the camera.</summary>
@@ -237,9 +320,10 @@ namespace CloneZ
             if (marker != null)
                 return marker.enabled ? PieceFor(marker.gameObject, marker, null) : NotAnOccluder;
 
-            // Unmarked: only tall solids on the Default layer, which leaves the ground, floors and low
-            // furniture alone.
-            if (go.layer != 0 || c.bounds.max.y < _feetY + FallbackMinTop) return NotAnOccluder;
+            // Unmarked: only tall solids of the world (on Default, or the Sight Occluder layer the world's solids
+            // move to), which leaves the ground, floors and low furniture alone.
+            if ((go.layer != 0 && go.layer != CloneZConfig.SightOccluderLayer) || c.bounds.max.y < _feetY + FallbackMinTop)
+                return NotAnOccluder;
             return PieceFor(go, null, c);
         }
 

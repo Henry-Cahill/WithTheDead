@@ -20,7 +20,8 @@ sound and your headset mic  ─────► screen or the Be-right-back card
   you sign in to Windows. The page sets the two sound levels.
 - **The headless OBS** builds the stream from that feed, or from the Be-right-back card while your screen is hidden. It
   streams once, to the relay. It goes live the moment it starts (`--startstreaming`), so after a reboot or a restart
-  the stream goes out again by itself, to every destination that's switched on.
+  the stream goes out again by itself, to every destination that's switched on. A reboot that stops it mid-save can
+  lose its scenes, so a copy is kept in `~/wtd/Untitled.json.last-good` on hts-llm and put back before it starts.
 - **The relay** ([relay/](relay)) takes that stream in nginx's RTMP module and runs one ffmpeg per destination, which
   sends it on unchanged: no second encode, and both get the same picture. When one drops, it reconnects on its own,
   waiting a little longer each time it fails in a row, while the other carries on. It talks to OBS over OBS's WebSocket,
@@ -42,8 +43,9 @@ the same stream. You may link your YouTube channel, but don't urge Twitch viewer
 
 1. **The relay.** Run `powershell -ExecutionPolicy Bypass -File Tools\Streaming\Deploy-Relay.ps1`. It copies
    [relay/](relay) to `~/wtd-relay` on hts-llm, builds the image and starts the `wtd-relay` container, which comes back
-   by itself after a reboot. It also adds `/etc/systemd/system/obs-headless.service.d/wait-for-relay.conf`, so that at
-   boot OBS starts after Docker and waits for the relay. Run it again after changing anything in `relay/`.
+   by itself after a reboot. It also adds two files to `/etc/systemd/system/obs-headless.service.d/`:
+   `wait-for-relay.conf`, so that at boot OBS starts after Docker and waits for the relay, and `keep-mainstream.conf`,
+   which puts OBS's scenes back before it starts if it has lost them. Run it again after changing anything in `relay/`.
 2. **YouTube.** In [YouTube Studio](https://studio.youtube.com), choose **Create → Go live**. The first time, YouTube
    asks you to verify the channel (with a phone number), and live streaming can take up to 24 hours to turn on.
 3. In the Live Control Room's **Stream** tab, set the title, the description, the category and who can watch: Public,
@@ -90,3 +92,10 @@ Each destination's ingest can be changed with an environment variable in [relay/
 - **The picture is frozen on both:** the headless OBS's *Windows Screen* source is stuck on a dead connection from this
   PC. Restart it with `ssh htsadmin@192.168.1.202 "sudo systemctl restart obs-headless"`. OBS comes back and goes
   live again by itself.
+- **Section 3 says *Not set up*, and viewers see a black picture:** the headless OBS lost its scenes (a reboot that
+  stops it mid-save can do that) and started on an empty one. Restart it the same way: before it starts, it puts back
+  the last copy that had MainStream (`~/wtd/Untitled.json.last-good`), and its journal says so.
+- **Section 3 says *Feed from this PC: waiting*:** OBS on this PC isn't sending your screen. It starts sending by itself
+  only when Windows starts it at sign-in (the *WTD screen feed (OBS)* shortcut in your Startup folder), and once the
+  OBS box has been away a while, it tries again only every 15 minutes. Press **Re-sync picture & sound** (section 4
+  has to be connected) to send it now.

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace CloneZ
 {
@@ -33,22 +32,6 @@ namespace CloneZ
         private static readonly float[] s_NearD = new float[MaxLit];
 
         private Light _light;
-        private static Material s_PostMaterial, s_GlobeMaterial;
-
-        // The post's and the globe's materials, made with the first lamp, in URP's Lit like every material the game makes.
-        // Not in a static constructor: one runs inside the first AddComponent<PorchLamp>(), where Unity's API may not be
-        // called, and it threw there, taking the whole piece's build (and with it the lobby after dark) down.
-        private static void EnsureMaterials()
-        {
-            if (s_PostMaterial != null && s_GlobeMaterial != null) return;
-            s_PostMaterial = CloneZUtil.Mat(new Color(0.22f, 0.15f, 0.10f), 0.3f);   // dark-brown wood
-            var glass = new Color(1f, 0.82f, 0.56f);                                    // warm, glowing glass
-            s_GlobeMaterial = new Material(CloneZUtil.LitShader) { name = "PorchLampGlobe", color = glass, enableInstancing = true };
-            if (s_GlobeMaterial.HasProperty("_BaseColor")) s_GlobeMaterial.SetColor("_BaseColor", glass);
-            if (s_GlobeMaterial.HasProperty("_Smoothness")) s_GlobeMaterial.SetFloat("_Smoothness", 0.9f);
-            s_GlobeMaterial.EnableKeyword("_EMISSION");
-            s_GlobeMaterial.SetColor("_EmissionColor", new Color(1f, 0.65f, 0.30f) * 2f);
-        }
         private float _intensity, _phase;
         private bool _wanted;
 
@@ -56,7 +39,6 @@ namespace CloneZ
         /// <paramref name="phase"/> keeps it from flickering in step with its neighbours.</summary>
         internal static PorchLamp Spawn(Transform parent, Vector3 at, float phase)
         {
-            EnsureMaterials();
             // Create a new GameObject to host the lamp instance.
             // Create a new GameObject to host the lamp instance.
             var go = new GameObject("PorchLamp");
@@ -81,7 +63,6 @@ namespace CloneZ
             // Define the radius within which the lamp can affect nearby objects.
             // Define the radius within which the lamp can affect nearby objects.
             light.range = 5.5f;
-            light.transform.localPosition = new Vector3(0f, 1.0f, 0f);
             // Disable shadows for performance; porch lamps are not meant to cast shadows.
             light.shadows = LightShadows.None;
             // Add the PorchLamp component to bind behaviour to the GameObject.
@@ -90,26 +71,6 @@ namespace CloneZ
             lamp._light = light;
             // Store the original intensity for later flicker modulation.
             lamp._intensity = light.intensity;
-            // ------- visual post & globe -------
-            float randScale = UnityEngine.Random.Range(0.9f, 1.1f);
-            // create the wooden post
-            GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            UnityEngine.Object.DestroyImmediate(post.GetComponent<Collider>()); // no collider needed
-            post.transform.SetParent(go.transform, false);
-            post.transform.localScale = new Vector3(0.07f, 0.5f, 0.07f) * randScale;
-            post.transform.localPosition = new Vector3(0f, 0.5f, 0f); // pivot at centre, so bottom sits on ground
-            post.GetComponent<Renderer>().sharedMaterial = s_PostMaterial;
-            // create the glass globe
-            GameObject globe = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            UnityEngine.Object.DestroyImmediate(globe.GetComponent<Collider>());
-            globe.transform.SetParent(go.transform, false);
-            globe.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f) * randScale;
-            globe.transform.localPosition = new Vector3(0f, 1.0f, 0f);
-            globe.GetComponent<Renderer>().sharedMaterial = s_GlobeMaterial;
-            globe.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
-            // Ensure objects are not static (avoid light‑map baking)
-            post.isStatic = false;
-            globe.isStatic = false;
             // Record the per‑lamp phase offset to desynchronize flicker between neighbours.
             lamp._phase = phase;
             return lamp;

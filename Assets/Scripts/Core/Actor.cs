@@ -45,6 +45,9 @@ namespace CloneZ
         public bool Surrendered;
         /// <summary>Restrained with cuffs or rope: can't fight, can be led.</summary>
         public bool Restrained;
+        /// <summary>On the ground: one of the dead knocked down (until it's back on its feet), or a crawler. A swing passes over
+        /// it while anything stands in the swing; an attack with it nearest at the feet is a stomp (see <see cref="PlayerCombat"/>).</summary>
+        public bool Downed;
 
         private IDamageable _damageable;
 
@@ -113,8 +116,9 @@ namespace CloneZ
             return !Physics.Raycast(from, d / Mathf.Max(0.001f, dist), dist - 0.3f, SightMask, QueryTriggerInteraction.Ignore);
         }
 
-        /// <summary>Layers that block sight: the default world layer only (characters live on Ignore Raycast).</summary>
-        public static int SightMask => 1 << 0;
+        /// <summary>Layers that block sight: the solid world, on Default and the Sight Occluder layer (characters live on
+        /// Ignore Raycast).</summary>
+        public static int SightMask => CloneZConfig.WorldMask;
 
         #region Queries
         /// <summary>The nearest living actor satisfying <paramref name="filter"/> within <paramref name="maxDistance"/>.</summary>

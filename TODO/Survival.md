@@ -29,7 +29,7 @@ condition with wear and repair are all in. Raid characters keep their diseases i
 | D | Bags | Done, minus weight reduction | [ITEMS_ENHANCEMENTS.md](../ITEMS_ENHANCEMENTS.md#L56) |
 | E | Literature | Partial | Skill books are read (`SkillBooks.Read`, [FieldSurvival.cs](../Assets/Scripts/Survival/FieldSurvival.cs#L623)); no recipe magazines |
 | F | Light & battery | Done | `PlayerGear` (flashlight, night vision, gas-mask filter) |
-| G | Throwables | Partial | Grenades and breach charges from the pack ([Camps.cs](../Assets/Scripts/World/Camps.cs#L632)); no molotov or noise lure (see [Weapons.md](Weapons.md)) |
+| G | Throwables | Done | Grenades, pipe bombs, molotovs (a spreading fire) and noise lures (firecrackers, an alarm clock, a timer radio) on one arc ([Throwables.cs](../Assets/Scripts/Weapons/Throwables.cs)); breach charges ([Camps.cs](../Assets/Scripts/World/Camps.cs#L625)). See [Weapons.md](Weapons.md) |
 | H | Inventory UX | Partial | Context menu and Split done; hotbar and favourites missing (see [UI.md](UI.md)) |
 | I | Can opener | Done | `IsCanned`, `TryOpenCan`, an empty tin ([PlayerInventory.cs](../Assets/Scripts/Player/PlayerInventory.cs#L279)); a starter can opener ([GameBootstrapper.cs](../Assets/Scripts/Bootstrap/GameBootstrapper.cs#L888)) |
 | J | Campfire | Done | Burns planks, rags and paper, warms, and is a cooking station ([FieldSurvival.cs](../Assets/Scripts/Survival/FieldSurvival.cs#L367)) |

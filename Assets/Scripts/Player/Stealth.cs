@@ -112,6 +112,7 @@ namespace CloneZ
             float own = 0f;
             // Own light sources are loud visually: flashlight is strongest, lighter weaker
             if (gear != null && gear.FlashlightOn) own += 0.55f;
+            if (gear != null && gear.WeaponLightOn) own += 0.45f;   // the light on the gun: seeing and being seen
             if (LighterOn) own += 0.25f;
 
             float vis = Mathf.Clamp01(ambient + Mathf.Min(0.8f, lamps) + own);

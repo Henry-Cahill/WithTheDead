@@ -3,42 +3,36 @@ using UnityEngine;
 namespace CloneZ
 {
     /// <summary>
-    /// Throwaway visual feedback for gunfire: a fading tracer line and a brief
-    /// muzzle flash. Both self-destruct, so callers can fire and forget.
+    /// Throwaway visual feedback for gunfire: a tracer round's red streak and a brief muzzle flash. Both
+    /// self-destruct, so callers can fire and forget.
     /// </summary>
     public static class CombatFX
     {
+        /// <summary>Tracer streaks drawn this session (the smoke test counts them).</summary>
+        public static int TracersDrawn { get; private set; }
+
+        // Statics outlive a play session in the editor (domain reload is off).
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void NewSession() => TracersDrawn = 0;
+
         /// <summary>
-        /// Spawns a short-lived tracer line between two points, using the given colour.
+        /// A tracer round's trail (<see cref="AmmoStats.Tracer"/>): a red streak that flies from <paramref name="from"/>
+        /// to where the round stopped, <paramref name="to"/>, then fades there. Plain rounds draw no trail.
         /// </summary>
-        public static void Tracer(Vector3 from, Vector3 to, Color color)
+        public static void Tracer(Vector3 from, Vector3 to)
         {
-            // Create a temporary GameObject to host the tracer visual; naming helps debugging.
+            if (DedicatedServer.Requested || (to - from).sqrMagnitude < 0.01f) return;
+            TracersDrawn++;
             var go = new GameObject("Tracer");
-            // Add a LineRenderer component, which draws a line in the scene.
             var lr = go.AddComponent<LineRenderer>();
-            // Use an unlit material so the tracer is visible regardless of scene lighting.
-            lr.material = CloneZUtil.UnlitMat(color);
-            // Render in world space so the positions match the actual world coordinates.
+            // Vertex-coloured and unlit (shared, never one per shot): the streak burns as bright by night as by day.
+            lr.sharedMaterial = ZoneKit.BeamMaterial();
             lr.useWorldSpace = true;
-            // No cap vertices – keeps the line thin and cheap to render.
-            lr.numCapVertices = 0;
-            // The tracer consists of exactly two points: start and end.
+            lr.numCapVertices = 2;
             lr.positionCount = 2;
-            // Assign the start and end positions of the line.
-            lr.SetPosition(0, from);
-            lr.SetPosition(1, to);
-            // Slightly wider at the origin for visibility, tapering toward the target.
-            lr.startWidth = 0.045f;
-            lr.endWidth = 0.02f;
-            // Preserve the chosen colour at the start, fade to semi‑transparent at the tail.
-            lr.startColor = color;
-            lr.endColor = new Color(color.r, color.g, color.b, 0.35f);
-            // Tracers should not affect lighting or cast shadows.
             lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             lr.receiveShadows = false;
-            // Attach a short‑lived fade component to clean up the object automatically.
-            go.AddComponent<FxFade>().Init(0.06f);
+            go.AddComponent<TracerStreak>().Init(lr, from, to);
         }
 
         /// <summary>
@@ -66,7 +60,7 @@ namespace CloneZ
         }
     }
 
-    /// <summary>Fades a tracer/flash out over a short life, then destroys the object.</summary>
+    /// <summary>Fades a flash (or a line) out over a short life, then destroys the object.</summary>
     public class FxFade : MonoBehaviour
     {
         private float _life = 0.05f;
@@ -92,6 +86,56 @@ namespace CloneZ
             if (_scaleDown) transform.localScale = _startScale * k;
             if (_line != null) _line.widthMultiplier = _startWidth * k;
             if (_t >= _life) Destroy(gameObject);
+        }
+    }
+
+    /// <summary>
+    /// A tracer round's streak (<see cref="CombatFX.Tracer"/>): the burning head flies from the muzzle to where the round
+    /// stopped, trailing up to <see cref="Length"/> metres of red behind it (slowed to be seen, and never there in less than
+    /// <see cref="MinFlight"/>), then that last stretch glows on and fades over <see cref="Fade"/>.
+    /// </summary>
+    public sealed class TracerStreak : MonoBehaviour
+    {
+        private const float Speed = 280f, Length = 8f, MinFlight = 0.05f, Fade = 0.3f, HeadWidth = 0.06f, TailWidth = 0.02f;
+        private static readonly Color HeadColor = new Color(1f, 0.3f, 0.16f, 1f), TailColor = new Color(1f, 0.12f, 0.06f, 0f);
+
+        private LineRenderer _line;
+        private Vector3 _from, _dir;
+        private float _dist, _flight, _t;
+
+        public void Init(LineRenderer line, Vector3 from, Vector3 to)
+        {
+            _line = line;
+            _from = from;
+            Vector3 d = to - from;
+            _dist = d.magnitude;
+            _dir = d / _dist;
+            _flight = Mathf.Max(MinFlight, _dist / Speed);
+            _line.startColor = TailColor;
+            Place();
+        }
+
+        private void Update()
+        {
+            _t += Time.deltaTime;
+            Place();
+        }
+
+        // Point 0 is the tail, point 1 the head.
+        private void Place()
+        {
+            float run = _dist * Mathf.Clamp01(_t / _flight);
+            float k = _t <= _flight ? 1f : 1f - (_t - _flight) / Fade;
+            if (k <= 0f)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            _line.SetPosition(0, _from + _dir * Mathf.Max(0f, run - Length));
+            _line.SetPosition(1, _from + _dir * run);
+            _line.startWidth = TailWidth * k;
+            _line.endWidth = HeadWidth * k;
+            _line.endColor = new Color(HeadColor.r, HeadColor.g, HeadColor.b, k);
         }
     }
 }

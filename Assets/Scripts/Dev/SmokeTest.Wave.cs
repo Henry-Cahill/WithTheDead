@@ -99,8 +99,13 @@ namespace CloneZ
                 yield break;
             }
             yield return WavesPass();
+            CheckFloating("after the waves");
             yield return SaveQuitContinue();
-            if (WorldUp) yield return Death();
+            if (WorldUp)
+            {
+                CheckFloating("after Continue");
+                yield return Death();
+            }
         }
 
         #region The run

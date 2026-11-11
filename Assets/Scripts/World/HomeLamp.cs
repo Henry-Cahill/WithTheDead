@@ -88,11 +88,13 @@ internal set
         /// A <paramref name="duskSensor"/> keeps the lamp dark by day even when it's switched on. The light is
         /// <paramref name="color"/> (by default <see cref="RoomLight.DefaultColor"/>); <paramref name="furniture"/> is the
         /// piece a free-standing lamp stands on, whose colliders mustn't block the reach for its switch (by default
-        /// <paramref name="parent"/>).</summary>
+        /// <paramref name="parent"/>). A shaded ceiling fitting's light is a <paramref name="downlight"/>
+        /// (<see cref="RoomLight.MakeDownlight"/>).</summary>
         internal static HomeLamp Attach(Transform parent, Vector3 bulb, float range, float intensity, bool shadows, RaidMesh glow,
-            string circuit = null, bool duskSensor = false, string displayName = null, Color? color = null, Transform furniture = null)
+            string circuit = null, bool duskSensor = false, string displayName = null, Color? color = null, Transform furniture = null,
+            bool downlight = false)
         {
-            RoomLight light = RoomLight.Spawn(parent, bulb, color ?? RoomLight.DefaultColor, range, intensity, false, shadows);
+            RoomLight light = RoomLight.Spawn(parent, bulb, color ?? RoomLight.DefaultColor, range, intensity, false, shadows, downlight);
             var lamp = light.gameObject.AddComponent<HomeLamp>();
             lamp._light = light;
             lamp._circuit = string.IsNullOrEmpty(circuit) ? null : circuit;

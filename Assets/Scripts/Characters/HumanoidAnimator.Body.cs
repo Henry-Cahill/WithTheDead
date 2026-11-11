@@ -48,6 +48,7 @@ namespace CloneZ
             float limp = Mathf.Clamp01(Limp);
             Leg(ThighL, ph + limp * 0.35f * Mathf.Sin(ph), amp * m * (1f - limp * 0.35f), knee * m * (1f - limp * 0.7f), stance, legYaw, -1f);
             Leg(ThighR, ph + Mathf.PI, amp * m, knee * m, stance, legYaw, 1f);
+            if (_act == Act.Stomp) StompLeg();
 
             float idle = 1f - m;
             float breathe = Mathf.Sin(_time * 2f * Mathf.PI / 3.6f + _seed);
@@ -146,16 +147,30 @@ namespace CloneZ
             switch (_act)
             {
                 case Act.Swing:
-                    yaw = KeyLerp(SwingT, _actTwoHanded ? Swing2Yaw : Swing1Yaw, t);
-                    pitch = KeyLerp(SwingT, _actTwoHanded ? Swing2Pitch : Swing1Pitch, t);
+                {
+                    float k = ActKeyT(SwingContact);
+                    yaw = KeyLerp(SwingT, _actTwoHanded ? Swing2Yaw : Swing1Yaw, k);
+                    pitch = KeyLerp(SwingT, _actTwoHanded ? Swing2Pitch : Swing1Pitch, k);
                     break;
+                }
                 case Act.Punch:
-                    yaw = -22f * Bell(t, 0f, 0.8f);
-                    pitch = 6f * Bell(t, 0f, 0.8f);
+                {
+                    float k = ActKeyT(PunchContact);
+                    yaw = -22f * Bell(k, 0f, 0.8f);
+                    pitch = 6f * Bell(k, 0f, 0.8f);
                     break;
+                }
                 case Act.Shove:
                     pitch = 12f * Bell(t, 0f, 0.9f);
                     break;
+                case Act.Stomp:
+                {
+                    // Leaning in over the foot and looking down at what's under it.
+                    float w = StompWeight();
+                    pitch = 14f * w;
+                    neck = 20f * w;
+                    break;
+                }
                 case Act.Lunge:
                 {
                     float w = Mathf.Clamp01(_actT / Mathf.Max(0.01f, _actWindup));
@@ -180,6 +195,33 @@ namespace CloneZ
         private static readonly float[] Swing1Pitch = { 0f, -4f, 10f, 8f, 0f };
         private static readonly float[] Swing2Yaw = { 0f, 40f, -15f, -48f, 0f };
         private static readonly float[] Swing2Pitch = { 0f, -2f, 6f, 4f, 0f };
+
+        // How much of a stomp the body is in: all of it from the knee coming up until the foot is planted again.
+        private float StompWeight()
+        {
+            float on = Mathf.SmoothStep(0f, 1f, _actT / Mathf.Max(0.01f, Mathf.Min(0.12f, _actWindup)));
+            float off = Mathf.SmoothStep(0f, 1f, (_actT - _actWindup - 0.12f) / Mathf.Max(0.05f, _actDur - _actWindup - 0.12f));
+            return on * (1f - off);
+        }
+
+        // The stomping (right) leg: the knee drawn up through the wind-up and the heel driven down in its last moment, planted
+        // as the blow lands, then the foot set back beside the other. The standing leg keeps the hips on the floor (Ground).
+        private void StompLeg()
+        {
+            float w = StompWeight();
+            if (w <= 0.001f) return;
+            float drive = Mathf.Min(0.07f, _actWindup * 0.35f);
+            float lift = _actWindup - drive;
+            float up = _actT < lift
+                ? Mathf.SmoothStep(0f, 1f, _actT / Mathf.Max(0.01f, lift))
+                : 1f - Mathf.Clamp01((_actT - lift) / Mathf.Max(0.01f, drive));
+            float thigh = Mathf.Lerp(-30f, -62f, up);
+            float knee = Mathf.Lerp(22f, 96f, up);
+            float foot = -(thigh + knee) + Mathf.Lerp(-6f, 12f, up);   // the sole level, the toes hanging up top and lifted as the heel drives down
+            _q[ThighR] = Quaternion.Slerp(_q[ThighR], E(thigh, 0f, 3f), w);
+            _q[ShinR] = Quaternion.Slerp(_q[ShinR], E(knee, 0f, 0f), w);
+            _q[FootR] = Quaternion.Slerp(_q[FootR], E(foot, 4f, 0f), w);
+        }
 
         // ── Crawling, sitting, lying and death ───────────────────────────────────────────────────────
 
@@ -298,14 +340,14 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Sprawled where the body fell. Arms are flung out sideways (which keeps them on the
-        /// floor either way up); knees and feet bend only the way that doesn't push them through it —
-        /// a raised knee face up, a lifted heel and pointed toes face down.</summary>
-        private void PoseDead()
+        /// <summary>Sprawled where the body fell (dead, or knocked down: <paramref name="backward"/> on its back). Arms are flung
+        /// out sideways (which keeps them on the floor either way up); knees and feet bend only the way that doesn't push them
+        /// through it — a raised knee face up, a lifted heel and pointed toes face down.</summary>
+        private void PoseDead(bool backward)
         {
             for (int i = 0; i < BoneCount; i++) _q2[i] = Quaternion.identity;
             _hips2 = Vector3.zero;
-            if (_fallBackward)
+            if (backward)
             {
                 _q2[Spine] = E(3f, 4f, 0f);
                 _q2[Chest] = E(3f, 6f, 0f);

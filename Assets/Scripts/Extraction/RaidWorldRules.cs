@@ -79,22 +79,78 @@ namespace CloneZ
             if (!exits.Exists(x => x.Open)) exits[rng.Next(exits.Count)].Open = true;
             if (GameSession.IsOpenZone)
                 foreach (RaidExit e in exits) if (e.Condition == ExitCondition.None) e.Open = true;
-            if (exits.Exists(x => x.Condition == ExitCondition.Switch)) PlaceSwitch(map, rng);
+            if (exits.Exists(x => x.Condition == ExitCondition.Switch) && !PlaceSwitch(rng))
+                new GameObject("PowerSwitchSite").AddComponent<PowerSwitchSite>().Rng = new System.Random(rng.Next());
         }
 
-        // The switch for a power-gated exit sits inside a building somewhere else on the map.
-        private static void PlaceSwitch(RaidMapInfo map, System.Random rng)
+        private static readonly Vector3 SwitchSize = new Vector3(0.3f, 0.45f, 0.15f);
+
+        /// <summary>Hangs the switch for a power-gated exit on a wall inside a building somewhere on the map, by one of the
+        /// storage fixtures in its sheltered rooms. False while the map has no such wall: a streamed map fits its rooms out
+        /// only as the survivor nears them, after the exits are rolled, and a <see cref="PowerSwitchSite"/> waits for one.</summary>
+        internal static bool PlaceSwitch(System.Random rng)
         {
             var spots = new List<Vector3>();
             foreach (LootContainer c in LootContainer.All)
                 if (c != null && c.IsFixture && Shelter.IsSheltered(c.transform.position + Vector3.up)) spots.Add(c.transform.position);
-            Vector3 at = spots.Count > 0 ? spots[rng.Next(spots.Count)] : Vector3.zero;
-            var go = new GameObject("PowerSwitch");
-            go.transform.position = new Vector3(at.x, 1.2f, at.z);
-            var box = CloneZUtil.Box("SwitchBox", go.transform.position, new Vector3(0.3f, 0.45f, 0.15f), new Color(0.55f, 0.5f, 0.2f), go.transform);
-            Object.Destroy(box.GetComponent<Collider>());
-            go.AddComponent<PowerSwitch>();
-            WorldMarkers.Add("exit_switch", go.transform.position);
+            if (spots.Count == 0) return false;
+            Physics.SyncTransforms();
+            for (int i = 0; i < spots.Count && i < 64; i++)
+            {
+                int pick = i + rng.Next(spots.Count - i);
+                (spots[i], spots[pick]) = (spots[pick], spots[i]);
+                if (!OnWall(spots[i], out Vector3 at, out Quaternion facing)) continue;
+                var go = new GameObject("PowerSwitch");
+                go.transform.SetPositionAndRotation(at, facing);
+                GameObject box = CloneZUtil.Box("SwitchBox", at, SwitchSize, new Color(0.55f, 0.5f, 0.2f), go.transform);
+                box.transform.localRotation = Quaternion.identity;
+                Object.Destroy(box.GetComponent<Collider>());
+                go.AddComponent<PowerSwitch>();
+                WorldMarkers.Add("exit_switch", at);
+                return true;
+            }
+            return false;
+        }
+
+        // A place for the switch box on the nearest wall round a spot: 1.2 m up from the floor under it, on a tall upright
+        // surface within reach, its back to the wall and nothing else where it would hang.
+        private static bool OnWall(Vector3 near, out Vector3 at, out Quaternion facing)
+        {
+            at = default;
+            facing = Quaternion.identity;
+            if (!Floor(near, out float floor)) return false;
+            var from = new Vector3(near.x, floor + 1.2f, near.z);
+            float best = float.MaxValue;
+            for (int k = 0; k < 8; k++)
+            {
+                Vector3 dir = Quaternion.Euler(0f, k * 45f, 0f) * Vector3.forward;
+                if (!Physics.Raycast(from, dir, out RaycastHit wall, 4f, ~0, QueryTriggerInteraction.Ignore) || wall.distance >= best) continue;
+                if (Mathf.Abs(wall.normal.y) > 0.2f || wall.collider.bounds.size.y < 2.2f) continue;   // not a wardrobe's side
+                Vector3 n = new Vector3(wall.normal.x, 0f, wall.normal.z).normalized;
+                Quaternion q = Quaternion.LookRotation(n);
+                Vector3 p = wall.point + n * (SwitchSize.z * 0.5f + 0.005f);
+                if (Physics.CheckBox(p + n * 0.01f, SwitchSize * 0.5f - Vector3.one * 0.01f, q, ~0, QueryTriggerInteraction.Ignore)) continue;
+                best = wall.distance;
+                at = p;
+                facing = q;
+            }
+            return best < float.MaxValue;
+        }
+
+        // The floor under a spot: the first broad, level surface below it (not the top of the furniture it's in).
+        private static bool Floor(Vector3 near, out float y)
+        {
+            y = 0f;
+            RaycastHit[] hits = Physics.RaycastAll(near + Vector3.up * 0.5f, Vector3.down, 3f, ~0, QueryTriggerInteraction.Ignore);
+            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+            foreach (RaycastHit h in hits)
+            {
+                Vector3 size = h.collider.bounds.size;
+                if (h.normal.y < 0.7f || size.x < 2f || size.z < 2f) continue;
+                y = h.point.y;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -145,6 +201,21 @@ namespace CloneZ
                 catch (System.Exception e) { Debug.LogException(e); }
             }
             GameEvents.RaiseToast("The helicopter sets you down at the landing zone and lifts away.");
+        }
+    }
+
+    /// <summary>Waits for a furnished room to hang a power-gated exit's switch in (see
+    /// <see cref="RaidWorldRules.PlaceSwitch"/>), looking every couple of seconds, then goes.</summary>
+    public sealed class PowerSwitchSite : MonoBehaviour
+    {
+        internal System.Random Rng;
+        private float _next;
+
+        private void Update()
+        {
+            if (Time.time < _next) return;
+            _next = Time.time + 2f;
+            if (RaidWorldRules.PlaceSwitch(Rng)) Destroy(gameObject);
         }
     }
 

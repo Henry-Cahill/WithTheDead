@@ -232,8 +232,8 @@ namespace CloneZ
             };
             B.ForeignWallMesh = FittingsAt;
             B.ForeignWallObject = WallObjectAt;
-            // A town's worth of fittings: none asks for shadows, and they're hung from the ceiling once the building shows.
-            B.CeilingShadows = false;
+            // A town's worth of fittings, hung from the ceiling once the building shows; the shadow budget gives their
+            // shadows to the few nearest the survivor (ShadowBudget).
             B.HungLater = _hung;
             foreach (PlanRoom r in Plan.Rooms)
             {
@@ -946,6 +946,8 @@ namespace CloneZ
                     for (int i = before; i < _windows.Count; i++)
                     {
                         GameObject root = _windows[i].root;
+                        // Fitted after the floor's claim: its sashes and screen onto the Sight Occluder layer as well.
+                        SightOccluders.Claim(root.transform);
                         RaidWindow win = root.GetComponent<RaidWindow>();
                         if (win != null) WindowStreamer.Restore(win);
                         MapCutaway.AddWindow(Plan.Id, Plan.Level, _windows[i].facing, root);
@@ -1465,6 +1467,8 @@ namespace CloneZ
             foreach (Vector2 p in Plan.Footprint.Pts) b.Encapsulate(new Vector3(p.x + _offset.x, Plan.FloorY, p.y + _offset.z));
             b.Encapsulate(b.center + Vector3.up * Plan.WallH * 0.5f);
             WorldBounds = b;
+            // Its solids onto the Sight Occluder layer, while it's still asleep when it was built hidden.
+            SightOccluders.Claim(Root.transform);
             if (_hidden) Root.SetActive(true);
             HangLamps();
             Objects = CountObjects(Root.transform) + (Town.Overhead != null ? CountObjects(Town.Overhead) : 0);

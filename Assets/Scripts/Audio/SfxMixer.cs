@@ -40,8 +40,9 @@ namespace CloneZ
 
         private const int MaxPool = 64, MaxDelayed = 256, ProbesPerFrame = 6;
         private const float FullBand = 22000f;
-        // World geometry only: characters sit on Ignore Raycast, so they never muffle anything.
-        private const int OcclusionMask = 1 << 0;
+        // World geometry only (Default and the Sight Occluder layer): characters sit on Ignore Raycast, so they never
+        // muffle anything.
+        private const int OcclusionMask = CloneZConfig.WorldMask;
 
         private static SfxMixer s_Instance;
         private static Transform s_Root;

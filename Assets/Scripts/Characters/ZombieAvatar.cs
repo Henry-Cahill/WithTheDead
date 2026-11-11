@@ -7,7 +7,7 @@ namespace CloneZ
     /// A zombie's body: the same humanoid as the survivor, dressed as a random dead survivor (grimy
     /// clothes, pale eyes, blood) and animated from <see cref="ZombieAI"/> — a shuffle, lurch, sprint
     /// or crawl by type, arms reaching for prey, lunges and barricade-beating on attack, staggering
-    /// when struck, and a collapse on death.
+    /// or flinching when struck, falling when knocked down and getting up again, and a collapse on death.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class ZombieAvatar : MonoBehaviour
@@ -72,6 +72,9 @@ namespace CloneZ
             {
                 _ai.AttackStarted += HandleAttack;
                 _ai.Staggered += HandleStagger;
+                _ai.Flinched += HandleFlinch;
+                _ai.KnockedDown += HandleKnockedDown;
+                _ai.GettingUp += HandleGettingUp;
             }
             _lastPos = transform.position;
             _hasLastPos = true;
@@ -83,6 +86,9 @@ namespace CloneZ
             if (_ai == null) return;
             _ai.AttackStarted -= HandleAttack;
             _ai.Staggered -= HandleStagger;
+            _ai.Flinched -= HandleFlinch;
+            _ai.KnockedDown -= HandleKnockedDown;
+            _ai.GettingUp -= HandleGettingUp;
         }
 
         private void LateUpdate()
@@ -113,6 +119,8 @@ namespace CloneZ
             a.Velocity = velocity;
             a.Hunting = hunting;
             a.ArmsOut = hunting || _reaches;
+            // Back on its feet in the brain but still down in the body (a getting-up missed): up it gets, quickly.
+            if (_ai != null && a.IsDown && !_ai.IsDowned) a.GetUp(0.25f);
 
             Vector3? prey = hunting && _ai != null ? _ai.HuntTarget : null;
             a.HasLookTarget = prey.HasValue;
@@ -128,5 +136,11 @@ namespace CloneZ
         }
 
         private void HandleStagger(Vector3 push, float duration) => Animator.Stagger(push, duration);
+
+        private void HandleFlinch(Vector3 blow) => Animator.Flinch(-blow);
+
+        private void HandleKnockedDown(Vector3 blow) => Animator.KnockDown(blow);
+
+        private void HandleGettingUp(float seconds) => Animator.GetUp(seconds);
     }
 }

@@ -377,7 +377,7 @@ namespace CloneZ
             float len = Mathf.Max(0.5f, d.magnitude);
             d /= len;
             float alpha = held ? 0.75f : 0.25f;
-            if (Physics.Raycast(from, d, out RaycastHit hit, len, 1, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(from, d, out RaycastHit hit, len, CloneZConfig.WorldMask, QueryTriggerInteraction.Ignore))
             {
                 _clear.SetPosition(0, from); _clear.SetPosition(1, hit.point);
                 _blocked.SetPosition(0, hit.point); _blocked.SetPosition(1, to);

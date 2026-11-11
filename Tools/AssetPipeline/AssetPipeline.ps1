@@ -11,18 +11,19 @@
   pulls them into Assets/Resources/GeneratedItemMeshes; its actions start with mesh-.
 
   Run with no arguments for a menu, or:  .\AssetPipeline.ps1 start|status|pull|stop|watch|gallery
-  or for meshes:  .\AssetPipeline.ps1 mesh-build|mesh-prepare|mesh-pilot|mesh-start|mesh-view|mesh-status|mesh-watch|mesh-pull|mesh-gallery|mesh-stop|mesh-refit|mesh-redo|mesh-view-stop
+  or for meshes:  .\AssetPipeline.ps1 mesh-build|mesh-prepare|mesh-pilot|mesh-start|mesh-view|mesh-status|mesh-watch|mesh-pull|mesh-gallery|mesh-stop|mesh-refit|mesh-redo|mesh-restart|mesh-view-stop
 
 .EXAMPLE
   .\AssetPipeline.ps1 start -Critic
   .\AssetPipeline.ps1 start -Extra '--category','Clothing'
   .\AssetPipeline.ps1 mesh-start -Extra '--category','Firearm'
   .\AssetPipeline.ps1 mesh-redo -Extra 'Ramen@2,Sugar@1'
+  .\AssetPipeline.ps1 mesh-restart
 #>
 param(
     [ValidateSet('menu', 'start', 'status', 'pull', 'stop', 'watch', 'gallery',
         'mesh-build', 'mesh-prepare', 'mesh-pilot', 'mesh-start', 'mesh-view', 'mesh-status', 'mesh-watch',
-        'mesh-pull', 'mesh-gallery', 'mesh-stop', 'mesh-refit', 'mesh-redo', 'mesh-view-stop')]
+        'mesh-pull', 'mesh-gallery', 'mesh-stop', 'mesh-refit', 'mesh-redo', 'mesh-restart', 'mesh-view-stop')]
     [string]$Action = 'menu',
     [string]$SparkHost = $(if ($env:CLONEZ_SPARK) { $env:CLONEZ_SPARK } else { 'henrylawrencecahill@192.168.1.252' }),
     [int]$Workers = 4,
@@ -233,6 +234,7 @@ function Show-MeshMenu {
         Write-Host ' 9) Stop after the item in progress'
         Write-Host ' R) Refit finished meshes (after a fitting change; generates nothing)'
         Write-Host ' D) Redo versions from new seeds (Status lists the worst)'
+        Write-Host ' N) New items: upload the pipeline and restart the run so it makes them (after exporting hand-built models)'
         Write-Host ' B) Back'
         switch ((Read-Host 'Choose').Trim().ToUpper()) {
             '1' { Sync-Pipeline; Invoke-Mesh 'build' | Out-Null }
@@ -250,6 +252,7 @@ function Show-MeshMenu {
                 $ids = (Read-Host 'Versions to redo (e.g. Ramen@2,Sugar@1; an item id redoes all its versions)').Trim()
                 if ($ids) { Sync-Pipeline; Invoke-Mesh "redo '$ids'" | Out-Null }
             }
+            'N' { Sync-Pipeline; Invoke-Mesh 'restart' | Out-Null }
             'B' { return }
         }
     }
@@ -302,5 +305,6 @@ switch ($Action) {
     'mesh-stop' { exit (Invoke-Mesh 'stop') }
     'mesh-refit' { Sync-Pipeline; exit (Invoke-Mesh ("refit " + (($Extra | ForEach-Object { "'$_'" }) -join ' '))) }
     'mesh-redo' { Sync-Pipeline; exit (Invoke-Mesh ("redo " + (($Extra | ForEach-Object { "'$_'" }) -join ' '))) }
+    'mesh-restart' { Sync-Pipeline; exit (Invoke-Mesh 'restart') }
     default { Show-Menu }
 }

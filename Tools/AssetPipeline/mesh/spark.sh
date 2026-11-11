@@ -8,6 +8,8 @@
 #   refit [args]    fit finished meshes again after a fitting change, without generating; args: --ids A,B
 #   redo ids        make versions again from new seeds (the worst ones, say): redo Ramen@2,Sugar@1; the run restarts
 #                   to pick them up
+#   restart         have the run finish the version in progress and start again, to pick up items added since it
+#                   started (a new hand-built model and its catalogue entry, say)
 #   status          whether it is running, the latest log lines and progress
 #   web             serve the live view (live.html: the item being made, its picture, the step, the latest meshes)
 #                   and the gallery on port 8765, in tmux session clonez-mesh-web; start does this too
@@ -232,6 +234,19 @@ case "${1:-status}" in
       else echo "The run finishes the version in progress and stops; start it again to make these."; fi
     else
       echo "The next start makes them in their turn."
+    fi
+    ;;
+
+  restart)
+    # The run lists what it will make when it starts, so items added since (a hand-built model exported with its
+    # catalogue entry, say) wait for its next start. As with redo: interrupted without a stop request, it finishes the
+    # version in progress and exits, and keep-running starts it again.
+    if tmux has-session -t "=$SESSION" 2>/dev/null && docker kill --signal INT "$SESSION" >/dev/null 2>&1; then
+      if [ -f "$OUT/hold" ]; then echo "The run finishes the version in progress and stops; once released, the next start picks up the new items."
+      elif scheduled; then echo "The run finishes the version in progress, then keep-running starts it again within 10 minutes with the new items."
+      else echo "The run finishes the version in progress and stops; start it again to pick up the new items."; fi
+    else
+      echo "Not running; the next start picks up the new items."
     fi
     ;;
 

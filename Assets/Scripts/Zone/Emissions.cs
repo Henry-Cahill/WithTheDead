@@ -239,7 +239,7 @@ namespace CloneZ
         {
             Vector3 head = feet + Vector3.up * 1.7f;
             if (Shelter.Count > 0 && Shelter.IsSheltered(feet + Vector3.up)) return true;
-            return Physics.Raycast(head, Vector3.up, 30f, 1, QueryTriggerInteraction.Ignore);
+            return Physics.Raycast(head, Vector3.up, 30f, CloneZConfig.WorldMask, QueryTriggerInteraction.Ignore);
         }
 
         // One second of the blast: everything alive and exposed suffers; people caught outside die.

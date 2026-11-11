@@ -116,13 +116,14 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.04f, 0f), new Vector3(len, 0.06f, 0.06f), steel);
         }
 
-        /// <summary>Creates the armory room with a weapon rack and ammunition crates.</summary>
+        /// <summary>Creates the armory room with a weapon rack and ammunition crates: a police station's (or a sheriff's, or a
+        /// jail's), so all of it holds police guns and rounds.</summary>
         private static void Armory(RoomCtx c)
         {
             RaidBuilding b = c.B;
             // Determine wall placement order, preferring walls opposite the entrance.
             int[] order = c.Sides(false);
-            LootPiece(c, ContainerType.GunLocker, order);
+            LootPiece(c, ContainerType.PoliceLocker, order);
             // Place a weapon rack on a suitable wall if space permits.
             if (c.AnyWall(order, 1.2f, 0.4f, 1.6f, -1f, out RaidBuilding.Place rack, out _))
                 b.WeaponRack(c.R, rack, new Vector3(1.2f, 1.6f, 0.4f), (m, r) =>
@@ -163,11 +164,11 @@ namespace CloneZ
                          // wood lid
                          m.Box(new Vector3(0f, 1.47f, -0.05f), new Vector3(0.25f, 0.015f, 0.18f), wood);
                      }
-                }, "Gun rack");
+                }, "Gun rack", ContainerType.PoliceLocker);
             MoreLoot(c, LootCount(c, 0.15f, 3), order);
             for (int k = 0; k < 2; k++)
                 if (c.AnyWall(order, 0.9f, 0.62f, 0.62f, -1f, out RaidBuilding.Place crate, out _))
-                    b.SupplyCrate(c.R, crate, new Vector3(0.9f, 0.6f, 0.6f), true, ContainerType.GunLocker, "Ammunition crate", k == 0);
+                    b.SupplyCrate(c.R, crate, new Vector3(0.9f, 0.6f, 0.6f), true, ContainerType.PoliceLocker, "Ammunition crate", k == 0);
         }
 
         /// <summary>Builds a church nave with an altar, pulpit, lectern and pews.</summary>

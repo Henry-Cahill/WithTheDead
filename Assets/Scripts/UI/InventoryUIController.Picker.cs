@@ -276,6 +276,9 @@ namespace CloneZ
                 case ContainerType.Wardrobe: return "Wd";
                 case ContainerType.Pantry: return "Pa";
                 case ContainerType.GunLocker: return "Gn";
+                case ContainerType.GunCabinet: return "Gc";
+                case ContainerType.GunCounter: return "Gs";
+                case ContainerType.PoliceLocker: return "Pd";
                 case ContainerType.Shelf: return "Sh";
                 case ContainerType.Corpse: return "\u2020";
                 default: return "Cr";

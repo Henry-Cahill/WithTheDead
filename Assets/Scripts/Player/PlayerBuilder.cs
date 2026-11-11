@@ -461,7 +461,7 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
             float thick = CloneZConfig.HouseWallThickness;
             Quaternion rot = Quaternion.Euler(0f, yaw, 0f);
             var half = new Vector3(T * 0.5f - 0.06f, h * 0.5f - 0.05f, thick * 0.5f);
-            int mask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+            int mask = CloneZConfig.WorldMask | (1 << CloneZConfig.IgnoreRaycastLayer);
 
             int n = Physics.OverlapBoxNonAlloc(center, half, _overlapBuf, rot, mask, QueryTriggerInteraction.Ignore);
             for (int i = 0; i < n; i++)
@@ -621,7 +621,7 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
             Vector3 center = pos + Vector3.up * 0.9f;                 // clears the ground slab (top at y=0)
             Vector3 half = new Vector3(w * 0.5f + 0.05f, 0.8f, d * 0.5f + 0.05f);
             Quaternion rot = Quaternion.LookRotation(forward, Vector3.up);
-            int mask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+            int mask = CloneZConfig.WorldMask | (1 << CloneZConfig.IgnoreRaycastLayer);
 
             int n = Physics.OverlapBoxNonAlloc(center, half, _overlapBuf, rot, mask, QueryTriggerInteraction.Ignore);
             for (int i = 0; i < n; i++)

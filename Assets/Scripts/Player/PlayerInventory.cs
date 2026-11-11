@@ -480,12 +480,7 @@ namespace CloneZ
                 return;
             }
 
-            _combat.EquipMeleeMode();
-            _combat.WeaponDamage = weapon.WeaponDamage;
-            _combat.WeaponRange = weapon.WeaponRange;
-            _combat.WeaponArc = weapon.WeaponArc;
-            _combat.SwingCooldown = weapon.SwingCooldown;
-            _combat.SwingKnockback = weapon.Knockback;
+            _combat.EquipMelee(weapon);
             Changed?.Invoke();
         }
 
@@ -570,12 +565,7 @@ namespace CloneZ
         {
             EquippedWeapon = null;
             if (_combat == null) { Changed?.Invoke(); return; }
-            _combat.EquipMeleeMode();               // leaves ranged mode and hands any loaded rounds back
-            _combat.WeaponDamage = CloneZConfig.BareHandDamage;
-            _combat.WeaponRange = CloneZConfig.BareHandRange;
-            _combat.WeaponArc = CloneZConfig.BareHandArc;
-            _combat.SwingCooldown = CloneZConfig.BareHandCooldown;
-            _combat.SwingKnockback = CloneZConfig.BareHandKnockback;
+            _combat.EquipMelee(null);               // leaves ranged mode, hands any loaded rounds back, and fights bare-handed
             Changed?.Invoke();
         }
 
@@ -733,6 +723,10 @@ namespace CloneZ
         public static event System.Action<ItemDef, int, Vector3> GroundTaken;
         public static event System.Action<ItemDef, int, Vector3, ItemExtra> GroundDropped;
 
+        /// <summary>Tells the netcode about something of the survivor's put on the ground other than by <see cref="Drop"/>
+        /// (an alarm clock they threw, run down where it lies), so everyone sees it there.</summary>
+        public static void AnnounceGroundDrop(ItemDef def, int count, Vector3 at, ItemExtra extra) => GroundDropped?.Invoke(def, count, at, extra);
+
         public int PickUp(WorldItem item, int max = int.MaxValue)
         {
             if (item == null || item.Def == null || max <= 0) return 0;
@@ -880,17 +874,12 @@ namespace CloneZ
                 }
                 else
                 {
-                    _combat.EquipMeleeMode();
-                    _combat.WeaponDamage = weapon.WeaponDamage;
-                    _combat.WeaponRange = weapon.WeaponRange;
-                    _combat.WeaponArc = weapon.WeaponArc;
-                    _combat.SwingCooldown = weapon.SwingCooldown;
-                    _combat.SwingKnockback = weapon.Knockback;
+                    _combat.EquipMelee(weapon);
                 }
             }
             else if (_combat != null)
             {
-                _combat.EquipMeleeMode();
+                _combat.EquipMelee(null);
             }
 
             Changed?.Invoke();

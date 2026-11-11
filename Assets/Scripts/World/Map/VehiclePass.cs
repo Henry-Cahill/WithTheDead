@@ -399,7 +399,7 @@ namespace CloneZ
                 new StorageOptions
                 {
                     Noun = back.ToLowerInvariant(), LookLabel = box ? "Roll up the cargo door" : bed ? "Search the truck bed" : "Pop the trunk",
-                    LootType = police ? ContainerType.GunLocker : box ? ContainerType.Shelf : ContainerType.Crate,
+                    LootType = police ? ContainerType.PoliceLocker : box ? ContainerType.Shelf : ContainerType.Crate,
                     EmptyChance = police ? CloneZConfig.RaidTrunkEmptyChance + 0.1f : CloneZConfig.RaidTrunkEmptyChance,
                     MaxStacks = police ? 1 : CloneZConfig.RaidTrunkMaxStacks, SearchTime = CloneZConfig.RaidTrunkSearchSeconds,
                     Noise = CloneZConfig.FixtureNoiseDoor, RaidBoost = false,

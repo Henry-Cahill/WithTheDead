@@ -210,8 +210,10 @@ else
             float halfDiagonal = 0.5f * Mathf.Sqrt(room.World.width * room.World.width + room.World.height * room.World.height);
             float range = Mathf.Clamp(1.3f * halfDiagonal, 3.5f, 9f);
             float intensity = 2.0f + (float)Rng.NextDouble() * 1.0f;
-            // The light sits at the fitting's own bulb, just under the panel / dome / shade.
-            HomeLamp lamp = HomeLamp.Attach(Root, pos - Vector3.up * drop, range, intensity, CeilingShadows, glow, CircuitOf(room), color: CeilingLightColor);
+            // The light sits at the fitting's own bulb, just under the panel / dome / shade. A shaded fitting shines down (a
+            // downlight: one shadow map, not a point light's six); a bare bulb lights the ceiling too.
+            HomeLamp lamp = HomeLamp.Attach(Root, pos - Vector3.up * drop, range, intensity, CeilingShadows, glow, CircuitOf(room), color: CeilingLightColor,
+                downlight: room.Light != LightStyle.Bulb);
             if (HungLater != null) HungLater.Add(lamp);
             else lamp.HangFromCeiling();
             lamp.Flicker = room.Flicker;

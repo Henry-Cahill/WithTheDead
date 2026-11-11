@@ -237,7 +237,7 @@ namespace CloneZ
                     if (d != null && d.IsClothing) clothing.Equip(d, Mathf.RoundToInt(d.MaxCondition * (0.4f + (float)rng.NextDouble() * 0.5f)));
                 }
             if (inventory == null) return;
-            string[] guns = { "pistol", "shotgun", "smg9", "mosin" };
+            string[] guns = { "pistol", "shotgun", "smg9", "mosin", "rev38", "rifle22", "lever3030" };
             string gun = guns[rng.Next(guns.Length)];
             ItemDef g = ItemDatabase.Get(gun);
             if (g != null)

@@ -59,6 +59,7 @@ namespace CloneZ
         private readonly Dictionary<string, ItemDef> _items;
         private readonly Dictionary<ContainerType, ItemDatabase.LootTable> _tables;
         private readonly Dictionary<ContainerType, List<ItemDatabase.LootEntry>> _pendingLoot = new Dictionary<ContainerType, List<ItemDatabase.LootEntry>>();
+        private readonly Dictionary<ContainerType, (int min, int max, int empty)> _rolls = new Dictionary<ContainerType, (int, int, int)>();
         private readonly HashSet<string> _fromDb;
 
         /// <summary>Number of items added to the database by this builder.</summary>
@@ -123,12 +124,20 @@ namespace CloneZ
             list.Add(new ItemDatabase.LootEntry(id, weight, min, Mathf.Max(min, max)));
         }
 
+        /// <summary>How a container type the database holds no loot table for (one that code adds) rolls: the draws per
+        /// container and the weight of an empty draw. A table the database holds keeps its own settings, as its items do.</summary>
+        public void LootRolls(ContainerType table, int minRolls, int maxRolls, int emptyWeight)
+            => _rolls[table] = (Mathf.Max(0, minRolls), Mathf.Max(minRolls, maxRolls), Mathf.Max(0, emptyWeight));
+
         internal void FlushLoot()
         {
             foreach (KeyValuePair<ContainerType, List<ItemDatabase.LootEntry>> kv in _pendingLoot)
             {
                 if (!_tables.TryGetValue(kv.Key, out ItemDatabase.LootTable t))
-                    _tables[kv.Key] = t = new ItemDatabase.LootTable { MinRolls = 1, MaxRolls = 3, EmptyWeight = 10, Entries = new ItemDatabase.LootEntry[0] };
+                {
+                    (int min, int max, int empty) r = _rolls.TryGetValue(kv.Key, out var set) ? set : (1, 3, 10);
+                    _tables[kv.Key] = t = new ItemDatabase.LootTable { MinRolls = r.min, MaxRolls = r.max, EmptyWeight = r.empty, Entries = new ItemDatabase.LootEntry[0] };
+                }
                 var merged = new List<ItemDatabase.LootEntry>(t.Entries ?? new ItemDatabase.LootEntry[0]);
                 merged.AddRange(kv.Value);
                 t.Entries = merged.ToArray();

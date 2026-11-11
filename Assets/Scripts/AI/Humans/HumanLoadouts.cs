@@ -113,7 +113,7 @@ namespace CloneZ
             Add(new HumanLoadout
             {
                 Id = Scav, Faction = Factions.Scavs, Title = "Scavenger",
-                Guns = new[] { new GunPick("pistol", 40), new GunPick("shotgun", 32), new GunPick("smg9", 20), new GunPick("ak74", 8) },
+                Guns = new[] { new GunPick("pistol", 40), new GunPick("shotgun", 32), new GunPick("smg9", 20), new GunPick("ak74", 8), new GunPick("rev38", 14), new GunPick("rifle22", 8), new GunPick("lever3030", 6) },
                 MagsMin = 1, MagsMax = 2,
                 Vests = new[] { "armor_vest_c2" }, VestChance = 0.15f,
                 Helmets = new[] { "helmet_c2" }, HelmetChance = 0.05f,
@@ -131,7 +131,7 @@ namespace CloneZ
             Add(new HumanLoadout
             {
                 Id = Raider, Faction = Factions.Scavs, Title = "Raider",
-                Guns = new[] { new GunPick("ak74", 45), new GunPick("shotgun", 25, "slug12"), new GunPick("smg9", 30) },
+                Guns = new[] { new GunPick("ak74", 45), new GunPick("shotgun", 25, "slug12"), new GunPick("smg9", 30), new GunPick("aks74u", 20), new GunPick("ar15", 8) },
                 MagsMin = 2, MagsMax = 3,
                 Vests = new[] { "armor_vest_c2", "armor_vest_c3", "armor_vest_c3" }, VestChance = 0.65f,
                 Helmets = new[] { "helmet_c2", "helmet_c3" }, HelmetChance = 0.3f,
@@ -149,7 +149,7 @@ namespace CloneZ
             Add(new HumanLoadout
             {
                 Id = Freehold, Faction = Factions.Freehold, Title = "Freehold runner",
-                Guns = new[] { new GunPick("ak74", 35), new GunPick("shotgun", 28), new GunPick("smg9", 22), new GunPick("mosin", 15) },
+                Guns = new[] { new GunPick("ak74", 35), new GunPick("shotgun", 28), new GunPick("smg9", 22), new GunPick("mosin", 15), new GunPick("lever3030", 10), new GunPick("rifle3006", 8) },
                 MagsMin = 2, MagsMax = 3,
                 Vests = new[] { "armor_vest_c2", "armor_vest_c2", "armor_vest_c3" }, VestChance = 0.5f,
                 Helmets = new[] { "helmet_c2" }, HelmetChance = 0.15f,
@@ -169,7 +169,7 @@ namespace CloneZ
             Add(new HumanLoadout
             {
                 Id = Vanguard, Faction = Factions.Vanguard, Title = "Vanguard trooper",
-                Guns = new[] { new GunPick("ak74", 55), new GunPick("ak74", 15, "ammo545_bp"), new GunPick("smg9", 15, "ammo9mm_ap"), new GunPick("mosin", 15) },
+                Guns = new[] { new GunPick("ak74", 55), new GunPick("ak74", 15, "ammo545_bp"), new GunPick("smg9", 15, "ammo9mm_ap"), new GunPick("mosin", 15), new GunPick("aks74u", 15), new GunPick("svd", 8), new GunPick("pkm", 5) },
                 MagsMin = 2, MagsMax = 4,
                 Vests = new[] { "armor_vest_c3", "armor_plate_c4", "armor_plate_c4", "armor_assault_c5" }, VestChance = 0.9f,
                 Helmets = new[] { "helmet_c3", "helmet_c3", "helmet_c4" }, HelmetChance = 0.75f,
@@ -187,7 +187,7 @@ namespace CloneZ
             Add(new HumanLoadout
             {
                 Id = Warden, Faction = Factions.Wardens, Title = "Cordon warden",
-                Guns = new[] { new GunPick("ak74", 70), new GunPick("mosin", 18), new GunPick("smg9", 12) },
+                Guns = new[] { new GunPick("ak74", 70), new GunPick("mosin", 18), new GunPick("smg9", 12), new GunPick("aks74u", 15), new GunPick("svd", 6), new GunPick("pkm", 6) },
                 MagsMin = 2, MagsMax = 4,
                 Vests = new[] { "armor_vest_c3", "armor_vest_c3", "armor_plate_c4" }, VestChance = 0.9f,
                 Helmets = new[] { "helmet_c3" }, HelmetChance = 0.75f,
@@ -205,7 +205,7 @@ namespace CloneZ
             Add(new HumanLoadout
             {
                 Id = Choir, Faction = Factions.Choir, Title = "Hollow Choir zealot",
-                Guns = new[] { new GunPick("ak74", 40), new GunPick("shotgun", 30), new GunPick("mosin", 15), new GunPick("smg9", 15) },
+                Guns = new[] { new GunPick("ak74", 40), new GunPick("shotgun", 30), new GunPick("mosin", 15), new GunPick("smg9", 15), new GunPick("rev38", 10), new GunPick("m1911", 6) },
                 MagsMin = 2, MagsMax = 3,
                 Vests = new[] { "armor_vest_c2", "armor_vest_c3" }, VestChance = 0.35f,
                 Helmets = new[] { "helmet_c2" }, HelmetChance = 0.05f,
@@ -223,7 +223,7 @@ namespace CloneZ
             Add(new HumanLoadout
             {
                 Id = Institute, Faction = Factions.Institute, Title = "Institute field team",
-                Guns = new[] { new GunPick("pistol", 50), new GunPick("smg9", 40), new GunPick("shotgun", 10) },
+                Guns = new[] { new GunPick("pistol", 50), new GunPick("smg9", 40), new GunPick("shotgun", 10), new GunPick("aks74u", 6) },
                 MagsMin = 1, MagsMax = 3,
                 Vests = new[] { "armor_vest_c2" }, VestChance = 0.25f,
                 Helmets = new[] { "helmet_c2" }, HelmetChance = 0.1f,
@@ -242,7 +242,7 @@ namespace CloneZ
             Add(new HumanLoadout
             {
                 Id = Lantern, Faction = Factions.Lantern, Title = "Lantern smuggler",
-                Guns = new[] { new GunPick("smg9", 40), new GunPick("shotgun", 25), new GunPick("ak74", 25), new GunPick("pistol", 10, "ammo9mm_hp") },
+                Guns = new[] { new GunPick("smg9", 40), new GunPick("shotgun", 25), new GunPick("ak74", 25), new GunPick("pistol", 10, "ammo9mm_hp"), new GunPick("aks74u", 12), new GunPick("m1911", 8) },
                 MagsMin = 1, MagsMax = 3,
                 Vests = new[] { "armor_vest_c2", "armor_vest_c3" }, VestChance = 0.35f,
                 Helmets = new[] { "helmet_c2" }, HelmetChance = 0.1f,

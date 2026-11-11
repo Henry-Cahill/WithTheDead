@@ -117,6 +117,7 @@ namespace CloneZ
                 {
                     _wanted.Remove(floor);
                     floor.DropWindows();
+                    IsoCutaway.LetGo();   // the camera's cutaway forgets the windows it met
                 }
             }
             _wanted.Sort((a, b) => Near(a).CompareTo(Near(b)));
