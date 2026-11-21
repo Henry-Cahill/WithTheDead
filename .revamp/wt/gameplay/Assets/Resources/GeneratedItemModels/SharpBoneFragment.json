@@ -1,0 +1,8 @@
+{"version": 1, "id": "SharpBoneFragment", "baseHeight": 0.0713, "name": "Sharp Bone Fragment", "model": "gpt-oss:120b", "notes": "Sharp bone fragment about 0.12 m long and ~0.02 m thick, lying flat on the ground. Main shaft is a thin cylinder, with a pointed tip cube, a rough end sphere and an irregular side splinter for visual interest.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.002,-0.0012,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Tip","shape":"cube","pos":[0.067,-0.0012,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"RoughEnd","shape":"sphere","pos":[-0.063,-0.0012,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideSplinter","shape":"cube","pos":[-0.028,0.0033,0.0062],"rot":[15.0,0.0,0.0],"size":[0.015,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"MinorChip","shape":"sphere","pos":[0.032,0.0053,-0.0118],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.022,0.0013,0.0082],"rot":[-10.0,0.0,20.0],"size":[0.008,0.006,0.018],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "ShinKneeGuard_L_IceHockey", "baseHeight": 0.0725, "name": "Shin Knee Guard L Ice Hockey", "model": "gpt-oss:120b", "notes": "Shin knee guard (left) for ice‑hockey – about 0.35 m long × 0.12 m high × 0.02 m thick. Main hard shell in muted grey‑brown, inner foam liner, two strap loops, and four rivet fasteners. Lying on its side with the length along X.", "score": 6, "parts": [
+  {"name":"ShellMain","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontCap","shape":"sphere","pos":[-0.185,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BackCap","shape":"sphere","pos":[0.185,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LinerMain","shape":"cube","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.018,0.108],"color":[0.75,0.73,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[0.0,0.0065,-0.07],"rot":[90.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.0,0.0065,0.07],"rot":[90.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.12,0.0085,-0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.15,0.15,0.15],"smooth":0.65,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[-0.12,0.0085,0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.15,0.15,0.15],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.12,0.0085,-0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.15,0.15,0.15],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.12,0.0085,0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.15,0.15,0.15],"smooth":0.65,"metal":1.0}
+]}

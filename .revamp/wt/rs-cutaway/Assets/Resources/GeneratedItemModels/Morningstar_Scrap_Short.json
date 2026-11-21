@@ -1,0 +1,11 @@
+{"version": 1, "id": "Morningstar_Scrap_Short", "baseHeight": 0.21, "name": "Morningstar Scrap Short", "model": "gpt-oss:120b", "notes": "Morningstar Scrap Short – approx 0.90 m total length, 4 cm‑diameter metal shaft lying on its side (X‑axis). Metal spiked ball 24 cm diameter at the forward end with six short spikes. Simple leather grip near the rear of the shaft.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.15,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.9,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.525,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.35,0.25,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"BallCore","shape":"sphere","pos":[0.42,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.42,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.26],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeXPos","shape":"cylinder","pos":[0.57,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeXNeg","shape":"cylinder","pos":[0.27,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeZPos","shape":"cylinder","pos":[0.42,-0.03,0.15],"rot":[90.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeZNeg","shape":"cylinder","pos":[0.42,-0.03,-0.15],"rot":[-90.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeYPos","shape":"cylinder","pos":[0.42,0.12,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

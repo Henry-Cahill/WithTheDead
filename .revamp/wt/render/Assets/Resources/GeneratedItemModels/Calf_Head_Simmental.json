@@ -1,0 +1,14 @@
+{"version": 1, "id": "Calf_Head_Simmental", "baseHeight": 0.1442, "name": "Calf Head Simmental", "model": "gpt-oss:120b", "notes": "Calf head ≈0.28 m long × 0.16 m high × 0.20 m wide, lying on its side (nose toward +Z). Main flesh ellipsoid, protruding snout, thin mouth plate, dark eyes, small ears, two‑segment curved horns, modest neck stub. Warm brown tint for readability.", "score": 6, "parts": [
+  {"name":"HeadEllipsoid","shape":"sphere","pos":[0.0,-0.0042,0.0325],"rot":[0.0,0.0,0.0],"size":[0.28,0.16,0.2],"color":[0.65,0.55,0.45],"smooth":0.09,"metal":0.0},
+  {"name":"Snout","shape":"sphere","pos":[0.0,-0.0142,-0.0875],"rot":[0.0,0.0,0.0],"size":[0.1,0.08,0.09],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"MouthPlate","shape":"cube","pos":[0.0,-0.0342,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.45,0.35,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.06,0.0258,0.0125],"rot":[0.0,0.0,0.0],"size":[0.025,0.023,0.015],"color":[0.12,0.08,0.05],"smooth":0.04,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.06,0.0258,0.0125],"rot":[0.0,0.0,0.0],"size":[0.025,0.023,0.015],"color":[0.12,0.08,0.05],"smooth":0.04,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[-0.09,0.0158,0.0525],"rot":[0.0,0.0,90.0],"size":[0.025,0.07,0.025],"color":[0.58,0.48,0.38],"smooth":0.06,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.09,0.0158,0.0525],"rot":[0.0,0.0,90.0],"size":[0.025,0.07,0.025],"color":[0.58,0.48,0.38],"smooth":0.06,"metal":0.0},
+  {"name":"HornL_Base","shape":"cylinder","pos":[-0.07,0.0458,-0.0075],"rot":[30.0,0.0,90.0],"size":[0.018,0.05,0.018],"color":[0.9,0.88,0.82],"smooth":0.25,"metal":0.0},
+  {"name":"HornL_Tip","shape":"cylinder","pos":[-0.07,0.0758,-0.0575],"rot":[55.0,0.0,90.0],"size":[0.012,0.04,0.012],"color":[0.9,0.88,0.82],"smooth":0.25,"metal":0.0},
+  {"name":"HornR_Base","shape":"cylinder","pos":[0.07,0.0458,-0.0075],"rot":[30.0,0.0,90.0],"size":[0.018,0.05,0.018],"color":[0.9,0.88,0.82],"smooth":0.25,"metal":0.0},
+  {"name":"HornR_Tip","shape":"cylinder","pos":[0.07,0.0758,-0.0575],"rot":[55.0,0.0,90.0],"size":[0.012,0.04,0.012],"color":[0.9,0.88,0.82],"smooth":0.25,"metal":0.0},
+  {"name":"NeckStub","shape":"cylinder","pos":[0.0,0.0058,0.1125],"rot":[90.0,0.0,0.0],"size":[0.04,0.07,0.04],"color":[0.9,0.88,0.82],"smooth":0.2,"metal":0.0}
+]}

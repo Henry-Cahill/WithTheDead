@@ -1,0 +1,10 @@
+{"version": 1, "id": "ShinKneeGuardSpike_L", "baseHeight": 0.1025, "name": "Shin Knee Guard Spike L", "model": "gpt-oss:120b", "notes": "Left‑hand shin knee guard, metal plate about 0.35 m long × 0.10 m wide × 0.015 m thick with a front‑facing spike; includes beveled front rim, four rivets and a two‑section spike for clear silhouette.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.035,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.1],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"FrontBevel","shape":"cube","pos":[0.0,-0.035,0.0475],"rot":[0.0,0.0,0.0],"size":[0.34,0.015,0.01],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[-0.14,-0.035,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.44,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[-0.14,-0.035,0.0325],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.44,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.14,-0.035,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.44,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.14,-0.035,0.0325],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.44,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"SpikeBase","shape":"cylinder","pos":[0.0,-0.0075,0.0475],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"SpikeTip","shape":"cylinder","pos":[0.0,0.0275,0.0475],"rot":[0.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.65,0.63,0.55],"smooth":0.6,"metal":1.0}
+]}

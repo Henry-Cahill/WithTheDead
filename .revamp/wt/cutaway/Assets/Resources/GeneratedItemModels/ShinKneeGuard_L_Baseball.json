@@ -1,0 +1,11 @@
+{"version": 1, "id": "ShinKneeGuard_L_Baseball", "baseHeight": 0.0823, "name": "Shin Knee Guard L Baseball", "model": "gpt-oss:120b", "notes": "Left shin‑guard for baseball – approx 0.35 m long × 0.12 m wide × 0.02 m thick, hard beige plastic with two adjustable fabric straps and four metal rivets. Lying flat on the floor, longest axis along X.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.0148,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontRound","shape":"sphere","pos":[0.0,-0.0043,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"BackRound","shape":"sphere","pos":[0.0,-0.0043,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"StrapUpper","shape":"cylinder","pos":[0.0,0.0097,0.04],"rot":[0.0,0.0,90.0],"size":[0.025,0.35,0.025],"color":[0.15,0.15,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLower","shape":"cylinder","pos":[0.0,0.0017,-0.04],"rot":[0.0,0.0,90.0],"size":[0.025,0.35,0.025],"color":[0.15,0.15,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"RivetUL","shape":"sphere","pos":[-0.16,0.0057,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetUR","shape":"sphere","pos":[0.16,0.0057,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLL","shape":"sphere","pos":[-0.16,-0.0003,-0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLR","shape":"sphere","pos":[0.16,-0.0003,-0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0}
+]}

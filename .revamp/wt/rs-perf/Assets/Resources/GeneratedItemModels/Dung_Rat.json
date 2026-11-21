@@ -1,0 +1,11 @@
+{"version": 1, "id": "Dung_Rat", "baseHeight": 0.082, "name": "Dung Rat", "model": "gpt-oss:120b", "notes": "Irregular dung clump about rat‑size (≈0.12 m long × 0.07 m wide × 0.04 m thick) lying on the floor. Main brown‑gray body with a few smaller lumps and dark spots for texture.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"sphere","pos":[-0.005,-0.002,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.07],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LumpFront","shape":"sphere","pos":[0.04,0.003,0.0175],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.04],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"LumpRear","shape":"sphere","pos":[-0.04,-0.004,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.035],"color":[0.62,0.59,0.52],"smooth":0.2,"metal":0.0},
+  {"name":"CrustTop","shape":"cube","pos":[-0.005,0.018,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.11,0.008,0.065],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[0.015,0.0,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.012],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[-0.03,-0.003,0.0275],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.009],"color":[0.42,0.37,0.32],"smooth":0.2,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[0.025,-0.007,0.0075],"rot":[0.0,0.0,0.0],"size":[0.009,0.005,0.007],"color":[0.38,0.34,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"SideRidge","shape":"cube","pos":[0.05,-0.007,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.06],"color":[0.57,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"BottomFlat","shape":"cube","pos":[-0.005,-0.021,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.115,0.002,0.06],"color":[0.55,0.53,0.46],"smooth":0.15,"metal":0.0}
+]}

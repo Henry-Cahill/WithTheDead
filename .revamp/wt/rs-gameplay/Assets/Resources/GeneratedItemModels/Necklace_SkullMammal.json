@@ -1,0 +1,14 @@
+{"version": 1, "id": "Necklace_SkullMammal", "baseHeight": 0.1087, "name": "Necklace Skull Mammal", "model": "gpt-oss:120b", "notes": "Necklace with a thin metal chain ~0.48 m long lying flat (X‑axis) and a small skull pendant (~0.07 m tall) at the end. The three chain links now overlap so they touch each other, and the skull hangs directly from the last link.", "score": 6, "parts": [
+  {"name":"Link1","shape":"cylinder","pos":[-0.1175,-0.0438,0.012],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.0275,-0.0438,0.012],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[0.0625,-0.0438,0.012],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"SkullCranium","shape":"sphere","pos":[0.1375,-0.0038,0.012],"rot":[0.0,0.0,0.0],"size":[0.07,0.09,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SkullJaw","shape":"cube","pos":[0.1375,-0.0238,-0.018],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ToothL","shape":"cube","pos":[0.1275,-0.0208,-0.033],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.015],"color":[0.8,0.78,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"ToothR","shape":"cube","pos":[0.1475,-0.0208,-0.033],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.015],"color":[0.8,0.78,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.1195,0.0213,0.037],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.1555,0.0213,0.037],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.1375,0.0112,0.047],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CrestBar","shape":"cylinder","pos":[0.1375,0.0412,0.012],"rot":[0.0,0.0,90.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PendantLoop","shape":"cylinder","pos":[0.1375,-0.0137,-0.048],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

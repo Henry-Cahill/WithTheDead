@@ -1,0 +1,8 @@
+{"version": 1, "id": "Pen", "baseHeight": 0.0685, "name": "Pen", "model": "gpt-oss:120b", "notes": "Tactical pen, 0.18 m long × 0.01 m diameter, lying on its side (X‑axis). Main body in the item tint, metal tip and clip clearly visible, thin rubber grip band around the middle.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0023,-0.0035,-0.0045],"rot":[0.0,0.0,90.0],"size":[0.01,0.18,0.01],"color":[0.6,0.6,0.64],"smooth":0.35,"metal":0.0},
+  {"name":"TipMetal","shape":"sphere","pos":[0.0938,0.0025,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Clip","shape":"cube","pos":[0.0678,-0.0025,0.0045],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.008],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"GripBand","shape":"cube","pos":[-0.0323,-0.0025,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.012],"color":[0.2,0.2,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.0922,-0.0035,-0.0045],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.55,0.55,0.58],"smooth":0.4,"metal":0.0},
+  {"name":"ClipEnd","shape":"cube","pos":[0.0877,-0.0025,0.009],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.003],"color":[0.45,0.45,0.48],"smooth":0.45,"metal":1.0}
+]}

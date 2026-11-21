@@ -1,0 +1,34 @@
+diff --git a/Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs b/Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
+index 88ad0948..320facb3 100644
+--- a/Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
++++ b/Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
+@@ -35,21 +35,22 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+             into.Add(new InteractAction("Read the house number", c =>
+                 c.Notify(_remark ?? "Number " + _number + ", says the little enamel plate by the door. Home \u2014 for now.")));
+             into.Add(new InteractAction("Knock on the door", Knock));
++            into.Add(new InteractAction("Tap the plate", Tap));
+             into.Add(new InteractAction("Yell at the house number", Yell));
+         }
+ 
+-        private void Yell(InteractContext ctx)
+-        {
+-            // Louder thump, like shouting against a metal plate
+-            MakeNoise(CloneZConfig.FixtureNoiseDoor);
+-            ctx.Notify("Your voice bounces off the enamel plate, echoing loudly.");
+-        }
+-
+         private void Knock(InteractContext ctx)
+         {
+             // Small thud sound, like knocking on a metal plate
+             MakeNoise(CloneZConfig.FixtureNoiseSmall);
+             ctx.Notify("You knock on the house‑number plate.");
+         }
++
++        private void Yell(InteractContext ctx)
++        {
++            // Louder thump, like shouting against a metal plate
++            MakeNoise(CloneZConfig.FixtureNoiseDoor);
++            ctx.Notify("Your voice bounces off the enamel plate, echoing loudly.");
++        }
+     }
+ }

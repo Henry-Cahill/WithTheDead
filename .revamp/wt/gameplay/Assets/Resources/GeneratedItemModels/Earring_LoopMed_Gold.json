@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_LoopMed_Gold", "baseHeight": 0.0635, "name": "Earring Loop Med Gold", "model": "gpt-oss:120b", "notes": "Medium gold hoop earring, ~2 cm diameter, 3 mm thick, lying flat on the floor (plane horizontal) so its circular silhouette is clear from above. Simple polished metal with a subtle rim detail.", "score": 6, "parts": [
+  {"name":"OuterRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.003,0.022],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"InnerRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.003,0.018],"color":[0.58,0.55,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Highlight","shape":"sphere","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.9,0.85,0.7],"smooth":0.8,"metal":1.0},
+  {"name":"ShadowEdge","shape":"sphere","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":1.0},
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

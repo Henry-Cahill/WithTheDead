@@ -1,0 +1,13 @@
+{"version": 1, "id": "CannedCarrotsOpen", "baseHeight": 0.122, "name": "Canned Carrots Open", "model": "gpt-oss:120b", "notes": "Open canned carrots: upright metal can 0.15 m diameter × 0.12 m tall with lid removed beside it; thin label band around the middle; several orange carrot sticks visible inside.", "score": 6, "parts": [
+  {"name":"CanBody","shape":"cylinder","pos":[-0.1085,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.12,0.15],"color":[0.82,0.82,0.84],"smooth":0.55,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.1085,0.059,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.006,0.158],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.1085,-0.059,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.006,0.158],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[-0.1085,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.15],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[-0.1085,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.002,0.152],"color":[0.55,0.45,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[-0.1085,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.002,0.152],"color":[0.55,0.45,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LidDisc","shape":"cylinder","pos":[0.1115,-0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.152],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"Carrot1","shape":"cylinder","pos":[-0.1285,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Carrot2","shape":"cylinder","pos":[-0.0785,-0.015,0.02],"rot":[90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Carrot3","shape":"sphere","pos":[-0.1185,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Carrot4","shape":"cylinder","pos":[-0.1085,-0.01,-0.03],"rot":[0.0,30.0,90.0],"size":[0.014,0.06,0.014],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

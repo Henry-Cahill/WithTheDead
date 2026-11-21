@@ -1,0 +1,18 @@
+{"version": 1, "id": "Dungarees", "baseHeight": 0.0862, "name": "Dungarees", "model": "gpt-oss:120b", "notes": "Flat pair of denim dungarees ~1 m long x 0.6 m wide, 2‑3 cm thick. Two leg panels spread apart, waistband across the top, front and back pockets, belt‑loops and stitching detail.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[-0.18,-0.0112,0.04],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,1.0],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.18,-0.0112,0.04],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,1.0],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0088,0.53],"rot":[0.0,0.0,0.0],"size":[0.62,0.02,0.14],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.25,0.0187,0.54],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.25,0.0187,0.54],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[-0.12,-0.0012,0.29],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.28],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[-0.12,0.0088,0.42],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.06],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocketL","shape":"cube","pos":[-0.1,-0.0012,-0.26],"rot":[0.0,0.0,0.0],"size":[0.16,0.018,0.22],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocketR","shape":"cube","pos":[0.1,-0.0012,-0.26],"rot":[0.0,0.0,0.0],"size":[0.16,0.018,0.22],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cylinder","pos":[-0.32,0.0037,0.04],"rot":[90.0,0.0,0.0],"size":[0.008,1.02,0.008],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cylinder","pos":[0.32,0.0037,0.04],"rot":[90.0,0.0,0.0],"size":[0.008,1.02,0.008],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCrotch","shape":"cylinder","pos":[0.0,0.0037,0.04],"rot":[90.0,0.0,0.0],"size":[0.008,0.6,0.008],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cylinder","pos":[-0.18,0.0037,-0.46],"rot":[90.0,0.0,0.0],"size":[0.008,0.28,0.008],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cylinder","pos":[0.18,0.0037,-0.46],"rot":[90.0,0.0,0.0],"size":[0.008,0.28,0.008],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"RivetTop","shape":"sphere","pos":[0.0,0.0187,0.54],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBottom","shape":"sphere","pos":[0.0,0.0187,-0.46],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":1.0}
+]}

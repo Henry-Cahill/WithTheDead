@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_Groin", "baseHeight": 0.12, "name": "Bandage Groin", "model": "gpt-oss:120b", "notes": "Rolled bandage pad for groin: flat rectangular cloth 0.60 m long × 0.12 m wide × 0.015 m thick, lying on its side (long axis along X) with a small rolled edge at the +X end and a thin label stripe across the top.", "score": 6, "parts": [
+  {"name":"Pad","shape":"cube","pos":[0.1387,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEdge","shape":"cylinder","pos":[0.4487,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelStripe","shape":"cube","pos":[-0.0613,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.11],"color":[0.5,0.45,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLine","shape":"cube","pos":[0.0387,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.12],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[-0.1613,-0.005,0.06],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.004],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimOpp","shape":"cube","pos":[-0.1613,-0.005,-0.06],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.004],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

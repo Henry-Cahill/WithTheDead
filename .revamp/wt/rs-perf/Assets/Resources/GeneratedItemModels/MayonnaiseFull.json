@@ -1,0 +1,10 @@
+{"version": 1, "id": "MayonnaiseFull", "baseHeight": 0.1623, "name": "Mayonnaise Full", "model": "gpt-oss:120b", "notes": "Upright mayonnaise squeeze bottle ~0.12 m diameter × 0.19 m tall: soft yellow‑tinted body, white plastic pump cap with spout, thin label band and a raised lip at the opening.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0123,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.18,0.12],"color":[0.75,0.68,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"CapBase","shape":"cylinder","pos":[0.0,0.0777,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.02,0.13],"color":[0.95,0.95,0.96],"smooth":0.4,"metal":0.0},
+  {"name":"Spout","shape":"cylinder","pos":[0.0,0.0897,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.95,0.95,0.96],"smooth":0.4,"metal":0.0},
+  {"name":"CapRim","shape":"cylinder","pos":[0.0,0.0927,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.008,0.14],"color":[0.9,0.9,0.92],"smooth":0.45,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,0.0127,0.0],"rot":[0.0,0.0,0.0],"size":[0.118,0.012,0.118],"color":[0.6,0.55,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.004,0.122],"color":[0.4,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,0.0067,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.004,0.122],"color":[0.4,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Lip","shape":"cylinder","pos":[0.0,0.0827,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.006,0.122],"color":[0.75,0.68,0.45],"smooth":0.25,"metal":0.0}
+]}

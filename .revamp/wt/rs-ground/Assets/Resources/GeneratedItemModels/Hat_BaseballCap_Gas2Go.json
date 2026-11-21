@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_BaseballCap_Gas2Go", "baseHeight": 0.14, "name": "Hat Baseball Cap Gas2 Go", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out flat (≈0.28 m brim diameter, 0.18 m crown width, 0.06 m crown height). Main fabric tint 0.55 0.5 0.6 with cloth smoothness; metal button, darker stitching and logo patch.", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.018,0.26],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.06,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.01,0.09],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.02],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.09,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.06,0.18],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.09,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.06,0.18],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.03,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonAdjust","shape":"cylinder","pos":[0.0,-0.03,-0.08],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"StrapBack","shape":"cube","pos":[0.0,-0.025,-0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBand","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.004,0.19],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopRib","shape":"cube","pos":[0.0,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0}
+]}

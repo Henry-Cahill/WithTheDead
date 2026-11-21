@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCapKY_Red", "baseHeight": 0.1263, "name": "Hat Baseball Cap KY Red", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out like a product photo (≈0.30 m wide × 0.22 m deep). Main crown dome, low‑profile brim plate, top button, side/front/back seam strips, small red logo patch and a decorative stitching line.", "score": 6, "parts": [
+  {"name":"BrimPlate","shape":"cube","pos":[0.0,-0.0622,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"sphere","pos":[0.0,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.12,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopDome","shape":"sphere","pos":[0.0,0.0237,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.08,0.15],"color":[0.62,0.57,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"cylinder","pos":[0.0,0.0638,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.7,0.65,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanelSeam","shape":"cube","pos":[0.0,0.0038,0.09],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.002],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,0.0038,-0.09],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.002],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.11,0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.08,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.11,0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.08,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[-0.07,0.0038,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.03],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineFront","shape":"cube","pos":[0.0,0.0057,0.09],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.002],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0}
+]}

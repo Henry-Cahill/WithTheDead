@@ -1,0 +1,13 @@
+{"version": 1, "id": "TrophyBronze", "baseHeight": 0.179, "name": "Trophy Bronze", "model": "gpt-oss:120b", "notes": "Bronze trophy ~0.30 m tall, 0.12 m base diameter: squat cylindrical base, short column, shallow cup‑shaped top and a front plaque. Chunky silhouette for easy read‑out from above.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.104,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"BaseEdge","shape":"cylinder","pos":[0.0,-0.088,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.004,0.13],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0},
+  {"name":"Column","shape":"cylinder","pos":[0.0,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"ColumnTop","shape":"cylinder","pos":[0.0,0.066,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.008,0.045],"color":[0.55,0.53,0.46],"smooth":0.3,"metal":1.0},
+  {"name":"CupBody","shape":"cylinder","pos":[0.0,0.096,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.1],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"CupRim","shape":"cylinder","pos":[0.0,0.116,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.006,0.108],"color":[0.55,0.53,0.46],"smooth":0.3,"metal":1.0},
+  {"name":"Plaque","shape":"cube","pos":[0.0,0.011,0.025],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.005],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"PlaqueInset","shape":"cube","pos":[0.0,0.013,0.028],"rot":[0.0,0.0,0.0],"size":[0.072,0.011,0.002],"color":[0.3,0.28,0.24],"smooth":0.1,"metal":0.0},
+  {"name":"LeftScroll","shape":"cube","pos":[-0.02,0.046,0.03],"rot":[0.0,15.0,0.0],"size":[0.015,0.04,0.005],"color":[0.55,0.53,0.46],"smooth":0.3,"metal":1.0},
+  {"name":"RightScroll","shape":"cube","pos":[0.02,0.046,0.03],"rot":[0.0,-15.0,0.0],"size":[0.015,0.04,0.005],"color":[0.55,0.53,0.46],"smooth":0.3,"metal":1.0},
+  {"name":"BaseShadow","shape":"cylinder","pos":[0.0,-0.118,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.14],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

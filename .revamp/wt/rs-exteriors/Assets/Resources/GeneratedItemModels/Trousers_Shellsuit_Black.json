@@ -1,0 +1,13 @@
+{"version": 1, "id": "Trousers_Shellsuit_Black", "baseHeight": 0.075, "name": "Trousers Shellsuit Black", "model": "gpt-oss:120b", "notes": "Flat‑lay trousers (Shellsuit) approx 0.9 m long x 0.45 m wide, 2–3 cm thick. Two leg panels spread outward, waistband strip across the top, side pockets, outer seam lines, belt loops and bottom hems.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.09,-0.0025,-0.025],"rot":[0.0,15.0,0.0],"size":[0.18,0.025,0.85],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.09,-0.0025,-0.025],"rot":[0.0,-15.0,0.0],"size":[0.18,0.025,0.85],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0,0.4],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.21,-0.0025,0.2],"rot":[0.0,15.0,0.0],"size":[0.06,0.015,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.21,-0.0025,0.2],"rot":[0.0,-15.0,0.0],"size":[0.06,0.015,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamOuterL","shape":"cylinder","pos":[-0.18,-0.0025,-0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.85,0.006],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamOuterR","shape":"cylinder","pos":[0.18,-0.0025,-0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.85,0.006],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.18,0.01,0.35],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.18,0.01,0.35],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cylinder","pos":[-0.18,-0.0025,-0.45],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cylinder","pos":[0.18,-0.0025,-0.45],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

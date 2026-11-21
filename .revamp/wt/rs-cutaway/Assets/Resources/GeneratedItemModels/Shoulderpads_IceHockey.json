@@ -1,0 +1,17 @@
+{"version": 1, "id": "Shoulderpads_IceHockey", "baseHeight": 0.185, "name": "Shoulderpads Ice Hockey", "model": "gpt-oss:120b", "notes": "Ice‑hockey shoulder pads (tint 0.6,0.58,0.5) – two padded shells lying side‑by‑side on the floor, each about 0.25 m wide × 0.15 m deep × 0.05 m thick with a hard plastic outer shell, foam interior and dark nylon straps.", "score": 6, "parts": [
+  {"name":"PadL_Shell","shape":"cube","pos":[-0.14,0.0,-0.0238],"rot":[0.0,0.0,0.0],"size":[0.25,0.05,0.15],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"PadL_Foam","shape":"cube","pos":[-0.14,0.0,-0.0238],"rot":[0.0,0.0,0.0],"size":[0.22,0.045,0.13],"color":[0.8,0.78,0.7],"smooth":0.1,"metal":0.0},
+  {"name":"PadL_StrapsTop","shape":"cylinder","pos":[-0.14,0.028,-0.0238],"rot":[0.0,0.0,90.0],"size":[0.01,0.26,0.01],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"PadL_StrapsFront","shape":"cylinder","pos":[-0.14,0.015,0.0463],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"PadR_Shell","shape":"cube","pos":[0.14,0.0,-0.0238],"rot":[0.0,0.0,0.0],"size":[0.25,0.05,0.15],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"PadR_Foam","shape":"cube","pos":[0.14,0.0,-0.0238],"rot":[0.0,0.0,0.0],"size":[0.22,0.045,0.13],"color":[0.8,0.78,0.7],"smooth":0.1,"metal":0.0},
+  {"name":"PadR_StrapsTop","shape":"cylinder","pos":[0.14,0.028,-0.0238],"rot":[0.0,0.0,90.0],"size":[0.01,0.26,0.01],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"PadR_StrapsFront","shape":"cylinder","pos":[0.14,0.015,0.0463],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Center_Velcro","shape":"cube","pos":[0.0,0.005,0.0362],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.02],"color":[0.35,0.33,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Front_RoundL","shape":"cylinder","pos":[-0.14,0.0,0.0512],"rot":[90.0,0.0,0.0],"size":[0.25,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Front_RoundR","shape":"cylinder","pos":[0.14,0.0,0.0512],"rot":[90.0,0.0,0.0],"size":[0.25,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Side_RidgeL","shape":"cylinder","pos":[-0.265,0.0,-0.0238],"rot":[90.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Side_RidgeR","shape":"cylinder","pos":[0.265,0.0,-0.0238],"rot":[90.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Back_TrimL","shape":"cylinder","pos":[-0.14,0.0,-0.0988],"rot":[90.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Back_TrimR","shape":"cylinder","pos":[0.14,0.0,-0.0988],"rot":[90.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0}
+]}

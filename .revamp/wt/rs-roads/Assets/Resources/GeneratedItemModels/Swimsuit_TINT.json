@@ -1,0 +1,11 @@
+{"version": 1, "id": "Swimsuit_TINT", "baseHeight": 0.1, "name": "Swimsuit TINT", "model": "gpt-oss:120b", "notes": "Flat one‑piece swimsuit about 0.58 m tall × 0.45 m wide × 0.025 m thick. Main body panel with side panels, front & back shoulder straps, side hip straps, a small tie loop at the front and a thin hem band.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftPanel","shape":"cube","pos":[-0.215,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightPanel","shape":"cube","pos":[0.215,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,0.02,0.12],"rot":[0.0,0.0,90.0],"size":[0.02,0.45,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.02,-0.12],"rot":[0.0,0.0,90.0],"size":[0.02,0.45,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HipStrapL","shape":"cylinder","pos":[-0.215,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HipStrapR","shape":"cylinder","pos":[0.215,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[0.0,-0.0025,0.25],"rot":[0.0,0.0,90.0],"size":[0.015,0.03,0.015],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.005,0.58],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

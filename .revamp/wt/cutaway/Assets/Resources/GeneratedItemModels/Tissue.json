@@ -1,0 +1,11 @@
+{"version": 1, "id": "Tissue", "baseHeight": 0.0654, "name": "Tissue", "model": "gpt-oss:120b", "notes": "A single folded tissue sheet about 0.20 m × 0.12 m lying flat (thickness ~2 mm). Main thin base plate plus a few raised folds, a torn edge and several small crumpled bits give the recognizable silhouette.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0016,-0.002,-0.0107],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTear","shape":"cylinder","pos":[0.0016,-0.0,-0.0697],"rot":[0.0,0.0,90.0],"size":[0.003,0.2,0.003],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CenterRidge","shape":"cylinder","pos":[0.0016,0.001,-0.0107],"rot":[0.0,0.0,90.0],"size":[0.0025,0.2,0.0025],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLineZ","shape":"cylinder","pos":[0.0016,0.001,0.0193],"rot":[90.0,0.0,0.0],"size":[0.0025,0.12,0.0025],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrumpleA","shape":"cube","pos":[-0.0384,-0.0,0.0093],"rot":[10.0,5.0,0.0],"size":[0.06,0.004,0.04],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrumpleB","shape":"cube","pos":[0.0316,-0.0,-0.0307],"rot":[-8.0,12.0,0.0],"size":[0.05,0.004,0.035],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrumpleC","shape":"cube","pos":[0.0716,-0.0,0.0293],"rot":[5.0,-10.0,0.0],"size":[0.045,0.004,0.03],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFold","shape":"cube","pos":[-0.0884,-0.0,-0.0657],"rot":[0.0,15.0,0.0],"size":[0.03,0.004,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TearFlap","shape":"cube","pos":[0.0916,-0.0,-0.0687],"rot":[0.0,-12.0,0.0],"size":[0.025,0.004,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

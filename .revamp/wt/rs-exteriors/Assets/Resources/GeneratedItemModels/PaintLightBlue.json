@@ -1,0 +1,8 @@
+{"version": 1, "id": "PaintLightBlue", "baseHeight": 0.22, "name": "Paint Light Blue", "model": "gpt-oss:120b", "notes": "Paint bucket (5 kg) ~0.30 m tall × 0.15 m diameter, standing upright on the floor: metal body with a light‑blue paint label and a thin metal lid rim.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.3,0.15],"color":[0.62,0.62,0.68],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.15,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.02,0.16],"color":[0.7,0.71,0.75],"smooth":0.55,"metal":0.9},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.136,0.0],"rot":[0.0,0.0,0.0],"size":[0.165,0.008,0.165],"color":[0.58,0.58,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.148,0.284,0.148],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.132,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.152],"color":[0.45,0.44,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.152,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.152],"color":[0.45,0.44,0.4],"smooth":0.12,"metal":0.0}
+]}

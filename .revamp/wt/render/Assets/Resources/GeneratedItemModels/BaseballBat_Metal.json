@@ -1,0 +1,8 @@
+{"version": 1, "id": "BaseballBat_Metal", "baseHeight": 0.1005, "name": "Baseball Bat Metal", "model": "gpt-oss:120b", "notes": "Metal baseball bat ~0.85 m long, lying on its side along X; thin metal shaft (diam 0.05 m) into a thicker barrel (diam 0.07 m) at the +X end, rubber grip near the handle and a small metal knob at the –X end.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cylinder","pos":[-0.275,-0.0195,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.1,0.1,0.1],"smooth":0.25,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[-0.125,-0.0145,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.6,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.3,-0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.25,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Knob","shape":"cylinder","pos":[-0.4,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.05,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Seam","shape":"cylinder","pos":[0.3,-0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.072,0.003,0.072],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.22,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.06],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0}
+]}

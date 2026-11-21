@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_ImprovisedGasMask", "baseHeight": 0.11, "name": "Hat Improvised Gas Mask", "model": "gpt-oss:120b", "notes": "Improvised gas‑mask hat laid flat: low‑cylinder crown (0.25 m dia × 0.06 m high) with a thin brim, front filter canister (0.10 m dia × 0.08 m high) and grill, two side straps with buckles, small valve sphere on the left side. Overall spread ≈ 0.45 m × 0.30 m, 3 cm thick.", "score": 6, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.06,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CanisterBody","shape":"cylinder","pos":[0.0,-0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.1,0.08,0.1],"color":[0.3,0.32,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"CanisterTopCap","shape":"cylinder","pos":[0.0,0.04,0.07],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.1],"color":[0.28,0.3,0.33],"smooth":0.55,"metal":1.0},
+  {"name":"CanisterGrill","shape":"cylinder","pos":[0.0,-0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.25,0.26,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"StrapL","shape":"cube","pos":[-0.15,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cube","pos":[0.15,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.3,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.2,0.18,0.22],"smooth":0.55,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.3,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.2,0.18,0.22],"smooth":0.55,"metal":1.0},
+  {"name":"Valve","shape":"sphere","pos":[-0.05,-0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.25,0.24,0.26],"smooth":0.55,"metal":1.0},
+  {"name":"Lens","shape":"sphere","pos":[0.0,-0.01,0.13],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.15,0.18,0.22],"smooth":0.65,"metal":0.0}
+]}

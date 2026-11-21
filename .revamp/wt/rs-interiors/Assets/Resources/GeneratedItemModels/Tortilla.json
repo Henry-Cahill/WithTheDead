@@ -1,0 +1,12 @@
+{"version": 1, "id": "Tortilla", "baseHeight": 0.066, "name": "Tortilla", "model": "gpt-oss:120b", "notes": "Loose tortilla lying flat on the floor (≈0.20 m diameter, 5 mm thick). Main disc, a slightly darker edge rim and eight small toasted spots give shape and texture while staying readable from above.", "score": 6, "parts": [
+  {"name":"TortillaBase","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.2],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.205,0.002,0.205],"color":[0.6,0.5,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[-0.045,0.0,-0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[0.03,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[-0.06,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Spot4","shape":"sphere","pos":[0.05,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Spot5","shape":"sphere","pos":[-0.02,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Spot6","shape":"sphere","pos":[0.04,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Spot7","shape":"sphere","pos":[-0.055,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Spot8","shape":"sphere","pos":[0.06,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.35,0.2],"smooth":0.2,"metal":0.0}
+]}

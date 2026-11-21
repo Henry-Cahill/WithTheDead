@@ -1,0 +1,12 @@
+{"version": 1, "id": "CannedPotatoOpen", "baseHeight": 0.2185, "name": "Canned Potato Open", "model": "gpt-oss:120b", "notes": "Open canned potatoes lying on its side (cylinder axis along X). Metal body with a popped‑up lid, simple label, and three potato pieces visible inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.007,-0.0515,-0.017],"rot":[0.0,0.0,90.0],"size":[0.2,0.29,0.2],"color":[0.8,0.8,0.78],"smooth":0.55,"metal":0.9},
+  {"name":"Rim","shape":"cylinder","pos":[0.138,-0.0515,-0.017],"rot":[0.0,0.0,90.0],"size":[0.212,0.012,0.212],"color":[0.8,0.8,0.78],"smooth":0.55,"metal":0.9},
+  {"name":"LidPiece","shape":"cylinder","pos":[0.148,0.0685,0.033],"rot":[0.0,0.0,90.0],"size":[0.18,0.008,0.18],"color":[0.7,0.71,0.74],"smooth":0.45,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[-0.007,-0.0495,-0.017],"rot":[0.0,0.0,90.0],"size":[0.19,0.018,0.19],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[-0.007,-0.0365,-0.017],"rot":[0.0,0.0,90.0],"size":[0.192,0.004,0.192],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[-0.007,-0.0625,-0.017],"rot":[0.0,0.0,90.0],"size":[0.192,0.004,0.192],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0},
+  {"name":"Potato1","shape":"sphere","pos":[-0.047,-0.0515,0.013],"rot":[0.0,0.0,0.0],"size":[0.08,0.07,0.09],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Potato2","shape":"sphere","pos":[0.013,-0.0415,-0.057],"rot":[0.0,0.0,0.0],"size":[0.07,0.06,0.08],"color":[0.58,0.48,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"Potato3","shape":"sphere","pos":[0.073,-0.0615,0.003],"rot":[0.0,0.0,0.0],"size":[0.06,0.07,0.05],"color":[0.52,0.42,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"PotatoChunk","shape":"cube","pos":[0.113,-0.0715,-0.047],"rot":[15.0,30.0,0.0],"size":[0.04,0.02,0.03],"color":[0.55,0.44,0.31],"smooth":0.05,"metal":0.0}
+]}

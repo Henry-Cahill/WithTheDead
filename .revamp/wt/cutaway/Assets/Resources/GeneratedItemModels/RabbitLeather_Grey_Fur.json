@@ -1,0 +1,12 @@
+{"version": 1, "id": "RabbitLeather_Grey_Fur", "baseHeight": 0.0788, "name": "Rabbit Leather Grey Fur", "model": "gpt-oss:120b", "notes": "Flat rabbit‑leather fur piece ~0.25 m × 0.15 m, about 1.5 cm thick, lying flat with a rolled edge on the left side and a few loose tufts of fur for visual texture.", "score": 7, "parts": [
+  {"name":"Sheet","shape":"cube","pos":[0.0018,-0.0112,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEdge","shape":"cylinder","pos":[-0.1157,0.0037,-0.0003],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FurTuft1","shape":"sphere","pos":[-0.0783,-0.0008,0.0398],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurTuft2","shape":"sphere","pos":[-0.0182,-0.0008,-0.0452],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurTuft3","shape":"sphere","pos":[0.0617,-0.0008,0.0297],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurTuft4","shape":"sphere","pos":[0.1018,-0.0008,-0.0203],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurTuft5","shape":"sphere","pos":[-0.0382,-0.0008,0.0698],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurTuft6","shape":"sphere","pos":[-0.0882,-0.0008,-0.0602],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurTuft7","shape":"sphere","pos":[0.1217,-0.0008,0.0597],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurTuft8","shape":"sphere","pos":[0.0218,-0.0008,-0.0703],"rot":[0.0,0.0,0.0],"size":[0.019,0.019,0.019],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

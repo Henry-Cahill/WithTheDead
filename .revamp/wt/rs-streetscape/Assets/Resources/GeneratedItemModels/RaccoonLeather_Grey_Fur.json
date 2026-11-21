@@ -1,0 +1,10 @@
+{"version": 1, "id": "RaccoonLeather_Grey_Fur", "baseHeight": 0.08, "name": "Raccoon Leather Grey Fur", "model": "gpt-oss:120b", "notes": "Flat raccoon leather/fur sheet about 30 cm × 20 cm and 2 cm thick, lying on the floor. Main rectangle with a slightly darker edge rim and a few fluffy tufts to hint at the fur texture; thin raised lines suggest the natural grain/folds of the hide.", "score": 7, "parts": [
+  {"name":"FurBase","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.312,0.022,0.212],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"TuftA","shape":"sphere","pos":[0.08,0.005,-0.06],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.04],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"TuftB","shape":"sphere","pos":[-0.07,0.005,0.04],"rot":[0.0,0.0,0.0],"size":[0.05,0.028,0.035],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"TuftC","shape":"sphere","pos":[0.12,0.005,0.07],"rot":[0.0,0.0,0.0],"size":[0.045,0.022,0.03],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"TuftD","shape":"sphere","pos":[-0.1,0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.055,0.027,0.04],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"GrainStripX","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GrainStripZ","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.2],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Lantern_Hurricane_Copper", "baseHeight": 0.1775, "name": "Lantern Hurricane Copper", "model": "gpt-oss:120b", "notes": "Hurricane lantern ~0.12 m diameter × 0.18 m tall, copper‑tinted metal body with four thin glass panes, a raised copper lid ring and glass top, small horizontal handle on the lid, and a tiny hinge at the back.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.0295,-0.0445],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BodyShell","shape":"cylinder","pos":[0.0,0.0405,-0.0445],"rot":[0.0,0.0,0.0],"size":[0.12,0.1,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"PanelFront","shape":"cube","pos":[0.0,0.0405,0.0095],"rot":[0.0,0.0,0.0],"size":[0.108,0.09,0.002],"color":[0.9,0.95,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"PanelBack","shape":"cube","pos":[0.0,0.0405,-0.0985],"rot":[0.0,0.0,0.0],"size":[0.108,0.09,0.002],"color":[0.9,0.95,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"PanelLeft","shape":"cube","pos":[0.054,0.0405,-0.0445],"rot":[0.0,90.0,0.0],"size":[0.108,0.09,0.002],"color":[0.9,0.95,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"PanelRight","shape":"cube","pos":[-0.054,0.0405,-0.0445],"rot":[0.0,-90.0,0.0],"size":[0.108,0.09,0.002],"color":[0.9,0.95,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"LidRing","shape":"cylinder","pos":[0.0,0.0965,-0.0445],"rot":[0.0,0.0,0.0],"size":[0.13,0.012,0.13],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LidGlass","shape":"cylinder","pos":[0.0,0.0945,-0.0445],"rot":[0.0,0.0,0.0],"size":[0.115,0.008,0.115],"color":[0.9,0.95,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.1025,-0.0445],"rot":[0.0,0.0,90.0],"size":[0.03,0.04,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Hinge","shape":"cylinder","pos":[0.0,-0.1075,0.1055],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

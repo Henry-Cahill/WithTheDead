@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shoes_CowboyBoots_SnakeSkin", "baseHeight": 0.125, "name": "Shoes Cowboy Boots Snake Skin", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a pair of cowboy boots (≈0.30 m long × 0.12 m wide per boot). Each boot is built from a sole, an upper shaft, a rear heel block, a front toe‑cap, edge stitching and two short lace cylinders at the opening. All parts now touch or overlap neighbouring parts – the left and right boots meet exactly at the centre (Z = 0) with no gap.", "score": 6, "parts": [
+  {"name":"BootLeftSole","shape":"cube","pos":[0.0,-0.055,-0.06],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BootRightSole","shape":"cube","pos":[0.0,-0.055,0.06],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BootLeftUpper","shape":"cube","pos":[0.0,-0.005,-0.06],"rot":[0.0,0.0,0.0],"size":[0.26,0.1,0.1],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BootRightUpper","shape":"cube","pos":[0.0,-0.005,0.06],"rot":[0.0,0.0,0.0],"size":[0.26,0.1,0.1],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BootLeftHeel","shape":"cube","pos":[-0.11,-0.035,-0.06],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BootRightHeel","shape":"cube","pos":[-0.11,-0.035,0.06],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BootLeftToeCap","shape":"cube","pos":[0.12,-0.035,-0.06],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.1],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BootRightToeCap","shape":"cube","pos":[0.12,-0.035,0.06],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.1],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BootLeftStitch","shape":"cylinder","pos":[0.0,-0.005,-0.06],"rot":[0.0,0.0,90.0],"size":[0.006,0.28,0.006],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BootRightStitch","shape":"cylinder","pos":[0.0,-0.005,0.06],"rot":[0.0,0.0,90.0],"size":[0.006,0.28,0.006],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BootLeftLace1","shape":"cylinder","pos":[0.11,0.055,-0.09],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.45,0.4,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"BootLeftLace2","shape":"cylinder","pos":[0.11,0.055,-0.07],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.45,0.4,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"BootRightLace1","shape":"cylinder","pos":[0.11,0.055,0.07],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.45,0.4,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"BootRightLace2","shape":"cylinder","pos":[0.11,0.055,0.09],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.45,0.4,0.45],"smooth":0.08,"metal":0.0}
+]}

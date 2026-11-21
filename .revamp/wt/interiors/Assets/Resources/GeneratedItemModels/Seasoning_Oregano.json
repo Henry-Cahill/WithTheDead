@@ -1,0 +1,10 @@
+{"version": 1, "id": "Seasoning_Oregano", "baseHeight": 0.1045, "name": "Seasoning Oregano", "model": "gpt-oss:120b", "notes": "Upright oregano spice tin ~0.06 m wide × 0.09 m tall: brushed‑metal body, recessed metal lid, paper label in herb tint with dark trim, and a small pile of dried oregano inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.85},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0395,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.008,0.062],"color":[0.7,0.7,0.72],"smooth":0.55,"metal":0.85},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.042],"color":[0.45,0.33,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.042],"color":[0.45,0.33,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"OreganoPile","shape":"sphere","pos":[0.0,-0.0245,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.55,0.68,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.0435,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.002,0.064],"color":[0.7,0.7,0.72],"smooth":0.55,"metal":0.85},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.002,0.064],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.85}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Trousers_Hide", "baseHeight": 0.075, "name": "Trousers Hide", "model": "gpt-oss:120b", "notes": "Flat hide trousers ~0.55 m wide × 0.90 m long, 0.03 m thick when laid flat. Main silhouette formed by two leg panels and a waistband; extra detail includes an inner seam, front pockets and belt‑loop cylinders.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.05],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.12,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.9],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.12,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.9],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"InnerSeam","shape":"cube","pos":[0.0,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.9],"color":[0.45,0.4,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.12,0.0075,0.175],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.12],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.12,0.0075,0.175],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.12],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoopLFront","shape":"cylinder","pos":[-0.23,0.0,0.45],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoopLBack","shape":"cylinder","pos":[-0.23,0.0,0.4],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoopRFront","shape":"cylinder","pos":[0.23,0.0,0.45],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoopRBack","shape":"cylinder","pos":[0.23,0.0,0.4],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0}
+]}

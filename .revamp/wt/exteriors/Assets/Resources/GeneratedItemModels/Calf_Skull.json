@@ -1,0 +1,14 @@
+{"version": 1, "id": "Calf_Skull", "baseHeight": 0.125, "name": "Calf Skull", "model": "gpt-oss:120b", "notes": "Calf skull ~0.18 m long × 0.13 m tall × 0.11 m wide, lying on its side (long axis +X). Main bone colour is the given beige tint (0.6 0.58 0.5). Darker recessed cylinders mark the two eye‑sockets, nasal passage and horn bases; a separate lower‑jaw block with a thin teeth strip gives a clear animal‑skull silhouette.", "score": 6, "parts": [
+  {"name":"Cranium","shape":"sphere","pos":[0.0087,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.13,0.11],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EyeSocketL","shape":"cylinder","pos":[0.0387,0.025,-0.045],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.38,0.36,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"EyeSocketR","shape":"cylinder","pos":[0.0387,0.025,0.045],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.38,0.36,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"NasalCavity","shape":"cylinder","pos":[0.0887,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.045,0.018],"color":[0.38,0.36,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"HornBaseL","shape":"cylinder","pos":[0.0788,0.04,-0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HornBaseR","shape":"cylinder","pos":[0.0788,0.04,0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LowerJaw","shape":"cube","pos":[-0.0513,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"TeethUpper","shape":"cube","pos":[0.0687,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.025],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"TeethLower","shape":"cube","pos":[-0.0313,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.025],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SagittalRidge","shape":"cube","pos":[0.0087,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CheekL","shape":"cube","pos":[0.0087,0.01,-0.055],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CheekR","shape":"cube","pos":[0.0087,0.01,0.055],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

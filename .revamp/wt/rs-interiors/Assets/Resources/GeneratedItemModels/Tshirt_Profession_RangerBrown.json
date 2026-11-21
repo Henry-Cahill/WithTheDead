@@ -1,0 +1,14 @@
+{"version": 1, "id": "Tshirt_Profession_RangerBrown", "baseHeight": 0.0815, "name": "Tshirt Profession Ranger Brown", "model": "gpt-oss:120b", "notes": "Flat Ranger‑brown T‑shirt about 0.58 m long x 0.72 m wide (including sleeves) and 3 cm thick: torso panel, shoulder spread, two angled short sleeves with cuffs, ribbed collar around a neck hole, bottom hem, small chest pocket and a couple of stitching lines for detail.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.025,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.03,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderPanel","shape":"cube","pos":[0.175,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.032,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.123,-0.0035,0.3],"rot":[0.0,-20.0,0.0],"size":[0.16,0.028,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.123,-0.0035,-0.3],"rot":[0.0,20.0,0.0],"size":[0.16,0.028,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.081,-0.0025,0.41],"rot":[0.0,-20.0,0.0],"size":[0.165,0.03,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.081,-0.0025,-0.41],"rot":[0.0,20.0,0.0],"size":[0.165,0.03,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.23,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.035,0.16],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.23,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.12],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.295,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.38],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ChestPocket","shape":"cube","pos":[0.095,-0.0005,0.22],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.02],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[-0.025,0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.004,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[-0.025,-0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.004,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

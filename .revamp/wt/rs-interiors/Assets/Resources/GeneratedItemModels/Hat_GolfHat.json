@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_GolfHat", "baseHeight": 0.0975, "name": "Hat Golf Hat", "model": "gpt-oss:120b", "notes": "Flat‑lay golf hat ~0.22 m brim width × 0.12 m crown height, 3 cm thick overall. Main cloth body (tint 0.55,0.5,0.6) with a low dome, dark stitched rim, thin rectangular brim strips and a small front label patch.", "score": 7, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RimSeam","shape":"cylinder","pos":[0.0,-0.023,0.0],"rot":[0.0,0.0,0.0],"size":[0.226,0.004,0.226],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.0335,0.12],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimBack","shape":"cube","pos":[0.0,-0.0335,-0.12],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimLeft","shape":"cube","pos":[-0.12,-0.0335,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimRight","shape":"cube","pos":[0.12,-0.0335,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,-0.0255,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.9,0.9,0.9],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,-0.024,0.05],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.022],"color":[0.3,0.28,0.35],"smooth":0.08,"metal":0.0}
+]}

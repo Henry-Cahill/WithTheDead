@@ -1,0 +1,9 @@
+{"version": 1, "id": "IronBlock", "baseHeight": 0.098, "name": "Iron Block", "model": "gpt-oss:120b", "notes": "Solid iron block about 6 cm on a side (≈0.064 m³ → ~2 kg). Lying flat on the floor, main cube with a few rivet‑like cylinders at the corners to give a readable silhouette and hint of metal texture.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.0004,-0.006,-0.0004],"rot":[0.0,0.0,0.0],"size":[0.064,0.064,0.064],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[0.0276,0.032,0.0276],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.48,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[-0.0284,0.032,0.0276],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.48,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.0276,0.032,-0.0284],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.48,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[-0.0284,0.032,-0.0284],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.48,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"EdgeStripX","shape":"cube","pos":[-0.0004,-0.006,0.0314],"rot":[0.0,0.0,0.0],"size":[0.064,0.004,0.002],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"EdgeStripZ","shape":"cube","pos":[0.0314,-0.006,-0.0004],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.064],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0}
+]}

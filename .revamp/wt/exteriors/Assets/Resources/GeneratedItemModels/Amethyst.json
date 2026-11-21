@@ -1,0 +1,9 @@
+{"version": 1, "id": "Amethyst", "baseHeight": 0.08, "name": "Amethyst", "model": "gpt-oss:120b", "notes": "Amethyst crystal about 0.03 m long × 0.04 m tall, faceted and irregular. Main body is an ellipsoid with a few small spikes and rounded tips to suggest the natural crystal shape. All parts rest on y=0 and overlap for a solid silhouette.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"TipL","shape":"sphere","pos":[-0.02,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"TipR","shape":"sphere","pos":[0.02,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"FacetFront","shape":"cube","pos":[0.015,0.002,0.012],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.012],"color":[0.58,0.55,0.48],"smooth":0.5,"metal":0.0},
+  {"name":"FacetBack","shape":"cube","pos":[-0.015,0.002,-0.012],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.012],"color":[0.58,0.55,0.48],"smooth":0.5,"metal":0.0},
+  {"name":"SideSpikeL","shape":"cube","pos":[-0.01,0.005,0.015],"rot":[0.0,20.0,0.0],"size":[0.004,0.006,0.012],"color":[0.57,0.54,0.47],"smooth":0.5,"metal":0.0},
+  {"name":"SideSpikeR","shape":"cube","pos":[0.01,0.005,-0.015],"rot":[0.0,-20.0,0.0],"size":[0.004,0.006,0.012],"color":[0.57,0.54,0.47],"smooth":0.5,"metal":0.0}
+]}

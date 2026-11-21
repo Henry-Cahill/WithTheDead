@@ -1,0 +1,13 @@
+{"version": 1, "id": "Pillow_Crafted", "baseHeight": 0.123, "name": "Pillow Crafted", "model": "gpt-oss:120b", "notes": "Crafted pillow ~0.45 m long × 0.30 m wide × 0.10 m thick (y‑height). Main soft body with darker stitched edge strips, a small decorative patch, a folded corner and rounded corners for visual cue.", "score": 7, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[-0.0003,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.1,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[-0.0003,0.043,0.14],"rot":[0.0,0.0,0.0],"size":[0.45,0.012,0.02],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[-0.0003,0.043,-0.14],"rot":[0.0,0.0,0.0],"size":[0.45,0.012,0.02],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.2153,0.043,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.3],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.2147,0.043,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.3],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"DecorativePatch","shape":"cube","pos":[-0.1503,0.043,-0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.08],"color":[0.7,0.68,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"FoldCorner","shape":"cube","pos":[0.1947,0.043,0.12],"rot":[0.0,0.0,10.0],"size":[0.06,0.012,0.06],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"CornerSphereFL","shape":"sphere","pos":[-0.2053,0.043,0.13],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerSphereFR","shape":"sphere","pos":[0.2047,0.043,0.13],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerSphereBL","shape":"sphere","pos":[-0.2053,0.043,-0.13],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerSphereBR","shape":"sphere","pos":[0.2047,0.043,-0.13],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

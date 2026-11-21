@@ -1,0 +1,13 @@
+{"version": 1, "id": "PonchoGarbageBag", "baseHeight": 0.075, "name": "Poncho Garbage Bag", "model": "gpt-oss:120b", "notes": "Flat poncho made from a translucent garbage‑bag material (tint 0.55,0.5,0.6). Approx. 0.9 m wide × 1.2 m tall, 3 cm thick, with side sleeves, top seam, bottom hem, side seams, a reinforced neck opening and tiny draw‑string loops.", "score": 6, "parts": [
+  {"name":"BodyPanel","shape":"cube","pos":[0.0,0.0,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,1.2],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.565,0.0,0.2975],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.565,0.0,0.2975],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.0,0.0,0.5375],"rot":[0.0,0.0,0.0],"size":[0.9,0.005,0.02],"color":[0.35,0.34,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BottomSeam","shape":"cube","pos":[0.0,0.0,-0.6425],"rot":[0.0,0.0,0.0],"size":[0.9,0.005,0.02],"color":[0.35,0.34,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.44,0.0,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,1.2],"color":[0.35,0.34,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.44,0.0,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,1.2],"color":[0.35,0.34,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"NeckRing","shape":"cylinder","pos":[0.0,0.0025,0.4975],"rot":[0.0,0.0,0.0],"size":[0.32,0.005,0.32],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"DrawLoopL","shape":"cylinder","pos":[-0.08,0.0025,0.4975],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"DrawLoopR","shape":"cylinder","pos":[0.08,0.0025,0.4975],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,0.0,-0.6475],"rot":[0.0,0.0,0.0],"size":[0.9,0.005,0.02],"color":[0.35,0.34,0.38],"smooth":0.1,"metal":0.0}
+]}

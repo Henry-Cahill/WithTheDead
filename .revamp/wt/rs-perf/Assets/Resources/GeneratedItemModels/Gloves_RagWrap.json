@@ -1,0 +1,13 @@
+{"version": 1, "id": "Gloves_RagWrap", "baseHeight": 0.069, "name": "Gloves Rag Wrap", "model": "gpt-oss:120b", "notes": "Flat rag‑wrap gloves spread open (≈ 0.25 m long × 0.16 m wide × 0.018 m thick). Main cloth panels in the item tint, with a darker ragged edge trim and a thin stitched line along the palm‑finger seam.", "score": 6, "parts": [
+  {"name":"PalmPanel","shape":"cube","pos":[-0.001,-0.0015,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerIndex","shape":"cube","pos":[-0.041,-0.0015,0.0375],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerMiddle","shape":"cube","pos":[-0.001,-0.0015,0.0375],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerRing","shape":"cube","pos":[0.039,-0.0015,0.0375],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThumbPanel","shape":"cube","pos":[-0.081,-0.0015,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffBand","shape":"cube","pos":[-0.086,0.0,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.05,0.018,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimTop","shape":"cube","pos":[-0.001,-0.001,0.0745],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.002],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimBottom","shape":"cube","pos":[-0.001,-0.001,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.002],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimLeft","shape":"cube","pos":[-0.121,-0.001,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.004,0.016,0.25],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimRight","shape":"cube","pos":[0.129,-0.001,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.004,0.016,0.25],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cylinder","pos":[-0.001,-0.001,0.0025],"rot":[90.0,0.0,0.0],"size":[0.004,0.26,0.004],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

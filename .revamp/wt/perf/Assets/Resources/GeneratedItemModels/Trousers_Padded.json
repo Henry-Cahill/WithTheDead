@@ -1,0 +1,17 @@
+{"version": 1, "id": "Trousers_Padded", "baseHeight": 0.0825, "name": "Trousers Padded", "model": "gpt-oss:120b", "notes": "Padded trousers laid flat spread like a product photo – two legs separated by a small gap, waistband at the top, thigh and calf panels each with an inner padding layer, front pocket, belt‑loops and stitching details. Overall footprint ≈1.0 m long × 0.60 m wide, overall thickness ≈0.04 m.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.185,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftThigh","shape":"cube","pos":[0.375,-0.0025,0.16],"rot":[0.0,0.0,0.0],"size":[0.5,0.04,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightThigh","shape":"cube","pos":[0.375,-0.0025,-0.16],"rot":[0.0,0.0,0.0],"size":[0.5,0.04,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftCalf","shape":"cube","pos":[-0.125,-0.0025,0.16],"rot":[0.0,0.0,0.0],"size":[0.5,0.04,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightCalf","shape":"cube","pos":[-0.125,-0.0025,-0.16],"rot":[0.0,0.0,0.0],"size":[0.5,0.04,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PadL_Thigh","shape":"cube","pos":[0.375,0.0,0.16],"rot":[0.0,0.0,0.0],"size":[0.5,0.045,0.28],"color":[0.7,0.65,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"PadR_Thigh","shape":"cube","pos":[0.375,0.0,-0.16],"rot":[0.0,0.0,0.0],"size":[0.5,0.045,0.28],"color":[0.7,0.65,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"PadL_Calf","shape":"cube","pos":[-0.125,0.0,0.16],"rot":[0.0,0.0,0.0],"size":[0.5,0.045,0.28],"color":[0.7,0.65,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"PadR_Calf","shape":"cube","pos":[-0.125,0.0,-0.16],"rot":[0.0,0.0,0.0],"size":[0.5,0.045,0.28],"color":[0.7,0.65,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.485,-0.0025,-0.18],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[0.665,-0.0125,0.2],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.665,-0.0125,-0.2],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"StitchL","shape":"cylinder","pos":[0.375,-0.0005,0.3],"rot":[0.0,0.0,90.0],"size":[0.01,0.5,0.01],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StitchR","shape":"cylinder","pos":[0.375,-0.0005,-0.3],"rot":[0.0,0.0,90.0],"size":[0.01,0.5,0.01],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"HemEdge","shape":"cylinder","pos":[-0.375,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.6,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

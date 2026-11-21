@@ -1,0 +1,12 @@
+{"version": 1, "id": "CeramicTeacup", "baseHeight": 0.107, "name": "Ceramic Teacup", "model": "gpt-oss:120b", "notes": "Ceramic teacup lying on its side (≈0.09 m long, 0.09 m outer diameter, 0.006 m wall thickness). Main body is a thin‑walled cylinder with inner cavity, rim lips at both ends, a simple curved handle, a small label decal and a tiny chip to suggest wear.", "score": 6, "parts": [
+  {"name":"OuterBody","shape":"cylinder","pos":[0.0,0.0,-0.0165],"rot":[0.0,0.0,90.0],"size":[0.09,0.09,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[0.0,0.0,-0.0165],"rot":[0.0,0.0,90.0],"size":[0.078,0.074,0.078],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.048,0.0,-0.0165],"rot":[0.0,0.0,90.0],"size":[0.094,0.006,0.094],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.048,0.0,-0.0165],"rot":[0.0,0.0,90.0],"size":[0.094,0.006,0.094],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"BaseInner","shape":"cylinder","pos":[-0.043,0.0,-0.0165],"rot":[0.0,0.0,90.0],"size":[0.074,0.004,0.074],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"TopInner","shape":"cylinder","pos":[0.043,0.0,-0.0165],"rot":[0.0,0.0,90.0],"size":[0.074,0.004,0.074],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"HandleMain","shape":"cylinder","pos":[0.0,0.025,0.0335],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.02,0.005,0.0135],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.015],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"Chip","shape":"cube","pos":[-0.04,-0.041,-0.0165],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.01],"color":[0.45,0.44,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Chip2","shape":"cube","pos":[0.03,-0.042,-0.0365],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.008],"color":[0.45,0.44,0.4],"smooth":0.1,"metal":0.0}
+]}

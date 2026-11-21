@@ -1,0 +1,9 @@
+{"version": 1, "id": "DogChew", "baseHeight": 0.1, "name": "Dog Chew", "model": "gpt-oss:120b", "notes": "Dog chew bone ~0.18 m long, 0.05 m wide, lying on its side (long axis along +X). Main body: two rounded ends (spheres) and a central rubber cylinder; three shallow rib‑grooves run around the centre for texture.", "score": 6, "parts": [
+  {"name":"CenterCylinder","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"EndSphereL","shape":"sphere","pos":[-0.065,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"EndSphereR","shape":"sphere","pos":[0.065,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Rib1","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Rib2","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[90.0,0.0,30.0],"size":[0.04,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Rib3","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[90.0,0.0,-30.0],"size":[0.04,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"BiteMark","shape":"cube","pos":[0.03,0.005,0.0],"rot":[0.0,15.0,0.0],"size":[0.015,0.005,0.04],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0}
+]}

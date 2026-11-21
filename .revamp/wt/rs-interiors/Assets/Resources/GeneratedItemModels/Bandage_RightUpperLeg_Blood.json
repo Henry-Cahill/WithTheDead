@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_RightUpperLeg_Blood", "baseHeight": 0.0665, "name": "Bandage Right Upper Leg Blood", "model": "gpt-oss:120b", "notes": "Flat bandage pad about 0.25 m long × 0.10 m wide × 0.01 m thick with a beige gauze tint and a few dark red blood stains on the top surface.", "score": 7, "parts": [
+  {"name":"BandagePad","shape":"cube","pos":[0.0025,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.01,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.0675,0.0015,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.012],"color":[0.7,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[-0.0175,0.0015,-0.025],"rot":[0.0,0.0,0.0],"size":[0.022,0.005,0.015],"color":[0.68,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.0625,0.0015,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.01],"color":[0.72,0.14,0.14],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot4","shape":"sphere","pos":[0.1225,0.0015,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.0045,0.013],"color":[0.65,0.11,0.11],"smooth":0.2,"metal":0.0},
+  {"name":"FoldEdge","shape":"cube","pos":[-0.1225,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.1],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

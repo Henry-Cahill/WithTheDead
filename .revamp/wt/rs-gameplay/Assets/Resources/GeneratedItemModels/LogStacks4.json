@@ -1,0 +1,8 @@
+{"version": 1, "id": "LogStacks4", "baseHeight": 0.285, "name": "Log Stacks4", "model": "gpt-oss:120b", "notes": "Four fire‑wood logs stacked irregularly. Each log ≈ 1.2 m long × 0.15 m diameter (brown tint 0.6,0.58,0.5). The pile is about 0.6 m wide and 0.45 m high when viewed from above.", "score": 7, "parts": [
+  {"name":"Log1","shape":"cylinder","pos":[0.0,-0.15,-0.08],"rot":[0.0,0.0,90.0],"size":[0.15,1.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Log2","shape":"cylinder","pos":[0.0,-0.15,0.08],"rot":[0.0,0.0,90.0],"size":[0.15,1.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Log3","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.15,1.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Log4","shape":"cylinder","pos":[0.0,0.15,0.0],"rot":[0.0,0.0,90.0],"size":[0.15,1.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BarkDetail","shape":"cube","pos":[0.0,-0.15,-0.08],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.02],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BarkDetail2","shape":"cube","pos":[0.0,-0.15,0.08],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.02],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0}
+]}

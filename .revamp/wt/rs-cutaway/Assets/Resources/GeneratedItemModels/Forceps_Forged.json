@@ -1,0 +1,12 @@
+{"version": 1, "id": "Forceps_Forged", "baseHeight": 0.0839, "name": "Forceps Forged", "model": "gpt-oss:120b", "notes": "Forged steel forceps ~0.15 m long lying on the floor, opened into an X‑shape. Main parts: central hinge joint, two slender arms crossing at ±15°, tip blocks, small grip discs now flush against the arm bases and a couple of rivet details. All pieces touch each other.", "score": 6, "parts": [
+  {"name":"Joint","shape":"cylinder","pos":[-0.0684,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.018],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Screw","shape":"sphere","pos":[-0.0684,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.45,0.43,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"ArmL","shape":"cube","pos":[-0.0008,-0.0,0.0181],"rot":[0.0,0.0,15.0],"size":[0.14,0.012,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ArmR","shape":"cube","pos":[-0.0008,-0.0,-0.0181],"rot":[0.0,0.0,-15.0],"size":[0.14,0.012,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipL","shape":"cube","pos":[0.0668,-0.0,0.0363],"rot":[0.0,0.0,15.0],"size":[0.02,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipR","shape":"cube","pos":[0.0668,-0.0,-0.0363],"rot":[0.0,0.0,-15.0],"size":[0.02,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"GripL","shape":"cylinder","pos":[-0.0684,-0.0,0.0181],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"GripR","shape":"cylinder","pos":[-0.0684,-0.0,-0.0181],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.0394,-0.0,0.0078],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.006],"color":[0.45,0.43,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[-0.0394,-0.0,-0.0078],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.006],"color":[0.45,0.43,0.38],"smooth":0.6,"metal":1.0}
+]}

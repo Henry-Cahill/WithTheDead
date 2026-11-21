@@ -1,0 +1,11 @@
+{"version": 1, "id": "BellyButton_DangleGold", "baseHeight": 0.0725, "name": "Belly Button Dangle Gold", "model": "gpt-oss:120b", "notes": "Gold belly‑button dangle ~12 cm long lying flat: a short clasp, six interlocking chain links alternating X/Z orientation, a tiny decorative bead mid‑chain and a small gold pendant at the end.", "score": 6, "parts": [
+  {"name":"Clasp","shape":"cube","pos":[-0.0605,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link1_X","shape":"cylinder","pos":[-0.0455,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.005,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link2_Z","shape":"cylinder","pos":[-0.0305,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link3_X","shape":"cylinder","pos":[-0.0155,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.005,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link4_Z","shape":"cylinder","pos":[-0.0005,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BeadMid","shape":"sphere","pos":[-0.0005,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":1.0},
+  {"name":"Link5_X","shape":"cylinder","pos":[0.0145,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.005,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link6_Z","shape":"cylinder","pos":[0.0295,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Pendant","shape":"sphere","pos":[0.0545,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0}
+]}

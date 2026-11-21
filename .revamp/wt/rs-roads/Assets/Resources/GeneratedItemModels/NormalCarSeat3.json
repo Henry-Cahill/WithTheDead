@@ -1,0 +1,16 @@
+{"version": 1, "id": "NormalCarSeat3", "baseHeight": 0.1437, "name": "Normal Car Seat3", "model": "gpt-oss:120b", "notes": "Normal car seat lying on its side (backrest down). Main fabric tint 0.6,0.58,0.5, with a steel‑grey frame and a small cylindrical head‑rest. Overall footprint ≈ 0.80 m × 0.50 m × 0.20 m (X × Z × Y). All parts now touch the main body.", "score": 6, "parts": [
+  {"name":"SeatBasePlate","shape":"cube","pos":[0.065,-0.0738,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.02,0.48],"color":[0.4,0.42,0.44],"smooth":0.25,"metal":1.0},
+  {"name":"FrameBack","shape":"cube","pos":[-0.215,-0.0137,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.48],"color":[0.4,0.42,0.44],"smooth":0.25,"metal":1.0},
+  {"name":"FrameSideL","shape":"cube","pos":[-0.015,-0.0137,-0.23],"rot":[0.0,0.0,0.0],"size":[0.58,0.12,0.02],"color":[0.4,0.42,0.44],"smooth":0.25,"metal":1.0},
+  {"name":"FrameSideR","shape":"cube","pos":[-0.015,-0.0137,0.23],"rot":[0.0,0.0,0.0],"size":[0.58,0.12,0.02],"color":[0.4,0.42,0.44],"smooth":0.25,"metal":1.0},
+  {"name":"BackPadFoam","shape":"cube","pos":[-0.215,0.0462,0.0],"rot":[0.0,0.0,0.0],"size":[0.42,0.06,0.44],"color":[0.7,0.68,0.62],"smooth":0.05,"metal":0.0},
+  {"name":"BackPadCover","shape":"cube","pos":[-0.215,0.0712,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.02,0.46],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CushionFoam","shape":"cube","pos":[0.285,0.0262,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.07,0.44],"color":[0.75,0.73,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"CushionCover","shape":"cube","pos":[0.285,0.0513,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.46],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HeadrestRod","shape":"cylinder","pos":[-0.415,0.0563,0.0],"rot":[0.0,90.0,0.0],"size":[0.12,0.02,0.12],"color":[0.4,0.42,0.44],"smooth":0.3,"metal":1.0},
+  {"name":"HeadrestCover","shape":"cylinder","pos":[-0.415,0.0762,0.0],"rot":[0.0,90.0,0.0],"size":[0.12,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BoltFL","shape":"sphere","pos":[-0.315,-0.0688,-0.22],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BoltFR","shape":"sphere","pos":[-0.315,-0.0688,0.22],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BoltRL","shape":"sphere","pos":[0.445,-0.0688,-0.22],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BoltRR","shape":"sphere","pos":[0.445,-0.0688,0.22],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "MarkerGreen", "baseHeight": 0.0675, "name": "Marker Green", "model": "gpt-oss:120b", "notes": "Green felt‑tip marker ~0.15 m long × 0.012 m diameter, lying on its side (X axis). Main plastic body, slightly larger cap, inner ink core, short tip, a thin label strip and a metal clip near the cap.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.15,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.085,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.4,0.4,0.42],"smooth":0.45,"metal":0.0},
+  {"name":"InkCore","shape":"cylinder","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.3,0.45,0.2],"smooth":0.35,"metal":0.0},
+  {"name":"Tip","shape":"cylinder","pos":[-0.085,-0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.3,0.45,0.2],"smooth":0.35,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.0118],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"Clip","shape":"cylinder","pos":[0.07,0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0}
+]}

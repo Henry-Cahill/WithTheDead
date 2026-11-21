@@ -1,0 +1,10 @@
+{"version": 1, "id": "Glasses_HalfMoon", "baseHeight": 0.065, "name": "Glasses Half Moon", "model": "gpt-oss:120b", "notes": "Glasses Half Moon laid flat like a product shot – two circular lenses (transparent) side‑by‑side, a thin tinted bridge, and the folded‑back temples. Overall spread ≈0.16 m wide × 0.07 m tall × 0.13 m deep; lens thickness 4 mm.", "score": 7, "parts": [
+  {"name":"LeftLens","shape":"cylinder","pos":[-0.045,-0.001,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.8,0.85,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"RightLens","shape":"cylinder","pos":[0.045,-0.001,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.8,0.85,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.09,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.13,0.008],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"TempleR","shape":"cylinder","pos":[0.09,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.13,0.008],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"HingeL","shape":"cube","pos":[-0.075,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.012],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"HingeR","shape":"cube","pos":[0.075,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.012],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"NosePad","shape":"cube","pos":[0.0,0.001,0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.02],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0}
+]}

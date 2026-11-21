@@ -1,0 +1,12 @@
+{"version": 1, "id": "SmallPunchSet", "baseHeight": 0.1, "name": "Small Punch Set", "model": "gpt-oss:120b", "notes": "Small Punch Set about 0.18 m × 0.12 m × 0.06 m: a chunky wooden block (tint‑brown) with three steel punches lying on top, a thin metal plate on the surface and two visible screws.", "score": 7, "parts": [
+  {"name":"BaseBlock","shape":"cube","pos":[-0.005,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.06,0.12],"color":[0.55,0.45,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"PlateTop","shape":"cylinder","pos":[-0.005,0.022,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.12],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewL","shape":"cylinder","pos":[-0.075,-0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewR","shape":"cylinder","pos":[0.065,-0.01,0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"Punch1Body","shape":"cylinder","pos":[-0.035,0.0275,-0.02],"rot":[0.0,0.0,90.0],"size":[0.015,0.09,0.015],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Punch1Head","shape":"sphere","pos":[0.0225,0.0275,-0.02],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.8,0.81,0.83],"smooth":0.65,"metal":1.0},
+  {"name":"Punch2Body","shape":"cylinder","pos":[-0.005,0.0275,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.09,0.015],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Punch2Head","shape":"sphere","pos":[0.0525,0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.8,0.81,0.83],"smooth":0.65,"metal":1.0},
+  {"name":"Punch3Body","shape":"cylinder","pos":[0.025,0.0275,0.02],"rot":[0.0,0.0,90.0],"size":[0.015,0.09,0.015],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Punch3Head","shape":"sphere","pos":[0.0825,0.0275,0.02],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.8,0.81,0.83],"smooth":0.65,"metal":1.0}
+]}

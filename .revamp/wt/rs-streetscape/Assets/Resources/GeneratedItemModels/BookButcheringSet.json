@@ -1,0 +1,12 @@
+{"version": 1, "id": "BookButcheringSet", "baseHeight": 0.1113, "name": "Book Butchering Set", "model": "gpt-oss:120b", "notes": "Book‑butchering set about 0.40 m long × 0.30 m wide on the floor: wooden cutting board, open guide book, heavy cleaver (metal blade + wood handle), thin boning knife, small bone saw with metal grip, and a cloth pouch tucked to one side.", "score": 6, "parts": [
+  {"name":"Board","shape":"cube","pos":[-0.03,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.04,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BookCover","shape":"cube","pos":[-0.08,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BookPages","shape":"cube","pos":[-0.08,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.018,0.18],"color":[0.9,0.88,0.8],"smooth":0.03,"metal":0.0},
+  {"name":"CleaverBlade","shape":"cube","pos":[-0.18,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.3,0.33,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"CleaverHandle","shape":"cylinder","pos":[-0.03,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.18,0.05],"color":[0.45,0.35,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"BoningKnifeBlade","shape":"cube","pos":[0.09,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.02],"color":[0.3,0.33,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"BoningKnifeHandle","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.14,0.03],"color":[0.45,0.35,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"SawBlade","shape":"cube","pos":[-0.03,0.0,0.0],"rot":[0.0,0.0,45.0],"size":[0.1,0.01,0.03],"color":[0.3,0.33,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"SawHandle","shape":"cylinder","pos":[0.04,0.0,0.07],"rot":[0.0,0.0,45.0],"size":[0.025,0.12,0.025],"color":[0.45,0.35,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"ClothPouch","shape":"cube","pos":[-0.21,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.55,0.5,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "PotOfSoupRecipe", "baseHeight": 0.206, "name": "Pot Of Soup Recipe", "model": "gpt-oss:120b", "notes": "Upright pot‑style soup bottle about 0.20 m wide × 0.28 m tall: metal body with thin rim, glass neck and screw‑on lid, a small side handle, blue‑tinted liquid inside and a front label.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0345,-0.036,-0.023],"rot":[0.0,0.0,0.0],"size":[0.2,0.22,0.2],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.0345,0.078,-0.023],"rot":[0.0,0.0,0.0],"size":[0.212,0.008,0.212],"color":[0.65,0.66,0.68],"smooth":0.45,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.0345,-0.142,-0.023],"rot":[0.0,0.0,0.0],"size":[0.212,0.008,0.212],"color":[0.65,0.66,0.68],"smooth":0.45,"metal":1.0},
+  {"name":"Liquid","shape":"cylinder","pos":[-0.0345,-0.046,-0.023],"rot":[0.0,0.0,0.0],"size":[0.18,0.2,0.18],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[-0.0345,0.104,-0.023],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.12],"color":[0.9,0.95,1.0],"smooth":0.1,"metal":0.0},
+  {"name":"NeckRing","shape":"cylinder","pos":[-0.0345,0.078,-0.023],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.78,0.8,0.82],"smooth":0.2,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[-0.0345,0.139,-0.023],"rot":[0.0,0.0,0.0],"size":[0.14,0.01,0.14],"color":[0.68,0.69,0.71],"smooth":0.45,"metal":1.0},
+  {"name":"CapRing","shape":"cylinder","pos":[-0.0345,0.144,-0.023],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.15],"color":[0.62,0.63,0.65],"smooth":0.45,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0805,0.034,-0.023],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.0345,-0.036,0.078],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.1],"color":[0.4,0.45,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[-0.0345,-0.034,0.078],"rot":[0.0,0.0,0.0],"size":[0.142,0.002,0.102],"color":[0.3,0.35,0.4],"smooth":0.2,"metal":0.0}
+]}

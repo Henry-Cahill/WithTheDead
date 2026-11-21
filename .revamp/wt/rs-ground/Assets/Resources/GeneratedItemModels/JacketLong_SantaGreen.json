@@ -1,0 +1,14 @@
+{"version": 1, "id": "JacketLong_SantaGreen", "baseHeight": 0.0725, "name": "Jacket Long Santa Green", "model": "gpt-oss:120b", "notes": "Long winter jacket in Santa‑green (≈ 0.9 m long × 0.55 m wide, 2.5 cm thick). Main torso panel with side sleeves, darker trim collar/hem/cuffs, two front pockets and a row of small buttons.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.025,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.0,0.0,-0.375],"rot":[0.0,0.0,0.0],"size":[0.9,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.0,0.0,0.375],"rot":[0.0,0.0,0.0],"size":[0.9,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.51,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.55],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.51,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.55],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.0,-0.005,-0.495],"rot":[0.0,0.0,0.0],"size":[0.9,0.015,0.04],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.0,-0.005,0.495],"rot":[0.0,0.0,0.0],"size":[0.9,0.015,0.04],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.2,-0.0025,-0.15],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.1],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.2,-0.0025,0.15],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.1],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.448,0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.448,0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.448,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0}
+]}

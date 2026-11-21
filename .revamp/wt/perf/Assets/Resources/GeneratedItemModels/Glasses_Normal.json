@@ -1,0 +1,15 @@
+{"version": 1, "id": "Glasses_Normal", "baseHeight": 0.065, "name": "Glasses Normal", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a pair of glasses (≈0.30 m wide × 0.005 m thick). Two circular lenses with thin plastic frames, a short bridge, folded temples on each side, nosepads and four tiny metal screws at the frame corners.", "score": 6, "parts": [
+  {"name":"LensL","shape":"cylinder","pos":[-0.045,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.005,0.05],"color":[0.6,0.58,0.65],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.045,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.005,0.05],"color":[0.6,0.58,0.65],"smooth":0.6,"metal":0.0},
+  {"name":"FrameRingL","shape":"cylinder","pos":[-0.045,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.005,0.058],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FrameRingR","shape":"cylinder","pos":[0.045,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.005,0.058],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleL","shape":"cube","pos":[-0.139,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.015],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleR","shape":"cube","pos":[0.139,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.015],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"NosepadL","shape":"cube","pos":[-0.02,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.015],"color":[0.4,0.38,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"NosepadR","shape":"cube","pos":[0.02,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.015],"color":[0.4,0.38,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewTL","shape":"sphere","pos":[-0.045,0.001,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.75],"smooth":0.65,"metal":1.0},
+  {"name":"ScrewBL","shape":"sphere","pos":[-0.045,0.001,-0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.75],"smooth":0.65,"metal":1.0},
+  {"name":"ScrewTR","shape":"sphere","pos":[0.045,0.001,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.75],"smooth":0.65,"metal":1.0},
+  {"name":"ScrewBR","shape":"sphere","pos":[0.045,0.001,-0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.75],"smooth":0.65,"metal":1.0}
+]}

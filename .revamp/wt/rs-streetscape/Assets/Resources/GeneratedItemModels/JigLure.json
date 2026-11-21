@@ -1,0 +1,12 @@
+{"version": 1, "id": "JigLure", "baseHeight": 0.086, "name": "Jig Lure", "model": "gpt-oss:120b", "notes": "Jig lure ~0.13 m long, ~0.04 m wide head. Consists of a squat lead‑head, small metal hook (stem + tip), a thin eye on the front, and six hanging skirt strands modelled as tiny spheres.", "score": 7, "parts": [
+  {"name":"LeadHead","shape":"cylinder","pos":[-0.0019,-0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.08,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Eye","shape":"cylinder","pos":[0.0401,-0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.008,0.004],"color":[0.2,0.2,0.22],"smooth":0.5,"metal":1.0},
+  {"name":"HookStem","shape":"cylinder","pos":[-0.0369,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.3,0.3,0.35],"smooth":0.45,"metal":1.0},
+  {"name":"HookTip","shape":"cube","pos":[-0.0369,0.024,-0.015],"rot":[0.0,20.0,0.0],"size":[0.008,0.004,0.02],"color":[0.3,0.3,0.35],"smooth":0.45,"metal":1.0},
+  {"name":"SkirtSphere1","shape":"sphere","pos":[0.0131,-0.016,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"SkirtSphere2","shape":"sphere","pos":[-0.0169,-0.016,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"SkirtSphere3","shape":"sphere","pos":[0.0131,-0.016,-0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"SkirtSphere4","shape":"sphere","pos":[-0.0169,-0.016,-0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"SkirtSphere5","shape":"sphere","pos":[-0.0019,-0.016,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"SkirtSphere6","shape":"sphere","pos":[-0.0019,-0.016,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0}
+]}

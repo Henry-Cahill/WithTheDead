@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hoodie_HuntingCamo_DOWN", "baseHeight": 0.075, "name": "Hoodie Hunting Camo DOWN", "model": "gpt-oss:120b", "notes": "Flat hoodie (camo down) approx 0.6 m wide × 0.8 m long × 0.03 m thick, with long sleeves, a split hood, front kangaroo pocket, cuff trims and bottom hem.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.575,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.575,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HoodBack","shape":"cube","pos":[0.0,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.4,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HoodFlapL","shape":"cube","pos":[-0.325,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HoodFlapR","shape":"cube","pos":[0.325,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.0,0.0,-0.5],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.875,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.875,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0075,-0.5],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

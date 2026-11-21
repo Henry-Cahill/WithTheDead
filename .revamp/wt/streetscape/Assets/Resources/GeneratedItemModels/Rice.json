@@ -1,0 +1,13 @@
+{"version": 1, "id": "Rice", "baseHeight": 0.14, "name": "Rice", "model": "gpt-oss:120b", "notes": "Rectangular cardboard box 0.35 m × 0.25 m × 0.15 m lying upright, lid open slightly to show loose rice inside; thin panels for walls, a front label, and three rice piles as ellipsoids using the item tint.", "score": 6, "parts": [
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.0725,-0.0432],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.25],"color":[0.85,0.8,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LeftSide","shape":"cube","pos":[-0.1725,0.0,-0.0432],"rot":[0.0,0.0,0.0],"size":[0.005,0.15,0.25],"color":[0.85,0.8,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"RightSide","shape":"cube","pos":[0.1725,0.0,-0.0432],"rot":[0.0,0.0,0.0],"size":[0.005,0.15,0.25],"color":[0.85,0.8,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BackSide","shape":"cube","pos":[0.0,0.0,-0.1658],"rot":[0.0,0.0,0.0],"size":[0.35,0.15,0.005],"color":[0.85,0.8,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"FrontSide","shape":"cube","pos":[0.0,0.0,0.0793],"rot":[0.0,0.0,0.0],"size":[0.35,0.15,0.005],"color":[0.85,0.8,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0775,-0.0432],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.25],"color":[0.85,0.8,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.003,0.0783],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.18],"color":[0.95,0.93,0.88],"smooth":0.08,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0045,0.0783],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.14],"color":[0.45,0.35,0.2],"smooth":0.08,"metal":0.0},
+  {"name":"RicePile1","shape":"sphere","pos":[-0.06,-0.045,-0.0832],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RicePile2","shape":"sphere","pos":[0.07,-0.05,-0.0232],"rot":[0.0,0.0,0.0],"size":[0.1,0.055,0.035],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RicePile3","shape":"sphere","pos":[0.0,-0.055,-0.1032],"rot":[0.0,0.0,0.0],"size":[0.09,0.05,0.03],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "HeavyChain", "baseHeight": 0.0725, "name": "Heavy Chain", "model": "gpt-oss:120b", "notes": "Heavy chain ≈0.9 m long, 0.12 m wide, ~2.5 cm thick links. Each link is modelled as two intersecting cylinders (A‑oriented along X, B‑oriented along Z) that interlock and touch the neighbouring link, forming a flat coil lying on the floor.", "score": 6, "parts": [
+  {"name":"Link0A","shape":"cylinder","pos":[-0.35,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link0B","shape":"cylinder","pos":[-0.35,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link1A","shape":"cylinder","pos":[-0.21,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link1B","shape":"cylinder","pos":[-0.21,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link2A","shape":"cylinder","pos":[-0.07,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link2B","shape":"cylinder","pos":[-0.07,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link3A","shape":"cylinder","pos":[0.07,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link3B","shape":"cylinder","pos":[0.07,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link4A","shape":"cylinder","pos":[0.21,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link4B","shape":"cylinder","pos":[0.21,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link5A","shape":"cylinder","pos":[0.35,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link5B","shape":"cylinder","pos":[0.35,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

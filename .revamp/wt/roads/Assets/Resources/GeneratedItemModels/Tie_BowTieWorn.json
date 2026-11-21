@@ -1,0 +1,9 @@
+{"version": 1, "id": "Tie_BowTieWorn", "baseHeight": 0.069, "name": "Tie Bow Tie Worn", "model": "gpt-oss:120b", "notes": "Bow‑tie made of muted cloth (0.6 ,0.58 ,0.5). Flat bow shape about 0.14 m wide × 0.07 m tall, knot 0.04 m square and a thin neck strap extending back ~0.25 m.", "score": 6, "parts": [
+  {"name":"Knot","shape":"cube","pos":[0.0,-0.001,0.1087],"rot":[0.0,0.0,0.0],"size":[0.04,0.016,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WingL","shape":"sphere","pos":[-0.07,-0.001,0.1087],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WingR","shape":"sphere","pos":[0.07,-0.001,0.1087],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strap","shape":"cylinder","pos":[0.0,-0.0015,-0.0163],"rot":[90.0,0.0,0.0],"size":[0.015,0.25,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldDetail","shape":"cube","pos":[0.0,0.007,0.1087],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimL","shape":"cube","pos":[-0.07,0.006,0.1387],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.005],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimR","shape":"cube","pos":[0.07,0.006,0.0788],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.005],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0}
+]}

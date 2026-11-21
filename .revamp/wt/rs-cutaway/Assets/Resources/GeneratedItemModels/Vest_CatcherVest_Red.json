@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_CatcherVest_Red", "baseHeight": 0.0775, "name": "Vest Catcher Vest Red", "model": "gpt-oss:120b", "notes": "Flat catcher vest lying on the floor, approx 0.44 m wide × 0.58 m tall × 0.03 m thick. Main body panel, left/right shoulder flaps, front pocket, bright‑red reflective strips along top and sides, small strap loops.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.03,0.58],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftShoulder","shape":"cube","pos":[-0.18,0.0,0.19],"rot":[0.0,0.0,0.0],"size":[0.12,0.035,0.2],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RightShoulder","shape":"cube","pos":[0.18,0.0,0.19],"rot":[0.0,0.0,0.0],"size":[0.12,0.035,0.2],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.0,0.0005,-0.15],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.1],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"ReflectStripTop","shape":"cube","pos":[0.0,0.0035,-0.285],"rot":[0.0,0.0,0.0],"size":[0.44,0.005,0.01],"color":[1.0,0.0,0.0],"smooth":0.2,"metal":0.0},
+  {"name":"ReflectStripSideL","shape":"cube","pos":[-0.215,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.58],"color":[1.0,0.0,0.0],"smooth":0.2,"metal":0.0},
+  {"name":"ReflectStripSideR","shape":"cube","pos":[0.215,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.58],"color":[1.0,0.0,0.0],"smooth":0.2,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.15,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.15,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"CollarStrip","shape":"cube","pos":[0.0,0.0045,-0.28],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

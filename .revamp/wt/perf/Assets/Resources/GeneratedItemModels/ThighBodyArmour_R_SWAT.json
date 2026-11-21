@@ -1,0 +1,13 @@
+{"version": 1, "id": "ThighBodyArmour_R_SWAT", "baseHeight": 0.0725, "name": "Thigh Body Armour R SWAT", "model": "gpt-oss:120b", "notes": "Thigh Body Armour R SWAT – approx 0.45 m wide × 0.60 m tall × 2.5 cm thick, with a right‑side thigh pad, internal padding layer, two shoulder straps (front & back) each with buckles, a side strap linking the thigh pad, small metal reinforcement plates on front and back, plus matching buckles.", "score": 6, "parts": [
+  {"name":"TorsoBase","shape":"cube","pos":[-0.11,0.0,0.14],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PaddingLayer","shape":"cube","pos":[-0.11,-0.0025,0.14],"rot":[0.0,0.0,0.0],"size":[0.44,0.02,0.58],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"ThighPad","shape":"cube","pos":[0.225,0.0,-0.3],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.28],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[-0.11,-0.0025,0.42],"rot":[0.0,0.0,90.0],"size":[0.02,0.45,0.02],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[-0.11,-0.0025,-0.14],"rot":[0.0,0.0,90.0],"size":[0.02,0.45,0.02],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleL_Front","shape":"cube","pos":[-0.32,-0.005,0.42],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.02],"color":[0.2,0.2,0.2],"smooth":0.55,"metal":1.0},
+  {"name":"BuckleR_Front","shape":"cube","pos":[0.1,-0.005,0.42],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.02],"color":[0.2,0.2,0.2],"smooth":0.55,"metal":1.0},
+  {"name":"ChestPlate","shape":"cube","pos":[-0.11,-0.01,0.24],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.12],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[-0.11,-0.01,0.04],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.12],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"SideStrap","shape":"cylinder","pos":[0.225,-0.005,-0.21],"rot":[90.0,0.0,0.0],"size":[0.015,0.2,0.015],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SideBuckle","shape":"cube","pos":[0.22,-0.0065,-0.16],"rot":[0.0,0.0,0.0],"size":[0.025,0.012,0.018],"color":[0.2,0.2,0.2],"smooth":0.55,"metal":1.0}
+]}

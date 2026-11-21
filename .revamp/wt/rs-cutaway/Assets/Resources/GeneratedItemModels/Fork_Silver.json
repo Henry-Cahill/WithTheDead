@@ -1,0 +1,10 @@
+{"version": 1, "id": "Fork_Silver", "baseHeight": 0.0725, "name": "Fork Silver", "model": "gpt-oss:120b", "notes": "Silver fork weapon ~0.35 m long lying on its side (X‑axis). Thin cylindrical handle, a small guard, a base plate and four polished steel tines extending forward (+Z) for clear silhouette.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.02,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.02],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[0.135,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineBase","shape":"cube","pos":[0.16,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL1","shape":"cylinder","pos":[-0.026,0.0,0.02],"rot":[90.0,0.0,0.0],"size":[0.004,0.03,0.004],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"TineL2","shape":"cylinder","pos":[-0.022,0.0,0.02],"rot":[90.0,0.0,0.0],"size":[0.004,0.03,0.004],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"TineR1","shape":"cylinder","pos":[-0.018,0.0,0.02],"rot":[90.0,0.0,0.0],"size":[0.004,0.03,0.004],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"TineR2","shape":"cylinder","pos":[-0.014,0.0,0.02],"rot":[90.0,0.0,0.0],"size":[0.004,0.03,0.004],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[-0.15,0.007,-0.015],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "Briefs_SmallTrunks_Red", "baseHeight": 0.095, "name": "Briefs Small Trunks Red", "model": "gpt-oss:120b", "notes": "Flat small trunks (briefs) approx 0.44 m wide × 0.18 m tall, 0.03 m thick. Main cloth panel with waistband rim, front leg openings and a centre seam.", "score": 6, "parts": [
+  {"name":"BodyPanel","shape":"cube","pos":[0.001,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.001,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.006,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegHoleL","shape":"cylinder","pos":[-0.119,0.0,0.045],"rot":[90.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LegHoleR","shape":"cylinder","pos":[-0.119,0.0,-0.045],"rot":[90.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[-0.149,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.18],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.219,0.0015,0.09],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.06],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.219,0.0015,-0.09],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.06],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.079,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.04],"color":[0.6,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

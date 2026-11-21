@@ -1,0 +1,16 @@
+{
+ "machine": "HANK-DEV",
+ "doing": "idle",
+ "updated": "2026-10-23T21:05:41-05:00",
+ "last": "extracted build ky-local-f1, part 0/1: 1956 regions",
+ "stats": {
+  "streets": 726725,
+  "lines": 33134,
+  "buildings": 932149,
+  "areas": 112551,
+  "relation_areas": 4777,
+  "pois": 15254,
+  "places": 4696,
+  "bad_geometry": 0
+ }
+}

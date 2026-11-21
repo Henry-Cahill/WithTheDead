@@ -1,0 +1,9 @@
+{"version": 1, "id": "CannedFruitBeverageOpen", "baseHeight": 0.1202, "name": "Canned Fruit Beverage Open", "model": "gpt-oss:120b", "notes": "Upright canned fruit beverage, open top: metal body 0.12 m tall × 0.066 m diameter, thin metal rim, full‑height label in the drink’s tint, liquid surface shown as a shallow disc, a few droplets near the opening.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.12,0.066],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.0572,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.0568,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.108,0.064],"color":[0.45,0.6,0.75],"smooth":0.12,"metal":0.0},
+  {"name":"LiquidSurface","shape":"cylinder","pos":[0.0,0.0447,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.062],"color":[0.55,0.7,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Droplet1","shape":"sphere","pos":[0.015,0.0587,0.01],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.55,0.7,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Droplet2","shape":"sphere","pos":[-0.012,0.0587,-0.018],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.55,0.7,0.9],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "SpoonForged", "baseHeight": 0.0842, "name": "Spoon Forged", "model": "gpt-oss:120b", "notes": "Forged steel spoon used as a melee weapon – 0.80 m long handle lying on its side (X‑axis) with the shallow bowl at the +X end. Rounded metal handle, slight taper near the bowl, shallow ellipsoidal bowl and a thin lip rim for visual detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.0075,-0.0132,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.8,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleTaper","shape":"cylinder","pos":[-0.3425,-0.0132,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.3,0.015],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":1.0},
+  {"name":"BowlBody","shape":"sphere","pos":[0.4225,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.08],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"BowlLip","shape":"cylinder","pos":[0.4625,0.0168,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.55,0.55,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"BowlRimEdge","shape":"cube","pos":[0.4625,0.0217,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.08],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"DecorNotch","shape":"cube","pos":[-0.1925,-0.0083,0.012],"rot":[0.0,15.0,0.0],"size":[0.02,0.004,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"BowlInnerCavity","shape":"sphere","pos":[0.4225,-0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.054,0.036,0.072],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleEndCap","shape":"cylinder","pos":[-0.3925,-0.0132,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.02,0.022],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":1.0}
+]}

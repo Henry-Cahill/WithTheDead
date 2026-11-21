@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_ShemaghFace", "baseHeight": 0.0837, "name": "Hat Shemagh Face", "model": "gpt-oss:120b", "notes": "Flat shemagh‑style head covering laid out as a rectangular sheet ≈ 0.38 m wide × 0.32 m tall, 2.5 cm thick. Includes rolled edges on all sides, a central knot, two decorative folds and a face opening.", "score": 6, "parts": [
+  {"name":"BaseFabric","shape":"cube","pos":[0.0,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.025,0.32],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTopRoll","shape":"cylinder","pos":[0.0,0.0113,0.16],"rot":[0.0,0.0,90.0],"size":[0.02,0.38,0.02],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeBottomRoll","shape":"cylinder","pos":[0.0,0.0113,-0.16],"rot":[0.0,0.0,90.0],"size":[0.02,0.38,0.02],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeLeftRoll","shape":"cylinder","pos":[-0.19,0.0113,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.32,0.02],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRightRoll","shape":"cylinder","pos":[0.19,0.0113,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.32,0.02],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CentralKnot","shape":"cylinder","pos":[0.0,0.0163,-0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.35,0.3,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"FoldTopLeft","shape":"cube","pos":[-0.13,-0.0058,0.07],"rot":[15.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FoldBottomRight","shape":"cube","pos":[0.13,-0.0058,-0.07],"rot":[-12.0,0.0,0.0],"size":[0.1,0.005,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FaceOpening","shape":"cube","pos":[0.0,-0.0112,-0.12],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.002],"color":[0.1,0.1,0.1],"smooth":0.02,"metal":0.0}
+]}

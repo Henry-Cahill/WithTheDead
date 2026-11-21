@@ -1,0 +1,10 @@
+{"version": 1, "id": "Spoon_Silver", "baseHeight": 0.084, "name": "Spoon Silver", "model": "gpt-oss:120b", "notes": "Long ceremonial spoon used as a melee weapon – total length ≈ 0.80 m lying on its side (X‑axis). Thin silver cylinder handle, rounded tip, shallow ellipsoidal bowl at the far end and a few decorative metal rings.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.04,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.78,0.03],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TipCap","shape":"sphere","pos":[0.35,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"GuardFlange","shape":"cube","pos":[0.31,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripRing","shape":"cylinder","pos":[-0.24,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"BowlBody","shape":"sphere","pos":[0.385,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.09],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"BowlRim","shape":"cylinder","pos":[0.385,0.021,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.006,0.09],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"BowlBottom","shape":"cylinder","pos":[0.385,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"DecorativeBand","shape":"cylinder","pos":[0.11,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.004,0.05],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0}
+]}

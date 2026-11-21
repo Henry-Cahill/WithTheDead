@@ -1,0 +1,14 @@
+{"version": 1, "id": "PotForgedSoupRecipe", "baseHeight": 0.2, "name": "Pot Forged Soup Recipe", "model": "gpt-oss:120b", "notes": "Upright soup bottle ~0.09 m wide × 0.28 m tall (3 kg). Main body is tinted glass, metal screw‑cap with threads, white label with dark trim and a small embossed logo.", "score": 7, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.02,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.09,0.24,0.09],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"BottomBase","shape":"cylinder","pos":[0.0,-0.135,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.09,0.01,0.09],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.096,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.092,0.008,0.092],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"CapShell","shape":"cylinder","pos":[0.0,0.12,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.095,0.04,0.095],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"CapThreadRing1","shape":"cylinder","pos":[0.0,0.105,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.093,0.004,0.093],"color":[0.55,0.55,0.55],"smooth":0.5,"metal":1.0},
+  {"name":"CapThreadRing2","shape":"cylinder","pos":[0.0,0.101,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.091,0.004,0.091],"color":[0.55,0.55,0.55],"smooth":0.5,"metal":1.0},
+  {"name":"LabelBack","shape":"cylinder","pos":[0.0,-0.02,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.082],"color":[0.9,0.9,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBorderTop","shape":"cylinder","pos":[0.0,-0.019,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.084,0.002,0.084],"color":[0.2,0.3,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBorderBottom","shape":"cylinder","pos":[0.0,-0.021,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.084,0.002,0.084],"color":[0.2,0.3,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LogoEmblem","shape":"sphere","pos":[0.0,-0.02,0.0237],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.2,0.3,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"PourSpout","shape":"cylinder","pos":[0.0,0.12,0.0437],"rot":[90.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.55,0.55,0.55],"smooth":0.5,"metal":1.0},
+  {"name":"SealDisc","shape":"cylinder","pos":[0.0,0.112,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.09],"color":[0.4,0.45,0.5],"smooth":0.2,"metal":0.0}
+]}

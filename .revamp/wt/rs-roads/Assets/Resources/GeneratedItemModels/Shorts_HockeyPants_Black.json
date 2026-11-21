@@ -1,0 +1,10 @@
+{"version": 1, "id": "Shorts_HockeyPants_Black", "baseHeight": 0.0725, "name": "Shorts Hockey Pants Black", "model": "gpt-oss:120b", "notes": "Flat hockey shorts (black) approx 0.38 m waist width × 0.45 m leg length, 2.5 cm thick. Main torso panel, two leg panels, a dark waistband rim and simple side‑seam strips.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,-0.095],"rot":[0.0,0.0,0.0],"size":[0.38,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.11,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.11,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0075,-0.095],"rot":[0.0,0.0,0.0],"size":[0.42,0.005,0.22],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.2,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.3],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.2,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.3],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,0.0,0.005],"rot":[0.0,0.0,0.0],"size":[0.38,0.025,0.004],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,0.0,-0.195],"rot":[0.0,0.0,0.0],"size":[0.38,0.025,0.004],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0}
+]}

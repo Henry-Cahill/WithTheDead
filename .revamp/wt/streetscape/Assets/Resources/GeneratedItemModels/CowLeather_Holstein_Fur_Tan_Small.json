@@ -1,0 +1,9 @@
+{"version": 1, "id": "CowLeather_Holstein_Fur_Tan_Small", "baseHeight": 0.0762, "name": "Cow Leather Holstein Fur Tan Small", "model": "gpt-oss:120b", "notes": "Small tan Holstein leather piece ~22 cm × 15 cm × 1.5 cm thick, laid flat on the ground with a thin fur border around all edges and a central stitching line for visual detail.", "score": 6, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FurEdgeFront","shape":"cube","pos":[0.0,0.0037,0.0775],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.005],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FurEdgeBack","shape":"cube","pos":[0.0,0.0037,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.005],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FurEdgeLeft","shape":"cube","pos":[-0.1125,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.15],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FurEdgeRight","shape":"cube","pos":[0.1125,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.15],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cylinder","pos":[0.0,0.0017,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.18,0.004],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"PatchMark","shape":"cube","pos":[-0.08,0.0003,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Wound_Chest_Scratch_Female", "baseHeight": 0.0712, "name": "Wound Chest Scratch Female", "model": "gpt-oss:120b", "notes": "Flat wound patch ~12 cm × 8 cm × 1 cm thick, lying on the floor. Base skin‑tone rectangle with ragged edge bits and a small raised blood clot in the centre.", "score": 7, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[0.0007,-0.0062,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRag1","shape":"cube","pos":[-0.0573,-0.0032,0.0245],"rot":[0.0,15.0,0.0],"size":[0.02,0.012,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRag2","shape":"cube","pos":[0.0587,-0.0023,-0.0305],"rot":[0.0,-12.0,0.0],"size":[0.018,0.013,0.014],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRag3","shape":"cube","pos":[0.0007,-0.0003,0.0345],"rot":[10.0,0.0,0.0],"size":[0.015,0.014,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodClot","shape":"sphere","pos":[0.0007,0.0013,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.7,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"ClotSpot1","shape":"sphere","pos":[-0.0143,0.0023,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.018,0.009,0.018],"color":[0.65,0.12,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"ClotSpot2","shape":"sphere","pos":[0.0207,0.0028,0.0095],"rot":[0.0,0.0,0.0],"size":[0.022,0.011,0.022],"color":[0.68,0.14,0.14],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "GamePieceRed", "baseHeight": 0.065, "name": "Game Piece Red", "model": "gpt-oss:120b", "notes": "Small red game token, 5 cm diameter × 8 mm thick. Flat disc with a slightly raised rim and a tiny embossed logo on top.", "score": 7, "parts": [
+  {"name":"Rim","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.05],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":0.7},
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.048,0.006,0.048],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.7},
+  {"name":"Logo","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.012],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"ShadowEdge","shape":"cylinder","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.05],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"BottomFace","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.05],"color":[0.3,0.28,0.24],"smooth":0.1,"metal":0.0},
+  {"name":"SideRimHighlight","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.051,0.0085,0.051],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.7}
+]}

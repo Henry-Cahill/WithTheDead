@@ -1,0 +1,8 @@
+{"version": 1, "id": "PiercedSteelBlock", "baseHeight": 0.1, "name": "Pierced Steel Block", "model": "gpt-oss:120b", "notes": "Pierced steel block about 7 cm on a side (≈2 kg of steel) lying flat on the floor. Main cube with four evenly‑spaced round holes punched through the centre.", "score": 7, "parts": [
+  {"name":"Block","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HoleTL","shape":"cylinder","pos":[-0.02,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"HoleTR","shape":"cylinder","pos":[0.02,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"HoleBL","shape":"cylinder","pos":[-0.02,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"HoleBR","shape":"cylinder","pos":[0.02,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.003,0.07],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "WheatSeed", "baseHeight": 0.0683, "name": "Wheat Seed", "model": "gpt-oss:120b", "notes": "Small wheat‑seed sachet (~7 cm × 4 cm × 1.5 cm) lying on its side: thin cardboard packet, dark label, a loose pile of tan seeds inside. Silhouette clear from above.", "score": 6, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[0.0,-0.0008,0.0082],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.04],"color":[0.78,0.71,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SeedPile","shape":"cube","pos":[0.0,-0.0038,0.0082],"rot":[0.0,0.0,0.0],"size":[0.065,0.008,0.035],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0052,0.0267],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.036],"color":[0.55,0.45,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.006,0.0267],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.038],"color":[0.4,0.3,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.0046,0.0267],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.038],"color":[0.4,0.3,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0072,0.0267],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.04],"color":[0.78,0.71,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLeft","shape":"cylinder","pos":[-0.0349,-0.0008,0.0082],"rot":[0.0,0.0,90.0],"size":[0.002,0.015,0.002],"color":[0.6,0.52,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRight","shape":"cylinder","pos":[0.0349,-0.0008,0.0082],"rot":[0.0,0.0,90.0],"size":[0.002,0.015,0.002],"color":[0.6,0.52,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0008,-0.0117],"rot":[90.0,0.0,0.0],"size":[0.002,0.07,0.002],"color":[0.6,0.52,0.38],"smooth":0.05,"metal":0.0}
+]}

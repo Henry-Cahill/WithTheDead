@@ -1,0 +1,8 @@
+{"version": 1, "id": "EggPoached", "baseHeight": 0.087, "name": "Egg Poached", "model": "gpt-oss:120b", "notes": "Poached egg in a small clear plastic cup, 0.07 m dia × 0.05 m tall. White gelatinous egg‑white dome and yellow yolk sit inside; a simple label wraps the front of the cup (tint 0.75,0.68,0.45).", "score": 6, "parts": [
+  {"name":"CupBody","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.05,0.07],"color":[0.93,0.94,0.92],"smooth":0.4,"metal":0.0},
+  {"name":"CupRim","shape":"cylinder","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.004,0.075],"color":[0.93,0.94,0.92],"smooth":0.4,"metal":0.0},
+  {"name":"EggWhite","shape":"sphere","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[1.0,1.0,1.0],"smooth":0.15,"metal":0.0},
+  {"name":"Yolk","shape":"sphere","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.95,0.8,0.2],"smooth":0.25,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.002,0.0345],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.002],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,-0.002,0.0346],"rot":[0.0,0.0,0.0],"size":[0.048,0.018,0.002],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "StripedBass", "baseHeight": 0.0825, "name": "Striped Bass", "model": "gpt-oss:120b", "notes": "Whole striped bass fillet (≈0.35 m L × 0.12 m W × 0.03 m H) vacuum‑packed in a thin cardboard tray with clear plastic lid; includes a brown label on the front. Overall footprint ≈0.38 m × 0.14 m, total height ≈0.045 m.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.01,0.14],"color":[0.55,0.45,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"FishBody","shape":"sphere","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LidCover","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.005,0.14],"color":[0.9,0.95,1.0],"smooth":0.3,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.011,0.07],"rot":[0.0,0.0,0.0],"size":[0.32,0.002,0.12],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,-0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.12],"color":[0.3,0.22,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.012,0.07],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.12],"color":[0.3,0.22,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"FishStripe","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.33,0.015],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0}
+]}

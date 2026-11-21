@@ -1,0 +1,13 @@
+{"version": 1, "id": "Underpants_RedSpots", "baseHeight": 0.076, "name": "Underpants Red Spots", "model": "gpt-oss:120b", "notes": "Flat men’s underpants laid out flat (product‑photo style). Overall footprint ≈ 0.38 m wide × 0.24 m long, fabric thickness 0.02 m, elastic waistband strip across the top front edge. Red circular spots (≈ 3 cm) scattered over the surface.", "score": 6, "parts": [
+  {"name":"Fabric","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0105,0.1],"rot":[0.0,0.0,0.0],"size":[0.38,0.005,0.015],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.1875,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.24],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.1875,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.24],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.002,0.12],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.005],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,-0.002,-0.12],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.005],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"RedSpot1","shape":"sphere","pos":[-0.12,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[1.0,0.0,0.0],"smooth":0.4,"metal":0.0},
+  {"name":"RedSpot2","shape":"sphere","pos":[0.08,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[1.0,0.0,0.0],"smooth":0.4,"metal":0.0},
+  {"name":"RedSpot3","shape":"sphere","pos":[0.02,0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.032,0.032,0.032],"color":[1.0,0.0,0.0],"smooth":0.4,"metal":0.0},
+  {"name":"RedSpot4","shape":"sphere","pos":[-0.06,0.0,-0.08],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[1.0,0.0,0.0],"smooth":0.4,"metal":0.0},
+  {"name":"RedSpot5","shape":"sphere","pos":[0.15,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[1.0,0.0,0.0],"smooth":0.4,"metal":0.0}
+]}

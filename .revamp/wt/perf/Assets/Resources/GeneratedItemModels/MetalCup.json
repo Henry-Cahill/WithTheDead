@@ -1,0 +1,8 @@
+{"version": 1, "id": "MetalCup", "baseHeight": 0.122, "name": "Metal Cup", "model": "gpt-oss:120b", "notes": "Metal cup about 8 cm wide × 12 cm tall, thin‑walled steel with a small side handle. Built from an outer shell cylinder, inner cavity cylinder, top rim disc and a simple rectangular handle made of two cylinders.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[0.007,-0.002,0.007],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[0.007,-0.004,0.007],"rot":[0.0,0.0,0.0],"size":[0.07,0.108,0.07],"color":[0.38,0.36,0.32],"smooth":0.5,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.007,0.06,0.007],"rot":[0.0,0.0,0.0],"size":[0.082,0.004,0.082],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[-0.018,0.033,-0.038],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"HandleLoop","shape":"cylinder","pos":[-0.018,0.033,-0.008],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BasePlate","shape":"cylinder","pos":[0.007,-0.058,0.007],"rot":[0.0,0.0,0.0],"size":[0.074,0.008,0.074],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

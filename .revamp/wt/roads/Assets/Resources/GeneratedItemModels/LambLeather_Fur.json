@@ -1,0 +1,19 @@
+{"version": 1, "id": "LambLeather_Fur", "baseHeight": 0.1215, "name": "Lamb Leather Fur", "model": "gpt-oss:120b", "notes": "Loose lamb leather fur pile about 0.40 m wide × 0.30 m long, up to ~0.07 m high. A thin base‑pelt gives the overall silhouette; fluffy patches are made from squashed ellipsoids (scaled spheres) and a few slender hair‑tuft cylinders give the impression of soft fur. Slight colour variations add depth while keeping the main tint 0.6, 0.58, 0.5.", "score": 6, "parts": [
+  {"name":"BasePelt","shape":"cube","pos":[-0.04,-0.041,-0.005],"rot":[0.0,0.0,0.0],"size":[0.4,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"FluffA","shape":"sphere","pos":[-0.14,-0.0085,-0.085],"rot":[0.0,0.0,0.0],"size":[0.18,0.09,0.14],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"FluffB","shape":"sphere","pos":[0.08,-0.0035,-0.045],"rot":[0.0,0.0,0.0],"size":[0.2,0.08,0.16],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FluffC","shape":"sphere","pos":[-0.1,-0.0155,0.095],"rot":[0.0,0.0,0.0],"size":[0.14,0.07,0.12],"color":[0.6,0.57,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffD","shape":"sphere","pos":[0.04,-0.0115,0.135],"rot":[0.0,0.0,0.0],"size":[0.16,0.09,0.13],"color":[0.59,0.56,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"FluffE","shape":"sphere","pos":[-0.19,-0.0135,0.015],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.1],"color":[0.61,0.59,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"FluffF","shape":"sphere","pos":[0.14,-0.0055,-0.125],"rot":[0.0,0.0,0.0],"size":[0.22,0.1,0.15],"color":[0.57,0.54,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"FluffG","shape":"sphere","pos":[-0.04,0.0015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.24,0.12,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HairTuft1","shape":"cylinder","pos":[-0.12,0.0085,-0.065],"rot":[90.0,0.0,0.0],"size":[0.012,0.07,0.012],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"HairTuft2","shape":"cylinder","pos":[0.0,0.0115,0.075],"rot":[90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.61,0.59,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"HairTuft3","shape":"cylinder","pos":[0.08,0.0045,-0.025],"rot":[90.0,0.0,0.0],"size":[0.011,0.065,0.011],"color":[0.59,0.56,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"HairTuft4","shape":"cylinder","pos":[-0.18,0.0065,0.115],"rot":[90.0,0.0,0.0],"size":[0.012,0.07,0.012],"color":[0.57,0.54,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"HairTuft5","shape":"cylinder","pos":[-0.04,0.0165,0.145],"rot":[90.0,0.0,0.0],"size":[0.01,0.08,0.01],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollFront","shape":"cylinder","pos":[0.16,-0.0415,-0.005],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.45,0.43,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRollBack","shape":"cylinder","pos":[-0.24,-0.0415,-0.005],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.45,0.43,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"TornPatch1","shape":"cube","pos":[0.11,-0.0355,0.115],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.02],"color":[0.52,0.5,0.42],"smooth":0.06,"metal":0.0},
+  {"name":"TornPatch2","shape":"cube","pos":[-0.17,-0.0385,-0.105],"rot":[0.0,0.0,0.0],"size":[0.025,0.012,0.018],"color":[0.52,0.5,0.42],"smooth":0.06,"metal":0.0}
+]}

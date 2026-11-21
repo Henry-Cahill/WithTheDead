@@ -1,0 +1,10 @@
+{"version": 1, "id": "PipeBombTriggered", "baseHeight": 0.095, "name": "Pipe Bomb Triggered", "model": "gpt-oss:120b", "notes": "Pipe bomb (metal pipe) 0.50 m long × 0.07 m diameter, lying on its side (X‑axis). Includes solid pipe body, end cap, front trigger box with orange fuse wire, and a few rivet details.", "score": 6, "parts": [
+  {"name":"PipeBody","shape":"cylinder","pos":[-0.02,0.0,-0.065],"rot":[0.0,0.0,90.0],"size":[0.07,0.5,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndCap","shape":"cube","pos":[0.24,0.0,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.07],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"TriggerBox","shape":"cube","pos":[0.24,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.03],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.5},
+  {"name":"FuseWire","shape":"cylinder","pos":[0.24,0.0,0.05],"rot":[90.0,0.0,0.0],"size":[0.008,0.1,0.008],"color":[0.9,0.4,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.17,0.0,-0.065],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"RivetC","shape":"sphere","pos":[-0.07,0.0,-0.065],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.03,0.0,-0.065],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFar","shape":"sphere","pos":[0.13,0.0,-0.065],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0}
+]}

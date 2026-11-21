@@ -1,0 +1,12 @@
+{"version": 1, "id": "SmallGasTank1", "baseHeight": 0.14, "name": "Small Gas Tank1", "model": "gpt-oss:120b", "notes": "Small steel gas tank ~0.30 m long × 0.15 m diameter, lying on its side with a valve knob and cap on the right‑hand end; thin label strip and a few rivets for detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0025,-0.005,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.15,0.3,0.15],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.1425,-0.005,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.02,0.15,0.15],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"EndCapR","shape":"cube","pos":[0.1375,-0.005,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.02,0.15,0.15],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"ValveBody","shape":"cylinder","pos":[0.1275,0.025,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.48,0.46,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"ValveCap","shape":"sphere","pos":[0.1275,0.055,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.42,0.4,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.0025,-0.005,0.0785],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.004],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Rivet1","shape":"cylinder","pos":[-0.0825,0.01,0.0735],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"cylinder","pos":[-0.0025,0.01,-0.0765],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"cylinder","pos":[0.0775,0.01,0.0735],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet4","shape":"cylinder","pos":[0.1275,0.01,-0.0765],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Emerald", "baseHeight": 0.0675, "name": "Emerald", "model": "gpt-oss:120b", "notes": "Small emerald gem ~2 cm across, lying on its side (longest axis along X). Main body is a green‑tinted ellipsoid, with a thin table facet at the +X end and a tiny white sparkle highlight.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0037,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":0.0},
+  {"name":"TableFacet","shape":"cube","pos":[0.0163,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.02],"color":[0.65,0.63,0.55],"smooth":0.7,"metal":0.0},
+  {"name":"Highlight","shape":"sphere","pos":[0.0137,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[1.0,1.0,1.0],"smooth":0.9,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0037,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.025,0.002,0.025],"color":[0.58,0.55,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"BaseSupport","shape":"cube","pos":[-0.0088,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"SideFacetL","shape":"cube","pos":[-0.0013,0.0015,0.008],"rot":[0.0,15.0,0.0],"size":[0.004,0.002,0.01],"color":[0.62,0.6,0.52],"smooth":0.65,"metal":0.0},
+  {"name":"SideFacetR","shape":"cube","pos":[-0.0013,0.0015,-0.008],"rot":[0.0,-15.0,0.0],"size":[0.004,0.002,0.01],"color":[0.62,0.6,0.52],"smooth":0.65,"metal":0.0}
+]}

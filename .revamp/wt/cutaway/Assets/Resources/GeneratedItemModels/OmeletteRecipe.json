@@ -1,0 +1,9 @@
+{"version": 1, "id": "OmeletteRecipe", "baseHeight": 0.14, "name": "Omelette Recipe", "model": "gpt-oss:120b", "notes": "Small cardboard box for instant omelette mix, 0.12 m × 0.08 m × 0.16 m total (base + lid). Yellow‑egg tint on the outer packaging; brownish cardboard base colour with a foil‑packet inside and a front label.", "score": 6, "parts": [
+  {"name":"BaseBox","shape":"cube","pos":[0.0,-0.01,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.12,0.14,0.08],"color":[0.55,0.45,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.07,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"InnerFoilPack","shape":"cube","pos":[0.0,-0.005,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.06],"color":[0.85,0.8,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.01,0.0398],"rot":[0.0,0.0,0.0],"size":[0.11,0.03,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorder","shape":"cube","pos":[0.0,0.01,0.0408],"rot":[0.0,0.0,0.0],"size":[0.112,0.032,0.002],"color":[0.45,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.068,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.122,0.004,0.082],"color":[0.55,0.45,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.078,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.122,0.004,0.082],"color":[0.55,0.45,0.3],"smooth":0.1,"metal":0.0}
+]}

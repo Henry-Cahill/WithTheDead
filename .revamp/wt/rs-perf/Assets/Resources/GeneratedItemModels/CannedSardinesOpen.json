@@ -1,0 +1,11 @@
+{"version": 1, "id": "CannedSardinesOpen", "baseHeight": 0.1205, "name": "Canned Sardines Open", "model": "gpt-oss:120b", "notes": "Open sardine tin ~0.09 m diameter × 0.12 m tall: steel cylinder with thin top rim, side label in the item tint, a shallow oil surface and several small fish pieces floating inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.12,0.09],"color":[0.78,0.79,0.81],"smooth":0.55,"metal":0.9},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.0585,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.004,0.092],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":0.9},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.018,0.09],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"OilSurface","shape":"cylinder","pos":[0.0,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.09],"color":[0.92,0.86,0.62],"smooth":0.1,"metal":0.0},
+  {"name":"Fish1","shape":"sphere","pos":[-0.015,-0.0205,0.02],"rot":[0.0,0.0,0.0],"size":[0.022,0.012,0.018],"color":[0.85,0.55,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Fish2","shape":"sphere","pos":[0.01,-0.0155,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.01,0.016],"color":[0.84,0.53,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"Fish3","shape":"sphere","pos":[0.02,-0.0225,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.011,0.017],"color":[0.86,0.57,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"Fish4","shape":"sphere","pos":[-0.01,-0.0185,-0.02],"rot":[0.0,0.0,0.0],"size":[0.019,0.01,0.015],"color":[0.83,0.51,0.27],"smooth":0.05,"metal":0.0},
+  {"name":"Fish5","shape":"sphere","pos":[0.0,-0.0255,0.0],"rot":[0.0,0.0,0.0],"size":[0.021,0.012,0.019],"color":[0.85,0.55,0.3],"smooth":0.05,"metal":0.0}
+]}

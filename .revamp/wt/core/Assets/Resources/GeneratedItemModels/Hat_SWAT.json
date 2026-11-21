@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_SWAT", "baseHeight": 0.1205, "name": "Hat SWAT", "model": "gpt-oss:120b", "notes": "Flat SWAT tactical hat laid out like a product photo – crown 0.22 m diameter × 0.12 m tall, wide brim 0.28 m diameter × 0.015 m thick, two front straps and a small logo patch. Overall footprint ≈ 0.30 m across, thickness ≤ 0.15 m.", "score": 7, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.053,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFrontL","shape":"cube","pos":[-0.04,-0.0485,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.02],"color":[0.52,0.47,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFrontR","shape":"cube","pos":[-0.04,-0.0485,-0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.02],"color":[0.52,0.47,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[-0.06,0.0295,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.005],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSeam","shape":"cylinder","pos":[0.0,0.0585,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.22],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.0455,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.28],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

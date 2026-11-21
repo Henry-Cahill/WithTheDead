@@ -1,0 +1,13 @@
+{"version": 1, "id": "Tongs", "baseHeight": 0.0837, "name": "Tongs", "model": "gpt-oss:120b", "notes": "Metal kitchen‑style tongs ~0.32 m long, 2 cm thick, lying on the floor slightly opened. Two arms (cylinders) meet at a central hinge cube; rubber grips and tip caps give recognizable silhouette.", "score": 7, "parts": [
+  {"name":"LeftArm","shape":"cylinder","pos":[-0.075,-0.0112,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.15,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RightArm","shape":"cylinder","pos":[0.075,-0.0112,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.15,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Hinge","shape":"cube","pos":[0.0,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"GripLeft","shape":"cylinder","pos":[-0.13,0.0038,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.04,0.04],"color":[0.2,0.15,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"GripRight","shape":"cylinder","pos":[0.13,0.0038,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.04,0.04],"color":[0.2,0.15,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"TipLeft","shape":"sphere","pos":[-0.17,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TipRight","shape":"sphere","pos":[0.17,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.03,0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.03,0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"BandLeft","shape":"cylinder","pos":[-0.09,-0.0032,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.008,0.03],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"BandRight","shape":"cylinder","pos":[0.09,-0.0032,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.008,0.03],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":1.0}
+]}

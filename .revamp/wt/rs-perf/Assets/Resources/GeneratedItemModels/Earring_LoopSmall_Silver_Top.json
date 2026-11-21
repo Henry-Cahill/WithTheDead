@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_LoopSmall_Silver_Top", "baseHeight": 0.0702, "name": "Earring Loop Small Silver Top", "model": "gpt-oss:120b", "notes": "Small silver hoop earring, about 2 cm across, 3 mm thick. Lying flat on the floor; main shape is a thin circular ring approximated by two crossing cylinders to give a clear silhouette, with a tiny polished bead at the top as a decorative tip.", "score": 7, "parts": [
+  {"name":"RingX","shape":"cylinder","pos":[0.0,-0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.003,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RingZ","shape":"cylinder","pos":[0.0,-0.0002,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.003,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TopBead","shape":"sphere","pos":[0.0,0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.78,0.77,0.74],"smooth":0.65,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.002,0.002],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeRimZ","shape":"cylinder","pos":[0.0,0.0013,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.002,0.002],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0}
+]}

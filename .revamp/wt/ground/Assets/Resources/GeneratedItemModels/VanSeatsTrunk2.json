@@ -1,0 +1,15 @@
+{"version": 1, "id": "VanSeatsTrunk2", "baseHeight": 0.1275, "name": "Van Seats Trunk2", "model": "gpt-oss:120b", "notes": "Van seat cushion (trunk style) about 0.48 m wide × 0.55 m deep × 0.12 m thick, lying flat on the floor. Main cloth‑covered pad with raised front/back and side bolsters, thin metal frame strips around the perimeter.", "score": 7, "parts": [
+  {"name":"BasePad","shape":"cube","pos":[0.0,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.09,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontEdge","shape":"cube","pos":[0.0,0.0375,0.25],"rot":[0.0,0.0,0.0],"size":[0.48,0.03,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackEdge","shape":"cube","pos":[0.0,0.0375,-0.25],"rot":[0.0,0.0,0.0],"size":[0.48,0.03,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSide","shape":"cube","pos":[-0.215,0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightSide","shape":"cube","pos":[0.215,0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MetalFrontBar","shape":"cube","pos":[0.0,0.06,0.25],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.008],"color":[0.15,0.15,0.15],"smooth":0.6,"metal":1.0},
+  {"name":"MetalBackBar","shape":"cube","pos":[0.0,0.06,-0.25],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.008],"color":[0.15,0.15,0.15],"smooth":0.6,"metal":1.0},
+  {"name":"MetalLeftBar","shape":"cube","pos":[-0.215,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.55],"color":[0.15,0.15,0.15],"smooth":0.6,"metal":1.0},
+  {"name":"MetalRightBar","shape":"cube","pos":[0.215,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.55],"color":[0.15,0.15,0.15],"smooth":0.6,"metal":1.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,0.0515,0.245],"rot":[90.0,0.0,0.0],"size":[0.48,0.002,0.002],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,0.0515,-0.245],"rot":[90.0,0.0,0.0],"size":[0.48,0.002,0.002],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.21,0.0515,0.0],"rot":[90.0,0.0,90.0],"size":[0.55,0.002,0.002],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.21,0.0515,0.0],"rot":[90.0,0.0,90.0],"size":[0.55,0.002,0.002],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0}
+]}

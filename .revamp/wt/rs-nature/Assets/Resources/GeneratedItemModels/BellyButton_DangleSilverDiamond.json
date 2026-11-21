@@ -1,0 +1,12 @@
+{"version": 1, "id": "BellyButton_DangleSilverDiamond", "baseHeight": 0.068, "name": "Belly Button Dangle Silver Diamond", "model": "gpt-oss:120b", "notes": "Small silver dangle charm ~4 cm long, 1.5 cm wide: thin chain lying flat, a clasp plate with rivets and a tiny loop at the end, a flattened silver pendant base and an elongated white diamond gem hanging from it. Total height ≈0.01 m, width≈0.04 m.", "score": 6, "parts": [
+  {"name":"ChainMain","shape":"cylinder","pos":[0.003,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.04,0.004],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ChainLinkMid","shape":"cylinder","pos":[0.003,0.002,0.0],"rot":[90.0,0.0,0.0],"size":[0.003,0.012,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ClaspPlate","shape":"cube","pos":[-0.019,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.002],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ClaspRivetL","shape":"sphere","pos":[-0.022,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"ClaspRivetR","shape":"sphere","pos":[-0.016,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EndLoop","shape":"cylinder","pos":[-0.019,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"PendantBase","shape":"sphere","pos":[0.003,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"DiamondGem","shape":"sphere","pos":[0.003,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.95,0.97,1.0],"smooth":0.7,"metal":0.0},
+  {"name":"GemFacetTop","shape":"cube","pos":[0.003,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.97,1.0],"smooth":0.7,"metal":0.0},
+  {"name":"GemFacetSide","shape":"cube","pos":[0.005,-0.0045,0.0],"rot":[0.0,45.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.97,1.0],"smooth":0.7,"metal":0.0}
+]}

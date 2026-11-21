@@ -1,0 +1,12 @@
+{"version": 1, "id": "SushiEgg", "baseHeight": 0.0727, "name": "Sushi Egg", "model": "gpt-oss:120b", "notes": "Sushi egg pack – rectangular clear‑plastic tray (≈0.12 m × 0.08 m × 0.03 m) with thin walls, a snap‑on lid, and four yellow‑tinted oval egg pieces inside. The eggs are about 4 cm long and sit on the base of the tray.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0001,-0.0103,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"WallFront","shape":"cube","pos":[0.0001,-0.0003,0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.005],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"WallBack","shape":"cube","pos":[0.0001,-0.0003,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.005],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"WallLeft","shape":"cube","pos":[-0.0574,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.08],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"WallRight","shape":"cube","pos":[0.0576,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.08],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0001,0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.003,0.082],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"Egg1","shape":"sphere","pos":[-0.0449,-0.0003,0.0],"rot":[0.0,5.0,0.0],"size":[0.04,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Egg2","shape":"sphere","pos":[-0.0149,-0.0003,0.0],"rot":[0.0,-3.0,0.0],"size":[0.04,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Egg3","shape":"sphere","pos":[0.0151,-0.0003,0.0],"rot":[0.0,2.0,0.0],"size":[0.04,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Egg4","shape":"sphere","pos":[0.0451,-0.0003,0.0],"rot":[0.0,-4.0,0.0],"size":[0.04,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

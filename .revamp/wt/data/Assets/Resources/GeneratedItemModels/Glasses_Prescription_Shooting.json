@@ -1,0 +1,12 @@
+{"version": 1, "id": "Glasses_Prescription_Shooting", "baseHeight": 0.065, "name": "Glasses Prescription Shooting", "model": "gpt-oss:120b", "notes": "Flat layout of prescription shooting glasses (≈0.16 m wide × 0.05 m tall × 0.01 m thick). Includes two tinted glass lenses, thin plastic frames, a central bridge, left/right temples and tiny metal screws at the hinges plus a nose‑pad.", "score": 6, "parts": [
+  {"name":"LensL","shape":"cylinder","pos":[-0.035,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.008,0.045],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.035,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.008,0.045],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"FrameL","shape":"cube","pos":[-0.035,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.01,0.055],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrameR","shape":"cube","pos":[0.035,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.01,0.055],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.08,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.13,0.01],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TempleR","shape":"cylinder","pos":[0.08,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.13,0.01],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ScrewL","shape":"sphere","pos":[-0.145,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.8,0.8,0.8],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewR","shape":"sphere","pos":[0.145,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.8,0.8,0.8],"smooth":0.5,"metal":1.0},
+  {"name":"NosePad","shape":"sphere","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0}
+]}

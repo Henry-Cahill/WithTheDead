@@ -1,0 +1,12 @@
+{"version": 1, "id": "Smallanimalmeat", "baseHeight": 0.0825, "name": "Smallanimalmeat", "model": "gpt-oss:120b", "notes": "Small animal meat vacuum‑packed pouch ~9 cm wide × 4 cm tall × 6 cm deep. Thin plastic walls, a dark label on the front, a small twist‑tie clip at the top and a visible lump of meat inside.", "score": 6, "parts": [
+  {"name":"FrontWall","shape":"cube","pos":[0.0,-0.0,0.0294],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.78,0.7,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BackWall","shape":"cube","pos":[0.0,-0.0,-0.0295],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.78,0.7,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LeftWall","shape":"cube","pos":[-0.0445,-0.0,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.06],"color":[0.78,0.7,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RightWall","shape":"cube","pos":[0.0445,-0.0,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.06],"color":[0.78,0.7,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.0195,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.78,0.7,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0195,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.78,0.7,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LabelFront","shape":"cylinder","pos":[0.0,0.0005,0.0305],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.058],"color":[0.4,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"MeatLump","shape":"sphere","pos":[0.0,-0.0075,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.05],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"ClipTie","shape":"cylinder","pos":[0.0,0.0215,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.015],"color":[0.3,0.3,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"SeamTopRim","shape":"cylinder","pos":[0.0,0.0205,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.062],"color":[0.7,0.62,0.45],"smooth":0.2,"metal":0.0}
+]}

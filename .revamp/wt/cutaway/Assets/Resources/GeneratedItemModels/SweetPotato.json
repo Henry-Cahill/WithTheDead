@@ -1,0 +1,8 @@
+{"version": 1, "id": "SweetPotato", "baseHeight": 0.1175, "name": "Sweet Potato", "model": "gpt-oss:120b", "notes": "Loose sweet potato in a small paper bag, 0.18 m long x 0.07 m wide. Bag is brown paper, potato orange‑brown with a green leaf tip and a dark spot for texture.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[0.0,-0.0375,-0.005],"rot":[0.0,0.0,0.0],"size":[0.15,0.04,0.15],"color":[0.5,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[0.0,-0.0125,-0.005],"rot":[0.0,0.0,0.0],"size":[0.16,0.005,0.16],"color":[0.55,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"Potato","shape":"sphere","pos":[0.0,-0.0225,-0.005],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.07],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"LeafTip","shape":"cylinder","pos":[0.07,0.0275,-0.005],"rot":[0.0,0.0,0.0],"size":[0.03,0.06,0.03],"color":[0.1,0.4,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"Spot","shape":"sphere","pos":[-0.04,-0.0125,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BagString","shape":"cylinder","pos":[0.0,-0.0125,0.065],"rot":[90.0,0.0,0.0],"size":[0.005,0.04,0.005],"color":[0.45,0.3,0.15],"smooth":0.12,"metal":0.0}
+]}

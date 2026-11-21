@@ -1,0 +1,21 @@
+{"version": 1, "id": "Corset", "baseHeight": 0.0805, "name": "Corset", "model": "gpt-oss:120b", "notes": "Corset laid flat (y = 0). Hour‑glass silhouette made from three overlapping panels (bust, waist, hips) in the given muted tint, a lighter inner lining, vertical steel boning strips along the front and back edges, a row of metal eyelets for lacing on the back centre line, two small lace‑loop cylinders at the front edges, and two shallow “cup” shapes at the upper front corners to hint at bust shapin", "score": 6, "parts": [
+  {"name":"OuterBustPanel","shape":"cube","pos":[0.0,-0.0065,-0.001],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.28],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"OuterWaistPanel","shape":"cube","pos":[0.0,-0.0065,-0.001],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"OuterHipPanel","shape":"cube","pos":[0.0,-0.0065,-0.001],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.26],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLining","shape":"cube","pos":[0.0,-0.0035,-0.001],"rot":[0.0,0.0,0.0],"size":[0.44,0.018,0.26],"color":[0.73,0.71,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"BoningFrontLeft","shape":"cylinder","pos":[-0.225,-0.0065,0.139],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BoningFrontRight","shape":"cylinder","pos":[0.225,-0.0065,0.139],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BoningBackLeft","shape":"cylinder","pos":[-0.225,-0.0065,-0.141],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BoningBackRight","shape":"cylinder","pos":[0.225,-0.0065,-0.141],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletBack01","shape":"cube","pos":[-0.18,-0.0115,-0.141],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"EyeletBack02","shape":"cube","pos":[-0.12,-0.0115,-0.141],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"EyeletBack03","shape":"cube","pos":[-0.06,-0.0115,-0.141],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"EyeletBack04","shape":"cube","pos":[0.0,-0.0115,-0.141],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"EyeletBack05","shape":"cube","pos":[0.06,-0.0115,-0.141],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"EyeletBack06","shape":"cube","pos":[0.12,-0.0115,-0.141],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"EyeletBack07","shape":"cube","pos":[0.18,-0.0115,-0.141],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"LaceLoopFrontLeft","shape":"cylinder","pos":[-0.2,-0.0025,0.139],"rot":[0.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.3,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"LaceLoopFrontRight","shape":"cylinder","pos":[0.2,-0.0025,0.139],"rot":[0.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.3,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"BustCupLeft","shape":"sphere","pos":[-0.12,0.0005,0.069],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.05],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"BustCupRight","shape":"sphere","pos":[0.12,0.0005,0.069],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.05],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0}
+]}

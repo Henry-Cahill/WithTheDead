@@ -1,0 +1,8 @@
+{"version": 1, "id": "Dung_Raccoon", "baseHeight": 0.0813, "name": "Dung Raccoon", "model": "gpt-oss:120b", "notes": "Small clump of raccoon dung ~0.10 m wide x 0.05 m tall, lying on the ground as an irregular mound made from overlapping soft ellipsoids.", "score": 6, "parts": [
+  {"name":"Core","shape":"sphere","pos":[-0.0037,-0.0013,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SideL","shape":"sphere","pos":[-0.0388,-0.0063,-0.0213],"rot":[0.0,0.0,0.0],"size":[0.045,0.025,0.05],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"SideR","shape":"sphere","pos":[0.0363,-0.0033,0.0238],"rot":[0.0,0.0,0.0],"size":[0.05,0.028,0.045],"color":[0.62,0.6,0.52],"smooth":0.2,"metal":0.0},
+  {"name":"TopNub","shape":"sphere","pos":[-0.0037,0.0138,0.0287],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BottomFlat","shape":"cube","pos":[-0.0037,-0.0163,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.09,0.01,0.07],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"WetSpot","shape":"sphere","pos":[-0.0187,0.0007,-0.0312],"rot":[0.0,0.0,0.0],"size":[0.018,0.01,0.018],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0}
+]}

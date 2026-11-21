@@ -1,0 +1,8 @@
+{"version": 1, "id": "ZucchiniSeed", "baseHeight": 0.069, "name": "Zucchini Seed", "model": "gpt-oss:120b", "notes": "Zucchini seed about 2 cm long × 8 mm wide × 4 mm thick, lying on its side (long axis along +X). Main ellipsoid body with a subtle longitudinal ridge and a dark hilum spot.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,-0.0015,0.0012],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Ridge","shape":"cylinder","pos":[0.0,0.0,0.0012],"rot":[0.0,0.0,90.0],"size":[0.018,0.002,0.002],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Hilum","shape":"sphere","pos":[-0.006,-0.001,0.003],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"SurfaceRidgeL","shape":"cube","pos":[-0.008,0.0003,0.0012],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.002],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SurfaceRidgeR","shape":"cube","pos":[0.008,0.0003,0.0012],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.002],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[0.0,-0.0015,-0.003],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

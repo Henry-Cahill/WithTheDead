@@ -1,0 +1,12 @@
+{"version": 1, "id": "ThighWood_L", "baseHeight": 0.125, "name": "Thigh Wood L", "model": "gpt-oss:120b", "notes": "Wooden thigh‑shaped log L, ~0.45 m long × 0.13 m thick, tapering at both ends, with a dark bark strip, a knot, grain lines and small splinters for detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0198,0.0,-0.0033],"rot":[0.0,0.0,0.0],"size":[0.45,0.13,0.13],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CapLeft","shape":"cylinder","pos":[-0.2202,-0.015,-0.0033],"rot":[0.0,0.0,90.0],"size":[0.1,0.03,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CapRight","shape":"cylinder","pos":[0.2598,-0.015,-0.0033],"rot":[0.0,0.0,90.0],"size":[0.1,0.03,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BarkStrip","shape":"cylinder","pos":[0.0198,-0.03,-0.0033],"rot":[0.0,0.0,90.0],"size":[0.07,0.4,0.07],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[0.1198,0.015,0.0467],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"Grain1","shape":"cube","pos":[-0.1002,0.005,0.0367],"rot":[0.0,0.0,5.0],"size":[0.35,0.006,0.02],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Grain2","shape":"cube","pos":[0.0998,0.005,-0.0333],"rot":[0.0,0.0,-7.0],"size":[0.3,0.006,0.018],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"SplinterA","shape":"cube","pos":[-0.1602,0.025,0.0567],"rot":[10.0,0.0,-12.0],"size":[0.03,0.015,0.02],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"SplinterB","shape":"cube","pos":[0.2198,0.025,-0.0533],"rot":[-8.0,0.0,14.0],"size":[0.028,0.014,0.022],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RoughEdge","shape":"cube","pos":[-0.2002,-0.005,-0.0433],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.05],"color":[0.5,0.48,0.44],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Rosemary", "baseHeight": 0.0837, "name": "Rosemary", "model": "gpt-oss:120b", "notes": "Rosemary bunch ~0.12 m long, ~0.02 m thick, lying on its side (long axis along X). Tied with a thin brown twine, small white label tag, and a few visible sprig leaves.", "score": 6, "parts": [
+  {"name":"Bundle","shape":"cylinder","pos":[0.0,-0.0112,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Twine","shape":"cylinder","pos":[0.0,-0.0062,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.12,0.025],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"StemLeft","shape":"cylinder","pos":[-0.06,-0.0112,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"StemRight","shape":"cylinder","pos":[0.06,-0.0112,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.05,0.0108,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.01],"color":[0.9,0.9,0.9],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.05,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.008],"color":[0.1,0.1,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"LeafL","shape":"sphere","pos":[-0.04,0.0038,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.035,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafR","shape":"sphere","pos":[-0.04,0.0038,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.035,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafExtraL","shape":"sphere","pos":[0.03,0.0038,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafExtraR","shape":"sphere","pos":[0.03,0.0038,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

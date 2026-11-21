@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_Denim", "baseHeight": 0.075, "name": "Trousers Denim", "model": "gpt-oss:120b", "notes": "Flat denim trousers laid out for a product view – about 1.00 m long, 0.52 m wide and 0.03 m thick. Main pieces are the two leg panels, a waistband strip, a front pocket on the right side, a back pocket centered, and dark stitching trims along the outer edges.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[0.055,0.0,-0.1375],"rot":[0.0,0.0,0.0],"size":[0.96,0.03,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.055,0.0,0.1425],"rot":[0.0,0.0,0.0],"size":[0.96,0.03,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.535,0.0,0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.52],"color":[0.2,0.15,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.275,0.0,0.3025],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketTrim","shape":"cylinder","pos":[0.275,0.0075,0.3375],"rot":[0.0,0.0,90.0],"size":[0.006,0.18,0.006],"color":[0.2,0.15,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[-0.145,0.0,-0.2975],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocketTrim","shape":"cylinder","pos":[-0.145,0.0075,-0.3375],"rot":[0.0,0.0,90.0],"size":[0.006,0.22,0.006],"color":[0.2,0.15,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"OuterSeamL","shape":"cylinder","pos":[0.055,0.0,-0.2575],"rot":[0.0,0.0,90.0],"size":[0.006,0.96,0.006],"color":[0.2,0.15,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"OuterSeamR","shape":"cylinder","pos":[0.055,0.0,0.2625],"rot":[0.0,0.0,90.0],"size":[0.006,0.96,0.006],"color":[0.2,0.15,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchSeam","shape":"cylinder","pos":[0.055,0.0,0.0025],"rot":[0.0,0.0,90.0],"size":[0.006,0.96,0.006],"color":[0.2,0.15,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cylinder","pos":[-0.425,0.0075,-0.1375],"rot":[0.0,0.0,90.0],"size":[0.006,0.24,0.006],"color":[0.2,0.15,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cylinder","pos":[-0.425,0.0075,0.1425],"rot":[0.0,0.0,90.0],"size":[0.006,0.24,0.006],"color":[0.2,0.15,0.25],"smooth":0.05,"metal":0.0}
+]}

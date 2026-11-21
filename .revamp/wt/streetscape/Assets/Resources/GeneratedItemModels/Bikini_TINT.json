@@ -1,0 +1,12 @@
+{"version": 1, "id": "Bikini_TINT", "baseHeight": 0.08, "name": "Bikini TINT", "model": "gpt-oss:120b", "notes": "Bikini (tint 0.6, 0.58, 0.5) lying flat on the floor. Two‑piece set about 0.55 m wide × 0.30 m deep × 0.02 m thick. Top: front panel, back panel and two shoulder straps. Bottom: front piece, back piece and side flaps that give the brief shape.", "score": 6, "parts": [
+  {"name":"TopFront","shape":"cube","pos":[-0.095,-0.005,0.02],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopBack","shape":"cube","pos":[-0.095,-0.005,-0.1],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopCenter","shape":"cube","pos":[-0.095,-0.005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.185,0.0,0.02],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[-0.005,0.0,0.02],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BottomFront","shape":"cube","pos":[0.175,-0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BottomBack","shape":"cube","pos":[0.175,-0.005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlapL","shape":"cube","pos":[0.315,-0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlapR","shape":"cube","pos":[0.315,-0.005,-0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cylinder","pos":[0.175,0.0,0.02],"rot":[90.0,0.0,0.0],"size":[0.04,0.28,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

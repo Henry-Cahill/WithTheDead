@@ -1,0 +1,8 @@
+{"version": 1, "id": "IcePick", "baseHeight": 0.09, "name": "Ice Pick", "model": "gpt-oss:120b", "notes": "Ice pick ~0.80 m long lying on its side (X‑axis). Steel shaft with a thin metal guard, tapered tip and a leather‑wrapped grip ending in a rounded knob.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0163,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.8,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Guard","shape":"cylinder","pos":[0.3337,-0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.05,0.025],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.4187,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.07,0.04],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"GripWrap","shape":"sphere","pos":[-0.4313,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.5,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EndKnob","shape":"sphere","pos":[-0.4313,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TipEdge","shape":"cube","pos":[0.4537,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.04],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0}
+]}

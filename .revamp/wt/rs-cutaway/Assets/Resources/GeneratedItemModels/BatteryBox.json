@@ -1,0 +1,13 @@
+{"version": 1, "id": "BatteryBox", "baseHeight": 0.1225, "name": "Battery Box", "model": "gpt-oss:120b", "notes": "Battery box ~0.30 m wide × 0.20 m deep × 0.12 m tall lying on its side: sturdy rectangular body in brown‑tinted plastic, hinged lid that overhangs, front latch, two side vents, a small top handle and four metal rivets for detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0175,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.3,0.09,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0375,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.302,0.02,0.202],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0175,0.097],"rot":[0.0,0.0,0.0],"size":[0.3,0.07,0.01],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Latch","shape":"cube","pos":[0.0,0.0175,0.1035],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.012],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":0.8},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.0525,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"VentLeft","shape":"cylinder","pos":[-0.151,-0.0025,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":0.8},
+  {"name":"VentRight","shape":"cylinder","pos":[0.151,-0.0025,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":0.8},
+  {"name":"RivetTL","shape":"cube","pos":[-0.145,0.0475,0.0865],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":0.8},
+  {"name":"RivetTR","shape":"cube","pos":[0.145,0.0475,0.0865],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":0.8},
+  {"name":"RivetBL","shape":"cube","pos":[-0.145,0.0475,-0.1035],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":0.8},
+  {"name":"RivetBR","shape":"cube","pos":[0.145,0.0475,-0.1035],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":0.8}
+]}

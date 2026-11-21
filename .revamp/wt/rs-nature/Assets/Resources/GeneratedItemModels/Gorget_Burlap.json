@@ -1,0 +1,12 @@
+{"version": 1, "id": "Gorget_Burlap", "baseHeight": 0.071, "name": "Gorget Burlap", "model": "gpt-oss:120b", "notes": "Flat burlap gorget fabric ~0.38 m wide × 0.22 m long × 0.018 m thick, with a torn corner and a few stitched detail points to hint at its cloth nature.", "score": 7, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.002,-0.0065],"rot":[0.0,0.0,0.0],"size":[0.38,0.018,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TornCorner","shape":"cube","pos":[-0.165,-0.002,-0.0915],"rot":[0.0,0.0,0.0],"size":[0.05,0.018,0.05],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch1","shape":"cylinder","pos":[-0.12,0.009,0.0635],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch2","shape":"cylinder","pos":[0.08,0.009,-0.0665],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch3","shape":"cylinder","pos":[-0.02,0.009,-0.0065],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch4","shape":"cylinder","pos":[0.15,0.009,0.0835],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch5","shape":"cylinder","pos":[-0.18,0.009,-0.0965],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch6","shape":"cylinder","pos":[0.0,0.009,-0.1065],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch7","shape":"cylinder","pos":[-0.07,0.009,0.1135],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch8","shape":"cylinder","pos":[0.12,0.009,-0.0265],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

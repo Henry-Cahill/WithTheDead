@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shirt_Lumberjack_Green", "baseHeight": 0.0725, "name": "Shirt Lumberjack Green", "model": "gpt-oss:120b", "notes": "Flat lumberjack shirt ~0.60 m long (neck to hem) x 0.45 m wide, 2.5 cm thick. Fabric tint 0.55 0.50 0.60; includes collar, front placket with four metal buttons, chest pocket, left/right sleeves with cuffs, and a bottom hem.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.1175,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.4175,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Placket","shape":"cube","pos":[0.1475,0.0,0.011],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.2375,0.0025,0.011],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.015],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.2875,0.0025,0.011],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.015],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.3375,0.0025,0.011],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.015],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.3875,0.0025,0.011],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.015],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.2375,-0.0025,-0.335],"rot":[0.0,-20.0,0.0],"size":[0.35,0.02,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.2375,-0.0025,0.335],"rot":[0.0,20.0,0.0],"size":[0.35,0.02,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.2375,-0.0025,-0.45],"rot":[0.0,-20.0,0.0],"size":[0.35,0.015,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.2375,-0.0025,0.45],"rot":[0.0,20.0,0.0],"size":[0.35,0.015,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.0975,0.0,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[0.0875,0.0075,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.1775,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

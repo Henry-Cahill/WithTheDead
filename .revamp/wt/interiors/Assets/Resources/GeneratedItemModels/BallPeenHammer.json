@@ -1,0 +1,9 @@
+{"version": 1, "id": "BallPeenHammer", "baseHeight": 0.09, "name": "Ball Peen Hammer", "model": "gpt-oss:120b", "notes": "Ball‑peen hammer ~0.34 m long lying on its side: wooden handle along X, steel head at the +X end with a flat striking face (+Z) and a rounded peen (‑Z).", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.04,-0.0,0.0125],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.45,0.33,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.15,-0.0,0.0125],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"FlatFace","shape":"cube","pos":[0.15,0.005,0.0525],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BallPeen","shape":"sphere","pos":[0.15,-0.0,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFront","shape":"cylinder","pos":[0.15,0.02,0.0275],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBack","shape":"cylinder","pos":[0.15,0.02,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.11,-0.0,0.0125],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

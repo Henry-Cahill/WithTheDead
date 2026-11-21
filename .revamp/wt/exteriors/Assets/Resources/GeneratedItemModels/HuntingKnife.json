@@ -1,0 +1,8 @@
+{"version": 1, "id": "HuntingKnife", "baseHeight": 0.08, "name": "Hunting Knife", "model": "gpt-oss:120b", "notes": "Hunting knife ~0.40 m long lying on its side (X‑axis). Metal blade with a small crossguard, wooden cylindrical handle and a rounded metal pommel at the rear.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.075,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.03],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.06,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.135,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.13,0.03],"color":[0.4,0.25,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.215,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cube","pos":[0.225,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.025],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.075,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.245,0.002,0.032],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0}
+]}

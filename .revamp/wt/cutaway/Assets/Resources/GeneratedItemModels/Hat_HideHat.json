@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_HideHat", "baseHeight": 0.0975, "name": "Hat Hide Hat", "model": "gpt-oss:120b", "notes": "Flat hide hat laid out flat, 0.30 m brim diameter, crown radius 0.08 m (flattened to 0.04 m thickness) – outer/inner brim rings, leather band around the crown, stitching detail, inner lining and a small tag.", "score": 7, "parts": [
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.0285,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.018,0.28],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.04,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"sphere","pos":[0.0,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeatherBand","shape":"cylinder","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.164,0.006,0.164],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StitchOuter","shape":"cylinder","pos":[0.0,-0.0255,0.0],"rot":[0.0,0.0,0.0],"size":[0.302,0.004,0.302],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchInner","shape":"cylinder","pos":[0.0,-0.0265,0.0],"rot":[0.0,0.0,0.0],"size":[0.278,0.004,0.278],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,-0.0265,0.0],"rot":[0.0,0.0,0.0],"size":[0.304,0.002,0.304],"color":[0.25,0.22,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LiningInsideCrown","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.036,0.15],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"HatTag","shape":"cube","pos":[-0.08,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.7,0.65,0.75],"smooth":0.4,"metal":1.0}
+]}

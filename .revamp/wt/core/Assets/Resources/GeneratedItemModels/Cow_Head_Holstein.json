@@ -1,0 +1,15 @@
+{"version": 1, "id": "Cow_Head_Holstein", "baseHeight": 0.135, "name": "Cow Head Holstein", "model": "gpt-oss:120b", "notes": "Holstein cow head ~0.45 m long × 0.30 m wide × 0.15 m thick, lying on its side (long axis along +X). Main skull block with a protruding snout, curved horns, floppy ears, dark eyes and characteristic black‑white patches.", "score": 6, "parts": [
+  {"name":"SkullBlock","shape":"cube","pos":[-0.045,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.15,0.3],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Snout","shape":"sphere","pos":[0.21,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.09,0.14],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[-0.195,0.055,0.12],"rot":[90.0,0.0,0.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[-0.195,0.055,-0.12],"rot":[90.0,0.0,0.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[-0.095,0.04,0.16],"rot":[0.0,15.0,0.0],"size":[0.08,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[-0.095,0.04,-0.16],"rot":[0.0,-15.0,0.0],"size":[0.08,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.075,0.015,0.08],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.075,0.015,-0.08],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"NostrilL","shape":"sphere","pos":[0.24,-0.01,0.035],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"NostrilR","shape":"sphere","pos":[0.24,-0.01,-0.035],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"PatchEyeL","shape":"cube","pos":[0.075,0.0,0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.002],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"PatchEyeR","shape":"cube","pos":[0.075,0.0,-0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.002],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"MuzzlePatch","shape":"cube","pos":[0.235,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0}
+]}

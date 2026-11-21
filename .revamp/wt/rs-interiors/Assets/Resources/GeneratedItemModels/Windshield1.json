@@ -1,0 +1,10 @@
+{"version": 1, "id": "Windshield1", "baseHeight": 0.0703, "name": "Windshield1", "model": "gpt-oss:120b", "notes": "Windshield lying flat on the floor: main glass pane about 1.20 m wide × 0.65 m tall × 0.005 m thick with dark tint, rubber seal around all edges, a visible crack across the surface and two small broken shards nearby.", "score": 7, "parts": [
+  {"name":"GlassPane","shape":"cube","pos":[0.0,-0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.005,0.65],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"SealFront","shape":"cube","pos":[0.0,0.0028,0.335],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.02],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SealBack","shape":"cube","pos":[0.0,0.0028,-0.335],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.02],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SealLeft","shape":"cube","pos":[0.61,0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.65],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SealRight","shape":"cube","pos":[-0.61,0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.65],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"CrackLine","shape":"cube","pos":[-0.1,-0.0012,0.0],"rot":[0.0,12.0,0.0],"size":[1.0,0.002,0.02],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":0.0},
+  {"name":"ShardA","shape":"cube","pos":[-0.3,-0.0017,0.2],"rot":[5.0,-8.0,2.0],"size":[0.15,0.005,0.08],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":0.0},
+  {"name":"ShardB","shape":"cube","pos":[0.25,-0.0017,-0.15],"rot":[-3.0,10.0,-4.0],"size":[0.12,0.004,0.07],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":0.0}
+]}

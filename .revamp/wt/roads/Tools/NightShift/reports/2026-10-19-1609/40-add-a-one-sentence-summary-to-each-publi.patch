@@ -1,0 +1,98 @@
+diff --git a/Assets/Scripts/Quests/QuestBook.cs b/Assets/Scripts/Quests/QuestBook.cs
+index e778e73..a287993 100644
+--- a/Assets/Scripts/Quests/QuestBook.cs
++++ b/Assets/Scripts/Quests/QuestBook.cs
+@@ -40,6 +40,7 @@ public sealed class QuestDef
+     public static class QuestBook
+     {
+         private static readonly Dictionary<string, QuestDef> s_Defs = new Dictionary<string, QuestDef>();
++        /// <summary>Gets an enumeration of all defined quests.</summary>
+         public static IEnumerable<QuestDef> All => s_Defs.Values;
+ 
+         static QuestBook()
+@@ -114,6 +115,7 @@ private static Builder Q(string id, string giver, string title, string brief, in
+             return new Builder { D = d };
+         }
+ 
++        /// <summary>Gets a quest by its identifier, handling contracts if appropriate.</summary>
+         public static QuestDef Get(string id)
+         {
+             if (id == null) return null;
+@@ -123,6 +125,7 @@ public static QuestDef Get(string id)
+ 
+         #region Contracts
+         /// <summary>Today's contract ids (three, refreshed each hub day).</summary>
++        /// <summary>Returns the list of today's contract IDs for the given character.</summary>
+         public static List<string> TodaysContracts(CharacterProfile c)
+         {
+             var list = new List<string>();
+@@ -175,6 +178,7 @@ private static QuestDef Contract(string id)
+         #endregion
+ 
+         #region State
++        /// <summary>Determines whether the given quest is available for the character.</summary>
+         public static bool Available(CharacterProfile c, QuestDef d)
+         {
+             if (c == null || d == null) return false;
+@@ -185,6 +189,7 @@ public static bool Available(CharacterProfile c, QuestDef d)
+             return true;
+         }
+ 
++        /// <summary>Starts a quest for the character, initializing progress and saving state.</summary>
+         public static void Accept(CharacterProfile c, QuestDef d)
+         {
+             QuestState q = c.Quest(d.Id);
+@@ -196,8 +201,10 @@ public static void Accept(CharacterProfile c, QuestDef d)
+             ProfileStore.Save();
+         }
+ 
++        /// <summary>Checks if a particular objective of a quest is completed.</summary>
+         public static bool ObjectiveDone(QuestDef d, QuestState q, int i) => i < q.Progress.Count && q.Progress[i] >= d.Objectives[i].Count;
+ 
++        /// <summary>Returns true if all non-fetch objectives of the quest are done.</summary>
+         public static bool AllDone(QuestDef d, QuestState q)
+         {
+             for (int i = 0; i < d.Objectives.Count; i++)
+@@ -206,6 +213,7 @@ public static bool AllDone(QuestDef d, QuestState q)
+         }
+ 
+         /// <summary>Hands in what the fetch objectives need (found-in-raid where required) and pays out.</summary>
++        /// <summary>Attempts to turn in a quest, handing in fetch items and awarding rewards.</summary>
+         public static bool TryTurnIn(CharacterProfile c, QuestDef d, PlayerInventory carried, out string message)
+         {
+             QuestState q = c.Quest(d.Id);
+@@ -227,7 +235,8 @@ public static bool TryTurnIn(CharacterProfile c, QuestDef d, PlayerInventory car
+             return true;
+         }
+ 
+-        private static void Gather(QuestObjective o, Inventory inv, ref int need, List<(ItemStack, Inventory, int)> take)
++        /// <summary>Collects matching items from an inventory into a take list for a fetch objective.</summary>
++        private static void Gather(QuestObjective o, Inventory inv, ref int need, List<(ItemStack s, Inventory from, int n)> take)
+         {
+             if (inv == null || need <= 0) return;
+             foreach (ItemStack s in inv.Stacks)
+@@ -241,6 +250,7 @@ private static void Gather(QuestObjective o, Inventory inv, ref int need, List<(
+             }
+         }
+ 
++        /// <summary>Checks if an item matches a quest's target criteria.</summary>
+         private static bool Matches(string target, ItemDef d)
+         {
+             if (d == null) return false;
+@@ -253,6 +263,7 @@ private static bool Matches(string target, ItemDef d)
+             }
+         }
+ 
++        /// <summary>Returns a human‑readable name for a fetch‑type objective’s target, handling special cases.</summary>
+         public static string FetchName(QuestObjective o)
+         {
+             switch (o.Target)
+@@ -264,6 +275,8 @@ public static string FetchName(QuestObjective o)
+             }
+         }
+ 
++        }
++        
+         private static void Complete(CharacterProfile c, QuestDef d, QuestState q)
+         {
+             q.Status = QuestState.Done;

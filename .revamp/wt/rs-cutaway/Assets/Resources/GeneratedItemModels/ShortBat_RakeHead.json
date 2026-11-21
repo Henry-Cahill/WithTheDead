@@ -1,0 +1,14 @@
+{"version": 1, "id": "ShortBat_RakeHead", "baseHeight": 0.094, "name": "Short Bat Rake Head", "model": "gpt-oss:120b", "notes": "Short bat‑rake head ~0.45 m long, laid on its side (X axis). Metal bar + rectangular head plate with forward‑pointing spikes; steel tint 0.6,0.6,0.64.", "score": 6, "parts": [
+  {"name":"Bar","shape":"cube","pos":[-0.0765,-0.014,-0.01],"rot":[0.0,0.0,0.0],"size":[0.35,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HeadPlate","shape":"cube","pos":[0.1985,-0.004,-0.01],"rot":[0.0,0.0,0.0],"size":[0.1,0.06,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngCenter","shape":"cylinder","pos":[0.1985,-0.004,0.11],"rot":[90.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngLeft1","shape":"cylinder","pos":[0.1535,-0.004,0.11],"rot":[90.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngRight1","shape":"cylinder","pos":[0.2435,-0.004,0.11],"rot":[90.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngBackCenter","shape":"cylinder","pos":[0.1985,-0.004,-0.13],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngBackLeft","shape":"cylinder","pos":[0.1535,-0.004,-0.13],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngBackRight","shape":"cylinder","pos":[0.2435,-0.004,-0.13],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFL","shape":"sphere","pos":[0.1535,0.026,0.08],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.2435,0.026,0.08],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.1535,0.026,-0.1],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.2435,0.026,-0.1],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

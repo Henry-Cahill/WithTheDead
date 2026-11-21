@@ -1,0 +1,14 @@
+{"version": 1, "id": "ConeIcecreamToppings", "baseHeight": 0.0845, "name": "Cone Icecream Toppings", "model": "gpt-oss:120b", "notes": "Box of cone‑ice‑cream toppings, approx 0.12 m × 0.08 m × 0.05 m: cardboard body with foil lid, thin plastic tray inside, front label, and a handful of assorted topping pieces (nuts, chocolate chips, sprinkles).", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.045,0.08],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LidFoil","shape":"cube","pos":[0.0,0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.004,0.082],"color":[0.85,0.85,0.83],"smooth":0.4,"metal":1.0},
+  {"name":"PlasticTray","shape":"cylinder","pos":[0.0,-0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.01,0.1],"color":[0.93,0.94,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.002,0.0405],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.002],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPrint","shape":"cube","pos":[0.0,-0.002,0.0411],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.002],"color":[0.2,0.22,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Nut1","shape":"sphere","pos":[-0.03,-0.0135,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Nut2","shape":"sphere","pos":[0.025,-0.0135,0.015],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.5,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Chip1","shape":"cube","pos":[-0.015,-0.0135,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.006,0.012],"color":[0.3,0.15,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Chip2","shape":"cube","pos":[0.02,-0.0135,-0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.01],"color":[0.3,0.15,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"SprinkleRed","shape":"cylinder","pos":[-0.02,-0.013,0.005],"rot":[30.0,0.0,45.0],"size":[0.004,0.012,0.004],"color":[0.8,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"SprinkleGreen","shape":"cylinder","pos":[0.01,-0.013,-0.025],"rot":[-20.0,0.0,-30.0],"size":[0.004,0.012,0.004],"color":[0.1,0.7,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"SprinkleYellow","shape":"cylinder","pos":[0.03,-0.013,0.02],"rot":[15.0,0.0,10.0],"size":[0.004,0.012,0.004],"color":[0.9,0.85,0.2],"smooth":0.4,"metal":0.0}
+]}

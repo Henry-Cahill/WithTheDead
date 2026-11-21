@@ -1,0 +1,164 @@
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.Ground.cs b/Assets/Scripts/World/Map/KentuckyMap.Ground.cs
+index b8bbc774..c2f579b6 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.Ground.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.Ground.cs
+@@ -15,13 +15,21 @@ public static partial class KentuckyMap
+         private const float KerbWidth = 0.22f;
+         // Kerb colour.
+         private static readonly Color KerbColor = new Color(0.62f, 0.62f, 0.60f);
++        // dark wood door colour
++        private static readonly Color DoorColor = new Color(0.55f, 0.33f, 0.22f);
++        // frosted glass window colour
++        private static readonly Color WindowColor = new Color(0.78f, 0.85f, 0.95f);
++        // period‑correct shingle hue for roofs
++        private static readonly Color RoofColor = new Color(0.45f, 0.33f, 0.28f);
+         // Height of the raised kerb strip (above the road surface).
+         private const float LotY = 0.008f;
+         private const float SnowBankWidth = 0.2f; // thin snow‑bank edge width for parking lots
+         private const float IceY = 0.006f;
+ 
+                 private static Surf Ice => DecorPalette.Gloss(new Color(0.60f, 0.68f, 0.76f));
+-        private static Surf KerbSurf => DecorPalette.Matte(KerbColor);
++        private static Surf DoorSurf => DecorPalette.Matte(DoorColor);
++        private static Surf WindowSurf => DecorPalette.Matte(WindowColor);
++        private static Surf RoofSurf => DecorPalette.Matte(RoofColor);
+         private static readonly Color StreetLampMetalColor = new Color(0.55f, 0.55f, 0.55f);
+         internal static Surf StreetLampMetal => DecorPalette.Matte(StreetLampMetalColor);
+         internal static readonly Color StreetLampLightColor = new Color(1f, 0.93f, 0.70f); // warm yellow
+@@ -49,24 +57,76 @@ private static IEnumerable<Vector2> SampleAlong(List<Vector2> pts, float interva
+                 accumulated = (accumulated + segLen) - Mathf.Floor((accumulated + segLen) / interval) * interval;
+             }
+         }
+-        private static void BuildGround(Site site)
++        private static void BuildBuildings(Site site)
+         {
+-            float half = site.Half + 0.8f;
+-            var ground = new GameObject("Ground");
+-            ground.transform.SetParent(site.Town.World, false);
+-            var m = new RaidMesh();
+-            m.Box(new Vector3(0f, -0.5f, 0f), new Vector3(half * 2f, 1f, half * 2f), DecorMaterials.Snow);
+-            m.ApplyTo(ground, Vector3.zero, ShadowCastingMode.Off);
+-            var col = ground.AddComponent<BoxCollider>();
+-            col.center = new Vector3(0f, -0.5f, 0f);
+-            col.size = new Vector3(half * 2f, 1f, half * 2f);
++            float half = site.Half;
++            var square = Rect.MinMaxRect(-half, -half, half, half);
++            foreach (Footprint f in site.Area.Buildings)
++            {
++                List<Vector2> inside = MapGeometry.ClipPolygon(f.Pts, square);
++                if (inside.Count < 3) continue;
++                // building wall colour based on OSM id
++                Color bCol = MapGeometry.GetBuildingColor(f.Data.id);
++                Surf buildingSurf = DecorPalette.Matte(bCol);
++                // wall polygon at low height (0.02 m)
++                Fill(site.Town.Out, inside, 0.02f, buildingSurf);
++                // thin roof ribbon 2 cm above the wall
++                Ribbon(site.Town.Out, inside, 0.5f, 0.04f, RoofSurf);
++                // door on first edge
++                site.Take(new Rect(
++                    new Vector2(Mathf.Min(inside[0].x, inside[1].x) - 0.5f, Mathf.Min(inside[0].y, inside[1].y) - 0.5f),
++                    new Vector2(Mathf.Max(inside[0].x, inside[1].x) + 0.5f, Mathf.Max(inside[0].y, inside[1].y) + 0.5f)));
++                AddDoor(site.Town.Out, inside[0], inside[1], 0.02f);
++                // first window on second edge
++                if (inside.Count > 2)
++                {
++                    site.Take(new Rect(
++                        new Vector2(Mathf.Min(inside[1].x, inside[2].x) - 0.5f, Mathf.Min(inside[1].y, inside[2].y) - 0.5f),
++                        new Vector2(Mathf.Max(inside[1].x, inside[2].x) + 0.5f, Mathf.Max(inside[1].y, inside[2].y) + 0.5f)));
++                    AddWindow(site.Town.Out, inside[1], inside[2], 0.02f);
++                }
++                // second window on third edge
++                if (inside.Count > 3)
++                {
++                    site.Take(new Rect(
++                        new Vector2(Mathf.Min(inside[2].x, inside[3].x) - 0.5f, Mathf.Min(inside[2].y, inside[3].y) - 0.5f),
++                        new Vector2(Mathf.Max(inside[2].x, inside[3].x) + 0.5f, Mathf.Max(inside[2].y, inside[3].y) + 0.5f)));
++                    AddWindow(site.Town.Out, inside[2], inside[3], 0.02f);
++                }
++            }
++        }
++        private static void AddDoor(OutdoorBatches into, Vector2 a, Vector2 b, float y)
++        {
++            const float doorWidth = 1.0f;
++            const float doorHeight = 2.2f;
++            Vector2 dir = (b - a).normalized;
++            Vector2 n = new Vector2(-dir.y, dir.x);
++            Vector2 mid = (a + b) * 0.5f;
++            Vector2 p1 = mid - n * (doorWidth * 0.5f);
++            Vector2 p2 = mid + n * (doorWidth * 0.5f);
++            Vector2 p3 = p2 + new Vector2(0f, doorHeight);
++            Vector2 p4 = p1 + new Vector2(0f, doorHeight);
++            var doorPoly = new List<Vector2> { p1, p2, p3, p4 };
++            Fill(into, doorPoly, y, DoorSurf);
++            // callers already reserve the space via site.Take before calling this helper
++        }
+ 
+-            float far = site.Half + SceneryReach + 40f;
+-            var field = new RaidMesh();
+-            field.Flat(new Vector3(0f, -0.02f, 0f), far * 2f, far * 2f, 0f, DecorMaterials.Snow);
+-            field.Emit("Snowfield", site.Town.Scenery, Vector3.zero, ShadowCastingMode.Off);
++        private static void AddWindow(OutdoorBatches into, Vector2 a, Vector2 b, float y)
++        {
++            const float winWidth = 0.9f;
++            const float winHeight = 1.2f;
++            Vector2 dir = (b - a).normalized;
++            Vector2 n = new Vector2(-dir.y, dir.x);
++            Vector2 mid = (a + b) * 0.5f;
++            Vector2 p1 = mid - n * (winWidth * 0.5f);
++            Vector2 p2 = mid + n * (winWidth * 0.5f);
++            Vector2 p3 = p2 + new Vector2(0f, winHeight);
++            Vector2 p4 = p1 + new Vector2(0f, winHeight);
++            var winPoly = new List<Vector2> { p1, p2, p3, p4 };
++            Fill(into, winPoly, y, WindowSurf);
+         }
+ 
++
+         // Ponds and lakes freeze over; parking lots are plowed down to the asphalt. Only the parts inside the
+         // playable square are drawn.
+         private static void BuildWaterAndLots(Site site)
+@@ -99,7 +159,7 @@ private static void BuildWaterAndLots(Site site)
+                      var edge = new List<Vector2>(inside);
+                      edge.Add(inside[0]); // close loop
+                      Ribbon(site.Town.Out, edge, SnowBankWidth, LotY + 0.001f, Ice);
+-                 }
++
+         }
+         }
+ 
+@@ -153,11 +213,13 @@ private static void BuildStreets(Site site, MapBuild build)
+                                     Vector2 d = (b - a).normalized;
+                                     yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                                     break;
+-                                }
+-                            }
++        }
++    }
++        }
++    }
+                             StreetLampHelper.PlaceLamp(site.Town.Out, site, lampPos, yaw);
+-                        }
+-                    }
++        }
++    }
+                     RoadMarkingsBuilder.BuildForStreet(site, s, build);
+                 site.TakeLine(piece, width * 0.5f + 0.3f);
+                 }
+@@ -170,8 +232,8 @@ private static void BuildStreets(Site site, MapBuild build)
+                         // Kerb on the outer road extension
+                         Ribbon(site.Town.Far, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                         Ribbon(site.Town.Far, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
+-                    }
+-                }
++            }
++        }
+             }
+         }
+ 
+@@ -373,5 +435,5 @@ private static Surf RandomGravelOverlay(Vector2 seed)
+             Color baseCol = new Color(0.55f, 0.55f, 0.55f);
+             Color varied = new Color(baseCol.r + r, baseCol.g + r, baseCol.b + r);
+             return DecorPalette.Matte(varied);
+-        }    }
+-}
++        }
++    }

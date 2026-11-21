@@ -1,0 +1,11 @@
+{"version": 1, "id": "TirePump", "baseHeight": 0.095, "name": "Tire Pump", "model": "gpt-oss:120b", "notes": "Tire pump lying on its side, about 0.35 m long × 0.15 m wide × 0.07 m tall (main barrel). Built from a metal cylindrical body, a rectangular foot base, a folding handle lever, an internal plunger rod, a short nozzle tip, a small pressure‑gauge cube, a coiled rubber hose and a thin branding label.", "score": 7, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[-0.02,0.0,-0.035],"rot":[0.0,0.0,90.0],"size":[0.07,0.3,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FootBase","shape":"cube","pos":[-0.15,-0.025,-0.035],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.1],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"BaseRim","shape":"cube","pos":[-0.15,-0.0225,-0.035],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.1],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleLever","shape":"cylinder","pos":[0.03,0.015,-0.035],"rot":[90.0,0.0,0.0],"size":[0.03,0.12,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PlungerRod","shape":"cylinder","pos":[-0.02,0.01,-0.035],"rot":[0.0,0.0,90.0],"size":[0.02,0.28,0.02],"color":[0.55,0.53,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"NozzleTip","shape":"cylinder","pos":[0.135,0.0,-0.035],"rot":[0.0,0.0,90.0],"size":[0.04,0.05,0.04],"color":[0.55,0.53,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"Gauge","shape":"cube","pos":[-0.07,0.008,-0.035],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RubberHose","shape":"sphere","pos":[0.16,-0.005,0.065],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.09,0.001,-0.035],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.002],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0}
+]}

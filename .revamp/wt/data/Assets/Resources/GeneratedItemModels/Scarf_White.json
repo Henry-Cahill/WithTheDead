@@ -1,0 +1,11 @@
+{"version": 1, "id": "Scarf_White", "baseHeight": 0.1109, "name": "Scarf White", "model": "gpt-oss:120b", "notes": "White scarf ~1.2 m long × 0.18 m wide × 0.02 m thick, lying flat with rolled ends, thin edge trims and two gentle folds; cloth smooth=0.05.", "score": 6, "parts": [
+  {"name":"MainFlat","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.02,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollLeft","shape":"cylinder","pos":[-0.63,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollRight","shape":"cylinder","pos":[0.63,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.004,0.18],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.004,0.18],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLeft","shape":"cube","pos":[-0.25,-0.0,0.04],"rot":[0.0,0.0,15.0],"size":[0.3,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldRight","shape":"cube","pos":[0.25,-0.0,-0.04],"rot":[0.0,0.0,-15.0],"size":[0.3,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeL","shape":"cube","pos":[-0.68,-0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.005],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeR","shape":"cube","pos":[0.68,-0.005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.005],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

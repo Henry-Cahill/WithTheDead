@@ -1,0 +1,9 @@
+{"version": 1, "id": "SnowShovel", "baseHeight": 0.0825, "name": "Snow Shovel", "model": "gpt-oss:120b", "notes": "Snow shovel ~1.6 m long lying on its side (handle along X). Wooden/metal handle cylinder, rubber grip at the far end, flat steel blade at the business end extending in +Z, with a thin edge plate and a bolt joining blade to handle.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.1175,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,1.4,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.7675,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.22,0.22,0.24],"smooth":0.3,"metal":0.0},
+  {"name":"Blade","shape":"cube","pos":[0.6825,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.3],"color":[0.78,0.78,0.84],"smooth":0.55,"metal":1.0},
+  {"name":"EdgePlate","shape":"cube","pos":[0.7725,0.0025,0.16],"rot":[0.0,0.0,0.0],"size":[0.19,0.04,0.02],"color":[0.78,0.78,0.84],"smooth":0.55,"metal":1.0},
+  {"name":"Bolt","shape":"sphere","pos":[0.6325,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.71,0.71,0.77],"smooth":0.6,"metal":1.0},
+  {"name":"BladeSideRim","shape":"cube","pos":[0.6825,0.0025,-0.16],"rot":[0.0,0.0,0.0],"size":[0.19,0.04,0.02],"color":[0.78,0.78,0.84],"smooth":0.55,"metal":1.0},
+  {"name":"HandleEndCap","shape":"cylinder","pos":[0.5825,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.035,0.04,0.035],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,16 @@
+{"version": 1, "id": "Dogbane", "baseHeight": 0.0837, "name": "Dogbane", "model": "gpt-oss:120b", "notes": "Loose bundle of Dogbane stalks about 0.35 m long and 0.12 m wide, lying on the floor. Thin green‑brown stems (cylinders) with a few flat leaf blades (cubes) and tiny seed pods (spheres). Overall silhouette is a short, bushy clump.", "score": 6, "parts": [
+  {"name":"Stalk1","shape":"cylinder","pos":[-0.0475,-0.0137,-0.0242],"rot":[0.0,0.0,90.0],"size":[0.02,0.35,0.02],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Stalk2","shape":"cylinder","pos":[-0.0375,-0.0137,0.0358],"rot":[0.0,0.0,90.0],"size":[0.018,0.33,0.018],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Stalk3","shape":"cylinder","pos":[0.0025,-0.0137,-0.0342],"rot":[0.0,0.0,90.0],"size":[0.019,0.34,0.019],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Stalk4","shape":"cylinder","pos":[0.0325,-0.0137,0.0258],"rot":[0.0,0.0,90.0],"size":[0.017,0.31,0.017],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Stalk5","shape":"cylinder","pos":[0.0725,-0.0137,-0.0142],"rot":[0.0,0.0,90.0],"size":[0.016,0.3,0.016],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"LeafL1","shape":"cube","pos":[-0.0475,0.0013,-0.0242],"rot":[20.0,0.0,0.0],"size":[0.06,0.004,0.12],"color":[0.65,0.6,0.5],"smooth":0.04,"metal":0.0},
+  {"name":"LeafR1","shape":"cube","pos":[-0.0475,0.0013,-0.0242],"rot":[-20.0,0.0,0.0],"size":[0.06,0.004,0.12],"color":[0.65,0.6,0.5],"smooth":0.04,"metal":0.0},
+  {"name":"LeafL2","shape":"cube","pos":[-0.0375,0.0003,0.0358],"rot":[15.0,0.0,0.0],"size":[0.055,0.004,0.11],"color":[0.65,0.6,0.5],"smooth":0.04,"metal":0.0},
+  {"name":"LeafR2","shape":"cube","pos":[-0.0375,0.0003,0.0358],"rot":[-15.0,0.0,0.0],"size":[0.055,0.004,0.11],"color":[0.65,0.6,0.5],"smooth":0.04,"metal":0.0},
+  {"name":"LeafL3","shape":"cube","pos":[0.0025,0.0013,-0.0342],"rot":[18.0,0.0,0.0],"size":[0.058,0.004,0.115],"color":[0.65,0.6,0.5],"smooth":0.04,"metal":0.0},
+  {"name":"LeafR3","shape":"cube","pos":[0.0025,0.0013,-0.0342],"rot":[-18.0,0.0,0.0],"size":[0.058,0.004,0.115],"color":[0.65,0.6,0.5],"smooth":0.04,"metal":0.0},
+  {"name":"Pod1","shape":"sphere","pos":[-0.0175,-0.0087,-0.0042],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Pod2","shape":"sphere","pos":[0.0325,-0.0097,0.0208],"rot":[0.0,0.0,0.0],"size":[0.007,0.007,0.007],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Pod3","shape":"sphere","pos":[0.0625,-0.0107,-0.0122],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

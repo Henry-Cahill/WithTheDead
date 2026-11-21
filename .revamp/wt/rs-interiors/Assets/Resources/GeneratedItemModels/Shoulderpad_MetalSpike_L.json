@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoulderpad_MetalSpike_L", "baseHeight": 0.106, "name": "Shoulderpad Metal Spike L", "model": "gpt-oss:120b", "notes": "Left‑side shoulder pad (≈0.25 m wide × 0.20 m deep × 0.02 m thick) with five metal spikes (~0.06 m long) standing up from the top surface. Base uses the item tint; spikes are steel‑grey.", "score": 7, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[0.0,-0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SpikeL","shape":"cylinder","pos":[-0.09,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.8,0.78,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeLMid","shape":"cylinder","pos":[-0.045,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.8,0.78,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeMid","shape":"cylinder","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.8,0.78,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeRMid","shape":"cylinder","pos":[0.045,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.8,0.78,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeR","shape":"cylinder","pos":[0.09,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.8,0.78,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"TipL","shape":"sphere","pos":[-0.09,0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"TipLMid","shape":"sphere","pos":[-0.045,0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"TipMid","shape":"sphere","pos":[0.0,0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"TipRMid","shape":"sphere","pos":[0.045,0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"TipR","shape":"sphere","pos":[0.09,0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0}
+]}

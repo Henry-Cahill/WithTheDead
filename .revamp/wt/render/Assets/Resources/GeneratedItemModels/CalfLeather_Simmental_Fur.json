@@ -1,0 +1,9 @@
+{"version": 1, "id": "CalfLeather_Simmental_Fur", "baseHeight": 0.0975, "name": "Calf Leather Simmental Fur", "model": "gpt-oss:120b", "notes": "Flat calf leather hide with Simmental fur, approx 0.35 m × 0.25 m and 1.5 cm thick. Base leather slab plus a thin rolled‑edge rim and several soft fur clumps on top.", "score": 6, "parts": [
+  {"name":"BaseHide","shape":"cube","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.005,0.26],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.08,0.0025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.65,0.63,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.1,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.65,0.63,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[-0.12,0.005,0.09],"rot":[0.0,0.0,0.0],"size":[0.055,0.055,0.055],"color":[0.65,0.63,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump4","shape":"sphere","pos":[0.05,-0.0025,-0.1],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.65,0.63,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump5","shape":"sphere","pos":[-0.02,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.65,0.63,0.55],"smooth":0.2,"metal":0.0}
+]}

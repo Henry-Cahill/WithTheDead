@@ -1,0 +1,12 @@
+{"version": 1, "id": "Apron_BBQ", "baseHeight": 0.0775, "name": "Apron BBQ", "model": "gpt-oss:120b", "notes": "Flat BBQ apron ~0.50 m wide × 0.35 m deep × 0.02 m thick, cloth tint (0.6,0.58,0.5). Main panel with two front pockets, top strap loops and crossed tie strings lying on the floor; a small dark label patch on the left side.", "score": 6, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[-0.055,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.205,0.0,0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.205,0.0,-0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LoopL","shape":"cylinder","pos":[-0.295,0.0075,0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"LoopR","shape":"cylinder","pos":[-0.295,0.0075,-0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"Tie1","shape":"cylinder","pos":[0.165,0.0075,0.06],"rot":[0.0,0.0,90.0],"size":[0.015,0.3,0.015],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"Tie2","shape":"cylinder","pos":[0.165,0.0075,-0.06],"rot":[0.0,0.0,90.0],"size":[0.015,0.3,0.015],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.275,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.04],"color":[0.35,0.33,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"StitchEdgeTop","shape":"cylinder","pos":[-0.055,0.0035,0.175],"rot":[90.0,0.0,0.0],"size":[0.02,0.5,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchEdgeBottom","shape":"cylinder","pos":[-0.055,0.0035,-0.175],"rot":[90.0,0.0,0.0],"size":[0.02,0.5,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

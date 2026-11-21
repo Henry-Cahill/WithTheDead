@@ -1,0 +1,10 @@
+{"version": 1, "id": "LightbarYellow", "baseHeight": 0.07, "name": "Lightbar Yellow", "model": "gpt-oss:120b", "notes": "Flat LED light‑bar about 1 m long, 0.12 m wide and 2 cm thick, lying on its side (longest axis along X). Main metal body in muted yellow tint, two mounting holes at the ends, a thin bright‑yellow LED strip on the front face and a dark logo decal.", "score": 7, "parts": [
+  {"name":"MainBar","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.8},
+  {"name":"LEDStrip","shape":"cube","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.002,0.12],"color":[0.9,0.85,0.4],"smooth":0.6,"metal":0.2},
+  {"name":"MountHoleL","shape":"cylinder","pos":[-0.45,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.9},
+  {"name":"MountHoleR","shape":"cylinder","pos":[0.45,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.9},
+  {"name":"LogoDecal","shape":"cube","pos":[-0.25,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.12],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRivetFront","shape":"cube","pos":[-0.48,0.005,0.055],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.004],"color":[0.3,0.3,0.32],"smooth":0.4,"metal":0.7},
+  {"name":"EdgeRivetBack","shape":"cube","pos":[-0.48,0.005,-0.055],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.004],"color":[0.3,0.3,0.32],"smooth":0.4,"metal":0.7},
+  {"name":"EdgeRivetMid","shape":"cube","pos":[0.48,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.004],"color":[0.3,0.3,0.32],"smooth":0.4,"metal":0.7}
+]}

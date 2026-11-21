@@ -1,0 +1,14 @@
+{"version": 1, "id": "Boxers_Silk_Red", "baseHeight": 0.0678, "name": "Boxers Silk Red", "model": "gpt-oss:120b", "notes": "Flat silk‑red boxer briefs ~0.38 m wide × 0.25 m long × 0.02 m thick, laid out flat: full waistband, front torso panel, two leg panels, a small fly, central crotch panel, side & middle seams and elastic cuffs.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.0008,0.0825],"rot":[0.0,0.0,0.0],"size":[0.38,0.008,0.04],"color":[0.6,0.55,0.65],"smooth":0.2,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0008,0.0025],"rot":[0.0,0.0,0.0],"size":[0.38,0.014,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.125,-0.0008,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.13,0.014,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.125,-0.0008,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.13,0.014,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchPanel","shape":"cube","pos":[0.0,-0.0008,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.18,0.014,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Fly","shape":"cube","pos":[0.0,0.0003,0.0475],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSideL","shape":"cube","pos":[-0.125,-0.0008,0.0075],"rot":[0.0,0.0,0.0],"size":[0.005,0.014,0.28],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SeamSideR","shape":"cube","pos":[0.125,-0.0008,0.0075],"rot":[0.0,0.0,0.0],"size":[0.005,0.014,0.28],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SeamMiddle","shape":"cube","pos":[0.0,-0.0008,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.004,0.014,0.12],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BottomCuffL","shape":"cube","pos":[-0.125,-0.0008,-0.1375],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.02],"color":[0.6,0.55,0.65],"smooth":0.2,"metal":0.0},
+  {"name":"BottomCuffR","shape":"cube","pos":[0.125,-0.0008,-0.1375],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.02],"color":[0.6,0.55,0.65],"smooth":0.2,"metal":0.0},
+  {"name":"WaistTrim","shape":"cube","pos":[0.0,-0.0008,0.0925],"rot":[0.0,0.0,0.0],"size":[0.38,0.004,0.02],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0}
+]}

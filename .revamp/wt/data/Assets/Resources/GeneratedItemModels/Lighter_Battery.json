@@ -1,0 +1,10 @@
+{"version": 1, "id": "Lighter_Battery", "baseHeight": 0.0775, "name": "Lighter Battery", "model": "gpt-oss:120b", "notes": "Rectangular lighter battery about 7 cm × 2.5 cm × 1.5 cm lying on its side (long axis along +X). Main beige‑gray body with a small metallic positive terminal cylinder, recessed negative end, thin label strip and a seam line for visual detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.0003,-0.0005,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"PosTerminal","shape":"cylinder","pos":[0.0362,-0.0005,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.005,0.003,0.005],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"NegRecess","shape":"cylinder","pos":[-0.0367,-0.0015,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.004,0.002,0.004],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.0003,0.0075,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.02],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"SeamLine","shape":"cube","pos":[-0.0003,0.0,0.012],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.002],"color":[0.48,0.46,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"TopRidge","shape":"cylinder","pos":[-0.0003,0.0075,0.012],"rot":[90.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.58,0.56,0.52],"smooth":0.3,"metal":0.0},
+  {"name":"BottomRidge","shape":"cylinder","pos":[-0.0003,-0.0075,0.012],"rot":[90.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.58,0.56,0.52],"smooth":0.3,"metal":0.0},
+  {"name":"SideNotch","shape":"cube","pos":[-0.0152,-0.0005,0.012],"rot":[0.0,0.0,0.0],"size":[0.005,0.008,0.002],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0}
+]}

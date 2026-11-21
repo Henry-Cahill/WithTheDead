@@ -1,0 +1,13 @@
+{"version": 1, "id": "Glasses", "baseHeight": 0.0655, "name": "Glasses", "model": "gpt-oss:120b", "notes": "Flat‑lay glasses ~0.16 m wide x 0.05 m tall, 5 mm thick. Two round lenses with plastic frames, a short bridge, nose pads and the two temples extended outward like a product photo.", "score": 6, "parts": [
+  {"name":"LensL","shape":"cylinder","pos":[-0.045,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.005,0.05],"color":[0.7,0.85,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.045,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.005,0.05],"color":[0.7,0.85,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"FrameL","shape":"cylinder","pos":[-0.045,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.008,0.058],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"FrameR","shape":"cylinder","pos":[0.045,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.008,0.058],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.015],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"NosePadL","shape":"cylinder","pos":[-0.005,-0.002,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"NosePadR","shape":"cylinder","pos":[0.005,-0.002,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"TempleL","shape":"cube","pos":[-0.115,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.006,0.012],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"TempleR","shape":"cube","pos":[0.115,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.006,0.012],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewL","shape":"sphere","pos":[-0.045,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.8,0.8,0.85],"smooth":0.65,"metal":1.0},
+  {"name":"ScrewR","shape":"sphere","pos":[0.045,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.8,0.8,0.85],"smooth":0.65,"metal":1.0}
+]}

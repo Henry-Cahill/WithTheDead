@@ -1,0 +1,10 @@
+{"version": 1, "id": "Timer", "baseHeight": 0.12, "name": "Timer", "model": "gpt-oss:120b", "notes": "Timer ~0.12 m diameter × 0.06 m tall, lying on its side (axis along X). Main plastic housing, small metal knob dome, front button panel and four metal screws.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,-0.012],"rot":[0.0,0.0,90.0],"size":[0.12,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Knob","shape":"cylinder","pos":[0.0,0.01,-0.012],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.45,0.44,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"ButtonPanel","shape":"cube","pos":[0.0,0.0,0.052],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.04],"color":[0.55,0.53,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Screen","shape":"cube","pos":[0.0,0.002,0.052],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.03],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":0.0},
+  {"name":"Screw1","shape":"cylinder","pos":[-0.025,0.0,0.038],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Screw2","shape":"cylinder","pos":[0.025,0.0,0.038],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Screw3","shape":"cylinder","pos":[-0.025,0.0,-0.062],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Screw4","shape":"cylinder","pos":[0.025,0.0,-0.062],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0}
+]}

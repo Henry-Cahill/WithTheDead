@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_AngusCalfHide", "baseHeight": 0.1208, "name": "Jacket Angus Calf Hide", "model": "gpt-oss:120b", "notes": "Flat‑lay Angus‑calf hide jacket, product‑photo style. Main body split into front/back panels (≈0.55 m wide × 0.60 m deep) with a thin 2.5 cm thickness. Sleeves spread outward at ~30° each side and end in cuff bands that now touch the sleeve tips. A round collar ring sits on the neck opening, front pockets are added, and thin stitch‑line cylinders mark seams. Main colour is the hide tint (0.55, 0.5", "score": 6, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.001,-0.02],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.001,0.02],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.375,0.0,0.0],"rot":[0.0,0.0,-30.0],"size":[0.2,0.025,0.5],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.375,0.0,0.0],"rot":[0.0,0.0,30.0],"size":[0.2,0.025,0.5],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LeftCuff","shape":"cube","pos":[-0.5,0.0,0.2165],"rot":[0.0,0.0,-30.0],"size":[0.02,0.025,0.12],"color":[0.45,0.4,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"RightCuff","shape":"cube","pos":[0.5,0.0,0.2165],"rot":[0.0,0.0,30.0],"size":[0.02,0.025,0.12],"color":[0.45,0.4,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"CollarRing","shape":"cylinder","pos":[0.0,0.015,0.31],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.24],"color":[0.45,0.4,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.45,0.4,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.45,0.4,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"StitchTopFront","shape":"cylinder","pos":[0.0,0.016,0.3],"rot":[90.0,0.0,0.0],"size":[0.015,0.55,0.015],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottomFront","shape":"cylinder","pos":[0.0,0.016,-0.3],"rot":[90.0,0.0,0.0],"size":[0.015,0.55,0.015],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideLeft","shape":"cylinder","pos":[-0.275,0.0,0.0],"rot":[90.0,0.0,90.0],"size":[0.015,0.6,0.015],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideRight","shape":"cylinder","pos":[0.275,0.0,0.0],"rot":[90.0,0.0,90.0],"size":[0.015,0.6,0.015],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

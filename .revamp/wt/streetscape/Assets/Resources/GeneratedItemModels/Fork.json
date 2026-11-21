@@ -1,0 +1,9 @@
+{"version": 1, "id": "Fork", "baseHeight": 0.084, "name": "Fork", "model": "gpt-oss:120b", "notes": "Combat‑fork weapon ~0.9 m long: thin steel handle (cylinder) lying on its side along X, a short cross‑guard block at the tip, and four sharp tines projecting forward (+Z). Metal tint 0.6 0.6 0.64, polished.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.7,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[0.315,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL2","shape":"cylinder","pos":[0.3,0.02,-0.015],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL1","shape":"cylinder","pos":[0.3,0.02,-0.005],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR1","shape":"cylinder","pos":[0.3,0.02,0.005],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR2","shape":"cylinder","pos":[0.3,0.02,0.015],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.28,0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

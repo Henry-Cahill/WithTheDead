@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers", "baseHeight": 0.09, "name": "Trousers", "model": "gpt-oss:120b", "notes": "Flat trousers about 1.0 m long × 0.6 m wide × 0.025 m thick, laid out spread like a product photo. Includes waist band (sits on top of upper legs), two separated legs (upper & lower panels), cuffs at the ankles, front pocket and side‑seam lines – all parts now touch each other.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.015,0.225],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftUpperLeg","shape":"cube","pos":[-0.175,-0.015,0.225],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightUpperLeg","shape":"cube","pos":[0.175,-0.015,0.225],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLowerLeg","shape":"cube","pos":[-0.175,-0.015,-0.125],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLowerLeg","shape":"cube","pos":[0.175,-0.015,-0.125],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.175,0.01,-0.35],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.175,0.01,-0.35],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.2,0.01,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL_Upper","shape":"cylinder","pos":[-0.25,-0.015,0.225],"rot":[90.0,0.0,0.0],"size":[0.008,0.3,0.008],"color":[0.3,0.28,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SideSeamL_Lower","shape":"cylinder","pos":[-0.25,-0.015,-0.125],"rot":[90.0,0.0,0.0],"size":[0.008,0.4,0.008],"color":[0.3,0.28,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SideSeamR_Upper","shape":"cylinder","pos":[0.25,-0.015,0.225],"rot":[90.0,0.0,0.0],"size":[0.008,0.3,0.008],"color":[0.3,0.28,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SideSeamR_Lower","shape":"cylinder","pos":[0.25,-0.015,-0.125],"rot":[90.0,0.0,0.0],"size":[0.008,0.4,0.008],"color":[0.3,0.28,0.35],"smooth":0.2,"metal":0.0}
+]}

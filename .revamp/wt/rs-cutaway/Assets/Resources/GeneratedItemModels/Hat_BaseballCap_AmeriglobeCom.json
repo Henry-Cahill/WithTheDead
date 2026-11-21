@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_BaseballCap_AmeriglobeCom", "baseHeight": 0.1325, "name": "Hat Baseball Cap Ameriglobe Com", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.24 m brim diameter, 0.12 m crown height. Components: thin fabric brim, rounded crown dome, front visor panel, top button, stitched edge trim and a small logo patch.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.065,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.0025,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontVisor","shape":"cube","pos":[0.0,0.0025,0.1037],"rot":[0.0,0.0,0.0],"size":[0.14,0.08,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.0625,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":0.0},
+  {"name":"StitchTrim","shape":"cylinder","pos":[0.0,-0.056,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.245,0.003,0.245],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.0075,0.1138],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.09,0.0025,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.09,0.0025,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

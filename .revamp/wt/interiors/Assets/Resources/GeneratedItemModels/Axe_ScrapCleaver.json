@@ -1,0 +1,11 @@
+{"version": 1, "id": "Axe_ScrapCleaver", "baseHeight": 0.1025, "name": "Axe Scrap Cleaver", "model": "gpt-oss:120b", "notes": "Scrap cleaver ~1.4 m long, lying on its side with the handle (wood) along X and a chunky steel blade crossing the end toward +Z. Blade 0.6 m long × 0.2 m wide × 0.03 m thick, metal‑tinted (0.6,0.6,0.64). Wooden grip, leather wrap near the head, simple metal guard and rivets.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.3,-0.0025,-0.015],"rot":[0.0,0.0,90.0],"size":[0.05,0.8,0.05],"color":[0.4,0.25,0.15],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.05,0.0075,-0.015],"rot":[0.0,0.0,90.0],"size":[0.07,0.3,0.07],"color":[0.3,0.15,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[0.05,-0.0025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeBlock","shape":"cube","pos":[0.4,-0.0125,-0.015],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.2],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeSpike","shape":"cylinder","pos":[0.7,-0.0125,0.095],"rot":[90.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[0.7,-0.0125,-0.095],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetC","shape":"sphere","pos":[0.7,-0.0125,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.7,-0.0125,0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"ButtCap","shape":"cube","pos":[-0.7,-0.0075,-0.015],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

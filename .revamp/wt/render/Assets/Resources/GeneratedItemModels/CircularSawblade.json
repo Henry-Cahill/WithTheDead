@@ -1,0 +1,12 @@
+{"version": 1, "id": "CircularSawblade", "baseHeight": 0.0675, "name": "Circular Sawblade", "model": "gpt-oss:120b", "notes": "Circular sawblade ~0.30 m diameter, 1 cm thick, lying flat on the floor. Main steel disc with a central hub and eight outward‑facing teeth.", "score": 7, "parts": [
+  {"name":"DiscBody","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.3],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Hub","shape":"cylinder","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.012,0.07],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"Tooth0","shape":"cube","pos":[0.155,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Tooth45","shape":"cube","pos":[0.1096,0.0,0.1096],"rot":[0.0,45.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Tooth90","shape":"cube","pos":[0.0,0.0,0.155],"rot":[0.0,90.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Tooth135","shape":"cube","pos":[-0.1096,0.0,0.1096],"rot":[0.0,135.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Tooth180","shape":"cube","pos":[-0.155,0.0,0.0],"rot":[0.0,-180.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Tooth225","shape":"cube","pos":[-0.1096,0.0,-0.1096],"rot":[0.0,-135.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Tooth270","shape":"cube","pos":[0.0,0.0,-0.155],"rot":[0.0,-90.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Tooth315","shape":"cube","pos":[0.1096,0.0,-0.1096],"rot":[0.0,-45.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0}
+]}

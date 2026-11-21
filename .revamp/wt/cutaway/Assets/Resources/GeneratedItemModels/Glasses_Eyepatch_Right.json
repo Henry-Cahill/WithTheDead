@@ -1,0 +1,12 @@
+{"version": 1, "id": "Glasses_Eyepatch_Right", "baseHeight": 0.089, "name": "Glasses Eyepatch Right", "model": "gpt-oss:120b", "notes": "Flat right‑eye eyepatch ~8 cm wide × 6 cm tall × 1.5 cm thick, with a small strap loop on the left side and thin stitching detail around the edge. Made of muted‑tan fabric (tint 0.6,0.58,0.5) with a dark leather‑tone strap.", "score": 6, "parts": [
+  {"name":"PatchBase","shape":"cube","pos":[0.0155,-0.001,0.0015],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0155,-0.0,0.0315],"rot":[0.0,0.0,0.0],"size":[0.078,0.002,0.002],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0155,-0.0,-0.0285],"rot":[0.0,0.0,0.0],"size":[0.078,0.002,0.002],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cube","pos":[-0.0245,-0.0,0.0015],"rot":[0.0,0.0,90.0],"size":[0.058,0.002,0.002],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cube","pos":[0.0555,-0.0,0.0015],"rot":[0.0,0.0,90.0],"size":[0.058,0.002,0.002],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[-0.0195,0.0065,0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"StrapTail","shape":"cylinder","pos":[-0.0395,0.0065,0.0015],"rot":[0.0,0.0,90.0],"size":[0.004,0.04,0.004],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"MetalClip","shape":"cube","pos":[0.0155,0.007,0.0265],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.002],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"CornerRoundL","shape":"sphere","pos":[-0.0245,-0.001,-0.0285],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRoundR","shape":"sphere","pos":[0.0555,-0.001,-0.0285],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

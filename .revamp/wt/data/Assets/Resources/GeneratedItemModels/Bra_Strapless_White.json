@@ -1,0 +1,11 @@
+{"version": 1, "id": "Bra_Strapless_White", "baseHeight": 0.0685, "name": "Bra Strapless White", "model": "gpt-oss:120b", "notes": "Strapless bra laid flat (≈0.25 m wide × 0.15 m deep, 1.5‑2 cm thick). Two rounded cups linked by a thin central bridge, with side “wings” that would normally hook under the bust. Light‑white fabric tint 0.6 0.58 0.5, cloth smoothness.", "score": 6, "parts": [
+  {"name":"LeftCup","shape":"cube","pos":[-0.07,-0.0005,0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.016,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightCup","shape":"cube","pos":[0.07,-0.0005,0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.016,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterBridge","shape":"cube","pos":[0.0,-0.0005,0.001],"rot":[0.0,0.0,0.0],"size":[0.04,0.016,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftWing","shape":"cube","pos":[-0.16,-0.0005,0.001],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightWing","shape":"cube","pos":[0.16,-0.0005,0.001],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeamL","shape":"cube","pos":[-0.07,0.0075,0.041],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.004],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeamR","shape":"cube","pos":[0.07,0.0075,0.041],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.004],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BridgeSeam","shape":"cube","pos":[0.0,0.0075,0.041],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.004],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BottomBand","shape":"cube","pos":[0.0,-0.0025,-0.039],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.008],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0}
+]}

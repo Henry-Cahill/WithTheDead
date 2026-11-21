@@ -1,0 +1,11 @@
+{"version": 1, "id": "Tshirt_Rock", "baseHeight": 0.08, "name": "Tshirt Rock", "model": "gpt-oss:120b", "notes": "Flat T‑shirt “Rock” – approx 0.55 m long × 0.44 m body width, sleeves give a total width ≈ 0.74 m, thickness ≈ 0.03 m (y = 0.015 m). Main purple‑gray tint with darker trim and a small front logo.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0325,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.0975,-0.005,0.35],"rot":[0.0,-25.0,0.0],"size":[0.16,0.028,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.0975,-0.005,-0.35],"rot":[0.0,25.0,0.0],"size":[0.16,0.028,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.0375,-0.004,0.45],"rot":[0.0,-25.0,0.0],"size":[0.165,0.03,0.03],"color":[0.46,0.42,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.0375,-0.004,-0.45],"rot":[0.0,25.0,0.0],"size":[0.165,0.03,0.03],"color":[0.46,0.42,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.2375,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.035,0.16],"color":[0.46,0.42,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.2375,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.036,0.13],"color":[0.12,0.1,0.14],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.3025,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.44],"color":[0.46,0.42,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"RockLogo","shape":"cube","pos":[0.0875,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.004,0.02],"color":[0.32,0.28,0.38],"smooth":0.05,"metal":0.0}
+]}

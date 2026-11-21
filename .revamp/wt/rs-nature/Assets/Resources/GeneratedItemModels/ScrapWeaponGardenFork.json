@@ -1,0 +1,13 @@
+{"version": 1, "id": "ScrapWeaponGardenFork", "baseHeight": 0.195, "name": "Scrap Weapon Garden Fork", "model": "gpt-oss:120b", "notes": "Scrap garden‑fork weapon ~1.2 m long lying on its side (X axis). Wooden‑grip handle, rusty steel head block with four upward tines, a few rivets and rust patches for detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.15,-0.1,-0.0175],"rot":[0.0,0.0,90.0],"size":[0.07,0.9,0.07],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.8},
+  {"name":"Grip","shape":"cylinder","pos":[0.05,-0.09,-0.0175],"rot":[0.0,0.0,90.0],"size":[0.09,0.12,0.09],"color":[0.4,0.25,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.45,-0.075,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.3,0.12,0.3],"color":[0.55,0.55,0.58],"smooth":0.35,"metal":0.7},
+  {"name":"TineL","shape":"cylinder","pos":[0.45,0.06,-0.1175],"rot":[0.0,0.0,0.0],"size":[0.03,0.15,0.03],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":0.8},
+  {"name":"TineML","shape":"cylinder","pos":[0.45,0.06,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.03,0.15,0.03],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":0.8},
+  {"name":"TineMR","shape":"cylinder","pos":[0.45,0.06,0.0125],"rot":[0.0,0.0,0.0],"size":[0.03,0.15,0.03],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":0.8},
+  {"name":"TineR","shape":"cylinder","pos":[0.45,0.06,0.0825],"rot":[0.0,0.0,0.0],"size":[0.03,0.15,0.03],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":0.8},
+  {"name":"Rivet1","shape":"sphere","pos":[0.1,-0.065,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.45,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[0.2,-0.065,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.45,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"RustPatchTop","shape":"sphere","pos":[0.45,-0.015,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.4,0.35,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"RustPatchSide","shape":"sphere","pos":[0.45,-0.075,0.1325],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.07],"color":[0.4,0.35,0.33],"smooth":0.2,"metal":0.0}
+]}

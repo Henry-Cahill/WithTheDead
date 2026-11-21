@@ -1,0 +1,12 @@
+{"version": 1, "id": "SleepingBag_Cheap_Green_Packed", "baseHeight": 0.2325, "name": "Sleeping Bag Cheap Green Packed", "model": "gpt-oss:120b", "notes": "Packed cheap green sleeping bag ~0.30 m long × 0.09 m diameter roll: main cloth tube, outer seam, inner lining, zipper strip with teeth, compression strap around the middle, small strap loop, printed label on one side and a fabric tag – all parts touch or overlap the roll.", "score": 6, "parts": [
+  {"name":"MainRoll","shape":"cylinder","pos":[-0.0075,-0.0215,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.09,0.3,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"OuterSeam","shape":"cylinder","pos":[-0.0075,-0.0195,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.094,0.302,0.094],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[-0.0075,-0.0235,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.086,0.298,0.086],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ZipperBase","shape":"cube","pos":[-0.0075,0.0285,0.0365],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.01],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"ZipTeeth","shape":"cylinder","pos":[-0.0075,0.0325,0.0365],"rot":[0.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"CompressionStrap","shape":"cylinder","pos":[-0.0075,-0.0065,-0.0085],"rot":[0.0,0.0,90.0],"size":[0.015,0.28,0.015],"color":[0.4,0.4,0.4],"smooth":0.4,"metal":0.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[0.1325,-0.0065,-0.0085],"rot":[0.0,0.0,90.0],"size":[0.02,0.03,0.02],"color":[0.4,0.4,0.4],"smooth":0.4,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.0075,0.0035,0.0355],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.0075,0.0085,0.0355],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.015],"color":[0.45,0.35,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cylinder","pos":[-0.0075,-0.0215,0.0385],"rot":[0.0,0.0,0.0],"size":[0.002,0.3,0.002],"color":[0.3,0.28,0.22],"smooth":0.05,"metal":0.0}
+]}

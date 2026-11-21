@@ -1,0 +1,11 @@
+{"version": 1, "id": "HerbivoreTeeth", "baseHeight": 0.07, "name": "Herbivore Teeth", "model": "gpt-oss:120b", "notes": "A loose pile of herbivore teeth about 6 cm across and 2 cm thick. Each tooth is modelled as a short, slightly squashed cylinder lying flat on the ground; the pile sits on a low base to give it volume.", "score": 6, "parts": [
+  {"name":"BasePile","shape":"cube","pos":[-0.0001,0.0,0.0018],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth1","shape":"cylinder","pos":[-0.0181,-0.002,-0.0132],"rot":[0.0,0.0,90.0],"size":[0.014,0.04,0.014],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth2","shape":"cylinder","pos":[0.0119,-0.001,0.0198],"rot":[0.0,5.0,90.0],"size":[0.013,0.038,0.013],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth3","shape":"cylinder","pos":[-0.0051,-0.003,0.0238],"rot":[0.0,-7.0,90.0],"size":[0.012,0.036,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth4","shape":"cylinder","pos":[0.0199,-0.002,-0.0202],"rot":[0.0,12.0,90.0],"size":[0.015,0.042,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth5","shape":"cylinder","pos":[-0.0221,-0.001,0.0068],"rot":[0.0,-3.0,90.0],"size":[0.014,0.039,0.014],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth6","shape":"cylinder","pos":[0.0179,-0.003,-0.0032],"rot":[0.0,8.0,90.0],"size":[0.013,0.037,0.013],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth7","shape":"cylinder","pos":[-0.0101,-0.002,0.0168],"rot":[0.0,-10.0,90.0],"size":[0.012,0.035,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth8","shape":"cylinder","pos":[0.0049,-0.001,-0.0162],"rot":[0.0,4.0,90.0],"size":[0.014,0.041,0.014],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

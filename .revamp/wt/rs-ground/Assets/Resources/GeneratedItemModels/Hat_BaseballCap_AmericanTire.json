@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_AmericanTire", "baseHeight": 0.0895, "name": "Hat Baseball Cap American Tire", "model": "gpt-oss:120b", "notes": "Flat‑lay American‑style baseball cap ~0.20 m diameter crown, 0.04 m tall, 0.07 m deep brim. Main cloth tint (0.55,0.5,0.6) with darker stitching and a small front label.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSideSeam","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.04,0.212],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopSeam","shape":"cylinder","pos":[0.0,0.0185,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.0,0.022,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.78,0.76],"smooth":0.6,"metal":0.0},
+  {"name":"BrimBase","shape":"cube","pos":[0.0,-0.0205,-0.035],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeFront","shape":"cube","pos":[0.0,-0.0145,-0.0345],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.002],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeSideL","shape":"cube","pos":[-0.1095,-0.0145,-0.035],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.07],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeSideR","shape":"cube","pos":[0.1095,-0.0145,-0.035],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.07],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeBottom","shape":"cube","pos":[0.0,-0.0285,-0.035],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.07],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.014,-0.015],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.03],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0}
+]}

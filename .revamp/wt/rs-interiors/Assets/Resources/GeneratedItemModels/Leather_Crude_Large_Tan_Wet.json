@@ -1,0 +1,14 @@
+{"version": 1, "id": "Leather_Crude_Large_Tan_Wet", "baseHeight": 0.335, "name": "Leather Crude Large Tan Wet", "model": "gpt-oss:120b", "notes": "Large wet crude leather sheet about 0.55 m × 0.45 m × 0.025 m thick, lying flat on the ground. Main slab in tan‑wet tint, edge rolled slightly, a few water droplets and a torn corner give visual cues of a usable material piece.", "score": 6, "parts": [
+  {"name":"BaseSlab","shape":"cube","pos":[0.017,-0.0155,0.0176],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeRollTop","shape":"cylinder","pos":[0.017,-0.0,0.2426],"rot":[90.0,0.0,0.0],"size":[0.55,0.012,0.55],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRollBottom","shape":"cylinder","pos":[0.017,-0.0,-0.2074],"rot":[90.0,0.0,0.0],"size":[0.55,0.012,0.55],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRollLeft","shape":"cylinder","pos":[-0.258,-0.0,0.0176],"rot":[90.0,0.0,90.0],"size":[0.45,0.012,0.45],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRollRight","shape":"cylinder","pos":[0.292,-0.0,0.0176],"rot":[90.0,0.0,90.0],"size":[0.45,0.012,0.45],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"Droplet1","shape":"sphere","pos":[-0.103,0.004,0.0976],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.9,0.92,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"Droplet2","shape":"sphere","pos":[0.087,0.003,-0.1224],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.9,0.92,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"Droplet3","shape":"sphere","pos":[0.197,0.005,0.1376],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.92,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"TornCorner","shape":"cube","pos":[-0.248,-0.013,-0.1974],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.07],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"TornFlap","shape":"cube","pos":[-0.278,-0.008,-0.2274],"rot":[15.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"FoldLine1","shape":"cube","pos":[0.167,-0.01,0.0176],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.45],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"FoldLine2","shape":"cube","pos":[-0.133,-0.01,0.0176],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.45],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0}
+]}

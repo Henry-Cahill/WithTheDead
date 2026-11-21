@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoulderpad_MetalSpikeScrap_R", "baseHeight": 0.0927, "name": "Shoulderpad Metal Spike Scrap R", "model": "gpt-oss:120b", "notes": "Scrap metal shoulder‑pad about 0.22 m long × 0.16 m wide × 0.04 m thick, lying flat on the floor. Three short spikes jut out (center forward, left and right), with a few rivet heads for detail.", "score": 7, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.0128,0.0139],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.16],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[-0.095,0.0093,-0.0561],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[-0.095,0.0093,0.0839],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.095,0.0093,-0.0561],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.095,0.0093,0.0839],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeCenter","shape":"cylinder","pos":[0.0,0.0253,0.0139],"rot":[90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeLeft","shape":"cylinder","pos":[-0.08,0.0253,0.0139],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeRight","shape":"cylinder","pos":[0.08,0.0253,0.0139],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"BentEdge","shape":"cube","pos":[0.0,-0.0077,-0.0761],"rot":[0.0,15.0,0.0],"size":[0.22,0.02,0.04],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"ScrapClump","shape":"sphere","pos":[-0.07,-0.0178,0.1039],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.57,0.55,0.47],"smooth":0.5,"metal":1.0}
+]}

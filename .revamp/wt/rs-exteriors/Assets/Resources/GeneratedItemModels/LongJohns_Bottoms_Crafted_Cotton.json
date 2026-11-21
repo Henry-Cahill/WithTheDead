@@ -1,0 +1,12 @@
+{"version": 1, "id": "LongJohns_Bottoms_Crafted_Cotton", "baseHeight": 0.0712, "name": "Long Johns Bottoms Crafted Cotton", "model": "gpt-oss:120b", "notes": "Flat layout of cotton long‑johns bottoms, spread out like a product photo. Overall footprint ≈ 0.40 m wide × 0.90 m long, 2 cm thick. Two leg tubes with waistband at the top, ankle cuffs at the bottom, side seams and a small front pocket.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.0012,0.4725],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.14,-0.0012,0.0325],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.14,-0.0012,0.0325],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftCuff","shape":"cylinder","pos":[-0.14,-0.0012,-0.4075],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightCuff","shape":"cylinder","pos":[0.14,-0.0012,-0.4075],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.0,0.0037,0.3325],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.23,-0.0012,0.0325],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.9],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.23,-0.0012,0.0325],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.9],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerSeam","shape":"cube","pos":[0.0,-0.0012,0.0325],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.9],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopHem","shape":"cube","pos":[0.0,-0.0012,0.4725],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

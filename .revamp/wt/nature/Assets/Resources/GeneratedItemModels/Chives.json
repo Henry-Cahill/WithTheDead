@@ -1,0 +1,13 @@
+{"version": 1, "id": "Chives", "baseHeight": 0.0837, "name": "Chives", "model": "gpt-oss:120b", "notes": "Loose chives in a thin clear‑plastic clamshell (≈0.14 m × 0.08 m × 0.04 m).  Bag body with snap lid, front label, and a small bunch of green chive stalks inside.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0012,-0.0042],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.08],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0208,-0.0042],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.08],"color":[0.78,0.71,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,-0.0222,0.0373],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.002],"color":[0.6,0.55,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,-0.0222,0.0373],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.002],"color":[0.3,0.25,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.0198,-0.0042],"rot":[0.0,0.0,0.0],"size":[0.142,0.002,0.082],"color":[0.7,0.62,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.0022,-0.0042],"rot":[0.0,0.0,0.0],"size":[0.142,0.002,0.082],"color":[0.7,0.62,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"Chive1","shape":"cylinder","pos":[-0.03,0.0038,0.0108],"rot":[90.0,0.0,0.0],"size":[0.012,0.07,0.012],"color":[0.4,0.6,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Chive2","shape":"cylinder","pos":[-0.01,0.0058,-0.0242],"rot":[90.0,0.0,0.0],"size":[0.011,0.065,0.011],"color":[0.42,0.62,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"Chive3","shape":"cylinder","pos":[0.015,0.0028,0.0208],"rot":[90.0,0.0,0.0],"size":[0.013,0.072,0.013],"color":[0.38,0.58,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"Chive4","shape":"cylinder","pos":[0.03,0.0048,-0.0192],"rot":[90.0,0.0,0.0],"size":[0.012,0.068,0.012],"color":[0.41,0.61,0.21],"smooth":0.05,"metal":0.0},
+  {"name":"ZipTie","shape":"cylinder","pos":[0.0,0.0217,-0.0042],"rot":[0.0,0.0,90.0],"size":[0.004,0.14,0.004],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0}
+]}

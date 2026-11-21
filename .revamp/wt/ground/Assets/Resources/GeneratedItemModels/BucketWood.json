@@ -1,0 +1,9 @@
+{"version": 1, "id": "BucketWood", "baseHeight": 0.295, "name": "Bucket Wood", "model": "gpt-oss:120b", "notes": "Wooden bucket about 0.26 m diameter × 0.30 m tall, lying on its side (resting on the floor). Main body is a thin‑walled cylinder with a base lip and top rim; a three‑piece wooden handle arches over the rim.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.3,0.26],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BaseLip","shape":"cylinder","pos":[0.0,-0.225,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"HandleLeft","shape":"cylinder","pos":[-0.11,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"HandleRight","shape":"cylinder","pos":[0.11,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"HandleTop","shape":"cylinder","pos":[0.0,0.115,0.0],"rot":[0.0,0.0,90.0],"size":[0.24,0.02,0.02],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"GrainBand","shape":"cylinder","pos":[0.0,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.005,0.27],"color":[0.5,0.48,0.42],"smooth":0.15,"metal":0.0}
+]}

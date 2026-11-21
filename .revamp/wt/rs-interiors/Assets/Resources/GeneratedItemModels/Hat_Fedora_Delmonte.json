@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_Fedora_Delmonte", "baseHeight": 0.1225, "name": "Hat Fedora Delmonte", "model": "gpt-oss:120b", "notes": "Fedora hat laid flat on the floor – a thin circular brim (≈ 0.26 m diameter) with a raised felt crown (≈ 0.15 m diameter, 0.11 m tall). Includes a dark band around the crown and a front ribbon detail.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.26],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.09,0.15],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CrownDome","shape":"cylinder","pos":[0.0,0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.005,0.16],"color":[0.44,0.4,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"Ribbon","shape":"cube","pos":[0.0,0.0075,0.085],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.02],"color":[0.44,0.4,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.0467,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.28],"color":[0.45,0.42,0.52],"smooth":0.08,"metal":0.0}
+]}

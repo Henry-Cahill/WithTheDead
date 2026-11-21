@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_ImprovisedGasMask_nofilter", "baseHeight": 0.085, "name": "Hat Improvised Gas Mask nofilter", "model": "gpt-oss:120b", "notes": "Improvised gas‑mask hat laid flat: 0.5 m brim diameter, low crown slab 0.30 × 0.20 m, front mask panel 0.25 × 0.15 m, two side straps ~0.25 m long with metal buckles, small filter inlet on the front. Total thickness ≈0.03 m.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.015,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamOuter","shape":"cylinder","pos":[0.0,-0.003,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.52,0.004,0.52],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamInner","shape":"cylinder","pos":[0.0,-0.007,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.48,0.004,0.48],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownFlat","shape":"cube","pos":[0.0,0.01,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"MaskPanel","shape":"cube","pos":[0.0,0.005,0.1675],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"MaskEdge","shape":"cube","pos":[0.0,0.005,0.1675],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.16],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[-0.225,0.005,0.1675],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.225,0.005,0.1675],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.325,0.007,0.1675],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.015],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.325,0.007,0.1675],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.015],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"FilterPort","shape":"sphere","pos":[0.0,0.015,0.2475],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.35,0.33,0.4],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "GreaveBodyArmour_Left", "baseHeight": 0.0805, "name": "Greave Body Armour Left", "model": "gpt-oss:120b", "notes": "Left‑side greave/body‑armour piece, about 0.40 m long × 0.16 m wide × 0.02 m thick. Two thin metal shells (front & back) with inner padded liner and two leather straps with metal buckles, lying flat on the floor.", "score": 6, "parts": [
+  {"name":"FrontShell","shape":"cube","pos":[0.0625,-0.0065,0.043],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"BackShell","shape":"cube","pos":[0.0625,-0.0065,-0.047],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Liner","shape":"cube","pos":[0.0625,-0.0015,-0.002],"rot":[0.0,0.0,0.0],"size":[0.38,0.018,0.14],"color":[0.42,0.4,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[-0.0875,0.0085,-0.002],"rot":[0.0,0.0,90.0],"size":[0.018,0.35,0.018],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[-0.0875,-0.0115,-0.002],"rot":[0.0,0.0,90.0],"size":[0.018,0.35,0.018],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.1175,0.0085,0.043],"rot":[0.0,0.0,0.0],"size":[0.012,0.024,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"BuckleR","shape":"cube","pos":[-0.1175,0.0085,-0.047],"rot":[0.0,0.0,0.0],"size":[0.012,0.024,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RimFront","shape":"cylinder","pos":[0.0625,-0.0015,0.083],"rot":[0.0,0.0,90.0],"size":[0.008,0.4,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9}
+]}

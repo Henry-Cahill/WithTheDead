@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BaseballCap_WestMapleCountryClub", "baseHeight": 0.115, "name": "Hat Baseball Cap West Maple Country Club", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.24 m wide x 0.20 m front‑to‑back (including brim) x 0.12 m tall when laid out. Main crown block, side panels, front dome and a rectangular brim give the classic outline; colour is the club tint (0.55,0.5,0.6) with cloth smoothness.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cube","pos":[0.0,-0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.11,-0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.11,-0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontDome","shape":"sphere","pos":[0.0,0.015,-0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cube","pos":[0.0,-0.051,0.05],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.12],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.024,-0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.08],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.11,-0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.08],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.11,-0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.08],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.054,-0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.08],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0}
+]}

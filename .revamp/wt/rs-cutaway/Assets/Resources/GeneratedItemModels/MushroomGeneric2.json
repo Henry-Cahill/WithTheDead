@@ -1,0 +1,12 @@
+{"version": 1, "id": "MushroomGeneric2", "baseHeight": 0.0783, "name": "Mushroom Generic2", "model": "gpt-oss:120b", "notes": "Small cardboard pack of sliced mushrooms, 0.12 m × 0.08 m × 0.05 m tall: thin base, snap‑on lid, inner plastic tray, brown‑tinted mushroom caps visible through a clear window, and a simple label on the front.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.01,0.082],"color":[0.73,0.66,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"Tray","shape":"cube","pos":[0.0,-0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.115,0.008,0.075],"color":[0.9,0.92,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"Window","shape":"cube","pos":[0.0,-0.0067,0.0385],"rot":[0.0,0.0,0.0],"size":[0.11,0.014,0.002],"color":[0.97,0.98,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0062,-0.035],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.002],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Mushroom1","shape":"sphere","pos":[-0.025,-0.0037,-0.015],"rot":[0.0,0.0,0.0],"size":[0.022,0.028,0.018],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Mushroom2","shape":"sphere","pos":[0.015,-0.0037,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.016],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Mushroom3","shape":"sphere","pos":[-0.01,-0.0037,0.025],"rot":[0.0,0.0,0.0],"size":[0.021,0.027,0.017],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Mushroom4","shape":"sphere","pos":[0.03,-0.0037,-0.02],"rot":[0.0,0.0,0.0],"size":[0.019,0.024,0.015],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Mushroom5","shape":"sphere","pos":[-0.03,-0.0037,0.02],"rot":[0.0,0.0,0.0],"size":[0.023,0.029,0.019],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "ButterKnife_Gold", "baseHeight": 0.0695, "name": "Butter Knife Gold", "model": "gpt-oss:120b", "notes": "Gold butter‑knife weapon ~0.28 m total length (0.12 m cylindrical handle + 0.16 m thin blade), 0.015 m handle diameter, blade thickness ≈0.008 m. Lying on its side with X as the long axis; blade tip and edge are flush against the handle so nothing floats.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.085,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.055,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[0.055,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.002,0.022],"color":[0.45,0.35,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.14,-0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.01,0.012],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"ButtRivet","shape":"sphere","pos":[-0.142,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.45,0.35,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"GripLine","shape":"cylinder","pos":[-0.085,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.004,0.015],"color":[0.45,0.35,0.2],"smooth":0.4,"metal":1.0}
+]}

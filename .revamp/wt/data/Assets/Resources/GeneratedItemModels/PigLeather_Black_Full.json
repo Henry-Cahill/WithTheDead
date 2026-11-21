@@ -1,0 +1,15 @@
+{"version": 1, "id": "PigLeather_Black_Full", "baseHeight": 0.54, "name": "Pig Leather Black Full", "model": "gpt-oss:120b", "notes": "Flat pig leather hide, approx 1.00 m long × 0.70 m wide × 0.008 m thick (≈3 kg). Dark brown‑black tint, ragged edges, two stitching lines and a couple of punched holes as it would be found lying on the floor.", "score": 7, "parts": [
+  {"name":"HideBase","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.008,0.7],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.005,0.36],"rot":[0.0,0.0,0.0],"size":[1.0,0.008,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.005,-0.36],"rot":[0.0,0.0,0.0],"size":[1.0,0.008,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.51,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.7],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.51,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.7],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineX","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.68,0.01],"color":[0.8,0.7,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"StitchLineZ","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.96,0.01],"color":[0.8,0.7,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"HoleA","shape":"cylinder","pos":[-0.2,-0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HoleB","shape":"cylinder","pos":[0.3,-0.0,-0.15],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRagFL","shape":"cube","pos":[0.515,-0.005,0.365],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRagFR","shape":"cube","pos":[0.515,-0.005,-0.365],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRagBL","shape":"cube","pos":[-0.515,-0.005,0.365],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRagBR","shape":"cube","pos":[-0.515,-0.005,-0.365],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0}
+]}

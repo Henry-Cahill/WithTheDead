@@ -1,0 +1,12 @@
+{"version": 1, "id": "MysteryCan", "baseHeight": 0.2205, "name": "Mystery Can", "model": "gpt-oss:120b", "notes": "Upright mystery food can ~0.22 m diameter × 0.30 m tall. Main metal body with raised seam rings, thin lid rim and pull‑tab, a paper label covering most of the side, dark trim at top/bottom, and a slightly smaller inner cylinder hinting at the unknown contents.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.001,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.3,0.22],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[-0.001,0.1355,0.0],"rot":[0.0,0.0,0.0],"size":[0.236,0.012,0.236],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.001,-0.1545,0.0],"rot":[0.0,0.0,0.0],"size":[0.236,0.012,0.236],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[-0.001,0.1465,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.012,0.2],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.85},
+  {"name":"Rim","shape":"cylinder","pos":[-0.001,0.1525,0.0],"rot":[0.0,0.0,0.0],"size":[0.236,0.008,0.236],"color":[0.68,0.69,0.71],"smooth":0.45,"metal":0.85},
+  {"name":"PullTab","shape":"cylinder","pos":[0.109,0.1585,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.015],"color":[0.68,0.69,0.71],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[-0.001,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.206,0.28,0.206],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"TrimTop","shape":"cylinder","pos":[-0.001,0.1155,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"TrimBottom","shape":"cylinder","pos":[-0.001,-0.1345,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Content","shape":"cylinder","pos":[-0.001,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.28,0.2],"color":[0.38,0.3,0.22],"smooth":0.08,"metal":0.0}
+]}

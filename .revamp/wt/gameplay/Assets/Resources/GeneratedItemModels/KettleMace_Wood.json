@@ -1,0 +1,10 @@
+{"version": 1, "id": "KettleMace_Wood", "baseHeight": 0.275, "name": "Kettle Mace Wood", "model": "gpt-oss:120b", "notes": "Wooden mace about 1.4 m long lying on its side (handle along X). Wooden handle 1.10 m × 0.07 m, steel kettle head 0.30 m diameter with four short spikes around the sides and one up‑pointing spike.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.21,-0.17,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.1,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.34,-0.17,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.02,0.09],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HeadBody","shape":"sphere","pos":[0.49,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.3,0.3],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeZPos","shape":"cylinder","pos":[0.49,-0.055,0.21],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeZNeg","shape":"cylinder","pos":[0.49,-0.055,-0.21],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeXPos","shape":"cylinder","pos":[0.7,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeXNeg","shape":"cylinder","pos":[0.28,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeYUp","shape":"cylinder","pos":[0.49,0.155,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shirt_Bowling_Pink", "baseHeight": 0.075, "name": "Shirt Bowling Pink", "model": "gpt-oss:120b", "notes": "Flat bowling shirt ~0.60 m long × 0.45 m wide, 3 cm thick. Main pink‑tan fabric (tint 0.6,0.58,0.5) with a ribbed collar band, short fitted sleeves, a left chest pocket, and five white plastic buttons.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[0.0,-0.0,0.3],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.0,-0.0,-0.3],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.009,0.225],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.06],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.15,0.0075,0.235],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"sphere","pos":[-0.2,0.003,0.235],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Button2","shape":"sphere","pos":[-0.1,0.003,0.235],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Button3","shape":"sphere","pos":[0.0,0.003,0.235],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Button4","shape":"sphere","pos":[0.1,0.003,0.235],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Button5","shape":"sphere","pos":[0.2,0.003,0.235],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.45],"color":[0.48,0.46,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.45],"color":[0.48,0.46,0.42],"smooth":0.05,"metal":0.0}
+]}

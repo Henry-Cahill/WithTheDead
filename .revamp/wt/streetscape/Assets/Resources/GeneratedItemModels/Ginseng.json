@@ -1,0 +1,10 @@
+{"version": 1, "id": "Ginseng", "baseHeight": 0.0765, "name": "Ginseng", "model": "gpt-oss:120b", "notes": "Loose dried ginseng in a small paper packet about 0.12 m × 0.08 m × 0.02 m (L × W × H). The packet uses the item tint, has a darker brown label on top, and contains three curved root shapes visible through the thin packaging.", "score": 6, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.45,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Root1","shape":"sphere","pos":[-0.025,0.0015,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.015],"color":[0.55,0.45,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"Root2","shape":"sphere","pos":[0.02,0.0005,0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.012],"color":[0.55,0.45,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"Root3","shape":"sphere","pos":[-0.03,-0.0005,-0.005],"rot":[0.0,0.0,0.0],"size":[0.022,0.032,0.016],"color":[0.55,0.45,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"Root4","shape":"sphere","pos":[0.04,0.001,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.022,0.011],"color":[0.55,0.45,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"TopEdge","shape":"cylinder","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.121,0.002,0.121],"color":[0.7,0.6,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"BottomEdge","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.121,0.002,0.121],"color":[0.7,0.6,0.4],"smooth":0.12,"metal":0.0}
+]}

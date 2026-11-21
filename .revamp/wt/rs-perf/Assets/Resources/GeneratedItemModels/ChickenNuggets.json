@@ -1,0 +1,12 @@
+{"version": 1, "id": "ChickenNuggets", "baseHeight": 0.077, "name": "Chicken Nuggets", "model": "gpt-oss:120b", "notes": "Shallow cardboard‑foam container ~0.15 m × 0.10 m, 4 cm tall, with a thin lid and a printed label; six golden‑brown chicken nuggets (tint 0.75,0.68,0.45) sit inside.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.1],"color":[0.55,0.45,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"TrayRim","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.004,0.158],"color":[0.48,0.38,0.26],"smooth":0.12,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.155,0.012,0.105],"color":[0.6,0.5,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0095,0.02],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.04],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"Nugget1","shape":"sphere","pos":[-0.045,0.005,-0.025],"rot":[0.0,0.0,0.0],"size":[0.028,0.022,0.032],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Nugget2","shape":"sphere","pos":[0.03,0.005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.03,0.024,0.034],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Nugget3","shape":"sphere","pos":[-0.02,0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.027,0.021,0.031],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Nugget4","shape":"sphere","pos":[0.05,0.005,0.02],"rot":[0.0,0.0,0.0],"size":[0.029,0.023,0.033],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Nugget5","shape":"sphere","pos":[-0.03,0.005,0.005],"rot":[0.0,0.0,0.0],"size":[0.026,0.02,0.03],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Nugget6","shape":"sphere","pos":[0.015,0.005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.028,0.022,0.032],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0}
+]}

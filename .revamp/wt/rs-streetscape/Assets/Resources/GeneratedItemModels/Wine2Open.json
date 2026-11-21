@@ -1,0 +1,8 @@
+{"version": 1, "id": "Wine2Open", "baseHeight": 0.2425, "name": "Wine2 Open", "model": "gpt-oss:120b", "notes": "Open wine bottle ~0.30 m tall, 0.07 m wide: glass body, narrower neck, thin foil cap, amber‑tinted wine inside, and a dark label around the mid‑section.", "score": 6, "parts": [
+  {"name":"GlassBody","shape":"cylinder","pos":[0.0,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.3,0.07],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.1475,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.06,0.03],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"FoilCap","shape":"cylinder","pos":[0.0,0.18,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.9,0.8,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"WineLiquid","shape":"cylinder","pos":[0.0,-0.1075,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.15,0.066],"color":[0.55,0.18,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.069,0.002,0.069],"color":[0.35,0.25,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.1765,0.0],"rot":[0.0,0.0,0.0],"size":[0.032,0.002,0.032],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0}
+]}

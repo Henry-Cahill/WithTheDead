@@ -1,0 +1,12 @@
+{"version": 1, "id": "SmashedBottle", "baseHeight": 0.1185, "name": "Smashed Bottle", "model": "gpt-oss:120b", "notes": "Smashed bottle ~0.30 m long × 0.07 m diameter, lying on its side (long axis along X). Main glass cylinder with a thin rim at the +X business end and several jagged shards sticking out to show it’s broken.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.021,-0.0035],"rot":[0.0,0.0,90.0],"size":[0.07,0.3,0.07],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.155,-0.021,-0.0035],"rot":[0.0,0.0,90.0],"size":[0.075,0.01,0.075],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":0.0},
+  {"name":"Shard1","shape":"cube","pos":[0.18,0.014,-0.0235],"rot":[15.0,-20.0,5.0],"size":[0.03,0.04,0.015],"color":[0.58,0.58,0.62],"smooth":0.35,"metal":0.0},
+  {"name":"Shard2","shape":"cube","pos":[0.19,-0.006,0.0265],"rot":[-10.0,30.0,-8.0],"size":[0.025,0.035,0.012],"color":[0.57,0.57,0.61],"smooth":0.35,"metal":0.0},
+  {"name":"Shard3","shape":"cube","pos":[0.175,0.034,-0.0435],"rot":[20.0,-5.0,12.0],"size":[0.028,0.042,0.014],"color":[0.59,0.59,0.63],"smooth":0.35,"metal":0.0},
+  {"name":"Shard4","shape":"cube","pos":[0.165,-0.026,0.0465],"rot":[-12.0,15.0,-20.0],"size":[0.022,0.038,0.011],"color":[0.56,0.56,0.6],"smooth":0.35,"metal":0.0},
+  {"name":"Shard5","shape":"cube","pos":[0.2,0.024,-0.0035],"rot":[30.0,-10.0,0.0],"size":[0.02,0.03,0.01],"color":[0.58,0.58,0.62],"smooth":0.35,"metal":0.0},
+  {"name":"Shard6","shape":"cube","pos":[0.21,0.004,-0.0335],"rot":[-25.0,5.0,15.0],"size":[0.018,0.028,0.009],"color":[0.57,0.57,0.61],"smooth":0.35,"metal":0.0},
+  {"name":"EdgeCap","shape":"cube","pos":[0.225,-0.021,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.015,0.07,0.02],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"BaseCap","shape":"cube","pos":[-0.225,-0.021,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.015,0.07,0.02],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":0.0}
+]}

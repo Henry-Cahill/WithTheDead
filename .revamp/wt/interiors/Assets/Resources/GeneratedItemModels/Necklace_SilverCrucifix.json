@@ -1,0 +1,12 @@
+{"version": 1, "id": "Necklace_SilverCrucifix", "baseHeight": 0.0655, "name": "Necklace Silver Crucifix", "model": "gpt-oss:120b", "notes": "Silver crucifix necklace lying on the floor, ~0.15 m long: five interlocking chain links and a small silver cross pendant with a tiny loop at its top.", "score": 7, "parts": [
+  {"name":"Link1","shape":"cylinder","pos":[-0.0745,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.0445,-0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[-0.0145,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link4","shape":"cylinder","pos":[0.0155,-0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link5","shape":"cylinder","pos":[0.0455,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"PendantLoop","shape":"cylinder","pos":[0.0755,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"CrossVert","shape":"cube","pos":[0.0805,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"CrossHoriz","shape":"cube","pos":[0.0805,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.02],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"CrossBorder","shape":"cube","pos":[0.0805,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.006,0.028],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.0145,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.02],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0}
+]}

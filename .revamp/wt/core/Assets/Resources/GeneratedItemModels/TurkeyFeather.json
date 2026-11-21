@@ -1,0 +1,9 @@
+{"version": 1, "id": "TurkeyFeather", "baseHeight": 0.063, "name": "Turkey Feather", "model": "gpt-oss:120b", "notes": "Turkey feather ~0.25 m long, ~0.07 m wide, thin rachis with two symmetric vane sheets; lying flat on the floor.", "score": 6, "parts": [
+  {"name":"Rachis","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.003,0.25,0.003],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"VaneLeft","shape":"cube","pos":[0.0,0.0015,0.035],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.07],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"VaneRight","shape":"cube","pos":[0.0,0.0015,-0.035],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.07],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Base","shape":"sphere","pos":[-0.125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BarbDetailL","shape":"sphere","pos":[-0.05,0.001,0.03],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BarbDetailR","shape":"sphere","pos":[-0.05,0.001,-0.03],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0}
+]}

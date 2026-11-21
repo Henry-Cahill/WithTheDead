@@ -1,0 +1,22 @@
+{"version": 1, "id": "Jacket_ArmyCamoTigerStripe", "baseHeight": 0.075, "name": "Jacket Army Camo Tiger Stripe", "model": "gpt-oss:120b", "notes": "Flat army‑camo jacket laid out for a product view – overall footprint ~0.44 m wide × 0.55 m tall, 2 cm thick. Includes a central torso panel, front collar band, left/right lapels, two sleeves with cuffs, twin front pockets, centre zipper strip and several irregular camouflage patches (dark‑green/brown) on the body and sleeves.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.005,-0.11],"rot":[0.0,0.0,0.0],"size":[0.44,0.02,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.0025,0.115],"rot":[0.0,0.0,0.0],"size":[0.44,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LapelL","shape":"cube","pos":[-0.22,0.0025,0.115],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LapelR","shape":"cube","pos":[0.22,0.0025,0.115],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.32,-0.005,-0.11],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.42,0.0,-0.11],"rot":[0.0,0.0,0.0],"size":[0.025,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.32,-0.005,-0.11],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.42,0.0,-0.11],"rot":[0.0,0.0,0.0],"size":[0.025,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.13,-0.0075,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.13,-0.0075,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Zipper","shape":"cube","pos":[0.0,-0.0025,0.11],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.55],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Patch1","shape":"cube","pos":[-0.1,-0.003,-0.06],"rot":[0.0,12.0,0.0],"size":[0.3,0.004,0.08],"color":[0.32,0.38,0.22],"smooth":0.07,"metal":0.0},
+  {"name":"Patch2","shape":"cube","pos":[0.15,-0.003,-0.01],"rot":[0.0,-8.0,0.0],"size":[0.28,0.004,0.07],"color":[0.3,0.34,0.2],"smooth":0.07,"metal":0.0},
+  {"name":"Patch3","shape":"cube","pos":[-0.18,-0.003,-0.19],"rot":[0.0,5.0,0.0],"size":[0.22,0.004,0.06],"color":[0.28,0.32,0.18],"smooth":0.07,"metal":0.0},
+  {"name":"Patch4","shape":"cube","pos":[0.2,-0.003,-0.23],"rot":[0.0,-15.0,0.0],"size":[0.25,0.004,0.09],"color":[0.34,0.4,0.24],"smooth":0.07,"metal":0.0},
+  {"name":"Patch5","shape":"cube","pos":[0.0,-0.003,0.19],"rot":[0.0,0.0,0.0],"size":[0.35,0.004,0.1],"color":[0.36,0.42,0.26],"smooth":0.07,"metal":0.0},
+  {"name":"SleevePatchL","shape":"cube","pos":[-0.32,-0.003,-0.05],"rot":[0.0,-20.0,0.0],"size":[0.18,0.004,0.05],"color":[0.31,0.37,0.21],"smooth":0.07,"metal":0.0},
+  {"name":"SleevePatchR","shape":"cube","pos":[0.32,-0.003,-0.17],"rot":[0.0,18.0,0.0],"size":[0.18,0.004,0.05],"color":[0.33,0.39,0.23],"smooth":0.07,"metal":0.0},
+  {"name":"SleevePatchL2","shape":"cube","pos":[-0.32,-0.003,-0.15],"rot":[0.0,10.0,0.0],"size":[0.14,0.004,0.04],"color":[0.29,0.35,0.19],"smooth":0.07,"metal":0.0},
+  {"name":"SleevePatchR2","shape":"cube","pos":[0.32,-0.003,-0.03],"rot":[0.0,-12.0,0.0],"size":[0.14,0.004,0.04],"color":[0.3,0.36,0.2],"smooth":0.07,"metal":0.0}
+]}

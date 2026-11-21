@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoulderpad_ArticulatedSpike_R", "baseHeight": 0.0887, "name": "Shoulderpad Articulated Spike R", "model": "gpt-oss:120b", "notes": "Right‑shoulder articulated spike armor piece (≈0.25 m × 0.20 m pad, 0.15 m spike). Main grey‑brown tint for padded leather; steel spike with high gloss.", "score": 7, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[-0.005,-0.0187,-0.0693],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PadRim","shape":"cube","pos":[-0.005,-0.0167,-0.0693],"rot":[0.0,0.0,0.0],"size":[0.258,0.024,0.208],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.115,0.0013,-0.0693],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.105,0.0013,-0.0693],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SpikeJoint","shape":"cube","pos":[0.115,0.0063,0.0207],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SpikeRod","shape":"cylinder","pos":[0.115,0.0163,0.0857],"rot":[90.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[0.115,0.0163,0.1608],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.78,0.78,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"RivetFL","shape":"cube","pos":[-0.12,-0.0087,0.0207],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFR","shape":"cube","pos":[0.11,-0.0087,0.0207],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBL","shape":"cube","pos":[-0.12,-0.0087,-0.1593],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBR","shape":"cube","pos":[0.11,-0.0087,-0.1593],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shoes_CrudeLeatherFootwear", "baseHeight": 0.122, "name": "Shoes Crude Leather Footwear", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a pair of crude leather shoes (≈0.28 m long × 0.10 m wide each, sole 2.5 cm thick, upper ≈7 cm high). Shoes are placed side‑by‑side on the floor (y=0) with their inner edges touching at Z = 0. All parts now sit flush against their own shoe – nothing is floating.", "score": 6, "parts": [
+  {"name":"LeftSole","shape":"cube","pos":[0.0,-0.0495,0.05],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.1],"color":[0.15,0.15,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"RightSole","shape":"cube","pos":[0.0,-0.0495,-0.05],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.1],"color":[0.15,0.15,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"LeftUpper","shape":"cube","pos":[0.0,-0.002,0.05],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightUpper","shape":"cube","pos":[0.0,-0.002,-0.05],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftToeCap","shape":"cube","pos":[0.115,0.013,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.056,0.09],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"RightToeCap","shape":"cube","pos":[0.115,0.013,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.056,0.09],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LeftHeel","shape":"cube","pos":[-0.12,0.013,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.042,0.09],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"RightHeel","shape":"cube","pos":[-0.12,0.013,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.042,0.09],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLace","shape":"cylinder","pos":[0.0,0.058,0.05],"rot":[0.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"RightLace","shape":"cylinder","pos":[0.0,0.058,-0.05],"rot":[0.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"LeftStitchBand","shape":"cube","pos":[0.0,0.032,0.05],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.004],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"RightStitchBand","shape":"cube","pos":[0.0,0.032,-0.05],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.004],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0}
+]}

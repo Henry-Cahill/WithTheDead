@@ -1,0 +1,13 @@
+{"version": 1, "id": "ClayBlockAnvilMold", "baseHeight": 0.078, "name": "Clay Block Anvil Mold", "model": "gpt-oss:120b", "notes": "Flat rectangular clay block (≈0.12 m × 0.08 m × 0.02 m) used as an anvil‑casting mold, lying on the floor. Main body of baked‑clay colour, shallow cylindrical cavity in the centre, raised rim around the edges and a faint surface crack for visual interest.", "score": 7, "parts": [
+  {"name":"BaseBlock","shape":"cube","pos":[-0.0003,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Cavity","shape":"cylinder","pos":[-0.0003,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.06],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[-0.0003,0.0035,0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.005],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[-0.0003,0.0035,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.005],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.0578,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.003,0.08],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.0572,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.003,0.08],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SurfaceCrack","shape":"cube","pos":[-0.0003,0.0015,0.0],"rot":[0.0,0.0,15.0],"size":[0.12,0.002,0.08],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[-0.0303,0.0015,0.0365],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.0303,0.0015,-0.0365],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRough1","shape":"cube","pos":[0.0577,0.0,0.03],"rot":[0.0,20.0,0.0],"size":[0.003,0.002,0.015],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRough2","shape":"cube","pos":[-0.0583,0.0,-0.03],"rot":[0.0,-15.0,0.0],"size":[0.003,0.002,0.015],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

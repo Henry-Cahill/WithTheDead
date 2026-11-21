@@ -1,0 +1,13 @@
+{"version": 1, "id": "GardenForkHead", "baseHeight": 0.0755, "name": "Garden Fork Head", "model": "gpt-oss:120b", "notes": "Garden fork head, approx 0.28 m long (X), 0.12 m wide across the three tines (Z) and 0.02 m thick (Y). A rectangular steel base with three short metal tines projecting forward; small rivets mark each tine‑base.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"TineL","shape":"cylinder","pos":[0.13,0.0005,-0.04],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"TineM","shape":"cylinder","pos":[0.13,0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"TineR","shape":"cylinder","pos":[0.13,0.0005,0.04],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"TineTipL","shape":"sphere","pos":[0.13,0.0005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"TineTipM","shape":"sphere","pos":[0.13,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"TineTipR","shape":"sphere","pos":[0.13,0.0005,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"RivetL","shape":"cylinder","pos":[0.13,0.0105,-0.04],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.005],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetM","shape":"cylinder","pos":[0.13,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.005],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.13,0.0105,0.04],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.005],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"HandleHole","shape":"cylinder","pos":[-0.11,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.022,0.03],"color":[0.2,0.22,0.25],"smooth":0.4,"metal":0.0}
+]}

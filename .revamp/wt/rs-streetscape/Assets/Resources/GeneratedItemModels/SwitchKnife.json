@@ -1,0 +1,10 @@
+{"version": 1, "id": "SwitchKnife", "baseHeight": 0.0975, "name": "Switch Knife", "model": "gpt-oss:120b", "notes": "Switch Knife ~0.9 m long lying on its side (X‑axis). Metal blade extending forward, polymer handle with rubber grip, small guard, pommel and tip detail.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.305,-0.0025,-0.005],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.355,0.0075,-0.005],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"LeatherWrap","shape":"cylinder","pos":[-0.305,0.0025,-0.005],"rot":[0.0,0.0,90.0],"size":[0.05,0.2,0.05],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[-0.155,-0.0125,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.14],"color":[0.5,0.5,0.55],"smooth":0.55,"metal":0.8},
+  {"name":"Blade","shape":"cube","pos":[0.145,-0.0175,-0.005],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.12],"color":[0.85,0.85,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.475,-0.0175,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.85,0.85,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.475,-0.0025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.5,0.5,0.55],"smooth":0.55,"metal":0.8},
+  {"name":"Screw","shape":"cylinder","pos":[-0.155,0.0075,0.065],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.6,0.65],"smooth":0.55,"metal":1.0}
+]}

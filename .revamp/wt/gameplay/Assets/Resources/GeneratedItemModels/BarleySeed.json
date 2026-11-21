@@ -1,0 +1,10 @@
+{"version": 1, "id": "BarleySeed", "baseHeight": 0.074, "name": "Barley Seed", "model": "gpt-oss:120b", "notes": "Loose barley seed in a small brown paper sack (~0.12 m × 0.08 m × 0.015 m). The bag is shown with a top seam, a simple label and two string ties; a modest pile of yellow‑gold seeds spills slightly out of the opening for recognisable silhouette.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.01,-0.0065,0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.58,0.53,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.01,0.0005,0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.45,0.4,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.01,-0.0055,0.01],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.92,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"TieLeft","shape":"cylinder","pos":[-0.03,0.0005,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"TieRight","shape":"cylinder","pos":[0.05,0.0005,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"SeedPileCenter","shape":"sphere","pos":[0.04,0.004,0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SeedSpillEdge","shape":"sphere","pos":[-0.04,-0.004,-0.02],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SeedSurface","shape":"cube","pos":[0.01,-0.005,0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.7,0.62,0.38],"smooth":0.15,"metal":0.0}
+]}

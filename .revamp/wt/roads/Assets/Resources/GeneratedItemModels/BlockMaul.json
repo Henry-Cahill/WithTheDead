@@ -1,0 +1,9 @@
+{"version": 1, "id": "BlockMaul", "baseHeight": 0.1913, "name": "Block Maul", "model": "gpt-oss:120b", "notes": "Block maul ~1.5 m long, 0.25 m tall head on a 1.2 m wooden handle. Lying on its side (X‑axis), head sticks out to show the heavy metal block and a top spike.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.175,-0.1062,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.535,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.25,0.45],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeTop","shape":"cylinder","pos":[0.535,0.0538,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Strap","shape":"cube","pos":[0.275,-0.1237,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.07],"color":[0.2,0.12,0.08],"smooth":0.05,"metal":0.0},
+  {"name":"SideSpikeL","shape":"cylinder","pos":[0.535,-0.0012,-0.18],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"SideSpikeR","shape":"cylinder","pos":[0.535,-0.0012,0.18],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"HeadRim","shape":"cylinder","pos":[0.535,0.1238,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.48],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0}
+]}

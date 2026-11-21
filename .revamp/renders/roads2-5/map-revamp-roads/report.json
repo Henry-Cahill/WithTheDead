@@ -1,0 +1,5301 @@
+{
+    "harness": "CloneZ MapShots 1",
+    "started": "2026-10-24 11:35:37",
+    "unity": "6000.7.0a2",
+    "graphics": "Direct3D11 / Intel(R) Arc(TM) A750 Graphics",
+    "worldStore": "C:\\Users\\hlcma\\source\\Unity\\CLONE-Z\\.revamp\\world-f2",
+    "buildId": "ky-local-f2",
+    "attribution": "Map data © OpenStreetMap contributors (ODbL)",
+    "place": "Frankfort",
+    "zone": "bardstown",
+    "placeX": 1576786.4,
+    "placeZ": 1207629.9,
+    "halfSize": 200.0,
+    "quick": false,
+    "exitCode": 0,
+    "exitReason": "ok",
+    "totalSeconds": 179.9,
+    "square": {
+        "built": true,
+        "why": "",
+        "lastStats": "Kentucky map Frankfort (build ky-local-f2): 38 buildings, 27 beyond the edge, 131 street pieces, 316 containers, 311 lights, 691 trees, 6 exits. Map data © OpenStreetMap contributors (ODbL)",
+        "buildMs": 3927.33,
+        "spawnX": -34.34809494018555,
+        "spawnZ": 21.196125030517578,
+        "spawnYaw": 118.12256622314453,
+        "exits": [
+            "Snowfield (north) at 0.0, 197.0",
+            "KY 2261 east at 197.0, 12.6",
+            "KY 420 south (High Street) at -25.3, -197.0",
+            "KY 420 south (Ann Street) at -194.1, -197.0",
+            "KY 420 west (West Clinton Street) at -197.0, -46.1",
+            "KY 420 west (Mero Street) at -197.0, 116.0"
+        ],
+        "ceilingRenderers": 62,
+        "dataBuildingsInside": 38,
+        "dataBuildingsAtEdge": 6,
+        "dataBuildingsRing": 27,
+        "dataStreetPieces": 134,
+        "dataLines": 6,
+        "dataAreas": 16,
+        "dataBuildingKinds": "house 20, commercial 15, church 2, civic 1",
+        "dataAreaKinds": "parking 11, pitch 2, grass 1, lot 1, park 1",
+        "dataLineKinds": "rail 3, abandoned 2, river 1",
+        "total": {
+            "name": "all",
+            "gameObjects": 10457,
+            "renderers": 5647,
+            "meshFilters": 5647,
+            "distinctMeshes": 5340,
+            "materialSlots": 13664,
+            "distinctMaterials": 178,
+            "lights": 324,
+            "lightsShadowed": 0,
+            "colliders": 3558,
+            "shadowCasters": 4015,
+            "lootContainers": 316,
+            "vertices": 3061530,
+            "triangles": 1927809,
+            "distinctMeshVertices": 3037924
+        },
+        "roots": [
+            {
+                "name": "World",
+                "gameObjects": 10157,
+                "renderers": 5386,
+                "meshFilters": 5386,
+                "distinctMeshes": 5079,
+                "materialSlots": 12861,
+                "distinctMaterials": 127,
+                "lights": 324,
+                "lightsShadowed": 0,
+                "colliders": 3558,
+                "shadowCasters": 3787,
+                "lootContainers": 316,
+                "vertices": 2813014,
+                "triangles": 1727646,
+                "distinctMeshVertices": 2789408
+            },
+            {
+                "name": "RaidOverhead",
+                "gameObjects": 209,
+                "renderers": 171,
+                "meshFilters": 171,
+                "distinctMeshes": 171,
+                "materialSlots": 612,
+                "distinctMaterials": 69,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 171,
+                "lootContainers": 0,
+                "vertices": 174333,
+                "triangles": 103425,
+                "distinctMeshVertices": 174333
+            },
+            {
+                "name": "RaidScenery",
+                "gameObjects": 91,
+                "renderers": 90,
+                "meshFilters": 90,
+                "distinctMeshes": 90,
+                "materialSlots": 191,
+                "distinctMaterials": 29,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 57,
+                "lootContainers": 0,
+                "vertices": 74183,
+                "triangles": 96738,
+                "distinctMeshVertices": 74183
+            }
+        ],
+        "groups": [
+            {
+                "name": "World/Interior KY#",
+                "gameObjects": 9025,
+                "renderers": 5119,
+                "meshFilters": 5119,
+                "distinctMeshes": 4818,
+                "materialSlots": 11600,
+                "distinctMaterials": 81,
+                "lights": 302,
+                "lightsShadowed": 0,
+                "colliders": 2027,
+                "shadowCasters": 3627,
+                "lootContainers": 246,
+                "vertices": 2166016,
+                "triangles": 1376322,
+                "distinctMeshVertices": 2142839
+            },
+            {
+                "name": "World/OutdoorProps",
+                "gameObjects": 114,
+                "renderers": 114,
+                "meshFilters": 114,
+                "distinctMeshes": 114,
+                "materialSlots": 433,
+                "distinctMaterials": 16,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 114,
+                "lootContainers": 0,
+                "vertices": 243082,
+                "triangles": 153846,
+                "distinctMeshVertices": 243082
+            },
+            {
+                "name": "World/OutdoorGround",
+                "gameObjects": 97,
+                "renderers": 97,
+                "meshFilters": 97,
+                "distinctMeshes": 97,
+                "materialSlots": 421,
+                "distinctMaterials": 13,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 0,
+                "lootContainers": 0,
+                "vertices": 86974,
+                "triangles": 37822,
+                "distinctMeshVertices": 86974
+            },
+            {
+                "name": "World/Building shells",
+                "gameObjects": 47,
+                "renderers": 46,
+                "meshFilters": 46,
+                "distinctMeshes": 46,
+                "materialSlots": 397,
+                "distinctMaterials": 42,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 46,
+                "lootContainers": 0,
+                "vertices": 316280,
+                "triangles": 158664,
+                "distinctMeshVertices": 316280
+            },
+            {
+                "name": "RaidOverhead/Building shells",
+                "gameObjects": 47,
+                "renderers": 46,
+                "meshFilters": 46,
+                "distinctMeshes": 46,
+                "materialSlots": 320,
+                "distinctMaterials": 55,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 46,
+                "lootContainers": 0,
+                "vertices": 130429,
+                "triangles": 64697,
+                "distinctMeshVertices": 130429
+            },
+            {
+                "name": "RaidOverhead/Roofs",
+                "gameObjects": 46,
+                "renderers": 46,
+                "meshFilters": 46,
+                "distinctMeshes": 46,
+                "materialSlots": 136,
+                "distinctMaterials": 29,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 46,
+                "lootContainers": 0,
+                "vertices": 16811,
+                "triangles": 10527,
+                "distinctMeshVertices": 16811
+            },
+            {
+                "name": "RaidOverhead/Interior KY#",
+                "gameObjects": 72,
+                "renderers": 36,
+                "meshFilters": 36,
+                "distinctMeshes": 36,
+                "materialSlots": 113,
+                "distinctMaterials": 5,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 36,
+                "lootContainers": 0,
+                "vertices": 22896,
+                "triangles": 21752,
+                "distinctMeshVertices": 22896
+            },
+            {
+                "name": "RaidScenery/SceneryGround",
+                "gameObjects": 31,
+                "renderers": 31,
+                "meshFilters": 31,
+                "distinctMeshes": 31,
+                "materialSlots": 95,
+                "distinctMaterials": 7,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 0,
+                "lootContainers": 0,
+                "vertices": 7168,
+                "triangles": 2406,
+                "distinctMeshVertices": 7168
+            },
+            {
+                "name": "RaidScenery/SceneryProps",
+                "gameObjects": 37,
+                "renderers": 37,
+                "meshFilters": 37,
+                "distinctMeshes": 37,
+                "materialSlots": 74,
+                "distinctMaterials": 21,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 37,
+                "lootContainers": 0,
+                "vertices": 26572,
+                "triangles": 19440,
+                "distinctMeshVertices": 26572
+            },
+            {
+                "name": "RaidOverhead/Overhead",
+                "gameObjects": 26,
+                "renderers": 26,
+                "meshFilters": 26,
+                "distinctMeshes": 26,
+                "materialSlots": 26,
+                "distinctMaterials": 1,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 26,
+                "lootContainers": 0,
+                "vertices": 699,
+                "triangles": 233,
+                "distinctMeshVertices": 699
+            },
+            {
+                "name": "RaidScenery/Wires",
+                "gameObjects": 20,
+                "renderers": 20,
+                "meshFilters": 20,
+                "distinctMeshes": 20,
+                "materialSlots": 20,
+                "distinctMaterials": 1,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 20,
+                "lootContainers": 0,
+                "vertices": 2112,
+                "triangles": 3660,
+                "distinctMeshVertices": 2112
+            },
+            {
+                "name": "RaidOverhead/Wires",
+                "gameObjects": 17,
+                "renderers": 17,
+                "meshFilters": 17,
+                "distinctMeshes": 17,
+                "materialSlots": 17,
+                "distinctMaterials": 1,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 17,
+                "lootContainers": 0,
+                "vertices": 3498,
+                "triangles": 6216,
+                "distinctMeshVertices": 3498
+            },
+            {
+                "name": "World/StreetLamp",
+                "gameObjects": 18,
+                "renderers": 9,
+                "meshFilters": 9,
+                "distinctMeshes": 3,
+                "materialSlots": 9,
+                "distinctMaterials": 3,
+                "lights": 9,
+                "lightsShadowed": 0,
+                "colliders": 9,
+                "shadowCasters": 0,
+                "lootContainers": 0,
+                "vertices": 638,
+                "triangles": 980,
+                "distinctMeshVertices": 209
+            },
+            {
+                "name": "World/Ground",
+                "gameObjects": 1,
+                "renderers": 1,
+                "meshFilters": 1,
+                "distinctMeshes": 1,
+                "materialSlots": 1,
+                "distinctMaterials": 1,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 1,
+                "shadowCasters": 0,
+                "lootContainers": 0,
+                "vertices": 24,
+                "triangles": 12,
+                "distinctMeshVertices": 24
+            },
+            {
+                "name": "RaidScenery/Snowfield",
+                "gameObjects": 1,
+                "renderers": 1,
+                "meshFilters": 1,
+                "distinctMeshes": 1,
+                "materialSlots": 1,
+                "distinctMaterials": 1,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 0,
+                "lootContainers": 0,
+                "vertices": 4,
+                "triangles": 2,
+                "distinctMeshVertices": 4
+            },
+            {
+                "name": "RaidScenery/SnowTone",
+                "gameObjects": 1,
+                "renderers": 1,
+                "meshFilters": 1,
+                "distinctMeshes": 1,
+                "materialSlots": 1,
+                "distinctMaterials": 1,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 0,
+                "lootContainers": 0,
+                "vertices": 38327,
+                "triangles": 71230,
+                "distinctMeshVertices": 38327
+            }
+        ],
+        "log": {
+            "errors": 0,
+            "warnings": 0,
+            "editModeArtefacts": 0,
+            "first": []
+        }
+    },
+    "squarePasses": [
+        {
+            "name": "(read the area)",
+            "ms": 157.79,
+            "maxMs": 157.79,
+            "count": 1
+        },
+        {
+            "name": "(set up the site)",
+            "ms": 2.94,
+            "maxMs": 2.94,
+            "count": 1
+        },
+        {
+            "name": "ground",
+            "ms": 1.84,
+            "maxMs": 1.84,
+            "count": 1
+        },
+        {
+            "name": "water",
+            "ms": 0.01,
+            "maxMs": 0.01,
+            "count": 1
+        },
+        {
+            "name": "fields",
+            "ms": 0.01,
+            "maxMs": 0.01,
+            "count": 1
+        },
+        {
+            "name": "ground mask",
+            "ms": 3.41,
+            "maxMs": 3.41,
+            "count": 1
+        },
+        {
+            "name": "lots",
+            "ms": 11.6,
+            "maxMs": 2.98,
+            "count": 39
+        },
+        {
+            "name": "grounds",
+            "ms": 0.0,
+            "maxMs": 0.0,
+            "count": 1
+        },
+        {
+            "name": "work yards",
+            "ms": 0.15,
+            "maxMs": 0.14,
+            "count": 2
+        },
+        {
+            "name": "snow tone",
+            "ms": 25.91,
+            "maxMs": 25.91,
+            "count": 1
+        },
+        {
+            "name": "road network",
+            "ms": 8.11,
+            "maxMs": 8.11,
+            "count": 1
+        },
+        {
+            "name": "junctions",
+            "ms": 2.81,
+            "maxMs": 2.81,
+            "count": 1
+        },
+        {
+            "name": "streets",
+            "ms": 28.12,
+            "maxMs": 6.68,
+            "count": 145
+        },
+        {
+            "name": "sidewalks",
+            "ms": 15.27,
+            "maxMs": 3.0,
+            "count": 52
+        },
+        {
+            "name": "berms and driveways",
+            "ms": 9.42,
+            "maxMs": 0.79,
+            "count": 49
+        },
+        {
+            "name": "road markings",
+            "ms": 0.57,
+            "maxMs": 0.14,
+            "count": 12
+        },
+        {
+            "name": "paths",
+            "ms": 1.24,
+            "maxMs": 0.28,
+            "count": 25
+        },
+        {
+            "name": "railways",
+            "ms": 0.01,
+            "maxMs": 0.01,
+            "count": 6
+        },
+        {
+            "name": "bridges",
+            "ms": 0.0,
+            "maxMs": 0.0,
+            "count": 1
+        },
+        {
+            "name": "scenery roads",
+            "ms": 1.17,
+            "maxMs": 1.17,
+            "count": 1
+        },
+        {
+            "name": "buildings",
+            "ms": 36.61,
+            "maxMs": 4.18,
+            "count": 16
+        },
+        {
+            "name": "interior plans",
+            "ms": 55.05,
+            "maxMs": 6.75,
+            "count": 37
+        },
+        {
+            "name": "interior shell",
+            "ms": 3.95,
+            "maxMs": 0.23,
+            "count": 36
+        },
+        {
+            "name": "interior walls",
+            "ms": 42.76,
+            "maxMs": 5.64,
+            "count": 36
+        },
+        {
+            "name": "interior floors",
+            "ms": 5.61,
+            "maxMs": 1.37,
+            "count": 36
+        },
+        {
+            "name": "interior doors",
+            "ms": 133.62,
+            "maxMs": 7.05,
+            "count": 72
+        },
+        {
+            "name": "interior switches",
+            "ms": 22.1,
+            "maxMs": 0.97,
+            "count": 36
+        },
+        {
+            "name": "interior rooms",
+            "ms": 795.97,
+            "maxMs": 89.22,
+            "count": 234
+        },
+        {
+            "name": "interior wall meshes",
+            "ms": 28.94,
+            "maxMs": 2.53,
+            "count": 36
+        },
+        {
+            "name": "interior finish",
+            "ms": 78.85,
+            "maxMs": 8.16,
+            "count": 36
+        },
+        {
+            "name": "cutaway",
+            "ms": 5.39,
+            "maxMs": 2.1,
+            "count": 3
+        },
+        {
+            "name": "utility lines",
+            "ms": 2.83,
+            "maxMs": 2.83,
+            "count": 1
+        },
+        {
+            "name": "power lines",
+            "ms": 0.0,
+            "maxMs": 0.0,
+            "count": 1
+        },
+        {
+            "name": "utility poles",
+            "ms": 2.63,
+            "maxMs": 2.63,
+            "count": 1
+        },
+        {
+            "name": "street lights",
+            "ms": 2.38,
+            "maxMs": 2.38,
+            "count": 1
+        },
+        {
+            "name": "signs",
+            "ms": 1.33,
+            "maxMs": 1.33,
+            "count": 1
+        },
+        {
+            "name": "street furniture",
+            "ms": 0.78,
+            "maxMs": 0.78,
+            "count": 1
+        },
+        {
+            "name": "landmarks",
+            "ms": 0.01,
+            "maxMs": 0.01,
+            "count": 1
+        },
+        {
+            "name": "fences and walls",
+            "ms": 0.0,
+            "maxMs": 0.0,
+            "count": 1
+        },
+        {
+            "name": "park litter",
+            "ms": 0.12,
+            "maxMs": 0.12,
+            "count": 1
+        },
+        {
+            "name": "wires",
+            "ms": 4.24,
+            "maxMs": 4.24,
+            "count": 1
+        },
+        {
+            "name": "nature plan",
+            "ms": 1.19,
+            "maxMs": 1.19,
+            "count": 1
+        },
+        {
+            "name": "driveway plan",
+            "ms": 0.24,
+            "maxMs": 0.24,
+            "count": 1
+        },
+        {
+            "name": "mapped trees",
+            "ms": 0.02,
+            "maxMs": 0.02,
+            "count": 1
+        },
+        {
+            "name": "yard trees",
+            "ms": 2.14,
+            "maxMs": 0.18,
+            "count": 30
+        },
+        {
+            "name": "grounds trees",
+            "ms": 1.87,
+            "maxMs": 1.43,
+            "count": 4
+        },
+        {
+            "name": "street trees",
+            "ms": 1.36,
+            "maxMs": 0.2,
+            "count": 85
+        },
+        {
+            "name": "fence rows",
+            "ms": 5.56,
+            "maxMs": 3.16,
+            "count": 156
+        },
+        {
+            "name": "woods",
+            "ms": 22.6,
+            "maxMs": 4.53,
+            "count": 9362
+        },
+        {
+            "name": "driveway cars",
+            "ms": 0.61,
+            "maxMs": 0.27,
+            "count": 8
+        },
+        {
+            "name": "buses and cruisers",
+            "ms": 0.02,
+            "maxMs": 0.02,
+            "count": 1
+        },
+        {
+            "name": "parking lot cars",
+            "ms": 8.1,
+            "maxMs": 1.24,
+            "count": 115
+        },
+        {
+            "name": "kerbside cars",
+            "ms": 8.27,
+            "maxMs": 0.48,
+            "count": 127
+        },
+        {
+            "name": "wrecks",
+            "ms": 0.16,
+            "maxMs": 0.16,
+            "count": 1
+        },
+        {
+            "name": "plough piles",
+            "ms": 0.42,
+            "maxMs": 0.42,
+            "count": 1
+        },
+        {
+            "name": "wall drifts",
+            "ms": 13.3,
+            "maxMs": 3.26,
+            "count": 39
+        },
+        {
+            "name": "fence drifts",
+            "ms": 0.01,
+            "maxMs": 0.01,
+            "count": 1
+        },
+        {
+            "name": "shovelled snow",
+            "ms": 0.21,
+            "maxMs": 0.21,
+            "count": 1
+        },
+        {
+            "name": "danger and landmarks",
+            "ms": 0.68,
+            "maxMs": 0.68,
+            "count": 1
+        },
+        {
+            "name": "points",
+            "ms": 0.15,
+            "maxMs": 0.15,
+            "count": 1
+        },
+        {
+            "name": "(after the last pass)",
+            "ms": 4.69,
+            "maxMs": 4.69,
+            "count": 1
+        },
+        {
+            "name": "(emit the overhead meshes)",
+            "ms": 3.95,
+            "maxMs": 3.95,
+            "count": 1
+        },
+        {
+            "name": "(emit the outdoor meshes)",
+            "ms": 53.46,
+            "maxMs": 53.46,
+            "count": 1
+        }
+    ],
+    "squarePassesTotalMs": 1626.88,
+    "squarePassesError": "",
+    "squarePassesLog": {
+        "errors": 0,
+        "warnings": 0,
+        "editModeArtefacts": 0,
+        "first": []
+    },
+    "spots": [
+        {
+            "id": "spawn",
+            "title": "The raid's opening frame: the survivor's spawn on Mero Street, at the game's starting zoom",
+            "why": "KentuckyMap.Build's spawn (the sidewalk spot nearest the place's centre), facing along the street",
+            "found": true,
+            "x": -34.34809494018555,
+            "z": 21.196125030517578,
+            "yaw": 118.12256622314453
+        },
+        {
+            "id": "downtown",
+            "title": "Downtown Frankfort: the middle of the square, on Elk Alley",
+            "why": "the place's own point in places.json (its OSM place node, which the square is built around), moved 2.9 m onto the nearest street",
+            "found": true,
+            "x": -2.5095367431640625,
+            "z": 1.3694953918457031,
+            "yaw": 0.0
+        },
+        {
+            "id": "residential",
+            "title": "The densest residential street: Lewis Street, 4 homes within 30 m",
+            "why": "of the points every 6 m along the square's residential streets, the one with the most houses, apartments and trailers within 30 m",
+            "found": true,
+            "x": -145.6687469482422,
+            "z": 50.80833053588867,
+            "yaw": 0.0
+        },
+        {
+            "id": "intersection",
+            "title": "The busiest intersection: Ann Street / West Clinton Street (4 ways in)",
+            "why": "the street node inside the square where the most, and the most important, streets meet (each scores its rank, double when it passes through)",
+            "found": true,
+            "x": -132.10000610351563,
+            "z": -81.4000015258789,
+            "yaw": 0.0
+        },
+        {
+            "id": "green",
+            "title": "Green: park 'Fort Hill Civil War Park', 5,319 m² inside the square",
+            "why": "the biggest park, cemetery, playground, pitch or golf course inside the square (grass, meadow and orchard count half)",
+            "found": true,
+            "x": 161.75250244140625,
+            "z": 154.24684143066406,
+            "yaw": 0.0
+        },
+        {
+            "id": "parking",
+            "title": "Parking: a parking, 7,259 m² inside the square",
+            "why": "the biggest parking area inside the square",
+            "found": true,
+            "x": 161.04891967773438,
+            "z": -161.81065368652344,
+            "yaw": 0.0
+        },
+        {
+            "id": "edge",
+            "title": "The square's edge: where Holmes Street leaves it (east), the playable map giving way to the scenery ring",
+            "why": "the best-ranked street crossing the square's edge, nearest its side's middle (how KentuckyMap ranks exits)",
+            "found": true,
+            "x": 200.0,
+            "z": 13.244707107543945,
+            "yaw": 0.0
+        },
+        {
+            "id": "waterway",
+            "title": "Railway: a rail",
+            "why": "the point of a railway, river, canal or stream nearest the square's middle (none inside the square: this one is in the scenery ring)",
+            "found": true,
+            "x": 29.828567504882813,
+            "z": -258.27142333984375,
+            "yaw": 0.0
+        },
+        {
+            "id": "landmark",
+            "title": "Landmark: the biggest building in the square, commercial 'Kentucky Transportation Cabinet' (9,435 m² footprint)",
+            "why": "the largest footprint inside the square among churches, schools, warehouses, industrial, civic, hospital, retail, office, hotel and apartment buildings",
+            "found": true,
+            "x": -82.95249938964844,
+            "z": 110.39998626708984,
+            "yaw": 0.0
+        }
+    ],
+    "shots": [
+        {
+            "file": "00_overview.png",
+            "title": "Top-down overview of the whole start square (400 m, red outline) and its scenery ring, roofs on, north up; cyan = spawn, yellow = exits, magenta = the close-up spots",
+            "look": "day",
+            "camera": "top-down orthographic, 592 m square, north up",
+            "x": 0.0,
+            "z": 0.0,
+            "width": 2048,
+            "height": 2048,
+            "renderMs": 1303.01,
+            "meanLuma": 0.5751492381095886,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "00_overview_night.png",
+            "title": "The same overview by night as a raid starts, every map light on and unshadowed (no survivor, so no sight light): where the light is",
+            "look": "night",
+            "camera": "top-down orthographic, 592 m square, north up",
+            "x": 0.0,
+            "z": 0.0,
+            "width": 2048,
+            "height": 2048,
+            "renderMs": 249.23,
+            "meanLuma": 0.07069594413042068,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_spawn_day.png",
+            "title": "The raid's opening frame: the survivor's spawn on Mero Street, at the game's starting zoom",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 9 (half-height, m), 20.5 m from the survivor's chest",
+            "x": -34.34809494018555,
+            "z": 21.196125030517578,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 145.45,
+            "meanLuma": 0.4301877021789551,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_spawn_night.png",
+            "title": "The raid's opening frame: the survivor's spawn on Mero Street, at the game's starting zoom",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 9 (half-height, m), 20.5 m from the survivor's chest",
+            "x": -34.34809494018555,
+            "z": 21.196125030517578,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 98.56,
+            "meanLuma": 0.10099393874406815,
+            "darkFraction": 0.00019500000053085387,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_downtown_day.png",
+            "title": "Downtown Frankfort: the middle of the square, on Elk Alley",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -2.5095367431640625,
+            "z": 1.3694953918457031,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 61.39,
+            "meanLuma": 0.4036109745502472,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_downtown_night.png",
+            "title": "Downtown Frankfort: the middle of the square, on Elk Alley",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -2.5095367431640625,
+            "z": 1.3694953918457031,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 65.45,
+            "meanLuma": 0.07258809357881546,
+            "darkFraction": 0.00009687500278232619,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_residential_day.png",
+            "title": "The densest residential street: Lewis Street, 4 homes within 30 m",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -145.6687469482422,
+            "z": 50.80833053588867,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 57.41,
+            "meanLuma": 0.4810045063495636,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_residential_night.png",
+            "title": "The densest residential street: Lewis Street, 4 homes within 30 m",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -145.6687469482422,
+            "z": 50.80833053588867,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 63.81,
+            "meanLuma": 0.08136177062988281,
+            "darkFraction": 0.000018124999769497663,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_intersection_day.png",
+            "title": "The busiest intersection: Ann Street / West Clinton Street (4 ways in)",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -132.10000610351563,
+            "z": -81.4000015258789,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 71.91,
+            "meanLuma": 0.35495489835739136,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_intersection_night.png",
+            "title": "The busiest intersection: Ann Street / West Clinton Street (4 ways in)",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -132.10000610351563,
+            "z": -81.4000015258789,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 72.59,
+            "meanLuma": 0.07318716496229172,
+            "darkFraction": 0.0007399999885819852,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_green_day.png",
+            "title": "Green: park 'Fort Hill Civil War Park', 5,319 m² inside the square",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 161.75250244140625,
+            "z": 154.24684143066406,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 53.79,
+            "meanLuma": 0.5879205465316772,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_green_night.png",
+            "title": "Green: park 'Fort Hill Civil War Park', 5,319 m² inside the square",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 161.75250244140625,
+            "z": 154.24684143066406,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 58.94,
+            "meanLuma": 0.07793041318655014,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_parking_day.png",
+            "title": "Parking: a parking, 7,259 m² inside the square",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 161.04891967773438,
+            "z": -161.81065368652344,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 56.23,
+            "meanLuma": 0.3858400881290436,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_parking_night.png",
+            "title": "Parking: a parking, 7,259 m² inside the square",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 161.04891967773438,
+            "z": -161.81065368652344,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 65.01,
+            "meanLuma": 0.07451444119215012,
+            "darkFraction": 0.00005812499875901267,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_edge_day.png",
+            "title": "The square's edge: where Holmes Street leaves it (east), the playable map giving way to the scenery ring",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 200.0,
+            "z": 13.244707107543945,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 60.97,
+            "meanLuma": 0.4633963108062744,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_edge_night.png",
+            "title": "The square's edge: where Holmes Street leaves it (east), the playable map giving way to the scenery ring",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 200.0,
+            "z": 13.244707107543945,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 63.08,
+            "meanLuma": 0.07580727338790894,
+            "darkFraction": 0.00023312499979510903,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_waterway_day.png",
+            "title": "Railway: a rail",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 29.828567504882813,
+            "z": -258.27142333984375,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 52.04,
+            "meanLuma": 0.5579577088356018,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_waterway_night.png",
+            "title": "Railway: a rail",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 29.828567504882813,
+            "z": -258.27142333984375,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 47.69,
+            "meanLuma": 0.07938192039728165,
+            "darkFraction": 0.000014375000318977982,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_landmark_day.png",
+            "title": "Landmark: the biggest building in the square, commercial 'Kentucky Transportation Cabinet' (9,435 m² footprint)",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -82.95249938964844,
+            "z": 110.39998626708984,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 56.63,
+            "meanLuma": 0.4542864263057709,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_landmark_night.png",
+            "title": "Landmark: the biggest building in the square, commercial 'Kentucky Transportation Cabinet' (9,435 m² footprint)",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -82.95249938964844,
+            "z": 110.39998626708984,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 56.52,
+            "meanLuma": 0.0902240052819252,
+            "darkFraction": 0.000013750000107393134,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "tp_downtown_day.png",
+            "title": "Third-person shoulder view from the raid's spawn on Mero Street (downtown), looking along the street",
+            "look": "day",
+            "camera": "shoulder: perspective fov 55, pitch 8, heading 118",
+            "x": -34.34809494018555,
+            "z": 21.196125030517578,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 56.65,
+            "meanLuma": 0.4083971679210663,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "tp_downtown_night.png",
+            "title": "Third-person shoulder view from the raid's spawn on Mero Street (downtown), looking along the street",
+            "look": "night",
+            "camera": "shoulder: perspective fov 55, pitch 8, heading 118",
+            "x": -34.34809494018555,
+            "z": 21.196125030517578,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 108.77,
+            "meanLuma": 0.17432785034179688,
+            "darkFraction": 0.22119437158107758,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "tp_residential_day.png",
+            "title": "Third-person shoulder view on the sidewalk of Lewis Street (the densest residential street), looking along it",
+            "look": "day",
+            "camera": "shoulder: perspective fov 55, pitch 8, heading 28",
+            "x": -149.8057861328125,
+            "z": 53.03876495361328,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 61.3,
+            "meanLuma": 0.3888109028339386,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "tp_residential_night.png",
+            "title": "Third-person shoulder view on the sidewalk of Lewis Street (the densest residential street), looking along it",
+            "look": "night",
+            "camera": "shoulder: perspective fov 55, pitch 8, heading 28",
+            "x": -149.8057861328125,
+            "z": 53.03876495361328,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 60.5,
+            "meanLuma": 0.13934189081192017,
+            "darkFraction": 0.19852937757968903,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "chunks_louisville_top.png",
+            "title": "Streamed look: a 3x3 block of 128 m chunks around downtown Louisville (KentuckyStreamer's way, no scenery ring), top-down, roofs on, north up",
+            "look": "day",
+            "camera": "top-down orthographic, 396 m square, north up",
+            "x": 23.299999237060547,
+            "z": 59.29999923706055,
+            "width": 2048,
+            "height": 2048,
+            "renderMs": 135.47,
+            "meanLuma": 0.5211403369903564,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "chunks_louisville_iso_day.png",
+            "title": "Streamed look: downtown Louisville in the isometric view, centred where four chunks meet",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -40.70000076293945,
+            "z": -4.699999809265137,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 57.17,
+            "meanLuma": 0.43965011835098267,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "chunks_louisville_iso_night.png",
+            "title": "Streamed look: downtown Louisville in the isometric view, centred where four chunks meet",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -40.70000076293945,
+            "z": -4.699999809265137,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 90.33,
+            "meanLuma": 0.07990401238203049,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        }
+    ],
+    "chunks": [
+        {
+            "label": "start-centre",
+            "place": "Frankfort",
+            "cx": 12318,
+            "cz": 9434,
+            "rx": 192,
+            "rz": 147,
+            "regionMissing": false,
+            "regionReadMs": 0.0,
+            "regionIndexMs": 0.0,
+            "totalMs": 18.51,
+            "activateMs": 0.11,
+            "slowestMs": 10.56,
+            "slowestStep": "data",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 10.56,
+                    "maxMs": 10.56,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 0.32,
+                    "maxMs": 0.32,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "lots",
+                    "ms": 0.15,
+                    "maxMs": 0.15,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.32,
+                    "maxMs": 0.32,
+                    "count": 1
+                },
+                {
+                    "name": "road network",
+                    "ms": 0.62,
+                    "maxMs": 0.62,
+                    "count": 1
+                },
+                {
+                    "name": "junctions",
+                    "ms": 0.45,
+                    "maxMs": 0.45,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 0.25,
+                    "maxMs": 0.25,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 0.67,
+                    "maxMs": 0.67,
+                    "count": 1
+                },
+                {
+                    "name": "paths",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "bridges",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 0.63,
+                    "maxMs": 0.63,
+                    "count": 1
+                },
+                {
+                    "name": "landmarks",
+                    "ms": 0.46,
+                    "maxMs": 0.46,
+                    "count": 1
+                },
+                {
+                    "name": "nature plan",
+                    "ms": 0.06,
+                    "maxMs": 0.06,
+                    "count": 1
+                },
+                {
+                    "name": "mapped trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "yard trees",
+                    "ms": 0.76,
+                    "maxMs": 0.76,
+                    "count": 1
+                },
+                {
+                    "name": "grounds trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "street trees",
+                    "ms": 0.1,
+                    "maxMs": 0.1,
+                    "count": 1
+                },
+                {
+                    "name": "fence rows",
+                    "ms": 0.1,
+                    "maxMs": 0.1,
+                    "count": 1
+                },
+                {
+                    "name": "woods",
+                    "ms": 0.34,
+                    "maxMs": 0.15,
+                    "count": 4
+                },
+                {
+                    "name": "danger and landmarks",
+                    "ms": 0.21,
+                    "maxMs": 0.21,
+                    "count": 1
+                },
+                {
+                    "name": "objects",
+                    "ms": 1.64,
+                    "maxMs": 1.64,
+                    "count": 1
+                },
+                {
+                    "name": "meshes",
+                    "ms": 0.46,
+                    "maxMs": 0.46,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 15,
+            "bucketLines": 0,
+            "bucketOwned": 6,
+            "bucketForeign": 3,
+            "bucketAreas": 3,
+            "bucketPois": 0,
+            "buildings": 6,
+            "containers": 0,
+            "trees": 14,
+            "lights": 0,
+            "madeColliders": 0,
+            "madeColliderObjects": 0,
+            "madeLights": 0,
+            "bakedMeshes": 29,
+            "emits": 28,
+            "navSources": 24,
+            "bakedVertices": 4136,
+            "colliderMs": 0.0,
+            "lightMs": 0.0,
+            "bakeMs": 0.13,
+            "emitMs": 0.78,
+            "navCollectMs": 3.42,
+            "detail": "Lite",
+            "counts": {
+                "name": "start-centre",
+                "gameObjects": 35,
+                "renderers": 30,
+                "meshFilters": 30,
+                "distinctMeshes": 30,
+                "materialSlots": 76,
+                "distinctMaterials": 21,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 1,
+                "shadowCasters": 15,
+                "lootContainers": 0,
+                "vertices": 4732,
+                "triangles": 3138,
+                "distinctMeshVertices": 4732
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        },
+        {
+            "label": "rural-5km",
+            "place": "5 km from Frankfort (bearing 70°)",
+            "cx": 12355,
+            "cz": 9447,
+            "rx": 193,
+            "rz": 147,
+            "regionMissing": false,
+            "regionReadMs": 0.0,
+            "regionIndexMs": 0.0,
+            "totalMs": 4.72,
+            "activateMs": 0.05,
+            "slowestMs": 1.06,
+            "slowestStep": "buildings",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 0.18,
+                    "maxMs": 0.18,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 0.62,
+                    "maxMs": 0.62,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "lots",
+                    "ms": 0.19,
+                    "maxMs": 0.19,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.35,
+                    "maxMs": 0.35,
+                    "count": 1
+                },
+                {
+                    "name": "road network",
+                    "ms": 0.19,
+                    "maxMs": 0.19,
+                    "count": 1
+                },
+                {
+                    "name": "junctions",
+                    "ms": 0.27,
+                    "maxMs": 0.27,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 0.12,
+                    "maxMs": 0.12,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 0.07,
+                    "maxMs": 0.07,
+                    "count": 1
+                },
+                {
+                    "name": "paths",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "bridges",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 1.06,
+                    "maxMs": 1.06,
+                    "count": 1
+                },
+                {
+                    "name": "landmarks",
+                    "ms": 0.02,
+                    "maxMs": 0.02,
+                    "count": 1
+                },
+                {
+                    "name": "nature plan",
+                    "ms": 0.09,
+                    "maxMs": 0.09,
+                    "count": 1
+                },
+                {
+                    "name": "mapped trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "yard trees",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "grounds trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "street trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "fence rows",
+                    "ms": 0.12,
+                    "maxMs": 0.12,
+                    "count": 1
+                },
+                {
+                    "name": "woods",
+                    "ms": 0.43,
+                    "maxMs": 0.18,
+                    "count": 4
+                },
+                {
+                    "name": "danger and landmarks",
+                    "ms": 0.1,
+                    "maxMs": 0.1,
+                    "count": 1
+                },
+                {
+                    "name": "objects",
+                    "ms": 0.67,
+                    "maxMs": 0.67,
+                    "count": 1
+                },
+                {
+                    "name": "meshes",
+                    "ms": 0.15,
+                    "maxMs": 0.15,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 8,
+            "bucketLines": 0,
+            "bucketOwned": 1,
+            "bucketForeign": 0,
+            "bucketAreas": 4,
+            "bucketPois": 0,
+            "buildings": 1,
+            "containers": 0,
+            "trees": 35,
+            "lights": 0,
+            "madeColliders": 0,
+            "madeColliderObjects": 0,
+            "madeLights": 0,
+            "bakedMeshes": 27,
+            "emits": 26,
+            "navSources": 26,
+            "bakedVertices": 3330,
+            "colliderMs": 0.0,
+            "lightMs": 0.0,
+            "bakeMs": 0.11,
+            "emitMs": 0.63,
+            "navCollectMs": 0.16,
+            "detail": "Lite",
+            "counts": {
+                "name": "rural-5km",
+                "gameObjects": 33,
+                "renderers": 28,
+                "meshFilters": 28,
+                "distinctMeshes": 28,
+                "materialSlots": 46,
+                "distinctMaterials": 12,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 1,
+                "shadowCasters": 13,
+                "lootContainers": 0,
+                "vertices": 3957,
+                "triangles": 3310,
+                "distinctMeshVertices": 3957
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        },
+        {
+            "label": "louisville-downtown",
+            "place": "Louisville",
+            "cx": 11712,
+            "cz": 9478,
+            "rx": 183,
+            "rz": 148,
+            "regionMissing": false,
+            "regionReadMs": 157.71,
+            "regionIndexMs": 11.69,
+            "totalMs": 12.65,
+            "activateMs": 0.09,
+            "slowestMs": 2.23,
+            "slowestStep": "buildings",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 0.48,
+                    "maxMs": 0.48,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 2.08,
+                    "maxMs": 2.08,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 1.75,
+                    "maxMs": 1.75,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "lots",
+                    "ms": 0.08,
+                    "maxMs": 0.08,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.41,
+                    "maxMs": 0.41,
+                    "count": 1
+                },
+                {
+                    "name": "road network",
+                    "ms": 0.56,
+                    "maxMs": 0.56,
+                    "count": 1
+                },
+                {
+                    "name": "junctions",
+                    "ms": 0.21,
+                    "maxMs": 0.21,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 0.13,
+                    "maxMs": 0.13,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 0.2,
+                    "maxMs": 0.2,
+                    "count": 1
+                },
+                {
+                    "name": "paths",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "bridges",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 5.0,
+                    "maxMs": 2.23,
+                    "count": 3
+                },
+                {
+                    "name": "landmarks",
+                    "ms": 0.03,
+                    "maxMs": 0.03,
+                    "count": 1
+                },
+                {
+                    "name": "nature plan",
+                    "ms": 0.16,
+                    "maxMs": 0.16,
+                    "count": 1
+                },
+                {
+                    "name": "mapped trees",
+                    "ms": 0.4,
+                    "maxMs": 0.4,
+                    "count": 1
+                },
+                {
+                    "name": "yard trees",
+                    "ms": 0.02,
+                    "maxMs": 0.02,
+                    "count": 1
+                },
+                {
+                    "name": "grounds trees",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "street trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "fence rows",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "woods",
+                    "ms": 0.12,
+                    "maxMs": 0.07,
+                    "count": 4
+                },
+                {
+                    "name": "danger and landmarks",
+                    "ms": 0.14,
+                    "maxMs": 0.14,
+                    "count": 1
+                },
+                {
+                    "name": "objects",
+                    "ms": 0.57,
+                    "maxMs": 0.57,
+                    "count": 1
+                },
+                {
+                    "name": "meshes",
+                    "ms": 0.22,
+                    "maxMs": 0.22,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 80,
+            "bucketLines": 0,
+            "bucketOwned": 6,
+            "bucketForeign": 9,
+            "bucketAreas": 19,
+            "bucketPois": 0,
+            "buildings": 6,
+            "containers": 0,
+            "trees": 12,
+            "lights": 0,
+            "madeColliders": 0,
+            "madeColliderObjects": 0,
+            "madeLights": 0,
+            "bakedMeshes": 27,
+            "emits": 26,
+            "navSources": 21,
+            "bakedVertices": 6535,
+            "colliderMs": 0.0,
+            "lightMs": 0.0,
+            "bakeMs": 0.12,
+            "emitMs": 0.54,
+            "navCollectMs": 0.29,
+            "detail": "Lite",
+            "counts": {
+                "name": "louisville-downtown",
+                "gameObjects": 33,
+                "renderers": 28,
+                "meshFilters": 28,
+                "distinctMeshes": 28,
+                "materialSlots": 69,
+                "distinctMaterials": 25,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 1,
+                "shadowCasters": 17,
+                "lootContainers": 0,
+                "vertices": 7211,
+                "triangles": 4685,
+                "distinctMeshVertices": 7211
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        },
+        {
+            "label": "lexington-downtown",
+            "place": "Lexington",
+            "cx": 12577,
+            "cz": 9303,
+            "rx": 196,
+            "rz": 145,
+            "regionMissing": false,
+            "regionReadMs": 463.0,
+            "regionIndexMs": 58.26,
+            "totalMs": 8.03,
+            "activateMs": 0.17,
+            "slowestMs": 2.14,
+            "slowestStep": "buildings",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 0.29,
+                    "maxMs": 0.29,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 0.66,
+                    "maxMs": 0.66,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "lots",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.4,
+                    "maxMs": 0.4,
+                    "count": 1
+                },
+                {
+                    "name": "road network",
+                    "ms": 0.68,
+                    "maxMs": 0.68,
+                    "count": 1
+                },
+                {
+                    "name": "junctions",
+                    "ms": 0.65,
+                    "maxMs": 0.65,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 0.31,
+                    "maxMs": 0.31,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 0.94,
+                    "maxMs": 0.94,
+                    "count": 1
+                },
+                {
+                    "name": "paths",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "bridges",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 2.4,
+                    "maxMs": 2.14,
+                    "count": 2
+                },
+                {
+                    "name": "landmarks",
+                    "ms": 0.02,
+                    "maxMs": 0.02,
+                    "count": 1
+                },
+                {
+                    "name": "nature plan",
+                    "ms": 0.11,
+                    "maxMs": 0.11,
+                    "count": 1
+                },
+                {
+                    "name": "mapped trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "yard trees",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "grounds trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "street trees",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "fence rows",
+                    "ms": 0.02,
+                    "maxMs": 0.02,
+                    "count": 1
+                },
+                {
+                    "name": "woods",
+                    "ms": 0.14,
+                    "maxMs": 0.09,
+                    "count": 4
+                },
+                {
+                    "name": "danger and landmarks",
+                    "ms": 0.13,
+                    "maxMs": 0.13,
+                    "count": 1
+                },
+                {
+                    "name": "objects",
+                    "ms": 0.74,
+                    "maxMs": 0.74,
+                    "count": 1
+                },
+                {
+                    "name": "meshes",
+                    "ms": 0.41,
+                    "maxMs": 0.41,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 43,
+            "bucketLines": 0,
+            "bucketOwned": 6,
+            "bucketForeign": 8,
+            "bucketAreas": 6,
+            "bucketPois": 5,
+            "buildings": 6,
+            "containers": 0,
+            "trees": 5,
+            "lights": 0,
+            "madeColliders": 0,
+            "madeColliderObjects": 0,
+            "madeLights": 0,
+            "bakedMeshes": 27,
+            "emits": 26,
+            "navSources": 22,
+            "bakedVertices": 3372,
+            "colliderMs": 0.0,
+            "lightMs": 0.0,
+            "bakeMs": 0.23,
+            "emitMs": 0.68,
+            "navCollectMs": 0.31,
+            "detail": "Lite",
+            "counts": {
+                "name": "lexington-downtown",
+                "gameObjects": 33,
+                "renderers": 28,
+                "meshFilters": 28,
+                "distinctMeshes": 28,
+                "materialSlots": 63,
+                "distinctMaterials": 22,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 1,
+                "shadowCasters": 12,
+                "lootContainers": 0,
+                "vertices": 4048,
+                "triangles": 2898,
+                "distinctMeshVertices": 4048
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        },
+        {
+            "label": "hazard",
+            "place": "Hazard",
+            "cx": 13490,
+            "cz": 8630,
+            "rx": 210,
+            "rz": 134,
+            "regionMissing": false,
+            "regionReadMs": 5.58,
+            "regionIndexMs": 1.51,
+            "totalMs": 4.39,
+            "activateMs": 0.07,
+            "slowestMs": 0.58,
+            "slowestStep": "objects",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 0.13,
+                    "maxMs": 0.13,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 0.38,
+                    "maxMs": 0.38,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "lots",
+                    "ms": 0.11,
+                    "maxMs": 0.11,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.4,
+                    "maxMs": 0.4,
+                    "count": 1
+                },
+                {
+                    "name": "road network",
+                    "ms": 0.18,
+                    "maxMs": 0.18,
+                    "count": 1
+                },
+                {
+                    "name": "junctions",
+                    "ms": 0.35,
+                    "maxMs": 0.35,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 0.29,
+                    "maxMs": 0.29,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "paths",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "bridges",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 0.08,
+                    "maxMs": 0.08,
+                    "count": 1
+                },
+                {
+                    "name": "landmarks",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "nature plan",
+                    "ms": 0.06,
+                    "maxMs": 0.06,
+                    "count": 1
+                },
+                {
+                    "name": "mapped trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "yard trees",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "grounds trees",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "street trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "fence rows",
+                    "ms": 0.47,
+                    "maxMs": 0.47,
+                    "count": 1
+                },
+                {
+                    "name": "woods",
+                    "ms": 0.91,
+                    "maxMs": 0.36,
+                    "count": 4
+                },
+                {
+                    "name": "danger and landmarks",
+                    "ms": 0.06,
+                    "maxMs": 0.06,
+                    "count": 1
+                },
+                {
+                    "name": "objects",
+                    "ms": 0.58,
+                    "maxMs": 0.58,
+                    "count": 1
+                },
+                {
+                    "name": "meshes",
+                    "ms": 0.26,
+                    "maxMs": 0.26,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 6,
+            "bucketLines": 0,
+            "bucketOwned": 0,
+            "bucketForeign": 1,
+            "bucketAreas": 3,
+            "bucketPois": 0,
+            "buildings": 0,
+            "containers": 0,
+            "trees": 75,
+            "lights": 0,
+            "madeColliders": 0,
+            "madeColliderObjects": 0,
+            "madeLights": 0,
+            "bakedMeshes": 25,
+            "emits": 24,
+            "navSources": 25,
+            "bakedVertices": 3558,
+            "colliderMs": 0.0,
+            "lightMs": 0.0,
+            "bakeMs": 0.13,
+            "emitMs": 0.54,
+            "navCollectMs": 0.15,
+            "detail": "Lite",
+            "counts": {
+                "name": "hazard",
+                "gameObjects": 31,
+                "renderers": 26,
+                "meshFilters": 26,
+                "distinctMeshes": 26,
+                "materialSlots": 33,
+                "distinctMaterials": 6,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 1,
+                "shadowCasters": 12,
+                "lootContainers": 0,
+                "vertices": 4170,
+                "triangles": 4326,
+                "distinctMeshVertices": 4170
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        }
+    ],
+    "regions": [
+        {
+            "rx": 192,
+            "rz": 148,
+            "exists": true,
+            "readMs": 9.59,
+            "indexMs": 6.26
+        },
+        {
+            "rx": 192,
+            "rz": 147,
+            "exists": true,
+            "readMs": 28.78,
+            "indexMs": 14.02
+        },
+        {
+            "rx": 193,
+            "rz": 147,
+            "exists": true,
+            "readMs": 31.69,
+            "indexMs": 3.87
+        },
+        {
+            "rx": 192,
+            "rz": 146,
+            "exists": true,
+            "readMs": 9.82,
+            "indexMs": 2.93
+        },
+        {
+            "rx": 191,
+            "rz": 147,
+            "exists": true,
+            "readMs": 3.56,
+            "indexMs": 1.44
+        },
+        {
+            "rx": 183,
+            "rz": 148,
+            "exists": true,
+            "readMs": 157.71,
+            "indexMs": 11.69
+        },
+        {
+            "rx": 196,
+            "rz": 145,
+            "exists": true,
+            "readMs": 463.0,
+            "indexMs": 58.26
+        },
+        {
+            "rx": 210,
+            "rz": 134,
+            "exists": true,
+            "readMs": 5.58,
+            "indexMs": 1.51
+        },
+        {
+            "rx": 182,
+            "rz": 148,
+            "exists": true,
+            "readMs": 148.41,
+            "indexMs": 10.15
+        }
+    ],
+    "louisvilleBlock": {
+        "place": "Louisville",
+        "built": true,
+        "centreCx": 11712,
+        "centreCz": 9478,
+        "totalMs": 97.31,
+        "maxChunkMs": 23.1,
+        "navSources": 193,
+        "navCollectMs": 1.2,
+        "navBakeMs": 116.36,
+        "navError": "",
+        "counts": {
+            "name": "Louisville 3x3",
+            "gameObjects": 288,
+            "renderers": 241,
+            "meshFilters": 241,
+            "distinctMeshes": 241,
+            "materialSlots": 588,
+            "distinctMaterials": 51,
+            "lights": 0,
+            "lightsShadowed": 0,
+            "colliders": 9,
+            "shadowCasters": 116,
+            "lootContainers": 0,
+            "vertices": 63393,
+            "triangles": 40504,
+            "distinctMeshVertices": 63393
+        },
+        "chunks": [
+            {
+                "label": "louisville 0,0",
+                "place": "Louisville",
+                "cx": 11712,
+                "cz": 9478,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 8.61,
+                "activateMs": 0.1,
+                "slowestMs": 2.79,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.55,
+                        "maxMs": 0.55,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.98,
+                        "maxMs": 0.98,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.44,
+                        "maxMs": 0.44,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.82,
+                        "maxMs": 0.82,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 0.24,
+                        "maxMs": 0.24,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.12,
+                        "maxMs": 0.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.21,
+                        "maxMs": 0.21,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 3.22,
+                        "maxMs": 2.79,
+                        "count": 2
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.17,
+                        "maxMs": 0.17,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.14,
+                        "maxMs": 0.14,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.12,
+                        "maxMs": 0.07,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.15,
+                        "maxMs": 0.15,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 1.02,
+                        "maxMs": 1.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 80,
+                "bucketLines": 0,
+                "bucketOwned": 6,
+                "bucketForeign": 9,
+                "bucketAreas": 19,
+                "bucketPois": 0,
+                "buildings": 6,
+                "containers": 0,
+                "trees": 12,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 27,
+                "emits": 26,
+                "navSources": 21,
+                "bakedVertices": 6535,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.14,
+                "emitMs": 0.97,
+                "navCollectMs": 0.14,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville 0,0",
+                    "gameObjects": 33,
+                    "renderers": 28,
+                    "meshFilters": 28,
+                    "distinctMeshes": 28,
+                    "materialSlots": 69,
+                    "distinctMaterials": 25,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 17,
+                    "lootContainers": 0,
+                    "vertices": 7211,
+                    "triangles": 4685,
+                    "distinctMeshVertices": 7211
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 1,0",
+                "place": "Louisville",
+                "cx": 11713,
+                "cz": 9478,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 9.4,
+                "activateMs": 0.11,
+                "slowestMs": 2.46,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.61,
+                        "maxMs": 0.61,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.46,
+                        "maxMs": 0.46,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.22,
+                        "maxMs": 0.22,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 0.12,
+                        "maxMs": 0.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.05,
+                        "maxMs": 0.05,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.06,
+                        "maxMs": 0.06,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 6.03,
+                        "maxMs": 2.46,
+                        "count": 3
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.35,
+                        "maxMs": 0.35,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.05,
+                        "maxMs": 0.05,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.08,
+                        "maxMs": 0.05,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.12,
+                        "maxMs": 0.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 0.7,
+                        "maxMs": 0.7,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.19,
+                        "maxMs": 0.19,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 11,
+                "bucketLines": 0,
+                "bucketOwned": 17,
+                "bucketForeign": 0,
+                "bucketAreas": 14,
+                "bucketPois": 2,
+                "buildings": 17,
+                "containers": 0,
+                "trees": 26,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 27,
+                "emits": 26,
+                "navSources": 19,
+                "bakedVertices": 6242,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.14,
+                "emitMs": 0.66,
+                "navCollectMs": 0.14,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville 1,0",
+                    "gameObjects": 33,
+                    "renderers": 28,
+                    "meshFilters": 28,
+                    "distinctMeshes": 28,
+                    "materialSlots": 84,
+                    "distinctMaterials": 29,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 19,
+                    "lootContainers": 0,
+                    "vertices": 6918,
+                    "triangles": 4964,
+                    "distinctMeshVertices": 6918
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville -1,0",
+                "place": "Louisville",
+                "cx": 11711,
+                "cz": 9478,
+                "rx": 182,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 148.41,
+                "regionIndexMs": 10.15,
+                "totalMs": 12.72,
+                "activateMs": 0.08,
+                "slowestMs": 4.07,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.3,
+                        "maxMs": 0.3,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.56,
+                        "maxMs": 0.56,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.06,
+                        "maxMs": 0.06,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.42,
+                        "maxMs": 0.42,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.93,
+                        "maxMs": 0.93,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 0.79,
+                        "maxMs": 0.79,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.35,
+                        "maxMs": 0.35,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.93,
+                        "maxMs": 0.93,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 6.29,
+                        "maxMs": 4.07,
+                        "count": 3
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.15,
+                        "maxMs": 0.15,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.06,
+                        "maxMs": 0.06,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.19,
+                        "maxMs": 0.12,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 1.12,
+                        "maxMs": 1.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.11,
+                        "maxMs": 0.11,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 45,
+                "bucketLines": 0,
+                "bucketOwned": 4,
+                "bucketForeign": 1,
+                "bucketAreas": 9,
+                "bucketPois": 0,
+                "buildings": 4,
+                "containers": 0,
+                "trees": 14,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 26,
+                "emits": 25,
+                "navSources": 22,
+                "bakedVertices": 7687,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.15,
+                "emitMs": 1.07,
+                "navCollectMs": 0.16,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville -1,0",
+                    "gameObjects": 32,
+                    "renderers": 27,
+                    "meshFilters": 27,
+                    "distinctMeshes": 27,
+                    "materialSlots": 65,
+                    "distinctMaterials": 20,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 12,
+                    "lootContainers": 0,
+                    "vertices": 8273,
+                    "triangles": 4883,
+                    "distinctMeshVertices": 8273
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 0,1",
+                "place": "Louisville",
+                "cx": 11712,
+                "cz": 9479,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 6.11,
+                "activateMs": 0.07,
+                "slowestMs": 1.38,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.34,
+                        "maxMs": 0.34,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.38,
+                        "maxMs": 0.38,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.39,
+                        "maxMs": 0.39,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.48,
+                        "maxMs": 0.48,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 0.7,
+                        "maxMs": 0.7,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.3,
+                        "maxMs": 0.3,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.62,
+                        "maxMs": 0.62,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 1.38,
+                        "maxMs": 1.38,
+                        "count": 1
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 0.03,
+                        "maxMs": 0.03,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.12,
+                        "maxMs": 0.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.06,
+                        "maxMs": 0.02,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.16,
+                        "maxMs": 0.16,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 0.59,
+                        "maxMs": 0.59,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.06,
+                        "maxMs": 0.06,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 19,
+                "bucketLines": 0,
+                "bucketOwned": 8,
+                "bucketForeign": 10,
+                "bucketAreas": 3,
+                "bucketPois": 1,
+                "buildings": 8,
+                "containers": 0,
+                "trees": 1,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 22,
+                "emits": 21,
+                "navSources": 18,
+                "bakedVertices": 5917,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.08,
+                "emitMs": 0.55,
+                "navCollectMs": 0.13,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville 0,1",
+                    "gameObjects": 28,
+                    "renderers": 23,
+                    "meshFilters": 23,
+                    "distinctMeshes": 23,
+                    "materialSlots": 70,
+                    "distinctMaterials": 22,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 10,
+                    "lootContainers": 0,
+                    "vertices": 6538,
+                    "triangles": 3625,
+                    "distinctMeshVertices": 6538
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 0,-1",
+                "place": "Louisville",
+                "cx": 11712,
+                "cz": 9477,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 18.04,
+                "activateMs": 0.07,
+                "slowestMs": 4.43,
+                "slowestStep": "landmarks",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.24,
+                        "maxMs": 0.24,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.47,
+                        "maxMs": 0.47,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.09,
+                        "maxMs": 0.09,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.6,
+                        "maxMs": 0.6,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.65,
+                        "maxMs": 0.65,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 0.53,
+                        "maxMs": 0.53,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.41,
+                        "maxMs": 0.41,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 1.58,
+                        "maxMs": 1.58,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 6.93,
+                        "maxMs": 3.23,
+                        "count": 3
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 4.43,
+                        "maxMs": 4.43,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.16,
+                        "maxMs": 0.16,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.17,
+                        "maxMs": 0.17,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.2,
+                        "maxMs": 0.09,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.14,
+                        "maxMs": 0.14,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 1.21,
+                        "maxMs": 1.21,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 40,
+                "bucketLines": 0,
+                "bucketOwned": 4,
+                "bucketForeign": 2,
+                "bucketAreas": 9,
+                "bucketPois": 0,
+                "buildings": 4,
+                "containers": 0,
+                "trees": 12,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 28,
+                "emits": 27,
+                "navSources": 24,
+                "bakedVertices": 4232,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.11,
+                "emitMs": 1.16,
+                "navCollectMs": 0.16,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville 0,-1",
+                    "gameObjects": 34,
+                    "renderers": 29,
+                    "meshFilters": 29,
+                    "distinctMeshes": 29,
+                    "materialSlots": 69,
+                    "distinctMaterials": 24,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 11,
+                    "lootContainers": 0,
+                    "vertices": 4898,
+                    "triangles": 3358,
+                    "distinctMeshVertices": 4898
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 1,1",
+                "place": "Louisville",
+                "cx": 11713,
+                "cz": 9479,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 4.78,
+                "activateMs": 0.07,
+                "slowestMs": 1.1,
+                "slowestStep": "objects",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.14,
+                        "maxMs": 0.14,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.39,
+                        "maxMs": 0.39,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.43,
+                        "maxMs": 0.43,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.35,
+                        "maxMs": 0.35,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 0.22,
+                        "maxMs": 0.22,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.18,
+                        "maxMs": 0.18,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 1.05,
+                        "maxMs": 1.05,
+                        "count": 1
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.31,
+                        "maxMs": 0.31,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.04,
+                        "maxMs": 0.01,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.18,
+                        "maxMs": 0.18,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 1.1,
+                        "maxMs": 1.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.09,
+                        "maxMs": 0.09,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 11,
+                "bucketLines": 0,
+                "bucketOwned": 5,
+                "bucketForeign": 1,
+                "bucketAreas": 5,
+                "bucketPois": 3,
+                "buildings": 5,
+                "containers": 0,
+                "trees": 20,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 23,
+                "emits": 22,
+                "navSources": 19,
+                "bakedVertices": 4050,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.12,
+                "emitMs": 1.03,
+                "navCollectMs": 0.12,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville 1,1",
+                    "gameObjects": 29,
+                    "renderers": 24,
+                    "meshFilters": 24,
+                    "distinctMeshes": 24,
+                    "materialSlots": 55,
+                    "distinctMaterials": 22,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 11,
+                    "lootContainers": 0,
+                    "vertices": 4726,
+                    "triangles": 3712,
+                    "distinctMeshVertices": 4726
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville -1,1",
+                "place": "Louisville",
+                "cx": 11711,
+                "cz": 9479,
+                "rx": 182,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 23.1,
+                "activateMs": 0.08,
+                "slowestMs": 16.29,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.25,
+                        "maxMs": 0.25,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.26,
+                        "maxMs": 0.26,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.15,
+                        "maxMs": 0.15,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.33,
+                        "maxMs": 0.33,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.95,
+                        "maxMs": 0.95,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 1.09,
+                        "maxMs": 1.09,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.5,
+                        "maxMs": 0.5,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.79,
+                        "maxMs": 0.79,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 16.52,
+                        "maxMs": 16.29,
+                        "count": 2
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 0.03,
+                        "maxMs": 0.03,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.15,
+                        "maxMs": 0.15,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.11,
+                        "maxMs": 0.05,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 1.37,
+                        "maxMs": 1.37,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.17,
+                        "maxMs": 0.17,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 44,
+                "bucketLines": 0,
+                "bucketOwned": 5,
+                "bucketForeign": 8,
+                "bucketAreas": 5,
+                "bucketPois": 0,
+                "buildings": 5,
+                "containers": 0,
+                "trees": 6,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 30,
+                "emits": 29,
+                "navSources": 25,
+                "bakedVertices": 12711,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.1,
+                "emitMs": 1.27,
+                "navCollectMs": 0.18,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville -1,1",
+                    "gameObjects": 36,
+                    "renderers": 31,
+                    "meshFilters": 31,
+                    "distinctMeshes": 31,
+                    "materialSlots": 74,
+                    "distinctMaterials": 22,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 14,
+                    "lootContainers": 0,
+                    "vertices": 13321,
+                    "triangles": 7159,
+                    "distinctMeshVertices": 13321
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 1,-1",
+                "place": "Louisville",
+                "cx": 11713,
+                "cz": 9477,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 6.58,
+                "activateMs": 0.05,
+                "slowestMs": 1.14,
+                "slowestStep": "junctions",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.2,
+                        "maxMs": 0.2,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.29,
+                        "maxMs": 0.29,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.23,
+                        "maxMs": 0.23,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.39,
+                        "maxMs": 0.39,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.71,
+                        "maxMs": 0.71,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 1.14,
+                        "maxMs": 1.14,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.49,
+                        "maxMs": 0.49,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 1.12,
+                        "maxMs": 1.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 0.43,
+                        "maxMs": 0.43,
+                        "count": 1
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.16,
+                        "maxMs": 0.16,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.24,
+                        "maxMs": 0.24,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.03,
+                        "maxMs": 0.03,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.1,
+                        "maxMs": 0.05,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 0.79,
+                        "maxMs": 0.79,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 32,
+                "bucketLines": 0,
+                "bucketOwned": 1,
+                "bucketForeign": 4,
+                "bucketAreas": 7,
+                "bucketPois": 6,
+                "buildings": 1,
+                "containers": 0,
+                "trees": 17,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 25,
+                "emits": 24,
+                "navSources": 24,
+                "bakedVertices": 3629,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.09,
+                "emitMs": 0.72,
+                "navCollectMs": 0.21,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville 1,-1",
+                    "gameObjects": 31,
+                    "renderers": 26,
+                    "meshFilters": 26,
+                    "distinctMeshes": 26,
+                    "materialSlots": 56,
+                    "distinctMaterials": 14,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 9,
+                    "lootContainers": 0,
+                    "vertices": 4274,
+                    "triangles": 3055,
+                    "distinctMeshVertices": 4274
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville -1,-1",
+                "place": "Louisville",
+                "cx": 11711,
+                "cz": 9477,
+                "rx": 182,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 7.97,
+                "activateMs": 0.07,
+                "slowestMs": 1.7,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.35,
+                        "maxMs": 0.35,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.53,
+                        "maxMs": 0.53,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "lots",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.55,
+                        "maxMs": 0.55,
+                        "count": 1
+                    },
+                    {
+                        "name": "road network",
+                        "ms": 0.81,
+                        "maxMs": 0.81,
+                        "count": 1
+                    },
+                    {
+                        "name": "junctions",
+                        "ms": 0.5,
+                        "maxMs": 0.5,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.27,
+                        "maxMs": 0.27,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.95,
+                        "maxMs": 0.95,
+                        "count": 1
+                    },
+                    {
+                        "name": "paths",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "bridges",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 1.7,
+                        "maxMs": 1.7,
+                        "count": 1
+                    },
+                    {
+                        "name": "landmarks",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "nature plan",
+                        "ms": 0.22,
+                        "maxMs": 0.22,
+                        "count": 1
+                    },
+                    {
+                        "name": "mapped trees",
+                        "ms": 0.48,
+                        "maxMs": 0.48,
+                        "count": 1
+                    },
+                    {
+                        "name": "yard trees",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds trees",
+                        "ms": 0.05,
+                        "maxMs": 0.05,
+                        "count": 1
+                    },
+                    {
+                        "name": "street trees",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "fence rows",
+                        "ms": 0.04,
+                        "maxMs": 0.04,
+                        "count": 1
+                    },
+                    {
+                        "name": "woods",
+                        "ms": 0.34,
+                        "maxMs": 0.18,
+                        "count": 4
+                    },
+                    {
+                        "name": "danger and landmarks",
+                        "ms": 0.11,
+                        "maxMs": 0.11,
+                        "count": 1
+                    },
+                    {
+                        "name": "objects",
+                        "ms": 0.63,
+                        "maxMs": 0.63,
+                        "count": 1
+                    },
+                    {
+                        "name": "meshes",
+                        "ms": 0.26,
+                        "maxMs": 0.26,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 49,
+                "bucketLines": 0,
+                "bucketOwned": 3,
+                "bucketForeign": 1,
+                "bucketAreas": 10,
+                "bucketPois": 0,
+                "buildings": 3,
+                "containers": 0,
+                "trees": 27,
+                "lights": 0,
+                "madeColliders": 0,
+                "madeColliderObjects": 0,
+                "madeLights": 0,
+                "bakedMeshes": 24,
+                "emits": 23,
+                "navSources": 21,
+                "bakedVertices": 6558,
+                "colliderMs": 0.0,
+                "lightMs": 0.0,
+                "bakeMs": 0.1,
+                "emitMs": 0.59,
+                "navCollectMs": 0.14,
+                "detail": "Lite",
+                "counts": {
+                    "name": "louisville -1,-1",
+                    "gameObjects": 30,
+                    "renderers": 25,
+                    "meshFilters": 25,
+                    "distinctMeshes": 25,
+                    "materialSlots": 46,
+                    "distinctMaterials": 14,
+                    "lights": 0,
+                    "lightsShadowed": 0,
+                    "colliders": 1,
+                    "shadowCasters": 13,
+                    "lootContainers": 0,
+                    "vertices": 7234,
+                    "triangles": 5063,
+                    "distinctMeshVertices": 7234
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            }
+        ],
+        "seams": "in chunks_louisville_top.png the seams are the lines x = 693 and 1,355 px, y = the same (from the top left); the iso pictures are centred on the corner where four chunks meet (-40.7, -4.7)"
+    },
+    "determinism": {
+        "ran": true,
+        "match": true,
+        "label": "start-centre",
+        "detail": "identical, in the same order",
+        "cx": 12318,
+        "cz": 9434,
+        "objectsA": 35,
+        "objectsB": 35,
+        "meshes": 30,
+        "differingMeshes": 0,
+        "parts": 1,
+        "unreadableMeshes": 0,
+        "verticesA": 4732,
+        "verticesB": 4732,
+        "trianglesA": 3138,
+        "trianglesB": 3138,
+        "orderedHashA": "e2b71d24a1f357fd",
+        "orderedHashB": "e2b71d24a1f357fd",
+        "unorderedHashA": "df4fa10819719fda",
+        "unorderedHashB": "df4fa10819719fda",
+        "otherHashA": "2903e617f5368050",
+        "otherHashB": "2903e617f5368050",
+        "differences": []
+    },
+    "perf": {
+        "detail": [
+            {
+                "label": "start-centre",
+                "cx": 12318,
+                "cz": 9434,
+                "identical": false,
+                "fullMs": 43.46,
+                "liteMs": 5.93,
+                "ratio": 0.136,
+                "fullSlowestMs": 9.23,
+                "liteSlowestMs": 0.82,
+                "fullSlowest": "streets",
+                "liteSlowest": "sidewalks",
+                "fullVertices": 100626,
+                "liteVertices": 4732,
+                "fullObjects": 159,
+                "liteObjects": 35,
+                "fullRenderers": 65,
+                "liteRenderers": 30,
+                "fullColliders": 156,
+                "liteColliders": 1,
+                "fullLights": 3,
+                "liteLights": 0
+            },
+            {
+                "label": "rural-5km",
+                "cx": 12355,
+                "cz": 9447,
+                "identical": false,
+                "fullMs": 21.24,
+                "liteMs": 4.15,
+                "ratio": 0.195,
+                "fullSlowestMs": 3.62,
+                "liteSlowestMs": 0.57,
+                "fullSlowest": "interior plans",
+                "liteSlowest": "objects",
+                "fullVertices": 52154,
+                "liteVertices": 3959,
+                "fullObjects": 111,
+                "liteObjects": 31,
+                "fullRenderers": 48,
+                "liteRenderers": 26,
+                "fullColliders": 89,
+                "liteColliders": 1,
+                "fullLights": 1,
+                "liteLights": 0
+            },
+            {
+                "label": "louisville-downtown",
+                "cx": 11712,
+                "cz": 9478,
+                "identical": false,
+                "fullMs": 55.3,
+                "liteMs": 8.16,
+                "ratio": 0.148,
+                "fullSlowestMs": 7.08,
+                "liteSlowestMs": 2.78,
+                "fullSlowest": "interior plans",
+                "liteSlowest": "buildings",
+                "fullVertices": 129586,
+                "liteVertices": 7103,
+                "fullObjects": 214,
+                "liteObjects": 33,
+                "fullRenderers": 53,
+                "liteRenderers": 28,
+                "fullColliders": 165,
+                "liteColliders": 1,
+                "fullLights": 0,
+                "liteLights": 0
+            },
+            {
+                "label": "lexington-downtown",
+                "cx": 12577,
+                "cz": 9303,
+                "identical": false,
+                "fullMs": 46.58,
+                "liteMs": 5.89,
+                "ratio": 0.126,
+                "fullSlowestMs": 6.28,
+                "liteSlowestMs": 0.93,
+                "fullSlowest": "streets",
+                "liteSlowest": "sidewalks",
+                "fullVertices": 119812,
+                "liteVertices": 4078,
+                "fullObjects": 141,
+                "liteObjects": 33,
+                "fullRenderers": 59,
+                "liteRenderers": 28,
+                "fullColliders": 95,
+                "liteColliders": 1,
+                "fullLights": 2,
+                "liteLights": 0
+            },
+            {
+                "label": "hazard",
+                "cx": 13490,
+                "cz": 8630,
+                "identical": false,
+                "fullMs": 21.99,
+                "liteMs": 4.49,
+                "ratio": 0.204,
+                "fullSlowestMs": 3.29,
+                "liteSlowestMs": 0.84,
+                "fullSlowest": "streets",
+                "liteSlowest": "objects",
+                "fullVertices": 62683,
+                "liteVertices": 4376,
+                "fullObjects": 84,
+                "liteObjects": 32,
+                "fullRenderers": 43,
+                "liteRenderers": 27,
+                "fullColliders": 150,
+                "liteColliders": 1,
+                "fullLights": 0,
+                "liteLights": 0
+            }
+        ],
+        "order": {
+            "ran": true,
+            "match": true,
+            "label": "start-centre, Full, with a Louisville piece built in between",
+            "detail": "identical, in the same order",
+            "cx": 12318,
+            "cz": 9434,
+            "objectsA": 159,
+            "objectsB": 159,
+            "meshes": 65,
+            "differingMeshes": 0,
+            "parts": 165,
+            "unreadableMeshes": 0,
+            "verticesA": 100626,
+            "verticesB": 100626,
+            "trianglesA": 56891,
+            "trianglesB": 56891,
+            "orderedHashA": "158842ae67ce940f",
+            "orderedHashB": "158842ae67ce940f",
+            "unorderedHashA": "b23eaffb589e5586",
+            "unorderedHashB": "b23eaffb589e5586",
+            "otherHashA": "02fed4a3edd62dd9",
+            "otherHashB": "02fed4a3edd62dd9",
+            "differences": []
+        },
+        "afterLite": {
+            "ran": true,
+            "match": true,
+            "label": "start-centre, Full, then Lite, then Full again (an upgrade)",
+            "detail": "identical, in the same order",
+            "cx": 12318,
+            "cz": 9434,
+            "objectsA": 159,
+            "objectsB": 159,
+            "meshes": 65,
+            "differingMeshes": 0,
+            "parts": 165,
+            "unreadableMeshes": 0,
+            "verticesA": 100626,
+            "verticesB": 100626,
+            "trianglesA": 56891,
+            "trianglesB": 56891,
+            "orderedHashA": "158842ae67ce940f",
+            "orderedHashB": "158842ae67ce940f",
+            "unorderedHashA": "b23eaffb589e5586",
+            "unorderedHashB": "b23eaffb589e5586",
+            "otherHashA": "02fed4a3edd62dd9",
+            "otherHashB": "02fed4a3edd62dd9",
+            "differences": []
+        },
+        "liteOrder": {
+            "ran": true,
+            "match": true,
+            "label": "start-centre, Lite, with a Louisville piece built in between",
+            "detail": "identical, in the same order",
+            "cx": 12318,
+            "cz": 9434,
+            "objectsA": 35,
+            "objectsB": 35,
+            "meshes": 30,
+            "differingMeshes": 0,
+            "parts": 1,
+            "unreadableMeshes": 0,
+            "verticesA": 4732,
+            "verticesB": 4732,
+            "trianglesA": 3138,
+            "trianglesB": 3138,
+            "orderedHashA": "e2b71d24a1f357fd",
+            "orderedHashB": "e2b71d24a1f357fd",
+            "unorderedHashA": "df4fa10819719fda",
+            "unorderedHashB": "df4fa10819719fda",
+            "otherHashA": "2903e617f5368050",
+            "otherHashB": "2903e617f5368050",
+            "differences": []
+        },
+        "costs": [
+            {
+                "group": "equivalence",
+                "name": "the fast RaidMesh against the old primitives, call for call",
+                "note": "SAME: 81,034 vs 81,034 vertices; bit-exact positions 81,034, normals 81,034, UVs 81,034; largest difference 0 m, 0 (normals), 0 (UVs); triangles same, materials same",
+                "n": 4000,
+                "ms": 0.0,
+                "usEach": 0.0,
+                "ok": true
+            },
+            {
+                "group": "colliders",
+                "name": "an object per turned box (the procedural town's way)",
+                "note": "make 61.73 + switch on 10.17 ms; 1602 objects; destroy 6.86 ms; 3,000 rays 3.28 ms, 1075 hits, 3200.7 m",
+                "n": 2000,
+                "ms": 71.897,
+                "usEach": 35.948,
+                "ok": true
+            },
+            {
+                "group": "colliders",
+                "name": "grouped: an object per angle (the Kentucky map's way)",
+                "note": "make 13.45 + switch on 6.95 ms; 10 objects; destroy 3.96 ms; 3,000 rays 2.71 ms, 1075 hits, 3200.7 m",
+                "n": 2000,
+                "ms": 20.392,
+                "usEach": 10.196,
+                "ok": true
+            },
+            {
+                "group": "colliders",
+                "name": "one MeshCollider, cooked on the main thread",
+                "note": "make 5.37 + switch on 11.46 ms; 2 objects; destroy 0.15 ms; 3,000 rays 2.50 ms, 1075 hits, 3200.7 m",
+                "n": 2000,
+                "ms": 16.836,
+                "usEach": 8.418,
+                "ok": true
+            },
+            {
+                "group": "colliders",
+                "name": "one MeshCollider, baked on a worker",
+                "note": "make 2.44 + switch on 0.03 ms (+ 9.92 ms baking on the worker); 2 objects; destroy 0.08 ms; 3,000 rays 2.36 ms, 1075 hits, 3200.7 m",
+                "n": 2000,
+                "ms": 2.476,
+                "usEach": 1.238,
+                "ok": true
+            },
+            {
+                "group": "meshes",
+                "name": "today: RaidMesh.Emit, one by one",
+                "note": "288,000 vertices; GameObjects, components and meshes",
+                "n": 40,
+                "ms": 11.63,
+                "usEach": 290.758,
+                "ok": true
+            },
+            {
+                "group": "meshes",
+                "name": "MeshBake, packed on the main thread",
+                "note": "objects 1.25, allocate 0.06, pack 9.01, apply 0.21 ms; same as today's: yes",
+                "n": 40,
+                "ms": 10.542,
+                "usEach": 263.562,
+                "ok": true
+            },
+            {
+                "group": "meshes",
+                "name": "MeshBake, packed on a worker",
+                "note": "objects 1.34, allocate 0.02, pack 8.34 (worker), apply 0.13 ms",
+                "n": 40,
+                "ms": 1.481,
+                "usEach": 37.032,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "Box, turned, flat colour",
+                "note": "480,000 vertices",
+                "n": 20000,
+                "ms": 57.258,
+                "usEach": 2.863,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "before: Box, turned, flat colour",
+                "note": "480,000 vertices",
+                "n": 20000,
+                "ms": 65.789,
+                "usEach": 3.289,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "Box, turned, planar texture",
+                "note": "480,000 vertices",
+                "n": 20000,
+                "ms": 41.313,
+                "usEach": 2.066,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "before: Box, turned, planar texture",
+                "note": "480,000 vertices",
+                "n": 20000,
+                "ms": 127.605,
+                "usEach": 6.38,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "Box, square, flat colour",
+                "note": "480,000 vertices",
+                "n": 20000,
+                "ms": 26.524,
+                "usEach": 1.326,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "Box in a turned frame (furniture)",
+                "note": "480,000 vertices",
+                "n": 20000,
+                "ms": 48.382,
+                "usEach": 2.419,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "Quad (Upright)",
+                "note": "80,000 vertices",
+                "n": 20000,
+                "ms": 8.285,
+                "usEach": 0.414,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "Tri",
+                "note": "60,000 vertices",
+                "n": 20000,
+                "ms": 6.698,
+                "usEach": 0.335,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "Cylinder, 8 sides",
+                "note": "190,000 vertices",
+                "n": 5000,
+                "ms": 40.851,
+                "usEach": 8.17,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "before: Cylinder, 8 sides",
+                "note": "190,000 vertices",
+                "n": 5000,
+                "ms": 72.639,
+                "usEach": 14.528,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "Ellipsoid, 8 x 5",
+                "note": "162,000 vertices",
+                "n": 3000,
+                "ms": 35.083,
+                "usEach": 11.694,
+                "ok": true
+            },
+            {
+                "group": "primitives",
+                "name": "before: Ellipsoid, 8 x 5",
+                "note": "162,000 vertices",
+                "n": 3000,
+                "ms": 41.318,
+                "usEach": 13.773,
+                "ok": true
+            },
+            {
+                "group": "objects",
+                "name": "empty GameObject, parented and placed",
+                "note": "",
+                "n": 2000,
+                "ms": 17.688,
+                "usEach": 8.844,
+                "ok": true
+            },
+            {
+                "group": "objects",
+                "name": "GameObject + MeshFilter + MeshRenderer",
+                "note": "",
+                "n": 1000,
+                "ms": 14.913,
+                "usEach": 14.913,
+                "ok": true
+            },
+            {
+                "group": "objects",
+                "name": "BoxCollider added to one object",
+                "note": "",
+                "n": 2000,
+                "ms": 49.401,
+                "usEach": 24.7,
+                "ok": true
+            },
+            {
+                "group": "objects",
+                "name": "LootContainer.Spawn (a crate)",
+                "note": "",
+                "n": 200,
+                "ms": 31.319,
+                "usEach": 156.595,
+                "ok": true
+            },
+            {
+                "group": "objects",
+                "name": "RoomLight.Spawn",
+                "note": "",
+                "n": 100,
+                "ms": 13.626,
+                "usEach": 136.261,
+                "ok": true
+            },
+            {
+                "group": "objects",
+                "name": "switching all of the above on",
+                "note": "edit mode: no Awake or OnEnable runs",
+                "n": 1,
+                "ms": 35.342,
+                "usEach": 35342.4,
+                "ok": true
+            },
+            {
+                "group": "objects",
+                "name": "destroying all of the above",
+                "note": "",
+                "n": 1,
+                "ms": 18.746,
+                "usEach": 18746.0,
+                "ok": true
+            },
+            {
+                "group": "triangulation",
+                "name": "MapGeometry.Triangulate, per footprint",
+                "note": "worst 0.13 ms; the biggest has 46 points; 0 over 100",
+                "n": 59,
+                "ms": 0.676,
+                "usEach": 11.458,
+                "ok": true
+            },
+            {
+                "group": "triangulation",
+                "name": "KentuckyMap.Area for a piece (the data step)",
+                "note": "",
+                "n": 10,
+                "ms": 2.556,
+                "usEach": 255.58,
+                "ok": true
+            },
+            {
+                "group": "regions",
+                "name": "MapBuild.LoadRegion 196_145 (today)",
+                "note": "0 MB allocated",
+                "n": 1,
+                "ms": 432.201,
+                "usEach": 432201.4,
+                "ok": true
+            },
+            {
+                "group": "regions",
+                "name": "the same through one buffer and an exactly sized string",
+                "note": "0 MB allocated; 18 MB of JSON; same data: yes",
+                "n": 1,
+                "ms": 439.17,
+                "usEach": 439169.9,
+                "ok": true
+            },
+            {
+                "group": "regions",
+                "name": "sorting it into chunks (MapRegionIndex)",
+                "note": "",
+                "n": 1,
+                "ms": 31.195,
+                "usEach": 31194.8,
+                "ok": true
+            }
+        ],
+        "start": {
+            "built": true,
+            "error": "",
+            "ms": 660.2,
+            "pieces": 16,
+            "meshes": 636,
+            "regions": 1,
+            "vertices": 1057228
+        },
+        "routes": [
+            {
+                "name": "settle",
+                "what": "standing at the spawn while the country around the start is built",
+                "seconds": 8.0,
+                "speed": 0.0,
+                "frames": 480,
+                "buildFrames": 21,
+                "steps": 273,
+                "finished": 9,
+                "finishedFull": 0,
+                "finishedLite": 9,
+                "upgraded": 0,
+                "unloaded": 0,
+                "meanMs": 0.185,
+                "p50Ms": 0.04,
+                "p95Ms": 0.14,
+                "p99Ms": 3.88,
+                "maxMs": 11.55,
+                "totalMs": 88.7,
+                "over5": 3,
+                "over8": 1,
+                "over16": 0,
+                "over33": 0,
+                "longestStep": "landmarks",
+                "longestStepMs": 4.31,
+                "ownBuiltAfter": 0.0,
+                "ringAfter": 0.0,
+                "holeFrames": 0,
+                "ringFrames": 0,
+                "pieces": 25,
+                "litePieces": 9,
+                "meshes": 875,
+                "regions": 1,
+                "vertices": 1111786,
+                "managedMB": 184.2,
+                "totalMB": 783.2,
+                "pooledMB": 32.6,
+                "slowest": [
+                    {
+                        "name": "buildings",
+                        "ms": 0.54,
+                        "maxMs": 0.54,
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "name": "drive-east",
+                "what": "driving east from the spawn at 90 km/h",
+                "seconds": 40.0,
+                "speed": 25.0,
+                "frames": 2400,
+                "buildFrames": 144,
+                "steps": 1888,
+                "finished": 40,
+                "finishedFull": 24,
+                "finishedLite": 16,
+                "upgraded": 0,
+                "unloaded": 19,
+                "meanMs": 0.267,
+                "p50Ms": 0.05,
+                "p95Ms": 1.57,
+                "p99Ms": 4.91,
+                "maxMs": 18.45,
+                "totalMs": 639.9,
+                "over5": 20,
+                "over8": 4,
+                "over16": 1,
+                "over33": 0,
+                "longestStep": "meshes",
+                "longestStepMs": 18.4,
+                "ownBuiltAfter": 0.0,
+                "ringAfter": 0.0,
+                "holeFrames": 0,
+                "ringFrames": 0,
+                "pieces": 46,
+                "litePieces": 12,
+                "meshes": 1484,
+                "regions": 1,
+                "vertices": 1927740,
+                "managedMB": 184.3,
+                "totalMB": 820.3,
+                "pooledMB": 32.6,
+                "slowest": [
+                    {
+                        "name": "meshes",
+                        "ms": 18.4,
+                        "maxMs": 18.4,
+                        "count": 1
+                    },
+                    {
+                        "name": "interior plans",
+                        "ms": 23.18,
+                        "maxMs": 13.76,
+                        "count": 2
+                    }
+                ]
+            },
+            {
+                "name": "teleport-louisville",
+                "what": "set down in downtown Louisville (78 km away), standing",
+                "seconds": 12.0,
+                "speed": 0.0,
+                "frames": 720,
+                "buildFrames": 115,
+                "steps": 1091,
+                "finished": 25,
+                "finishedFull": 9,
+                "finishedLite": 16,
+                "upgraded": 0,
+                "unloaded": 30,
+                "meanMs": 0.963,
+                "p50Ms": 0.05,
+                "p95Ms": 6.5,
+                "p99Ms": 9.42,
+                "maxMs": 49.98,
+                "totalMs": 693.4,
+                "over5": 47,
+                "over8": 15,
+                "over16": 4,
+                "over33": 1,
+                "longestStep": "interior plans",
+                "longestStepMs": 30.65,
+                "ownBuiltAfter": 0.1666666716337204,
+                "ringAfter": 1.4833333492279053,
+                "holeFrames": 10,
+                "ringFrames": 89,
+                "pieces": 41,
+                "litePieces": 16,
+                "meshes": 1530,
+                "regions": 3,
+                "vertices": 2273232,
+                "managedMB": 206.4,
+                "totalMB": 838.3,
+                "pooledMB": 34.9,
+                "slowest": [
+                    {
+                        "name": "interior plans",
+                        "ms": 118.2,
+                        "maxMs": 30.65,
+                        "count": 9
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 6.07,
+                        "maxMs": 3.95,
+                        "count": 2
+                    },
+                    {
+                        "name": "fences and walls",
+                        "ms": 3.79,
+                        "maxMs": 3.79,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 2.21,
+                        "maxMs": 2.21,
+                        "count": 1
+                    },
+                    {
+                        "name": "kerbside cars",
+                        "ms": 1.74,
+                        "maxMs": 1.74,
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "name": "drive-louisville",
+                "what": "driving south through downtown Louisville at 43 km/h",
+                "seconds": 30.0,
+                "speed": 12.0,
+                "frames": 1800,
+                "buildFrames": 158,
+                "steps": 977,
+                "finished": 18,
+                "finishedFull": 12,
+                "finishedLite": 6,
+                "upgraded": 3,
+                "unloaded": 10,
+                "meanMs": 0.4,
+                "p50Ms": 0.05,
+                "p95Ms": 3.45,
+                "p99Ms": 5.6,
+                "maxMs": 30.29,
+                "totalMs": 719.3,
+                "over5": 29,
+                "over8": 6,
+                "over16": 1,
+                "over33": 0,
+                "longestStep": "interior plans",
+                "longestStepMs": 30.16,
+                "ownBuiltAfter": 0.0,
+                "ringAfter": 0.0,
+                "holeFrames": 0,
+                "ringFrames": 20,
+                "pieces": 46,
+                "litePieces": 12,
+                "meshes": 1937,
+                "regions": 5,
+                "vertices": 3076762,
+                "managedMB": 250.8,
+                "totalMB": 875.1,
+                "pooledMB": 34.9,
+                "slowest": [
+                    {
+                        "name": "interior plans",
+                        "ms": 53.77,
+                        "maxMs": 30.16,
+                        "count": 3
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 10.63,
+                        "maxMs": 10.63,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 5.14,
+                        "maxMs": 5.14,
+                        "count": 1
+                    }
+                ]
+            }
+        ],
+        "routesLog": {
+            "errors": 0,
+            "warnings": 0,
+            "editModeArtefacts": 46,
+            "first": [
+                "(edit mode) Error: Raid_sign_HOLMES SAINT SCHOOL0A120D373631: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_HOLMES SAINT SCHOOL0A120D373631: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_COMMUNITY STORAGE353432070807: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_COMMUNITY STORAGE353432070807: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_DIVISION OF ENGINEERIN050505372C11: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_DIVISION OF ENGINEERIN050505372C11: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_EDEN PLANTS & VINTAGE373531080706: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_EDEN PLANTS & VINTAGE373531080706: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_OFFICE OF FLEET MANAGE1906063B3A37: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_OFFICE OF FLEET MANAGE1906063B3A37: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_SCHOOL BUS3B2A06030303: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_SCHOOL BUS3B2A06030303: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_SCHOOL BUS392906030303: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_SCHOOL BUS392906030303: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_AEES (ART'S ELECTRIC)1906063B3A37: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_AEES (ART'S ELECTRIC)1906063B3A37: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_HOTEL0A0C1233322D: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_HOTEL0A0C1233322D: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_OFFICE OF FLEET MANAGE37342D060606: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+                "(edit mode) Error: Raid_sign_OFFICE OF FLEET MANAGE37342D060606: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)"
+            ]
+        }
+    },
+    "nonFinite": {
+        "meshes": 8881,
+        "offenders": [],
+        "baked": []
+    },
+    "runLog": {
+        "errors": 0,
+        "warnings": 0,
+        "editModeArtefacts": 46,
+        "first": [
+            "(edit mode) Error: Raid_sign_HOLMES SAINT SCHOOL0A120D373631: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_HOLMES SAINT SCHOOL0A120D373631: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_COMMUNITY STORAGE353432070807: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_COMMUNITY STORAGE353432070807: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_DIVISION OF ENGINEERIN050505372C11: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_DIVISION OF ENGINEERIN050505372C11: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_EDEN PLANTS & VINTAGE373531080706: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_EDEN PLANTS & VINTAGE373531080706: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_OFFICE OF FLEET MANAGE1906063B3A37: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_OFFICE OF FLEET MANAGE1906063B3A37: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_SCHOOL BUS3B2A06030303: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_SCHOOL BUS3B2A06030303: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_SCHOOL BUS392906030303: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_SCHOOL BUS392906030303: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_AEES (ART'S ELECTRIC)1906063B3A37: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_AEES (ART'S ELECTRIC)1906063B3A37: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_HOTEL0A0C1233322D: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_HOTEL0A0C1233322D: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_OFFICE OF FLEET MANAGE37342D060606: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)",
+            "(edit mode) Error: Raid_sign_OFFICE OF FLEET MANAGE37342D060606: Destroy may not be called from edit mode! Use DestroyImmediate instead.  @ UnityEngine.Object:Destroy (UnityEngine.Object)"
+        ]
+    },
+    "stages": [
+        {
+            "name": "setup",
+            "error": "",
+            "ok": true,
+            "ms": 62.48
+        },
+        {
+            "name": "square: KentuckyMap.Build",
+            "error": "",
+            "ok": true,
+            "ms": 3929.15
+        },
+        {
+            "name": "square: count",
+            "error": "",
+            "ok": true,
+            "ms": 310.92
+        },
+        {
+            "name": "square: pick spots",
+            "error": "",
+            "ok": true,
+            "ms": 82.33
+        },
+        {
+            "name": "square: pictures",
+            "error": "",
+            "ok": true,
+            "ms": 5371.27
+        },
+        {
+            "name": "square: discard",
+            "error": "",
+            "ok": true,
+            "ms": 193.33
+        },
+        {
+            "name": "square: passes (warm rebuild)",
+            "error": "",
+            "ok": true,
+            "ms": 1708.65
+        },
+        {
+            "name": "chunks: stress test",
+            "error": "",
+            "ok": true,
+            "ms": 878.36
+        },
+        {
+            "name": "chunks: Louisville 3x3",
+            "error": "",
+            "ok": true,
+            "ms": 1222.24
+        },
+        {
+            "name": "chunks: determinism",
+            "error": "",
+            "ok": true,
+            "ms": 24.37
+        },
+        {
+            "name": "perf: Lite against Full",
+            "error": "",
+            "ok": true,
+            "ms": 1224.91
+        },
+        {
+            "name": "perf: determinism across build orders",
+            "error": "",
+            "ok": true,
+            "ms": 316.89
+        },
+        {
+            "name": "perf: what things cost",
+            "error": "",
+            "ok": true,
+            "ms": 1978.18
+        },
+        {
+            "name": "perf: walking and driving through the state",
+            "error": "",
+            "ok": true,
+            "ms": 162637.93
+        }
+    ],
+    "notes": []
+}

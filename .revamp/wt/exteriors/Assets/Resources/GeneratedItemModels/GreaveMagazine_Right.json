@@ -1,0 +1,13 @@
+{"version": 1, "id": "GreaveMagazine_Right", "baseHeight": 0.099, "name": "Greave Magazine Right", "model": "gpt-oss:120b", "notes": "Greave Magazine Right – a rectangular 0.25 m long steel‑tinted magazine lying on its side (long axis along X). Main body cylinder with rounded edges, outer rim, base plate, front/rear lips, printed label on the front, rear clip‑release button, internal feed ramp, spring coil at the bottom and small side markings.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.25,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.85},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.075,0.255,0.075],"color":[0.45,0.43,0.35],"smooth":0.45,"metal":0.9},
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.037,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.07],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"FrontLip","shape":"cube","pos":[0.0,0.037,0.04],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.01],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.7},
+  {"name":"RearLip","shape":"cube","pos":[0.0,0.037,-0.04],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.01],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.7},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,0.0,0.036],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.002],"color":[0.3,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"ClipReleaseButton","shape":"cylinder","pos":[-0.11,0.025,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.1,0.1,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"FeedRamp","shape":"cube","pos":[-0.09,0.01,0.0],"rot":[10.0,0.0,0.0],"size":[0.05,0.01,0.07],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.6},
+  {"name":"SpringCoil","shape":"sphere","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"MarkL","shape":"cube","pos":[-0.05,0.0,0.036],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.002],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"MarkR","shape":"cube","pos":[0.05,0.0,0.036],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.002],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Molotov", "baseHeight": 0.13, "name": "Molotov", "model": "gpt-oss:120b", "notes": "Molotov bottle ~0.14 m diameter × 0.25 m length lying on its side (X‑axis). Glass body with a narrower neck and metal cap, orange liquid inside, rag wick at the top, thin label band, bottom base ring and a small flame tip.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.04,0.0,-0.045],"rot":[0.0,0.0,90.0],"size":[0.14,0.25,0.14],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.11,0.0,-0.045],"rot":[0.0,0.0,90.0],"size":[0.08,0.05,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.145,0.0,-0.045],"rot":[0.0,0.0,90.0],"size":[0.09,0.02,0.09],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"Liquid","shape":"cylinder","pos":[-0.04,0.0,-0.045],"rot":[0.0,0.0,90.0],"size":[0.12,0.24,0.12],"color":[1.0,0.5,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBand","shape":"cube","pos":[-0.04,0.001,-0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.14],"color":[0.35,0.35,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"RagWick","shape":"sphere","pos":[0.145,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"FlameTip","shape":"sphere","pos":[0.145,0.02,0.075],"rot":[0.0,0.0,0.0],"size":[0.08,0.1,0.08],"color":[1.0,0.6,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BaseRing","shape":"cylinder","pos":[-0.175,0.0,-0.045],"rot":[0.0,0.0,90.0],"size":[0.14,0.02,0.14],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"NeckRim","shape":"cylinder","pos":[0.11,0.0,-0.045],"rot":[0.0,0.0,90.0],"size":[0.09,0.004,0.09],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"CapThread","shape":"cylinder","pos":[0.145,0.0,-0.045],"rot":[0.0,0.0,90.0],"size":[0.095,0.003,0.095],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"WickTie","shape":"cube","pos":[0.135,0.015,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,212 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CloneZ
+{
+    /// <summary>
+    /// The survivor's fear response — Project Zomboid's Panic moodle. Being near or
+    /// in sight of the dead drives panic up (each newly-spotted zombie spikes it, a
+    /// looming horde sustains it) and it ebbs once the danger passes. High panic makes
+    /// the hands shake — firearms lose accuracy — and, past a point, robs the nerve
+    /// needed to sleep. Beta blockers steady the nerves for a while.
+    ///
+    /// Panic lives on <see cref="PlayerStats.Panic"/> (0..100); this component owns it,
+    /// mirroring how <see cref="PlayerWounds"/> owns Pain. Values are grounded in the
+    /// reference game's BodyDamage panic model (panicIncreaseValue 7, discrete updates,
+    /// beta-blocker relief) and MoodleStat.PANIC thresholds (6 / 30 / 65 / 80).
+    /// </summary>
+    [RequireComponent(typeof(PlayerStats))]
+    public class PlayerPanic : MonoBehaviour
+    {
+        private PlayerStats _stats;
+        private PlayerWounds _wounds;
+        private PlayerSleep _sleep;
+
+        private readonly Collider[] _zombieBuf = new Collider[48];
+        private readonly HashSet<ZombieAI> _seen = new HashSet<ZombieAI>();
+
+        private int _lastVisible;
+        private float _tickTimer;
+        private float _betaTimer;   // seconds of beta-blocker cover remaining
+        private TimeOfDay _timeOfDay;
+        private readonly int _ignoreRaycastMask = 1 << CloneZConfig.IgnoreRaycastLayer;
+        private readonly int _defaultRaycastMask = 1 << 0;
+        private Transform _tr;
+        // Cached panic level and descriptor; updated only when panic value changes
+        private int _cachedLevel;
+        private string _cachedDescriptor;
+        private float _lastPanic = float.NaN;
+
+        public bool BetaBlockersActive => _betaTimer > 0f;
+        /// <summary>Beta-blocker cover remaining, in seconds (captured/restored by the save system).</summary>
+        public float BetaSecondsRemaining => _betaTimer;
+
+        private PlayerWounds Wounds => _wounds != null ? _wounds : (_wounds = GetComponent<PlayerWounds>());
+        private PlayerSleep Sleep => _sleep != null ? _sleep : (_sleep = GetComponent<PlayerSleep>());
+
+        /// <summary>Panic moodle level 0..4 (PZ MoodleStat.PANIC thresholds 6 / 30 / 65 / 80).</summary>
+        public int Level
+        {
+            get
+            {
+                if (_stats == null) return 0;
+                float p = _stats.Panic;
+                if (p != _lastPanic)
+                {
+                    // Recalculate and cache level and descriptor when panic changes
+                    _lastPanic = p;
+                    if (p >= CloneZConfig.PanicLevel4) _cachedLevel = 4;
+                    else if (p >= CloneZConfig.PanicLevel3) _cachedLevel = 3;
+                    else if (p >= CloneZConfig.PanicLevel2) _cachedLevel = 2;
+                    else if (p >= CloneZConfig.PanicLevel1) _cachedLevel = 1;
+                    else _cachedLevel = 0;
+                    // Update descriptor cache according to new level
+                    switch (_cachedLevel)
+                    {
+                        case 4: _cachedDescriptor = "Terrified"; break;
+                        case 3: _cachedDescriptor = "Panicked"; break;
+                        case 2: _cachedDescriptor = "Anxious"; break;
+                        case 1: _cachedDescriptor = "Uneasy"; break;
+                        default: _cachedDescriptor = "Calm"; break;
+                    }
+                }
+                return _cachedLevel;
+            }
+        }
+
+
+        /// <summary>A short word for the current fear level (for the HUD / health panel).</summary>
+        public string Descriptor
+        {
+            get
+            {
+                // Ensure cache is updated based on current panic value
+                var _ = Level; // triggers cache refresh if needed
+                return _cachedDescriptor;
+            }
+        }
+
+        /// <summary>Too rattled to lie down and sleep (PZ blocks sleep while heavily panicked).</summary>
+        public bool TooPanickedToSleep => Level >= 3;
+
+        private void Awake()
+        {
+            _stats = GetComponent<PlayerStats>();
+            _tr = transform;
+            _timeOfDay = TimeOfDay.Instance;
+        }
+
+        /// <summary>Swallows a dose of beta blockers: steadies the nerves and bleeds off panic for a while.
+        /// Returns true if it did anything, so the pill is only spent when it actually helps.</summary>
+        public bool TakeBetaBlockers()
+        {
+            if (_stats == null || _stats.IsDead) return false;
+            // Calm and already dosed? Don't waste it.
+            if (_stats.Panic < CloneZConfig.PanicLevel1 && _betaTimer > 0f) return false;
+            _betaTimer = CloneZConfig.BetaBlockerDurationSec;
+            return true;
+        }
+
+        /// <summary>Restores remaining beta-blocker cover from a saved game.</summary>
+        public void RestoreBeta(float seconds) => _betaTimer = Mathf.Max(0f, seconds);
+
+        private void Update()
+        {
+            if (_stats == null || _stats.IsDead) return;
+            float dt = Time.deltaTime;
+            if (_betaTimer > 0f) _betaTimer -= dt;
+
+            _tickTimer += dt;
+            if (_tickTimer < CloneZConfig.PanicTickInterval) return;
+            float step = _tickTimer;
+            _tickTimer = 0f;
+
+            // Asleep the world is frozen and fear drains fast (PZ ReducePanic x2 while asleep).
+            if (Sleep != null && Sleep.IsSleeping)
+            {
+                _stats.Panic = Mathf.Max(0f, _stats.Panic - CloneZConfig.PanicSafeDecayPerSec * 2f * step);
+                _lastVisible = 0;
+                return;
+            }
+
+            int visible = AssessThreat(out float threat);
+
+            // Fear bites harder in the dark; eases toward normal by daylight.
+            float darkMult = _timeOfDay != null
+                ? Mathf.Lerp(CloneZConfig.PanicNightMultiplier, 1f, _timeOfDay.LightLevel)
+                : 1f;
+
+            float panic = _stats.Panic;
+
+            // 1) A brand-new zombie coming into view spikes panic (PZ IncreasePanic).
+            int newlySeen = Mathf.Max(0, visible - _lastVisible);
+            if (newlySeen > 0)
+            {
+                float spike = newlySeen * CloneZConfig.PanicPerNewZombie * darkMult;
+                if (_betaTimer > 0f) spike *= CloneZConfig.BetaBlockerSpikeDampen;
+                panic += spike;
+            }
+
+            // 2) A looming horde sustains a panic "floor" scaled by how close and aggressive it is;
+            //    bleeding keeps you at least uneasy. Beta blockers suppress the response entirely.
+            float floor = Mathf.Min(CloneZConfig.PanicMax, threat * CloneZConfig.PanicThreatWeight * darkMult);
+            if (Wounds != null && Wounds.IsBleeding) floor = Mathf.Max(floor, CloneZConfig.PanicBleedingFloor);
+
+            if (_betaTimer <= 0f && panic < floor)
+            {
+                panic = Mathf.MoveTowards(panic, floor, CloneZConfig.PanicSustainRisePerSec * step);
+            }
+            else
+            {
+                // 3) Otherwise fear ebbs — fast with nothing in sight, slower while the dead linger,
+                //    and faster still (toward zero) while beta blockers hold the nerves steady.
+                float target = _betaTimer > 0f ? 0f : floor;
+                float decay = visible == 0 ? CloneZConfig.PanicSafeDecayPerSec : CloneZConfig.PanicDecayPerSec;
+                if (_betaTimer > 0f) decay += CloneZConfig.BetaBlockerCalmPerSec;
+                panic = Mathf.MoveTowards(panic, target, decay * step);
+            }
+
+            _stats.Panic = Mathf.Clamp(panic, 0f, CloneZConfig.PanicMax);
+            _lastVisible = visible;
+        }
+
+        /// <summary>Counts zombies the survivor can actually see nearby and sums a proximity/aggression threat.</summary>
+        private int AssessThreat(out float threat)
+        {
+            threat = 0f;
+            int visible = 0;
+            Vector3 eye = _tr.position + Vector3.up * 1f;
+
+                int n = Physics.OverlapSphereNonAlloc(_tr.position, CloneZConfig.PanicSightRadius, _zombieBuf,
+                _ignoreRaycastMask, QueryTriggerInteraction.Ignore);
+
+            _seen.Clear();
+            for (int i = 0; i < n; i++)
+            {
+                Collider col = _zombieBuf[i];
+                if (col == null) continue;
+                ZombieAI ai = col.GetComponentInParent<ZombieAI>();
+                if (ai == null || ai.IsDeadState || !_seen.Add(ai)) continue;
+
+                Vector3 zp = ai.transform.position;
+                float dist = Vector3.Distance(_tr.position, zp);
+                if (dist < 0.01f || dist > CloneZConfig.PanicSightRadius) continue;
+
+                // A wall between us hides the horror (PZ counts *visible* zombies). Start the ray
+                // clear of the player's own body; zombies are on Ignore Raycast so they never block.
+                Vector3 dir = (zp - _tr.position) / dist;
+                Vector3 zeye = zp + Vector3.up * 1f;
+                if (Physics.Raycast(eye + dir * 0.6f, (zeye - (eye + dir * 0.6f)).normalized,
+                        Vector3.Distance(eye + dir * 0.6f, zeye), _defaultRaycastMask, QueryTriggerInteraction.Ignore))
+                    continue;
+
+                visible++;
+                float prox = 1f - Mathf.Clamp01(dist / CloneZConfig.PanicSightRadius);
+                float w = prox;
+                if (ai.IsHunting) w *= CloneZConfig.PanicHuntingWeight;
+                threat += w;
+            }
+            return visible;
+        }
+    }
+}

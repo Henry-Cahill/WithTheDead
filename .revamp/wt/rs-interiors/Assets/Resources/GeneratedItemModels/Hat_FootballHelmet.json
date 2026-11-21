@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_FootballHelmet", "baseHeight": 0.11, "name": "Hat Football Helmet", "model": "gpt-oss:120b", "notes": "Flat football helmet laid out flat (~0.30 m wide × 0.20 m tall × 0.03 m thick). Main plastic shell disc, five steel face‑mask bars, a fabric chin strap and a small logo on top.", "score": 7, "parts": [
+  {"name":"Shell","shape":"cylinder","pos":[0.0,-0.04,-0.01],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Bar1","shape":"cube","pos":[-0.06,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.005,0.08,0.02],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Bar2","shape":"cube","pos":[-0.03,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.005,0.08,0.02],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Bar3","shape":"cube","pos":[0.0,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.005,0.08,0.02],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Bar4","shape":"cube","pos":[0.03,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.005,0.08,0.02],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Bar5","shape":"cube","pos":[0.06,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.005,0.08,0.02],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"ChinStrap","shape":"cube","pos":[0.0,-0.02,0.15],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.02],"color":[0.3,0.25,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Logo","shape":"cylinder","pos":[0.0,-0.0275,-0.01],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.08],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "Harmonica", "baseHeight": 0.07, "name": "Harmonica", "model": "gpt-oss:120b", "notes": "Harmonica about 0.11 m long × 0.025 m wide × 0.012 m thick, lying flat on the floor. Main metal body (tint 0.6,0.58,0.5) with a thin stamped label and six round air‑holes spaced along its length.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.012,0.025],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.02,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.022],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"Hole1","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.12,0.12,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"Hole2","shape":"cylinder","pos":[-0.022,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.12,0.12,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"Hole3","shape":"cylinder","pos":[-0.004,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.12,0.12,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"Hole4","shape":"cylinder","pos":[0.014,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.12,0.12,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"Hole5","shape":"cylinder","pos":[0.032,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.12,0.12,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"Hole6","shape":"cylinder","pos":[0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.12,0.12,0.12],"smooth":0.1,"metal":0.0}
+]}

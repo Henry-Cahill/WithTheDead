@@ -1,0 +1,8 @@
+{"version": 1, "id": "Cork", "baseHeight": 0.0725, "name": "Cork", "model": "gpt-oss:120b", "notes": "Wine‑bottle cork about 2.5 cm diameter × 7 cm long, lying on its side (axis along X). Main body plus slightly narrower top and bottom plugs.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.07,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopPlug","shape":"cylinder","pos":[0.04,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.01,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BottomPlug","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.01,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PoreDetail1","shape":"sphere","pos":[-0.015,0.0055,0.005],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PoreDetail2","shape":"sphere","pos":[0.01,-0.0035,-0.006],"rot":[0.0,0.0,0.0],"size":[0.0025,0.0025,0.0025],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PoreDetail3","shape":"sphere","pos":[0.025,0.0025,0.008],"rot":[0.0,0.0,0.0],"size":[0.0035,0.0035,0.0035],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

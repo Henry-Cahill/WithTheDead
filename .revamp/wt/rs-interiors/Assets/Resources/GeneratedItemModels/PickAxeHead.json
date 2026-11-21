@@ -1,0 +1,14 @@
+{"version": 1, "id": "PickAxeHead", "baseHeight": 0.0892, "name": "Pick Axe Head", "model": "gpt-oss:120b", "notes": "Pick‑axe head ~0.25 m long × 0.15 m wide × 0.05 m thick, metal (tint 0.6,0.58,0.5). Lying on its side, longest axis along X, eye‑hole for the handle at the rear, two prongs forward.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[-0.0325,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.05,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LeftTine","shape":"cube","pos":[0.1275,-0.0032,0.045],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RightTine","shape":"cube","pos":[0.1275,-0.0032,-0.045],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EyeHole","shape":"cylinder","pos":[-0.1325,-0.0032,0.0],"rot":[90.0,0.0,0.0],"size":[0.05,0.055,0.05],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"EyeRim","shape":"cylinder","pos":[-0.1325,0.0003,0.0],"rot":[90.0,0.0,0.0],"size":[0.058,0.003,0.058],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[-0.1525,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.13],"color":[0.5,0.48,0.42],"smooth":0.45,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[0.1075,0.0167,0.04],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.35,0.34,0.3],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.1075,0.0167,-0.04],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.35,0.34,0.3],"smooth":0.5,"metal":1.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0925,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.05,0.12],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"SeamBack","shape":"cube","pos":[-0.1575,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.05,0.12],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeTrimTop","shape":"cube","pos":[-0.0325,0.0227,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.12],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeTrimBottom","shape":"cube","pos":[-0.0325,-0.0283,-0.001],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.12],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0}
+]}

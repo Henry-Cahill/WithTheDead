@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_Sheriff", "baseHeight": 0.12, "name": "Hat Sheriff", "model": "gpt-oss:120b", "notes": "Sheriff hat laid flat like a product photo – 28 cm wide brim (flat cylinder) with a 9 cm tall crown standing in the centre. Includes a decorative band, a gold badge on the front and a red feather.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownCore","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.09,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.16],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTip","shape":"cylinder","pos":[0.0,0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Badge","shape":"cylinder","pos":[0.0,0.01,0.08],"rot":[90.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.9,0.75,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Feather","shape":"sphere","pos":[-0.04,0.03,0.07],"rot":[30.0,20.0,0.0],"size":[0.02,0.06,0.015],"color":[0.8,0.1,0.1],"smooth":0.05,"metal":0.0}
+]}

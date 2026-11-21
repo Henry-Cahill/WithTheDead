@@ -1,0 +1,13 @@
+{"version": 1, "id": "ScoutCookies", "baseHeight": 0.091, "name": "Scout Cookies", "model": "gpt-oss:120b", "notes": "Scout Cookies box ~0.18 m × 0.12 m × 0.06 m upright: brown cardboard body, thin lid, front label in the cookie tint, and a few visible round cookies inside the top opening.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.001,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.18,0.06,0.12],"color":[0.58,0.48,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.027,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.12],"color":[0.55,0.45,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.003,0.0403],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.1],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorderTop","shape":"cube","pos":[0.0,0.0045,0.0403],"rot":[0.0,0.0,0.0],"size":[0.162,0.002,0.102],"color":[0.45,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBorderBottom","shape":"cube","pos":[0.0,0.0015,0.0403],"rot":[0.0,0.0,0.0],"size":[0.162,0.002,0.102],"color":[0.45,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Cookie1","shape":"sphere","pos":[-0.04,0.022,-0.0412],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Cookie2","shape":"sphere","pos":[0.02,0.022,0.0088],"rot":[0.0,0.0,0.0],"size":[0.038,0.008,0.038],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Cookie3","shape":"sphere","pos":[0.06,0.022,-0.0612],"rot":[0.0,0.0,0.0],"size":[0.042,0.008,0.042],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Cookie4","shape":"sphere","pos":[-0.05,0.022,0.0188],"rot":[0.0,0.0,0.0],"size":[0.036,0.008,0.036],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Cookie5","shape":"sphere","pos":[0.03,0.022,-0.0712],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Cookie6","shape":"sphere","pos":[-0.02,0.022,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.038,0.008,0.038],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0}
+]}

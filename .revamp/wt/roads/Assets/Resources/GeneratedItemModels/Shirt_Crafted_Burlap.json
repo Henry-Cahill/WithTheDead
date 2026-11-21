@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shirt_Crafted_Burlap", "baseHeight": 0.0778, "name": "Shirt Crafted Burlap", "model": "gpt-oss:120b", "notes": "Flat burlap shirt ~0.55 m long × 0.45 m wide × 0.025 m thick. Main torso panel, two angled short sleeves, a simple rib‑collar with neck opening, cuffs at the sleeve ends, bottom hem and a few coarse stitching strips.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0574,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.1626,-0.0018,0.3],"rot":[0.0,-30.0,0.0],"size":[0.18,0.025,0.2],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.1626,-0.0018,-0.3],"rot":[0.0,30.0,0.0],"size":[0.18,0.025,0.2],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.2126,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.03,0.16],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.2126,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.032,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.3226,-0.0018,0.45],"rot":[0.0,-30.0,0.0],"size":[0.04,0.025,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.3226,-0.0018,-0.45],"rot":[0.0,30.0,0.0],"size":[0.04,0.025,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.3324,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.45],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTorso","shape":"cylinder","pos":[-0.0574,0.0102,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.55,0.015],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSleeveL","shape":"cylinder","pos":[0.1626,0.0102,0.3],"rot":[90.0,0.0,-30.0],"size":[0.012,0.18,0.012],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSleeveR","shape":"cylinder","pos":[0.1626,0.0102,-0.3],"rot":[90.0,0.0,30.0],"size":[0.012,0.18,0.012],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

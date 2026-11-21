@@ -1,0 +1,9 @@
+{"version": 1, "id": "Bullhorn", "baseHeight": 0.1405, "name": "Bullhorn", "model": "gpt-oss:120b", "notes": "Bullhorn (megaphone) about 0.27 m long, 0.15 m wide at the flare. Main body is a narrow mouth‑piece cylinder into a wider flared tube, with a short side grip handle. All parts sit on the floor (y=0).", "score": 6, "parts": [
+  {"name":"Mouthpiece","shape":"cylinder","pos":[-0.18,-0.0495,-0.03],"rot":[0.0,0.0,90.0],"size":[0.06,0.07,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Flare","shape":"cylinder","pos":[-0.045,-0.0045,-0.03],"rot":[0.0,0.0,90.0],"size":[0.15,0.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[-0.18,-0.0455,-0.03],"rot":[0.0,0.0,90.0],"size":[0.07,0.008,0.07],"color":[0.45,0.43,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.18,-0.0695,0.03],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.2,0.15,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.18,-0.0645,0.04],"rot":[90.0,0.0,0.0],"size":[0.03,0.14,0.03],"color":[0.25,0.2,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.045,-0.0035,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.1],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"EndCap","shape":"sphere","pos":[0.135,0.0005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.16,0.16,0.16],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

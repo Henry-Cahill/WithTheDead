@@ -1,0 +1,18 @@
+{"version": 1, "id": "NecklaceLong_SkullMammal", "baseHeight": 0.11, "name": "Necklace Long Skull Mammal", "model": "gpt-oss:120b", "notes": "Long necklace (~ 0.45 m) lying flat on the floor: six interlocking metal links forming a loose coil that ends in a small mammal‑skull pendant (≈ 0.10 m tall). All links rest on the ground and touch each other, with the final link directly attached to the skull base.", "score": 6, "parts": [
+  {"name":"Link1","shape":"cylinder","pos":[-0.2175,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.1475,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[-0.0775,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link4","shape":"cylinder","pos":[-0.0075,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link5","shape":"cylinder","pos":[0.0625,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link6","shape":"cylinder","pos":[0.1475,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"SkullBase","shape":"cube","pos":[0.1825,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.1,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Snout","shape":"sphere","pos":[0.2125,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.1675,0.02,0.018],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.1675,0.02,-0.018],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"NoseHole","shape":"cylinder","pos":[0.2225,-0.025,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"TeethFront","shape":"cube","pos":[0.2325,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.015],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"ToothL1","shape":"cube","pos":[0.2225,-0.03,0.006],"rot":[0.0,0.0,0.0],"size":[0.008,0.01,0.004],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"ToothL2","shape":"cube","pos":[0.2225,-0.03,-0.006],"rot":[0.0,0.0,0.0],"size":[0.008,0.01,0.004],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"ToothR1","shape":"cube","pos":[0.2425,-0.03,0.006],"rot":[0.0,0.0,0.0],"size":[0.008,0.01,0.004],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"ToothR2","shape":"cube","pos":[0.2425,-0.03,-0.006],"rot":[0.0,0.0,0.0],"size":[0.008,0.01,0.004],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0}
+]}

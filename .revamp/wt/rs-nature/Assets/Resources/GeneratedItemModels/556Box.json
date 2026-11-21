@@ -1,0 +1,12 @@
+{"version": 1, "id": "556Box", "baseHeight": 0.095, "name": "556 Box", "model": "gpt-oss:120b", "notes": "555 mm ammunition box, approx 0.30 m long × 0.15 m wide × 0.07 m high, lying flat on the floor. Main cardboard body with a raised top flap, front/back label patches and thin edge bands; four small metal staples at the corners.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.07,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.15],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,0.0,0.076],"rot":[0.0,0.0,0.0],"size":[0.24,0.05,0.002],"color":[0.3,0.28,0.2],"smooth":0.07,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.0,-0.076],"rot":[0.0,0.0,0.0],"size":[0.24,0.05,0.002],"color":[0.3,0.28,0.2],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeBandFront","shape":"cube","pos":[0.0,0.0025,0.073],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.004],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBandBack","shape":"cube","pos":[0.0,0.0025,-0.073],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.004],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.15,0.004,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.15,0.004,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.15,0.004,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.15,0.004,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0}
+]}

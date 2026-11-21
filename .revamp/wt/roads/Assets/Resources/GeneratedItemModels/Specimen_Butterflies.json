@@ -1,0 +1,21 @@
+{"version": 1, "id": "Specimen_Butterflies", "baseHeight": 0.124, "name": "Specimen Butterflies", "model": "gpt-oss:120b", "notes": "Specimen of pinned butterflies in a shallow glass display case about 0.25 m wide × 0.15 m deep × 0.12 m tall. Includes wooden base, thin side walls, transparent lid, front label and six flat butterfly bodies (tint 0.6,0.58,0.5) each on a small steel pin.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.054,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.16],"color":[0.7,0.65,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.125,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.1,0.16],"color":[0.7,0.65,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.125,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.1,0.16],"color":[0.7,0.65,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"FrontWall","shape":"cube","pos":[0.0,-0.004,0.0755],"rot":[0.0,0.0,0.0],"size":[0.26,0.1,0.01],"color":[0.7,0.65,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BackWall","shape":"cube","pos":[0.0,-0.004,-0.0755],"rot":[0.0,0.0,0.0],"size":[0.26,0.1,0.01],"color":[0.7,0.65,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.262,0.008,0.162],"color":[0.9,0.95,1.0],"smooth":0.7,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.026,0.081],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.002],"color":[0.2,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Butterfly1_Body","shape":"cube","pos":[-0.09,-0.043,0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Butterfly1_Pin","shape":"cylinder","pos":[-0.09,-0.012,0.04],"rot":[0.0,0.0,0.0],"size":[0.004,0.06,0.004],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Butterfly2_Body","shape":"cube","pos":[-0.045,-0.043,-0.02],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Butterfly2_Pin","shape":"cylinder","pos":[-0.045,-0.012,-0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.06,0.004],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Butterfly3_Body","shape":"cube","pos":[0.0,-0.043,0.07],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Butterfly3_Pin","shape":"cylinder","pos":[0.0,-0.012,0.07],"rot":[0.0,0.0,0.0],"size":[0.004,0.06,0.004],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Butterfly4_Body","shape":"cube","pos":[0.045,-0.043,-0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Butterfly4_Pin","shape":"cylinder","pos":[0.045,-0.012,-0.05],"rot":[0.0,0.0,0.0],"size":[0.004,0.06,0.004],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Butterfly5_Body","shape":"cube","pos":[0.09,-0.043,0.02],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Butterfly5_Pin","shape":"cylinder","pos":[0.09,-0.012,0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.06,0.004],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Butterfly6_Body","shape":"cube","pos":[-0.03,-0.043,-0.07],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Butterfly6_Pin","shape":"cylinder","pos":[-0.03,-0.012,-0.07],"rot":[0.0,0.0,0.0],"size":[0.004,0.06,0.004],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

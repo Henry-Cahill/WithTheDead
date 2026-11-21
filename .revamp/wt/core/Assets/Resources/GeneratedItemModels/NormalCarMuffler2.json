@@ -1,0 +1,14 @@
+{"version": 1, "id": "NormalCarMuffler2", "baseHeight": 0.15, "name": "Normal Car Muffler2", "model": "gpt-oss:120b", "notes": "Car muffler lying on its side (long axis along X). Overall size ≈ 0.42 m long × 0.14 m diameter. Main steel tube with inlet/outlet flares, two internal baffles and mounting bolts, plus rubber end mounts.", "score": 6, "parts": [
+  {"name":"OuterTube","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.42,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"InnerTube","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.38,0.12],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"InletFlare","shape":"cylinder","pos":[-0.235,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.05,0.18],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"OutletFlare","shape":"cylinder","pos":[0.235,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.05,0.18],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaffleFront","shape":"cylinder","pos":[-0.07,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.015,0.13],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BaffleRear","shape":"cylinder","pos":[0.07,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.015,0.13],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"MountBoltL","shape":"cube","pos":[-0.2,0.03,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"MountBoltR","shape":"cube","pos":[-0.2,0.03,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"MountBoltL2","shape":"cube","pos":[0.2,0.03,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"MountBoltR2","shape":"cube","pos":[0.2,0.03,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"RubberClampInlet","shape":"sphere","pos":[-0.28,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.25,0.24,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"RubberClampOutlet","shape":"sphere","pos":[0.28,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.25,0.24,0.22],"smooth":0.2,"metal":0.0}
+]}

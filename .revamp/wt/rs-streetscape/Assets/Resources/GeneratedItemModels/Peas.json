@@ -1,0 +1,14 @@
+{"version": 1, "id": "Peas", "baseHeight": 0.0692, "name": "Peas", "model": "gpt-oss:120b", "notes": "Clear frozen‑pea bag lying flat (≈0.15 m × 0.12 m × 0.01 m). Thin plastic seams around the edges, a green label on the front, and five small pea clusters inside. A twist‑tie seals the top corner.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.002,-0.0023,-0.007],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.12],"color":[0.9,0.95,0.9],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeXPos","shape":"cylinder","pos":[0.002,0.0037,0.053],"rot":[0.0,0.0,90.0],"size":[0.002,0.15,0.002],"color":[0.8,0.85,0.8],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeXNeg","shape":"cylinder","pos":[0.002,0.0037,-0.067],"rot":[0.0,0.0,90.0],"size":[0.002,0.15,0.002],"color":[0.8,0.85,0.8],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeZPos","shape":"cylinder","pos":[0.077,0.0037,-0.007],"rot":[90.0,0.0,0.0],"size":[0.002,0.12,0.002],"color":[0.8,0.85,0.8],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeZNeg","shape":"cylinder","pos":[-0.073,0.0037,-0.007],"rot":[90.0,0.0,0.0],"size":[0.002,0.12,0.002],"color":[0.8,0.85,0.8],"smooth":0.3,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.002,-0.0008,0.048],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.45,0.6,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"PeaCluster1","shape":"sphere","pos":[-0.028,-0.0003,-0.027],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PeaCluster2","shape":"sphere","pos":[0.042,-0.0003,0.003],"rot":[0.0,0.0,0.0],"size":[0.012,0.016,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PeaCluster3","shape":"sphere","pos":[-0.048,0.0007,0.023],"rot":[0.0,0.0,0.0],"size":[0.014,0.017,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PeaCluster4","shape":"sphere","pos":[0.022,-0.0013,-0.047],"rot":[0.0,0.0,0.0],"size":[0.013,0.015,0.013],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PeaCluster5","shape":"sphere","pos":[0.062,-0.0003,-0.057],"rot":[0.0,0.0,0.0],"size":[0.011,0.014,0.011],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TwistTie","shape":"cylinder","pos":[-0.068,0.0037,-0.057],"rot":[0.0,0.0,90.0],"size":[0.004,0.02,0.004],"color":[0.4,0.45,0.3],"smooth":0.2,"metal":0.0}
+]}

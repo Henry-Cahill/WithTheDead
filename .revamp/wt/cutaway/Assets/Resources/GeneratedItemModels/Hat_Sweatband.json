@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_Sweatband", "baseHeight": 0.0755, "name": "Hat Sweatband", "model": "gpt-oss:120b", "notes": "Flat sweatband ~0.55 m long × 0.05 m wide × 0.02 m thick, laid out flat with stitched edges, central elastic tube, a logo patch and rounded end caps.", "score": 6, "parts": [
+  {"name":"Band","shape":"cube","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.0055,0.024],"rot":[0.0,0.0,0.0],"size":[0.55,0.002,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,0.0055,-0.024],"rot":[0.0,0.0,0.0],"size":[0.55,0.002,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterElastic","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.55,0.015],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapL","shape":"sphere","pos":[-0.2625,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"sphere","pos":[0.2625,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimL","shape":"cylinder","pos":[-0.275,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimR","shape":"cylinder","pos":[0.275,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"sphere","pos":[-0.2,0.0055,0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.1,0.1],"smooth":0.3,"metal":0.0}
+]}

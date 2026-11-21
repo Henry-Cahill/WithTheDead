@@ -1,0 +1,14 @@
+{"version": 1, "id": "Tshirt_CamoUrban", "baseHeight": 0.078, "name": "Tshirt Camo Urban", "model": "gpt-oss:120b", "notes": "Flat urban‑camo T‑shirt ~0.58 m long × 0.44 m wide, 3 cm thick: torso panel, shoulder block, two angled sleeves with cuffs, ribbed collar & neck opening, bottom hem band, plus a few camouflage print patches.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.1,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.03,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Shoulders","shape":"cube","pos":[0.35,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.032,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.25,-0.004,0.35],"rot":[0.0,-20.0,0.0],"size":[0.18,0.028,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.25,-0.004,-0.35],"rot":[0.0,20.0,0.0],"size":[0.18,0.028,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.25,-0.002,0.55],"rot":[0.0,-20.0,0.0],"size":[0.19,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.25,-0.002,-0.55],"rot":[0.0,20.0,0.0],"size":[0.19,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.38,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.034,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.38,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.18,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.004,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch1","shape":"cube","pos":[0.15,-0.001,0.15],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch2","shape":"cube","pos":[0.15,-0.001,-0.15],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch3","shape":"cube","pos":[0.05,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.004,0.16],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

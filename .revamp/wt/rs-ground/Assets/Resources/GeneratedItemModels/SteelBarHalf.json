@@ -1,0 +1,13 @@
+{"version": 1, "id": "SteelBarHalf", "baseHeight": 0.09, "name": "Steel Bar Half", "model": "gpt-oss:120b", "notes": "Steel Bar Half – 1.10 m long x 5 cm diameter, lying on its side (X‑axis). Main solid steel cylinder with a rounded business end, flat cut end, rubber grip near the handle, thin label strip and a few rivet bumps for detail.", "score": 6, "parts": [
+  {"name":"BarBody","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.1,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"RoundedTip","shape":"sphere","pos":[0.525,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"FlatEnd","shape":"cube","pos":[-0.5475,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.05,0.05],"color":[0.45,0.45,0.48],"smooth":0.4,"metal":0.8},
+  {"name":"Grip","shape":"cylinder","pos":[-0.35,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.023,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.006,0.04],"color":[0.5,0.5,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"RivetFrontL","shape":"sphere","pos":[-0.2,0.02,0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"RivetFrontR","shape":"sphere","pos":[-0.2,0.02,-0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"RivetMidL","shape":"sphere","pos":[0.0,0.02,0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"RivetMidR","shape":"sphere","pos":[0.0,0.02,-0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"RivetBackL","shape":"sphere","pos":[0.2,0.02,0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"RivetBackR","shape":"sphere","pos":[0.2,0.02,-0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9}
+]}

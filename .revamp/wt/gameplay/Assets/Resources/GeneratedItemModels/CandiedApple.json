@@ -1,0 +1,8 @@
+{"version": 1, "id": "CandiedApple", "baseHeight": 0.107, "name": "Candied Apple", "model": "gpt-oss:120b", "notes": "Candied apple (~0.08 m diameter) on a short wooden stick (≈0.10 m long) packed in a thin cardboard box (0.12 × 0.09 × 0.04 m). The apple is glossy caramel‑tinted, the stick is brown wood, and the box is light‑brown with a simple label.", "score": 6, "parts": [
+  {"name":"Box","shape":"cube","pos":[-0.0438,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.09,0.04],"color":[0.78,0.71,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[-0.0438,0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.04],"color":[0.73,0.66,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0438,0.013,0.0205],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.002],"color":[0.62,0.55,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Apple","shape":"sphere","pos":[-0.0438,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.0},
+  {"name":"Stick","shape":"cylinder","pos":[0.0462,-0.007,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.1,0.015],"color":[0.42,0.22,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"StickTip","shape":"sphere","pos":[0.0963,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.42,0.22,0.12],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "BookFlintKnappingSet", "baseHeight": 0.12, "name": "Book Flint Knapping Set", "model": "gpt-oss:120b", "notes": "Book‑flint knapping set about 0.28 m long × 0.21 m wide, 5 cm thick when closed. Main brown‑tinted paper book with a leather strap across the front, three grey flint nodules, a small hammerstone and an antler billet scattered around it on the floor.", "score": 6, "parts": [
+  {"name":"Cover","shape":"cube","pos":[0.0,-0.007,-0.007],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.21],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pages","shape":"cube","pos":[0.0,-0.009,-0.007],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.19],"color":[0.78,0.76,0.68],"smooth":0.02,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[0.0,0.001,0.083],"rot":[0.0,0.0,0.0],"size":[0.24,0.004,0.004],"color":[0.35,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"FlintA","shape":"sphere","pos":[-0.12,-0.002,-0.087],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.45,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"FlintB","shape":"sphere","pos":[0.11,0.001,0.063],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.45,0.45,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"FlintC","shape":"sphere","pos":[-0.08,-0.005,0.113],"rot":[0.0,0.0,0.0],"size":[0.038,0.038,0.038],"color":[0.45,0.45,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"Hammerstone","shape":"sphere","pos":[0.02,-0.003,-0.107],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.4,0.4,0.42],"smooth":0.25,"metal":0.0},
+  {"name":"AntlerBillet","shape":"cylinder","pos":[-0.04,0.0,0.023],"rot":[0.0,30.0,0.0],"size":[0.06,0.12,0.06],"color":[0.55,0.5,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeTrimL","shape":"cube","pos":[-0.13,-0.006,-0.007],"rot":[0.0,0.0,0.0],"size":[0.01,0.018,0.21],"color":[0.4,0.38,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimR","shape":"cube","pos":[0.13,-0.006,-0.007],"rot":[0.0,0.0,0.0],"size":[0.01,0.018,0.21],"color":[0.4,0.38,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BottomRim","shape":"cube","pos":[0.0,-0.016,-0.007],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.21],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0}
+]}

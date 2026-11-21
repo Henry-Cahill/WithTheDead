@@ -1,0 +1,13 @@
+{"version": 1, "id": "Rabbit_Head_CottonTail", "baseHeight": 0.0912, "name": "Rabbit Head Cotton Tail", "model": "gpt-oss:120b", "notes": "Cotton rabbit‑head scrap ~0.15 m wide × 0.12 m deep, 2 cm thick, with two floppy ears and a short fluffy cotton tail extending from the back.", "score": 7, "parts": [
+  {"name":"HeadBody","shape":"cube","pos":[0.0,-0.0212,0.045],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[0.075,-0.0062,0.085],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[-0.075,-0.0062,0.085],"rot":[0.0,0.0,-90.0],"size":[0.02,0.06,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.06,-0.0163,0.115],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.03,-0.0133,0.105],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.03,-0.0133,0.105],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Mouth","shape":"cube","pos":[0.0,-0.0192,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"TailBase","shape":"cylinder","pos":[-0.07,-0.0062,0.005],"rot":[90.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TailFluff1","shape":"sphere","pos":[-0.07,0.0088,-0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.045,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TailFluff2","shape":"sphere","pos":[-0.07,-0.0013,-0.075],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TailFluff3","shape":"sphere","pos":[-0.07,-0.0062,-0.105],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

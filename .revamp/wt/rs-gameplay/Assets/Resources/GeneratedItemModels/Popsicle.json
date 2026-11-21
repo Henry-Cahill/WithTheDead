@@ -1,0 +1,8 @@
+{"version": 1, "id": "Popsicle", "baseHeight": 0.105, "name": "Popsicle", "model": "gpt-oss:120b", "notes": "Popsicle about 0.12 m long: wooden stick (cylinder) lying flat on the floor, a rounded ice‑cream head (~0.08 m diameter) of tinted frozen fruit, thin paper wrapper around the head with a small label.", "score": 7, "parts": [
+  {"name":"Stick","shape":"cylinder","pos":[-0.028,-0.034,-0.01],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"IceCream","shape":"sphere","pos":[0.042,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Wrapper","shape":"sphere","pos":[0.042,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.85,0.78,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.042,0.0,0.036],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.04],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Drip","shape":"sphere","pos":[0.047,-0.025,-0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WrapEdge","shape":"cylinder","pos":[0.042,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.092],"color":[0.78,0.71,0.55],"smooth":0.2,"metal":0.0}
+]}

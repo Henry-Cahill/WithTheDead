@@ -1,0 +1,11 @@
+{"version": 1, "id": "NormalBrake3", "baseHeight": 0.069, "name": "Normal Brake3", "model": "gpt-oss:120b", "notes": "Normal Brake3 – flat brake disc lying on the floor, approx 0.28 m diameter × 0.015 m thick, dark‑gray steel tint (0.6,0.58,0.5). Includes a central hub, four bolt heads around the hub and two ventilation ribs for recognisable silhouette.", "score": 7, "parts": [
+  {"name":"OuterDisc","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"InnerHub","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.08],"color":[0.48,0.46,0.38],"smooth":0.45,"metal":1.0},
+  {"name":"BoltFront","shape":"cylinder","pos":[0.06,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BoltBack","shape":"cylinder","pos":[-0.06,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BoltLeft","shape":"cylinder","pos":[0.0,0.0025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BoltRight","shape":"cylinder","pos":[0.0,0.0025,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"VentRibX","shape":"cube","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.003,0.015],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"VentRibZ","shape":"cube","pos":[0.0,0.0015,0.0],"rot":[0.0,90.0,0.0],"size":[0.24,0.003,0.015],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.285,0.012,0.285],"color":[0.52,0.5,0.42],"smooth":0.4,"metal":1.0}
+]}

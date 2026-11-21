@@ -1,0 +1,12 @@
+{"version": 1, "id": "LicoriceRed", "baseHeight": 0.081, "name": "Licorice Red", "model": "gpt-oss:120b", "notes": "Rectangular cardboard package ~0.12 m × 0.08 m × 0.04 m (width × depth × height) for Licorice Red, lying on its side with the lid up. Inside are a handful of short red‑licorice sticks. Package colour is the given tint; sticks are bright red.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.71,0.64,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0185,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.07],"color":[0.55,0.45,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.102,0.002,0.072],"color":[0.35,0.28,0.18],"smooth":0.12,"metal":0.0},
+  {"name":"Stick1","shape":"cylinder","pos":[-0.025,-0.003,-0.02],"rot":[0.0,0.0,90.0],"size":[0.008,0.028,0.008],"color":[0.92,0.12,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"Stick2","shape":"cylinder","pos":[0.0,-0.003,0.015],"rot":[0.0,5.0,90.0],"size":[0.008,0.025,0.008],"color":[0.92,0.12,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"Stick3","shape":"cylinder","pos":[0.02,-0.003,-0.025],"rot":[0.0,-8.0,90.0],"size":[0.008,0.03,0.008],"color":[0.92,0.12,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"Stick4","shape":"cylinder","pos":[-0.015,-0.003,0.025],"rot":[0.0,3.0,90.0],"size":[0.008,0.027,0.008],"color":[0.92,0.12,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"Stick5","shape":"cylinder","pos":[0.01,-0.003,-0.005],"rot":[0.0,-2.0,90.0],"size":[0.008,0.022,0.008],"color":[0.92,0.12,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"Stick6","shape":"cylinder","pos":[-0.01,-0.003,0.005],"rot":[0.0,7.0,90.0],"size":[0.008,0.024,0.008],"color":[0.92,0.12,0.15],"smooth":0.4,"metal":0.0}
+]}

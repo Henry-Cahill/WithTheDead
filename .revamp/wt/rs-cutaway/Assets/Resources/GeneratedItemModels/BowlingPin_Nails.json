@@ -1,0 +1,9 @@
+{"version": 1, "id": "BowlingPin_Nails", "baseHeight": 0.13, "name": "Bowling Pin Nails", "model": "gpt-oss:120b", "notes": "Bowling‑pin style melee weapon ~0.38 m long, 0.09 m wide, solid steel (tint 0.6,0.6,0.64). Main body is a cylindrical pin with a narrower neck and a rounded head; four short metal spikes protrude from the head to emphasise the “nails”. Lying on its side, longest axis along X, business end (head) facing +X.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0025,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.38,0.09],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"Neck","shape":"cylinder","pos":[-0.1575,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.07,0.04],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"Head","shape":"sphere","pos":[0.1175,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailFront","shape":"cylinder","pos":[0.1175,0.02,0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailBack","shape":"cylinder","pos":[0.1175,0.02,-0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailLeft","shape":"cylinder","pos":[0.0475,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailRight","shape":"cylinder","pos":[0.1875,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0}
+]}

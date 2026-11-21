@@ -1,0 +1,8 @@
+{"version": 1, "id": "Clay", "baseHeight": 0.0975, "name": "Clay", "model": "gpt-oss:120b", "notes": "Irregular clay lump about 6 cm across, soft matte finish. Main body is a flattened sphere resting on the floor with a few overlapping bumps to give a natural, hand‑shaped silhouette.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"sphere","pos":[0.0,0.0075,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BumpFront","shape":"sphere","pos":[0.015,0.0225,0.0187],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BumpSide","shape":"sphere","pos":[-0.018,0.0175,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.02,0.022,0.019],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"FlatBase","shape":"cylinder","pos":[0.0,-0.0075,-0.0013],"rot":[90.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrackLine","shape":"cube","pos":[0.005,0.0095,-0.0113],"rot":[0.0,0.0,15.0],"size":[0.008,0.002,0.03],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"DustPatch","shape":"cylinder","pos":[-0.012,-0.0215,0.0207],"rot":[90.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.5,0.48,0.45],"smooth":0.05,"metal":0.0}
+]}

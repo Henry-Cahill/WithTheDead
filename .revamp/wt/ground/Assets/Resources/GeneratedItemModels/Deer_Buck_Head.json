@@ -1,0 +1,14 @@
+{"version": 1, "id": "Deer_Buck_Head", "baseHeight": 0.1539, "name": "Deer Buck Head", "model": "gpt-oss:120b", "notes": "Deer buck head ~0.35 m wide, 0.25 m long, 0.20 m tall, lying on its side with antlers spread left‑right (Z). Main brown tint for bone/hide, dark eyes.", "score": 6, "parts": [
+  {"name":"BaseSkull","shape":"cube","pos":[-0.04,-0.0339,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.18],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.11,-0.0339,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.07],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LeftAntlerMain","shape":"cylinder","pos":[-0.04,0.0161,-0.09],"rot":[90.0,0.0,0.0],"size":[0.02,0.25,0.02],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RightAntlerMain","shape":"cylinder","pos":[-0.04,0.0161,0.09],"rot":[90.0,0.0,0.0],"size":[0.02,0.25,0.02],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"LeftBranch1","shape":"cylinder","pos":[-0.1,0.0461,-0.18],"rot":[45.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RightBranch1","shape":"cylinder","pos":[-0.1,0.0461,0.18],"rot":[45.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"LeftEar","shape":"sphere","pos":[-0.02,-0.0039,-0.12],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.03],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"RightEar","shape":"sphere","pos":[-0.02,-0.0039,0.12],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.03],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LeftEye","shape":"sphere","pos":[0.02,-0.0239,-0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RightEye","shape":"sphere","pos":[0.02,-0.0239,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LeftBranch2","shape":"cylinder","pos":[-0.06,0.0361,-0.15],"rot":[30.0,0.0,20.0],"size":[0.012,0.09,0.012],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RightBranch2","shape":"cylinder","pos":[-0.06,0.0361,0.15],"rot":[30.0,0.0,-20.0],"size":[0.012,0.09,0.012],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0}
+]}

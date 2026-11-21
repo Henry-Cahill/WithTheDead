@@ -1,0 +1,13 @@
+{"version": 1, "id": "PigletLeather_Landrace_Fur_Tan_Wet", "baseHeight": 0.0737, "name": "Piglet Leather Landrace Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Flat wet piglet leather with short fur patches, approx 0.25 m × 0.15 m × 0.015 m thick, laid face‑up on the ground. Main sheet in tan‑brown, a few irregular edge strips and three fluffy fur clumps give a recognizable silhouette.", "score": 6, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0005,-0.0063,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.1295,-0.0048,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.15],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.1305,-0.0048,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.15],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0005,-0.0048,0.0795],"rot":[0.0,0.0,0.0],"size":[0.25,0.018,0.02],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0005,-0.0048,-0.0805],"rot":[0.0,0.0,0.0],"size":[0.25,0.018,0.018],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.0795,0.0012,0.0395],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.035],"color":[0.48,0.45,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.0705,0.0012,-0.0305],"rot":[0.0,0.0,0.0],"size":[0.028,0.022,0.032],"color":[0.48,0.45,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[-0.0295,0.0012,-0.0605],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.028],"color":[0.48,0.45,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"WetSheen","shape":"cube","pos":[0.0005,0.0017,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.15],"color":[0.68,0.66,0.58],"smooth":0.35,"metal":0.0},
+  {"name":"CornerTrimTL","shape":"cube","pos":[-0.1195,-0.0012,0.0695],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"CornerTrimBR","shape":"cube","pos":[0.1205,-0.0012,-0.0705],"rot":[0.0,0.0,0.0],"size":[0.018,0.015,0.018],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

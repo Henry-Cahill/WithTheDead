@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Right_RingFinger_GoldDiamond", "baseHeight": 0.0648, "name": "Ring Right Ring Finger Gold Diamond", "model": "gpt-oss:120b", "notes": "Gold wedding‑style ring ~18 mm outer diameter, 4 mm band width, 2 mm thick, lying flat on the floor with a small round diamond set in the centre (≈6 mm across).", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0027,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.018,0.004],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.9,0.95,1.0],"smooth":0.65,"metal":0.0},
+  {"name":"Setting","shape":"cylinder","pos":[0.0,-0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.018,0.002],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.05,0.04,0.03],"smooth":0.05,"metal":0.0},
+  {"name":"Highlight","shape":"sphere","pos":[0.0,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[1.0,1.0,1.0],"smooth":0.9,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,90.0],"size":[0.0042,0.018,0.0042],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0}
+]}

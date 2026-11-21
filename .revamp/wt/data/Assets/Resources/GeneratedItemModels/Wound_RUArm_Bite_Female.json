@@ -1,0 +1,11 @@
+{"version": 1, "id": "Wound_RUArm_Bite_Female", "baseHeight": 0.0725, "name": "Wound RUArm Bite Female", "model": "gpt-oss:120b", "notes": "Small gore lump representing a bitten right‑upper‑arm wound, lying on the floor. Roughly a 12 cm wide blood pool with a few clotted tissue bits and splatter droplets.", "score": 6, "parts": [
+  {"name":"BasePool","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.008,0.14],"color":[0.45,0.42,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"ClotCenter","shape":"sphere","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.52,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"ClotSideL","shape":"sphere","pos":[-0.04,0.0035,0.02],"rot":[0.0,0.0,0.0],"size":[0.045,0.018,0.045],"color":[0.55,0.52,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"ClotSideR","shape":"sphere","pos":[0.04,0.0025,-0.018],"rot":[0.0,0.0,0.0],"size":[0.05,0.019,0.05],"color":[0.55,0.52,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"TissueChunk1","shape":"cube","pos":[-0.03,-0.0015,0.04],"rot":[10.0,15.0,5.0],"size":[0.035,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"TissueChunk2","shape":"cube","pos":[0.028,-0.0005,-0.03],"rot":[-8.0,12.0,-6.0],"size":[0.032,0.014,0.022],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"Droplet1","shape":"sphere","pos":[-0.06,-0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.48,0.45,0.42],"smooth":0.07,"metal":0.0},
+  {"name":"Droplet2","shape":"sphere","pos":[0.058,-0.0035,-0.025],"rot":[0.0,0.0,0.0],"size":[0.011,0.011,0.011],"color":[0.48,0.45,0.42],"smooth":0.07,"metal":0.0},
+  {"name":"Droplet3","shape":"sphere","pos":[0.0,-0.0045,0.06],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.48,0.45,0.42],"smooth":0.07,"metal":0.0}
+]}

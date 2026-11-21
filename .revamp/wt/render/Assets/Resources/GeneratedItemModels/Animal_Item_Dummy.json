@@ -1,0 +1,12 @@
+{"version": 1, "id": "Animal_Item_Dummy", "baseHeight": 0.08, "name": "Animal Item Dummy", "model": "gpt-oss:120b", "notes": "Small animal dummy ~12 cm long × 8 cm wide × 5 cm thick, lying on its side. Main brown‑tinted plush body with a rounded head, four stubby legs, tiny tail and simple facial features.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.006,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.07],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.054,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.025],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.061,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LegFL","shape":"cylinder","pos":[0.034,-0.01,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LegFR","shape":"cylinder","pos":[0.034,-0.01,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LegBL","shape":"cylinder","pos":[-0.046,-0.01,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LegBR","shape":"cylinder","pos":[-0.046,-0.01,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.064,0.008,0.005],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.064,0.008,-0.005],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.074,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.006],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0}
+]}

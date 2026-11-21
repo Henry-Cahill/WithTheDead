@@ -1,0 +1,15 @@
+{"version": 1, "id": "Tshirt_Tuxedo", "baseHeight": 0.0755, "name": "Tshirt Tuxedo", "model": "gpt-oss:120b", "notes": "Flat tuxedo‑style T‑shirt ~0.68 m long × 0.44 m wide × 0.03 m thick. Main body in tint (0.55,0.5,0.6) with angled sleeves, a small stand‑up collar, front placket and four buttons.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0993,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.3193,-0.0005,0.27],"rot":[0.0,-20.0,0.0],"size":[0.24,0.028,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.4793,0.0005,0.27],"rot":[0.0,-20.0,0.0],"size":[0.18,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.3193,-0.0005,-0.27],"rot":[0.0,20.0,0.0],"size":[0.24,0.028,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.4793,0.0005,-0.27],"rot":[0.0,20.0,0.0],"size":[0.18,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.3543,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.012,0.12],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.3543,0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.004,0.09],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"FrontPlacket","shape":"cube","pos":[0.1993,0.0025,0.22],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"sphere","pos":[-0.0507,0.0025,0.23],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Button2","shape":"sphere","pos":[0.0493,0.0025,0.23],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Button3","shape":"sphere","pos":[0.1493,0.0025,0.23],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Button4","shape":"sphere","pos":[0.2493,0.0025,0.23],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.2307,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.006,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "RatPoison", "baseHeight": 0.145, "name": "Rat Poison", "model": "gpt-oss:120b", "notes": "Upright plastic rat‑poison bottle about 0.15 m tall × 0.07 m diameter, with a snap‑on cap, a dark label and a visible powder fill.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.005,0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.15,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.075,0.005],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"LabelBack","shape":"cylinder","pos":[0.0,0.01,0.005],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.072],"color":[0.35,0.33,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"LabelFront","shape":"cylinder","pos":[0.0,0.011,0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.3,0.25,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Powder","shape":"cylinder","pos":[0.0,-0.035,0.005],"rot":[0.0,0.0,0.0],"size":[0.062,0.09,0.062],"color":[0.85,0.85,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"SpillDrop","shape":"sphere","pos":[0.03,-0.075,-0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.85,0.85,0.8],"smooth":0.05,"metal":0.0}
+]}

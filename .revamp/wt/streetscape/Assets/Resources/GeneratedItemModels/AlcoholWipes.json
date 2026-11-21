@@ -1,0 +1,8 @@
+{"version": 1, "id": "AlcoholWipes", "baseHeight": 0.0706, "name": "Alcohol Wipes", "model": "gpt-oss:120b", "notes": "Alcohol wipe pack ~0.12 m × 0.07 m × 0.02 m lying flat: thin cardboard/foil wrapper (dark‑tan), a stack of soft wipes inside (light beige) and a printed label on the top.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cube","pos":[0.024,-0.0006,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.07],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"WipeStack","shape":"cube","pos":[0.024,-0.0031,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.014,0.058],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WipeEdgeL","shape":"cube","pos":[-0.03,0.004,-0.025],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.002],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WipeEdgeR","shape":"cube","pos":[-0.03,0.004,0.025],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.002],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.024,0.0089,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.045],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"LabelPrint","shape":"cube","pos":[0.024,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.037],"color":[0.2,0.22,0.25],"smooth":0.05,"metal":0.0}
+]}

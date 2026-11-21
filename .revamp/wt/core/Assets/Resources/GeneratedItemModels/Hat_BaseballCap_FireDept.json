@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_BaseballCap_FireDept", "baseHeight": 0.085, "name": "Hat Baseball Cap Fire Dept", "model": "gpt-oss:120b", "notes": "Flat baseball cap (fire‑dept style) ~0.22 m wide, 0.12 m tall when worn. Crown flattened to a low disc, front brim extending forward, side panels, top button and a small red fire‑badge on the front panel.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.01,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.0,0.015,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.02,0.0575],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.1,-0.015,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.1,-0.015,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.015,0.0325],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Badge","shape":"cube","pos":[0.0,-0.004,0.0425],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.015],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRing","shape":"cylinder","pos":[0.0,-0.007,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.23,0.004,0.23],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0}
+]}

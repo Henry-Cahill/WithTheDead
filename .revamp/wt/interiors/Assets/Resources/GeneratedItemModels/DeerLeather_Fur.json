@@ -1,0 +1,14 @@
+{"version": 1, "id": "DeerLeather_Fur", "baseHeight": 0.0867, "name": "Deer Leather Fur", "model": "gpt-oss:120b", "notes": "Flat deer hide with fur side up, approx 0.45 m × 0.35 m × 0.02 m thick; leather base slab, stitched edge strips, several fluffy fur ellipsoids for texture and a small tag corner label.", "score": 6, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0025,-0.0168,-0.005],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0025,-0.0092,0.165],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.01],"color":[0.55,0.53,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0025,-0.0092,-0.175],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.01],"color":[0.55,0.53,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.2175,-0.0092,-0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.35],"color":[0.55,0.53,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.2225,-0.0092,-0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.35],"color":[0.55,0.53,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"FurCluster1","shape":"sphere","pos":[-0.1475,0.0032,0.115],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.07],"color":[0.65,0.62,0.55],"smooth":0.02,"metal":0.0},
+  {"name":"FurCluster2","shape":"sphere","pos":[0.1025,0.0043,0.075],"rot":[0.0,0.0,0.0],"size":[0.11,0.045,0.08],"color":[0.66,0.63,0.56],"smooth":0.02,"metal":0.0},
+  {"name":"FurCluster3","shape":"sphere","pos":[-0.0475,0.0023,-0.105],"rot":[0.0,0.0,0.0],"size":[0.08,0.035,0.06],"color":[0.64,0.61,0.54],"smooth":0.02,"metal":0.0},
+  {"name":"FurCluster4","shape":"sphere","pos":[0.1825,0.0053,-0.125],"rot":[0.0,0.0,0.0],"size":[0.1,0.042,0.075],"color":[0.65,0.62,0.55],"smooth":0.02,"metal":0.0},
+  {"name":"FurCluster5","shape":"sphere","pos":[-0.1975,0.0013,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.033,0.05],"color":[0.63,0.6,0.53],"smooth":0.02,"metal":0.0},
+  {"name":"FurCluster6","shape":"sphere","pos":[0.1225,0.0032,0.145],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.07],"color":[0.66,0.63,0.56],"smooth":0.02,"metal":0.0},
+  {"name":"TagLabel","shape":"cube","pos":[-0.1875,-0.0043,0.155],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.03],"color":[0.4,0.28,0.2],"smooth":0.1,"metal":0.0}
+]}

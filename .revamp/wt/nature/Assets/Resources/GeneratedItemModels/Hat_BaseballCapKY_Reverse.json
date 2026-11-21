@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCapKY_Reverse", "baseHeight": 0.09, "name": "Hat Baseball Cap KY Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out like a product photo (≈0.24 m wide × 0.20 m deep, 0.03 m thick). Main tinted cloth with darker brim edge, crown seam and adjustable back strap.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimCenter","shape":"cube","pos":[0.0,-0.026,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeFront","shape":"cube","pos":[0.0,-0.019,-0.09],"rot":[0.0,0.0,0.0],"size":[0.24,0.006,0.02],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeBack","shape":"cube","pos":[0.0,-0.019,0.09],"rot":[0.0,0.0,0.0],"size":[0.24,0.006,0.02],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeLeft","shape":"cube","pos":[-0.11,-0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.2],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeRight","shape":"cube","pos":[0.11,-0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.2],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSeam","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.004,0.19],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBack","shape":"cube","pos":[0.0,-0.015,-0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.006,0.02],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Button","shape":"sphere","pos":[0.025,-0.012,-0.09],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Brush", "baseHeight": 0.0838, "name": "Brush", "model": "gpt-oss:120b", "notes": "Brush ~0.34 m long lying on its side: wooden‑plastic handle (cylinder) along X, metal ferrule ring, rounded bristle bundle and a few individual bristle tips. Overall height ≈0.06 m, width ≈0.08 m.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.035,-0.0113,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.28,0.02],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.115,-0.0113,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.012,0.025],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":1.0},
+  {"name":"BristleBase","shape":"sphere","pos":[0.145,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Bristle1","shape":"cylinder","pos":[0.15,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Bristle2","shape":"cylinder","pos":[0.15,0.0037,0.015],"rot":[30.0,0.0,0.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Bristle3","shape":"cylinder","pos":[0.15,0.0037,-0.015],"rot":[-30.0,0.0,0.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Bristle4","shape":"cylinder","pos":[0.15,0.0037,0.03],"rot":[15.0,0.0,0.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Bristle5","shape":"cylinder","pos":[0.15,0.0037,-0.03],"rot":[-15.0,0.0,0.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Bristle6","shape":"cylinder","pos":[0.15,0.0037,0.0],"rot":[0.0,20.0,0.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0}
+]}

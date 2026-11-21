@@ -1,0 +1,8 @@
+{"version": 1, "id": "HatchetHead_Bone", "baseHeight": 0.0725, "name": "Hatchet Head Bone", "model": "gpt-oss:120b", "notes": "Bone hatchet head about 15 cm long × 7 cm wide × 2 cm thick, lying on its side (long axis along X). Main blade plate with a small back spike, a cylindrical eye hole for the handle and a thin edge ridge. A couple of surface cracks add detail.", "score": 6, "parts": [
+  {"name":"BladePlate","shape":"cube","pos":[0.015,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackSpike","shape":"cube","pos":[-0.075,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.04],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EyeHole","shape":"cylinder","pos":[-0.025,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.015,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.01],"color":[0.57,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Crack1","shape":"cube","pos":[-0.005,0.011,0.015],"rot":[0.0,10.0,0.0],"size":[0.12,0.002,0.004],"color":[0.52,0.5,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"Crack2","shape":"cube","pos":[0.045,0.011,-0.018],"rot":[0.0,-12.0,0.0],"size":[0.09,0.002,0.004],"color":[0.52,0.5,0.44],"smooth":0.05,"metal":0.0}
+]}

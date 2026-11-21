@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_FawnHide", "baseHeight": 0.0825, "name": "Vest Fawn Hide", "model": "gpt-oss:120b", "notes": "Flat fawn‑hide vest laid out as two panels (front & back) side‑by‑side, 0.55 m wide × 0.75 m tall each, 2.5 cm thick hide. A collar strip runs across the top, leather straps at the sides, bottom hems and edge stitching give shape.", "score": 6, "parts": [
+  {"name":"FrontPanel","shape":"cube","pos":[-0.305,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.75],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.305,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.75],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"CollarStrip","shape":"cube","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[1.18,0.02,0.04],"color":[0.6,0.55,0.65],"smooth":0.1,"metal":0.0},
+  {"name":"StrapL","shape":"cube","pos":[-0.6,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.12],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"StrapR","shape":"cube","pos":[0.6,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.12],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[-0.305,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.75],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.305,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.75],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.58,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.75],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.58,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.75],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.305,0.0075,0.35],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.02],"color":[0.7,0.6,0.5],"smooth":0.2,"metal":0.0}
+]}

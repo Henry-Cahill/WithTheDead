@@ -1,0 +1,16 @@
+{"version": 1, "id": "WoodenBlacksmithAnvilMold", "baseHeight": 0.1125, "name": "Wooden Blacksmith Anvil Mold", "model": "gpt-oss:120b", "notes": "Wooden blacksmith anvil mold, approx 0.30 m long × 0.15 m wide × 0.05 m tall. Central cavity for the anvil shape, two side handles, raised wooden rims, grain‑detail strips and four small metal clamps at the corners.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.05,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0,0.0025,0.0725],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.005],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0,0.0025,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.005],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.1475,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.15],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.1475,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.15],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Cavity","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.08],"color":[0.45,0.44,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.12,0.0125,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.12,0.0125,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"GrainStrip1","shape":"cube","pos":[0.0,-0.0015,-0.04],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"GrainStrip2","shape":"cube","pos":[0.0,-0.0015,0.04],"rot":[0.0,5.0,0.0],"size":[0.28,0.003,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"ClampFL","shape":"cube","pos":[-0.145,0.0075,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ClampFR","shape":"cube","pos":[0.145,0.0075,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ClampBL","shape":"cube","pos":[-0.145,0.0075,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ClampBR","shape":"cube","pos":[0.145,0.0075,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0}
+]}

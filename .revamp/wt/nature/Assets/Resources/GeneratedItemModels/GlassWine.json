@@ -1,0 +1,8 @@
+{"version": 1, "id": "GlassWine", "baseHeight": 0.0975, "name": "Glass Wine", "model": "gpt-oss:120b", "notes": "Wine bottle lying on its side, total length ≈ 0.30 m, main body 0.22 m long × 0.075 m diameter, neck 0.06 m long × 0.05 m diameter, short lip 0.02 m long × 0.04 m diameter, amber‑tinted glass (0.6,0.58,0.5) with a dark label band.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0375,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.075,0.22,0.075],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.1025,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.06,0.05],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Lip","shape":"cylinder","pos":[0.1425,-0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"LabelBand","shape":"cube","pos":[-0.0375,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.0751],"color":[0.45,0.43,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"BaseCap","shape":"cylinder","pos":[-0.1475,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.075,0.01,0.075],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":0.0},
+  {"name":"NeckRing","shape":"cylinder","pos":[0.0725,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.004,0.05],"color":[0.45,0.43,0.35],"smooth":0.2,"metal":0.0}
+]}

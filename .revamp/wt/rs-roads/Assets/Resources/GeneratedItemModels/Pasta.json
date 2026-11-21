@@ -1,0 +1,12 @@
+{"version": 1, "id": "Pasta", "baseHeight": 0.13, "name": "Pasta", "model": "gpt-oss:120b", "notes": "Upright cardboard pasta box about 0.26 m wide × 0.18 m deep × 0.14 m tall with a slightly open lid; front label and several spaghetti‑type strands (cylinders) inside to give a clear silhouette.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.01,0.0125],"rot":[0.0,0.0,0.0],"size":[0.26,0.12,0.18],"color":[0.6,0.55,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.06,0.0125],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.18],"color":[0.7,0.66,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[0.0,0.0,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.02],"color":[0.62,0.58,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"BackFlap","shape":"cube","pos":[0.0,0.0,0.1025],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.02],"color":[0.62,0.58,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.009,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.07],"color":[0.92,0.91,0.86],"smooth":0.05,"metal":0.0},
+  {"name":"Spaghetti1","shape":"cylinder","pos":[-0.03,-0.038,0.0325],"rot":[0.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Spaghetti2","shape":"cylinder","pos":[0.02,-0.036,-0.0175],"rot":[5.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Spaghetti3","shape":"cylinder","pos":[-0.015,-0.042,0.0625],"rot":[-4.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Spaghetti4","shape":"cylinder","pos":[0.04,-0.04,-0.0375],"rot":[3.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Spaghetti5","shape":"cylinder","pos":[-0.04,-0.039,0.0125],"rot":[-2.0,0.0,90.0],"size":[0.008,0.22,0.008],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

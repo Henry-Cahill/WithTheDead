@@ -1,0 +1,10 @@
+{"version": 1, "id": "Bandage_LeftUpperArm_Blood", "baseHeight": 0.0705, "name": "Bandage Left Upper Arm Blood", "model": "gpt-oss:120b", "notes": "Folded bandage about 0.30 m long × 0.10 m wide × 0.015 m thick (two‑layer cloth) lying flat on the floor, with a few dark red blood stains on the surface.", "score": 6, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopLayer","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.1],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.1],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.08,0.003,0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.003,0.03],"color":[0.68,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.05,0.003,-0.03],"rot":[0.0,0.0,0.0],"size":[0.025,0.0025,0.025],"color":[0.7,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.12,0.003,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.65,0.15,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"FoldLine","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTie","shape":"cylinder","pos":[-0.145,0.0045,0.045],"rot":[0.0,90.0,0.0],"size":[0.008,0.012,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

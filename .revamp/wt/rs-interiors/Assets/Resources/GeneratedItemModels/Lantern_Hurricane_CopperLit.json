@@ -1,0 +1,12 @@
+{"version": 1, "id": "Lantern_Hurricane_CopperLit", "baseHeight": 0.232, "name": "Lantern Hurricane Copper Lit", "model": "gpt-oss:120b", "notes": "Copper‑tinted hurricane lantern, upright on the floor. Main body cylinder (0.15 m dia × 0.18 m tall) sits on a thin copper base rim; a matching top rim caps it. A glass dome rests on the top rim, with a narrow copper handle loop and its hinge plate attached to the side of the dome. Inside the body a small wick‑holder cylinder is visible. All external parts now touch the main body.", "score": 7, "parts": [
+  {"name":"BaseRim","shape":"cylinder","pos":[0.0,-0.167,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.16,0.01,0.16],"color":[0.58,0.55,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.082,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.15,0.18,0.15],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"WickHolder","shape":"cylinder","pos":[0.0,-0.007,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.012,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.16],"color":[0.58,0.55,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"GlassEdge","shape":"cylinder","pos":[0.0,0.016,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.158,0.004,0.158],"color":[0.8,0.9,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"GlassDome","shape":"sphere","pos":[0.0,0.092,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.16,0.16,0.16],"color":[0.8,0.9,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"HandleLoop","shape":"cylinder","pos":[0.0,0.092,0.0775],"rot":[0.0,0.0,0.0],"size":[0.03,0.12,0.03],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"HingePlate","shape":"cube","pos":[0.0,0.048,0.0575],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.02],"color":[0.58,0.55,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BottomPlate","shape":"cube","pos":[0.0,-0.171,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.15],"color":[0.58,0.55,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"ShadowRing","shape":"cylinder","pos":[0.0,-0.167,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.155,0.006,0.155],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":0.0}
+]}

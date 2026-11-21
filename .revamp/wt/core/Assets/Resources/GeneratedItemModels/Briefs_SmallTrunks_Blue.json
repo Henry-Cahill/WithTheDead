@@ -1,0 +1,12 @@
+{"version": 1, "id": "Briefs_SmallTrunks_Blue", "baseHeight": 0.075, "name": "Briefs Small Trunks Blue", "model": "gpt-oss:120b", "notes": "Small blue briefs laid flat – about 0.28 m wide (X), 0.14 m long (Z) and 0.025 m thick (Y). Main panel with a thin waistband, side seams, front fly flap and two leg‑hole cut‑outs.", "score": 6, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandFront","shape":"cube","pos":[0.0,0.0125,0.0625],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandBack","shape":"cube","pos":[0.0,0.0125,-0.0625],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandSideL","shape":"cube","pos":[-0.1325,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.11],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandSideR","shape":"cube","pos":[0.1325,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.11],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.139,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.14],"color":[0.4,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.139,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.14],"color":[0.4,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FrontFly","shape":"cube","pos":[0.0,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.03],"color":[0.45,0.41,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"LegHoleL","shape":"cylinder","pos":[-0.09,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.07],"color":[0.2,0.22,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LegHoleR","shape":"cylinder","pos":[0.09,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.07],"color":[0.2,0.22,0.3],"smooth":0.05,"metal":0.0}
+]}

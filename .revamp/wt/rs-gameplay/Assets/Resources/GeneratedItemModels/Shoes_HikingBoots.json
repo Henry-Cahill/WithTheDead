@@ -1,0 +1,15 @@
+{"version": 1, "id": "Shoes_HikingBoots", "baseHeight": 0.1047, "name": "Shoes Hiking Boots", "model": "gpt-oss:120b", "notes": "Hiking boots laid flat, approx 0.38 m long × 0.18 m wide × 0.08 m high. Leather upper (tint 0.55,0.5,0.6), rubber sole (darker), metal eye‑lets, tongue and laces sit on top of the upper.", "score": 6, "parts": [
+  {"name":"Sole","shape":"cube","pos":[0.01,-0.0347,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.18],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Heel","shape":"cylinder","pos":[-0.155,-0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.09],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"ToeCap","shape":"cube","pos":[0.17,-0.0347,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.18],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"UpperLeft","shape":"cube","pos":[0.01,0.0053,-0.11],"rot":[0.0,0.0,0.0],"size":[0.38,0.06,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperRight","shape":"cube","pos":[0.01,0.0053,0.11],"rot":[0.0,0.0,0.0],"size":[0.38,0.06,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Tongue","shape":"cube","pos":[0.01,0.0253,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Laces","shape":"cylinder","pos":[0.01,0.0302,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.35,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EyeletL1","shape":"cylinder","pos":[-0.11,0.0373,-0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletL2","shape":"cylinder","pos":[0.01,0.0373,-0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletL3","shape":"cylinder","pos":[0.13,0.0373,-0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR1","shape":"cylinder","pos":[-0.11,0.0373,0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR2","shape":"cylinder","pos":[0.01,0.0373,0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR3","shape":"cylinder","pos":[0.13,0.0373,0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0}
+]}

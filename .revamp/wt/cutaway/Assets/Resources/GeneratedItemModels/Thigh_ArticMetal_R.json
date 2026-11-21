@@ -1,0 +1,8 @@
+{"version": 1, "id": "Thigh_ArticMetal_R", "baseHeight": 0.1263, "name": "Thigh Artic Metal R", "model": "gpt-oss:120b", "notes": "Irregular metal scrap roughly thigh‑shaped, lying on its side (long axis X). Main block with a rounded bulge at one end and two small rust patches for visual detail. Approx. 0.25 m × 0.12 m × 0.07 m.", "score": 6, "parts": [
+  {"name":"BaseBlock","shape":"cube","pos":[-0.0066,-0.0312,-0.005],"rot":[0.0,0.0,0.0],"size":[0.25,0.07,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bulge","shape":"sphere","pos":[0.0834,-0.0163,-0.005],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"RustPatchL","shape":"cube","pos":[-0.0866,-0.0588,-0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.38,0.28,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"RustPatchR","shape":"cube","pos":[-0.0666,-0.0588,0.035],"rot":[0.0,0.0,0.0],"size":[0.018,0.014,0.018],"color":[0.42,0.31,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[-0.0066,0.0038,-0.005],"rot":[90.0,0.0,0.0],"size":[0.255,0.005,0.125],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"WearStrip","shape":"cube","pos":[0.1134,-0.0413,0.055],"rot":[0.0,15.0,0.0],"size":[0.04,0.005,0.01],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0}
+]}

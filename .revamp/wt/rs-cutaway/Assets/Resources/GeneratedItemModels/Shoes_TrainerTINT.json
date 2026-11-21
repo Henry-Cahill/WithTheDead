@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoes_TrainerTINT", "baseHeight": 0.115, "name": "Shoes Trainer TINT", "model": "gpt-oss:120b", "notes": "Flat sneaker layout ~0.28 m long × 0.11 m wide × 0.12 m tall (sole down). Main tinted fabric upper, dark rubber sole, white laces and silver eyelets.", "score": 6, "parts": [
+  {"name":"SoleBase","shape":"cube","pos":[0.005,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.11],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Midsole","shape":"cube","pos":[0.005,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.015,0.105],"color":[0.4,0.4,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"HeelCounter","shape":"cube","pos":[-0.13,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.11],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperBack","shape":"cube","pos":[-0.11,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.08,0.11],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperFront","shape":"cube","pos":[0.095,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.11],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Tongue","shape":"cube","pos":[0.025,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Laces","shape":"cylinder","pos":[0.005,0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.25,0.004],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"EyeletL","shape":"cylinder","pos":[-0.065,-0.01,-0.055],"rot":[0.0,0.0,0.0],"size":[0.006,0.012,0.006],"color":[0.75,0.75,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"EyeletR","shape":"cylinder","pos":[-0.065,-0.01,0.055],"rot":[0.0,0.0,0.0],"size":[0.006,0.012,0.006],"color":[0.75,0.75,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"EyeletL2","shape":"cylinder","pos":[0.075,-0.01,-0.055],"rot":[0.0,0.0,0.0],"size":[0.006,0.012,0.006],"color":[0.75,0.75,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"EyeletR2","shape":"cylinder","pos":[0.075,-0.01,0.055],"rot":[0.0,0.0,0.0],"size":[0.006,0.012,0.006],"color":[0.75,0.75,0.75],"smooth":0.4,"metal":1.0}
+]}

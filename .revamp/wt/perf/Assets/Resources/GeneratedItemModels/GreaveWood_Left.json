@@ -1,0 +1,14 @@
+{"version": 1, "id": "GreaveWood_Left", "baseHeight": 0.0763, "name": "Greave Wood Left", "model": "gpt-oss:120b", "notes": "Wooden greave (left) ~0.35 m long × 0.12 m wide × 0.02 m thick, lying flat on the floor. Main wooden shell with raised front/back/side rims, a thin leather strap loop and a foam liner inside; metal rivets fasten the strap.", "score": 7, "parts": [
+  {"name":"Shell","shape":"cube","pos":[0.0,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontRim","shape":"cube","pos":[0.0,-0.0038,0.056],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.008],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BackRim","shape":"cube","pos":[0.0,-0.0038,-0.056],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.008],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SideRimL","shape":"cube","pos":[-0.171,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.12],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SideRimR","shape":"cube","pos":[0.171,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.12],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherStrapFront","shape":"cylinder","pos":[0.0,0.0087,0.056],"rot":[0.0,0.0,90.0],"size":[0.015,0.34,0.015],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LeatherStrapBack","shape":"cylinder","pos":[0.0,0.0087,-0.056],"rot":[0.0,0.0,90.0],"size":[0.015,0.34,0.015],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[-0.16,0.0117,0.056],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.6,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[0.16,0.0117,0.056],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.6,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.16,0.0117,-0.056],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.6,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.16,0.0117,-0.056],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.6,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"FoamLiner","shape":"cube","pos":[0.0,0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.015,0.1],"color":[0.9,0.85,0.75],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_BuildersRespirator_nofilter", "baseHeight": 0.071, "name": "Hat Builders Respirator nofilter", "model": "gpt-oss:120b", "notes": "Flat respirator mask laid out flat: overall outline ~0.28 m wide × 0.18 m deep × 0.02 m thick, with side strap loops, two fabric straps extending outward, a metal nose‑clip on the front centre and a small printed label.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LoopL","shape":"cylinder","pos":[-0.13,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"LoopR","shape":"cylinder","pos":[0.13,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.23,-0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.2,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.23,-0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.2,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NoseClip","shape":"cube","pos":[0.0,0.0015,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.01],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.01,0.05],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.015],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0}
+]}

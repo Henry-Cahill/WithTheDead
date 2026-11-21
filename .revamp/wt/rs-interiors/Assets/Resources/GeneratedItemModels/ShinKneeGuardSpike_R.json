@@ -1,0 +1,8 @@
+{"version": 1, "id": "ShinKneeGuardSpike_R", "baseHeight": 0.0725, "name": "Shin Knee Guard Spike R", "model": "gpt-oss:120b", "notes": "Shin knee guard (right‑side spike) ~0.35 m long × 0.12 m wide × 0.02 m thick, gray‑brown metal tint. Lying flat on its back with the spike pointing forward (+Z).", "score": 7, "parts": [
+  {"name":"GuardBody","shape":"cube","pos":[0.0,-0.0025,-0.026],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeStem","shape":"cylinder","pos":[0.08,-0.0025,0.054],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[0.08,-0.0025,0.08],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.12,0.005,-0.026],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.12,0.005,-0.026],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeSeam","shape":"cube","pos":[0.0,0.0085,-0.026],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.12],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":1.0}
+]}

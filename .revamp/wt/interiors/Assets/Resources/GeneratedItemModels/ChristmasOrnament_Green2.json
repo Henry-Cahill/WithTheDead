@@ -1,0 +1,8 @@
+{"version": 1, "id": "ChristmasOrnament_Green2", "baseHeight": 0.096, "name": "Christmas Ornament Green2", "model": "gpt-oss:120b", "notes": "Round Christmas ornament about 7 cm across, green glass‑like body with a small silver metal cap and hooked wire for hanging; tiny sparkle highlight on the surface.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.02],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"HookWire","shape":"cylinder","pos":[0.0,0.006,0.0075],"rot":[90.0,0.0,0.0],"size":[0.005,0.015,0.005],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"HookEnd","shape":"sphere","pos":[0.0,0.006,0.0105],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Glint","shape":"sphere","pos":[0.025,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[1.0,1.0,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.072,0.002,0.072],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0}
+]}

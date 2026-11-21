@@ -1,0 +1,12 @@
+{"version": 1, "id": "Necklace_DogTag", "baseHeight": 0.0703, "name": "Necklace Dog Tag", "model": "gpt-oss:120b", "notes": "Necklace dog‑tag lying on the floor (~12 cm diameter loop). Made of a thin steel chain (four cylinder segments) with a small rectangular clasp at the top and a flat rectangular tag hanging below. Tag is a 5 × 2.5 cm plate, 3 mm thick, with two tiny rivets and a dark imprint for the ID number.", "score": 7, "parts": [
+  {"name":"ChainSegX1","shape":"cylinder","pos":[-0.03,0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ChainSegX2","shape":"cylinder","pos":[0.03,0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ChainSegZTop","shape":"cylinder","pos":[0.0,0.0002,0.03],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ChainSegZBottom","shape":"cylinder","pos":[0.0,0.0002,-0.03],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.0,0.0052,0.03],"rot":[0.0,0.0,0.0],"size":[0.022,0.005,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TagPlate","shape":"cube","pos":[0.0,-0.0083,-0.04],"rot":[0.0,0.0,0.0],"size":[0.05,0.003,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.015,-0.0083,-0.028],"rot":[0.0,0.0,0.0],"size":[0.004,0.003,0.004],"color":[0.45,0.43,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.015,-0.0083,-0.028],"rot":[0.0,0.0,0.0],"size":[0.004,0.003,0.004],"color":[0.45,0.43,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"TagImprint","shape":"cube","pos":[0.0,-0.0073,-0.039],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.022],"color":[0.42,0.4,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"TagEdge","shape":"cube","pos":[0.0,-0.0083,-0.04],"rot":[0.0,0.0,0.0],"size":[0.052,0.004,0.027],"color":[0.55,0.53,0.48],"smooth":0.55,"metal":1.0}
+]}

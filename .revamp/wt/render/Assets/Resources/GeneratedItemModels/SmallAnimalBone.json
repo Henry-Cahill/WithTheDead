@@ -1,0 +1,8 @@
+{"version": 1, "id": "SmallAnimalBone", "baseHeight": 0.08, "name": "Small Animal Bone", "model": "gpt-oss:120b", "notes": "Small animal bone ~0.15 m long, ~0.025 m thick: central shaft cylinder with two rounded ends, a small ridge near the proximal end and a broken fragment lying nearby. All parts use the bone tint (0.6, 0.58, 0.5) and low gloss.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.011,-0.01,-0.0193],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EndProximal","shape":"sphere","pos":[-0.071,0.0,-0.0193],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EndDistal","shape":"sphere","pos":[0.049,0.0,-0.0193],"rot":[0.0,0.0,0.0],"size":[0.025,0.035,0.025],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"DistalJoint","shape":"cylinder","pos":[0.059,-0.0025,-0.0193],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Ridge","shape":"cube","pos":[-0.056,-0.0025,-0.0193],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Fragment","shape":"cube","pos":[0.069,-0.0175,0.0207],"rot":[0.0,15.0,0.0],"size":[0.03,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

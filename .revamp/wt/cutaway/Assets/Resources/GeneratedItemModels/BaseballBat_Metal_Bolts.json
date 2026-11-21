@@ -1,0 +1,9 @@
+{"version": 1, "id": "BaseballBat_Metal_Bolts", "baseHeight": 0.0975, "name": "Baseball Bat Metal Bolts", "model": "gpt-oss:120b", "notes": "Baseball bat ~0.86 m long, 0.07 m barrel diameter, wooden handle tapering to 0.04 m. Lying on its side (X‑axis) with the barrel at +X; three small metal bolts protrude from the business end for visual detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.28,-0.015,-0.0088],"rot":[0.0,0.0,90.0],"size":[0.04,0.31,0.04],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.15,0.0,-0.0088],"rot":[0.0,0.0,90.0],"size":[0.07,0.55,0.07],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"Bolt1","shape":"cylinder","pos":[0.195,0.01,0.0362],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Bolt2","shape":"cylinder","pos":[0.245,0.01,0.0362],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Bolt3","shape":"cylinder","pos":[0.295,0.01,0.0362],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"GripTape","shape":"cylinder","pos":[-0.28,-0.01,-0.0088],"rot":[0.0,0.0,90.0],"size":[0.045,0.31,0.045],"color":[0.2,0.15,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[0.425,0.0,-0.0088],"rot":[0.0,0.0,90.0],"size":[0.075,0.02,0.075],"color":[0.55,0.55,0.6],"smooth":0.1,"metal":0.0}
+]}

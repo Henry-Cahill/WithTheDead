@@ -1,0 +1,11 @@
+{"version": 1, "id": "Wound_RHand_Bite_Female", "baseHeight": 0.0823, "name": "Wound RHand Bite Female", "model": "gpt-oss:120b", "notes": "Flat gore chunk representing a female right‑hand bite wound – roughly a 14 cm × 12 cm piece of flesh ~2 cm thick with four shallow tooth dents, a torn skin flap and three small blood splatters. All parts lie on the floor (y≈0).", "score": 6, "parts": [
+  {"name":"FleshBlock","shape":"cube","pos":[0.0,-0.0123,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SkinFlap","shape":"cube","pos":[0.045,0.0027,0.0],"rot":[0.0,0.0,15.0],"size":[0.04,0.03,0.06],"color":[0.63,0.61,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"Bite1","shape":"cylinder","pos":[-0.04,-0.0023,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bite2","shape":"cylinder","pos":[-0.02,-0.0033,-0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bite3","shape":"cylinder","pos":[0.03,-0.0013,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bite4","shape":"cylinder","pos":[0.01,-0.0023,-0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blood1","shape":"sphere","pos":[-0.045,0.0027,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.78,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Blood2","shape":"sphere","pos":[0.02,0.0007,-0.045],"rot":[0.0,0.0,0.0],"size":[0.011,0.011,0.011],"color":[0.78,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Blood3","shape":"sphere","pos":[0.035,-0.0003,0.045],"rot":[0.0,0.0,0.0],"size":[0.013,0.013,0.013],"color":[0.78,0.12,0.12],"smooth":0.2,"metal":0.0}
+]}

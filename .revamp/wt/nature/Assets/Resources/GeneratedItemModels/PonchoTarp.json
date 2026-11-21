@@ -1,0 +1,12 @@
+{"version": 1, "id": "PonchoTarp", "baseHeight": 0.165, "name": "Poncho Tarp", "model": "gpt-oss:120b", "notes": "Flat poncho‑tarp ~0.90 m wide × 1.20 m long × 0.02 m thick, with a central neck opening and reinforced hems; four hanging tie straps at the corners.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.02,1.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckRing","shape":"cylinder","pos":[0.0,-0.093,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.024,0.26],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,-0.094,0.59],"rot":[0.0,0.0,0.0],"size":[0.9,0.022,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,-0.094,-0.59],"rot":[0.0,0.0,0.0],"size":[0.9,0.022,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.44,-0.094,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.022,1.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.44,-0.094,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.022,1.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFL","shape":"cylinder","pos":[-0.43,0.005,0.58],"rot":[0.0,0.0,0.0],"size":[0.02,0.2,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFR","shape":"cylinder","pos":[0.43,0.005,0.58],"rot":[0.0,0.0,0.0],"size":[0.02,0.2,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBL","shape":"cylinder","pos":[-0.43,0.005,-0.58],"rot":[0.0,0.0,0.0],"size":[0.02,0.2,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBR","shape":"cylinder","pos":[0.43,0.005,-0.58],"rot":[0.0,0.0,0.0],"size":[0.02,0.2,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

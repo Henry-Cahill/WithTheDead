@@ -1,0 +1,11 @@
+{"version": 1, "id": "ClayBlockAnvilMoldUnfired", "baseHeight": 0.0838, "name": "Clay Block Anvil Mold Unfired", "model": "gpt-oss:120b", "notes": "Unfired clay anvil‑mold block about 0.09 m long × 0.06 m wide × 0.04 m high, lying on its side. Main rectangular body with a shallow cylindrical cavity on the top surface and small ridges/cracks to hint at the wet‑clay texture.", "score": 7, "parts": [
+  {"name":"MainBlock","shape":"cube","pos":[0.0,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Cavity","shape":"cylinder","pos":[0.0,0.0112,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.09,0.025],"color":[0.51,0.493,0.425],"smooth":0.1,"metal":0.0},
+  {"name":"RidgeFront","shape":"cube","pos":[0.0,0.0187,0.025],"rot":[0.0,0.0,0.0],"size":[0.09,0.005,0.01],"color":[0.63,0.609,0.525],"smooth":0.1,"metal":0.0},
+  {"name":"RidgeBack","shape":"cube","pos":[0.0,0.0187,-0.025],"rot":[0.0,0.0,0.0],"size":[0.09,0.005,0.01],"color":[0.63,0.609,0.525],"smooth":0.1,"metal":0.0},
+  {"name":"RidgeLeft","shape":"cube","pos":[-0.04,0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.06],"color":[0.63,0.609,0.525],"smooth":0.1,"metal":0.0},
+  {"name":"RidgeRight","shape":"cube","pos":[0.04,0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.06],"color":[0.63,0.609,0.525],"smooth":0.1,"metal":0.0},
+  {"name":"Crack1","shape":"cube","pos":[-0.015,0.0172,0.01],"rot":[0.0,0.0,15.0],"size":[0.02,0.002,0.002],"color":[0.36,0.348,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Crack2","shape":"cube","pos":[0.018,0.0172,-0.012],"rot":[0.0,0.0,-10.0],"size":[0.015,0.002,0.002],"color":[0.36,0.348,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"SurfacePatch","shape":"cube","pos":[0.0,0.0177,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.05],"color":[0.72,0.696,0.6],"smooth":0.1,"metal":0.0}
+]}

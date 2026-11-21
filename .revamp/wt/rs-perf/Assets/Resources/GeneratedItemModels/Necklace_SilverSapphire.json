@@ -1,0 +1,12 @@
+{"version": 1, "id": "Necklace_SilverSapphire", "baseHeight": 0.085, "name": "Necklace Silver Sapphire", "model": "gpt-oss:120b", "notes": "Silver chain necklace ~0.35 m across lying flat as a square loop with a sapphire pendant hanging from the bottom; includes four chain‑side cylinders, corner link spheres, a tiny clasp cube and the blue sapphire pendant sphere.", "score": 6, "parts": [
+  {"name":"FrontSide","shape":"cylinder","pos":[0.0,-0.019,0.183],"rot":[0.0,0.0,90.0],"size":[0.012,0.35,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BackSide","shape":"cylinder","pos":[0.0,-0.019,-0.167],"rot":[0.0,0.0,90.0],"size":[0.012,0.35,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RightSide","shape":"cylinder","pos":[0.175,-0.019,0.008],"rot":[90.0,0.0,0.0],"size":[0.012,0.35,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LeftSide","shape":"cylinder","pos":[-0.175,-0.019,0.008],"rot":[90.0,0.0,0.0],"size":[0.012,0.35,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"CornerFL","shape":"sphere","pos":[0.175,-0.019,0.183],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"CornerFR","shape":"sphere","pos":[-0.175,-0.019,0.183],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"CornerBL","shape":"sphere","pos":[0.175,-0.019,-0.167],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"CornerBR","shape":"sphere","pos":[-0.175,-0.019,-0.167],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.0,-0.01,0.183],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.018],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Pendant","shape":"sphere","pos":[0.0,0.0,-0.167],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.05,0.07,0.4],"smooth":0.2,"metal":0.0}
+]}

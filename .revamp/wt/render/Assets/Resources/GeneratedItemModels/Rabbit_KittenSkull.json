@@ -1,0 +1,13 @@
+{"version": 1, "id": "Rabbit_KittenSkull", "baseHeight": 0.095, "name": "Rabbit Kitten Skull", "model": "gpt-oss:120b", "notes": "Rabbit kitten skull about 9 cm long, 7 cm wide, 8 cm tall. Main cranium ellipsoid, lower jaw slab, dark eye‑socket depressions, tiny nasal cavity, a few front teeth and side ear‑hole pits. All parts rest on the floor (y=0) and overlap to form a solid skull silhouette.", "score": 6, "parts": [
+  {"name":"Cranium","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.07,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[0.0,-0.02,-0.035],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EyeSocketL","shape":"sphere","pos":[-0.018,0.01,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.01],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EyeSocketR","shape":"sphere","pos":[0.018,0.01,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.01],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"NasalCavity","shape":"cylinder","pos":[0.0,0.005,0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.25,0.23,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth1","shape":"cube","pos":[-0.015,-0.025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.9,0.88,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"Tooth2","shape":"cube","pos":[-0.005,-0.025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.9,0.88,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"Tooth3","shape":"cube","pos":[0.005,-0.025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.9,0.88,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"Tooth4","shape":"cube","pos":[0.015,-0.025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.9,0.88,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"EarHoleL","shape":"sphere","pos":[-0.04,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.006],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EarHoleR","shape":"sphere","pos":[0.04,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.006],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0}
+]}

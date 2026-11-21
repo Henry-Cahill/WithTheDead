@@ -1,0 +1,12 @@
+{"version": 1, "id": "RaccoonLeather_Grey_Full", "baseHeight": 0.149, "name": "Raccoon Leather Grey Full", "model": "gpt-oss:120b", "notes": "Grey raccoon leather hide, laid flat on the floor (~0.45 m × 0.35 m, 1‑2 cm thick). Main sheet with stitched border, a torn corner piece, a small label tag and three fluffy fur‑detail bumps.", "score": 7, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0039,0.066,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.35],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"BorderLongTop","shape":"cube","pos":[0.0039,0.075,0.17],"rot":[0.0,0.0,0.0],"size":[0.45,0.003,0.01],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BorderLongBottom","shape":"cube","pos":[0.0039,0.075,-0.17],"rot":[0.0,0.0,0.0],"size":[0.45,0.003,0.01],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BorderShortLeft","shape":"cube","pos":[-0.2161,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.35],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BorderShortRight","shape":"cube","pos":[0.2239,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.35],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[-0.0961,0.076,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.4,0.3,0.2],"smooth":0.08,"metal":0.0},
+  {"name":"TornCorner","shape":"cube","pos":[-0.1861,-0.0815,0.0],"rot":[0.0,15.0,0.0],"size":[0.07,0.015,0.07],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"FurPatch1","shape":"sphere","pos":[0.0539,0.081,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch2","shape":"sphere","pos":[-0.0761,0.081,-0.04],"rot":[0.0,0.0,0.0],"size":[0.028,0.014,0.023],"color":[0.66,0.61,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch3","shape":"sphere","pos":[0.1239,0.081,-0.1],"rot":[0.0,0.0,0.0],"size":[0.032,0.016,0.027],"color":[0.64,0.59,0.54],"smooth":0.05,"metal":0.0}
+]}

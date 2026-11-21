@@ -1,0 +1,12 @@
+{"version": 1, "id": "Socks_Heavy", "baseHeight": 0.11, "name": "Socks Heavy", "model": "gpt-oss:120b", "notes": "Heavy socks laid flat, approx 30 cm long × 12 cm wide × 2 cm thick. Main tube with rounded toe/heel caps, top ribbing band, central seam and side seams, heel loop, toe reinforcement patch and a small fabric fold for detail.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.041,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.018,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ToeCap","shape":"cylinder","pos":[0.12,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,0.04,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelCap","shape":"cylinder","pos":[-0.12,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,0.04,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RibbingTop","shape":"cube","pos":[0.0,-0.038,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.006,0.1],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLine","shape":"cube","pos":[0.0,-0.041,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.018,0.005],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.0,-0.041,-0.045],"rot":[0.0,0.0,0.0],"size":[0.2,0.018,0.003],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.0,-0.041,0.045],"rot":[0.0,0.0,0.0],"size":[0.2,0.018,0.003],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"HeelLoop","shape":"cylinder","pos":[-0.12,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.3,0.3,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"ToeReinforcement","shape":"cube","pos":[0.13,-0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FabricFold","shape":"cube","pos":[0.0,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.004,0.02],"color":[0.58,0.53,0.65],"smooth":0.05,"metal":0.0}
+]}

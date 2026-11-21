@@ -1,0 +1,16 @@
+{"version": 1, "id": "TrapBox", "baseHeight": 0.1825, "name": "Trap Box", "model": "gpt-oss:120b", "notes": "Wooden trap crate ~0.40 m × 0.30 m × 0.25 m lying on its side, brown‑tinted planks with a hinged lid, metal straps and corner brackets, internal divider and a label.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0125,0.0075],"rot":[0.0,0.0,0.0],"size":[0.4,0.22,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.1075,0.0075],"rot":[0.0,0.0,0.0],"size":[0.42,0.02,0.32],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HingeRod","shape":"cylinder","pos":[0.0,0.0875,-0.1575],"rot":[0.0,0.0,90.0],"size":[0.016,0.38,0.016],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"Latch","shape":"cube","pos":[0.0,-0.0625,-0.1575],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"TopStrapFront","shape":"cylinder","pos":[0.0,0.1125,-0.1125],"rot":[0.0,0.0,90.0],"size":[0.012,0.38,0.012],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"TopStrapBack","shape":"cylinder","pos":[0.0,0.1125,0.1275],"rot":[0.0,0.0,90.0],"size":[0.012,0.38,0.012],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"SideHandleLeft","shape":"cylinder","pos":[-0.205,-0.0125,0.0075],"rot":[0.0,0.0,0.0],"size":[0.012,0.12,0.012],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"SideHandleRight","shape":"cylinder","pos":[0.205,-0.0125,0.0075],"rot":[0.0,0.0,0.0],"size":[0.012,0.12,0.012],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"Divider","shape":"cube","pos":[0.0,-0.0725,0.0075],"rot":[0.0,0.0,0.0],"size":[0.38,0.01,0.14],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.08,0.1125,-0.0625],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.1],"color":[0.9,0.85,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"BracketFL","shape":"cube","pos":[-0.19,0.1125,-0.1425],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"BracketFR","shape":"cube","pos":[0.19,0.1125,-0.1425],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"BracketBL","shape":"cube","pos":[-0.19,0.1125,0.1575],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"BracketBR","shape":"cube","pos":[0.19,0.1125,0.1575],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0}
+]}

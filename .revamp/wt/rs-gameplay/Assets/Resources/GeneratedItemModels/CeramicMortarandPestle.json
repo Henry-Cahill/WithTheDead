@@ -1,0 +1,8 @@
+{"version": 1, "id": "CeramicMortarandPestle", "baseHeight": 0.1015, "name": "Ceramic Mortarand Pestle", "model": "gpt-oss:120b", "notes": "Ceramic mortar ≈ 0.12 m diameter × 0.07 m tall with a thin rim; ceramic pestle ≈ 0.15 m long × 0.03 m thick, lying on the floor beside the bowl (pestle head pointing toward +X). Tint 0.6, 0.58, 0.5.", "score": 7, "parts": [
+  {"name":"MortarBody","shape":"cylinder","pos":[-0.01,-0.0015,0.0225],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"MortarRim","shape":"cylinder","pos":[-0.01,0.0375,0.0225],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"PestleBody","shape":"cylinder","pos":[-0.01,-0.0215,-0.0675],"rot":[0.0,0.0,90.0],"size":[0.03,0.15,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"PestleHead","shape":"sphere","pos":[0.065,-0.0215,-0.0675],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"PestleGrip","shape":"cylinder","pos":[-0.07,-0.0215,-0.0675],"rot":[0.0,0.0,90.0],"size":[0.025,0.03,0.025],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"MortarShadow","shape":"cube","pos":[-0.01,-0.0355,0.0225],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.13],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

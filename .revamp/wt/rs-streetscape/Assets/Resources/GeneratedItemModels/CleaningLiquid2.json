@@ -1,0 +1,9 @@
+{"version": 1, "id": "CleaningLiquid2", "baseHeight": 0.1095, "name": "Cleaning Liquid2", "model": "gpt-oss:120b", "notes": "CleaningLiquid2 – a 0.25 m tall × 0.09 m diameter plastic bottle, tipped onto its side (long axis along X). Main body in the item’s tint, dark‑gray cap, thin white label strip.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0025,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.25,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[-0.1225,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.095,0.04,0.095],"color":[0.4,0.42,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0025,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.002,0.07],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0025,0.0005,0.01],"rot":[0.0,0.0,90.0],"size":[0.09,0.002,0.07],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[0.0025,-0.0095,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.22,0.08],"color":[0.5,0.55,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"NeckRing","shape":"cylinder","pos":[-0.1125,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.098,0.008,0.098],"color":[0.45,0.44,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"DropShadow","shape":"cube","pos":[0.0025,-0.0455,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.12],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

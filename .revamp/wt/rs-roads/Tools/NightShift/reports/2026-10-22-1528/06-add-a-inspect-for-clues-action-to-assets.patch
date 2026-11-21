@@ -1,0 +1,80 @@
+diff --git a/Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs b/Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
+index 88ad0948..d3cf2518 100644
+--- a/Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
++++ b/Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
+@@ -7,8 +7,29 @@ namespace CloneZ
+     [DisallowMultipleComponent]
+     public class OutdoorHouseNumber : Interactable
+     {
+-        private Vector3 _point, _face, _normal;
+-        private string _number, _remark;
++    private Vector3 _point, _face, _normal;
++    private string _number, _remark;
++    // Tracks whether the clue has been given to the survivor.
++    private bool _clueGiven;
++    // Period‑correct clue strings.
++    private static readonly string[] _clues = new[]
++    {
++        "A faint imprint of a key near the bottom edge.",
++        "A dried‑up mud splatter – maybe the road was washed out here.",
++        "A scorch mark hints at a recent fire nearby.",
++        "A torn piece of paper reads ‘Meet at the barn…’"
++    };
++    public override string SaveKey => Interactable.KeyFor("HouseNumber", transform.position);
++    public override void CaptureState(FixtureSave save)
++    {
++        // Store clue-given flag in the save's State bits (bit 0).
++        save.State = _clueGiven ? 1 : 0;
++    }
++    public override void RestoreState(FixtureSave save)
++    {
++        // Restore clue-given flag from State bits.
++        _clueGiven = (save.State & 1) != 0;
++    }
+ 
+         public override string DisplayName => "House number";
+         public override Vector3 InteractPoint => _point;
+@@ -32,24 +53,29 @@ internal static OutdoorHouseNumber Create(Transform host, string number, Vector3
+ 
+         public override void GetActions(InteractContext ctx, List<InteractAction> into)
+         {
+-            into.Add(new InteractAction("Read the house number", c =>
+-                c.Notify(_remark ?? "Number " + _number + ", says the little enamel plate by the door. Home \u2014 for now.")));
+-            into.Add(new InteractAction("Knock on the door", Knock));
+-            into.Add(new InteractAction("Yell at the house number", Yell));
++        into.Add(new InteractAction("Read the house number", c =>
++            c.Notify(_remark ?? "Number " + _number + ", says the little enamel plate by the door. Home \u2014 for now.")));
++        into.Add(new InteractAction("Knock on the door", Knock));
++        into.Add(new InteractAction("Yell at the house number", Yell));
++        if (!_clueGiven)
++            into.Add(new InteractAction("Inspect for clues", Inspect));
+         }
+ 
+-        private void Yell(InteractContext ctx)
++        private void Inspect(InteractContext ctx)
+         {
+-            // Louder thump, like shouting against a metal plate
+-            MakeNoise(CloneZConfig.FixtureNoiseDoor);
+-            ctx.Notify("Your voice bounces off the enamel plate, echoing loudly.");
+-        }
+-
+-        private void Knock(InteractContext ctx)
+-        {
+-            // Small thud sound, like knocking on a metal plate
++            // Tiny scrape sound, like fingernails on metal
+             MakeNoise(CloneZConfig.FixtureNoiseSmall);
+-            ctx.Notify("You knock on the house‑number plate.");
++            var rnd = new System.Random();
++            var clue = _clues[rnd.Next(_clues.Length)];
++            ctx.Notify(clue);
++            _clueGiven = true;
+         }
++
++    private void Knock(InteractContext ctx)
++    {
++        // Small thud sound, like knocking on a metal plate
++        MakeNoise(CloneZConfig.FixtureNoiseSmall);
++        ctx.Notify("You knock on the house‑number plate.");
++    }
+     }
+ }

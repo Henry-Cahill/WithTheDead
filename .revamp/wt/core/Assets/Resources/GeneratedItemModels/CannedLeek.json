@@ -1,0 +1,10 @@
+{"version": 1, "id": "CannedLeek", "baseHeight": 0.1303, "name": "Canned Leek", "model": "gpt-oss:120b", "notes": "Upright canned leek ≈ 0.11 m diameter × 0.13 m tall: brushed‑metal body, recessed lid, beige label with dark trim, and a green ellipsoid of leeks visible through the label opening.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.13,0.11],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.85},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0607,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.012,0.122],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.85},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0643,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.012,0.122],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.85},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0663,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.1],"color":[0.7,0.71,0.74],"smooth":0.45,"metal":0.85},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.11,0.108],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0483,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.008,0.11],"color":[0.48,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0518,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.008,0.11],"color":[0.48,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LeekContent","shape":"sphere","pos":[0.0,0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.05,0.04],"color":[0.25,0.45,0.2],"smooth":0.08,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Teacup", "baseHeight": 0.0925, "name": "Teacup", "model": "gpt-oss:120b", "notes": "Beige ceramic teacup about 0.09 m across and 0.07 m tall, with a simple side‑handle; includes outer body, thin rim, inner cavity, foot plate and a small chip on the floor.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0088,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.06,0.09],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"OuterRim","shape":"cylinder","pos":[-0.0088,0.0235,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.008,0.095],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.0088,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.055,0.08],"color":[0.65,0.63,0.55],"smooth":0.45,"metal":0.0},
+  {"name":"InnerRim","shape":"cylinder","pos":[-0.0088,0.0215,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.004,0.082],"color":[0.65,0.63,0.55],"smooth":0.5,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0462,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"HandleEndFront","shape":"sphere","pos":[0.0462,0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"HandleEndBack","shape":"sphere","pos":[0.0462,0.0025,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FootPlate","shape":"cube","pos":[-0.0088,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.06],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Chip","shape":"cube","pos":[-0.0387,-0.0275,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0}
+]}

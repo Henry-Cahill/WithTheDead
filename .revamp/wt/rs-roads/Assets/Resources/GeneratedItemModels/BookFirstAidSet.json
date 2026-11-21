@@ -1,0 +1,16 @@
+{"version": 1, "id": "BookFirstAidSet", "baseHeight": 0.1275, "name": "Book First Aid Set", "model": "gpt-oss:120b", "notes": "First‑aid kit shaped like a paperback book (≈0.25 m long × 0.20 m wide × 0.03 m thick) lying flat on the floor. Includes cover, pages, elastic strap across the spine, front label, bandage roll tucked onto the back side and a small bottle of antiseptic beside it.", "score": 7, "parts": [
+  {"name":"Cover","shape":"cube","pos":[-0.0225,-0.0525,-0.0017],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pages","shape":"cube","pos":[-0.0225,-0.0525,-0.0017],"rot":[0.0,0.0,0.0],"size":[0.236,0.025,0.186],"color":[0.95,0.95,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"SpineEdge","shape":"cube","pos":[-0.1475,-0.0525,-0.0017],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,0.2],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"ElasticStrap","shape":"cube","pos":[-0.1425,-0.0525,-0.0017],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.2],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[-0.0225,-0.0355,0.0683],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.05],"color":[0.8,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFL","shape":"cube","pos":[-0.1375,-0.0525,0.0882],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFR","shape":"cube","pos":[0.0925,-0.0525,0.0882],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBL","shape":"cube","pos":[-0.1375,-0.0525,-0.0917],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBR","shape":"cube","pos":[0.0925,-0.0525,-0.0917],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BandageRollBody","shape":"cylinder","pos":[0.0575,-0.0325,0.0882],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.8,0.7,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"BandageRollBand","shape":"cylinder","pos":[0.0575,-0.0275,0.0882],"rot":[0.0,0.0,90.0],"size":[0.032,0.005,0.032],"color":[0.7,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BottleBody","shape":"cylinder","pos":[0.1275,-0.0075,-0.0817],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.2,0.6,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BottleCap","shape":"cylinder","pos":[0.1275,0.06,-0.0817],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.1,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"BottleLabel","shape":"cylinder","pos":[0.1275,-0.0075,-0.0817],"rot":[0.0,0.0,0.0],"size":[0.042,0.005,0.042],"color":[0.8,0.8,0.8],"smooth":0.1,"metal":0.0}
+]}

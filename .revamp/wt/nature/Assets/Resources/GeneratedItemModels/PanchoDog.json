@@ -1,0 +1,16 @@
+{"version": 1, "id": "PanchoDog", "baseHeight": 0.14, "name": "Pancho Dog", "model": "gpt-oss:120b", "notes": "Plush Pancho Dog ~0.40 m long, 0.12 m tall when lying on its side: cylindrical body, ellipsoid head with eyes, nose and ears, four short legs, a thin tail, plus simple stitching lines.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.05,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.28,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.17,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.16,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.21,0.01,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.21,0.01,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.23,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[0.13,0.03,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[0.13,0.03,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegFL","shape":"cylinder","pos":[0.03,-0.04,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegFR","shape":"cylinder","pos":[0.03,-0.04,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegRL","shape":"cylinder","pos":[-0.13,-0.04,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegRR","shape":"cylinder","pos":[-0.13,-0.04,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.19,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[-0.05,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.01],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[-0.05,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.01],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0}
+]}

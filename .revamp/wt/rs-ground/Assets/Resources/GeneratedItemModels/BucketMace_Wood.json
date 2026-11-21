@@ -1,0 +1,11 @@
+{"version": 1, "id": "BucketMace_Wood", "baseHeight": 0.15, "name": "Bucket Mace Wood", "model": "gpt-oss:120b", "notes": "Wooden shaft ~1.30 m long, 4 cm thick, ending in a metal bucket‑head about 12 cm deep and 16 cm across with four short spikes showing the business end. A leather‑style grip near the far end and a metal band at the junction give extra detail.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0925,-0.06,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.3,0.04],"color":[0.55,0.4,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.6425,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.3,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"JunctionBand","shape":"cylinder","pos":[0.5575,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"HeadBody","shape":"cylinder","pos":[0.6475,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.16,0.12,0.16],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HeadRim","shape":"cylinder","pos":[0.6475,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.02,0.18],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeFront","shape":"cylinder","pos":[0.7075,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeBack","shape":"cylinder","pos":[0.5875,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeSideL","shape":"cylinder","pos":[0.6475,0.0,0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeSideR","shape":"cylinder","pos":[0.6475,0.0,-0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0}
+]}

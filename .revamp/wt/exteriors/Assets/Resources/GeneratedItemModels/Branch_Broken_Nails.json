@@ -1,0 +1,13 @@
+{"version": 1, "id": "Branch_Broken_Nails", "baseHeight": 0.1172, "name": "Branch Broken Nails", "model": "gpt-oss:120b", "notes": "Broken wooden branch weapon ~1.2 m long, 8 cm thick, jagged end on +X side, several protruding nails for extra damage.", "score": 6, "parts": [
+  {"name":"BarkOverlay","shape":"cylinder","pos":[-0.0777,-0.0072,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,1.22,0.1],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"MainBranch","shape":"cylinder","pos":[-0.0777,-0.0122,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,1.2,0.08],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"BrokenTip","shape":"cube","pos":[0.5823,0.0178,0.0],"rot":[15.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.55,0.55,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"SplinterA","shape":"cube","pos":[0.6423,-0.0122,0.03],"rot":[-20.0,30.0,0.0],"size":[0.07,0.04,0.05],"color":[0.55,0.55,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"NailUp1","shape":"cylinder","pos":[-0.5277,0.0078,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.8,0.78,0.76],"smooth":0.5,"metal":1.0},
+  {"name":"NailUp2","shape":"cylinder","pos":[-0.2277,0.0078,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.8,0.78,0.76],"smooth":0.5,"metal":1.0},
+  {"name":"NailUp3","shape":"cylinder","pos":[0.1723,0.0078,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.8,0.78,0.76],"smooth":0.5,"metal":1.0},
+  {"name":"NailOutPos1","shape":"cylinder","pos":[-0.4277,-0.0122,0.06],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.8,0.78,0.76],"smooth":0.5,"metal":1.0},
+  {"name":"NailOutNeg1","shape":"cylinder","pos":[-0.0277,-0.0122,-0.06],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.8,0.78,0.76],"smooth":0.5,"metal":1.0},
+  {"name":"NailOutPos2","shape":"cylinder","pos":[0.3223,-0.0122,0.06],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.8,0.78,0.76],"smooth":0.5,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[-0.2777,-0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.5,0.35,0.25],"smooth":0.2,"metal":0.0}
+]}

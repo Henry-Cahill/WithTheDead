@@ -1,0 +1,11 @@
+{"version": 1, "id": "FireplacePoker", "baseHeight": 0.09, "name": "Fireplace Poker", "model": "gpt-oss:120b", "notes": "Fireplace poker ~1.2 m long lying on its side (X axis). Thin steel shaft with a rubber‑grip handle at the far end and a hooked business end pointing forward (+Z). Small rivet spheres along the shaft.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.01,-0.015,-0.075],"rot":[0.0,0.0,90.0],"size":[0.03,1.0,0.03],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HandleGrip","shape":"cylinder","pos":[-0.52,0.0,-0.075],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"HookStem","shape":"cylinder","pos":[0.56,-0.01,-0.015],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HookTip","shape":"cylinder","pos":[0.56,-0.01,0.065],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.39,-0.015,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.19,-0.015,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.01,-0.015,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.21,-0.015,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet5","shape":"sphere","pos":[0.41,-0.015,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0}
+]}

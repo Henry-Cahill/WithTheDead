@@ -1,0 +1,10 @@
+{"version": 1, "id": "ClaySheetMold", "baseHeight": 0.0933, "name": "Clay Sheet Mold", "model": "gpt-oss:120b", "notes": "Flat clay sheet mold about 35 cm × 25 cm × 2 cm thick, lying on its side. Main slab with a low raised rim around the edges, a shallow central dome for visual interest and two thin crack marks to suggest wear.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.0117,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0,-0.0092,-0.13],"rot":[0.0,0.0,0.0],"size":[0.36,0.025,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0,-0.0092,0.13],"rot":[0.0,0.0,0.0],"size":[0.36,0.025,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.18,-0.0092,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.26],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.18,-0.0092,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.26],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CenterDome","shape":"sphere","pos":[0.0,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.65,0.63,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Crack1","shape":"cube","pos":[-0.06,-0.0007,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.004],"color":[0.3,0.28,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Crack2","shape":"cube","pos":[0.07,-0.0007,0.03],"rot":[0.0,0.0,45.0],"size":[0.09,0.002,0.004],"color":[0.3,0.28,0.2],"smooth":0.05,"metal":0.0}
+]}

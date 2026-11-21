@@ -1,0 +1,13 @@
+{"version": 1, "id": "HankPic", "baseHeight": 0.15, "name": "Hank Pic", "model": "gpt-oss:120b", "notes": "Hank of coarse fabric (brown‑gray) lying on its side, about 0.25 m long and 0.15 m thick; core yarn roll with two outer fabric layers and a loose coil end.", "score": 7, "parts": [
+  {"name":"CoreRoll","shape":"cylinder","pos":[0.0375,-0.01,-0.03],"rot":[0.0,0.0,90.0],"size":[0.12,0.25,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"OuterLayer1","shape":"cylinder","pos":[0.0375,-0.005,-0.03],"rot":[0.0,0.0,90.0],"size":[0.16,0.27,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"OuterLayer2","shape":"cylinder","pos":[0.0375,0.0,-0.03],"rot":[0.0,0.0,90.0],"size":[0.18,0.29,0.18],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LooseCoil","shape":"sphere","pos":[-0.1125,-0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CoilWrap","shape":"cylinder","pos":[-0.1125,-0.015,0.06],"rot":[0.0,90.0,0.0],"size":[0.06,0.14,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.1675,0.005,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.02],"color":[0.4,0.38,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"TagHole","shape":"cylinder","pos":[0.1675,0.007,0.04],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.2,0.19,0.16],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.0375,0.045,-0.03],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.02],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"BottomRidge","shape":"cube","pos":[0.0375,-0.045,-0.03],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.02],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimL","shape":"cube","pos":[-0.0875,-0.01,0.06],"rot":[0.0,0.0,0.0],"size":[0.004,0.15,0.02],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimR","shape":"cube","pos":[-0.0875,-0.01,-0.12],"rot":[0.0,0.0,0.0],"size":[0.004,0.15,0.02],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0}
+]}

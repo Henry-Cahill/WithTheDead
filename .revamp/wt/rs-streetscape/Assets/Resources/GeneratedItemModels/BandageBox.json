@@ -1,0 +1,12 @@
+{"version": 1, "id": "BandageBox", "baseHeight": 0.083, "name": "Bandage Box", "model": "gpt-oss:120b", "notes": "Small rectangular bandage box ~13 cm × 9 cm × 4 cm (X × Z × Y) lying upright on the floor. Main cardboard shell tinted beige, thin white label on front, slightly raised lid and a couple of seam strips for detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.003,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.13,0.04,0.09],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.13,0.006,0.09],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,0.0095,0.0447],"rot":[0.0,0.0,0.0],"size":[0.09,0.025,0.002],"color":[0.9,0.92,0.94],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.022,0.0447],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.002],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.0025,0.0447],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.002],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamLeft","shape":"cube","pos":[-0.0645,-0.003,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.09],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cube","pos":[0.0645,-0.003,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.09],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0,0.0195,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.09],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BottomEdge","shape":"cube","pos":[0.0,-0.0055,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.09],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"InnerPadding","shape":"cube","pos":[0.0,-0.008,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.08],"color":[0.7,0.68,0.6],"smooth":0.08,"metal":0.0}
+]}

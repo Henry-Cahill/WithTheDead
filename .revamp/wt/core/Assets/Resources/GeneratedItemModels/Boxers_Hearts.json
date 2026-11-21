@@ -1,0 +1,11 @@
+{"version": 1, "id": "Boxers_Hearts", "baseHeight": 0.0725, "name": "Boxers Hearts", "model": "gpt-oss:120b", "notes": "Flat boxer briefs ~0.38 m wide × 0.22 m long × 0.025 m thick, laid out as a central front panel with left/right leg flaps, a waistband strip, a small front fly and a few red heart accents.", "score": 6, "parts": [
+  {"name":"CenterPanel","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.14,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.14,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0015,-0.1],"rot":[0.0,0.0,0.0],"size":[0.38,0.008,0.02],"color":[0.45,0.42,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Fly","shape":"cube","pos":[0.0,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.03],"color":[0.48,0.45,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"Heart1","shape":"sphere","pos":[-0.07,0.0075,-0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Heart2","shape":"sphere","pos":[0.07,0.0075,-0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Heart3","shape":"sphere","pos":[-0.05,0.0075,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Heart4","shape":"sphere","pos":[0.05,0.0075,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.1,0.1],"smooth":0.2,"metal":0.0}
+]}

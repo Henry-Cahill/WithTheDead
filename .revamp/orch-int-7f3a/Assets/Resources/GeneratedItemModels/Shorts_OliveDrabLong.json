@@ -1,0 +1,8 @@
+{"version": 1, "id": "Shorts_OliveDrabLong", "baseHeight": 0.0837, "name": "Shorts Olive Drab Long", "model": "gpt-oss:120b", "notes": "Flat long shorts laid out as a product photo: overall footprint ~0.45 m length × 0.60 m width (including gap) × 0.03 m thickness. Consist of a waistband strip, two leg panels, a thin central seam, and front & back pockets.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.62,0.02,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.16,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.16,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamCenter","shape":"cube","pos":[0.0,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.45],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFront","shape":"cube","pos":[-0.16,0.0163,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketBack","shape":"cube","pos":[0.16,0.0163,-0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0}
+]}

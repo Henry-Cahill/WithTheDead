@@ -1,0 +1,15 @@
+{"version": 1, "id": "Shirt_Lumberjack_TINT", "baseHeight": 0.1243, "name": "Shirt Lumberjack TINT", "model": "gpt-oss:120b", "notes": "Flat lumberjack shirt (~0.56 m long × 0.44 m wide, 3 cm thick) laid out like a product photo. Includes torso panel, angled long‑sleeves whose ends meet the cuffs, collar band, cuffs, chest pocket, button line and a dark check overlay for the flannel pattern.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.03,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.15,0.0,0.3],"rot":[0.0,0.0,25.0],"size":[0.24,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.15,0.0,-0.3],"rot":[0.0,0.0,-25.0],"size":[0.24,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.23,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.44],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.3,0.03,0.45],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.3,0.03,-0.45],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.2,0.013,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.02],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.25,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.15,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Button3","shape":"cylinder","pos":[-0.05,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.05,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.15,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"CheckOverlay","shape":"cube","pos":[-0.15,0.017,-0.1],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.2],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

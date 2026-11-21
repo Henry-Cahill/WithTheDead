@@ -1,0 +1,8 @@
+{"version": 1, "id": "RopeBelt", "baseHeight": 0.106, "name": "Rope Belt", "model": "gpt-oss:120b", "notes": "Rope belt ~1 m long, 8 cm wide, 1 cm thick, laid flat on the floor with a small knot at one end to show it’s a tied rope.", "score": 6, "parts": [
+  {"name":"BeltFlat","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.01,0.08],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[-0.48,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrayLeft","shape":"cylinder","pos":[-0.495,0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.02,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrayRight","shape":"cylinder","pos":[0.495,0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.02,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRimTop","shape":"cylinder","pos":[0.0,0.006,0.0],"rot":[90.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRimBottom","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[90.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

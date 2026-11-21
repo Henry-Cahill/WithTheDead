@@ -1,0 +1,12 @@
+{"version": 1, "id": "Apron_Leather", "baseHeight": 0.12, "name": "Apron Leather", "model": "gpt-oss:120b", "notes": "Leather apron ~0.55 m wide × 0.75 m long × 0.025 m thick, laid flat on the floor. Main panel with raised edge strips, two leather loop‑ties at the top corners and hanging straps.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0075,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.75],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.01,0.3862],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.025],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.01,-0.3888],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.025],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.2875,0.01,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.025,0.005,0.75],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.2875,0.01,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.025,0.005,0.75],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCenter","shape":"cube","pos":[0.0,0.013,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.55,0.002,0.01],"color":[0.3,0.28,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"LoopL","shape":"cylinder","pos":[-0.2,0.02,0.3862],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LoopR","shape":"cylinder","pos":[0.2,0.02,0.3862],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieL","shape":"cylinder","pos":[-0.2,-0.0,0.3862],"rot":[0.0,0.0,0.0],"size":[0.025,0.12,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieR","shape":"cylinder","pos":[0.2,-0.0,0.3862],"rot":[0.0,0.0,0.0],"size":[0.025,0.12,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

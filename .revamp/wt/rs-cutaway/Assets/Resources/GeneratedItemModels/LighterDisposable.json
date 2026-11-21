@@ -1,0 +1,8 @@
+{"version": 1, "id": "LighterDisposable", "baseHeight": 0.0658, "name": "Lighter Disposable", "model": "gpt-oss:120b", "notes": "Disposable lighter ~0.07 m long × 0.025 m wide × 0.01 m thick. Main plastic body with a metal ignition wheel near the front, a tiny fuel‑release button on top, a short nozzle tube at the rear side and a thin printed label on the top surface.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0007,-0.001],"rot":[0.0,0.0,0.0],"size":[0.07,0.01,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Wheel","shape":"cylinder","pos":[0.02,0.0003,-0.001],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.015],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Button","shape":"cylinder","pos":[0.015,0.0007,-0.001],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Nozzle","shape":"cylinder","pos":[-0.03,-0.0007,0.0115],"rot":[0.0,0.0,90.0],"size":[0.004,0.008,0.004],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.01,0.0048,-0.001],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.025],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,-0.0003,-0.001],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.025],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":0.0}
+]}

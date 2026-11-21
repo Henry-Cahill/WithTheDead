@@ -1,0 +1,11 @@
+{"version": 1, "id": "TableLeg_Chain", "baseHeight": 0.095, "name": "Table Leg Chain", "model": "gpt-oss:120b", "notes": "Table‑leg chain weapon ~0.9 m long on its side (X axis). Thick wooden‑tinted table‑leg handle at the rear, a short series of interlocking metal links, and a heavy looped end for striking.", "score": 6, "parts": [
+  {"name":"HandleLeg","shape":"cylinder","pos":[-0.345,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.18,0.07],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Link0","shape":"cylinder","pos":[-0.225,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Link1","shape":"cylinder","pos":[-0.145,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.08,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.065,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[0.015,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.08,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Link4","shape":"cylinder","pos":[0.095,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Link5","shape":"cylinder","pos":[0.175,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.08,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Link6","shape":"cylinder","pos":[0.255,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"WeightLoop","shape":"cylinder","pos":[0.375,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shoes_HideBoots", "baseHeight": 0.1475, "name": "Shoes Hide Boots", "model": "gpt-oss:120b", "notes": "Flat pair of hide boots laid side‑by‑side, each ~0.30 m long, 0.12 m wide, sole 2.5 cm thick and upper 15 cm high; includes soles, uppers, rear heel blocks, front toe caps and two front laces. Right‑hand boot parts have been shifted to touch the left boot (inner edges meet at X = 0).", "score": 7, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.06,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.3],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[-0.06,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelL","shape":"cube","pos":[-0.06,-0.0225,-0.115],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.07],"color":[0.18,0.13,0.09],"smooth":0.05,"metal":0.0},
+  {"name":"ToeL","shape":"cube","pos":[-0.06,-0.075,0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.04],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LaceL1","shape":"cylinder","pos":[-0.06,0.0725,0.1],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.05,0.04,0.03],"smooth":0.05,"metal":0.0},
+  {"name":"LaceL2","shape":"cylinder","pos":[-0.06,0.0525,0.1],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.05,0.04,0.03],"smooth":0.05,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.06,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.3],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[0.06,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelR","shape":"cube","pos":[0.06,-0.0225,-0.115],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.07],"color":[0.18,0.13,0.09],"smooth":0.05,"metal":0.0},
+  {"name":"ToeR","shape":"cube","pos":[0.06,-0.075,0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.04],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LaceR1","shape":"cylinder","pos":[0.06,0.0725,0.1],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.05,0.04,0.03],"smooth":0.05,"metal":0.0},
+  {"name":"LaceR2","shape":"cylinder","pos":[0.06,0.0525,0.1],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.05,0.04,0.03],"smooth":0.05,"metal":0.0}
+]}

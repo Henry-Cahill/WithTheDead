@@ -1,0 +1,12 @@
+{"version": 1, "id": "RosemarySeed", "baseHeight": 0.068, "name": "Rosemary Seed", "model": "gpt-oss:120b", "notes": "Rosemary seed packet about 6 cm × 4 cm × 0.8 cm lying flat on the floor, with a paper envelope (light‑tan) and a green label; six individual seeds shown as tiny ellipsoids inside.", "score": 6, "parts": [
+  {"name":"EnvelopeBody","shape":"cube","pos":[0.0,-0.004,0.007],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.04],"color":[0.75,0.73,0.65],"smooth":0.1,"metal":0.0},
+  {"name":"Flap","shape":"cube","pos":[0.0,0.004,-0.018],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.01],"color":[0.75,0.73,0.65],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0005,-0.012],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0006,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.005],"color":[0.35,0.33,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.015,-0.002,0.002],"rot":[0.0,0.0,0.0],"size":[0.004,0.0025,0.002],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.01,-0.0015,0.015],"rot":[0.0,0.0,0.0],"size":[0.0038,0.0023,0.002],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.008,-0.0025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.0041,0.0024,0.002],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.018,-0.0018,-0.003],"rot":[0.0,0.0,0.0],"size":[0.0039,0.0025,0.002],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.02,-0.0022,0.018],"rot":[0.0,0.0,0.0],"size":[0.004,0.0022,0.002],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.005,-0.0017,0.007],"rot":[0.0,0.0,0.0],"size":[0.0037,0.0024,0.002],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0}
+]}

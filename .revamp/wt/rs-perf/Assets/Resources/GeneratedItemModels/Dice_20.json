@@ -1,0 +1,8 @@
+{"version": 1, "id": "Dice_20", "baseHeight": 0.0742, "name": "Dice 20", "model": "gpt-oss:120b", "notes": "Polyhedral d20 die ~2 cm across, lying on a flat surface (y=0). Main body is a slightly squashed sphere of plastic tint (0.6,0.58,0.5). A raised black “20” label is shown as two small cylinders on the upward‑facing face; a thin dark rim around the equator hints at the beveled edges of an icosahedron.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.0053,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.15,0.14,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTop","shape":"cylinder","pos":[0.0,0.0058,0.005],"rot":[90.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBottom","shape":"cylinder","pos":[0.0,0.0058,-0.005],"rot":[90.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"Number20","shape":"cube","pos":[0.0,0.0068,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"ShadowBase","shape":"cylinder","pos":[0.0,-0.0132,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

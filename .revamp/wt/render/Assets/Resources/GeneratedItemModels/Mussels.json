@@ -1,0 +1,14 @@
+{"version": 1, "id": "Mussels", "baseHeight": 0.1245, "name": "Mussels", "model": "gpt-oss:120b", "notes": "Canned mussels 0.08 m diameter × 0.12 m tall: metal body with rolled seams, recessed lid, printed label and a few visible mussel shells inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0565,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.006,0.082],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0615,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.006,0.082],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0605,0.0],"rot":[0.0,0.0,0.0],"size":[0.076,0.008,0.076],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.9},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.002,0.074],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.076,0.002,0.076],"color":[0.48,0.39,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.076,0.002,0.076],"color":[0.48,0.39,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"Mussel1","shape":"sphere","pos":[-0.015,0.0075,0.02],"rot":[0.0,0.0,0.0],"size":[0.022,0.018,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Mussel2","shape":"sphere","pos":[0.01,0.0025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.016,0.023],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Mussel3","shape":"sphere","pos":[-0.005,-0.0025,0.01],"rot":[0.0,0.0,0.0],"size":[0.019,0.015,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Mussel4","shape":"sphere","pos":[0.018,0.0095,-0.008],"rot":[0.0,0.0,0.0],"size":[0.021,0.017,0.024],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Mussel5","shape":"sphere","pos":[-0.012,-0.0045,-0.02],"rot":[0.0,0.0,0.0],"size":[0.018,0.014,0.021],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

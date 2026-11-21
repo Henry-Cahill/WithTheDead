@@ -1,0 +1,14 @@
+{"version": 1, "id": "BenchAnvilUntreated", "baseHeight": 0.28, "name": "Bench Anvil Untreated", "model": "gpt-oss:120b", "notes": "Bench Anvil Untreated – a 1.2 m long × 0.5 m wide × 0.3 m thick untreated‑wood bench with a steel anvil top, lying on its side (long axis along +X). Includes wooden body, metal plate & head, horn, four mounting bolts, edge strips and two broken leg stubs.", "score": 6, "parts": [
+  {"name":"BaseWood","shape":"cube","pos":[-0.005,-0.07,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.3,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PlateMetal","shape":"cube","pos":[0.47,0.12,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.08,0.4],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"AnvilHead","shape":"cube","pos":[0.345,0.16,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.2],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Horn","shape":"cylinder","pos":[0.285,0.16,0.0],"rot":[0.0,90.0,0.0],"size":[0.08,0.12,0.08],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"BoltFL","shape":"sphere","pos":[0.345,0.16,0.19],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.3,0.35],"smooth":0.65,"metal":1.0},
+  {"name":"BoltFR","shape":"sphere","pos":[0.345,0.16,-0.19],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.3,0.35],"smooth":0.65,"metal":1.0},
+  {"name":"BoltBL","shape":"sphere","pos":[0.595,0.08,0.19],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.3,0.35],"smooth":0.65,"metal":1.0},
+  {"name":"BoltBR","shape":"sphere","pos":[0.595,0.08,-0.19],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.3,0.35],"smooth":0.65,"metal":1.0},
+  {"name":"EdgeFront","shape":"cylinder","pos":[-0.005,0.09,-0.25],"rot":[0.0,0.0,90.0],"size":[0.02,1.2,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cylinder","pos":[-0.005,0.09,0.25],"rot":[0.0,0.0,90.0],"size":[0.02,1.2,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegStubL","shape":"cylinder","pos":[-0.555,-0.17,-0.2],"rot":[0.0,0.0,0.0],"size":[0.04,0.1,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegStubR","shape":"cylinder","pos":[-0.555,-0.17,0.2],"rot":[0.0,0.0,0.0],"size":[0.04,0.1,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

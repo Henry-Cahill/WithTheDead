@@ -1,0 +1,12 @@
+{"version": 1, "id": "NormalSuspension3", "baseHeight": 0.0765, "name": "Normal Suspension3", "model": "gpt-oss:120b", "notes": "Flat webbing strap 0.80 m long × 0.10 m wide × 0.015 m thick (cloth‑like) with metal rings at each end and a printed label; thin stitch lines run along the top/bottom edges and vertical seams on the ends.", "score": 6, "parts": [
+  {"name":"Strap","shape":"cube","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.015,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RingL","shape":"cylinder","pos":[-0.38,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"RingR","shape":"cylinder","pos":[0.38,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"LoopL","shape":"sphere","pos":[-0.38,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"LoopR","shape":"sphere","pos":[0.38,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.12,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.09],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.002,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.002,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.4,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.4,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "HandAxe", "baseHeight": 0.09, "name": "Hand Axe", "model": "gpt-oss:120b", "notes": "Hand axe ~0.8 m long wooden handle (diameter 0.04 m) lying on its side, metal head and thin steel blade extending forward (+Z). Includes leather grip, rivet, rounded back cap and a tiny tip sphere for the cutting edge.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.031,-0.01,-0.1058],"rot":[0.0,0.0,90.0],"size":[0.04,0.8,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.231,-0.0075,-0.1058],"rot":[0.0,0.0,90.0],"size":[0.045,0.6,0.045],"color":[0.22,0.15,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.429,0.0,-0.1058],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.04],"color":[0.42,0.44,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBase","shape":"cube","pos":[0.499,0.0,-0.0058],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.2],"color":[0.38,0.4,0.44],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"cube","pos":[0.514,0.0,0.0943],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.06],"color":[0.38,0.4,0.44],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.369,0.0,-0.1058],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.75,0.75,0.78],"smooth":0.65,"metal":1.0},
+  {"name":"BackCap","shape":"sphere","pos":[0.349,0.0,-0.1058],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.42,0.44,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeSharp","shape":"cube","pos":[0.499,0.015,-0.0058],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.2],"color":[0.38,0.4,0.44],"smooth":0.65,"metal":1.0},
+  {"name":"Strap","shape":"cube","pos":[-0.331,-0.005,-0.1058],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.03],"color":[0.22,0.15,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"TipPoint","shape":"sphere","pos":[0.527,0.0,0.1242],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.38,0.4,0.44],"smooth":0.65,"metal":1.0}
+]}

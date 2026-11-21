@@ -1,0 +1,12 @@
+{"version": 1, "id": "Greave_Right", "baseHeight": 0.11, "name": "Greave Right", "model": "gpt-oss:120b", "notes": "Right greave about 0.30 m long × 0.10 m wide × 0.02 m thick, lying on its side (long axis along X). Metal shell with rounded front rim, thin leather padding inside and two crossing straps with buckles.", "score": 6, "parts": [
+  {"name":"ShellBody","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.018,0.1],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"FrontRim","shape":"cylinder","pos":[0.0,0.0,0.055],"rot":[0.0,0.0,90.0],"size":[0.1,0.3,0.1],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BackRim","shape":"cylinder","pos":[0.0,0.0,-0.055],"rot":[0.0,0.0,90.0],"size":[0.08,0.3,0.08],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"InnerPadding","shape":"cube","pos":[0.0,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.012,0.08],"color":[0.35,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.07,-0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.3,0.015],"color":[0.35,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.07,-0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.3,0.015],"color":[0.35,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.07,-0.003,0.058],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.01],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.07,-0.003,0.058],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.01],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.3,0.018],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.027,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.3,0.018],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0}
+]}

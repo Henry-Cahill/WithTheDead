@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_LoopSmall_Gold_Top", "baseHeight": 0.0635, "name": "Earring Loop Small Gold Top", "model": "gpt-oss:120b", "notes": "Small gold earring loop (≈2 cm diameter) lying flat on the floor: a thin polished gold disc with a raised rim edge and a tiny hook‑style clasp on one side.", "score": 7, "parts": [
+  {"name":"MainDisc","shape":"cylinder","pos":[-0.0015,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.006,0.018],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[-0.0015,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"Clasp","shape":"cylinder","pos":[0.0095,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.005,0.006,0.005],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ClaspTip","shape":"sphere","pos":[0.0125,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":1.0},
+  {"name":"ShadowBase","shape":"cylinder","pos":[-0.0015,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.024,0.002,0.024],"color":[0.2,0.19,0.17],"smooth":0.1,"metal":0.0},
+  {"name":"Highlight","shape":"sphere","pos":[-0.0055,0.0025,0.002],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[1.0,0.9,0.7],"smooth":0.8,"metal":1.0}
+]}

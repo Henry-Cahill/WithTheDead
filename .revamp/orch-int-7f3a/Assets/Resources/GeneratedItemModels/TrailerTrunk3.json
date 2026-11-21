@@ -1,0 +1,13 @@
+{"version": 1, "id": "TrailerTrunk3", "baseHeight": 0.245, "name": "Trailer Trunk3", "model": "gpt-oss:120b", "notes": "Trailer trunk (metal storage box) about 0.75 m long × 0.45 m wide × 0.30 m tall, lying on the floor upright. Main body is a brushed‑metal cube; lid with hinges, front latch, rubber feet and a simple side label give recognizable detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.035,0.1762],"rot":[0.0,0.0,0.0],"size":[0.75,0.3,0.45],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.125,0.1762],"rot":[0.0,0.0,0.0],"size":[0.78,0.02,0.48],"color":[0.58,0.55,0.47],"smooth":0.45,"metal":1.0},
+  {"name":"HingeL","shape":"cylinder","pos":[0.0,0.125,-0.0587],"rot":[0.0,0.0,90.0],"size":[0.025,0.78,0.025],"color":[0.5,0.48,0.42],"smooth":0.5,"metal":1.0},
+  {"name":"HingeR","shape":"cylinder","pos":[0.0,0.125,0.4113],"rot":[0.0,0.0,90.0],"size":[0.025,0.78,0.025],"color":[0.5,0.48,0.42],"smooth":0.5,"metal":1.0},
+  {"name":"Latch","shape":"cube","pos":[0.0,0.155,-0.0738],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.45,0.43,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"RubberFootFL","shape":"cylinder","pos":[-0.35,-0.175,-0.0238],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"RubberFootFR","shape":"cylinder","pos":[-0.35,-0.175,0.3762],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"RubberFootBL","shape":"cylinder","pos":[0.35,-0.175,-0.0238],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"RubberFootBR","shape":"cylinder","pos":[0.35,-0.175,0.3762],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[0.0,-0.035,-0.0488],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.002],"color":[0.48,0.45,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"TopReinforcement","shape":"cylinder","pos":[0.0,0.145,-0.0488],"rot":[90.0,0.0,0.0],"size":[0.04,0.75,0.04],"color":[0.55,0.52,0.46],"smooth":0.45,"metal":1.0}
+]}

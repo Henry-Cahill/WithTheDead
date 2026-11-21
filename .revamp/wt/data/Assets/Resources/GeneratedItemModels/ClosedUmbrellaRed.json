@@ -1,0 +1,10 @@
+{"version": 1, "id": "ClosedUmbrellaRed", "baseHeight": 0.0902, "name": "Closed Umbrella Red", "model": "gpt-oss:120b", "notes": "Closed umbrella (red) used as a blunt melee weapon – about 1.0 m total length lying on its side. Shaft 3 cm diameter steel, ~0.9 m long; wooden‑style handle at the -X end; metal tip at +X; thin red fabric sleeve around the middle of the shaft; three short rib‑like steel struts hint at the umbrella ribs.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.031,-0.0148,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,1.0,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.529,-0.0098,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.556,-0.0223,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.05,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"TipPoint","shape":"sphere","pos":[0.581,-0.0223,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"FabricSleeve","shape":"cylinder","pos":[0.031,0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.4,0.06],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"RibL","shape":"cylinder","pos":[-0.119,0.0002,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.05,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RibC","shape":"cylinder","pos":[0.031,0.0002,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.05,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RibR","shape":"cylinder","pos":[0.181,0.0002,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.05,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

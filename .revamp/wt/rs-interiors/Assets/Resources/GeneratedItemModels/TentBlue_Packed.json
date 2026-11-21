@@ -1,0 +1,14 @@
+{"version": 1, "id": "TentBlue_Packed", "baseHeight": 0.1575, "name": "Tent Blue Packed", "model": "gpt-oss:120b", "notes": "Packed blue‑tent roll ~0.60 m long × 0.18 m diameter, lying on its side. Main fabric cylinder, end caps, a strap band with buckles, metal grommet, label tag, small carry bag attached, and two thin stitching lines for visual detail.", "score": 6, "parts": [
+  {"name":"RollBody","shape":"cylinder","pos":[0.0,-0.0075,0.035],"rot":[0.0,0.0,90.0],"size":[0.18,0.6,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapFront","shape":"cube","pos":[0.31,-0.0075,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.18,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapBack","shape":"cube","pos":[-0.31,-0.0075,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.18,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBand","shape":"cube","pos":[0.0,0.0885,0.035],"rot":[0.0,0.0,0.0],"size":[0.6,0.012,0.02],"color":[0.4,0.38,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.25,0.0885,0.05],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.006],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.25,0.0885,0.02],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.006],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Grommet","shape":"cylinder","pos":[0.25,-0.0075,0.125],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.8,0.8,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBase","shape":"cube","pos":[-0.1,0.0425,0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.005],"color":[0.95,0.95,0.95],"smooth":0.02,"metal":0.0},
+  {"name":"BagBody","shape":"cube","pos":[-0.25,-0.0075,-0.095],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.65,0.63,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[-0.19,0.0225,-0.095],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.08],"color":[0.68,0.66,0.58],"smooth":0.07,"metal":0.0},
+  {"name":"StitchLineTop","shape":"cylinder","pos":[0.0,0.0675,0.035],"rot":[0.0,0.0,90.0],"size":[0.01,0.6,0.01],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineBottom","shape":"cylinder","pos":[0.0,-0.0825,0.035],"rot":[0.0,0.0,90.0],"size":[0.01,0.6,0.01],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0}
+]}

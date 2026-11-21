@@ -1,0 +1,8 @@
+{"version": 1, "id": "BellyButton_StudGold", "baseHeight": 0.0663, "name": "Belly Button Stud Gold", "model": "gpt-oss:120b", "notes": "Gold belly‑button stud about 2.6 cm long with a 1.2 cm decorative ball, lying flat on the floor.", "score": 6, "parts": [
+  {"name":"Post","shape":"cylinder","pos":[-0.004,-0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.003,0.02,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Ball","shape":"sphere","pos":[0.012,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BackClasp","shape":"cube","pos":[-0.016,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.006],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.004,-0.0052,0.0],"rot":[0.0,0.0,0.0],"size":[0.026,0.002,0.006],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.012,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.004],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"GlossHighlight","shape":"sphere","pos":[0.011,0.0047,0.0025],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[1.0,0.9,0.6],"smooth":1.0,"metal":1.0}
+]}

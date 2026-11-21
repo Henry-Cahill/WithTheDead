@@ -1,0 +1,10 @@
+{"version": 1, "id": "HandScytheForged", "baseHeight": 0.0925, "name": "Hand Scythe Forged", "model": "gpt-oss:120b", "notes": "Hand‑scythe forged ~1.15 m long lying on its side (X axis). Steel handle, pommel and guard; curved sickle blade shown as a thin Z‑axis cylinder with a rounded tip that touches the guard. Three small rivets run along the handle.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.03,-0.0075,-0.035],"rot":[0.0,0.0,90.0],"size":[0.04,0.6,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.3,0.0025,-0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[0.28,-0.0075,-0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.02],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Blade","shape":"cylinder","pos":[0.28,-0.0075,-0.035],"rot":[90.0,0.0,0.0],"size":[0.04,0.8,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.28,-0.0025,0.405],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.12,-0.0075,-0.035],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.4,0.4,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"RivetC","shape":"cylinder","pos":[0.03,-0.0075,-0.035],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.4,0.4,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.18,-0.0075,-0.035],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.4,0.4,0.45],"smooth":0.3,"metal":1.0}
+]}

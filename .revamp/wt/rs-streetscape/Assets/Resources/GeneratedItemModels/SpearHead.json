@@ -1,0 +1,12 @@
+{"version": 1, "id": "SpearHead", "baseHeight": 0.095, "name": "Spear Head", "model": "gpt-oss:120b", "notes": "Spear head ~0.25 m long, 0.12 m wide, 0.04 m thick, metal (tint 0.6,0.58,0.5). Lying on its side with the point (+X) forward; includes main blade, tip sphere, rear guard, wooden‑socket cylinder and four rivet caps for detail.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[-0.02,-0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.125,-0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RearGuard","shape":"cube","pos":[-0.12,-0.005,-0.005],"rot":[0.0,0.0,0.0],"size":[0.05,0.06,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Socket","shape":"cylinder","pos":[-0.12,0.0,-0.005],"rot":[0.0,0.0,90.0],"size":[0.07,0.04,0.07],"color":[0.45,0.42,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFront","shape":"cylinder","pos":[-0.12,0.01,0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBack","shape":"cylinder","pos":[-0.12,0.01,-0.035],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTop","shape":"cylinder","pos":[-0.12,0.02,-0.005],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBottom","shape":"cylinder","pos":[-0.12,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeRim","shape":"cube","pos":[-0.02,0.0075,-0.005],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.12],"color":[0.55,0.53,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"SidePlate","shape":"cube","pos":[-0.04,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.02],"color":[0.58,0.55,0.48],"smooth":0.5,"metal":1.0}
+]}

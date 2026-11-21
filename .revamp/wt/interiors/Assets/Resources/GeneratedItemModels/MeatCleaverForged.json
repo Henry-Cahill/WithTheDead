@@ -1,0 +1,8 @@
+{"version": 1, "id": "MeatCleaverForged", "baseHeight": 0.0902, "name": "Meat Cleaver Forged", "model": "gpt-oss:120b", "notes": "Forged meat cleaver ~1 m total length: long steel handle lying on its side along X, dark pommel on the far end, a simple leather‑wrap grip, and a rectangular blade (0.25 m × 0.12 m) at the business end with two rivets marking the edge.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.095,-0.0097,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.7,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.095,-0.0077,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.5,0.045],"color":[0.35,0.25,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.475,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.38,-0.0197,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[0.425,-0.0147,-0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.425,-0.0147,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,78 @@
+diff --git a/Assets/Scripts/World/Zone/ZoneOverlays.cs b/Assets/Scripts/World/Zone/ZoneOverlays.cs
+index b7768a4c..21e0f4d6 100644
+--- a/Assets/Scripts/World/Zone/ZoneOverlays.cs
++++ b/Assets/Scripts/World/Zone/ZoneOverlays.cs
+@@ -17,15 +17,17 @@ internal static class ZoneForest
+         private static readonly List<Vector3> s_Trees = new List<Vector3>(512);
+ 
+         /// <summary>Tree positions of the current raid (the stingers and the foragers read them).</summary>
++        
+         public static IReadOnlyList<Vector3> Trees => s_Trees;
+ 
++        /// <summary>Clear the forest data for a new raid.</summary>
+         public static void Reset()
+         {
+             TreeCount = 0;
+             s_Trees.Clear();
+         }
+ 
+-        /// <summary>How deep in the woods a point is, 0 (open) .. 1 (dense).</summary>
++        /// <summary>Calculate how dense the forest is at a point, returning 0 (open) to 1 (dense).</summary>
+         public static float Density(Vector3 p)
+         {
+             if (s_Trees.Count == 0) return 0f;
+@@ -34,10 +36,11 @@ public static float Density(Vector3 p)
+             {
+                 float dx = s_Trees[i].x - p.x, dz = s_Trees[i].z - p.z;
+                 if (dx * dx + dz * dz < 144f) n++;
+-            }
+-            return Mathf.Clamp01(n / 14f);
++        }
++        return Mathf.Clamp01(n / 14f);
+         }
+ 
++        /// <summary>Generate tree trunks, canopies, and ground vegetation for the forest overlay.</summary>
+         public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSiteMap site, System.Random rng)
+         {
+             var trunks = new ZoneChunks(24f);
+@@ -121,8 +124,9 @@ public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSit
+             List<MeshRenderer> tops = canopies.Emit(unbaked, "ForestCanopy", ShadowCastingMode.On);
+             for (int i = 0; i < tops.Count; i++) CeilingVisibility.Register(tops[i]);   // seen-through from above, like roofs
+             ground.Emit(unbaked, "ForestFloor", ShadowCastingMode.Off);
+-        }
+-    }
++}
++}
++}
+ 
+     /// <summary>
+     /// The Spillway's industrial heart: pipe runs on trestles, tanks, rusted shipping containers, a section of the old
+@@ -130,8 +134,8 @@ public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSit
+     /// </summary>
+     internal static class ZoneIndustry
+     {
+-        public static bool Wants(ZoneDef zone) => zone != null && zone.Id == "spillway";
+-
++        /// <summary>Return true if the current zone is the Spillway industrial area.</summary>
++        /// <summary>Construct the industrial overlay: dam wall, pipe runs, tanks, containers, and steam effects.</summary>
+         public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSiteMap site, System.Random rng)
+         {
+             Transform unbaked = ZoneWorld.Unbaked;
+@@ -184,7 +188,7 @@ public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSit
+                             float offsetZ = (float)rng.NextDouble() * 0.2f - 0.1f; // -0.1 .. 0.1
+                             Vector3 boltPos = new Vector3(x + offsetX, h + 0.01f, offsetZ);
+                             sb.Solid.Cylinder(boltPos, 0.015f, 0.02f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+-                        }
++        return Mathf.Clamp01(n / 14f);
+                     }
+                 sb.Upper.CylinderX(new Vector3(0f, h + 0.35f, -0.4f), 0.35f, len, 10, ZoneKit.Mt(ZoneKit.V(ZoneKit.Rust, rng)));
+                 sb.Upper.CylinderX(new Vector3(0f, h + 0.25f, 0.45f), 0.25f, len, 8, ZoneKit.Mt(ZoneKit.Galvanised));
+@@ -295,7 +299,6 @@ public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSit
+                 if (site.Any(p, 2f, ZoneSiteMap.Hard)) continue;
+                 ZoneKit.Plume(unbaked, p + Vector3.up * 0.2f, false, 1.1f, 5f, 2f, new Color(0.9f, 0.9f, 0.86f, 0.45f));
+                 if (i % 2 == 0) ZoneFlameLight.Spawn(unbaked, p + Vector3.up * 4.5f, new Color(1f, 0.62f, 0.25f), 14f, 1.4f, 0.05f);
+-            }
+         }
+-    }
++}
+ }

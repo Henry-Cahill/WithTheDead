@@ -1,0 +1,11 @@
+{"version": 1, "id": "SmallCopperSheet", "baseHeight": 0.064, "name": "Small Copper Sheet", "model": "gpt-oss:120b", "notes": "Small copper sheet about 0.25 m long × 0.15 m wide × 0.002 m thick (≈0.5 kg). Main flat panel with thin rolled metal edges for a readable silhouette.", "score": 7, "parts": [
+  {"name":"Sheet","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"EdgeXPos","shape":"cylinder","pos":[0.0,0.0,0.075],"rot":[0.0,0.0,90.0],"size":[0.008,0.25,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"EdgeXNeg","shape":"cylinder","pos":[0.0,0.0,-0.075],"rot":[0.0,0.0,90.0],"size":[0.008,0.25,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"EdgeZPos","shape":"cylinder","pos":[0.125,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"EdgeZNeg","shape":"cylinder","pos":[-0.125,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"CornerFL","shape":"sphere","pos":[0.125,0.0,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"CornerFR","shape":"sphere","pos":[0.125,0.0,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"CornerBL","shape":"sphere","pos":[-0.125,0.0,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"CornerBR","shape":"sphere","pos":[-0.125,0.0,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0}
+]}

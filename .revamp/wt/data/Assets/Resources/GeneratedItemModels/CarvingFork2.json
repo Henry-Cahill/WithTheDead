@@ -1,0 +1,12 @@
+{"version": 1, "id": "CarvingFork2", "baseHeight": 0.205, "name": "Carving Fork2", "model": "gpt-oss:120b", "notes": "Carving fork weapon ≈ 0.90 m long, lying on its side (handle along X). Metal steel body (tint 0.6,0.6,0.64) with a rubber‑grip wrap, butt cap, two reinforcing bands, a short cross‑bar and two upward tines. Includes rivet detail and a faint engraved label on the handle.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.02,-0.125,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.55,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.02,-0.125,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.55,0.025],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"ButtCap","shape":"cylinder","pos":[-0.285,-0.125,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ReinforceBandFront","shape":"cylinder","pos":[0.105,-0.125,0.0],"rot":[0.0,0.0,90.0],"size":[0.035,0.02,0.035],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ReinforceBandRear","shape":"cylinder","pos":[-0.095,-0.125,0.0],"rot":[0.0,0.0,90.0],"size":[0.035,0.02,0.035],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"CrossBar","shape":"cube","pos":[0.285,-0.115,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineLeft","shape":"cylinder","pos":[0.285,0.02,-0.055],"rot":[0.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineRight","shape":"cylinder","pos":[0.285,0.02,0.055],"rot":[0.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetCenter","shape":"sphere","pos":[0.285,-0.097,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.02,-0.122,-0.017],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.02],"color":[0.5,0.5,0.55],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "CakeRaw", "baseHeight": 0.1015, "name": "Cake Raw", "model": "gpt-oss:120b", "notes": "Rectangular raw cake in a thin cardboard tray (≈0.22 m × 0.17 m × 0.08 m). Tray has base, four side walls and a lid; the cake slab sits on the base. Chocolate‑chip details added on top.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.034,-0.02],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.17],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,-0.004,0.0575],"rot":[0.0,0.0,0.0],"size":[0.22,0.06,0.015],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,-0.004,-0.0975],"rot":[0.0,0.0,0.0],"size":[0.22,0.06,0.015],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.1025,-0.004,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.17],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.1025,-0.004,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.17],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"TrayLid","shape":"cube","pos":[0.0,0.0375,-0.02],"rot":[0.0,0.0,0.0],"size":[0.225,0.008,0.18],"color":[0.48,0.38,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"CakeSlab","shape":"cube","pos":[0.0,-0.004,-0.02],"rot":[0.0,0.0,0.0],"size":[0.2,0.045,0.15],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LabelFront","shape":"cylinder","pos":[0.0,-0.004,0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.12],"color":[0.3,0.25,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Chip1","shape":"sphere","pos":[-0.05,0.0235,-0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.2,0.12,0.08],"smooth":0.3,"metal":0.0},
+  {"name":"Chip2","shape":"sphere","pos":[0.06,0.0235,-0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.2,0.12,0.08],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Splint", "baseHeight": 0.079, "name": "Splint", "model": "gpt-oss:120b", "notes": "Wooden splint ~30 cm long × 4 cm wide × 2 cm thick lying on its side (longest axis X). Main board with raised edge rails, a fabric strap across the centre and metal buckles, plus small detail holes and a label strip.", "score": 7, "parts": [
+  {"name":"Board","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.148,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.04],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.148,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.04],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.0065,0.021],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.004],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.0065,-0.021],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.004],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"StrapBand","shape":"cube","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.006,0.018],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cylinder","pos":[-0.13,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleR","shape":"cylinder","pos":[0.13,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"PinHoleL","shape":"sphere","pos":[-0.12,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.1,0.1,0.1],"smooth":0.02,"metal":0.0},
+  {"name":"PinHoleR","shape":"sphere","pos":[0.12,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.1,0.1,0.1],"smooth":0.02,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.018],"color":[0.8,0.78,0.7],"smooth":0.15,"metal":0.0},
+  {"name":"WearMark","shape":"cube","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.04],"color":[0.3,0.28,0.25],"smooth":0.12,"metal":0.0}
+]}

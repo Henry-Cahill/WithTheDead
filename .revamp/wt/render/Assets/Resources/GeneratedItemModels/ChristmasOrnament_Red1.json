@@ -1,0 +1,12 @@
+{"version": 1, "id": "ChristmasOrnament_Red1", "baseHeight": 0.0975, "name": "Christmas Ornament Red1", "model": "gpt-oss:120b", "notes": "Round glass Christmas ornament ~7 cm diameter lying on its side: clear tinted sphere, brighter inner glow, metal cap and hook, tiny silver clip, a bottom metal ring for stability, plus a few sparkling specks.", "score": 7, "parts": [
+  {"name":"OuterSphere","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.075,0.075],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"InnerGlow","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.064,0.064],"color":[0.7,0.3,0.3],"smooth":0.5,"metal":0.0},
+  {"name":"TopCap","shape":"cylinder","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.9,0.75,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"Hook","shape":"cylinder","pos":[0.0,0.008,0.01],"rot":[90.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.85,0.85,0.88],"smooth":0.5,"metal":1.0},
+  {"name":"Clip","shape":"cube","pos":[0.008,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.8,0.8,0.8],"smooth":0.3,"metal":1.0},
+  {"name":"BaseRing","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.9,0.75,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"Glitter1","shape":"cube","pos":[0.015,0.0125,0.01],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Glitter2","shape":"cube","pos":[-0.02,0.0075,-0.015],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Glitter3","shape":"cube","pos":[0.025,0.0025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Glitter4","shape":"cube","pos":[-0.018,0.0175,0.012],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0}
+]}

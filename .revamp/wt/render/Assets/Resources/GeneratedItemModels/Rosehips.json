@@ -1,0 +1,14 @@
+{"version": 1, "id": "Rosehips", "baseHeight": 0.0902, "name": "Rosehips", "model": "gpt-oss:120b", "notes": "Small cardboard box of dried rosehips (≈0.12 m × 0.08 m × 0.05 m) lying on its side, with a thin lid, front label and a handful of individual rosehip spheres inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0053,-0.0173],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.08],"color":[0.78,0.7,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0237,-0.0173],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.082],"color":[0.78,0.7,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0053,0.0232],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.07],"color":[0.55,0.45,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Tie","shape":"cylinder","pos":[0.0,0.0278,0.0232],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.55,0.45,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Rosehip1","shape":"sphere","pos":[-0.03,-0.0223,-0.0373],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Rosehip2","shape":"sphere","pos":[0.025,-0.0223,-0.0023],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Rosehip3","shape":"sphere","pos":[-0.01,-0.0223,-0.0173],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Rosehip4","shape":"sphere","pos":[0.04,-0.0223,-0.0473],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Rosehip5","shape":"sphere","pos":[-0.035,-0.0223,0.0077],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Rosehip6","shape":"sphere","pos":[0.0,-0.0223,-0.0373],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Rosehip7","shape":"sphere","pos":[0.015,-0.0223,0.0127],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Rosehip8","shape":"sphere","pos":[-0.02,-0.0223,-0.0273],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0}
+]}

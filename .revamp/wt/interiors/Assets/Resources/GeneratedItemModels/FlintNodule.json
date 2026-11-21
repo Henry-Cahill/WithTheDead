@@ -1,0 +1,12 @@
+{"version": 1, "id": "FlintNodule", "baseHeight": 0.14, "name": "Flint Nodule", "model": "gpt-oss:120b", "notes": "Flint nodule blunt weapon ~0.8 m long, lying on its side (X‑axis). Main body is a rounded cylinder with a heavier stone tip and a short thick base chunk; a leather grip band runs around the middle and small cracks/flake details give shape.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.01,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.8,0.14],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.45,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":0.0},
+  {"name":"BaseChunk","shape":"cube","pos":[-0.45,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.16,0.16],"color":[0.58,0.58,0.62],"smooth":0.38,"metal":0.0},
+  {"name":"GripBand","shape":"cube","pos":[-0.01,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.02,0.14],"color":[0.4,0.25,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"CrackL","shape":"sphere","pos":[-0.11,0.05,0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.35,0.35,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"CrackR","shape":"sphere","pos":[-0.11,0.05,-0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.35,0.35,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"RidgeFront","shape":"cylinder","pos":[0.37,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.62,0.62,0.66],"smooth":0.45,"metal":0.0},
+  {"name":"RidgeBack","shape":"cylinder","pos":[-0.39,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.62,0.62,0.66],"smooth":0.45,"metal":0.0},
+  {"name":"FlakeL","shape":"cube","pos":[-0.36,0.04,0.06],"rot":[0.0,15.0,0.0],"size":[0.05,0.01,0.04],"color":[0.58,0.58,0.62],"smooth":0.38,"metal":0.0},
+  {"name":"FlakeR","shape":"cube","pos":[-0.36,0.04,-0.06],"rot":[0.0,-15.0,0.0],"size":[0.05,0.01,0.04],"color":[0.58,0.58,0.62],"smooth":0.38,"metal":0.0}
+]}

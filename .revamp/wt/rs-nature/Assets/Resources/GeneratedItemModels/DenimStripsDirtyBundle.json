@@ -1,0 +1,14 @@
+{"version": 1, "id": "DenimStripsDirtyBundle", "baseHeight": 0.0708, "name": "Denim Strips Dirty Bundle", "model": "gpt-oss:120b", "notes": "Dirty denim strip bundle ~0.42 m long × 0.22 m wide × 0.06 m high. A pile of overlapping thin fabric strips lying on the floor, each strip about 0.8–1 cm thick and raggedly rotated to give a messy silhouette.", "score": 6, "parts": [
+  {"name":"Strip01","shape":"cube","pos":[-0.1206,-0.0038,-0.0298],"rot":[2.0,-10.0,0.0],"size":[0.48,0.011,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip02","shape":"cube","pos":[0.0794,-0.0028,0.0402],"rot":[-3.0,7.0,0.0],"size":[0.42,0.009,0.07],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Strip03","shape":"cube","pos":[-0.0406,-0.0013,-0.0598],"rot":[1.0,-12.0,0.0],"size":[0.35,0.012,0.08],"color":[0.59,0.57,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"Strip04","shape":"cube","pos":[0.1494,-0.0048,-0.0098],"rot":[-2.0,14.0,0.0],"size":[0.45,0.008,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip05","shape":"cube","pos":[-0.1806,-0.0003,0.0702],"rot":[3.0,-8.0,0.0],"size":[0.38,0.01,0.09],"color":[0.57,0.55,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"Strip06","shape":"cube","pos":[0.0194,0.0012,0.0902],"rot":[-1.0,5.0,0.0],"size":[0.32,0.012,0.07],"color":[0.59,0.57,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"Strip07","shape":"cube","pos":[-0.0606,-0.0018,-0.1098],"rot":[2.0,-6.0,0.0],"size":[0.4,0.009,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Strip08","shape":"cube","pos":[0.0994,0.0022,-0.0798],"rot":[-3.0,9.0,0.0],"size":[0.36,0.011,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip09","shape":"cube","pos":[-0.1406,0.0037,0.0102],"rot":[1.0,-13.0,0.0],"size":[0.44,0.012,0.09],"color":[0.57,0.55,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"Strip10","shape":"cube","pos":[0.0394,-0.0043,0.1302],"rot":[-2.0,4.0,0.0],"size":[0.3,0.008,0.06],"color":[0.59,0.57,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"Strip11","shape":"cube","pos":[-0.0206,0.0032,-0.0198],"rot":[3.0,-7.0,0.0],"size":[0.48,0.011,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Strip12","shape":"cube","pos":[0.1794,0.0002,0.0502],"rot":[-1.0,11.0,0.0],"size":[0.34,0.009,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

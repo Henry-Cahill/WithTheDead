@@ -1,0 +1,9 @@
+{"version": 1, "id": "Thread_Sinew", "baseHeight": 0.08, "name": "Thread Sinew", "model": "gpt-oss:120b", "notes": "Coiled bundle of sinew thread (~12 cm square coil) lying flat on the floor, 2 cm thick rope with two loose ends and a small tangled nub in the centre. Overall footprint ≈0.12 m × 0.12 m.", "score": 6, "parts": [
+  {"name":"LoopXNeg","shape":"cylinder","pos":[0.0,-0.01,-0.06],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LoopZPos","shape":"cylinder","pos":[0.06,-0.01,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LoopXPos","shape":"cylinder","pos":[0.0,-0.01,0.06],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LoopZNeg","shape":"cylinder","pos":[-0.06,-0.01,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndLeft","shape":"cylinder","pos":[-0.09,-0.01,-0.06],"rot":[0.0,0.0,90.0],"size":[0.018,0.03,0.018],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EndRight","shape":"cylinder","pos":[0.09,-0.01,0.06],"rot":[0.0,0.0,90.0],"size":[0.018,0.03,0.018],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Tangle","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0}
+]}

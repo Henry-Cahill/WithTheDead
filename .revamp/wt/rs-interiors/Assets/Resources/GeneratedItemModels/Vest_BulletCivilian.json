@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_BulletCivilian", "baseHeight": 0.0712, "name": "Vest Bullet Civilian", "model": "gpt-oss:120b", "notes": "Civilian bullet‑proof vest laid flat on the floor, approx 0.45 m wide × 0.55 m tall × ≈0.02 m thick. Main front/back panels in Kevlar‑tinted cloth, side shoulder straps, a chest pocket and thin Velcro trim strips.", "score": 6, "parts": [
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.018,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.018,0.55],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cube","pos":[-0.205,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.55],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[0.205,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.55],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"ChestPocket","shape":"cube","pos":[0.0,0.0008,0.15],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroTop","shape":"cylinder","pos":[0.0,0.0013,0.26],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"VelcroBottom","shape":"cylinder","pos":[0.0,0.0013,-0.26],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"VelcroLeft","shape":"cylinder","pos":[-0.22,0.0013,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"VelcroRight","shape":"cylinder","pos":[0.22,0.0013,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.01],"color":[0.4,0.38,0.32],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "3030Box", "baseHeight": 0.138, "name": "3030 Box", "model": "gpt-oss:120b", "notes": "Closed cardboard box 0.30 m long × 0.20 m wide × 0.15 m tall lying on its side (long axis along X). Main body, two hinged top flaps, thin tape strips marking the seam.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.2],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"FlapL","shape":"cube","pos":[-0.075,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.008,0.2],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"FlapR","shape":"cube","pos":[0.075,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.008,0.2],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"TapeFront","shape":"cylinder","pos":[0.0,0.007,-0.099],"rot":[90.0,0.0,0.0],"size":[0.015,0.3,0.015],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"TapeBack","shape":"cylinder","pos":[0.0,0.007,0.099],"rot":[90.0,0.0,0.0],"size":[0.015,0.3,0.015],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"TapeLeft","shape":"cylinder","pos":[-0.149,0.007,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.2,0.015],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"TapeRight","shape":"cylinder","pos":[0.149,0.007,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.2,0.015],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.312,0.006,0.212],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.312,0.006,0.212],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0}
+]}

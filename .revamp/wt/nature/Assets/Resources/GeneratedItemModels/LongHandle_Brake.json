@@ -1,0 +1,12 @@
+{"version": 1, "id": "LongHandle_Brake", "baseHeight": 0.133, "name": "Long Handle Brake", "model": "gpt-oss:120b", "notes": "Long‑handle hydraulic‑style brake, total length ≈1.2 m (handle) +0.15 m business end. Thin metal cylinder handle (≈5 cm dia.) lying on its side along X, with a short block at the +X tip containing a pivot and two jaws. Rubber grip near the centre for handling.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.005,-0.047,-0.05],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"GripMid","shape":"cylinder","pos":[-0.305,-0.037,-0.05],"rot":[0.0,0.0,90.0],"size":[0.07,0.18,0.07],"color":[0.4,0.42,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BrakeBody","shape":"cube","pos":[0.545,0.003,-0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.14,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"PivotPin","shape":"cylinder","pos":[0.545,0.003,-0.05],"rot":[90.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"JawUpper","shape":"cube","pos":[0.545,0.058,-0.05],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.07],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"JawLower","shape":"cube","pos":[0.545,-0.052,-0.05],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.07],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Lever","shape":"cube","pos":[0.575,0.003,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RingClamp","shape":"cylinder","pos":[-0.055,-0.047,-0.05],"rot":[0.0,0.0,90.0],"size":[0.052,0.006,0.052],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewHead","shape":"cylinder","pos":[0.575,0.018,0.07],"rot":[90.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.45,0.45,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewShank","shape":"cylinder","pos":[0.575,0.003,0.07],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.45,0.45,0.48],"smooth":0.3,"metal":1.0}
+]}

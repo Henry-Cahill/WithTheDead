@@ -1,0 +1,12 @@
+{"version": 1, "id": "Trousers_Shellsuit_Teal", "baseHeight": 0.0825, "name": "Trousers Shellsuit Teal", "model": "gpt-oss:120b", "notes": "Flat trousers 1.00 m long, each leg 0.18 m wide × 0.03 m thick, waist‑band across the top, cuffs at the bottom, front pockets on both legs, a back pocket, and thin inner seam lines for detail.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.1,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.1,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0025,0.44],"rot":[0.0,0.0,0.0],"size":[0.38,0.04,0.12],"color":[0.48,0.43,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.1,0.0025,-0.485],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.03],"color":[0.48,0.43,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.1,0.0025,-0.485],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.03],"color":[0.48,0.43,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.07,-0.0025,0.2],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.2],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.07,-0.0025,0.2],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.2],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,-0.0025,-0.2],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.22],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"SeamL","shape":"cube","pos":[-0.01,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,1.0],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cube","pos":[0.01,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,1.0],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

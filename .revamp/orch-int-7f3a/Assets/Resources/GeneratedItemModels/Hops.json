@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hops", "baseHeight": 0.0915, "name": "Hops", "model": "gpt-oss:120b", "notes": "Loose hops packed in a small cardboard box (≈0.12 m W × 0.08 m D × 0.06 m H). Box walls are paper‑tinted, with a simple front label and an inner thin sack.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0015,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WallFront","shape":"cube","pos":[0.0,-0.0005,0.0408],"rot":[0.0,0.0,0.0],"size":[0.12,0.058,0.002],"color":[0.73,0.66,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"WallBack","shape":"cube","pos":[0.0,-0.0005,-0.0413],"rot":[0.0,0.0,0.0],"size":[0.12,0.058,0.002],"color":[0.73,0.66,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"WallLeft","shape":"cube","pos":[-0.059,-0.0005,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.002,0.058,0.08],"color":[0.73,0.66,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"WallRight","shape":"cube","pos":[0.059,-0.0005,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.002,0.058,0.08],"color":[0.73,0.66,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.0275,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.118,0.008,0.078],"color":[0.71,0.64,0.41],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0105,0.0413],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.002],"color":[0.55,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.025,0.0413],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.002],"color":[0.4,0.33,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.004,0.0413],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.002],"color":[0.4,0.33,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBag","shape":"cube","pos":[0.0,-0.0035,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.108,0.004,0.068],"color":[0.78,0.7,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"HopsPile","shape":"sphere","pos":[0.0,0.0005,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0}
+]}

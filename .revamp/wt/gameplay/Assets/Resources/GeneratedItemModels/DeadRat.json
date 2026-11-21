@@ -1,0 +1,14 @@
+{"version": 1, "id": "DeadRat", "baseHeight": 0.0975, "name": "Dead Rat", "model": "gpt-oss:120b", "notes": "Dead rat ~0.18 m long × 0.07 m tall, lying on its side along +X. Main ellipsoid body, rounded head, tiny ears, eyes, four short legs, thin tail and a faint blood splatter on the floor.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.003,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.093,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.06,0.045],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[0.118,0.0325,0.015],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.118,0.0325,-0.015],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.108,0.0075,0.012],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.108,0.0075,-0.012],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.087,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.07,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LegFL","shape":"cylinder","pos":[0.043,-0.0225,0.02],"rot":[90.0,0.0,0.0],"size":[0.01,0.025,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LegFR","shape":"cylinder","pos":[0.043,-0.0225,-0.02],"rot":[90.0,0.0,0.0],"size":[0.01,0.025,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LegBL","shape":"cylinder","pos":[-0.037,-0.0225,0.02],"rot":[90.0,0.0,0.0],"size":[0.01,0.025,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LegBR","shape":"cylinder","pos":[-0.037,-0.0225,-0.02],"rot":[90.0,0.0,0.0],"size":[0.01,0.025,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSplatter","shape":"cube","pos":[0.003,-0.0365,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.5,0.05,0.05],"smooth":0.2,"metal":0.0}
+]}

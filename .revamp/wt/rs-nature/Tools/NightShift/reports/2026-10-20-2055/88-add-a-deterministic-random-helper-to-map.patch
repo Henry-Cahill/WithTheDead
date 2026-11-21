@@ -1,0 +1,14 @@
+diff --git a/Assets/Scripts/World/Map/WorldStore.cs b/Assets/Scripts/World/Map/WorldStore.cs
+index cbbac973..f97bf4a3 100644
+--- a/Assets/Scripts/World/Map/WorldStore.cs
++++ b/Assets/Scripts/World/Map/WorldStore.cs
+@@ -94,6 +94,9 @@ public MapBuild(string id, string folder, MapManifest manifest)
+         /// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>
+         public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());
+ 
++        /// <summary>Returns a new deterministic System.Random seeded with the build Id combined with <paramref name="seed"/>. Use it for per‑feature visual variation (e.g., tree placement, porch chance) so the result is stable across runs.</summary>
++        public System.Random DeterministicRandom(int seed) => new System.Random(Id.GetHashCode() ^ seed);
++
+         /// <summary>Deterministic colour for a building (or other feature) identified by <paramref name="seed"/>.
+         /// Uses the build‑id hash combined with the seed to produce a stable hue in a muted range.</summary>
+         public Color GetBuildingColour(int seed)

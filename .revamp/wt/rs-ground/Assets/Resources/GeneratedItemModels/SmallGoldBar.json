@@ -1,0 +1,9 @@
+{"version": 1, "id": "SmallGoldBar", "baseHeight": 0.0803, "name": "Small Gold Bar", "model": "gpt-oss:120b", "notes": "Small gold bar ~0.15 m long × 0.05 m wide × 0.025 m thick, lying flat on its largest face. Main block in gold tint, with a raised stamped logo on the top surface.", "score": 7, "parts": [
+  {"name":"BarBody","shape":"cube","pos":[0.0,-0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TopStampBase","shape":"cylinder","pos":[0.0,0.0048,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"TopStampRelief","shape":"cylinder","pos":[0.0,0.0062,0.0],"rot":[90.0,0.0,0.0],"size":[0.028,0.002,0.028],"color":[0.48,0.46,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeHighlightL","shape":"cube","pos":[-0.075,-0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.025,0.05],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeHighlightR","shape":"cube","pos":[0.075,-0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.025,0.05],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeHighlightF","shape":"cube","pos":[0.0,-0.0077,0.025],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.002],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeHighlightB","shape":"cube","pos":[0.0,-0.0077,-0.025],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.002],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0}
+]}

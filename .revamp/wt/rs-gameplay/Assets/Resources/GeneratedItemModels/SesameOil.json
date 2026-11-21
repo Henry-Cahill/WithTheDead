@@ -1,0 +1,8 @@
+{"version": 1, "id": "SesameOil", "baseHeight": 0.1382, "name": "Sesame Oil", "model": "gpt-oss:120b", "notes": "Sesame oil in a small clear glass bottle (~250 ml). Bottle 0.07 m diameter, 0.12 m tall body, 0.04 m neck and a metal screw‑cap. Brown paper label wraps the lower half of the body.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0183,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.0518,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.0692,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CapRidge","shape":"cylinder","pos":[0.0,0.0767,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.003,0.05],"color":[0.55,0.55,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,0.0117,0.0],"rot":[0.0,0.0,0.0],"size":[0.071,0.002,0.071],"color":[0.48,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"NeckRing","shape":"cylinder","pos":[0.0,0.0618,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0}
+]}

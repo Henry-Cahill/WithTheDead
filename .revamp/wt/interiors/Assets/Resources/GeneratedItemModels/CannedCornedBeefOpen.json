@@ -1,0 +1,9 @@
+{"version": 1, "id": "CannedCornedBeefOpen", "baseHeight": 0.135, "name": "Canned Corned Beef Open", "model": "gpt-oss:120b", "notes": "Open canned corned beef ~0.15 m diameter × 0.14 m tall: metal body with rolled seams, a thin lip at the open top, dark printed label, visible meat interior and a small sauce droplet.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.14,0.15],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.008,0.158],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.071,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.008,0.158],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.071,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.16],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.145,0.13,0.145],"color":[0.55,0.45,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"Meat","shape":"sphere","pos":[0.0,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.08,0.13],"color":[0.6,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"SauceDrop","shape":"sphere","pos":[0.0,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.3,0.15],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "SteakKnife", "baseHeight": 0.075, "name": "Steak Knife", "model": "gpt-oss:120b", "notes": "Steak Knife ~0.30 m long lying on its side (X‑axis). Thin steel blade, small metal guard, wooden‑ish handle and a pommel tip. Silhouette shows the blade clearly.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cube","pos":[-0.087,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.04],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.147,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.032,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.068,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[-0.032,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.158,-0.011,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

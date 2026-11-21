@@ -1,0 +1,13 @@
+{"version": 1, "id": "Bandage_LeftFoot_Blood", "baseHeight": 0.0857, "name": "Bandage Left Foot Blood", "model": "gpt-oss:120b", "notes": "Rolled gauze bandage ~0.30 m long × 0.04 m diameter lying on its side (axis along X) with a few dark‑red blood stains and slight cloth folds; thickness ≈2 cm, colour tint 0.6 0.58 0.5.", "score": 6, "parts": [
+  {"name":"MainRoll","shape":"cylinder","pos":[-0.001,-0.0057,-0.0029],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fold1","shape":"cube","pos":[-0.081,-0.0007,0.0151],"rot":[0.0,10.0,0.0],"size":[0.06,0.004,0.04],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Fold2","shape":"cube","pos":[0.119,-0.0037,-0.0179],"rot":[0.0,-8.0,0.0],"size":[0.07,0.004,0.035],"color":[0.59,0.56,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.061,0.0193,0.0071],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.78,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.019,0.0213,-0.0149],"rot":[0.0,0.0,0.0],"size":[0.022,0.009,0.022],"color":[0.81,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.099,0.0183,0.0151],"rot":[0.0,0.0,0.0],"size":[0.016,0.007,0.016],"color":[0.75,0.15,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot4","shape":"sphere","pos":[-0.121,0.0203,-0.0229],"rot":[0.0,0.0,0.0],"size":[0.019,0.0085,0.019],"color":[0.79,0.13,0.13],"smooth":0.2,"metal":0.0},
+  {"name":"TornEdge","shape":"cube","pos":[-0.146,-0.0077,-0.0029],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"InnerCore","shape":"cylinder","pos":[-0.001,-0.0077,-0.0029],"rot":[0.0,0.0,90.0],"size":[0.032,0.3,0.032],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"WrapEndL","shape":"cube","pos":[-0.151,-0.0057,-0.0029],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WrapEndR","shape":"cube","pos":[0.149,-0.0057,-0.0029],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

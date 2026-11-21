@@ -1,0 +1,8 @@
+{"version": 1, "id": "LongHandle", "baseHeight": 0.12, "name": "Long Handle", "model": "gpt-oss:120b", "notes": "LongHandle melee weapon ~1.2 m long: wooden shaft (6 cm diameter) lying on its side along X, rubber‑grip mid‑section, metal band near the centre, and a weighted metal head (0.12 × 0.12 × 0.30 m) sticking out forward (+Z). All head parts now touch the shaft.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0325,-0.03,-0.1325],"rot":[0.0,0.0,90.0],"size":[0.06,1.2,0.06],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.0325,-0.015,-0.1325],"rot":[0.0,0.0,90.0],"size":[0.09,0.5,0.09],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.5175,-0.025,-0.1325],"rot":[0.0,0.0,90.0],"size":[0.07,0.04,0.07],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.5725,0.0,0.0175],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.3],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"HeadFace","shape":"cylinder","pos":[0.5725,0.0,0.1675],"rot":[90.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"HeadBack","shape":"cylinder","pos":[0.5725,0.0,-0.1325],"rot":[90.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

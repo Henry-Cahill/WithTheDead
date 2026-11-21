@@ -1,0 +1,12 @@
+{"version": 1, "id": "BreadKnife", "baseHeight": 0.075, "name": "Bread Knife", "model": "gpt-oss:120b", "notes": "Bread knife ~0.35 m long lying on its side (X‑axis). Thin steel blade (blade body + tip) with a small guard and a wooden‑styled handle. Added edge ridge, rivet on the guard and two grip lines on the handle for silhouette detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.115,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[-0.05,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.012,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.055,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.008,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cube","pos":[0.165,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.055,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.04],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[-0.05,-0.012,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.008,0.006],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripLineL","shape":"cube","pos":[-0.115,0.002,0.015],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.002],"color":[0.4,0.4,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GripLineR","shape":"cube","pos":[-0.115,0.002,-0.015],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.002],"color":[0.4,0.4,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ScrewEndL","shape":"cylinder","pos":[-0.165,-0.011,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewEndR","shape":"cylinder","pos":[-0.075,-0.011,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

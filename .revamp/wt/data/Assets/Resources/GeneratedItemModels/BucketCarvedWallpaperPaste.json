@@ -1,0 +1,10 @@
+{"version": 1, "id": "BucketCarvedWallpaperPaste", "baseHeight": 0.1988, "name": "Bucket Carved Wallpaper Paste", "model": "gpt-oss:120b", "notes": "Bucket of thick wallpaper paste (≈0.28 m Ø × 0.25 m tall) standing upright: metal‑gray bucket body with a lip, a carved raised band around the middle, a simple side handle, a removable lid and a small white label on the front. Inside is the brownish‑tan paste (tint 0.6,0.58,0.5).", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[-0.045,-0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.25,0.28],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"RimLip","shape":"cylinder","pos":[-0.045,0.1162,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[-0.045,0.1288,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.26],"color":[0.3,0.3,0.3],"smooth":0.45,"metal":1.0},
+  {"name":"CarvedBand","shape":"cylinder","pos":[-0.045,0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.095,-0.0188,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"PasteInside","shape":"cylinder","pos":[-0.045,-0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.23,0.26],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.096,-0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.1,0.06],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorder","shape":"cube","pos":[0.0965,-0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.102,0.062],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "CannedSardines", "baseHeight": 0.128, "name": "Canned Sardines", "model": "gpt-oss:120b", "notes": "Upright sardine tin ~0.08 m diameter × 0.12 m tall: metallic body with rolled seams, recessed pull‑tab lid, printed label in the can’s tint, and a simple fish silhouette on the front.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.005,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.78,0.77,0.73],"smooth":0.55,"metal":0.8},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.054,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.082,0.008,0.082],"color":[0.78,0.77,0.73],"smooth":0.55,"metal":0.8},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.064,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.082,0.008,0.082],"color":[0.78,0.77,0.73],"smooth":0.55,"metal":0.8},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.06,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.07,0.012,0.07],"color":[0.71,0.7,0.66],"smooth":0.45,"metal":0.8},
+  {"name":"PullTab","shape":"cube","pos":[0.0,0.066,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.02],"color":[0.65,0.64,0.6],"smooth":0.4,"metal":0.8},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.005,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.078,0.108,0.078],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.047,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.08,0.006,0.08],"color":[0.5,0.45,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.057,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.08,0.006,0.08],"color":[0.5,0.45,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"FishSilhouette","shape":"sphere","pos":[0.0,-0.005,0.0305],"rot":[0.0,0.0,0.0],"size":[0.07,0.012,0.03],"color":[0.42,0.38,0.3],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "556Carton", "baseHeight": 0.205, "name": "556 Carton", "model": "gpt-oss:120b", "notes": "Cardboard carton 0.45 m wide × 0.30 m deep × 0.25 m high, lying on its largest face (X‑Z) with thin walls and a lid; main colour cardboard tint (0.6,0.58,0.5).", "score": 7, "parts": [
+  {"name":"BasePanel","shape":"cube","pos":[0.0,-0.135,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.3],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[0.215,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.25,0.3],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[-0.215,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.25,0.3],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0,-0.14],"rot":[0.0,0.0,0.0],"size":[0.45,0.25,0.02],"color":[0.59,0.56,0.49],"smooth":0.1,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0,0.14],"rot":[0.0,0.0,0.0],"size":[0.45,0.25,0.02],"color":[0.59,0.56,0.49],"smooth":0.1,"metal":0.0},
+  {"name":"LidPanel","shape":"cube","pos":[0.0,0.135,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.3],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"TapeFront","shape":"cube","pos":[0.0,0.117,-0.14],"rot":[0.0,0.0,0.0],"size":[0.44,0.004,0.006],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"TapeBack","shape":"cube","pos":[0.0,0.117,0.14],"rot":[0.0,0.0,0.0],"size":[0.44,0.004,0.006],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"TapeLeft","shape":"cube","pos":[0.215,0.117,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.28],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"TapeRight","shape":"cube","pos":[-0.215,0.117,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.28],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0}
+]}

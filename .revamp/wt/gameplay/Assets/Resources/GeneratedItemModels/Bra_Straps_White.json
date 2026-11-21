@@ -1,0 +1,14 @@
+{"version": 1, "id": "Bra_Straps_White", "baseHeight": 0.0668, "name": "Bra Straps White", "model": "gpt-oss:120b", "notes": "White bra strap 0.60 m long × 0.03 m wide × 0.008 m thick, lying flat on the floor. Main strip of cloth with elastic edges, stitched lines, tiny metal rivets at each end and small label tags.", "score": 6, "parts": [
+  {"name":"MainStrip","shape":"cube","pos":[0.0,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cylinder","pos":[0.0,-0.0027,0.0135],"rot":[0.0,0.0,90.0],"size":[0.003,0.6,0.003],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRight","shape":"cylinder","pos":[0.0,-0.0027,-0.0135],"rot":[0.0,0.0,90.0],"size":[0.003,0.6,0.003],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"StitchCenter","shape":"cube","pos":[0.0,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.003],"color":[0.3,0.3,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[0.0,0.0018,0.0135],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.002],"color":[0.3,0.3,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.0,0.0018,-0.0135],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.002],"color":[0.3,0.3,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LoopLeft","shape":"cylinder","pos":[-0.295,0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"LoopRight","shape":"cylinder","pos":[0.295,0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"TagL","shape":"cube","pos":[-0.295,0.0038,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.008],"color":[0.7,0.68,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"TagR","shape":"cube","pos":[0.295,0.0038,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.008],"color":[0.7,0.68,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.295,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.295,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0}
+]}

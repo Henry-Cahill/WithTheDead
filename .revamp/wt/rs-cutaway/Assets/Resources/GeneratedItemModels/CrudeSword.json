@@ -1,0 +1,9 @@
+{"version": 1, "id": "CrudeSword", "baseHeight": 0.1, "name": "Crude Sword", "model": "gpt-oss:120b", "notes": "Crude sword ~1.5 m long lying on its side (X‑axis). Blade (steel, 1.2 m × 0.06 m × 0.01 m) with a simple cross‑guard and a wooden‑leather grip ending in a round pommel.", "score": 7, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.17,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.01,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"CrossGuard","shape":"cube","pos":[-0.43,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.15],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"Grip","shape":"cylinder","pos":[-0.58,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.3,0.06],"color":[0.4,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherWrap","shape":"cylinder","pos":[-0.58,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.32,0.07],"color":[0.3,0.15,0.08],"smooth":0.1,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.73,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"GuardRivetL","shape":"cylinder","pos":[-0.425,-0.0275,-0.07],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":0.9},
+  {"name":"GuardRivetR","shape":"cylinder","pos":[-0.425,-0.0275,0.07],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":0.9}
+]}

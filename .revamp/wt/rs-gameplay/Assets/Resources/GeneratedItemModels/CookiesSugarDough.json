@@ -1,0 +1,13 @@
+{"version": 1, "id": "CookiesSugarDough", "baseHeight": 0.0993, "name": "Cookies Sugar Dough", "model": "gpt-oss:120b", "notes": "Rectangular plastic tub for sugar‑dough cookies – approx 0.22 m wide × 0.15 m deep × 0.07 m tall, with a snap‑on lid and a visible dough mass inside. Light‑brown tint (0.75,0.68,0.45) used for the dough; slightly lighter plastic for the container.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0343,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.15],"color":[0.82,0.78,0.65],"smooth":0.4,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.105,-0.0042,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.15],"color":[0.82,0.78,0.65],"smooth":0.4,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.105,-0.0042,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.15],"color":[0.82,0.78,0.65],"smooth":0.4,"metal":0.0},
+  {"name":"Front","shape":"cube","pos":[0.0,-0.0042,0.07],"rot":[0.0,0.0,0.0],"size":[0.22,0.06,0.01],"color":[0.82,0.78,0.65],"smooth":0.4,"metal":0.0},
+  {"name":"Back","shape":"cube","pos":[0.0,-0.0042,-0.07],"rot":[0.0,0.0,0.0],"size":[0.22,0.06,0.01],"color":[0.82,0.78,0.65],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0317,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.012,0.154],"color":[0.86,0.82,0.7],"smooth":0.45,"metal":0.0},
+  {"name":"DoughMass","shape":"sphere","pos":[0.0,-0.0142,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0042,0.0725],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.002],"color":[0.58,0.5,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"SealRing","shape":"cylinder","pos":[0.0,0.0377,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.003,0.22],"color":[0.7,0.66,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.105,-0.0343,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.01,0.15],"color":[0.7,0.66,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.105,-0.0343,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.01,0.15],"color":[0.7,0.66,0.55],"smooth":0.3,"metal":0.0}
+]}

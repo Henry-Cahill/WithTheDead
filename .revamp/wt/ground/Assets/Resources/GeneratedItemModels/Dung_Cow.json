@@ -1,0 +1,12 @@
+{"version": 1, "id": "Dung_Cow", "baseHeight": 0.1021, "name": "Dung Cow", "model": "gpt-oss:120b", "notes": "Irregular cow dung lump about 0.12 m long × 0.08 m wide × 0.06 m high, lying on the floor. Main brown tint with darker patches and a slight wet sheen.", "score": 6, "parts": [
+  {"name":"BaseCube","shape":"cube","pos":[0.0009,-0.0221,-0.0058],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Ellipsoid1","shape":"sphere","pos":[-0.0291,0.0029,0.0042],"rot":[0.0,0.0,0.0],"size":[0.07,0.06,0.04],"color":[0.6,0.58,0.5],"smooth":0.06,"metal":0.0},
+  {"name":"Ellipsoid2","shape":"sphere","pos":[0.0209,0.0129,-0.0258],"rot":[10.0,0.0,5.0],"size":[0.05,0.05,0.03],"color":[0.6,0.58,0.5],"smooth":0.06,"metal":0.0},
+  {"name":"Ellipsoid3","shape":"sphere","pos":[0.0409,-0.0071,0.0242],"rot":[-5.0,0.0,15.0],"size":[0.04,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.06,"metal":0.0},
+  {"name":"DarkSpot1","shape":"sphere","pos":[-0.0191,-0.0171,-0.0158],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.018],"color":[0.45,0.42,0.35],"smooth":0.04,"metal":0.0},
+  {"name":"DarkSpot2","shape":"sphere","pos":[0.0309,-0.0141,0.0092],"rot":[0.0,0.0,0.0],"size":[0.018,0.014,0.016],"color":[0.45,0.42,0.35],"smooth":0.04,"metal":0.0},
+  {"name":"WetSheen","shape":"sphere","pos":[0.0309,0.0079,-0.0058],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.014],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"ClumpL","shape":"cube","pos":[-0.0391,-0.0121,0.0142],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ClumpR","shape":"cube","pos":[0.0459,-0.0101,-0.0308],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.022],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrustEdge","shape":"cube","pos":[0.0009,0.0004,-0.0058],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Glasses_Cosmetic_70s_Gold", "baseHeight": 0.07, "name": "Glasses Cosmetic 70s Gold", "model": "gpt-oss:120b", "notes": "Retro‑70s sunglasses laid flat for a product shot – two round lenses (≈9 cm dia) in thin gold frames, a short top bridge, and the temples stretched out left/right. Overall spread ≈35 cm wide × 12 cm deep × 2 cm thick.", "score": 7, "parts": [
+  {"name":"FrameL","shape":"cylinder","pos":[-0.07,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.015,0.11],"color":[0.85,0.71,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"FrameR","shape":"cylinder","pos":[0.07,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.015,0.11],"color":[0.85,0.71,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"LensL","shape":"sphere","pos":[-0.07,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.005,0.09],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"sphere","pos":[0.07,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.005,0.09],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"TrimL","shape":"cylinder","pos":[-0.07,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.115,0.005,0.115],"color":[0.7,0.55,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"TrimR","shape":"cylinder","pos":[0.07,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.115,0.005,0.115],"color":[0.7,0.55,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"BridgeBar","shape":"cube","pos":[0.0,0.0025,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.85,0.71,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"TempleL","shape":"cube","pos":[-0.13,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.008],"color":[0.85,0.71,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"TempleR","shape":"cube","pos":[0.13,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.008],"color":[0.85,0.71,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"HingeL","shape":"cylinder","pos":[-0.055,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.005,0.012],"color":[0.7,0.55,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"HingeR","shape":"cylinder","pos":[0.055,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.005,0.012],"color":[0.7,0.55,0.2],"smooth":0.4,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClayBenchAnvilMold", "baseHeight": 0.1237, "name": "Clay Bench Anvil Mold", "model": "gpt-oss:120b", "notes": "Clay bench‑anvil mold, low‑poly block about 0.30 m long × 0.18 m wide × 0.07 m high. Main clay body with raised front/back rims, end caps, a recessed rectangular cavity (bench shape) and a small anvil head detail; dark seam strips and a tiny knob on the front rim for visual interest.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0287,-0.003],"rot":[0.0,0.0,0.0],"size":[0.3,0.07,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontRim","shape":"cube","pos":[0.0,0.0137,0.096],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.018],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BackRim","shape":"cube","pos":[0.0,0.0137,-0.102],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.018],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.1575,-0.0287,-0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.07,0.18],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"cube","pos":[0.1575,-0.0287,-0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.07,0.18],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CavityBase","shape":"cube","pos":[0.0,0.0038,-0.003],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.12],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"AnvilHead","shape":"cylinder","pos":[-0.04,0.0338,-0.003],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.5,0.48,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Knob","shape":"sphere","pos":[0.0,0.0363,0.096],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,0.0082,0.096],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.018],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,0.0082,-0.102],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.018],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

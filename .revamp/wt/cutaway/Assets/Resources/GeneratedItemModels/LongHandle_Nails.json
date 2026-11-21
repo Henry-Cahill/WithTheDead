@@ -1,0 +1,13 @@
+{"version": 1, "id": "LongHandle_Nails", "baseHeight": 0.1783, "name": "Long Handle Nails", "model": "gpt-oss:120b", "notes": "Long‑handle nail weapon ≈1.4 m total length: 1.2 m cylindrical steel shaft lying on its side (X‑axis), a short spiked head block at the +X end, and four metal nails protruding forward/back/left/right from the head. Overall tint 0.6 0.6 0.64, polished steel look.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.06,-0.0958,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"GripBand","shape":"cylinder","pos":[0.49,-0.0958,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.6,-0.0758,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailFront","shape":"cylinder","pos":[0.6,0.0392,0.05],"rot":[0.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailTipFront","shape":"sphere","pos":[0.6,0.1143,0.05],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailBack","shape":"cylinder","pos":[0.6,0.0392,-0.05],"rot":[0.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailTipBack","shape":"sphere","pos":[0.6,0.1143,-0.05],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailLeft","shape":"cylinder","pos":[0.56,0.0392,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailTipLeft","shape":"sphere","pos":[0.56,0.1143,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailRight","shape":"cylinder","pos":[0.64,0.0392,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"NailTipRight","shape":"sphere","pos":[0.64,0.1143,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0}
+]}

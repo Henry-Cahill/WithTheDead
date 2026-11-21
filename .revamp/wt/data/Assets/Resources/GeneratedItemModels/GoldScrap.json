@@ -1,0 +1,9 @@
+{"version": 1, "id": "GoldScrap", "baseHeight": 0.075, "name": "Gold Scrap", "model": "gpt-oss:120b", "notes": "A loose pile of gold scrap ~8 cm wide × 4 cm deep × 2 cm tall, made of several irregular nuggets. Main colour is the gold tint (0.6,0.58,0.5) with high metal reflectivity; a few small ridges give the impression of hammered edges.", "score": 7, "parts": [
+  {"name":"NuggetBase","shape":"sphere","pos":[-0.0179,0.002,-0.0152],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"NuggetSide","shape":"cylinder","pos":[0.0171,-0.0,0.0128],"rot":[0.0,0.0,30.0],"size":[0.025,0.02,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"NuggetCorner","shape":"cube","pos":[-0.0159,0.004,0.0168],"rot":[10.0,-15.0,5.0],"size":[0.022,0.012,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"NuggetTop","shape":"sphere","pos":[0.0121,0.009,-0.0202],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RidgeA","shape":"cube","pos":[-0.0029,0.005,-0.0002],"rot":[0.0,25.0,0.0],"size":[0.004,0.008,0.02],"color":[0.58,0.55,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"RidgeB","shape":"cube","pos":[0.0241,0.002,-0.0132],"rot":[15.0,0.0,0.0],"size":[0.006,0.007,0.015],"color":[0.58,0.55,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"ShineSpot","shape":"sphere","pos":[0.0141,0.007,0.0068],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.78,0.76,0.68],"smooth":0.8,"metal":1.0}
+]}

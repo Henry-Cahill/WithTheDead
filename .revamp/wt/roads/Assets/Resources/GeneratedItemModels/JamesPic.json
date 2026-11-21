@@ -1,0 +1,8 @@
+{"version": 1, "id": "JamesPic", "baseHeight": 0.0707, "name": "James Pic", "model": "gpt-oss:120b", "notes": "Flat printed photo 0.24 m × 0.18 m, 5 mm thick, lying on its side. Main sheet in the item tint, a slightly darker paper border, a central image patch with subtle colour shift and a tiny curled corner to hint at wear.", "score": 7, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[-0.004,-0.0072,-0.004],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Border","shape":"cube","pos":[-0.004,-0.007,-0.004],"rot":[0.0,0.0,0.0],"size":[0.246,0.006,0.186],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ImagePatch","shape":"cube","pos":[-0.004,-0.0072,-0.004],"rot":[0.0,0.0,0.0],"size":[0.22,0.0051,0.16],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CurlCorner","shape":"cylinder","pos":[0.111,-0.0012,0.081],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CurlTip","shape":"sphere","pos":[0.121,0.0048,0.091],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DustSpot","shape":"sphere","pos":[-0.084,-0.0067,-0.064],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0}
+]}

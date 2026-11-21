@@ -1,0 +1,13 @@
+{"version": 1, "id": "FlameTrapSensorV2", "baseHeight": 0.12, "name": "Flame Trap Sensor V2", "model": "gpt-oss:120b", "notes": "Long flame‑trap pole ~1.2 m long lying on its side (X axis). Thick steel shaft with rubber‑grip handle at the rear, a rectangular sensor housing at the front, vent cylinders, a red‑orange flame emitter nozzle and a small indicator LED.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.055,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleGrip","shape":"cylinder","pos":[-0.635,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.12,0.09],"color":[0.15,0.15,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"HandleCap","shape":"cube","pos":[-0.635,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":1.0},
+  {"name":"SensorBox","shape":"cube","pos":[0.495,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.14],"color":[0.58,0.58,0.62],"smooth":0.45,"metal":1.0},
+  {"name":"VentLeft","shape":"cylinder","pos":[0.425,0.02,0.045],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"VentRight","shape":"cylinder","pos":[0.425,0.02,-0.045],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"FlameNozzle","shape":"cylinder","pos":[0.605,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.85,0.35,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"NozzleTip","shape":"sphere","pos":[0.665,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.95,0.5,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"LEDLight","shape":"sphere","pos":[0.495,0.04,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[1.0,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"MountRing","shape":"cylinder","pos":[0.495,-0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.45,0.45,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"CableCoil","shape":"cylinder","pos":[-0.355,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.15,0.025],"color":[0.4,0.4,0.45],"smooth":0.35,"metal":0.0}
+]}

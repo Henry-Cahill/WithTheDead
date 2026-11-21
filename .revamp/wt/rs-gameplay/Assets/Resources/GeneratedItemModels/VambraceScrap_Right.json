@@ -1,0 +1,10 @@
+{"version": 1, "id": "VambraceScrap_Right", "baseHeight": 0.0936, "name": "Vambrace Scrap Right", "model": "gpt-oss:120b", "notes": "Scrap right‑hand vambrace about 0.35 m long × 0.12 m wide × 0.025 m thick, lying on its side with the forearm axis along X. Main worn steel plate with a protruding edge piece, four rivets, a bent scrap fragment and a loose rusted chunk.", "score": 7, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0125,-0.0075,-0.0032],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.9},
+  {"name":"EdgePiece","shape":"cube","pos":[0.0125,-0.0025,0.0768],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.9},
+  {"name":"RivetFL","shape":"cylinder","pos":[-0.1175,0.0125,-0.0432],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.7,0.68,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[0.1425,0.0125,-0.0432],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.7,0.68,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.1175,0.0125,0.0368],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.7,0.68,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.1425,0.0125,0.0368],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.7,0.68,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"BentPlate","shape":"cube","pos":[-0.0875,0.0,-0.0632],"rot":[45.0,0.0,0.0],"size":[0.2,0.015,0.08],"color":[0.58,0.55,0.48],"smooth":0.35,"metal":0.85},
+  {"name":"ScrapChunk","shape":"sphere","pos":[0.1625,0.005,0.0468],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.5,0.4,0.3],"smooth":0.2,"metal":0.0}
+]}

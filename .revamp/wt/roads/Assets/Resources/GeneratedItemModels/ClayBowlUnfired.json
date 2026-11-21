@@ -1,0 +1,13 @@
+{"version": 1, "id": "ClayBowlUnfired", "baseHeight": 0.105, "name": "Clay Bowl Unfired", "model": "gpt-oss:120b", "notes": "Unfired clay bowl about 15 cm wide, 7 cm deep, lying upright on its flat bottom. Main shallow cylinder, a thin flared rim, inner cavity, two subtle raised bands, and several small clay lumps/splatter to convey the rough hand‑molded texture.", "score": 7, "parts": [
+  {"name":"BowlBase","shape":"cylinder","pos":[0.0,-0.005,0.0013],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.15],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"RimOuter","shape":"cylinder","pos":[0.0,0.0375,0.0013],"rot":[0.0,0.0,0.0],"size":[0.165,0.015,0.165],"color":[0.58,0.56,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[0.0,-0.005,0.0013],"rot":[0.0,0.0,0.0],"size":[0.13,0.06,0.13],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"BandMid","shape":"cylinder","pos":[0.0,0.005,0.0013],"rot":[0.0,0.0,0.0],"size":[0.155,0.004,0.155],"color":[0.57,0.55,0.47],"smooth":0.07,"metal":0.0},
+  {"name":"BandUpper","shape":"cylinder","pos":[0.0,0.03,0.0013],"rot":[0.0,0.0,0.0],"size":[0.16,0.003,0.16],"color":[0.57,0.55,0.47],"smooth":0.07,"metal":0.0},
+  {"name":"Lump1","shape":"sphere","pos":[0.06,-0.01,0.0312],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Lump2","shape":"sphere","pos":[-0.05,-0.015,-0.0387],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Lump3","shape":"sphere","pos":[0.02,0.0,-0.0587],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Lump4","shape":"sphere","pos":[-0.07,-0.005,0.0513],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Lump5","shape":"sphere","pos":[0.03,-0.02,0.0612],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Splatter","shape":"sphere","pos":[0.04,-0.03,-0.0688],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.58,0.56,0.48],"smooth":0.07,"metal":0.0}
+]}

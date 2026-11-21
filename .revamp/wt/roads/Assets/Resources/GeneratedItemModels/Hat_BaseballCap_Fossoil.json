@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_BaseballCap_Fossoil", "baseHeight": 0.095, "name": "Hat Baseball Cap Fossoil", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.22 m wide, 0.04 m thick crown with front brim extending 0.07 m; includes crown panels, seam ring, front label patch and metal button on top.", "score": 6, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.015,0.031],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPanel1","shape":"cube","pos":[0.0,-0.014,0.006],"rot":[0.0,0.0,5.0],"size":[0.22,0.002,0.05],"color":[0.48,0.43,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPanel2","shape":"cube","pos":[0.0,-0.014,0.056],"rot":[0.0,0.0,-5.0],"size":[0.22,0.002,0.05],"color":[0.48,0.43,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,0.006,0.031],"rot":[0.0,0.0,0.0],"size":[0.236,0.004,0.236],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBrim","shape":"cube","pos":[0.0,-0.025,-0.114],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,-0.01,0.001],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.04],"color":[0.7,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.0,0.02,0.031],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.78,0.78,0.78],"smooth":0.6,"metal":1.0}
+]}

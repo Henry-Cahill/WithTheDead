@@ -1,0 +1,9 @@
+{"version": 1, "id": "StoneBlock", "baseHeight": 0.09, "name": "Stone Block", "model": "gpt-oss:120b", "notes": "Rough rectangular stone block ~15 cm × 8 cm × 6 cm lying on its side; main cube with a few chipped corner pieces, a shallow crack sphere and a tiny dust mound to convey texture.", "score": 7, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,0.0,0.0025],"rot":[0.0,0.0,0.0],"size":[0.15,0.06,0.08],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"ChipFrontRight","shape":"cube","pos":[0.07,0.015,0.0425],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"ChipFrontLeft","shape":"cube","pos":[-0.07,0.015,0.0425],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"ChipBackRight","shape":"cube","pos":[0.07,0.015,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"ChipBackLeft","shape":"cube","pos":[-0.07,0.015,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"CrackSpot","shape":"sphere","pos":[0.03,0.005,0.0125],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"DustMound","shape":"sphere","pos":[-0.02,-0.025,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.07,0.01,0.07],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,16 @@
+{"version": 1, "id": "CowLeather_Angus_Full", "baseHeight": 0.0767, "name": "Cow Leather Angus Full", "model": "gpt-oss:120b", "notes": "Flat full cow‑leather hide ~1.2 m long × 0.6 m wide × 1.5 cm thick, laid on the floor with a stitched border, grain overlay, hanging eyelet and a small leather tag with metal rivets.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"GrainOverlay","shape":"cube","pos":[0.0,-0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[1.18,0.014,0.58],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BorderTop","shape":"cube","pos":[0.0,-0.0077,0.29],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.02],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BorderBottom","shape":"cube","pos":[0.0,-0.0077,-0.29],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.02],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BorderLeft","shape":"cube","pos":[-0.59,-0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.6],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BorderRight","shape":"cube","pos":[0.59,-0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.6],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"HangHole","shape":"cylinder","pos":[-0.55,-0.0077,0.25],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.55,0.0072,0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TagRivet","shape":"cylinder","pos":[-0.55,0.0072,0.25],"rot":[0.0,0.0,0.0],"size":[0.012,0.019,0.012],"color":[0.8,0.78,0.77],"smooth":0.6,"metal":1.0},
+  {"name":"TagLabel","shape":"cube","pos":[-0.55,0.0152,0.25],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.03],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRivetTL","shape":"cylinder","pos":[-0.59,-0.0077,0.29],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.8,0.78,0.77],"smooth":0.6,"metal":1.0},
+  {"name":"CornerRivetTR","shape":"cylinder","pos":[0.59,-0.0077,0.29],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.8,0.78,0.77],"smooth":0.6,"metal":1.0},
+  {"name":"CornerRivetBL","shape":"cylinder","pos":[-0.59,-0.0077,-0.29],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.8,0.78,0.77],"smooth":0.6,"metal":1.0},
+  {"name":"CornerRivetBR","shape":"cylinder","pos":[0.59,-0.0077,-0.29],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.8,0.78,0.77],"smooth":0.6,"metal":1.0}
+]}

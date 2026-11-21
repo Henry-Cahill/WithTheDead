@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_Bandana", "baseHeight": 0.085, "name": "Hat Bandana", "model": "gpt-oss:120b", "notes": "Flat square bandana 0.55 m per side, 2 cm thick, laid flat like a product photo. Main cloth in tint (0.55,0.5,0.6) with darker hem border and a central decorative patch; a small tie‑loop cylinder at one corner.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemTop","shape":"cube","pos":[0.0,-0.0025,0.265],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,-0.0025,-0.265],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.265,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.55],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.265,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.55],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CenterPatch","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[-0.22,0.005,0.22],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "SmokeBombRemote", "baseHeight": 0.1, "name": "Smoke Bomb Remote", "model": "gpt-oss:120b", "notes": "Small handheld remote (≈0.15 m long × 0.04 m tall × 0.03 m thick) lying on its side, X‑axis is the longest dimension. Main plastic body with rubber grip, three front buttons, a trigger lever on the business end, a short vertical antenna, a cylindrical battery pack at the back and four tiny metal screws for detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0175,-0.02,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.15,0.04,0.03],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"GripRubber","shape":"cylinder","pos":[-0.0275,-0.02,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.03,0.06,0.03],"color":[0.2,0.2,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"Trigger","shape":"cylinder","pos":[0.0725,0.0,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Button1","shape":"cube","pos":[0.0575,-0.025,0.0165],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.004],"color":[0.45,0.45,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Button2","shape":"cube","pos":[0.0675,-0.025,0.0165],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.004],"color":[0.45,0.45,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Button3","shape":"cube","pos":[0.0775,-0.025,0.0165],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.004],"color":[0.45,0.45,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Antenna","shape":"cylinder","pos":[0.0875,0.01,0.0095],"rot":[0.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BatteryPack","shape":"cylinder","pos":[-0.0525,-0.02,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.0175,-0.018,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.002],"color":[0.55,0.55,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewFL","shape":"sphere","pos":[0.0875,-0.017,0.0145],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.4,0.45],"smooth":0.7,"metal":1.0},
+  {"name":"ScrewFR","shape":"sphere","pos":[0.0875,-0.017,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.4,0.45],"smooth":0.7,"metal":1.0},
+  {"name":"ScrewBL","shape":"sphere","pos":[-0.0525,-0.017,0.0145],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.4,0.45],"smooth":0.7,"metal":1.0},
+  {"name":"ScrewBR","shape":"sphere","pos":[-0.0525,-0.017,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.4,0.45],"smooth":0.7,"metal":1.0}
+]}

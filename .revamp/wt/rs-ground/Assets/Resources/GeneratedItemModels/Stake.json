@@ -1,0 +1,12 @@
+{"version": 1, "id": "Stake", "baseHeight": 0.08, "name": "Stake", "model": "gpt-oss:120b", "notes": "Stake melee weapon ~0.85 m long lying on its side (X‑axis). Metal shaft with a rectangular blade at the business end, rubber grip near the opposite end, small guard ring and decorative rivets.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0175,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.75,0.03],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.3675,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"GuardRing","shape":"cylinder","pos":[-0.2175,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.4075,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.4575,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeEdgeTop","shape":"cube","pos":[0.4075,0.0,0.065],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.005],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"BladeEdgeBottom","shape":"cube","pos":[0.4075,0.0,-0.065],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.005],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[0.3625,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.3625,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"ShaftSeam","shape":"cylinder","pos":[-0.0175,-0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.75,0.032],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0}
+]}

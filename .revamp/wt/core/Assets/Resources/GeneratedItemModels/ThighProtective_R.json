@@ -1,0 +1,15 @@
+{"version": 1, "id": "ThighProtective_R", "baseHeight": 0.0855, "name": "Thigh Protective R", "model": "gpt-oss:120b", "notes": "Right‑side thigh protector, approx 0.45 m long × 0.22 m wide × 0.025 m thick. Main padded plate with two fabric straps and metal buckles; inner softer padding layer and rounded edge caps for a clear silhouette.", "score": 6, "parts": [
+  {"name":"PlateOuter","shape":"cube","pos":[0.0,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.22],"color":[0.54,0.52,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PaddingInner","shape":"cube","pos":[0.0,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.42,0.018,0.19],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,0.01,0.09],"rot":[0.0,0.0,90.0],"size":[0.015,0.45,0.015],"color":[0.54,0.52,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.01,-0.09],"rot":[0.0,0.0,90.0],"size":[0.015,0.45,0.015],"color":[0.54,0.52,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BuckleFrontL","shape":"cube","pos":[-0.22,0.018,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleFrontR","shape":"cube","pos":[0.22,0.018,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleBackL","shape":"cube","pos":[-0.22,0.018,-0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleBackR","shape":"cube","pos":[0.22,0.018,-0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLine","shape":"cylinder","pos":[0.0,0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.005,0.4,0.005],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"CornerFL","shape":"sphere","pos":[0.21,-0.0105,0.09],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.54,0.52,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CornerFR","shape":"sphere","pos":[-0.21,-0.0105,0.09],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.54,0.52,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBL","shape":"sphere","pos":[0.21,-0.0105,-0.09],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.54,0.52,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBR","shape":"sphere","pos":[-0.21,-0.0105,-0.09],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.54,0.52,0.45],"smooth":0.2,"metal":0.0}
+]}

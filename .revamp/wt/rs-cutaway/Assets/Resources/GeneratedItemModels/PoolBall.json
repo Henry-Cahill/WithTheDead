@@ -1,0 +1,12 @@
+{"version": 1, "id": "PoolBall", "baseHeight": 0.089, "name": "Pool Ball", "model": "gpt-oss:120b", "notes": "Standard pool ball ~57 mm diameter lying on the floor (center at y = radius). Main glossy plastic body, thin dark seam around the equator, a white number plate with black imprint, subtle highlights and a faint outer gloss overlay.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"sphere","pos":[0.0,0.0,-0.0057],"rot":[0.0,0.0,0.0],"size":[0.057,0.057,0.057],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,0.0,-0.0057],"rot":[0.0,0.0,0.0],"size":[0.057,0.002,0.057],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"PlateWhite","shape":"cylinder","pos":[0.0,0.0,0.0221],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.92,0.92,0.93],"smooth":0.4,"metal":0.0},
+  {"name":"PlateBorder","shape":"cylinder","pos":[0.0,0.0,0.0221],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.78,0.76,0.71],"smooth":0.35,"metal":0.0},
+  {"name":"NumberImprint","shape":"cube","pos":[0.0,0.0,0.0226],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.004],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"NumberOutline","shape":"cube","pos":[0.0,0.0,0.0226],"rot":[0.0,0.0,0.0],"size":[0.009,0.002,0.005],"color":[0.1,0.09,0.12],"smooth":0.35,"metal":0.0},
+  {"name":"NumberBackShadow","shape":"cube","pos":[0.0,0.0,0.0215],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.004],"color":[0.12,0.11,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"HighlightFront","shape":"sphere","pos":[0.012,0.0165,0.0193],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[1.0,1.0,1.0],"smooth":0.7,"metal":0.0},
+  {"name":"HighlightSide","shape":"sphere","pos":[-0.02,0.0115,0.0093],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[1.0,1.0,1.0],"smooth":0.65,"metal":0.0},
+  {"name":"GlossOverlay","shape":"sphere","pos":[0.0,0.0,-0.0057],"rot":[0.0,0.0,0.0],"size":[0.058,0.058,0.058],"color":[0.95,0.95,0.96],"smooth":0.75,"metal":0.0}
+]}

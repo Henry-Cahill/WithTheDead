@@ -1,0 +1,11 @@
+{"version": 1, "id": "SugarBeetPulpPot", "baseHeight": 0.1263, "name": "Sugar Beet Pulp Pot", "model": "gpt-oss:120b", "notes": "Rectangular tin pot of sugar‑beet pulp, ~0.28 m long × 0.18 m wide × 0.10 m high, standing upright on the floor. Includes thin metal lid with a small front handle, raised top/bottom rims, and a paper label on the front side.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0163,-0.004],"rot":[0.0,0.0,0.0],"size":[0.28,0.1,0.18],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.8},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0512,-0.004],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.2],"color":[0.73,0.66,0.43],"smooth":0.45,"metal":0.8},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.0387,-0.004],"rot":[0.0,0.0,0.0],"size":[0.304,0.004,0.204],"color":[0.73,0.66,0.43],"smooth":0.45,"metal":0.8},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.0643,-0.004],"rot":[0.0,0.0,0.0],"size":[0.284,0.004,0.184],"color":[0.73,0.66,0.43],"smooth":0.45,"metal":0.8},
+  {"name":"Label","shape":"cube","pos":[-0.04,-0.0113,0.0885],"rot":[0.0,0.0,0.0],"size":[0.2,0.08,0.005],"color":[0.9,0.85,0.7],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[-0.04,0.0287,0.0885],"rot":[0.0,0.0,0.0],"size":[0.208,0.006,0.005],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.04,-0.0513,0.0885],"rot":[0.0,0.0,0.0],"size":[0.208,0.006,0.005],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.0587,0.086],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.4,0.4,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"PulpFill","shape":"sphere","pos":[0.0,-0.0113,-0.004],"rot":[0.0,0.0,0.0],"size":[0.24,0.09,0.14],"color":[0.78,0.7,0.45],"smooth":0.05,"metal":0.0}
+]}

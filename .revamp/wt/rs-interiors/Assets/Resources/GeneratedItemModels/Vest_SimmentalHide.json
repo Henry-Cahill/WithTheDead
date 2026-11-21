@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_SimmentalHide", "baseHeight": 0.085, "name": "Vest Simmental Hide", "model": "gpt-oss:120b", "notes": "Flat Simmental‑hide vest laid out as product photo – two rectangular panels (back & front) 0.55 m wide × 0.60 m tall × 0.025 m thick, overlapped slightly in Z. Includes side seams, leather collar band, chest pocket and three button studs.", "score": 6, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0125,-0.005],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0125,0.005],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.265,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.6],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.265,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.6],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.55,0.025],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.12,0.0075,0.005],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.2],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.0,0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ButtonMid","shape":"sphere","pos":[0.0,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ButtonBottom","shape":"sphere","pos":[0.0,0.01,0.18],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Tag","shape":"cube","pos":[0.0,-0.01,-0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0}
+]}

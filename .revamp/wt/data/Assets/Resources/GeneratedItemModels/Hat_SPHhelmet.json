@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_SPHhelmet", "baseHeight": 0.18, "name": "Hat SPHhelmet", "model": "gpt-oss:120b", "notes": "Hat SPHhelmet laid flat like a product photo – overall footprint ≈ 0.36 m wide (brim) × 0.24 m tall (crown), thickness ~2‑3 cm. Main tinted plastic shell, inner lining, wide brim, decorative rim band and three side/front vents plus a small logo patch.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"InnerLining","shape":"sphere","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.22,0.22],"color":[0.38,0.38,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.11,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.02,0.36],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RimBand","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.26],"color":[0.45,0.42,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"PaddingStrap","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.2],"color":[0.5,0.48,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"FrontVent","shape":"cylinder","pos":[0.0,0.0,0.09],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":0.9},
+  {"name":"SideVentL","shape":"cylinder","pos":[-0.09,0.0,0.0],"rot":[90.0,90.0,0.0],"size":[0.04,0.08,0.04],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":0.9},
+  {"name":"SideVentR","shape":"cylinder","pos":[0.09,0.0,0.0],"rot":[90.0,-90.0,0.0],"size":[0.04,0.08,0.04],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":0.9},
+  {"name":"TopRimEdge","shape":"cube","pos":[0.0,-0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.005,0.36],"color":[0.45,0.42,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"LogoPatch","shape":"sphere","pos":[0.0,0.06,0.08],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.7,0.2,0.2],"smooth":0.3,"metal":0.0}
+]}

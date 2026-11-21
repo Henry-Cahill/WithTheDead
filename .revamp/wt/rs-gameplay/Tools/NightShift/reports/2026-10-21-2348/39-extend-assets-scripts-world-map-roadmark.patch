@@ -1,0 +1,92 @@
+diff --git a/Assets/Scripts/World/Map/RoadMarkingsBuilder.cs b/Assets/Scripts/World/Map/RoadMarkingsBuilder.cs
+index 4f9f80ab..ce76c7c9 100644
+--- a/Assets/Scripts/World/Map/RoadMarkingsBuilder.cs
++++ b/Assets/Scripts/World/Map/RoadMarkingsBuilder.cs
+@@ -9,6 +9,7 @@ namespace CloneZ
+     internal static class RoadMarkingsBuilder
+     {
+         internal const float SideLineOffset = 0.25f; // metres from road edge
++    internal const float SidewalkHalfWidth = 1.5f; // metres from road centre to outer edge of sidewalk
+         private const float KerbHeight = 0.08f; // metres tall concrete kerb
+ 
+         /// <summary>
+@@ -24,6 +25,10 @@ internal static void BuildForStreet(KentuckyMap.Site site, KentuckyMap.Street st
+             if (paintMat == null) paintMat = Resources.Load<Material>("Materials/DefaultWhite");
+ 
+             float thickness = build.GetRoadMarkingThickness();
++            // load sidewalk material (fallback to default gray)
++            var sidewalkMat = Resources.Load<Material>("Materials/Sidewalk");
++            if (sidewalkMat == null) sidewalkMat = Resources.Load<Material>("Materials/DefaultGray");
++            var sidewalkSurf = new Surf(sidewalkMat, Vector2.zero, 0f);
+             var pts = street.Pts;
+             for (int i = 0; i < pts.Count - 1; i++)
+             {
+@@ -48,15 +53,57 @@ internal static void BuildForStreet(KentuckyMap.Site site, KentuckyMap.Street st
+                     var dashCenter = new Vector3(0f, 0f, travelled + curLen * 0.5f - len * 0.5f);
+                     box.Box(dashCenter, new Vector3(0.12f, thickness, curLen), yaw, surf);
+                     travelled += curLen + gapLen;
+-                }
+-                // no collider needed – markings are purely decorative
++            }
++
+             }
+             // side-line strips (always visible)
+             BuildSideLines(site, street, build, new Surf(paintMat, Vector2.zero, 0f));
+             // kerbs for sidewalks
+             RoadSideElementBuilder.BuildKerbs(site, street, build);
++            // sidewalks with colliders
++            BuildSidewalks(site, street, build, sidewalkSurf);
+         }
+ 
++        /// <summary>
++        /// Builds flat sidewalk slabs beside a road and reserves walkable space with colliders.
++        /// </summary>
++        private static void BuildSidewalks(KentuckyMap.Site site, KentuckyMap.Street street,
++            MapBuild build, Surf surf)
++        {
++            var pts = street.Pts;
++            for (int i = 0; i < pts.Count - 1; i++)
++            {
++                Vector2 a = pts[i];
++                Vector2 b = pts[i + 1];
++                var dir = (b - a).normalized;
++                float len = Vector2.Distance(a, b);
++                float yaw = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++                // left sidewalk (outside of road)
++                var leftCenter = (a + b) * 0.5f + new Vector2(-dir.y, dir.x) * (SideLineOffset + SidewalkHalfWidth);
++                var leftBox = site.Overhead.At(new Vector3(leftCenter.x, 0.01f, leftCenter.y));
++                leftBox.Box(Vector3.zero, new Vector3(0.05f, 0.02f, len), yaw, surf);
++                // right sidewalk
++                var rightCenter = (a + b) * 0.5f + new Vector2(dir.y, -dir.x) * (SideLineOffset + SidewalkHalfWidth);
++                var rightBox = site.Overhead.At(new Vector3(rightCenter.x, 0.01f, rightCenter.y));
++                rightBox.Box(Vector3.zero, new Vector3(0.05f, 0.02f, len), yaw, surf);
++                // reserve space for colliders (walkable area)
++                var line = new List<Vector2> { a, b };
++                float radius = SidewalkHalfWidth + SideLineOffset;
++                if (site.Free(line[0], radius) && site.Free(line[1], radius))
++                {
++                    site.TakeLine(line, radius);
++                    var leftColliderPos = new Vector3(leftCenter.x, 0f, leftCenter.y);
++                    var rightColliderPos = new Vector3(rightCenter.x, 0f, rightCenter.y);
++                    var colliderSize = new Vector3(SidewalkHalfWidth * 2f, 0.02f, 0.05f);
++                    site.Town.PropCollider(leftColliderPos, colliderSize, yaw);
++                    site.Town.PropCollider(rightColliderPos, colliderSize, yaw);
++
++            }
++        }
++
++        /// <summary>
++        /// Builds side‑line strips (the white edge strips alongside the road).
++        /// </summary>
+         private static void BuildSideLines(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build, Surf surf)
+         {
+             var pts = street.Pts;
+@@ -76,6 +123,6 @@ private static void BuildSideLines(KentuckyMap.Site site, KentuckyMap.Street str
+                 var rightBox = site.Overhead.At(new Vector3(rightCenter.x, 0.01f, rightCenter.y));
+                 rightBox.Box(Vector3.zero, new Vector3(0.05f, build.GetRoadMarkingThickness(), len), yaw, surf);
+             }
+-        }
+-    }
++            }
++
+ }

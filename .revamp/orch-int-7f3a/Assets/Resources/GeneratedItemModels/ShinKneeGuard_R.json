@@ -1,0 +1,12 @@
+{"version": 1, "id": "ShinKneeGuard_R", "baseHeight": 0.0783, "name": "Shin Knee Guard R", "model": "gpt-oss:120b", "notes": "Right‑hand shin knee guard, dull‑metal front plate (0.22 m × 0.15 m) with foam padding and a fabric strap with buckle; lying on its side so the plate faces up.", "score": 6, "parts": [
+  {"name":"PlateFront","shape":"cube","pos":[0.0,-0.0008,0.017],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PaddingFoam","shape":"cube","pos":[0.0,0.0093,0.017],"rot":[0.0,0.0,0.0],"size":[0.2,0.018,0.13],"color":[0.81,0.78,0.71],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBand","shape":"cube","pos":[0.0,-0.0107,-0.073],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.04],"color":[0.32,0.33,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[0.08,-0.0107,-0.073],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.03],"color":[0.25,0.24,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.11,0.0093,0.087],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.11,0.0093,0.087],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.11,0.0093,-0.053],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.11,0.0093,-0.053],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeFoamTop","shape":"cube","pos":[0.0,0.0152,0.017],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.15],"color":[0.81,0.78,0.71],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFoamBottom","shape":"cube","pos":[0.0,-0.0068,0.017],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.15],"color":[0.81,0.78,0.71],"smooth":0.05,"metal":0.0}
+]}

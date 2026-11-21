@@ -1,0 +1,13 @@
+{"version": 1, "id": "LeatherStripsDirtyBundle", "baseHeight": 0.0971, "name": "Leather Strips Dirty Bundle", "model": "gpt-oss:120b", "notes": "Dirty leather strips bundled together, about 0.35 m × 0.25 m footprint and ~5‑7 cm thick. Main brown‑tan tint with darker stitching lines; includes a few rolled pieces and overlapping flat strips.", "score": 6, "parts": [
+  {"name":"BaseStrip1","shape":"cube","pos":[-0.0475,-0.0054,-0.02],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BaseStrip2","shape":"cube","pos":[0.0825,-0.0069,0.04],"rot":[0.0,0.0,10.0],"size":[0.28,0.012,0.05],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BaseStrip3","shape":"cube","pos":[-0.0975,-0.0059,0.06],"rot":[0.0,0.0,-8.0],"size":[0.25,0.014,0.07],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"RolledStrip1","shape":"cylinder","pos":[0.1225,0.0121,-0.08],"rot":[0.0,0.0,90.0],"size":[0.05,0.18,0.05],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"RolledStrip2","shape":"cylinder","pos":[-0.1175,0.0071,0.1],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SmallStrip1","shape":"cube","pos":[0.0225,-0.0089,0.02],"rot":[0.0,0.0,-5.0],"size":[0.18,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"SmallStrip2","shape":"cube","pos":[-0.0275,-0.0084,-0.06],"rot":[0.0,0.0,12.0],"size":[0.22,0.009,0.05],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"StitchLine1","shape":"cylinder","pos":[-0.0475,0.0026,-0.02],"rot":[0.0,0.0,90.0],"size":[0.002,0.3,0.002],"color":[0.3,0.25,0.2],"smooth":0.04,"metal":0.0},
+  {"name":"StitchLine2","shape":"cylinder","pos":[0.0825,0.0016,0.04],"rot":[0.0,0.0,90.0],"size":[0.002,0.28,0.002],"color":[0.3,0.25,0.2],"smooth":0.04,"metal":0.0},
+  {"name":"StitchLine3","shape":"cylinder","pos":[-0.0975,0.0036,0.06],"rot":[0.0,0.0,90.0],"size":[0.002,0.25,0.002],"color":[0.3,0.25,0.2],"smooth":0.04,"metal":0.0},
+  {"name":"PileBase","shape":"cube","pos":[0.0025,-0.0099,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.006,0.25],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0}
+]}

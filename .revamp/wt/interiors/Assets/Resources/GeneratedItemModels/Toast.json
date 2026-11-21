@@ -1,0 +1,14 @@
+{"version": 1, "id": "Toast", "baseHeight": 0.0825, "name": "Toast", "model": "gpt-oss:120b", "notes": "Two slices of toast (≈0.12 m × 0.15 m × 0.018 m each) stacked in a thin cardboard bag, with a small red label on the front. Total bag size ≈0.13 m × 0.045 m × 0.16 m.", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,0.0,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.13,0.045,0.16],"color":[0.93,0.9,0.85],"smooth":0.2,"metal":0.0},
+  {"name":"SliceBottom","shape":"cube","pos":[0.0,-0.0135,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SliceTop","shape":"cube","pos":[0.0,0.0045,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CrustFrontB","shape":"cube","pos":[0.0,-0.0135,0.0762],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.015],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CrustBackB","shape":"cube","pos":[0.0,-0.0135,-0.0888],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.015],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CrustLeftB","shape":"cube","pos":[-0.0675,-0.0135,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.15],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CrustRightB","shape":"cube","pos":[0.0675,-0.0135,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.15],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CrustFrontT","shape":"cube","pos":[0.0,0.0045,0.0762],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.015],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CrustBackT","shape":"cube","pos":[0.0,0.0045,-0.0888],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.015],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CrustLeftT","shape":"cube","pos":[-0.0675,0.0045,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.15],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CrustRightT","shape":"cube","pos":[0.0675,0.0045,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.15],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0205,0.0762],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.8,0.2,0.2],"smooth":0.1,"metal":0.0}
+]}

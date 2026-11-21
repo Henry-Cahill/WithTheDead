@@ -1,0 +1,9 @@
+{"version": 1, "id": "Bull_Head_Angus", "baseHeight": 0.19, "name": "Bull Head Angus", "model": "gpt-oss:120b", "notes": "Bull head (Angus) about 0.35 m long × 0.30 m wide × 0.25 m high, lying on its side with horns pointing outward. Main bone colour tint (0.6, 0.58, 0.5).", "score": 6, "parts": [
+  {"name":"SkullBase","shape":"sphere","pos":[0.0,-0.005,-0.075],"rot":[0.0,0.0,0.0],"size":[0.3,0.25,0.35],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.0,-0.015,0.175],"rot":[90.0,0.0,0.0],"size":[0.12,0.15,0.12],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[-0.15,0.11,-0.075],"rot":[0.0,0.0,90.0],"size":[0.04,0.18,0.04],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.15,0.11,-0.075],"rot":[0.0,0.0,90.0],"size":[0.04,0.18,0.04],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.07,0.02,-0.055],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.07,0.02,-0.055],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"NeckStub","shape":"cylinder","pos":[0.0,-0.07,-0.075],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0}
+]}

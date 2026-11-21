@@ -1,0 +1,12 @@
+{"version": 1, "id": "PotForgedStew", "baseHeight": 0.185, "name": "Pot Forged Stew", "model": "gpt-oss:120b", "notes": "Upright forged‑steel stew pot 0.15 m diameter × 0.20 m tall (3 kg). Thick body with a lip, screw‑rim lid and small knob, side handle, four rivets around the rim and a thin label band mid‑height.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.037,-0.025,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.15,0.2,0.15],"color":[0.45,0.6,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[-0.037,0.079,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.16],"color":[0.45,0.6,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"LidBase","shape":"cylinder","pos":[-0.037,0.087,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.14,0.012,0.14],"color":[0.45,0.6,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"LidKnob","shape":"sphere","pos":[-0.037,0.105,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.6,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.078,-0.025,-0.0055],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.45,0.6,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBand","shape":"cube","pos":[-0.037,-0.025,0.0765],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.02],"color":[0.2,0.3,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"RivetFront","shape":"sphere","pos":[-0.037,0.075,0.0695],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBack","shape":"sphere","pos":[-0.037,0.075,-0.0805],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLeft","shape":"sphere","pos":[-0.112,0.075,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRight","shape":"sphere","pos":[0.038,0.075,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0}
+]}

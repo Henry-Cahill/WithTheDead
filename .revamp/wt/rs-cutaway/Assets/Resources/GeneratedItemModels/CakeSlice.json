@@ -1,0 +1,11 @@
+{"version": 1, "id": "CakeSlice", "baseHeight": 0.1135, "name": "Cake Slice", "model": "gpt-oss:120b", "notes": "Cake slice in a rectangular cardboard box (≈0.16 m × 0.10 m × 0.07 m). Inside sits a thin crumb base (tint 0.75,0.68,0.45), a light frosting top and a couple of chocolate drizzle bits. The lid is slightly larger to overlap the box edges.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0185,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.07,0.1],"color":[0.6,0.4,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.0255,0.0],"rot":[0.0,0.0,0.0],"size":[0.162,0.008,0.102],"color":[0.58,0.38,0.18],"smooth":0.12,"metal":0.0},
+  {"name":"Tray","shape":"cube","pos":[0.0,0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.09],"color":[0.9,0.85,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"SliceBase","shape":"cube","pos":[0.0,0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.07],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Frosting","shape":"cube","pos":[0.0,0.044,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.07],"color":[0.95,0.94,0.9],"smooth":0.25,"metal":0.0},
+  {"name":"Drizzle1","shape":"cylinder","pos":[-0.03,0.047,0.015],"rot":[90.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Drizzle2","shape":"cylinder","pos":[0.025,0.0475,-0.02],"rot":[90.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.3,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.075,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.002],"color":[0.8,0.7,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.075,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.002],"color":[0.8,0.7,0.5],"smooth":0.05,"metal":0.0}
+]}

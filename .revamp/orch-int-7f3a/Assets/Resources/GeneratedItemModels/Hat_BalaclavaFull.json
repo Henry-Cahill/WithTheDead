@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BalaclavaFull", "baseHeight": 0.0725, "name": "Hat Balaclava Full", "model": "gpt-oss:120b", "notes": "Flat balaclava ~0.35 m tall × 0.30 m wide, 2.5 cm thick. Main front panel, back‑neck piece, top crown slab, left/right ear flaps, bottom neck band and dark eye/mouth cut‑outs for silhouette.", "score": 7, "parts": [
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0,0.075],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopCrown","shape":"cube","pos":[0.0,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlapL","shape":"cube","pos":[-0.185,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlapR","shape":"cube","pos":[0.185,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckBand","shape":"cube","pos":[0.0,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EyeHoleL","shape":"cube","pos":[-0.07,0.0025,0.09],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.02],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"EyeHoleR","shape":"cube","pos":[0.07,0.0025,0.09],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.02],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"MouthHole","shape":"cube","pos":[0.0,0.0025,0.05],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.02],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Coldpack", "baseHeight": 0.0725, "name": "Coldpack", "model": "gpt-oss:120b", "notes": "Coldpack instant ice pack ~13 cm × 7 cm × 2 cm lying flat: outer cloth pouch, inner gel filler, sewn edge strips, a white label on top, a small valve cap, and a few internal gel bubbles for visual detail.", "score": 7, "parts": [
+  {"name":"OuterFabric","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.02,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerGel","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.126,0.018,0.066],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,-0.0025,0.034],"rot":[0.0,0.0,0.0],"size":[0.13,0.004,0.002],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.0025,-0.034],"rot":[0.0,0.0,0.0],"size":[0.13,0.004,0.002],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[0.064,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.07],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[-0.064,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.07],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.03,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"ValveCap","shape":"cylinder","pos":[0.055,0.01,0.02],"rot":[0.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.7,0.7],"smooth":0.3,"metal":0.0},
+  {"name":"Bubble1","shape":"sphere","pos":[-0.02,-0.0005,0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.8,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"Bubble2","shape":"sphere","pos":[0.025,0.0005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.8,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"Bubble3","shape":"sphere","pos":[0.0,-0.0015,0.025],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.6,0.8,1.0],"smooth":0.2,"metal":0.0}
+]}

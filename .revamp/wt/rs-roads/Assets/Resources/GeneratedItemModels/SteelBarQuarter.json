@@ -1,0 +1,8 @@
+{"version": 1, "id": "SteelBarQuarter", "baseHeight": 0.0745, "name": "Steel Bar Quarter", "model": "gpt-oss:120b", "notes": "Quarter‑length steel bar, about 0.15 m long × 0.025 m diameter (≈0.5 kg). Lying flat on the floor with its long axis along X; simple rolled ends give a clear silhouette.", "score": 7, "parts": [
+  {"name":"BarBody","shape":"cylinder","pos":[0.0,-0.002,-0.006],"rot":[0.0,0.0,90.0],"size":[0.025,0.15,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EndCapFront","shape":"cylinder","pos":[0.075,0.0005,-0.006],"rot":[0.0,0.0,90.0],"size":[0.028,0.005,0.028],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"EndCapBack","shape":"cylinder","pos":[-0.075,0.0005,-0.006],"rot":[0.0,0.0,90.0],"size":[0.028,0.005,0.028],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"RustSpot","shape":"sphere","pos":[-0.03,0.0035,0.004],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.02,0.0035,0.0065],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.025],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelEdge","shape":"cube","pos":[0.02,0.005,0.0065],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.027],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0}
+]}

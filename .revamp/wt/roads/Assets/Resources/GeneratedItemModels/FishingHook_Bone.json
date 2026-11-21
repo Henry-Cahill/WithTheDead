@@ -1,0 +1,9 @@
+{"version": 1, "id": "FishingHook_Bone", "baseHeight": 0.08, "name": "Fishing Hook Bone", "model": "gpt-oss:120b", "notes": "Bone fishing hook ~10 cm long, 2 cm high at the bend, 0.8 cm thick. Lying on its side: thin shank along X, short upward stem and rounded tip.", "score": 6, "parts": [
+  {"name":"Shank","shape":"cylinder","pos":[-0.003,-0.016,-0.0035],"rot":[0.0,0.0,90.0],"size":[0.008,0.07,0.008],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.032,-0.002,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.032,0.014,0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EyeRing","shape":"cylinder","pos":[-0.028,-0.016,-0.0035],"rot":[0.0,0.0,90.0],"size":[0.003,0.01,0.003],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Ridge","shape":"cube","pos":[-0.003,-0.014,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.008],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"DetailMarkL","shape":"cube","pos":[-0.018,-0.014,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"DetailMarkR","shape":"cube","pos":[-0.018,-0.014,-0.0065],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0}
+]}

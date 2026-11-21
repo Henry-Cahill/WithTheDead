@@ -1,0 +1,15 @@
+{"version": 1, "id": "Codpiece_Metal", "baseHeight": 0.068, "name": "Codpiece Metal", "model": "gpt-oss:120b", "notes": "Flat rectangular metal codpiece (≈0.18 m × 0.12 m × 0.006 m) lying flat on the floor, with slightly raised beveled edges, a central rivet and a couple of wear marks for visual interest.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.006,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.004,0.059],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.002],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.004,-0.059],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.002],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.089,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.12],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.089,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.12],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"RivetShaft","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.7,0.71,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetHead","shape":"cylinder","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.75,0.76,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"WearMark1","shape":"sphere","pos":[0.04,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"WearMark2","shape":"sphere","pos":[-0.05,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBevelFL","shape":"cube","pos":[-0.088,-0.004,-0.058],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"CornerBevelFR","shape":"cube","pos":[0.088,-0.004,-0.058],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"CornerBevelBL","shape":"cube","pos":[-0.088,-0.004,0.058],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"CornerBevelBR","shape":"cube","pos":[0.088,-0.004,0.058],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0}
+]}

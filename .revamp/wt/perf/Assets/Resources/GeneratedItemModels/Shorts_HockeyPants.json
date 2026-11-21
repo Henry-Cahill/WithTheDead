@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shorts_HockeyPants", "baseHeight": 0.12, "name": "Shorts Hockey Pants", "model": "gpt-oss:120b", "notes": "Hockey shorts (padded) laid flat: overall size ≈ 0.60 m long × 0.40 m wide × 0.04 m thick; main cloth body with a darker waistband, front‑side foam padding, side‑padding cylinders, four belt‑loops, a logo patch and simple seam lines.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.01,-0.11],"rot":[0.0,0.0,0.0],"size":[0.6,0.04,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[-0.27,-0.006,-0.11],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.4],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"FrontPad","shape":"cube","pos":[-0.075,-0.0,0.14],"rot":[0.0,0.0,0.0],"size":[0.35,0.06,0.5],"color":[0.7,0.68,0.62],"smooth":0.2,"metal":0.0},
+  {"name":"SidePadL","shape":"cylinder","pos":[0.0,-0.0,-0.33],"rot":[0.0,0.0,90.0],"size":[0.12,0.6,0.12],"color":[0.7,0.68,0.62],"smooth":0.15,"metal":0.0},
+  {"name":"SidePadR","shape":"cylinder","pos":[0.0,-0.0,0.11],"rot":[0.0,0.0,90.0],"size":[0.12,0.6,0.12],"color":[0.7,0.68,0.62],"smooth":0.15,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.25,0.01,-0.21],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.3,0.28,0.25],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[-0.25,0.01,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.3,0.28,0.25],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.23,0.01,-0.21],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.3,0.28,0.25],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[-0.23,0.01,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.3,0.28,0.25],"smooth":0.12,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,-0.008,0.14],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.06],"color":[0.2,0.2,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,-0.01,-0.11],"rot":[0.0,0.0,0.0],"size":[0.6,0.04,0.008],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"KneeSeam","shape":"cube","pos":[-0.1,-0.01,-0.11],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.4],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

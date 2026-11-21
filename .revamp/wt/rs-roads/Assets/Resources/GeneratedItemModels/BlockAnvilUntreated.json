@@ -1,0 +1,12 @@
+{"version": 1, "id": "BlockAnvilUntreated", "baseHeight": 0.17, "name": "Block Anvil Untreated", "model": "gpt-oss:120b", "notes": "Untreated wooden anvil block – a solid rectangular slab (≈ 0.50 m × 0.30 m × 0.20 m) lying on its side, with a slightly raised top surface, three dark grain‑line ribs for visual texture, four small rounded corner beads and a tiny metal eye/loop for hanging.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.005,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.2,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TopSlab","shape":"cube","pos":[0.005,0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.02,0.28],"color":[0.65,0.63,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"GrainFront","shape":"cylinder","pos":[0.005,0.085,-0.09],"rot":[0.0,0.0,90.0],"size":[0.008,0.48,0.008],"color":[0.45,0.43,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"GrainMiddle","shape":"cylinder","pos":[0.005,0.085,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.48,0.008],"color":[0.45,0.43,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"GrainBack","shape":"cylinder","pos":[0.005,0.085,0.09],"rot":[0.0,0.0,90.0],"size":[0.008,0.48,0.008],"color":[0.45,0.43,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"CornerFL","shape":"cylinder","pos":[-0.23,0.1,-0.135],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"CornerFR","shape":"cylinder","pos":[-0.23,0.1,0.135],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[0.24,0.1,-0.135],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[0.24,0.1,0.135],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"MetalEye","shape":"cylinder","pos":[-0.24,0.01,0.1],"rot":[0.0,0.0,90.0],"size":[0.015,0.03,0.015],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0}
+]}

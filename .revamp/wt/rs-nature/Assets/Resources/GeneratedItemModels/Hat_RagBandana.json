@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_RagBandana", "baseHeight": 0.08, "name": "Hat Rag Bandana", "model": "gpt-oss:120b", "notes": "Flat rag bandana hat ~0.55 m square cloth, 2 cm thick, with frayed edges, a central knot and two crossed tie strips; darker fringe on edges and corners for readability.", "score": 6, "parts": [
+  {"name":"BaseFabric","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,-0.008,0.279],"rot":[0.0,0.0,0.0],"size":[0.55,0.004,0.008],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.008,-0.279],"rot":[0.0,0.0,0.0],"size":[0.55,0.004,0.008],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.279,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.55],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.279,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.55],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"HemFold","shape":"cube","pos":[0.0,-0.006,0.271],"rot":[0.0,0.0,0.0],"size":[0.55,0.008,0.008],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTL","shape":"sphere","pos":[0.279,0.005,0.279],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.38,0.34,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTR","shape":"sphere","pos":[-0.279,0.005,0.279],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.38,0.34,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBL","shape":"sphere","pos":[0.279,0.005,-0.279],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.38,0.34,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBR","shape":"sphere","pos":[-0.279,0.005,-0.279],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.38,0.34,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"KnotCenter","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.38,0.34,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"TieStrip1","shape":"cylinder","pos":[0.0,0.012,0.0],"rot":[0.0,45.0,90.0],"size":[0.015,0.4,0.015],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TieStrip2","shape":"cylinder","pos":[0.0,0.012,0.0],"rot":[0.0,-45.0,90.0],"size":[0.015,0.4,0.015],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0}
+]}

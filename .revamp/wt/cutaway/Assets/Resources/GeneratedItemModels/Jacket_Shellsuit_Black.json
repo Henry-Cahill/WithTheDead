@@ -1,0 +1,13 @@
+{"version": 1, "id": "Jacket_Shellsuit_Black", "baseHeight": 0.17, "name": "Jacket Shellsuit Black", "model": "gpt-oss:120b", "notes": "Flat shellsuit jacket ~0.70 m long × 0.45 m wide × 0.04 m thick, lying on its back: main torso panel, two sleeves, high front collar, thin front‑zipper seam, left/right chest pockets, a small hood cap, inner lining and edge seams for stitching.", "score": 6, "parts": [
+  {"name":"TorsoBody","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.04,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.0,-0.09,0.335],"rot":[0.0,0.0,0.0],"size":[0.6,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.0,-0.09,-0.335],"rot":[0.0,0.0,0.0],"size":[0.6,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarFront","shape":"cube","pos":[0.0,-0.05,0.265],"rot":[0.0,0.0,0.0],"size":[0.7,0.04,0.08],"color":[0.4,0.38,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"FrontZipper","shape":"cube","pos":[0.0,-0.065,0.265],"rot":[0.0,0.0,0.0],"size":[0.68,0.008,0.012],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,-0.065,0.225],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,-0.065,0.225],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"HoodTop","shape":"sphere","pos":[0.0,0.01,0.265],"rot":[0.0,0.0,0.0],"size":[0.3,0.2,0.3],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"InnerLining","shape":"cube","pos":[0.0,-0.088,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.036,0.43],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.0,-0.07,0.225],"rot":[0.0,0.0,0.0],"size":[0.68,0.004,0.008],"color":[0.3,0.28,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.0,-0.07,-0.225],"rot":[0.0,0.0,0.0],"size":[0.68,0.004,0.008],"color":[0.3,0.28,0.2],"smooth":0.1,"metal":0.0}
+]}

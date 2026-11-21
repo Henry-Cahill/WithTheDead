@@ -1,0 +1,13 @@
+{"version": 1, "id": "Bandage_LeftUpperArm", "baseHeight": 0.075, "name": "Bandage Left Upper Arm", "model": "gpt-oss:120b", "notes": "Bandage for left upper arm, lying flat on the floor. Main strip ~0.32 m long × 0.06 m wide × 0.012 m thick, with a small rolled end (≈3 cm diameter) at the left side and thin seam edges to hint at the gauze texture.", "score": 6, "parts": [
+  {"name":"BaseStrip","shape":"cube","pos":[0.004,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.012,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEnd","shape":"cylinder","pos":[-0.141,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.06,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSeam","shape":"cube","pos":[-0.156,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.014,0.06],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RightSeam","shape":"cube","pos":[0.164,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.014,0.06],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[-0.161,0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MidFold","shape":"cube","pos":[0.004,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.014,0.06],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.076,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.02],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.004,-0.003,0.031],"rot":[0.0,0.0,0.0],"size":[0.32,0.002,0.002],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.004,-0.003,-0.031],"rot":[0.0,0.0,0.0],"size":[0.32,0.002,0.002],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideRidgeL","shape":"cube","pos":[-0.156,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.014,0.06],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideRidgeR","shape":"cube","pos":[0.164,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.014,0.06],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

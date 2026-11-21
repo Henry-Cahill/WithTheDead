@@ -1,0 +1,10 @@
+{"version": 1, "id": "PigLeather_Landrace_Full", "baseHeight": 0.0725, "name": "Pig Leather Landrace Full", "model": "gpt-oss:120b", "notes": "Full pig hide laid flat on the ground, roughly 0.65 m long × 0.45 m wide × 0.025 m thick. Main body with a head‑flap at one short end and two leg‑flaps at the opposite side; thin leather stitching runs around the perimeter for visual detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0375,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.65,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HeadFlap","shape":"cube","pos":[-0.2975,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegFlapL","shape":"cube","pos":[0.0375,0.0,-0.275],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegFlapR","shape":"cube","pos":[0.0375,0.0,0.275],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0375,0.0,0.235],"rot":[0.0,0.0,0.0],"size":[0.65,0.025,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0375,0.0,-0.235],"rot":[0.0,0.0,0.0],"size":[0.65,0.025,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.2925,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.45],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.3675,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.45],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

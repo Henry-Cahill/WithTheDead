@@ -1,0 +1,10 @@
+{"version": 1, "id": "TableLeg_Sawblade", "baseHeight": 0.27, "name": "Table Leg Sawblade", "model": "gpt-oss:120b", "notes": "Table‑leg sawblade weapon ~0.8 m long metal handle with a 0.40 m diameter steel blade at the end; blade laid flat on its side (axis along X) so the toothed rim is visible from above.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0153,0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.8,0.07],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Hub","shape":"cube","pos":[0.3647,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.07,0.07],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"BladeDisc","shape":"cylinder","pos":[0.3947,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.4,0.02,0.4],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.3947,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.42,0.02,0.42],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"ToothFront","shape":"cube","pos":[0.3947,0.01,0.204],"rot":[0.0,0.0,0.0],"size":[0.018,0.04,0.008],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"ToothBack","shape":"cube","pos":[0.3947,0.01,-0.204],"rot":[0.0,0.0,0.0],"size":[0.018,0.04,0.008],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"ToothRight","shape":"cube","pos":[0.3947,0.01,0.144],"rot":[0.0,0.0,45.0],"size":[0.018,0.04,0.008],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"ToothLeft","shape":"cube","pos":[0.3947,0.01,-0.144],"rot":[0.0,0.0,-45.0],"size":[0.018,0.04,0.008],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0}
+]}

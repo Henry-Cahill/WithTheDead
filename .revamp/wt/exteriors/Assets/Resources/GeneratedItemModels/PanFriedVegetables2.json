@@ -1,0 +1,10 @@
+{"version": 1, "id": "PanFriedVegetables2", "baseHeight": 0.0895, "name": "Pan Fried Vegetables2", "model": "gpt-oss:120b", "notes": "Shallow rectangular take‑out tray 0.25 m × 0.18 m × 0.05 m tall with thin plastic walls, a slightly overhanging aluminum lid and a lump of pan‑fried vegetables inside (tint 0.75,0.68,0.45).", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.0245,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.01,0.18],"color":[0.9,0.9,0.9],"smooth":0.15,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,-0.0045,-0.09],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.02],"color":[0.9,0.9,0.9],"smooth":0.15,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,-0.0045,0.09],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.02],"color":[0.9,0.9,0.9],"smooth":0.15,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.115,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.18],"color":[0.9,0.9,0.9],"smooth":0.15,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.115,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.18],"color":[0.9,0.9,0.9],"smooth":0.15,"metal":0.0},
+  {"name":"LidBase","shape":"cube","pos":[0.0,0.0245,0.0],"rot":[0.0,0.0,0.0],"size":[0.255,0.008,0.185],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"VeggieMass","shape":"sphere","pos":[0.0,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LidLabel","shape":"cube","pos":[0.0,0.0285,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.6,0.5,0.4],"smooth":0.12,"metal":0.0}
+]}

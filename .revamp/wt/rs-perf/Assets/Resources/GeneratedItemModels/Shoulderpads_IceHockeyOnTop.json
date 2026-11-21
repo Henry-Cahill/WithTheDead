@@ -1,0 +1,18 @@
+{"version": 1, "id": "Shoulderpads_IceHockeyOnTop", "baseHeight": 0.1, "name": "Shoulderpads Ice Hockey On Top", "model": "gpt-oss:120b", "notes": "Ice‑hockey shoulder pads ~0.44 m wide × 0.22 m deep × 0.09 m thick. Two hard plastic shells (tinted brown‑gray), a foam padding core, front/back Velcro strap loops, small metal buckles and edge ribbing.", "score": 7, "parts": [
+  {"name":"ShellL","shape":"cube","pos":[-0.11,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.22],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"ShellR","shape":"cube","pos":[0.11,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.22],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FoamCoreL","shape":"cube","pos":[-0.09,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.2],"color":[0.7,0.68,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FoamCoreR","shape":"cube","pos":[0.09,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.2],"color":[0.7,0.68,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"StrapFrontL","shape":"cylinder","pos":[-0.05,0.03,0.108],"rot":[0.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.15,0.12,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFrontR","shape":"cylinder","pos":[0.05,0.03,0.108],"rot":[0.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.15,0.12,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBackL","shape":"cylinder","pos":[-0.05,0.03,-0.108],"rot":[0.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.15,0.12,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBackR","shape":"cylinder","pos":[0.05,0.03,-0.108],"rot":[0.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.15,0.12,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroFrontL","shape":"cube","pos":[-0.07,0.035,0.108],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.02],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroFrontR","shape":"cube","pos":[0.07,0.035,0.108],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.02],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroBackL","shape":"cube","pos":[-0.07,0.035,-0.108],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.02],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroBackR","shape":"cube","pos":[0.07,0.035,-0.108],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.02],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.12,-0.0,0.108],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.12,-0.0,0.108],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.004],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeRimTop","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.005,0.22],"color":[0.5,0.48,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeRimBottom","shape":"cube","pos":[0.0,-0.037,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.005,0.22],"color":[0.5,0.48,0.45],"smooth":0.4,"metal":0.0}
+]}

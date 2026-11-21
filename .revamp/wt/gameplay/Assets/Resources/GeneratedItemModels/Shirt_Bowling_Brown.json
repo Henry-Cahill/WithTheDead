@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shirt_Bowling_Brown", "baseHeight": 0.075, "name": "Shirt Bowling Brown", "model": "gpt-oss:120b", "notes": "Bowling shirt brown 0.55 m long × 0.40 m wide × 0.03 m thick, short sleeves, collar band, two front pockets and a row of five buttons. Lying flat with neck towards +X.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0225,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.0975,0.0,0.25],"rot":[0.0,-20.0,0.0],"size":[0.3,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.0975,0.0,-0.25],"rot":[0.0,20.0,0.0],"size":[0.3,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.2475,0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.2475,0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.2425,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.5,0.45,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.0775,0.003,0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.5,0.45,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.0775,0.003,-0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.5,0.45,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.2025,0.003,0.21],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.1325,0.003,0.21],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[-0.0625,0.003,0.21],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.0075,0.003,0.21],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.0775,0.003,0.21],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"Hem","shape":"cube","pos":[-0.2875,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.4],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0}
+]}

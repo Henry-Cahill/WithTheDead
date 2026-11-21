@@ -1,0 +1,11 @@
+{"version": 1, "id": "SteelBlock", "baseHeight": 0.09, "name": "Steel Block", "model": "gpt-oss:120b", "notes": "Steel block ~6 cm cube lying flat on the floor (y=0). Main body is solid steel with a thin worn‑off top layer, a small stamped label on one side and a raised number indicating its material.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"WearTop","shape":"cube","pos":[0.0,0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.004,0.058],"color":[0.48,0.45,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBase","shape":"cube","pos":[-0.018,0.025,0.02],"rot":[0.0,0.0,0.0],"size":[0.036,0.002,0.012],"color":[0.45,0.42,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"LabelText","shape":"cube","pos":[-0.018,0.0265,0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.008],"color":[0.2,0.18,0.15],"smooth":0.55,"metal":1.0},
+  {"name":"StampNumber","shape":"cube","pos":[0.018,0.025,-0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.2,0.18,0.15],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRimFront","shape":"cylinder","pos":[0.0,-0.0,0.03],"rot":[90.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRimBack","shape":"cylinder","pos":[0.0,-0.0,-0.03],"rot":[90.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRimLeft","shape":"cylinder","pos":[-0.03,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRimRight","shape":"cylinder","pos":[0.03,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0}
+]}

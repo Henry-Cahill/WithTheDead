@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_Neck_Blood", "baseHeight": 0.0747, "name": "Bandage Neck Blood", "model": "gpt-oss:120b", "notes": "Flat rolled bandage about 0.45 m long × 0.12 m wide × 0.015 m thick with a small rolled‑up end and three dark blood stains on top.", "score": 7, "parts": [
+  {"name":"ClothBase","shape":"cube","pos":[0.025,-0.0048,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEnd","shape":"cylinder","pos":[-0.2,-0.0048,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.125,0.0077,0.0075],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.08],"color":[0.7,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.075,0.0067,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.06],"color":[0.55,0.08,0.08],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.205,0.0088,0.0275],"rot":[0.0,0.0,0.0],"size":[0.07,0.012,0.09],"color":[0.6,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeFold","shape":"cube","pos":[-0.2,0.0032,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

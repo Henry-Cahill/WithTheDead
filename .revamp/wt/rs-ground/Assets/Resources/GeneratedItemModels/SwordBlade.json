@@ -1,0 +1,11 @@
+{"version": 1, "id": "SwordBlade", "baseHeight": 0.08, "name": "Sword Blade", "model": "gpt-oss:120b", "notes": "Sword blade (material) ~0.84 m long, 0.07 m wide, 0.012 m thick, lying flat on its side. Main metal body with guard, tapered tip, central fuller groove and edge highlights; small rivets for detail.", "score": 6, "parts": [
+  {"name":"Guard","shape":"cube","pos":[-0.405,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Core","shape":"cube","pos":[-0.045,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.66,0.012,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipBlock","shape":"cube","pos":[0.345,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.012,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipPoint","shape":"cylinder","pos":[0.425,-0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FullerGroove","shape":"cube","pos":[-0.045,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.002,0.01],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeHighlightL","shape":"cube","pos":[-0.045,0.002,0.0345],"rot":[0.0,0.0,0.0],"size":[0.66,0.004,0.002],"color":[0.75,0.73,0.68],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeHighlightR","shape":"cube","pos":[-0.045,0.002,-0.0345],"rot":[0.0,0.0,0.0],"size":[0.66,0.004,0.002],"color":[0.75,0.73,0.68],"smooth":0.55,"metal":1.0},
+  {"name":"RivetGuard","shape":"sphere","pos":[-0.365,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"RivetTip","shape":"sphere","pos":[0.345,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0}
+]}

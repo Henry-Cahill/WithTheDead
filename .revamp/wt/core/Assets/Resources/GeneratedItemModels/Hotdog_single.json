@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hotdog_single", "baseHeight": 0.075, "name": "Hotdog single", "model": "gpt-oss:120b", "notes": "Single hot‑dog (≈0.15 m long × 0.025 m diameter) in a thin paper/foil sleeve, lying on its side along X. Main tan meat colour (0.75,0.68,0.45) with a light‑gray wrapper, brown label and a small ketchup spot.", "score": 6, "parts": [
+  {"name":"WrapperBody","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.03,0.16],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Sausage","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LumpFront","shape":"sphere","pos":[-0.06,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LumpMid","shape":"sphere","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.025,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LumpBack","shape":"sphere","pos":[0.06,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LumpSide","shape":"sphere","pos":[0.03,-0.0025,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.028],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBorderTop","shape":"cube","pos":[0.0,0.0005,0.014],"rot":[0.0,0.0,0.0],"size":[0.072,0.002,0.002],"color":[0.3,0.22,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorderBottom","shape":"cube","pos":[0.0,0.0005,-0.014],"rot":[0.0,0.0,0.0],"size":[0.072,0.002,0.002],"color":[0.3,0.22,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorderLeft","shape":"cube","pos":[-0.036,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.028],"color":[0.3,0.22,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorderRight","shape":"cube","pos":[0.036,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.028],"color":[0.3,0.22,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"KetchupSpot","shape":"sphere","pos":[0.07,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.85,0.15,0.12],"smooth":0.3,"metal":0.0}
+]}

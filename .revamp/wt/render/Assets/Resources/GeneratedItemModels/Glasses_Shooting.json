@@ -1,0 +1,13 @@
+{"version": 1, "id": "Glasses_Shooting", "baseHeight": 0.0675, "name": "Glasses Shooting", "model": "gpt-oss:120b", "notes": "Flat‑lay of shooting glasses (≈0.16 m wide × 0.06 m tall × 0.02 m thick). Main purple‑gray frame, dark lenses, thin temples and nose pads. All parts sit on the floor (y=0) with half‑thickness offset.", "score": 6, "parts": [
+  {"name":"LeftLens","shape":"sphere","pos":[-0.04,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.06],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":0.0},
+  {"name":"RightLens","shape":"sphere","pos":[0.04,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.06],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.04],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"UpperFrame","shape":"cube","pos":[0.0,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"LowerFrame","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.115,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.13,0.012],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleR","shape":"cylinder","pos":[0.115,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.13,0.012],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"NosePadL","shape":"cube","pos":[-0.015,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.01],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"NosePadR","shape":"cube","pos":[0.015,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.01],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewL","shape":"sphere","pos":[-0.07,0.0035,0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.4,0.45],"smooth":0.7,"metal":1.0},
+  {"name":"ScrewR","shape":"sphere","pos":[0.07,0.0035,0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.4,0.45],"smooth":0.7,"metal":1.0}
+]}

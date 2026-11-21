@@ -1,0 +1,10 @@
+{"version": 1, "id": "Tsquare", "baseHeight": 0.0725, "name": "Tsquare", "model": "gpt-oss:120b", "notes": "T‑square ~0.5 m long wooden drafting ruler lying flat on its side (X axis). Main bar 2 cm×1.5 cm cross‑section, right‑angle head 7 cm long protruding in +Z. Thin metal reinforcement stripe along the top edge and two rounded end caps. Small metal screws at the head joint.", "score": 7, "parts": [
+  {"name":"MainBar","shape":"cube","pos":[0.0,0.0,-0.0265],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"HeadBar","shape":"cube","pos":[0.2375,0.0,0.0085],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"MetalStripe","shape":"cube","pos":[0.0,0.0015,-0.0265],"rot":[0.0,0.0,0.0],"size":[0.48,0.003,0.022],"color":[0.4,0.4,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"CapLeft","shape":"cylinder","pos":[-0.24,0.0,-0.0265],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"CapRight","shape":"cylinder","pos":[0.24,0.0,-0.0265],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"Screw1","shape":"cylinder","pos":[0.235,0.0045,-0.0115],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.3,0.3,0.32],"smooth":0.65,"metal":1.0},
+  {"name":"Screw2","shape":"cylinder","pos":[0.235,0.0045,-0.0415],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.3,0.3,0.32],"smooth":0.65,"metal":1.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.15,0.005,-0.0265],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.022],"color":[0.45,0.42,0.38],"smooth":0.12,"metal":0.0}
+]}

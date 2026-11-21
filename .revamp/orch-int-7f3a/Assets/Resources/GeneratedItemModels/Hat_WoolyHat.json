@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_WoolyHat", "baseHeight": 0.225, "name": "Hat Wooly Hat", "model": "gpt-oss:120b", "notes": "Wooly hat laid flat like a product photo – wide brim (≈0.30 m dia) with a rounded crown (~0.26 m dia, 0.20 m tall), a mid‑crown band, inner brim lining and a pom‑pom on top. Main colour is the given tint; darker greys for seams and band.", "score": 7, "parts": [
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.155,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.16,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.62,0.57,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBody","shape":"sphere","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.26,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.24],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,-0.144,0.0],"rot":[0.0,0.0,0.0],"size":[0.302,0.004,0.302],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopRidge","shape":"cylinder","pos":[0.0,0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.004,0.24],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PomPom","shape":"sphere","pos":[0.0,0.135,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FoldL","shape":"sphere","pos":[-0.07,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.08],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"FoldR","shape":"sphere","pos":[0.07,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.08],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"FoldFront","shape":"sphere","pos":[0.0,-0.035,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "ChickenFillet", "baseHeight": 0.0726, "name": "Chicken Fillet", "model": "gpt-oss:120b", "notes": "Chicken fillet package ~0.124 m wide × 0.064 m deep × 0.022 m tall: thin cardboard tray base, raw meat slab, clear plastic film top, wrap edges, printed label on the front and a few texture grains on the meat surface.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.0106,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.064],"color":[0.6,0.5,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Meat","shape":"cube","pos":[0.0,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopFilm","shape":"cube","pos":[0.0,0.0099,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.064],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapFront","shape":"cube","pos":[0.0,0.0004,-0.031],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.002],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapBack","shape":"cube","pos":[0.0,0.0004,0.031],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.002],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapLeft","shape":"cube","pos":[-0.061,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.064],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapRight","shape":"cube","pos":[0.061,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.064],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0106,-0.01],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.5,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Grain1","shape":"sphere","pos":[-0.02,0.0104,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.6,0.55,0.35],"smooth":0.03,"metal":0.0},
+  {"name":"Grain2","shape":"sphere","pos":[0.03,0.0104,-0.015],"rot":[0.0,0.0,0.0],"size":[0.009,0.0035,0.007],"color":[0.6,0.55,0.35],"smooth":0.03,"metal":0.0},
+  {"name":"Grain3","shape":"sphere","pos":[-0.04,0.0104,0.0],"rot":[0.0,0.0,0.0],"size":[0.007,0.0045,0.005],"color":[0.6,0.55,0.35],"smooth":0.03,"metal":0.0}
+]}

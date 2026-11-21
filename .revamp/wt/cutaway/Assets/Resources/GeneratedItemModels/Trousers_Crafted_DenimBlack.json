@@ -1,0 +1,16 @@
+{"version": 1, "id": "Trousers_Crafted_DenimBlack", "baseHeight": 0.08, "name": "Trousers Crafted Denim Black", "model": "gpt-oss:120b", "notes": "Denim black trousers laid flat like a product photo – footprint ≈ 0.90 m long × 0.48 m wide, 3 cm thick. Main silhouette: waistband spanning the top, two leg panels side‑by‑side, front pockets on each leg, a rear pocket, side seam strips, belt loops and bottom cuffs.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.02,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.04,0.48],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[0.02,-0.005,0.14],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.02,-0.005,-0.14],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[0.27,-0.005,0.12],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.07],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.27,-0.005,-0.12],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.07],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[-0.28,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.08],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.02,-0.0025,0.255],"rot":[0.0,0.0,0.0],"size":[0.9,0.005,0.01],"color":[0.4,0.38,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.02,-0.0025,-0.255],"rot":[0.0,0.0,0.0],"size":[0.9,0.005,0.01],"color":[0.4,0.38,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[0.37,0.005,0.2],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[0.37,0.005,-0.2],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.33,0.005,0.2],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[-0.33,0.005,-0.2],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.43,-0.002,0.14],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.43,-0.002,-0.14],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0}
+]}

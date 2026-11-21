@@ -1,0 +1,11 @@
+{"version": 1, "id": "Bull_Head_Simmental", "baseHeight": 0.12, "name": "Bull Head Simmental", "model": "gpt-oss:120b", "notes": "Bull head Simmental ~0.45 m long × 0.22 m wide × 0.12 m thick, lying on its side (long axis along +X). Main skull body, two forward‑pointing horns, eyes, snout, ears and a simple mouth opening.", "score": 6, "parts": [
+  {"name":"Skull","shape":"sphere","pos":[-0.0425,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.12,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[0.1775,0.03,-0.07],"rot":[90.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.38,0.34,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.1775,0.03,0.07],"rot":[90.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.38,0.34,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.0775,0.03,-0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.15,0.15,0.15],"smooth":0.02,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.0775,0.03,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.15,0.15,0.15],"smooth":0.02,"metal":0.0},
+  {"name":"Snout","shape":"sphere","pos":[0.2225,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.06],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[-0.1925,0.03,-0.08],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.02],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[-0.1925,0.03,0.08],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.02],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Mouth","shape":"cube","pos":[0.2375,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0}
+]}

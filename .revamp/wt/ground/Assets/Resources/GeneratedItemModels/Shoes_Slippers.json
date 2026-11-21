@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoes_Slippers", "baseHeight": 0.0887, "name": "Shoes Slippers", "model": "gpt-oss:120b", "notes": "Flat product‑photo view of a pair of slippers (≈0.28 m long × 0.10 m wide × 0.03 m thick). Main fabric tinted 0.55,0.5,0.6; rubber sole and trim darker. Parts include the sole, upper front/back panels, toe cap, heel tab/loop, edge rims and a small decorative button.", "score": 6, "parts": [
+  {"name":"Sole","shape":"cube","pos":[-0.005,-0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.1],"color":[0.35,0.33,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"UpperFront","shape":"cube","pos":[0.065,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperBack","shape":"cube","pos":[-0.075,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ToeCap","shape":"cylinder","pos":[0.125,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.45,0.42,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"HeelTab","shape":"cube","pos":[-0.135,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelLoop","shape":"cylinder","pos":[-0.135,0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.35,0.33,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.1325,-0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.1],"color":[0.35,0.33,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[-0.1425,-0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.1],"color":[0.35,0.33,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.005,-0.0187,0.0525],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.005],"color":[0.35,0.33,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[-0.005,-0.0187,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.005],"color":[0.35,0.33,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"ToeDecor","shape":"sphere","pos":[0.115,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.2],"smooth":0.4,"metal":0.0}
+]}

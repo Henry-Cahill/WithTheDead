@@ -1,0 +1,13 @@
+{"version": 1, "id": "AerosolbombRemote", "baseHeight": 0.17, "name": "Aerosolbomb Remote", "model": "gpt-oss:120b", "notes": "Aerosol‑bomb remote 0.45 m long × 0.20 m wide (lying on its side). Main body is a steel aerosol can, capped with a spray nozzle at the business end and a plastic trigger grip on the opposite side. Small button and label give visual detail.", "score": 6, "parts": [
+  {"name":"CanBody","shape":"cylinder","pos":[0.0,0.0,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.2,0.33,0.2],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"Cap","shape":"cylinder","pos":[0.17,0.0,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.22,0.01,0.22],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":0.9},
+  {"name":"Nozzle","shape":"cylinder","pos":[0.18,0.0,0.0925],"rot":[90.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":0.8},
+  {"name":"Valve","shape":"sphere","pos":[0.18,0.0,0.1225],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Grip","shape":"cube","pos":[-0.18,0.0,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.08,0.15,0.05],"color":[0.6,0.6,0.64],"smooth":0.3,"metal":0.0},
+  {"name":"TriggerButton","shape":"sphere","pos":[-0.18,0.085,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.2,0.2,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"LabelBand","shape":"cube","pos":[0.0,0.001,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.2],"color":[0.45,0.45,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"SideRimL","shape":"cylinder","pos":[-0.07,0.0,0.0625],"rot":[0.0,0.0,90.0],"size":[0.02,0.33,0.02],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":0.9},
+  {"name":"SideRimR","shape":"cylinder","pos":[-0.07,0.0,-0.1175],"rot":[0.0,0.0,90.0],"size":[0.02,0.33,0.02],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":0.9},
+  {"name":"TopRim","shape":"cylinder","pos":[0.07,0.0,0.0625],"rot":[0.0,0.0,90.0],"size":[0.02,0.33,0.02],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":0.9},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.07,0.0,-0.1175],"rot":[0.0,0.0,90.0],"size":[0.02,0.33,0.02],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":0.9}
+]}

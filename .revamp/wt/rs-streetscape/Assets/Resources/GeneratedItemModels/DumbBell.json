@@ -1,0 +1,10 @@
+{"version": 1, "id": "DumbBell", "baseHeight": 0.15, "name": "Dumb Bell", "model": "gpt-oss:120b", "notes": "Dumbbell ~0.44 m long lying on its side (X‑axis). Central steel bar (diameter 0.03 m, length 0.32 m) with two round weight plates (diameter 0.18 m, thickness 0.04 m) at each end and small metal caps. A rubber knurled grip in the centre.", "score": 7, "parts": [
+  {"name":"Bar","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.32,0.03],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.28,0.04],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"PlateL","shape":"cylinder","pos":[-0.18,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.04,0.18],"color":[0.55,0.55,0.58],"smooth":0.45,"metal":1.0},
+  {"name":"PlateR","shape":"cylinder","pos":[0.18,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.04,0.18],"color":[0.55,0.55,0.58],"smooth":0.45,"metal":1.0},
+  {"name":"CapL","shape":"cylinder","pos":[-0.2,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.008,0.04],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"CapR","shape":"cylinder","pos":[0.2,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.008,0.04],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"KnurlL","shape":"cube","pos":[-0.07,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.03],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"KnurlR","shape":"cube","pos":[0.07,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.03],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0}
+]}

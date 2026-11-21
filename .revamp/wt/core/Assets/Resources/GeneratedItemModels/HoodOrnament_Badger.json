@@ -1,0 +1,15 @@
+{"version": 1, "id": "HoodOrnament_Badger", "baseHeight": 0.1125, "name": "Hood Ornament Badger", "model": "gpt-oss:120b", "notes": "Badger hood‑ornament about 0.18 m long × 0.12 m tall × 0.10 m deep, lying on its side with the base plate touching the floor. Main body is a brushed‑metal badger head (tint 0.6 0.58 0.5) with ears, nose, eyes and a dark stripe; small rivets around the mounting plate add detail.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cylinder","pos":[-0.0005,-0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.06],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[-0.0255,-0.0415,-0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[-0.0255,-0.0415,0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.0245,-0.0415,-0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.0245,-0.0415,0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"Body","shape":"sphere","pos":[-0.0005,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.08,0.1],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EarL","shape":"sphere","pos":[-0.0405,0.0375,0.045],"rot":[0.0,0.0,0.0],"size":[0.025,0.03,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EarR","shape":"sphere","pos":[-0.0405,0.0375,-0.045],"rot":[0.0,0.0,0.0],"size":[0.025,0.03,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0695,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.022],"color":[0.35,0.33,0.28],"smooth":0.45,"metal":1.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.0295,0.0075,0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.1,0.09,0.07],"smooth":0.6,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.0295,0.0075,-0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.1,0.09,0.07],"smooth":0.6,"metal":0.0},
+  {"name":"Stripe","shape":"cube","pos":[-0.0105,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.09],"color":[0.35,0.33,0.28],"smooth":0.3,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.0705,-0.0125,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.03,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

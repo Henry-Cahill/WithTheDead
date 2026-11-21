@@ -1,0 +1,13 @@
+{"version": 1, "id": "LongCoat_Bathrobe", "baseHeight": 0.17, "name": "Long Coat Bathrobe", "model": "gpt-oss:120b", "notes": "Long bathrobe ~0.90 m long × 0.60 m wide, 2.5 cm thick; main cloth in muted taupe (0.6,0.58,0.5). Built as a back panel, front panel, two sleeves, a collar ring and a thin belt strip with darker seam trims.", "score": 6, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.075,-0.0025,-0.15],"rot":[0.0,0.0,0.0],"size":[0.9,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.075,-0.0025,0.15],"rot":[0.0,0.0,0.0],"size":[0.9,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.275,-0.0025,-0.45],"rot":[0.0,0.0,0.0],"size":[0.5,0.025,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.275,-0.0025,0.45],"rot":[0.0,0.0,0.0],"size":[0.5,0.025,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarRing","shape":"cylinder","pos":[-0.35,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.22,0.02,0.22],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BeltStrip","shape":"cube","pos":[-0.025,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.008,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.075,0.01,-0.15],"rot":[0.0,0.0,0.0],"size":[0.9,0.002,0.01],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.075,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.9,0.002,0.01],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSleeveL","shape":"cube","pos":[-0.275,0.01,-0.45],"rot":[0.0,0.0,0.0],"size":[0.5,0.002,0.01],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSleeveR","shape":"cube","pos":[-0.275,0.01,0.45],"rot":[0.0,0.0,0.0],"size":[0.5,0.002,0.01],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"CollarTie","shape":"cube","pos":[-0.35,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.02],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0}
+]}

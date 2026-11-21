@@ -1,0 +1,12 @@
+{"version": 1, "id": "Trousers_Suit", "baseHeight": 0.0725, "name": "Trousers Suit", "model": "gpt-oss:120b", "notes": "Flat‑lay trouser suit about 1.02 m long, 0.40 m wide (two 0.18 m legs separated by a 0.04 m gap) and 2.5 cm thick. Main fabric tint 0.55,0.50,0.60; includes waist front strip, two leg panels, front pockets, back pocket and four belt‑loop studs.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.11,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,1.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.11,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,1.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.4,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.07,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.04],"color":[0.48,0.43,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.07,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.04],"color":[0.48,0.43,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,0.0,-0.45],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.04],"color":[0.48,0.43,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop1","shape":"cylinder","pos":[-0.15,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"BeltLoop2","shape":"cylinder","pos":[-0.05,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"BeltLoop3","shape":"cylinder","pos":[0.05,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"BeltLoop4","shape":"cylinder","pos":[0.15,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0}
+]}

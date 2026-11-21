@@ -1,0 +1,11 @@
+{"version": 1, "id": "HempBundleDried", "baseHeight": 0.12, "name": "Hemp Bundle Dried", "model": "gpt-oss:120b", "notes": "Dried hemp bundle in a light burlap sack (~0.30 m L × 0.15 m W × 0.08 m H).  Bundle of stems tied with twine, a few leaf‑shaped lumps poking out, and a small paper label on the front of the sack.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.015,-0.036],"rot":[0.0,0.0,0.0],"size":[0.34,0.09,0.17],"color":[0.9,0.85,0.7],"smooth":0.15,"metal":0.0},
+  {"name":"Bundle","shape":"cube","pos":[0.0,-0.02,-0.036],"rot":[0.0,0.0,0.0],"size":[0.3,0.08,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Twine","shape":"cylinder","pos":[0.0,0.025,-0.036],"rot":[0.0,0.0,90.0],"size":[0.01,0.32,0.01],"color":[0.4,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"LeafFR","shape":"sphere","pos":[0.12,0.04,0.034],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.68,0.58,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LeafFL","shape":"sphere","pos":[-0.12,0.04,0.034],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.68,0.58,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBR","shape":"sphere","pos":[0.12,0.04,-0.106],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.68,0.58,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBL","shape":"sphere","pos":[-0.12,0.04,-0.106],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.68,0.58,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.05,-0.015,0.084],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.07],"color":[0.5,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[-0.05,-0.013,0.084],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.074],"color":[0.35,0.3,0.2],"smooth":0.05,"metal":0.0}
+]}

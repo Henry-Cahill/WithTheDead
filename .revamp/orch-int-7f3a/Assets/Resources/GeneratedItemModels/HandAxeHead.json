@@ -1,0 +1,13 @@
+{"version": 1, "id": "HandAxeHead", "baseHeight": 0.069, "name": "Hand Axe Head", "model": "gpt-oss:120b", "notes": "Hand axe head, metal (tint 0.6 0.58 0.5), about 0.22 m long × 0.12 m wide × 0.02 m thick, lying on its flat side. Core block with tapered blade tip, central eye‑ring, two rivets, top/bottom bevels and side plates give a readable silhouette.", "score": 7, "parts": [
+  {"name":"Core","shape":"cube","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.018,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"cube","pos":[0.1,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EyeRing","shape":"cylinder","pos":[-0.04,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.06,0.0,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[-0.06,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"BevelTop","shape":"cube","pos":[-0.01,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.12],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"BevelBottom","shape":"cube","pos":[-0.01,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.12],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"SidePlateL","shape":"cube","pos":[-0.01,0.0,0.062],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.004],"color":[0.58,0.56,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"SidePlateR","shape":"cube","pos":[-0.01,0.0,-0.062],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.004],"color":[0.58,0.56,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"PollTop","shape":"cube","pos":[-0.1,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.12],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"PollBottom","shape":"cube","pos":[-0.1,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.12],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0}
+]}

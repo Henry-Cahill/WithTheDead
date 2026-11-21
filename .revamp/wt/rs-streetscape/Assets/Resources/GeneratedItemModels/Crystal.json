@@ -1,0 +1,13 @@
+{"version": 1, "id": "Crystal", "baseHeight": 0.1, "name": "Crystal", "model": "gpt-oss:120b", "notes": "Small crystal cluster ~0.12 m long x 0.08 m wide x 0.06 m tall, lying on its side. Main prismatic body with two end spikes, a central rounded core and several angled shard facets for a readable silhouette.", "score": 7, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"CoreSphere","shape":"sphere","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.7,0.68,0.6],"smooth":0.55,"metal":0.0},
+  {"name":"SpikeA","shape":"cylinder","pos":[0.055,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"SpikeB","shape":"cylinder","pos":[-0.055,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"Shard1","shape":"cube","pos":[0.03,-0.005,0.045],"rot":[0.0,30.0,0.0],"size":[0.04,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"Shard2","shape":"cube","pos":[-0.03,-0.005,0.045],"rot":[0.0,-30.0,0.0],"size":[0.04,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"Shard3","shape":"cube","pos":[0.03,-0.005,-0.045],"rot":[0.0,-30.0,0.0],"size":[0.04,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"Shard4","shape":"cube","pos":[-0.03,-0.005,-0.045],"rot":[0.0,30.0,0.0],"size":[0.04,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"TopFacetL","shape":"cube","pos":[0.015,0.005,0.025],"rot":[0.0,15.0,0.0],"size":[0.02,0.008,0.03],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"TopFacetR","shape":"cube","pos":[-0.015,0.005,-0.025],"rot":[0.0,-15.0,0.0],"size":[0.02,0.008,0.03],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"BaseRim","shape":"cylinder","pos":[0.0,-0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "LightBulbBox", "baseHeight": 0.125, "name": "Light Bulb Box", "model": "gpt-oss:120b", "notes": "Closed cardboard light‑bulb box about 0.32 m long × 0.22 m wide × 0.12 m high, lying on its side (long axis along +X). Main body in muted brown‑tan, thin label on the front (+Z) and three small glass bulbs visible inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.12,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.01,0.24],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BottomFlap","shape":"cube","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.01,0.24],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.155,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.32,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.155,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.32,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.01,0.111],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.002],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Bulb1","shape":"sphere","pos":[-0.07,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.8},
+  {"name":"Bulb2","shape":"sphere","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.8},
+  {"name":"Bulb3","shape":"sphere","pos":[0.07,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.8},
+  {"name":"BulbBase","shape":"cylinder","pos":[-0.07,-0.037,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.9},
+  {"name":"BulbBaseR","shape":"cylinder","pos":[0.0,-0.037,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.9},
+  {"name":"BulbBaseL","shape":"cylinder","pos":[0.07,-0.037,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.9}
+]}

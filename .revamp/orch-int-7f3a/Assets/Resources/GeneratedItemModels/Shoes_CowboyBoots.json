@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shoes_CowboyBoots", "baseHeight": 0.125, "name": "Shoes Cowboy Boots", "model": "gpt-oss:120b", "notes": "Cowboy boots pair laid flat like a product photo – each boot ~0.35 m long, 0.10 m wide, shaft rises ~0.12 m at the heel, sole thickness 0.02 m. Boots sit side‑by‑side with their inner edges touching (≈0 m apart). Leather tint (0.55,0.5,0.6) used for all parts.", "score": 6, "parts": [
+  {"name":"LeftSole","shape":"cube","pos":[0.0325,-0.055,-0.05],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"RightSole","shape":"cube","pos":[0.0325,-0.055,0.05],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"HeelL","shape":"cube","pos":[-0.0825,-0.055,-0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"HeelR","shape":"cube","pos":[-0.0825,-0.055,0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"ShaftL","shape":"cube","pos":[-0.1025,0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.12,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"ShaftR","shape":"cube","pos":[-0.1025,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.12,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"ToeCapL","shape":"cube","pos":[0.1775,-0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"ToeCapR","shape":"cube","pos":[0.1775,-0.04,0.05],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"EyeletL_Lower","shape":"cylinder","pos":[-0.0975,-0.025,-0.1],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletL_Upper","shape":"cylinder","pos":[-0.0975,0.015,-0.1],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR_Lower","shape":"cylinder","pos":[-0.0975,-0.025,0.1],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR_Upper","shape":"cylinder","pos":[-0.0975,0.015,0.1],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"StitchLineL","shape":"cube","pos":[-0.0675,-0.05,-0.05],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.004],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineR","shape":"cube","pos":[-0.0675,-0.05,0.05],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.004],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

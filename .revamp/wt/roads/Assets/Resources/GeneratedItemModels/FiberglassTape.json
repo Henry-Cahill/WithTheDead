@@ -1,0 +1,9 @@
+{"version": 1, "id": "FiberglassTape", "baseHeight": 0.13, "name": "Fiberglass Tape", "model": "gpt-oss:120b", "notes": "Fiberglass tape roll (≈0.14 m outer Ø × 0.05 m wide) with cardboard core and a loose strip of tape lying beside it. Core is brownish, tape grey‑fiberglass.", "score": 6, "parts": [
+  {"name":"TapeCoil","shape":"cylinder","pos":[0.5312,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.05,0.14],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Core","shape":"cylinder","pos":[0.5312,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.05,0.04],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LooseStrip","shape":"cube","pos":[-0.0687,-0.0685,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.003,0.05],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.5312,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.138,0.05,0.138],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.5613,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.04],"color":[0.3,0.28,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"TapeEndCap","shape":"cylinder","pos":[0.5062,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.005,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"TapeEndCap2","shape":"cylinder","pos":[0.5563,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.005,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

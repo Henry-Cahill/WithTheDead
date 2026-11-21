@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_BaseballCap_Sheriff", "baseHeight": 0.078, "name": "Hat Baseball Cap Sheriff", "model": "gpt-oss:120b", "notes": "Flat baseball‑cap sheriff hat spread out: circular crown ≈ 0.28 m diameter, 0.02 m thick; front visor ≈ 0.07 m deep extending from the front edge of the crown; thin dark trim around crown edge and a small front button. Main colour is the tint (0.55,0.5,0.6) with darker stitching.", "score": 6, "parts": [
+  {"name":"CrownDisc","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTrim","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.304,0.004,0.304],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"VisorFront","shape":"cube","pos":[0.0,0.0,0.105],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"VisorTrim","shape":"cube","pos":[0.0,0.0075,0.105],"rot":[0.0,0.0,0.0],"size":[0.304,0.003,0.082],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.14,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.015,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.14,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.015,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontButton","shape":"sphere","pos":[0.0,0.012,0.14],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.75,0.7,0.6],"smooth":0.4,"metal":1.0}
+]}

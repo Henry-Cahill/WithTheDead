@@ -1,0 +1,13 @@
+{"version": 1, "id": "Trousers_Crafted_Burlap", "baseHeight": 0.0725, "name": "Trousers Crafted Burlap", "model": "gpt-oss:120b", "notes": "Flat trousers of burlap (tint 0.55,0.5,0.6) spread out for a product‑photo view: wide waistband, two leg panels separated by a crotch gap, front pockets on each side, a back pocket, three small belt‑loops and ankle cuffs (hems). Overall footprint ≈ 0.78 m wide × 1.0 m long, 3 cm thick.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.48,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.78],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[0.0,0.0,0.225],"rot":[0.0,0.0,0.0],"size":[0.9,0.025,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.0,0.0,-0.225],"rot":[0.0,0.0,0.0],"size":[0.9,0.025,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[0.25,-0.005,0.12],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.25,-0.005,-0.12],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.2,-0.005,-0.3],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopCenter","shape":"cylinder","pos":[0.48,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopLeft","shape":"cylinder","pos":[0.48,-0.01,0.2],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopRight","shape":"cylinder","pos":[0.48,-0.01,-0.2],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[-0.475,-0.005,0.225],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[-0.475,-0.005,-0.225],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

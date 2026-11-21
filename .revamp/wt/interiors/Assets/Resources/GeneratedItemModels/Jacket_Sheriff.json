@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_Sheriff", "baseHeight": 0.08, "name": "Jacket Sheriff", "model": "gpt-oss:120b", "notes": "Flat sheriff jacket laid out flat like a product photo: 0.70 m long × 0.50 m wide × 0.03 m thick. Main torso panel, two angled sleeves, stand‑up collar, front lapels, twin front pockets, waist belt and thin stitching lines.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0549,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.3749,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LapelLeft","shape":"cube","pos":[0.3349,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LapelRight","shape":"cube","pos":[0.3349,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.1549,-0.002,0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.25],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.1549,-0.002,-0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.25],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Belt","shape":"cube","pos":[-0.1451,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.01,0.5],"color":[0.495,0.45,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.3549,-0.005,0.38],"rot":[0.0,-30.0,0.0],"size":[0.22,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.3549,-0.005,-0.38],"rot":[0.0,30.0,0.0],"size":[0.22,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[0.0549,-0.005,0.255],"rot":[0.0,0.0,0.0],"size":[0.7,0.005,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.0549,-0.005,-0.255],"rot":[0.0,0.0,0.0],"size":[0.7,0.005,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[-0.2951,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.5],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.4049,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.5],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

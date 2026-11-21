@@ -1,0 +1,10 @@
+{"version": 1, "id": "TentGreen_Packed", "baseHeight": 0.128, "name": "Tent Green Packed", "model": "gpt-oss:120b", "notes": "Packed green tent bundle ~0.55 m long × 0.20 m wide × 0.12 m high, folded fabric with a rolled pole sticking out the front and a strap across the top.", "score": 6, "parts": [
+  {"name":"Bag","shape":"cube","pos":[-0.075,-0.008,-0.0255],"rot":[0.0,0.0,0.0],"size":[0.55,0.12,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[-0.075,0.047,-0.0255],"rot":[0.0,0.0,0.0],"size":[0.55,0.004,0.2],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[-0.075,-0.062,-0.0255],"rot":[0.0,0.0,0.0],"size":[0.55,0.004,0.2],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[-0.075,0.04,-0.0255],"rot":[0.0,0.0,5.0],"size":[0.55,0.008,0.02],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.275,0.012,0.0755],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.1],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[-0.325,0.002,0.0755],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"PoleRoll","shape":"cylinder","pos":[0.075,0.022,-0.0255],"rot":[0.0,0.0,90.0],"size":[0.03,0.55,0.03],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"PoleCap","shape":"sphere","pos":[0.35,0.022,-0.0255],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0}
+]}

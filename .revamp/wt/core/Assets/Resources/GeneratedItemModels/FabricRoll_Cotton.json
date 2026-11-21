@@ -1,0 +1,8 @@
+{"version": 1, "id": "FabricRoll_Cotton", "baseHeight": 0.211, "name": "Fabric Roll Cotton", "model": "gpt-oss:120b", "notes": "Cotton fabric roll about 0.8 m long × 0.30 m diameter, cardboard core with cotton wound around it, white label on the side.", "score": 6, "parts": [
+  {"name":"OuterFabric","shape":"cylinder","pos":[0.0,0.0,-0.026],"rot":[0.0,0.0,90.0],"size":[0.3,0.8,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CoreCardboard","shape":"cylinder","pos":[0.0,0.0,-0.026],"rot":[0.0,0.0,90.0],"size":[0.1,0.76,0.1],"color":[0.4,0.3,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[0.0,0.0,0.127],"rot":[0.0,0.0,0.0],"size":[0.22,0.006,0.1],"color":[0.92,0.92,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"SeamBand","shape":"cylinder","pos":[-0.38,0.0,-0.026],"rot":[0.0,0.0,90.0],"size":[0.302,0.02,0.302],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.4,0.0,-0.026],"rot":[0.0,0.0,0.0],"size":[0.02,0.3,0.3],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"cube","pos":[0.4,0.0,-0.026],"rot":[0.0,0.0,0.0],"size":[0.02,0.3,0.3],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0}
+]}

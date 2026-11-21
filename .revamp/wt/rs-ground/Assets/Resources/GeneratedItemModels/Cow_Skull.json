@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cow_Skull", "baseHeight": 0.115, "name": "Cow Skull", "model": "gpt-oss:120b", "notes": "Cow skull about 0.30 m long × 0.18 m wide × 0.14 m high, lying on its side (long axis along X). Main bone block with two curved horns, a forward nasal protrusion, lower jaw and a few teeth give the recognisable silhouette.", "score": 6, "parts": [
+  {"name":"SkullBlock","shape":"cube","pos":[-0.03,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[-0.11,0.035,-0.09],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[-0.11,0.035,0.09],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"NasalBone","shape":"cube","pos":[0.14,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[0.02,-0.045,-0.02],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"ToothFL","shape":"cube","pos":[0.1,-0.04,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.005],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"ToothFR","shape":"cube","pos":[0.1,-0.04,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.005],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"ToothBL","shape":"cube","pos":[0.04,-0.04,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.005],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"ToothBR","shape":"cube","pos":[0.04,-0.04,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.005],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Crack1","shape":"cube","pos":[-0.09,-0.015,0.05],"rot":[0.0,20.0,0.0],"size":[0.12,0.005,0.01],"color":[0.5,0.48,0.44],"smooth":0.1,"metal":0.0},
+  {"name":"Crack2","shape":"cube","pos":[-0.01,-0.01,-0.06],"rot":[0.0,-15.0,0.0],"size":[0.09,0.005,0.01],"color":[0.5,0.48,0.44],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jacket_Shellsuit_Teal", "baseHeight": 0.1643, "name": "Jacket Shellsuit Teal", "model": "gpt-oss:120b", "notes": "Flat shellsuit jacket ≈ 0.68 m long × 0.48 m wide × 0.04 m thick (teal tint). Main torso panel, two angled sleeves whose ends are capped by cuffs that sit flush against the sleeve tips, a standing collar, front zipper line and two small front pockets.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.002,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.04,0.48],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.098,-0.0,-0.35],"rot":[0.0,0.0,-20.0],"size":[0.5,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.098,-0.0,0.35],"rot":[0.0,0.0,20.0],"size":[0.5,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.348,0.0025,-0.35],"rot":[0.0,0.0,-20.0],"size":[0.12,0.045,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.348,0.0025,0.35],"rot":[0.0,0.0,20.0],"size":[0.12,0.045,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.342,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.342,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.045,0.09],"color":[0.12,0.13,0.11],"smooth":0.05,"metal":0.0},
+  {"name":"ZipperLine","shape":"cube","pos":[0.002,0.005,0.24],"rot":[0.0,0.0,0.0],"size":[0.68,0.008,0.004],"color":[0.38,0.36,0.28],"smooth":0.1,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.198,0.005,0.24],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.202,0.005,0.24],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0}
+]}

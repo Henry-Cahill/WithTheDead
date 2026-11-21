@@ -1,0 +1,12 @@
+{"version": 1, "id": "WhiteCrappie", "baseHeight": 0.09, "name": "White Crappie", "model": "gpt-oss:120b", "notes": "Whole white crappie ~0.25 m long, ~0.07 m wide, ~0.05 m thick, lying on its side (head +X). Main body tinted pale gold, with simple fins, eyes and mouth details.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.005,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.05,0.07],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"TailFin","shape":"cube","pos":[-0.125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.1],"color":[0.4,0.5,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"DorsalFin","shape":"cube","pos":[0.005,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.4,0.5,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"PectoralL","shape":"cube","pos":[0.075,-0.015,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.4,0.5,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"PectoralR","shape":"cube","pos":[0.075,-0.015,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.4,0.5,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.125,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.125,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Mouth","shape":"cylinder","pos":[0.135,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.005,0.02,0.005],"color":[0.85,0.6,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"ScalePatch","shape":"cube","pos":[-0.045,-0.0045,0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.04],"color":[0.68,0.58,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"GillCover","shape":"cube","pos":[0.095,-0.004,-0.015],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.03],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0}
+]}

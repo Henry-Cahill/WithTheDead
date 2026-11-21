@@ -1,0 +1,12 @@
+{"version": 1, "id": "Apron_PileOCrepe", "baseHeight": 0.1107, "name": "Apron Pile OCrepe", "model": "gpt-oss:120b", "notes": "Pile of three loosely‑folded aprons, approx 0.35 m long × 0.25 m wide, max height ≈ 0.07 m. Main cloth colour is a muted oat (0.6,0.58,0.5) with darker stitching trims.", "score": 6, "parts": [
+  {"name":"BaseApron","shape":"cube","pos":[0.0,-0.0171,0.0035],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.24],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopFold","shape":"cube","pos":[0.03,-0.0021,0.0235],"rot":[8.0,0.0,12.0],"size":[0.28,0.015,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideFoldL","shape":"cube","pos":[-0.15,-0.0051,0.0035],"rot":[0.0,5.0,0.0],"size":[0.04,0.025,0.24],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideFoldR","shape":"cube","pos":[0.15,-0.0051,0.0035],"rot":[0.0,-5.0,0.0],"size":[0.04,0.025,0.24],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BottomRoll","shape":"cylinder","pos":[-0.12,-0.0071,-0.0965],"rot":[0.0,0.0,90.0],"size":[0.04,0.08,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.12,0.0129,0.0835],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.12,0.0129,-0.0765],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeTrimTop","shape":"cube","pos":[0.0,-0.0091,0.1235],"rot":[0.0,0.0,0.0],"size":[0.34,0.005,0.01],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeTrimBottom","shape":"cube","pos":[0.0,-0.0091,-0.1165],"rot":[0.0,0.0,0.0],"size":[0.34,0.005,0.01],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"ClothLayer2","shape":"cube","pos":[-0.02,0.0129,-0.0165],"rot":[-5.0,0.0,-8.0],"size":[0.3,0.015,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

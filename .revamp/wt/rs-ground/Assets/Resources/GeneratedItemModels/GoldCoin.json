@@ -1,0 +1,11 @@
+{"version": 1, "id": "GoldCoin", "baseHeight": 0.0658, "name": "Gold Coin", "model": "gpt-oss:120b", "notes": "Gold coin ~2.5 cm diameter, 2.5 mm thick, lying flat on the floor. Main disc with a thin raised rim and shallow embossed designs on both faces.", "score": 7, "parts": [
+  {"name":"Disc","shape":"cylinder","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.0025,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.027,0.002,0.027],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.027,0.002,0.027],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"EmbossTop","shape":"sphere","pos":[0.0,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.65,0.62,0.55],"smooth":0.7,"metal":1.0},
+  {"name":"EmbossBottom","shape":"sphere","pos":[0.0,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.65,0.62,0.55],"smooth":0.7,"metal":1.0},
+  {"name":"EdgeDetailL","shape":"cube","pos":[-0.009,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.0025,0.025],"color":[0.58,0.56,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeDetailR","shape":"cube","pos":[0.009,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.0025,0.025],"color":[0.58,0.56,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeDetailF","shape":"cube","pos":[0.0,0.0,0.009],"rot":[0.0,0.0,0.0],"size":[0.025,0.0025,0.002],"color":[0.58,0.56,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeDetailB","shape":"cube","pos":[0.0,0.0,-0.009],"rot":[0.0,0.0,0.0],"size":[0.025,0.0025,0.002],"color":[0.58,0.56,0.48],"smooth":0.6,"metal":1.0}
+]}

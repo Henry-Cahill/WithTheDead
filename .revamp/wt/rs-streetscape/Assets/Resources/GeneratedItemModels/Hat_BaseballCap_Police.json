@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_BaseballCap_Police", "baseHeight": 0.085, "name": "Hat Baseball Cap Police", "model": "gpt-oss:120b", "notes": "Police baseball cap laid flat like a product photo – round crown (0.22 m diameter, 2 cm thick) with forward‑extending brim (7 cm long, same width), stitched rim, top button, front badge and dark trim on the brim.", "score": 7, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[-0.034,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLining","shape":"cube","pos":[-0.034,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.215,0.018,0.215],"color":[0.7,0.7,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cube","pos":[0.111,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimTrim","shape":"cube","pos":[0.111,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.22],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRing","shape":"cylinder","pos":[-0.034,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.003,0.224],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[-0.034,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.1,0.1,0.12],"smooth":0.6,"metal":1.0},
+  {"name":"BadgeFront","shape":"cube","pos":[0.026,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.04],"color":[0.1,0.1,0.3],"smooth":0.05,"metal":0.0}
+]}

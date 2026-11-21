@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BoneMask", "baseHeight": 0.155, "name": "Hat Bone Mask", "model": "gpt-oss:120b", "notes": "Flat Hat Bone Mask laid out for a product‑photo view – overall silhouette about 0.28 m wide × 0.18 m deep × 0.15 m tall (thickness). Main hat band, low crown, front skull mask with eye holes, teeth and side bone protrusions.", "score": 6, "parts": [
+  {"name":"BaseBand","shape":"cylinder","pos":[0.0,-0.09,-0.0262],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cube","pos":[0.0,-0.07,-0.0262],"rot":[0.0,0.0,0.0],"size":[0.24,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SkullFront","shape":"sphere","pos":[0.0,0.02,0.1138],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.08],"color":[0.65,0.6,0.7],"smooth":0.4,"metal":0.0},
+  {"name":"EyeHoleL","shape":"cylinder","pos":[-0.03,-0.005,0.1537],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeHoleR","shape":"cylinder","pos":[0.03,-0.005,0.1537],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"Teeth","shape":"cube","pos":[0.0,-0.025,0.1537],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.02],"color":[0.9,0.85,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"BoneProtrusionL","shape":"sphere","pos":[-0.14,-0.005,0.0738],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.06],"color":[0.65,0.6,0.7],"smooth":0.4,"metal":0.0},
+  {"name":"BoneProtrusionR","shape":"sphere","pos":[0.14,-0.005,0.0738],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.06],"color":[0.65,0.6,0.7],"smooth":0.4,"metal":0.0},
+  {"name":"Strap","shape":"cylinder","pos":[0.0,-0.087,-0.0262],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.28],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,120 @@
+# CLONE-Z Introduction town harness
+
+Zone `intro`, layout seed 0. `RaidMapBuilder.Build` 2558 ms; NavMesh bake 86 ms.
+
+`Raid map 0: 16 buildings, 461 containers, 1117 fixtures, 119 lights, 5560 objects, 17 ceilings`
+
+Map half-size 70.0 m; spawn (17.1, 16.5) facing 0°.
+
+## Checks
+
+- **FAILED** 2 of 69 rooms can't be walked to from the spawn
+
+NavMesh (every door open: 29 carvers off): 3956 triangles, 16425 m² walkable. Outside doors reached 35/35, rooms reached 67/69.
+
+Unreachable:
+
+- room House_Oak_110/Bedroom: path PathPartial
+- room House_Oak_110/Bathroom: path PathPartial
+
+Doorways in buildings with rooms that can't be walked to:
+
+- House_Oak_110 doorway at (-38.1, -53.3) (along x), head 1.6 m wide: no NavMesh in the gap; Bldg_House_Oak_110/Wall 76 tris y 0.1..2.0; Bldg_House_Oak_110/DoorHead 40 tris y 0.1..2.0; Bldg_House_Oak_110/Wall 46 tris y 0.1..2.0
+- House_Oak_110 doorway at (-31.5, -53.3) (along x), head 1.6 m wide: NavMesh runs through
+- House_Oak_110 doorway at (-37.5, -47.8) (along x), head 1.6 m wide: NavMesh runs through
+- House_Oak_110 doorway at (-34.5, -50.8) (along z), head 1.6 m wide: NavMesh runs through
+- House_Oak_110 doorway at (-28.5, -51.3) (along z), head 1.6 m wide: NavMesh runs through
+- House_Oak_110 doorway at (-36.0, -56.4) (along z), head 1.6 m wide: NavMesh runs through
+
+## Exits
+
+| exit | this raid | where | walk from the spawn |
+|---|---|---|--:|
+| Road Block | open | (0.0, 63.0) | 58 m |
+| Rail Bridge | open | (63.0, 0.0) | 49 m |
+| Army Checkpoint | open | (0.0, -63.0) | 87 m |
+| Boat Dock | closed | (-63.0, 0.0) | 83 m |
+
+## Buildings
+
+| # | name | kind | footprint | size (m) | rooms | outside doors reached | rooms reached |
+|--:|---|---|---|---|--:|--:|--:|
+| 1 | CountyOffice | Office | (9.4, 10.4) – (29.6, 24.6) | 20.2 × 14.2 | 6 | 3/3 | 6/6 |
+| 2 | FoodMart | Store | (14.9, 41.9) – (25.1, 56.1) | 10.2 × 14.2 | 3 | 2/2 | 3/3 |
+| 3 | Depot | Depot | (39.9, 41.9) – (62.1, 58.1) | 22.2 × 16.2 | 3 | 4/4 | 3/3 |
+| 4 | NationalGuard | Army | (13.9, -28.1) – (28.1, -9.9) | 14.2 × 18.2 | 5 | 3/3 | 5/5 |
+| 5 | QuarantineTent | Tent | (42.4, -30.6) – (51.6, -24.4) | 9.2 × 6.2 | 1 | 1/1 | 1/1 |
+| 6 | Clinic | Clinic | (-26.6, -21.6) – (-8.4, -9.4) | 18.2 × 12.2 | 5 | 2/2 | 5/5 |
+| 7 | House_Elm_105 | House | (-23.1, 47.8) – (-10.9, 57.9) | 12.2 × 10.2 | 5 | 2/2 | 5/5 |
+| 8 | House_Elm_109 | House | (-39.6, 47.8) – (-29.4, 56.9) | 10.2 × 9.2 | 4 | 2/2 | 4/4 |
+| 9 | House_Elm_113 | House | (-58.1, 47.8) – (-45.9, 57.9) | 12.2 × 10.2 | 5 | 2/2 | 5/5 |
+| 10 | House_Elm_110 | House | (-43.1, 18.0) – (-30.9, 28.3) | 12.2 × 10.2 | 5 | 2/2 | 5/5 |
+| 11 | House_Elm_114 | House | (-59.1, 19.0) – (-48.9, 28.3) | 10.2 × 9.2 | 4 | 2/2 | 4/4 |
+| 12 | House_Oak_109 | House | (-44.1, -28.3) – (-31.9, -18.0) | 12.2 × 10.2 | 5 | 2/2 | 5/5 |
+| 13 | House_Oak_113 | House | (-60.6, -28.3) – (-50.4, -19.0) | 10.2 × 9.2 | 4 | 2/2 | 4/4 |
+| 14 | House_Oak_106 | House | (-22.1, -56.9) – (-11.9, -47.8) | 10.2 × 9.2 | 4 | 2/2 | 4/4 |
+| 15 | House_Oak_110 | House | (-40.6, -57.9) – (-28.4, -47.8) | 12.2 × 10.2 | 5 | 2/2 | 3/5 |
+| 16 | House_Oak_114 | House | (-58.1, -57.9) – (-45.9, -47.8) | 12.2 × 10.2 | 5 | 2/2 | 5/5 |
+
+## What the town is made of
+
+| root | objects | renderers | meshes | vertices | triangles | materials | lights | colliders |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|
+| world | 5513 | 3367 | 3179 | 1200630 | 764291 | 112 | 189 | 1528 |
+| overhead | 21 | 17 | 17 | 15240 | 12764 | 7 | 0 | 71 |
+| scenery | 26 | 24 | 24 | 43726 | 32842 | 7 | 0 | 0 |
+| total | 5560 | 3408 | 3220 | 1259596 | 809897 | 114 | 189 | 1599 |
+
+## Log
+
+0 errors, 1 warnings logged during the run.
+
+- warning: `[CloneZ] Raid map layout notes (4): no room for a street light on Main St at -18 | no room for a street light on Main St at 50 | no room for a street light on Depot Rd at 60 | no room for a street light on Oak St at -45 Raid map 0: 16 buildings, 461 containers, 1117 fixtures, 119 lights, 5560 objects, 17 ceilings`
+
+## Pictures
+
+- plan_day.png
+- plan_night.png
+- town_day.png
+- grid_nw_day.png
+- grid_nc_day.png
+- grid_ne_day.png
+- grid_mw_day.png
+- grid_mc_day.png
+- grid_me_day.png
+- grid_sw_day.png
+- grid_sc_day.png
+- grid_se_day.png
+- bldg_01_countyoffice_day.png
+- bldg_02_foodmart_day.png
+- bldg_03_depot_day.png
+- bldg_04_nationalguard_day.png
+- bldg_05_quarantinetent_day.png
+- bldg_06_clinic_day.png
+- bldg_07_house_elm_105_day.png
+- bldg_08_house_elm_109_day.png
+- bldg_09_house_elm_113_day.png
+- bldg_10_house_elm_110_day.png
+- bldg_11_house_elm_114_day.png
+- bldg_12_house_oak_109_day.png
+- bldg_13_house_oak_113_day.png
+- bldg_14_house_oak_106_day.png
+- bldg_15_house_oak_110_day.png
+- bldg_16_house_oak_114_day.png
+- exit_road_block_day.png
+- exit_rail_bridge_day.png
+- exit_army_checkpoint_day.png
+- exit_boat_dock_day.png
+- spawn_day.png
+- spawn_night.png
+- nav_house_oak_110.png
+
+## Stages
+
+- setup: ok, 27 ms
+- build the town: ok, 2559 ms
+- count: ok, 19 ms
+- navmesh and paths: ok, 132 ms
+- pictures: ok, 9542 ms
+
+**Exit 2** after 12.3 s.

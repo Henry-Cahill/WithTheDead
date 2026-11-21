@@ -1,0 +1,12 @@
+{"version": 1, "id": "308Box", "baseHeight": 0.1507, "name": "308 Box", "model": "gpt-oss:120b", "notes": "Flat cardboard box ~0.35 m long × 0.25 m wide × 0.12 m tall, lying on its base. Main brown‑tinted panels with darker tape seams and a simple front label.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0882,0.0112],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.25],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.1725,-0.0282,0.0112],"rot":[0.0,0.0,0.0],"size":[0.005,0.12,0.25],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.1725,-0.0282,0.0112],"rot":[0.0,0.0,0.0],"size":[0.005,0.12,0.25],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Front","shape":"cube","pos":[0.0,-0.0282,-0.1113],"rot":[0.0,0.0,0.0],"size":[0.35,0.12,0.005],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Back","shape":"cube","pos":[0.0,-0.0282,0.1337],"rot":[0.0,0.0,0.0],"size":[0.35,0.12,0.005],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0318,0.0112],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.25],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0307,-0.1163],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.04],"color":[0.75,0.7,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TapeTop","shape":"cube","pos":[0.0,0.0307,-0.1113],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.01],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"TapeSideL","shape":"cube","pos":[-0.1725,0.0307,0.0112],"rot":[0.0,0.0,0.0],"size":[0.002,0.12,0.01],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"TapeSideR","shape":"cube","pos":[0.1725,0.0307,0.0112],"rot":[0.0,0.0,0.0],"size":[0.002,0.12,0.01],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0}
+]}

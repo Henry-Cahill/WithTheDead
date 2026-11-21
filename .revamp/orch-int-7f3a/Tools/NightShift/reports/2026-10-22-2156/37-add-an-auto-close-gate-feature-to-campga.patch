@@ -1,0 +1,90 @@
+diff --git a/Assets/Scripts/World/Camps.cs b/Assets/Scripts/World/Camps.cs
+index 0d292517..043338ed 100644
+--- a/Assets/Scripts/World/Camps.cs
++++ b/Assets/Scripts/World/Camps.cs
+@@ -272,9 +272,7 @@ public static Barricade FindBarricade(Vector3 pos)
+         {
+             foreach (Barricade b in Barricade.All) if (b != null && (b.transform.position - pos).sqrMagnitude < 0.01f) return b;
+             return null;
+-        }
+-        #endregion
+-    }
++
+ 
+     /// <summary>
+     /// A gate hung in a camp doorway (planks and nails), and its combination lock. The owner — and their squad —
+@@ -298,6 +296,9 @@ public sealed class CampGate : Interactable
+         private Transform _pivot;
+         private GameObject _block;
+         private float _noiseAt;
++        private float _autoCloseTimer;
++        private bool _autoCloseEnabled;
++        private const float AutoCloseDelay = 10f; // seconds the gate stays open before auto‑closing
+         private const float RepairHealFraction = 0.25f; // heal up to 25% of max health per repair
+ 
+         /// <summary>Creates or retrieves the CampGate component for a piece.</summary>
+@@ -407,16 +408,28 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+                     Broadcast();
+                     c.Notify("Locked. The code is " + code + " — your squad knows it too.");
+                 }).Timed(3f, "Fitting the lock...").DisabledIf(!inv.Has("combolock"), "Needs a combination lock"));
+-            else
+-                into.Add(new InteractAction("Take the lock off (" + (Code ?? "???") + ")", c =>
++// Enable auto‑close (requires rope)
++                if (Hung && Trusted && !_autoCloseEnabled && inv.Has("rope"))
+                 {
+-                    Apply(true, Open, false, null);
+-                    Broadcast();
+-                    ItemDef lockDef = ItemDatabase.Get("combolock");
+-                    if (lockDef != null) c.Inventory.Inventory.Add(lockDef, 1, enforceWeight: false);
+-                }).Timed(2f, "Unlocking..."));
++                    into.Add(new InteractAction("Enable auto‑close (10 s) – consumes rope", c =>
++                    {
++                        if (!c.Inventory.Consume("rope", 1)) return;
++                        _autoCloseEnabled = true;
++                        _autoCloseTimer = AutoCloseDelay;
++                        c.Notify("Gate will auto‑close after being opened.");
++                    }).Timed(2f, "Setting auto‑close…"));
++                }
++                // Disable auto‑close (requires knife)
++                if (Hung && Trusted && _autoCloseEnabled && inv.Has("knife"))
++                {
++                     into.Add(new InteractAction("Disable auto‑close – consumes knife", c =>
++                     {
++                         if (c.Inventory.Consume("knife", 1) <= 0) return;
++                         _autoCloseEnabled = false;
++                         c.Notify("Auto‑close disabled.");
++                     }).Timed(2f, "Removing auto‑close…"));
++        }
+         }
+-
+         /// <summary>Applies the gate's hung/open/locked state and updates its visuals.</summary>
+         public void Apply(bool hung, bool open, bool locked, string code)
+         {
+@@ -487,7 +500,7 @@ private void EnsureLeaf()
+             carve.carving = true;
+             carve.carveOnlyStationary = true;
+         }
+-    }
++
+ 
+     /// <summary>Blasts break camps: every wall, gate and barricade near an explosion takes its force.</summary>
+     public sealed class StructureBlast : IExplosionTarget
+@@ -511,9 +524,7 @@ public void OnExplosion(Vector3 center, float radius, float damage)
+                 if (d > reach) continue;
+                 float falloff = 1f - Mathf.Clamp01(d / reach);
+                 b.TakeDamage(new DamageInfo(damage * falloff, DamageKind.Explosion, b.transform.position, (b.transform.position - center).normalized, null));
+-            }
+-        }
+-    }
++
+ 
+     /// <summary>
+     /// Explosions go through the server (it owns the AI, so it decides who a blast hurts); everyone sees and
+@@ -796,5 +807,5 @@ private void Update()
+             _ready = Time.time + 1f;
+             Explosives.Throw(_inv);
+         }
+-    }
+-}
++        }
++

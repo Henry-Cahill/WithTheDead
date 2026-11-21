@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandeau_Rag", "baseHeight": 0.09, "name": "Bandeau Rag", "model": "gpt-oss:120b", "notes": "Flat bandeau rag laid out like a product photo – 0.75 m long × 0.20 m wide × 0.02 m thick. Main cloth panel in muted purple‑gray (tint 0.55,0.5,0.6) with dark trim around all edges and a small tie loop at one end.", "score": 6, "parts": [
+  {"name":"BasePanel","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TrimTop","shape":"cube","pos":[0.0,-0.008,0.096],"rot":[0.0,0.0,0.0],"size":[0.75,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TrimBottom","shape":"cube","pos":[0.0,-0.008,-0.096],"rot":[0.0,0.0,0.0],"size":[0.75,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TrimLeft","shape":"cube","pos":[-0.371,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.024,0.2],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TrimRight","shape":"cube","pos":[0.371,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.024,0.2],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[-0.34,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

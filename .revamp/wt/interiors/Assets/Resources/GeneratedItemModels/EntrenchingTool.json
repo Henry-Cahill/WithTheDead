@@ -1,0 +1,12 @@
+{"version": 1, "id": "EntrenchingTool", "baseHeight": 0.09, "name": "Entrenching Tool", "model": "gpt-oss:120b", "notes": "Entrenching tool ~1.10 m long: wooden handle lying on its side (X‑axis), steel blade at the forward end, thin guard and tip, rivets and a grip tape for detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.114,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.8,0.06],"color":[0.45,0.33,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripTape","shape":"cylinder","pos":[-0.114,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.6,0.02],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"ButtCap","shape":"cube","pos":[-0.544,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Guard","shape":"cylinder","pos":[0.286,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.411,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.35],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RearPlate","shape":"cube","pos":[0.266,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.35],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.546,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.35],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.566,-0.022,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[0.236,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.236,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "GreenPen", "baseHeight": 0.0695, "name": "Green Pen", "model": "gpt-oss:120b", "notes": "Green tactical‑pen melee weapon ~0.18 m long, 1.4 cm diameter: plastic body and cap in green tint, metal tip, small metal clip, thin embossed label on the side.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0015,-0.0055],"rot":[0.0,0.0,90.0],"size":[0.014,0.14,0.014],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[-0.08,-0.0015,-0.0055],"rot":[0.0,0.0,90.0],"size":[0.014,0.02,0.014],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.08,0.0005,-0.0055],"rot":[0.0,0.0,90.0],"size":[0.018,0.02,0.018],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Clip","shape":"cube","pos":[-0.045,0.0025,0.0045],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.02],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.001,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.012],"color":[0.45,0.45,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,-0.0015,-0.0055],"rot":[0.0,0.0,90.0],"size":[0.016,0.002,0.016],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":0.0}
+]}

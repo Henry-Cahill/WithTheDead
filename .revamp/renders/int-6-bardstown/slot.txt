@@ -1,0 +1,1 @@
+slot: C:\Users\hlcma\source\Unity\CLONE-Z\.revamp\wt\render

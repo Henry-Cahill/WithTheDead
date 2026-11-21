@@ -1,0 +1,13 @@
+{"version": 1, "id": "LemonGrass", "baseHeight": 0.0775, "name": "Lemon Grass", "model": "gpt-oss:120b", "notes": "Bunched lemongrass about 0.30 m long, lying on its side. Six thin stalks (cylinders) grouped around a small rope‑tie, a paper tag and two leaf clusters at the top that sit directly on the tie.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.002,0.12],"color":[0.6,0.5,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Tie","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.015,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk1","shape":"cylinder","pos":[-0.12,-0.0025,-0.035],"rot":[0.0,0.0,90.0],"size":[0.008,0.3,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk2","shape":"cylinder","pos":[-0.04,-0.0025,-0.045],"rot":[0.0,0.0,90.0],"size":[0.008,0.3,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk3","shape":"cylinder","pos":[0.04,-0.0025,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.3,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk4","shape":"cylinder","pos":[0.12,-0.0025,-0.04],"rot":[0.0,0.0,90.0],"size":[0.008,0.3,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk5","shape":"cylinder","pos":[-0.08,-0.0025,0.04],"rot":[0.0,0.0,90.0],"size":[0.008,0.3,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk6","shape":"cylinder","pos":[0.08,-0.0025,0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.3,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafTopL","shape":"sphere","pos":[-0.02,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.85,0.78,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LeafTopR","shape":"sphere","pos":[0.02,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.85,0.78,0.55],"smooth":0.05,"metal":0.0}
+]}

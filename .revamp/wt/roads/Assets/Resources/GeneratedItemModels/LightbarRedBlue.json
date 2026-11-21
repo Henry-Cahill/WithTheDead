@@ -1,0 +1,12 @@
+{"version": 1, "id": "LightbarRedBlue", "baseHeight": 0.074, "name": "Lightbar Red Blue", "model": "gpt-oss:120b", "notes": "Flat light bar ~0.60 m long × 0.10 m wide × 0.02 m thick, grey‑brown plastic body with thin red and blue LED strips on the top surface and metal end connectors; four small screws and a printed label add detail.", "score": 7, "parts": [
+  {"name":"MainBar","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LEDRed","shape":"cylinder","pos":[0.0,0.01,-0.025],"rot":[0.0,0.0,90.0],"size":[0.008,0.55,0.008],"color":[1.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"LEDBlue","shape":"cylinder","pos":[0.0,0.01,0.025],"rot":[0.0,0.0,90.0],"size":[0.008,0.55,0.008],"color":[0.0,0.0,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"ConnectorLeft","shape":"cube","pos":[-0.28,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.4,0.4,0.4],"smooth":0.3,"metal":0.8},
+  {"name":"ConnectorRight","shape":"cube","pos":[0.28,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.4,0.4,0.4],"smooth":0.3,"metal":0.8},
+  {"name":"Screw1","shape":"sphere","pos":[-0.15,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Screw2","shape":"sphere","pos":[-0.05,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Screw3","shape":"sphere","pos":[0.05,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Screw4","shape":"sphere","pos":[0.15,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.1,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

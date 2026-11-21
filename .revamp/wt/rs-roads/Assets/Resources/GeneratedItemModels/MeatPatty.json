@@ -1,0 +1,10 @@
+{"version": 1, "id": "MeatPatty", "baseHeight": 0.0705, "name": "Meat Patty", "model": "gpt-oss:120b", "notes": "Loose cooked meat patty (≈0.12 m dia × 0.015 m thick) wrapped in a thin wax‑paper sheet and resting on a small paper napkin. Four dark grill‑mark ellipsoids are added for recognisable texture.", "score": 6, "parts": [
+  {"name":"Napkin","shape":"cube","pos":[0.0,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.15],"color":[0.92,0.88,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Wrapper","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.003,0.14],"color":[0.85,0.78,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"Patty","shape":"cylinder","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.75,0.68,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.02],"color":[0.55,0.45,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"GrillMark1","shape":"sphere","pos":[0.02,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.008],"color":[0.55,0.45,0.3],"smooth":0.03,"metal":0.0},
+  {"name":"GrillMark2","shape":"sphere","pos":[-0.02,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.008],"color":[0.55,0.45,0.3],"smooth":0.03,"metal":0.0},
+  {"name":"GrillMark3","shape":"sphere","pos":[0.0,0.0095,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.008],"color":[0.55,0.45,0.3],"smooth":0.03,"metal":0.0},
+  {"name":"GrillMark4","shape":"sphere","pos":[0.0,0.0095,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.008],"color":[0.55,0.45,0.3],"smooth":0.03,"metal":0.0}
+]}

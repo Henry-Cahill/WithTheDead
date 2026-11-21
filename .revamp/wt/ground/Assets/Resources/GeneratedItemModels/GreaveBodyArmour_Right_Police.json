@@ -1,0 +1,13 @@
+{"version": 1, "id": "GreaveBodyArmour_Right_Police", "baseHeight": 0.166, "name": "Greave Body Armour Right Police", "model": "gpt-oss:120b", "notes": "Police right‑leg greave – about 0.40 m long, curved shell radius ≈ 0.10 m, ~2 cm thick, padded interior, leather‑look strap with metal buckle near the knee, small dark‑blue police badge on the front, and a foot‑plate at the ankle.", "score": 6, "parts": [
+  {"name":"ShellOuter","shape":"cylinder","pos":[-0.0638,-0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.4,0.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Padding","shape":"cylinder","pos":[-0.0638,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.16,0.38,0.16],"color":[0.68,0.66,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[0.0862,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.04],"color":[0.25,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Buckle","shape":"cylinder","pos":[0.2662,0.014,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.8,0.78,0.77],"smooth":0.6,"metal":1.0},
+  {"name":"PoliceBadge","shape":"cube","pos":[0.0162,0.024,0.06],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.01],"color":[0.1,0.15,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"HeelPlate","shape":"cube","pos":[-0.2438,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[-0.0638,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.202,0.402,0.202],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"FrontPlate","shape":"cube","pos":[-0.1138,0.014,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BackPlate","shape":"cube","pos":[-0.1138,0.014,-0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideRimLeft","shape":"cylinder","pos":[-0.0638,0.005,0.07],"rot":[90.0,0.0,0.0],"size":[0.202,0.402,0.02],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"SideRimRight","shape":"cylinder","pos":[-0.0638,0.005,-0.07],"rot":[90.0,0.0,0.0],"size":[0.202,0.402,0.02],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0}
+]}

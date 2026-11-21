@@ -1,0 +1,125 @@
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.Awning.cs b/Assets/Scripts/World/Map/KentuckyMap.Awning.cs
+index 428bf2e9..d6b5e4fe 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.Awning.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.Awning.cs
+@@ -10,6 +10,9 @@ namespace CloneZ
+ // Partial class to isolate awning and sign logic for retail‑type buildings.
+     public static partial class KentuckyMap
+     {
++        // Chain constants for rusted‑metal decorative chains
++        private const float ChainRadius = 0.015f; // 1.5 cm radius for each chain segment
++        private const float ChainSegLength = 0.12f; // 12 cm long segment before a joint
+         private static Color GetAwningColor(MapBuilding b)
+         {
+             // deterministic hue shift based on building id hash
+@@ -29,8 +32,15 @@ private static Color GetBannerColor(MapBuilding b, System.Random rng)
+             Color.RGBToHSV(baseCol, out h, out s, out v);
+             h += (float)rng.NextDouble() * 0.02f - 0.01f; // ±0.01 hue
+             v = Mathf.Clamp01(v + 0.12f); // a bit brighter for canvas
+-            return Color.HSVToRGB(h, s * 0.9f, v);
+-        }
++            }
++
++
++
++
++
++
++
++
+         private static Color GetMatColor(MapBuilding b, System.Random rng)
+         {
+             // Base colour is a muted beige; add a tiny random hue/tint per building.
+@@ -44,6 +54,48 @@ private static Color GetMatColor(MapBuilding b, System.Random rng)
+             return Color.HSVToRGB(Mathf.Clamp01(h), Mathf.Clamp01(s), Mathf.Clamp01(v));
+         }
+ 
++
++
++
++        private static Color GetChainColor(MapBuilding b, System.Random rng)
++        {
++            Color baseCol = GetMatColor(b, rng);
++            float h, s, v;
++            Color.RGBToHSV(baseCol, out h, out s, out v);
++            // shift hue toward orange‑red and lower saturation a bit.
++            h = Mathf.Lerp(h, 0.05f, 0.3f);
++            s = Mathf.Clamp01(s * 0.7f);
++            v = Mathf.Clamp01(v * 0.9f);
++            return Color.HSVToRGB(h, s, v);
++        }
++
++        // Builds a rust‑colored metal chain from start to end using short cylinder segments.
++        private static void BuildChain(Site site, Vector3 start, Vector3 end, Color rustCol)
++        {
++            // number of full segments needed
++            float totalDist = Vector3.Distance(start, end);
++            int segCount = Mathf.CeilToInt(totalDist / ChainSegLength);
++            Vector3 dir = (end - start).normalized;
++            Vector3 segDelta = dir * ChainSegLength;
++            // metal rust material
++            Surf metalMat = DecorPalette.Metal(rustCol);
++            // compute yaw angle (degrees) for segment orientation around Y axis
++            float yaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
++            for (int i = 0; i < segCount; ++i)
++            {
++                // centre of this segment
++                Vector3 segCenter = start + segDelta * (i + 0.5f);
++                // cylinder size (radius, length, radius)
++                Vector3 size = new Vector3(ChainRadius * 2f, ChainSegLength, ChainRadius * 2f);
++                site.Town.Out.Solid(segCenter).Box(segCenter, size, yaw, metalMat);
++                site.Town.PropCollider(segCenter, size, yaw);
++            }            }
++
++
++
++
++
++
+         private static void BuildAwningAndSign(Site site, Vector2 doorPt, Vector2 outward, float yaw, MapBuilding b, System.Random rng)
+         {
+             // ----- awning -------------------------------------------------
+@@ -96,29 +148,37 @@ private static void BuildAwningAndSign(Site site, Vector2 doorPt, Vector2 outwar
+                 new Vector3(awningWidth * 0.78f, MatThickness, FootboardDepth - 0.02f),
+                 0f,
+                 matMat);
+-            // ----- side support posts -----
++// ----- side support posts -----
+             float supportWidth = 0.07f;
+             float supportHeight = awningHeightAboveDoor + 0.5f;
+             Vector3 leftOffset = Vector3.left * (awningWidth * 0.5f - supportWidth * 0.5f);
+             Vector3 rightOffset = Vector3.right * (awningWidth * 0.5f - supportWidth * 0.5f);
+             Vector3 leftPos = awningCenter + leftOffset;
+             Vector3 rightPos = awningCenter + rightOffset;
+-site.Town.Out.Solid(leftPos).Box(leftPos,
+-                 new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
++            site.Town.Out.Solid(leftPos).Box(leftPos,
++                  new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
+             site.Town.PropCollider(leftPos,
+-                 new Vector3(supportWidth, supportHeight, supportWidth), 0f);
++                  new Vector3(supportWidth, supportHeight, supportWidth), 0f);
+             // Thin vertical rope tie on left post (jute colour)
+             var ropeColor = DecorPalette.Matte(new Color(0.545f, 0.435f, 0.255f));
+             var ropeSize = new Vector3(0.02f, supportHeight, 0.02f);
+             site.Town.Out.Solid(leftPos).Box(leftPos, ropeSize, 0f, ropeColor);
+             site.Town.PropCollider(leftPos, ropeSize, 0f);
+             site.Town.Out.Solid(rightPos).Box(rightPos,
+-                 new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
++                  new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
+             site.Town.PropCollider(rightPos,
+-                 new Vector3(supportWidth, supportHeight, supportWidth), 0f);
++                  new Vector3(supportWidth, supportHeight, supportWidth), 0f);
+             // Thin vertical rope tie on right post (jute colour)
+             site.Town.Out.Solid(rightPos).Box(rightPos, ropeSize, 0f, ropeColor);
+             site.Town.PropCollider(rightPos, ropeSize, 0f);
++            // ----- rusted‑metal chains from posts to awning front edge -----
++
++            Color chainCol = GetChainColor(b, rng);
++            Vector3 awningFrontLeft = awningCenter + new Vector3(-awningWidth * 0.5f, awningHeightAboveDoor - awningThickness * 0.5f, awningDepth * 0.5f);
++            Vector3 awningFrontRight = awningCenter + new Vector3( awningWidth * 0.5f, awningHeightAboveDoor - awningThickness * 0.5f, awningDepth * 0.5f);
++            BuildChain(site, leftPos + new Vector3(0f, supportHeight, 0f), awningFrontLeft, chainCol);
++            BuildChain(site, rightPos + new Vector3(0f, supportHeight, 0f), awningFrontRight, chainCol);
++
+ 
+             // ----- horizontal slats -----
+             int slatCount = 4;

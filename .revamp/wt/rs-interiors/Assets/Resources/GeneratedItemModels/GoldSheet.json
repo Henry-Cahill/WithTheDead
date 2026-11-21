@@ -1,0 +1,11 @@
+{"version": 1, "id": "GoldSheet", "baseHeight": 0.0612, "name": "Gold Sheet", "model": "gpt-oss:120b", "notes": "Gold sheet about 0.16 m × 0.16 m, 1 mm thick, lying flat on the floor (y = 0). Main body plus thin raised edges to give a clear silhouette from above.", "score": 7, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.002,0.158],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0003,0.0795],"rot":[0.0,0.0,0.0],"size":[0.158,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0003,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.158,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.0795,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.158],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.0795,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.158],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CornerTL","shape":"cube","pos":[-0.0795,0.0003,0.0795],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CornerTR","shape":"cube","pos":[0.0795,0.0003,0.0795],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CornerBL","shape":"cube","pos":[-0.0795,0.0003,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CornerBR","shape":"cube","pos":[0.0795,0.0003,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

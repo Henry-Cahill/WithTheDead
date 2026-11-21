@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shirt_Jockey05", "baseHeight": 0.075, "name": "Shirt Jockey05", "model": "gpt-oss:120b", "notes": "Flat jockey shirt ~0.68 m long × 0.48 m wide × 0.03 m thick, with short sleeves angled outward, crew‑neck collar, side seams and a chest stripe. Main fabric colour is the tint (0.55,0.5,0.6).", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.48],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.21,0.0,-0.33],"rot":[0.0,30.0,0.0],"size":[0.2,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.21,0.0,0.33],"rot":[0.0,-30.0,0.0],"size":[0.2,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.29,0.0,-0.33],"rot":[0.0,30.0,0.0],"size":[0.04,0.008,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.29,0.0,0.33],"rot":[0.0,-30.0,0.0],"size":[0.04,0.008,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.3,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.16],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.3,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.04,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.008,0.48],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.04,0.0,-0.24],"rot":[0.0,0.0,0.0],"size":[0.68,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.04,0.0,0.24],"rot":[0.0,0.0,0.0],"size":[0.68,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ChestStripe","shape":"cube","pos":[-0.04,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.006,0.02],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "CalfLeather_Holstein_Fur_Tan_Wet", "baseHeight": 0.078, "name": "Calf Leather Holstein Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Flat calf leather hide with Holstein fur, tan‑wet. Approx 0.60 m × 0.45 m, 1.5 cm thick; top side dotted with short fuzzy fur clumps for silhouette clarity.", "score": 6, "parts": [
+  {"name":"LeatherBase","shape":"cube","pos":[-0.0068,-0.0105,-0.0143],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.45],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump01","shape":"sphere","pos":[-0.2268,0.007,-0.1643],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.72,0.7,0.62],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump02","shape":"sphere","pos":[0.0932,0.007,-0.1943],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.028],"color":[0.71,0.69,0.61],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump03","shape":"sphere","pos":[-0.0568,0.007,0.1057],"rot":[0.0,0.0,0.0],"size":[0.032,0.022,0.032],"color":[0.73,0.71,0.63],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump04","shape":"sphere","pos":[0.2432,0.007,-0.0643],"rot":[0.0,0.0,0.0],"size":[0.027,0.019,0.027],"color":[0.7,0.68,0.6],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump05","shape":"sphere","pos":[-0.2868,0.007,0.1857],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.72,0.7,0.62],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump06","shape":"sphere","pos":[0.1732,0.007,0.2057],"rot":[0.0,0.0,0.0],"size":[0.029,0.019,0.029],"color":[0.71,0.69,0.61],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump07","shape":"sphere","pos":[-0.1268,0.007,-0.2642],"rot":[0.0,0.0,0.0],"size":[0.031,0.021,0.031],"color":[0.73,0.71,0.63],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump08","shape":"sphere","pos":[-0.0068,0.007,-0.0343],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.028],"color":[0.7,0.68,0.6],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump09","shape":"sphere","pos":[-0.2068,0.007,0.0357],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.72,0.7,0.62],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump10","shape":"sphere","pos":[0.2933,0.007,0.1357],"rot":[0.0,0.0,0.0],"size":[0.027,0.019,0.027],"color":[0.71,0.69,0.61],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump11","shape":"sphere","pos":[-0.1568,0.007,-0.1143],"rot":[0.0,0.0,0.0],"size":[0.029,0.019,0.029],"color":[0.73,0.71,0.63],"smooth":0.45,"metal":0.0},
+  {"name":"FurClump12","shape":"sphere","pos":[0.0432,0.007,0.2658],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.028],"color":[0.7,0.68,0.6],"smooth":0.45,"metal":0.0}
+]}

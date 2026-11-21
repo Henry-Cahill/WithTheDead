@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_CrashHelmetFULL_Spiked", "baseHeight": 0.0875, "name": "Hat Crash Helmet FULL Spiked", "model": "gpt-oss:120b", "notes": "Flat crash helmet 0.30 m wide x 0.25 m tall, 2–3 cm thick: outer shell disc, slightly larger rim, inner padding, crossed head‑straps and eight metal spikes around the brim.", "score": 7, "parts": [
+  {"name":"ShellTop","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.28],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.015,0.32],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.012,0.24],"color":[0.7,0.65,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"StrapH","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.006,0.02],"color":[0.1,0.1,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"StrapV","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,90.0,0.0],"size":[0.28,0.006,0.02],"color":[0.1,0.1,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Spike1","shape":"cylinder","pos":[0.16,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.04,0.016],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Spike2","shape":"cylinder","pos":[0.113,0.0075,0.113],"rot":[0.0,0.0,0.0],"size":[0.016,0.04,0.016],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Spike3","shape":"cylinder","pos":[0.0,0.0075,0.16],"rot":[0.0,0.0,0.0],"size":[0.016,0.04,0.016],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Spike4","shape":"cylinder","pos":[-0.113,0.0075,0.113],"rot":[0.0,0.0,0.0],"size":[0.016,0.04,0.016],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Spike5","shape":"cylinder","pos":[-0.16,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.04,0.016],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Spike6","shape":"cylinder","pos":[-0.113,0.0075,-0.113],"rot":[0.0,0.0,0.0],"size":[0.016,0.04,0.016],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Spike7","shape":"cylinder","pos":[0.0,0.0075,-0.16],"rot":[0.0,0.0,0.0],"size":[0.016,0.04,0.016],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Spike8","shape":"cylinder","pos":[0.113,0.0075,-0.113],"rot":[0.0,0.0,0.0],"size":[0.016,0.04,0.016],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "MugWhite", "baseHeight": 0.113, "name": "Mug White", "model": "gpt-oss:120b", "notes": "White coffee mug lying upright on the floor (≈0.09 m diameter × 0.10 m tall). Main body cylinder, thin rim at the top and a simple side‑handle made from one horizontal cylinder.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0395,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.1,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[-0.0395,0.049,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.008,0.092],"color":[0.62,0.6,0.52],"smooth":0.4,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0305,0.007,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.08,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"HandleEnd","shape":"cylinder","pos":[0.0705,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.0395,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.09,0.08],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"BaseShadow","shape":"cylinder","pos":[-0.0395,-0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.09],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.0}
+]}

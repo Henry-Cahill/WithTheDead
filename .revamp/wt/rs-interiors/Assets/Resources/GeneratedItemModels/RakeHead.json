@@ -1,0 +1,16 @@
+{"version": 1, "id": "RakeHead", "baseHeight": 0.075, "name": "Rake Head", "model": "gpt-oss:120b", "notes": "Rake head ~0.42 m wide × 0.10 m deep × 0.02 m thick, metal (tint 0.6,0.58,0.5). Main rectangular plate with a rear mounting block and 12 evenly‑spaced steel tines projecting forward from the front edge.", "score": 7, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.42,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"MountBlock","shape":"cube","pos":[-0.18,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.04],"color":[0.55,0.53,0.48],"smooth":0.35,"metal":1.0},
+  {"name":"Tine01","shape":"cube","pos":[-0.18,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine02","shape":"cube","pos":[-0.14,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine03","shape":"cube","pos":[-0.1,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine04","shape":"cube","pos":[-0.06,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine05","shape":"cube","pos":[-0.02,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine06","shape":"cube","pos":[0.02,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine07","shape":"cube","pos":[0.06,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine08","shape":"cube","pos":[0.1,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine09","shape":"cube","pos":[0.14,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine10","shape":"cube","pos":[0.18,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine11","shape":"cube","pos":[-0.18,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0},
+  {"name":"Tine12","shape":"cube","pos":[-0.14,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.04],"color":[0.58,0.56,0.46],"smooth":0.45,"metal":1.0}
+]}

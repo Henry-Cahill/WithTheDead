@@ -1,0 +1,15 @@
+{"version": 1, "id": "Beef", "baseHeight": 0.0737, "name": "Beef", "model": "gpt-oss:120b", "notes": "Loose ground beef in a vacuum‑sealed plastic tray ~0.15 m × 0.10 m × 0.04 m thick. Main meat mass (tint 0.75,0.68,0.45) sits under a thin clear film; light‑gray tray forms the base; a dark label on the top edge gives a recognisable silhouette.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.0063,-0.0195],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.1],"color":[0.78,0.78,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"FilmTop","shape":"cube","pos":[0.0,-0.0037,-0.0195],"rot":[0.0,0.0,0.0],"size":[0.148,0.003,0.098],"color":[0.9,0.9,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"MeatMass","shape":"sphere","pos":[0.0,0.0037,-0.0195],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopLabel","shape":"cube","pos":[0.0,-0.0018,0.0255],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.09],"color":[0.45,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBorder","shape":"cube","pos":[0.0,-0.0008,0.0255],"rot":[0.0,0.0,0.0],"size":[0.122,0.002,0.092],"color":[0.3,0.25,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.075,-0.0063,-0.0195],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.1],"color":[0.6,0.6,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.075,-0.0063,-0.0195],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.1],"color":[0.6,0.6,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.0063,0.0305],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.002],"color":[0.6,0.6,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,-0.0063,-0.0695],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.002],"color":[0.6,0.6,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRoundingTL","shape":"sphere","pos":[-0.0745,-0.0063,0.03],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.78,0.78,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRoundingTR","shape":"sphere","pos":[0.0745,-0.0063,0.03],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.78,0.78,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRoundingBL","shape":"sphere","pos":[-0.0745,-0.0063,-0.069],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.78,0.78,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRoundingBR","shape":"sphere","pos":[0.0745,-0.0063,-0.069],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.78,0.78,0.78],"smooth":0.2,"metal":0.0}
+]}

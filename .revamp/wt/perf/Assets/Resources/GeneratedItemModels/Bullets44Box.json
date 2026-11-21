@@ -1,0 +1,12 @@
+{"version": 1, "id": "Bullets44Box", "baseHeight": 0.1025, "name": "Bullets44 Box", "model": "gpt-oss:120b", "notes": "Box of .44 calibre bullets ~12 cm × 8 cm × 6 cm: cardboard body with a thin lid, reinforced seam strips on all edges, a printed label on the front, and three loose bullets resting on (and slightly sinking into) the lid so they touch the main box.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.055,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.005,0.082],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,-0.0135,0.038],"rot":[0.0,0.0,0.0],"size":[0.12,0.058,0.004],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,-0.0135,-0.038],"rot":[0.0,0.0,0.0],"size":[0.12,0.058,0.004],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.058,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.058,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.058,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.058,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0005,0.0385],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.004],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"Bullet1","shape":"cylinder","pos":[-0.02,0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.7,0.65,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Bullet2","shape":"cylinder","pos":[0.0,0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.7,0.65,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Bullet3","shape":"cylinder","pos":[0.02,0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.7,0.65,0.6],"smooth":0.6,"metal":1.0}
+]}

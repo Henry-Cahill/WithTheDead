@@ -1,0 +1,9 @@
+{"version": 1, "id": "PopEmpty", "baseHeight": 0.095, "name": "Pop Empty", "model": "gpt-oss:120b", "notes": "Empty soda‑can lying on its side, about 0.12 m long × 0.066 m diameter: metallic body, thin top/bottom rims, a paper label band around the middle and a small dent for visual interest.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.066,0.122,0.066],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.061,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.004,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.061,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.004,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.064,0.09,0.064],"color":[0.48,0.42,0.34],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0,0.045],"rot":[0.0,0.0,90.0],"size":[0.066,0.008,0.066],"color":[0.35,0.3,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,0.0,-0.045],"rot":[0.0,0.0,90.0],"size":[0.066,0.008,0.066],"color":[0.35,0.3,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Dent","shape":"sphere","pos":[0.02,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.55,0.52,0.45],"smooth":0.4,"metal":1.0}
+]}

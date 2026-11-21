@@ -1,0 +1,11 @@
+{"version": 1, "id": "TreeBranch2", "baseHeight": 0.14, "name": "Tree Branch2", "model": "gpt-oss:120b", "notes": "TreeBranch2 – a 1.20 m long blunt melee weapon. Main cylindrical shaft (diameter 0.07 m) lies on its side along X, ending in a thicker bark‑chunk tip. Added knots, bark lumps and a few small twigs give a recognisable branch silhouette.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.085,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.6,0.6,0.64],"smooth":0.09,"metal":0.0},
+  {"name":"TipChunk","shape":"sphere","pos":[0.615,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.58,0.58,0.62],"smooth":0.09,"metal":0.0},
+  {"name":"KnotMid","shape":"sphere","pos":[-0.285,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.4,0.35,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"BarkLump1","shape":"sphere","pos":[-0.585,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.55,0.55,0.6],"smooth":0.09,"metal":0.0},
+  {"name":"BarkLump2","shape":"sphere","pos":[0.215,-0.01,0.06],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.57,0.57,0.62],"smooth":0.09,"metal":0.0},
+  {"name":"TwigA","shape":"cylinder","pos":[0.465,0.01,0.05],"rot":[90.0,0.0,0.0],"size":[0.03,0.2,0.03],"color":[0.5,0.6,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"TwigB","shape":"cylinder","pos":[0.465,0.01,-0.05],"rot":[90.0,0.0,0.0],"size":[0.03,0.2,0.03],"color":[0.5,0.6,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"TwigC","shape":"cylinder","pos":[-0.435,-0.0,0.04],"rot":[30.0,0.0,0.0],"size":[0.025,0.15,0.025],"color":[0.5,0.6,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"BarkRidge","shape":"cube","pos":[-0.085,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.02,0.04],"color":[0.58,0.58,0.63],"smooth":0.09,"metal":0.0}
+]}

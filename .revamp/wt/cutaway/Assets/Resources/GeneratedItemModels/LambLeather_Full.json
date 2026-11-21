@@ -1,0 +1,13 @@
+{"version": 1, "id": "LambLeather_Full", "baseHeight": 0.067, "name": "Lamb Leather Full", "model": "gpt-oss:120b", "notes": "Full lamb leather hide ~0.55 m long × 0.40 m wide, 1 cm thick, laid flat on the floor. Main sheet with dark‑brown edge trim, thin stitching along all sides and a small leather tag in one corner.", "score": 6, "parts": [
+  {"name":"Hide","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.01,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,-0.002,0.204],"rot":[0.0,0.0,0.0],"size":[0.55,0.006,0.008],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.002,-0.204],"rot":[0.0,0.0,0.0],"size":[0.55,0.006,0.008],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.279,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.4],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.279,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.4],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0,0.004,0.196],"rot":[0.0,0.0,90.0],"size":[0.002,0.55,0.002],"color":[0.1,0.08,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0,0.004,-0.196],"rot":[0.0,0.0,90.0],"size":[0.002,0.55,0.002],"color":[0.1,0.08,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.275,0.004,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.4,0.002],"color":[0.1,0.08,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.275,0.004,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.4,0.002],"color":[0.1,0.08,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.245,0.004,-0.185],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.03],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.245,0.006,-0.185],"rot":[0.0,0.0,0.0],"size":[0.055,0.002,0.025],"color":[0.85,0.8,0.6],"smooth":0.1,"metal":0.0}
+]}

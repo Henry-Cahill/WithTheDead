@@ -1,0 +1,12 @@
+{"version": 1, "id": "Firewood", "baseHeight": 0.6125, "name": "Firewood", "model": "gpt-oss:120b", "notes": "Log‑shaped melee weapon ~1.10 m long, 0.15 m diameter. Outer bark shell over lighter wood core, capped ends, with a split/business end on +X side and a few splinters for visual cue.", "score": 7, "parts": [
+  {"name":"OuterBark","shape":"cylinder","pos":[0.0,0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.16,1.1,0.16],"color":[0.45,0.35,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"InnerWood","shape":"cylinder","pos":[0.0,-0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.14,1.1,0.14],"color":[0.7,0.6,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EndCapLeft","shape":"sphere","pos":[-0.55,0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.16,0.16,0.16],"color":[0.45,0.35,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"EndCapRight","shape":"sphere","pos":[0.55,0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.16,0.16,0.16],"color":[0.45,0.35,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"SplitSide","shape":"cube","pos":[0.55,0.0425,-0.04],"rot":[0.0,0.0,15.0],"size":[0.02,0.04,0.12],"color":[0.7,0.6,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Splinter1","shape":"cube","pos":[0.58,0.0125,0.04],"rot":[0.0,0.0,30.0],"size":[0.03,0.015,0.03],"color":[0.7,0.6,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Splinter2","shape":"cube","pos":[0.57,-0.0075,-0.02],"rot":[0.0,0.0,-20.0],"size":[0.025,0.012,0.025],"color":[0.7,0.6,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Splinter3","shape":"cube","pos":[0.59,0.0325,0.02],"rot":[0.0,0.0,5.0],"size":[0.028,0.014,0.028],"color":[0.7,0.6,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BarkStripTop","shape":"cube","pos":[0.0,0.0875,0.09],"rot":[0.0,0.0,0.0],"size":[1.1,0.01,0.02],"color":[0.4,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"BarkStripBottom","shape":"cube","pos":[0.0,0.0875,-0.05],"rot":[0.0,0.0,0.0],"size":[1.1,0.01,0.02],"color":[0.4,0.3,0.25],"smooth":0.05,"metal":0.0}
+]}

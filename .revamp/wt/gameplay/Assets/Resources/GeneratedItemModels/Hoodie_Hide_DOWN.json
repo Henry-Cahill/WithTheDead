@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hoodie_Hide_DOWN", "baseHeight": 0.26, "name": "Hoodie Hide DOWN", "model": "gpt-oss:120b", "notes": "Flat hoodie (hide, down) spread on the floor: approx 1.4 m wide × 0.7 m long, 2‑3 cm thick. Main torso panel, two sleeves, cuffs, rounded hood, draw‑string, front pocket, bottom hem and side seams.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.5,0.025,0.7],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.475,-0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.475,-0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.675,-0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.05,0.025,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.675,-0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.05,0.025,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Hood","shape":"cylinder","pos":[0.0,-0.0,-0.25],"rot":[0.0,0.0,90.0],"size":[0.4,0.5,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Drawstring","shape":"cylinder","pos":[0.0,0.0225,-0.25],"rot":[0.0,0.0,90.0],"size":[0.01,0.45,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.0,-0.0,0.3],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,-0.005,-0.25],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.25,-0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.7],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.25,-0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.7],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

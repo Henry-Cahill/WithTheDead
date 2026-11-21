@@ -1,0 +1,12 @@
+{"version": 1, "id": "Bra_Strapless_RedSpots", "baseHeight": 0.073, "name": "Bra Strapless Red Spots", "model": "gpt-oss:120b", "notes": "Strapless bra approx 0.30 m wide × 0.15 m deep × 0.02 m thick, lying flat: central fabric band and two cup shells, with a few red spot accents.", "score": 6, "parts": [
+  {"name":"Band","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CupL","shape":"cylinder","pos":[-0.15,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CupR","shape":"cylinder","pos":[0.15,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[-0.13,0.005,0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[1.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[-0.13,0.005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[1.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[-0.18,0.005,0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[1.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"Spot4","shape":"sphere","pos":[-0.18,0.005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[1.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"Spot5","shape":"sphere","pos":[0.13,0.005,0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[1.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"Spot6","shape":"sphere","pos":[0.13,0.005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[1.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"FoldLine","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

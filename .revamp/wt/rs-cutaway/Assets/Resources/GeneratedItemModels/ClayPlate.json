@@ -1,0 +1,8 @@
+{"version": 1, "id": "ClayPlate", "baseHeight": 0.0757, "name": "Clay Plate", "model": "gpt-oss:120b", "notes": "Round clay plate ~0.27 m diameter, 1.5 cm thick, lying flat on the floor. Main body, slightly raised rim, thin glaze coat and a tiny chip for visual interest.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.015,0.27],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.3],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Glaze","shape":"cylinder","pos":[0.0,0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.002,0.27],"color":[0.62,0.6,0.52],"smooth":0.25,"metal":0.0},
+  {"name":"Chip","shape":"sphere","pos":[0.13,0.0057,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeHighlight","shape":"cylinder","pos":[0.0,0.0073,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.28],"color":[0.68,0.66,0.58],"smooth":0.2,"metal":0.0},
+  {"name":"BottomRough","shape":"sphere","pos":[-0.09,-0.0082,-0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0}
+]}

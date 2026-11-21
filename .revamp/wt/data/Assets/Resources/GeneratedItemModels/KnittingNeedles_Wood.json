@@ -1,0 +1,11 @@
+{"version": 1, "id": "KnittingNeedles_Wood", "baseHeight": 0.07, "name": "Knitting Needles Wood", "model": "gpt-oss:120b", "notes": "Two wooden knitting needles ~0.30 m long lying on their sides, parallel along X. Each needle has a thin shaft, a pointed tip and a rounded wooden knob; the knobs sit on the floor (y=0) while the shafts rest on it via their radius.", "score": 7, "parts": [
+  {"name":"NeedleL_Shaft","shape":"cylinder","pos":[0.0,-0.006,-0.015],"rot":[0.0,0.0,90.0],"size":[0.008,0.3,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"NeedleL_Tip","shape":"sphere","pos":[0.15,-0.006,-0.015],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"NeedleL_Knob","shape":"sphere","pos":[-0.15,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"NeedleL_Seam","shape":"cylinder","pos":[0.0,-0.006,-0.015],"rot":[0.0,0.0,90.0],"size":[0.006,0.3,0.006],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"NeedleR_Shaft","shape":"cylinder","pos":[0.0,-0.006,0.015],"rot":[0.0,0.0,90.0],"size":[0.008,0.3,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"NeedleR_Tip","shape":"sphere","pos":[0.15,-0.006,0.015],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"NeedleR_Knob","shape":"sphere","pos":[-0.15,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"NeedleR_Seam","shape":"cylinder","pos":[0.0,-0.006,0.015],"rot":[0.0,0.0,90.0],"size":[0.006,0.3,0.006],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"GroundShadow","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.08],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0}
+]}

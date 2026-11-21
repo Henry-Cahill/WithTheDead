@@ -1,0 +1,9 @@
+{"version": 1, "id": "ShortSwordBlade_NoTang", "baseHeight": 0.07, "name": "Short Sword Blade No Tang", "model": "gpt-oss:120b", "notes": "Short sword blade (no tang) about 0.55 m long × 0.07 m wide × 0.015 m thick, steel‑tinted (0.6,0.58,0.5). Lying flat on the floor: main blade body, tapered tip, small base guard, and a thin edge ridge for visual definition.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[-0.0225,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tip","shape":"cube","pos":[0.2525,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.07],"color":[0.58,0.55,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"BaseGuard","shape":"cube","pos":[-0.2725,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.08],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.0275,-0.002,0.035],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.005],"color":[0.5,0.48,0.42],"smooth":0.7,"metal":1.0},
+  {"name":"BackRidge","shape":"cube","pos":[0.0275,-0.002,-0.035],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.005],"color":[0.5,0.48,0.42],"smooth":0.7,"metal":1.0},
+  {"name":"SideBevelL","shape":"cube","pos":[-0.0225,0.001,0.035],"rot":[0.0,0.0,0.0],"size":[0.45,0.006,0.005],"color":[0.57,0.55,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"SideBevelR","shape":"cube","pos":[-0.0225,0.001,-0.035],"rot":[0.0,0.0,0.0],"size":[0.45,0.006,0.005],"color":[0.57,0.55,0.48],"smooth":0.6,"metal":1.0}
+]}

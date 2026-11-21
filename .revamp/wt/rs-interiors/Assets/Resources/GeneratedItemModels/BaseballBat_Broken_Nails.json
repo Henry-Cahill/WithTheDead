@@ -1,0 +1,8 @@
+{"version": 1, "id": "BaseballBat_Broken_Nails", "baseHeight": 0.095, "name": "Baseball Bat Broken Nails", "model": "gpt-oss:120b", "notes": "Baseball bat ~0.85 m long lying on its side (X‑axis). Wood handle (thin) into a thicker barrel; three broken metal nails jut out of the barrel’s top surface; small wooden tip knob at the far end.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.175,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.5,0.025],"color":[0.55,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.25,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.55,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"TipKnob","shape":"sphere","pos":[0.41,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.55,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Nail1","shape":"cylinder","pos":[0.15,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Nail2","shape":"cylinder","pos":[0.25,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Nail3","shape":"cylinder","pos":[0.35,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

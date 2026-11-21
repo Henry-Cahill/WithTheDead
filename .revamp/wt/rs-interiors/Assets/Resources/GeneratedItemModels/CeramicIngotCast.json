@@ -1,0 +1,8 @@
+{"version": 1, "id": "CeramicIngotCast", "baseHeight": 0.074, "name": "Ceramic Ingot Cast", "model": "gpt-oss:120b", "notes": "Ceramic ingot cast ~0.10 m long × 0.05 m wide × 0.02 m thick, lying on its largest face. Main block with a faint casting seam, a small glaze spot and a tiny surface crack for visual interest.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0025,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.05],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SeamStrip","shape":"cube","pos":[0.0025,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.005],"color":[0.45,0.43,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"GlazeSpot","shape":"sphere","pos":[0.0425,0.004,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.75,0.73,0.65],"smooth":0.3,"metal":0.0},
+  {"name":"Crack","shape":"cube","pos":[-0.0425,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.03],"color":[0.35,0.34,0.33],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0025,-0.009,0.0255],"rot":[90.0,0.0,0.0],"size":[0.004,0.05,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRimOpp","shape":"cylinder","pos":[0.0025,-0.009,-0.0255],"rot":[90.0,0.0,0.0],"size":[0.004,0.05,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

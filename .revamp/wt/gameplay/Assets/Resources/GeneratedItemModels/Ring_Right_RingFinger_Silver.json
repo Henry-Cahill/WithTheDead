@@ -1,0 +1,11 @@
+{"version": 1, "id": "Ring_Right_RingFinger_Silver", "baseHeight": 0.0738, "name": "Ring Right Ring Finger Silver", "model": "gpt-oss:120b", "notes": "Silver ring for right finger, approx 24 mm outer diameter, 5 mm band thickness, 2 mm inner hole. Lying flat on the floor, oriented with its circular face up. Main silver body with a dark‑floor coloured cut‑out to show the hole, thin edge seams, a small gemstone and a subtle engraving.", "score": 6, "parts": [
+  {"name":"BandOuter","shape":"cylinder","pos":[-0.0005,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.024,0.005,0.024],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"HoleInner","shape":"cylinder","pos":[-0.0005,-0.0003,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.006,0.018],"color":[0.05,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[-0.0005,0.0018,0.0],"rot":[0.0,0.0,90.0],"size":[0.024,0.002,0.024],"color":[0.45,0.44,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.0005,-0.0018,0.0],"rot":[0.0,0.0,90.0],"size":[0.024,0.002,0.024],"color":[0.45,0.44,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeL","shape":"cube","pos":[-0.0125,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.024],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeR","shape":"cube","pos":[0.0115,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.024],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"GemStone","shape":"sphere","pos":[0.0115,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.2,0.4,0.9],"smooth":0.8,"metal":0.0},
+  {"name":"Engrave","shape":"cube","pos":[-0.0005,-0.0005,0.0],"rot":[0.0,15.0,0.0],"size":[0.018,0.002,0.004],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"PolishHighlight","shape":"sphere","pos":[-0.011,0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.85,0.85,0.9],"smooth":0.95,"metal":1.0}
+]}

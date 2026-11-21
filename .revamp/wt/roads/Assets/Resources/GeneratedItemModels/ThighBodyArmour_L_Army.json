@@ -1,0 +1,11 @@
+{"version": 1, "id": "ThighBodyArmour_L_Army", "baseHeight": 0.0813, "name": "Thigh Body Armour L Army", "model": "gpt-oss:120b", "notes": "Left‑thigh body armour (army style) ~0.35 m long × 0.20 m wide × 0.025 m thick. Main padded plate with side flaps and two fabric straps across the front and back, each ending in a small metal buckle.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideFlapL","shape":"cube","pos":[0.0,-0.0088,0.1075],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.015],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SideFlapR","shape":"cube","pos":[0.0,-0.0088,-0.1075],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.015],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[0.0,0.0062,0.09],"rot":[0.0,0.0,90.0],"size":[0.03,0.35,0.03],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[0.0,0.0062,-0.09],"rot":[0.0,0.0,90.0],"size":[0.03,0.35,0.03],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleTopL","shape":"cube","pos":[-0.16,0.0112,0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.005],"color":[0.75,0.77,0.78],"smooth":0.4,"metal":1.0},
+  {"name":"BuckleTopR","shape":"cube","pos":[0.16,0.0112,0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.005],"color":[0.75,0.77,0.78],"smooth":0.4,"metal":1.0},
+  {"name":"BuckleBottomL","shape":"cube","pos":[-0.16,0.0112,-0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.005],"color":[0.75,0.77,0.78],"smooth":0.4,"metal":1.0},
+  {"name":"BuckleBottomR","shape":"cube","pos":[0.16,0.0112,-0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.005],"color":[0.75,0.77,0.78],"smooth":0.4,"metal":1.0}
+]}

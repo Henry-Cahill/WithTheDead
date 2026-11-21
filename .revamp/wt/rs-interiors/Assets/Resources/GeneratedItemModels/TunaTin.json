@@ -1,0 +1,9 @@
+{"version": 1, "id": "TunaTin", "baseHeight": 0.13, "name": "Tuna Tin", "model": "gpt-oss:120b", "notes": "Upright tuna tin ≈ 0.09 m wide × 0.13 m tall: metal body with rolled seams, recessed lid, printed label covering the side and a dark trim ring.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.13,0.09],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.054,0.0],"rot":[0.0,0.0,0.0],"size":[0.106,0.012,0.106],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.064,0.0],"rot":[0.0,0.0,0.0],"size":[0.106,0.012,0.106],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.08],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.085,0.115,0.085],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.09],"color":[0.48,0.42,0.28],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.09],"color":[0.48,0.42,0.28],"smooth":0.12,"metal":0.0}
+]}

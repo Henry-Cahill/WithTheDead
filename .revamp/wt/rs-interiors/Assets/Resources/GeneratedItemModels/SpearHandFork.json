@@ -1,0 +1,11 @@
+{"version": 1, "id": "SpearHandFork", "baseHeight": 0.1, "name": "Spear Hand Fork", "model": "gpt-oss:120b", "notes": "Spear‑hand fork ~1.4 m long: wooden shaft (60 mm dia.) lying on its side along X, a short metal base and two forward‑pointing tines with sharpened tips. Silhouette shows the fork head clearly.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0675,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.06,1.2,0.06],"color":[0.42,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"BaseBlock","shape":"cube","pos":[0.5925,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GuardRing","shape":"cylinder","pos":[0.5125,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.08,0.015,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL","shape":"cylinder","pos":[0.6525,0.02,-0.015],"rot":[90.0,0.0,0.0],"size":[0.02,0.2,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR","shape":"cylinder","pos":[0.6525,-0.02,-0.015],"rot":[90.0,0.0,0.0],"size":[0.02,0.2,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TipL","shape":"sphere","pos":[0.6525,0.02,0.1],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TipR","shape":"sphere","pos":[0.6525,-0.02,0.1],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"HandleEndCap","shape":"cylinder","pos":[-0.6475,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.07,0.04,0.07],"color":[0.42,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[-0.3675,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.08,0.02,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

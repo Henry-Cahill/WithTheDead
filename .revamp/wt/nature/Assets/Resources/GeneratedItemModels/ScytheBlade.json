@@ -1,0 +1,13 @@
+{"version": 1, "id": "ScytheBlade", "baseHeight": 0.16, "name": "Scythe Blade", "model": "gpt-oss:120b", "notes": "Scythe blade lying flat on the ground, approx 1.2 m long (X), 0.25 m wide (Z) and 2 cm thick (Y). Main metal body with a curved tip, thin edge trim, a small socket at the rear for the handle, and four rivets as detail.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[-0.06,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipCylinder","shape":"cylinder","pos":[0.54,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.2,0.2],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeTop","shape":"cube","pos":[-0.06,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.004,0.2],"color":[0.45,0.43,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[-0.06,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.004,0.2],"color":[0.45,0.43,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeSideL","shape":"cube","pos":[-0.06,0.0,-0.102],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.004],"color":[0.45,0.43,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeSideR","shape":"cube","pos":[-0.06,0.0,0.102],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.004],"color":[0.45,0.43,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Socket","shape":"cylinder","pos":[-0.61,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.36,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.78,0.7],"smooth":0.65,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[0.24,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.78,0.7],"smooth":0.65,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[-0.56,0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.78,0.7],"smooth":0.65,"metal":1.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.44,0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.78,0.7],"smooth":0.65,"metal":1.0}
+]}

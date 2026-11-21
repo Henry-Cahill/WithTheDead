@@ -1,0 +1,10 @@
+{"version": 1, "id": "Trousers_SuitWhite", "baseHeight": 0.0725, "name": "Trousers Suit White", "model": "gpt-oss:120b", "notes": "Flat‑lay trousers suit (≈1.00 m long × 0.60 m wide, 2.5 cm thick). Main parts: waistband, two leg panels, central seam, belt‑loops and front pockets.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0,0.4],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.165,0.0,-0.1],"rot":[0.0,0.0,0.0],"size":[0.27,0.025,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.165,0.0,-0.1],"rot":[0.0,0.0,0.0],"size":[0.27,0.025,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,0.0,-0.1],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.8],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.31,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.31,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.195,0.0,-0.2],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.195,0.0,-0.2],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0}
+]}

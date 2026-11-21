@@ -1,0 +1,9 @@
+{"version": 1, "id": "Wound_Abdomen_Scratch_Female", "baseHeight": 0.075, "name": "Wound Abdomen Scratch Female", "model": "gpt-oss:120b", "notes": "Flat wound patch ~0.15 m × 0.10 m × 0.01 m lying on the floor, skin‑tinted base with a few dark‑red blood spots and tiny raised clots for texture.", "score": 6, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"cylinder","pos":[-0.04,0.0,0.02],"rot":[90.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.4,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"BloodSpot2","shape":"cylinder","pos":[0.02,0.0,-0.03],"rot":[90.0,0.0,0.0],"size":[0.025,0.004,0.025],"color":[0.45,0.07,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"ClotL","shape":"sphere","pos":[-0.03,0.005,0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"ClotR","shape":"sphere","pos":[0.04,0.007,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.48,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"TornEdgeTop","shape":"cube","pos":[0.0,-0.0015,0.05],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.02],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"TornEdgeBottom","shape":"cube","pos":[0.0,-0.0015,-0.05],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.02],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0}
+]}

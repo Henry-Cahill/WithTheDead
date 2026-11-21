@@ -1,0 +1,12 @@
+{"version": 1, "id": "Plank_Broken_Nails", "baseHeight": 0.075, "name": "Plank Broken Nails", "model": "gpt-oss:120b", "notes": "Wooden plank weapon 1.10 m long × 0.08 m wide × 0.03 m thick, lying on its side (long axis along X). Four broken metal nails protrude from the business‑end (+X) side, each with a small head.", "score": 7, "parts": [
+  {"name":"PlankBody","shape":"cube","pos":[0.0,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[1.1,0.03,0.08],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GrainOverlay","shape":"cube","pos":[0.0,0.001,-0.025],"rot":[0.0,0.0,0.0],"size":[1.09,0.028,0.078],"color":[0.5,0.5,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"NailShaft1","shape":"cylinder","pos":[0.42,0.0,0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.4,0.4,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"NailHead1","shape":"sphere","pos":[0.42,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.45,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft2","shape":"cylinder","pos":[0.44,0.0,0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.4,0.4,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"NailHead2","shape":"sphere","pos":[0.44,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.45,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft3","shape":"cylinder","pos":[0.46,0.0,0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.4,0.4,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"NailHead3","shape":"sphere","pos":[0.46,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.45,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft4","shape":"cylinder","pos":[0.48,0.0,0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.4,0.4,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"NailHead4","shape":"sphere","pos":[0.48,0.0,0.055],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.45,0.5],"smooth":0.4,"metal":1.0}
+]}

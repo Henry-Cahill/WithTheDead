@@ -1,0 +1,12 @@
+{"version": 1, "id": "BunsHamburger", "baseHeight": 0.125, "name": "Buns Hamburger", "model": "gpt-oss:120b", "notes": "Cardboard pack (≈0.26 m × 0.16 m × 0.12 m) holding two hamburger‑bun halves stacked inside; the front lid is open so the buns are visible.", "score": 7, "parts": [
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.06,-0.02],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.16],"color":[0.78,0.68,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.125,-0.005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.16],"color":[0.78,0.68,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.125,-0.005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.16],"color":[0.78,0.68,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BackWall","shape":"cube","pos":[0.0,-0.005,-0.095],"rot":[0.0,0.0,0.0],"size":[0.24,0.12,0.01],"color":[0.78,0.68,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontWall","shape":"cube","pos":[0.0,-0.005,0.055],"rot":[0.0,0.0,0.0],"size":[0.24,0.12,0.01],"color":[0.78,0.68,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.06,-0.02],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.16],"color":[0.78,0.68,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,-0.005,0.06],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.08],"color":[0.6,0.5,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,-0.0045,0.0605],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.06],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BunBottom","shape":"cylinder","pos":[0.0,-0.035,-0.04],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.1],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BunTop","shape":"cylinder","pos":[0.0,0.005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.1],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

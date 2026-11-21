@@ -1,0 +1,8 @@
+{"version": 1, "id": "StoneWheel", "baseHeight": 0.1, "name": "Stone Wheel", "model": "gpt-oss:120b", "notes": "Stone wheel ~0.50 m dia × 0.04 m thick solid stone disc, lying flat on the floor. Central raised hub gives a recognisable silhouette for a wheel; all parts are stone‑tinted.", "score": 7, "parts": [
+  {"name":"OuterDisc","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.04,0.5],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"HubBase","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.5,0.48,0.4],"smooth":0.08,"metal":0.0},
+  {"name":"HubShaft","shape":"cylinder","pos":[0.0,0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.5,0.48,0.4],"smooth":0.08,"metal":0.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.008,0.5],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"RimInner","shape":"cylinder","pos":[0.0,0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.46,0.004,0.46],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"WearMark","shape":"cube","pos":[-0.12,-0.015,0.15],"rot":[0.0,10.0,0.0],"size":[0.02,0.002,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

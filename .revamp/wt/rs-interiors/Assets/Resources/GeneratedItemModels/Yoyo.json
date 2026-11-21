@@ -1,0 +1,11 @@
+{"version": 1, "id": "Yoyo", "baseHeight": 0.1025, "name": "Yoyo", "model": "gpt-oss:120b", "notes": "Yoyo ~0.07 m diameter × 0.035 m tall, lying on the floor: two plastic discs, a metal axle, small button studs on each disc edge, a thin string coil, and a logo imprint on the top disc.", "score": 6, "parts": [
+  {"name":"DiscBottom","shape":"cylinder","pos":[0.0,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"DiscTop","shape":"cylinder","pos":[0.0,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Axle","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"ButtonBottom","shape":"sphere","pos":[0.032,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.032,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"StringCoil","shape":"cylinder","pos":[0.0,0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.08,0.004],"color":[0.8,0.78,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"LogoTop","shape":"cube","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.01],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimBottom","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRimTop","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0}
+]}

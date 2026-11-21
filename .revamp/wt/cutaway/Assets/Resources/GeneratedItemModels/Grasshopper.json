@@ -1,0 +1,14 @@
+{"version": 1, "id": "Grasshopper", "baseHeight": 0.0742, "name": "Grasshopper", "model": "gpt-oss:120b", "notes": "Small snack box ≈ 0.10 m L × 0.07 m W × 0.02 m H, cardboard with a printed label, containing up to four dried grasshoppers (ellipsoids) stacked inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0023,0.0012],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.1],"color":[0.78,0.71,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BoxLidFlap","shape":"cube","pos":[0.0,0.0088,0.0012],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.1],"color":[0.78,0.71,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0102,0.0012],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.08],"color":[0.6,0.45,0.25],"smooth":0.07,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0112,0.0012],"rot":[0.0,0.0,0.0],"size":[0.055,0.002,0.075],"color":[0.2,0.15,0.1],"smooth":0.07,"metal":0.0},
+  {"name":"Grasshopper1","shape":"sphere","pos":[-0.018,0.0003,-0.0288],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Grasshopper2","shape":"sphere","pos":[0.012,-0.0008,0.0212],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Grasshopper3","shape":"sphere","pos":[-0.022,-0.0017,0.0412],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Grasshopper4","shape":"sphere","pos":[0.018,0.0012,-0.0437],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"AntennaL1","shape":"cylinder","pos":[-0.018,0.0132,-0.0288],"rot":[90.0,0.0,0.0],"size":[0.002,0.01,0.002],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"AntennaR1","shape":"cylinder","pos":[-0.018,0.0132,-0.0268],"rot":[90.0,0.0,0.0],"size":[0.002,0.01,0.002],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"AntennaL2","shape":"cylinder","pos":[0.012,0.0112,0.0212],"rot":[90.0,0.0,0.0],"size":[0.002,0.01,0.002],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"AntennaR2","shape":"cylinder","pos":[0.012,0.0112,0.0232],"rot":[90.0,0.0,0.0],"size":[0.002,0.01,0.002],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

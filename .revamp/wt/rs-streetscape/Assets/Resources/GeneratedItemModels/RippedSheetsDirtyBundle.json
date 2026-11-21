@@ -1,0 +1,14 @@
+{"version": 1, "id": "RippedSheetsDirtyBundle", "baseHeight": 0.483, "name": "Ripped Sheets Dirty Bundle", "model": "gpt-oss:120b", "notes": "Crumpled dirty sheet bundle ~0.8 m × 0.6 m footprint, three overlapping layers of ragged cloth (2‑1‑0.8 cm thick) with torn edge scraps and a dark stain patch.", "score": 6, "parts": [
+  {"name":"BaseLayer","shape":"cube","pos":[0.0061,-0.017,-0.0116],"rot":[0.0,0.0,0.0],"size":[0.8,0.02,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MiddleLayer","shape":"cube","pos":[-0.0039,0.002,-0.0066],"rot":[0.0,0.0,2.0],"size":[0.78,0.018,0.58],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopLayer","shape":"cube","pos":[0.0211,0.019,-0.0196],"rot":[0.0,0.0,-3.0],"size":[0.76,0.016,0.56],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TornCornerFL","shape":"cube","pos":[-0.3739,0.003,-0.2916],"rot":[0.0,15.0,0.0],"size":[0.12,0.02,0.08],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TornCornerFR","shape":"cube","pos":[0.3861,0.005,-0.2916],"rot":[0.0,-12.0,0.0],"size":[0.1,0.022,0.07],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TornCornerBL","shape":"cube","pos":[-0.3539,0.007,0.2884],"rot":[0.0,-8.0,0.0],"size":[0.11,0.018,0.09],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TornCornerBR","shape":"cube","pos":[0.3761,0.009,0.3084],"rot":[0.0,10.0,0.0],"size":[0.09,0.02,0.06],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StainPatch","shape":"sphere","pos":[0.1261,0.028,0.0284],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.18],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLine1","shape":"cube","pos":[-0.0939,0.021,-0.0116],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.6],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLine2","shape":"cube","pos":[0.0861,0.025,-0.0116],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.6],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFrayTop","shape":"cylinder","pos":[0.0061,0.033,-0.0116],"rot":[90.0,0.0,0.0],"size":[0.78,0.006,0.78],"color":[0.57,0.55,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFrayBottom","shape":"cylinder","pos":[0.0061,-0.023,-0.0116],"rot":[90.0,0.0,0.0],"size":[0.8,0.006,0.8],"color":[0.57,0.55,0.5],"smooth":0.05,"metal":0.0}
+]}

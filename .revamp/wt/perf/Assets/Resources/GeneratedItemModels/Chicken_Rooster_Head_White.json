@@ -1,0 +1,10 @@
+{"version": 1, "id": "Chicken_Rooster_Head_White", "baseHeight": 0.105, "name": "Chicken Rooster Head White", "model": "gpt-oss:120b", "notes": "White rooster head ~7 cm wide lying face‑up on the floor. Main skull ellipsoid, yellow beak, black eyes, red comb and wattle add recognisable detail.", "score": 6, "parts": [
+  {"name":"Skull","shape":"sphere","pos":[0.0,-0.015,-0.02],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Beak","shape":"cylinder","pos":[0.0,-0.015,0.035],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.9,0.75,0.4],"smooth":0.35,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.02,0.0,0.005],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.02,0.0,0.005],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"Comb","shape":"sphere","pos":[0.0,0.03,-0.03],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.01],"color":[0.8,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Wattle","shape":"cylinder","pos":[0.0,-0.03,0.035],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.8,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"NostrilL","shape":"sphere","pos":[-0.005,-0.013,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"NostrilR","shape":"sphere","pos":[0.005,-0.013,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0}
+]}

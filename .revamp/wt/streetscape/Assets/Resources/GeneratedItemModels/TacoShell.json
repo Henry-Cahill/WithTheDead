@@ -1,0 +1,14 @@
+{"version": 1, "id": "TacoShell", "baseHeight": 0.09, "name": "Taco Shell", "model": "gpt-oss:120b", "notes": "Cardboard packaging (≈0.12 m × 0.06 m × 0.05 m) lying on its side with the front face up; contains four hard taco shells (~0.09 m long, 0.015 m thick) shown as thin cylinders in a loose pile.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.05],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BoxLidFlap","shape":"cube","pos":[0.0,0.028,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.05],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.015,0.0262],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0165,0.0267],"rot":[0.0,0.0,0.0],"size":[0.07,0.012,0.002],"color":[0.15,0.1,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"Shell1","shape":"cylinder","pos":[-0.025,0.002,0.0147],"rot":[0.0,0.0,90.0],"size":[0.015,0.09,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Shell2","shape":"cylinder","pos":[0.005,0.002,0.0177],"rot":[0.0,0.0,90.0],"size":[0.015,0.09,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Shell3","shape":"cylinder","pos":[-0.01,0.002,-0.0153],"rot":[0.0,0.0,90.0],"size":[0.015,0.09,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Shell4","shape":"cylinder","pos":[0.025,0.002,-0.0183],"rot":[0.0,0.0,90.0],"size":[0.015,0.09,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BoxSideLeft","shape":"cube","pos":[-0.06,-0.0,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.004,0.06,0.05],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BoxSideRight","shape":"cube","pos":[0.06,-0.0,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.004,0.06,0.05],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BoxFront","shape":"cube","pos":[0.0,-0.0,-0.0258],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.004],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BoxBack","shape":"cube","pos":[0.0,-0.0,0.0252],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.004],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0}
+]}

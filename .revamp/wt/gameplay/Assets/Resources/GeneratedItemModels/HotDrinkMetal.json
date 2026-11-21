@@ -1,0 +1,10 @@
+{"version": 1, "id": "HotDrinkMetal", "baseHeight": 0.1895, "name": "Hot Drink Metal", "model": "gpt-oss:120b", "notes": "Upright stainless‑steel thermos bottle ~0.07 m diameter × 0.25 m tall: metal body, recessed screw lid with side pull‑handle, thin label band, bottom rim.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0025,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.24,0.07],"color":[0.45,0.6,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"LidBase","shape":"cylinder","pos":[-0.0025,0.118,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.015,0.068],"color":[0.45,0.6,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"LidTop","shape":"cylinder","pos":[-0.0025,0.1255,0.0],"rot":[0.0,0.0,0.0],"size":[0.065,0.008,0.065],"color":[0.42,0.55,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.0025,-0.122,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.015,0.072],"color":[0.45,0.6,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0325,0.1055,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.04,0.012],"color":[0.45,0.6,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBand","shape":"cube","pos":[-0.0025,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.022],"color":[0.3,0.4,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[-0.0025,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.022],"color":[0.2,0.25,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.0025,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.022],"color":[0.2,0.25,0.35],"smooth":0.2,"metal":0.0}
+]}

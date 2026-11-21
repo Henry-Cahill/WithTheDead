@@ -1,0 +1,11 @@
+{"version": 1, "id": "Necklace_YingYang", "baseHeight": 0.069, "name": "Necklace Ying Yang", "model": "gpt-oss:120b", "notes": "Necklace Yin‑Yang lying flat: tangled chain mass ~0.18 m wide as a low disc, silver pendant 0.03 m dia with black/white yin‑yang halves and contrasting dots, small clasp and two decorative beads.", "score": 6, "parts": [
+  {"name":"ChainMass","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.18],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Clasp","shape":"cylinder","pos":[0.08,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bead1","shape":"sphere","pos":[-0.05,0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":0.0},
+  {"name":"Bead2","shape":"sphere","pos":[0.04,0.005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":0.0},
+  {"name":"PendantDisc","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LeftHalf","shape":"cube","pos":[-0.0075,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.03],"color":[0.05,0.05,0.05],"smooth":0.2,"metal":0.0},
+  {"name":"RightHalf","shape":"cube","pos":[0.0075,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.03],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"WhiteDotInBlack","shape":"sphere","pos":[-0.003,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.9],"smooth":0.5,"metal":0.0},
+  {"name":"BlackDotInWhite","shape":"sphere","pos":[0.003,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.05,0.05,0.05],"smooth":0.5,"metal":0.0}
+]}

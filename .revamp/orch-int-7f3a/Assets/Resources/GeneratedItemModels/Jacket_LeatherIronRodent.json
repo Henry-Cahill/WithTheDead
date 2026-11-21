@@ -1,0 +1,18 @@
+{"version": 1, "id": "Jacket_LeatherIronRodent", "baseHeight": 0.085, "name": "Jacket Leather Iron Rodent", "model": "gpt-oss:120b", "notes": "Flat leather jacket ~0.58 m tall × 0.54 m wide × 0.03 m thick laid out like a product photo. Main torso panel with sleeves, collar band, lapels, front pockets, central zipper line, a row of metal button studs and a small rivet on the collar.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.01,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.54,0.03,0.58],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.36,-0.01,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.36,-0.01,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.006,0.1625],"rot":[0.0,0.0,0.0],"size":[0.54,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"LapelLeft","shape":"cube","pos":[-0.135,0.006,0.1225],"rot":[0.0,0.0,0.0],"size":[0.27,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"LapelRight","shape":"cube","pos":[0.135,0.006,0.1225],"rot":[0.0,0.0,0.0],"size":[0.27,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.15,-0.007,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.15,-0.007,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"ZipperLine","shape":"cube","pos":[0.0,-0.01,0.1625],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,0.58],"color":[0.3,0.3,0.32],"smooth":0.4,"metal":1.0},
+  {"name":"ButtonStud1","shape":"cylinder","pos":[-0.09,-0.007,0.1225],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"ButtonStud2","shape":"cylinder","pos":[-0.045,-0.007,0.0725],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"ButtonStud3","shape":"cylinder","pos":[0.0,-0.007,0.0225],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"ButtonStud4","shape":"cylinder","pos":[0.045,-0.007,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"ButtonStud5","shape":"cylinder","pos":[0.09,-0.007,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"RivetTop","shape":"sphere","pos":[0.0,0.02,0.2025],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.75,0.74,0.73],"smooth":0.5,"metal":1.0},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,-0.003,-0.4175],"rot":[0.0,0.0,0.0],"size":[0.54,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0}
+]}

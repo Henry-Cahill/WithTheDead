@@ -1,0 +1,11 @@
+{"version": 1, "id": "Gravelbag", "baseHeight": 0.2, "name": "Gravelbag", "model": "gpt-oss:120b", "notes": "Burlap sack of gravel lying on its side (≈0.45 m long × 0.25 m wide). Main bag is a cloth cylinder, tied with two thin rope bands, and a small spill of loose gravel at the front end.", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[-0.055,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.25,0.45,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieBandY","shape":"cylinder","pos":[-0.055,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.28,0.02],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"TieBandX","shape":"cylinder","pos":[-0.055,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.02,0.28,0.02],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Gravel1","shape":"sphere","pos":[0.205,-0.07,0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.38,0.38,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Gravel2","shape":"sphere","pos":[0.225,-0.1,-0.03],"rot":[0.0,0.0,0.0],"size":[0.038,0.038,0.038],"color":[0.42,0.42,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"Gravel3","shape":"sphere","pos":[0.255,-0.05,0.01],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.36,0.36,0.36],"smooth":0.2,"metal":0.0},
+  {"name":"Gravel4","shape":"sphere","pos":[0.185,-0.08,-0.07],"rot":[0.0,0.0,0.0],"size":[0.042,0.042,0.042],"color":[0.4,0.4,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Gravel5","shape":"sphere","pos":[0.215,-0.12,0.08],"rot":[0.0,0.0,0.0],"size":[0.036,0.036,0.036],"color":[0.39,0.39,0.39],"smooth":0.2,"metal":0.0},
+  {"name":"Gravel6","shape":"sphere","pos":[0.245,-0.02,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.37,0.37,0.37],"smooth":0.2,"metal":0.0}
+]}

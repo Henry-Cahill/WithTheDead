@@ -1,0 +1,13 @@
+{"version": 1, "id": "Skirt_Knees_Hide", "baseHeight": 0.085, "name": "Skirt Knees Hide", "model": "gpt-oss:120b", "notes": "Knee‑length hide skirt laid flat (≈0.55 m long × 0.85 m wide, 2–3 cm thick). Main body of leather, a darker waistband on top, reinforced hem at the bottom and four front/back pleats for silhouette detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.85],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.85],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.85],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"PleatF1","shape":"cube","pos":[-0.18,-0.0075,0.42],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"PleatF2","shape":"cube","pos":[-0.06,-0.0075,0.42],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"PleatF3","shape":"cube","pos":[0.06,-0.0075,0.42],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"PleatF4","shape":"cube","pos":[0.18,-0.0075,0.42],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"PleatB1","shape":"cube","pos":[-0.18,-0.0075,-0.42],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"PleatB2","shape":"cube","pos":[-0.06,-0.0075,-0.42],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"PleatB3","shape":"cube","pos":[0.06,-0.0075,-0.42],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"PleatB4","shape":"cube","pos":[0.18,-0.0075,-0.42],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0}
+]}

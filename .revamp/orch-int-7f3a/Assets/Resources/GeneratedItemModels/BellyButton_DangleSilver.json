@@ -1,0 +1,8 @@
+{"version": 1, "id": "BellyButton_DangleSilver", "baseHeight": 0.071, "name": "Belly Button Dangle Silver", "model": "gpt-oss:120b", "notes": "Small silver belly‑button dangle ~4 cm chain segment ending in a round 2 cm pendant with a tiny loop; overall footprint ≈0.06 m×0.04 m, thickness ≈0.01 m.", "score": 6, "parts": [
+  {"name":"Chain","shape":"cylinder","pos":[-0.013,-0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Loop","shape":"cylinder","pos":[0.012,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Pendant","shape":"sphere","pos":[0.022,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[0.022,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.003,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.02],"color":[0.15,0.14,0.13],"smooth":0.05,"metal":0.0},
+  {"name":"Highlight","shape":"cube","pos":[0.022,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.8,0.78,0.7],"smooth":0.6,"metal":1.0}
+]}

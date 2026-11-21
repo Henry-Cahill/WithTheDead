@@ -1,0 +1,11 @@
+{"version": 1, "id": "FrillyUnderpants_Pink", "baseHeight": 0.0925, "name": "Frilly Underpants Pink", "model": "gpt-oss:120b", "notes": "Flat pink frilly underpants spread out for a product‑photo view – overall footprint ~0.35 m wide × 0.25 m long, 2–3 cm thick. Main fabric panel, elastic waistband, two leg flaps, decorative frill strips around the edge and a small bow on the front.", "score": 6, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.02,0.055],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0035,0.055],"rot":[0.0,0.0,0.0],"size":[0.35,0.008,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegFlapL","shape":"cube","pos":[-0.1,-0.02,-0.13],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegFlapR","shape":"cube","pos":[0.1,-0.02,-0.13],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrillTop","shape":"cylinder","pos":[0.0,-0.02,0.185],"rot":[0.0,0.0,90.0],"size":[0.01,0.35,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrillBottom","shape":"cylinder","pos":[0.0,-0.02,-0.075],"rot":[0.0,0.0,90.0],"size":[0.01,0.35,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrillLeft","shape":"cylinder","pos":[-0.18,-0.02,0.055],"rot":[90.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrillRight","shape":"cylinder","pos":[0.18,-0.02,0.055],"rot":[90.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Bow","shape":"sphere","pos":[0.0,0.0125,0.115],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.9,0.5,0.6],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Cigar", "baseHeight": 0.0757, "name": "Cigar", "model": "gpt-oss:120b", "notes": "Pack of cigars (4‑piece tin/box) lying on its side: rectangular container ~0.14 m long × 0.06 m deep × 0.03 m high, with a thin paper label on the lid and four individual cigars stacked inside along the length.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.03,0.06],"color":[0.75,0.68,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.0147,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.45,0.38,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"Cigar1","shape":"cylinder","pos":[0.0,-0.0008,-0.0225],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.6,0.54,0.36],"smooth":0.15,"metal":0.0},
+  {"name":"Cigar2","shape":"cylinder","pos":[0.0,-0.0008,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.6,0.54,0.36],"smooth":0.15,"metal":0.0},
+  {"name":"Cigar3","shape":"cylinder","pos":[0.0,-0.0008,0.0075],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.6,0.54,0.36],"smooth":0.15,"metal":0.0},
+  {"name":"Cigar4","shape":"cylinder","pos":[0.0,-0.0008,0.0225],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.6,0.54,0.36],"smooth":0.15,"metal":0.0}
+]}

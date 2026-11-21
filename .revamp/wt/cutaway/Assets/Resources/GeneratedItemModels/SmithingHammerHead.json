@@ -1,0 +1,8 @@
+{"version": 1, "id": "SmithingHammerHead", "baseHeight": 0.0855, "name": "Smithing Hammer Head", "model": "gpt-oss:120b", "notes": "Smithing hammer head ~0.12 m long × 0.08 m wide × 0.04 m thick, steel block with a rounded peen on the front, a cylindrical handle‑hole near the back and two small rivets around it.", "score": 7, "parts": [
+  {"name":"Block","shape":"cube","pos":[-0.0125,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Peen","shape":"sphere","pos":[0.0575,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleHole","shape":"cylinder","pos":[-0.0325,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.06,0.018],"color":[0.2,0.22,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.0475,0.0045,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.3,0.31,0.33],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[-0.0475,0.0045,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.3,0.31,0.33],"smooth":0.5,"metal":1.0},
+  {"name":"RivetTop","shape":"cylinder","pos":[-0.0475,0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.3,0.31,0.33],"smooth":0.5,"metal":1.0}
+]}

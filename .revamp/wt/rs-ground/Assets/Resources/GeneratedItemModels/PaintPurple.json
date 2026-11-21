@@ -1,0 +1,12 @@
+{"version": 1, "id": "PaintPurple", "baseHeight": 0.204, "name": "Paint Purple", "model": "gpt-oss:120b", "notes": "Upright paint can 0.22 m diameter x 0.28 m tall (5 kg): metal body, inner purple paint fill, slightly larger metal lid with rim, thin label band and front stripe, small screw‑cap on the lid, and a side grip knob.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0113,-0.014,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.22,0.26,0.22],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"PaintFill","shape":"cylinder","pos":[-0.0113,-0.014,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.2,0.24,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LidOuter","shape":"cylinder","pos":[-0.0113,0.125,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.235,0.018,0.235],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"LidInner","shape":"cylinder","pos":[-0.0113,0.118,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.215,0.014,0.215],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.0113,0.12,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.224,0.008,0.224],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.0113,-0.14,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.224,0.008,0.224],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[-0.0113,-0.014,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.226,0.002,0.226],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"LabelStripe","shape":"cube","pos":[-0.0113,-0.013,0.1092],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.02],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideGrip","shape":"cylinder","pos":[0.1137,-0.014,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewCap","shape":"cylinder","pos":[-0.0113,0.139,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.04],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0}
+]}

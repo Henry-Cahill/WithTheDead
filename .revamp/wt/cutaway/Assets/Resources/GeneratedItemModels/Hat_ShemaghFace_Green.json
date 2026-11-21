@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_ShemaghFace_Green", "baseHeight": 0.0725, "name": "Hat Shemagh Face Green", "model": "gpt-oss:120b", "notes": "Flat shemagh 0.70 m wide × 0.50 m deep × 0.025 m thick (cloth), laid out as a rectangular sheet with three folded corners and a short fringe along the lower edge; overall silhouette clear from above.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,0.0,0.005],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FoldTL","shape":"cube","pos":[-0.25,0.0,0.23],"rot":[0.0,-30.0,0.0],"size":[0.2,0.025,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FoldTR","shape":"cube","pos":[0.25,0.0,0.23],"rot":[0.0,30.0,0.0],"size":[0.2,0.025,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FoldBottom","shape":"cube","pos":[0.0,0.0,-0.245],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"cylinder","pos":[0.0,0.0,0.105],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe1","shape":"cylinder","pos":[-0.25,-0.0025,-0.265],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.005],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe2","shape":"cylinder","pos":[-0.15,-0.0025,-0.265],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.005],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe3","shape":"cylinder","pos":[-0.05,-0.0025,-0.265],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.005],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe4","shape":"cylinder","pos":[0.05,-0.0025,-0.265],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.005],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe5","shape":"cylinder","pos":[0.15,-0.0025,-0.265],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.005],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe6","shape":"cylinder","pos":[0.25,-0.0025,-0.265],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.005],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0}
+]}

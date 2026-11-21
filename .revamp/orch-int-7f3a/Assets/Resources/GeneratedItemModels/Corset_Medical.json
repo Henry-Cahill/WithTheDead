@@ -1,0 +1,13 @@
+{"version": 1, "id": "Corset_Medical", "baseHeight": 0.0742, "name": "Corset Medical", "model": "gpt-oss:120b", "notes": "Medical corset ~0.40 m long × 0.28 m wide × 0.025 m thick: central front panel, side boning strips, vertical lace strips with metal eyelets, a rear strap and a small label.", "score": 6, "parts": [
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideBoningL","shape":"cube","pos":[-0.14,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.4],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideBoningR","shape":"cube","pos":[0.14,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.4],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LaceStripL","shape":"cube","pos":[-0.07,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.38],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LaceStripR","shape":"cube","pos":[0.07,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.38],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackStrap","shape":"cube","pos":[0.0,-0.0017,-0.175],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EyeletTopL","shape":"sphere","pos":[-0.07,0.0063,0.18],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletBottomL","shape":"sphere","pos":[-0.07,0.0063,-0.18],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletTopR","shape":"sphere","pos":[0.07,0.0063,0.18],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletBottomR","shape":"sphere","pos":[0.07,0.0063,-0.18],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0}
+]}

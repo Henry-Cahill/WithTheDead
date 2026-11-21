@@ -1,0 +1,12 @@
+{"version": 1, "id": "Skirt_Short_FaunHide", "baseHeight": 0.0725, "name": "Skirt Short Faun Hide", "model": "gpt-oss:120b", "notes": "Flat short skirt of faun hide, about 0.48 m across hips and 0.38 m from front to back, 2‑3 cm thick when laid flat. Built from a waist band, front and back panels, side flare blocks and thin hem strips around the edges.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0025,-0.1],"rot":[0.0,0.0,0.0],"size":[0.48,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0025,0.09],"rot":[0.0,0.0,0.0],"size":[0.48,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"SideFlareL","shape":"cube","pos":[-0.3,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.38],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"SideFlareR","shape":"cube","pos":[0.3,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.38],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.02],"color":[0.47,0.43,0.52],"smooth":0.12,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,0.0,0.18],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.02],"color":[0.47,0.43,0.52],"smooth":0.12,"metal":0.0},
+  {"name":"HemSideL","shape":"cube","pos":[-0.35,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.38],"color":[0.47,0.43,0.52],"smooth":0.12,"metal":0.0},
+  {"name":"HemSideR","shape":"cube","pos":[0.35,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.38],"color":[0.47,0.43,0.52],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoop","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.005,0.48],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0}
+]}

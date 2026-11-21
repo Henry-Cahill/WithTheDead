@@ -1,0 +1,16 @@
+{"version": 1, "id": "UmbrellaBlack", "baseHeight": 0.735, "name": "Umbrella Black", "model": "gpt-oss:120b", "notes": "Closed black umbrella lying on the floor – 0.90 m shaft, ~1.20 m dome, metal tip & ribs, rubber grip. The thin canopy now rests directly on the rib ends and a small fabric nub (button) sits at the very top of the dome.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0,-0.225,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.9,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.7},
+  {"name":"Tip","shape":"sphere","pos":[0.0,-0.66,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.0,0.2,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.05,0.025],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Canopy","shape":"sphere","pos":[0.0,0.625,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.06,1.2],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBand","shape":"cylinder","pos":[0.0,0.23,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.02,0.02],"color":[0.3,0.28,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"Rib01","shape":"cylinder","pos":[0.1768,0.4018,0.0],"rot":[45.0,0.0,0.0],"size":[0.015,0.5,0.015],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.9},
+  {"name":"Rib02","shape":"cylinder","pos":[0.125,0.4018,0.125],"rot":[45.0,45.0,0.0],"size":[0.015,0.5,0.015],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.9},
+  {"name":"Rib03","shape":"cylinder","pos":[0.0,0.4018,0.1768],"rot":[45.0,90.0,0.0],"size":[0.015,0.5,0.015],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.9},
+  {"name":"Rib04","shape":"cylinder","pos":[-0.125,0.4018,0.125],"rot":[45.0,135.0,0.0],"size":[0.015,0.5,0.015],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.9},
+  {"name":"Rib05","shape":"cylinder","pos":[-0.1768,0.4018,0.0],"rot":[45.0,-180.0,0.0],"size":[0.015,0.5,0.015],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.9},
+  {"name":"Rib06","shape":"cylinder","pos":[-0.125,0.4018,-0.125],"rot":[45.0,-135.0,0.0],"size":[0.015,0.5,0.015],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.9},
+  {"name":"Rib07","shape":"cylinder","pos":[0.0,0.4018,-0.1768],"rot":[45.0,-90.0,0.0],"size":[0.015,0.5,0.015],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.9},
+  {"name":"Rib08","shape":"cylinder","pos":[0.125,0.4018,-0.125],"rot":[45.0,-45.0,0.0],"size":[0.015,0.5,0.015],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.9},
+  {"name":"FabricTop","shape":"sphere","pos":[0.0,0.665,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

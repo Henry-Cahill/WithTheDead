@@ -1,0 +1,10 @@
+{"version": 1, "id": "BucketCarvedConcreteFull", "baseHeight": 0.23, "name": "Bucket Carved Concrete Full", "model": "gpt-oss:120b", "notes": "Concrete bucket (full) ~0.40 m long, 0.30 m outer diameter, 0.02 m wall thickness; lying on its side with the opening facing +X. Includes outer shell, inner cavity, rim band, two metal handle ends and three carved rib details.", "score": 7, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.4,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.26,0.36,0.26],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"RimBand","shape":"cylinder","pos":[0.19,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.34,0.02,0.34],"color":[0.58,0.56,0.48],"smooth":0.18,"metal":0.0},
+  {"name":"HandleLeft","shape":"cylinder","pos":[0.19,0.07,-0.08],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.4,0.42,0.44],"smooth":0.55,"metal":1.0},
+  {"name":"HandleRight","shape":"cylinder","pos":[0.19,0.07,0.08],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.4,0.42,0.44],"smooth":0.55,"metal":1.0},
+  {"name":"RibTop","shape":"cube","pos":[-0.01,0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.015],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"RibMid","shape":"cube","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.015],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"RibBottom","shape":"cube","pos":[-0.01,-0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.015],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

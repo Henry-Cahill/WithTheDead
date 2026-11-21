@@ -1,0 +1,11 @@
+{"version": 1, "id": "CanteenMilitaryFull", "baseHeight": 0.1055, "name": "Canteen Military Full", "model": "gpt-oss:120b", "notes": "Military full‑size canteen ~0.25 m long × 0.08 m diameter, lying on its side (X‑axis). Main painted‑metal body with a thicker cap at one end, rolled‑seam rings, two strap loops, and a thin label strip around the centre.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.006,-0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.25,0.08],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.9},
+  {"name":"Cap","shape":"cylinder","pos":[0.1265,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.015,0.09],"color":[0.45,0.44,0.4],"smooth":0.4,"metal":0.9},
+  {"name":"RimTop","shape":"cylinder","pos":[0.136,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.005,0.09],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":0.9},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.136,-0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.082,0.005,0.082],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.064,-0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.082,0.004,0.082],"color":[0.62,0.6,0.52],"smooth":0.4,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.076,-0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.082,0.004,0.082],"color":[0.62,0.6,0.52],"smooth":0.4,"metal":0.9},
+  {"name":"Label","shape":"cube","pos":[-0.006,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.07],"color":[0.3,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LoopL","shape":"cylinder","pos":[-0.096,-0.0045,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"LoopR","shape":"cylinder","pos":[0.084,-0.0045,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0}
+]}

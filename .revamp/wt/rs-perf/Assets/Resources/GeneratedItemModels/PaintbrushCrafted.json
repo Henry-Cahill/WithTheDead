@@ -1,0 +1,10 @@
+{"version": 1, "id": "PaintbrushCrafted", "baseHeight": 0.1, "name": "Paintbrush Crafted", "model": "gpt-oss:120b", "notes": "PaintbrushCrafted – about 0.35 m long lying on its side: a tapered wooden handle (≈0.25 m) with a small wooden knob at the rear end, a short metal ferrule near the tip and a fluffy bristle tuft at the front.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0275,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Knob","shape":"sphere","pos":[-0.1405,-0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.1125,-0.0275,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.03,0.025],"color":[0.75,0.75,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"BristleSphere","shape":"sphere","pos":[0.1575,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.9,0.85,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"BristleTip","shape":"cylinder","pos":[0.1875,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.9,0.85,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"WoodGrain1","shape":"cube","pos":[-0.1775,-0.029,0.005],"rot":[0.0,0.0,10.0],"size":[0.04,0.004,0.002],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WoodGrain2","shape":"cube","pos":[-0.0975,-0.029,-0.006],"rot":[0.0,0.0,-8.0],"size":[0.03,0.004,0.002],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"MetalRivet","shape":"sphere","pos":[0.0925,-0.025,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":1.0}
+]}

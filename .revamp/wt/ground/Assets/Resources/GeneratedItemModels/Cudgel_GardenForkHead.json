@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cudgel_GardenForkHead", "baseHeight": 0.0825, "name": "Cudgel Garden Fork Head", "model": "gpt-oss:120b", "notes": "Garden‑fork head (weapon) ~0.20 m long × 0.04 m thick × 0.08 m deep; two steel tines 0.12 m long protrude from the front plate. Lying on its side with the X‑axis as the longest dimension, business end (tines and front plate) faces +X.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[-0.013,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.087,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.045,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"Connector","shape":"cylinder","pos":[0.082,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"TineL","shape":"cylinder","pos":[0.097,0.0055,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.12,0.012],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"TineR","shape":"cylinder","pos":[0.097,-0.0105,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.12,0.012],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[0.097,0.0185,0.036],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.097,0.0185,-0.036],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.097,-0.0185,0.036],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.097,-0.0185,-0.036],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeTop","shape":"cube","pos":[-0.013,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[-0.013,-0.0215,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0}
+]}

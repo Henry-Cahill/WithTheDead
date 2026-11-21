@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shirt_NoSleeves_Crafted_DenimBlack", "baseHeight": 0.076, "name": "Shirt No Sleeves Crafted Denim Black", "model": "gpt-oss:120b", "notes": "Sleeveless denim shirt 0.58 m wide × 0.74 m long × 0.025 m thick, laid flat: main body panel, neck opening, collar rim, top & bottom hems, side seam strips, two shoulder‑strap tabs and a centre stitch line.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0025,-0.02],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.74],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.0,-0.0025,0.28],"rot":[0.0,0.0,0.0],"size":[0.18,0.027,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.0,0.013,0.28],"rot":[0.0,0.0,0.0],"size":[0.22,0.006,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopHem","shape":"cube","pos":[0.0,-0.0025,0.34],"rot":[0.0,0.0,0.0],"size":[0.58,0.026,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BottomHem","shape":"cube","pos":[0.0,-0.0025,-0.38],"rot":[0.0,0.0,0.0],"size":[0.58,0.026,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSideSeam","shape":"cube","pos":[-0.285,-0.0025,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.026,0.74],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightSideSeam","shape":"cube","pos":[0.285,-0.0025,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.026,0.74],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapL","shape":"cube","pos":[-0.12,-0.0025,0.32],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapR","shape":"cube","pos":[0.12,-0.0025,0.32],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterStitch","shape":"cube","pos":[0.0,-0.0025,-0.02],"rot":[0.0,0.0,0.0],"size":[0.005,0.026,0.68],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

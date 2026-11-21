@@ -1,0 +1,14 @@
+{"version": 1, "id": "BerryGeneric3", "baseHeight": 0.08, "name": "Berry Generic3", "model": "gpt-oss:120b", "notes": "Small berry pack 0.12 m wide × 0.08 m deep × 0.04 m tall, cardboard‑plastic pouch lying on its side with a thin lid rim and a printed label; five loose berries are shown inside.", "score": 7, "parts": [
+  {"name":"PackBody","shape":"cube","pos":[0.0,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PackSideL","shape":"cube","pos":[-0.058,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.036,0.08],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PackSideR","shape":"cube","pos":[0.058,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.036,0.08],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PackFront","shape":"cube","pos":[0.0,0.002,-0.038],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.004],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PackBack","shape":"cube","pos":[0.0,0.002,0.038],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.004],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LidRim","shape":"cube","pos":[0.0,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.6,0.52,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.45,0.33,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Berry01","shape":"sphere","pos":[-0.02,0.005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.014,0.018],"color":[0.82,0.18,0.22],"smooth":0.4,"metal":0.0},
+  {"name":"Berry02","shape":"sphere","pos":[0.015,0.007,0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.012,0.016],"color":[0.78,0.22,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"Berry03","shape":"sphere","pos":[0.025,0.004,-0.02],"rot":[0.0,0.0,0.0],"size":[0.019,0.015,0.019],"color":[0.84,0.15,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Berry04","shape":"sphere","pos":[-0.03,0.006,0.02],"rot":[0.0,0.0,0.0],"size":[0.017,0.013,0.017],"color":[0.8,0.2,0.23],"smooth":0.4,"metal":0.0},
+  {"name":"Berry05","shape":"sphere","pos":[0.0,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.014,0.018],"color":[0.82,0.18,0.22],"smooth":0.4,"metal":0.0}
+]}

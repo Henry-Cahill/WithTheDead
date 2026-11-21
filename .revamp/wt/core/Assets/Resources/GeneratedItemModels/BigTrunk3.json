@@ -1,0 +1,12 @@
+{"version": 1, "id": "BigTrunk3", "baseHeight": 0.29, "name": "Big Trunk3", "model": "gpt-oss:120b", "notes": "Wooden trunk lying on its side (long axis X). Overall size ≈1 m × 0.44 m × 0.5 m (L × H × W). Main body of solid wood, three metal reinforcement bands, corner brackets and a simple metal latch on the lid.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.005,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.44,0.5],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.395,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.5],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BandBottom","shape":"cube","pos":[-0.005,-0.1,0.0],"rot":[0.0,0.0,0.0],"size":[1.02,0.02,0.04],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BandMiddle","shape":"cube","pos":[-0.005,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[1.02,0.02,0.04],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BandTop","shape":"cube","pos":[-0.005,0.08,0.0],"rot":[0.0,0.0,0.0],"size":[1.02,0.02,0.04],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BracketFL","shape":"cube","pos":[-0.485,0.19,0.23],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BracketFR","shape":"cube","pos":[-0.485,0.19,-0.23],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BracketBL","shape":"cube","pos":[0.475,0.19,0.23],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BracketBR","shape":"cube","pos":[0.475,0.19,-0.23],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Latch","shape":"cylinder","pos":[0.475,0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.08,0.03],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0}
+]}

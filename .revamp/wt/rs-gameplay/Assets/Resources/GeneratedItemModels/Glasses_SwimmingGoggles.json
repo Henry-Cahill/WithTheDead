@@ -1,0 +1,12 @@
+{"version": 1, "id": "Glasses_SwimmingGoggles", "baseHeight": 0.066, "name": "Glasses Swimming Goggles", "model": "gpt-oss:120b", "notes": "Flat swimming‑goggle set laid out like a product photo – overall footprint ≈ 0.22 m wide (X) × 0.25 m deep (Z) × 0.01 m thick (Y). Two clear plastic lenses, a short bridge frame and a flat silicone strap that runs behind the lenses.", "score": 7, "parts": [
+  {"name":"LensL","shape":"sphere","pos":[-0.055,0.0,0.0988],"rot":[0.0,0.0,0.0],"size":[0.09,0.012,0.09],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"sphere","pos":[0.055,0.0,0.0988],"rot":[0.0,0.0,0.0],"size":[0.09,0.012,0.09],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"RimL","shape":"cube","pos":[-0.055,0.002,0.0988],"rot":[0.0,0.0,0.0],"size":[0.095,0.004,0.095],"color":[0.45,0.4,0.5],"smooth":0.5,"metal":0.0},
+  {"name":"RimR","shape":"cube","pos":[0.055,0.002,0.0988],"rot":[0.0,0.0,0.0],"size":[0.095,0.004,0.095],"color":[0.45,0.4,0.5],"smooth":0.5,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.002,0.0988],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.09],"color":[0.45,0.4,0.5],"smooth":0.5,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[0.0,-0.003,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.22,0.006,0.25],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"StrapSeam","shape":"cube","pos":[0.0,0.001,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.002],"color":[0.07,0.07,0.09],"smooth":0.3,"metal":0.0},
+  {"name":"LoopL","shape":"cube","pos":[-0.055,-0.001,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.02],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"LoopR","shape":"cube","pos":[0.055,-0.001,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.02],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"BrandTag","shape":"cube","pos":[0.0,0.003,0.0738],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.01],"color":[0.2,0.2,0.25],"smooth":0.4,"metal":0.0}
+]}

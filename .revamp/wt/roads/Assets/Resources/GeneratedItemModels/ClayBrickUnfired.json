@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClayBrickUnfired", "baseHeight": 0.0935, "name": "Clay Brick Unfired", "model": "gpt-oss:120b", "notes": "Unfired clay brick ~0.24 m long × 0.115 m wide × 0.065 m thick, lying on its largest face (length‑wise along X). Main body is matte earthen, with a few chipped corners and a thin dusty rim to hint at rough handling.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0005,-0.001,0.0012],"rot":[0.0,0.0,0.0],"size":[0.24,0.065,0.115],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"DustRim","shape":"cube","pos":[0.0005,0.0325,0.0012],"rot":[0.0,0.0,0.0],"size":[0.242,0.002,0.117],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"ChipFL","shape":"cube","pos":[-0.1145,0.0115,-0.0538],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ChipFR","shape":"cube","pos":[-0.1145,0.0115,0.0562],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.035],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ChipBL","shape":"cube","pos":[0.1155,0.0115,-0.0538],"rot":[0.0,0.0,0.0],"size":[0.028,0.022,0.038],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ChipBR","shape":"cube","pos":[0.1155,0.0115,0.0562],"rot":[0.0,0.0,0.0],"size":[0.025,0.019,0.032],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeWearXPos","shape":"cube","pos":[0.1205,-0.001,0.0012],"rot":[0.0,0.0,0.0],"size":[0.004,0.065,0.115],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"EdgeWearXNeg","shape":"cube","pos":[-0.1195,-0.001,0.0012],"rot":[0.0,0.0,0.0],"size":[0.004,0.065,0.115],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"EdgeWearZPos","shape":"cube","pos":[0.0005,-0.001,0.0592],"rot":[0.0,0.0,0.0],"size":[0.24,0.065,0.004],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"EdgeWearZNeg","shape":"cube","pos":[0.0005,-0.001,-0.0568],"rot":[0.0,0.0,0.0],"size":[0.24,0.065,0.004],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0}
+]}

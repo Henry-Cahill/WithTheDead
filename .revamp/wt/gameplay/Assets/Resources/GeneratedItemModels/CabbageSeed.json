@@ -1,0 +1,14 @@
+{"version": 1, "id": "CabbageSeed", "baseHeight": 0.0624, "name": "Cabbage Seed", "model": "gpt-oss:120b", "notes": "A loose heap of cabbage seeds about 3 cm across and 1 cm high, shown as a small pile of individual oval seeds lying on the floor.", "score": 6, "parts": [
+  {"name":"Seed01","shape":"sphere","pos":[-0.01,0.0001,0.008],"rot":[0.0,0.0,0.0],"size":[0.009,0.0045,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed02","shape":"sphere","pos":[0.012,0.0002,-0.007],"rot":[0.0,0.0,0.0],"size":[0.0085,0.0042,0.0058],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed03","shape":"sphere","pos":[-0.006,0.0,0.001],"rot":[0.0,0.0,0.0],"size":[0.0092,0.0044,0.0061],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed04","shape":"sphere","pos":[0.003,-0.0002,-0.01],"rot":[0.0,0.0,0.0],"size":[0.0088,0.0041,0.0059],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed05","shape":"sphere","pos":[-0.011,0.0001,0.012],"rot":[0.0,0.0,0.0],"size":[0.0091,0.0043,0.0062],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed06","shape":"sphere","pos":[0.008,-0.0001,-0.003],"rot":[0.0,0.0,0.0],"size":[0.0087,0.004,0.0057],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed07","shape":"sphere","pos":[-0.004,-0.0002,0.009],"rot":[0.0,0.0,0.0],"size":[0.0089,0.0042,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed08","shape":"sphere","pos":[0.01,0.0001,-0.009],"rot":[0.0,0.0,0.0],"size":[0.0093,0.0045,0.0063],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed09","shape":"sphere","pos":[-0.007,-0.0002,0.005],"rot":[0.0,0.0,0.0],"size":[0.0086,0.0041,0.0058],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed10","shape":"sphere","pos":[0.006,0.0001,-0.012],"rot":[0.0,0.0,0.0],"size":[0.009,0.0043,0.0061],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed11","shape":"sphere","pos":[-0.012,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[0.0084,0.0039,0.0056],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed12","shape":"sphere","pos":[-0.0,-0.0003,-0.006],"rot":[0.0,0.0,0.0],"size":[0.0089,0.0042,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

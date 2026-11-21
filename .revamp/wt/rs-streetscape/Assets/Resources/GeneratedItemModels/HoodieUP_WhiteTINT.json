@@ -1,0 +1,13 @@
+{"version": 1, "id": "HoodieUP_WhiteTINT", "baseHeight": 0.17, "name": "Hoodie UP White TINT", "model": "gpt-oss:120b", "notes": "Flat hoodie laid out with hood at the front‑top: torso panel (0.58 m × 0.40 m, 4 cm thick), two sleeves angled outward, a rounded hood, front pocket and twin draw‑strings. Overall footprint ≈ 0.9 m × 0.6 m.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.09,-0.135],"rot":[0.0,0.0,0.0],"size":[0.58,0.04,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.44,-0.095,-0.135],"rot":[0.0,-15.0,0.0],"size":[0.25,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.44,-0.095,-0.135],"rot":[0.0,15.0,0.0],"size":[0.25,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.57,-0.0925,-0.135],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.57,-0.0925,-0.135],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HoodBase","shape":"cylinder","pos":[0.0,-0.04,0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HoodPuff","shape":"sphere","pos":[0.0,0.01,0.215],"rot":[0.0,0.0,0.0],"size":[0.28,0.2,0.28],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFront","shape":"cube","pos":[0.0,-0.08,0.045],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DrawStringL","shape":"cylinder","pos":[-0.02,-0.07,0.085],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"DrawStringR","shape":"cylinder","pos":[0.02,-0.07,0.085],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.105,-0.335],"rot":[0.0,0.0,0.0],"size":[0.58,0.01,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

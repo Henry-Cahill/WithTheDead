@@ -1,0 +1,10 @@
+{"version": 1, "id": "MaceHead", "baseHeight": 0.1688, "name": "Mace Head", "model": "gpt-oss:120b", "notes": "Mace head ~0.15 m diameter metal sphere with six short spikes (top, bottom, front, back, left, right). Lying on the floor on its side – the main sphere rests on y=0, spikes jut out radially.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,0.0312,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.15,0.15],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeTop","shape":"cylinder","pos":[0.0,0.0513,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeBottom","shape":"cylinder","pos":[0.0,-0.0887,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeFront","shape":"cylinder","pos":[0.0,0.0312,0.095],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeBack","shape":"cylinder","pos":[0.0,0.0312,-0.095],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeLeft","shape":"cylinder","pos":[-0.095,0.0312,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeRight","shape":"cylinder","pos":[0.095,0.0312,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RimBand","shape":"cylinder","pos":[0.0,0.0312,0.0],"rot":[90.0,0.0,0.0],"size":[0.155,0.008,0.155],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0}
+]}

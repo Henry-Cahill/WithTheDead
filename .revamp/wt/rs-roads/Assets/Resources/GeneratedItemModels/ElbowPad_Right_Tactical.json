@@ -1,0 +1,11 @@
+{"version": 1, "id": "ElbowPad_Right_Tactical", "baseHeight": 0.085, "name": "Elbow Pad Right Tactical", "model": "gpt-oss:120b", "notes": "Right‑hand tactical elbow pad lying on the floor – about 0.18 m long × 0.12 m wide × 0.02 m thick. Padded main body (tint 0.6,0.58,0.5) with a rounded front bulge, dark trim around the edges, two strap‑loop tubes at each end and a small Velcro patch centre‑top.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[-0.01,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.08,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimTop","shape":"cube","pos":[-0.01,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.12],"color":[0.4,0.38,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"SideTrimLeft","shape":"cube","pos":[-0.01,-0.015,-0.058],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.004],"color":[0.4,0.38,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"SideTrimRight","shape":"cube","pos":[-0.01,-0.015,0.058],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.004],"color":[0.4,0.38,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"StrapLoopFore","shape":"cylinder","pos":[-0.09,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"StrapLoopUpper","shape":"cylinder","pos":[0.07,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"VelcroPatch","shape":"cube","pos":[-0.01,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.04],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Logo","shape":"sphere","pos":[0.01,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0}
+]}

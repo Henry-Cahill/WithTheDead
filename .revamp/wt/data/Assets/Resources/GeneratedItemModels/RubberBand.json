@@ -1,0 +1,10 @@
+{"version": 1, "id": "RubberBand", "baseHeight": 0.065, "name": "Rubber Band", "model": "gpt-oss:120b", "notes": "Flat rubber band loop about 7 cm across, 2 cm wide strip and 1 cm thick, lying on its side on the floor.", "score": 6, "parts": [
+  {"name":"TopSide","shape":"cube","pos":[0.0,0.0,0.01],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"BottomSide","shape":"cube","pos":[0.0,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"LeftSide","shape":"cube","pos":[-0.025,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RightSide","shape":"cube","pos":[0.025,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerTL","shape":"cylinder","pos":[-0.025,0.0,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerTR","shape":"cylinder","pos":[0.025,0.0,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[-0.025,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[0.025,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

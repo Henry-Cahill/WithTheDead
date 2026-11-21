@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoulderpad_MetalScrap_R", "baseHeight": 0.1, "name": "Shoulderpad Metal Scrap R", "model": "gpt-oss:120b", "notes": "Scrap metal shoulder‑pad (right side), roughly a 0.25 m × 0.15 m plate ~2 cm thick with a curved front bulge, rivets and a torn strap; lying on its back so the longest axis runs along X.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.02,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.0,-0.0,0.0775],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[-0.1,-0.015,0.0425],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.68,0.66,0.58],"smooth":0.65,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.1,-0.015,0.0425],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.68,0.66,0.58],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.1,-0.015,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.68,0.66,0.58],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.1,-0.015,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.68,0.66,0.58],"smooth":0.65,"metal":1.0},
+  {"name":"Strap","shape":"cube","pos":[0.0,-0.0125,-0.1075],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"RustPatch1","shape":"sphere","pos":[-0.08,-0.01,0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.43,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"RustPatch2","shape":"sphere","pos":[0.07,-0.012,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.035,0.035,0.035],"color":[0.44,0.42,0.34],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[0.0,-0.008,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.15],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0}
+]}

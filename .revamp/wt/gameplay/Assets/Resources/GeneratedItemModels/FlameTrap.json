@@ -1,0 +1,11 @@
+{"version": 1, "id": "FlameTrap", "baseHeight": 0.18, "name": "Flame Trap", "model": "gpt-oss:120b", "notes": "Flame Trap melee weapon – total length ≈1.14 m (grip + handle + chain + flaming head). Wooden grip and metal handle sit on the floor, a thin steel chain runs along X to a spherical flaming head at the +X end. All parts touch their neighbours.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cube","pos":[-0.555,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.08,0.1],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.355,-0.08,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.25,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Chain","shape":"cylinder","pos":[0.02,-0.11,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.5,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"FlameHeadBody","shape":"sphere","pos":[0.39,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"InnerFlame","shape":"sphere","pos":[0.39,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.16,0.16],"color":[1.0,0.5,0.0],"smooth":0.4,"metal":0.0},
+  {"name":"SpikeXPos","shape":"cylinder","pos":[0.57,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeXNeg","shape":"cylinder","pos":[0.21,0.0,0.0],"rot":[0.0,0.0,-90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeZPos","shape":"cylinder","pos":[0.39,0.0,0.18],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeZNeg","shape":"cylinder","pos":[0.39,0.0,-0.18],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

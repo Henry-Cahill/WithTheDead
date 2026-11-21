@@ -1,0 +1,8 @@
+{"version": 1, "id": "Spear_Bone", "baseHeight": 0.13, "name": "Spear Bone", "model": "gpt-oss:120b", "notes": "Bone spear ~1.40 m long, 0.04 m shaft diameter, blunt bone head ≈0.14 m wide and a short wooden grip at the opposite end. Lying on its side (X‑axis) with the head pointing +X.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.01,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.68,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.665,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.15,0.06],"color":[0.4,0.25,0.15],"smooth":0.15,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[-0.74,-0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"ShaftRidge","shape":"cylinder","pos":[0.01,-0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,1.2,0.015],"color":[0.55,0.55,0.6],"smooth":0.25,"metal":0.0},
+  {"name":"HeadRidge","shape":"cylinder","pos":[0.68,0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.14,0.02],"color":[0.55,0.55,0.6],"smooth":0.25,"metal":0.0}
+]}

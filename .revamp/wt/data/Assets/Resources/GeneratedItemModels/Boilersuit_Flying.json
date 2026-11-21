@@ -1,0 +1,17 @@
+{"version": 1, "id": "Boilersuit_Flying", "baseHeight": 0.0755, "name": "Boilersuit Flying", "model": "gpt-oss:120b", "notes": "Boilersuit Flying – flat‑lay of a full‑body coverall (~1.4 m long × ~1.2 m wide). Main fabric tint 0.55,0.5,0.6; dark‑grey stitching and metal‑look zipper. All parts now touch the main body: torso panels, sleeves with cuffs, waist band, front pockets, zip pull, legs with leg cuffs.", "score": 6, "parts": [
+  {"name":"TorsoFront","shape":"cube","pos":[0.0,-0.0045,0.375],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TorsoBack","shape":"cube","pos":[0.0,-0.0055,0.375],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.3],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.0,0.0005,0.675],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.2],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.0035,0.125],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.04],"color":[0.45,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,-0.0035,0.225],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.45,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,-0.0035,0.225],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.45,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"ZipPull","shape":"cube","pos":[0.0,-0.0025,0.275],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.02],"color":[0.2,0.18,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.55,-0.0045,0.375],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.55,-0.0045,0.375],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.89,-0.0035,0.375],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.22],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.89,-0.0035,0.375],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.22],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.15,-0.0045,-0.295],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.15,-0.0045,-0.295],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffLegL","shape":"cube","pos":[-0.15,-0.0035,-0.735],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.08],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"CuffLegR","shape":"cube","pos":[0.15,-0.0035,-0.735],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.08],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "FluffyfootBunny", "baseHeight": 0.205, "name": "Fluffyfoot Bunny", "model": "gpt-oss:120b", "notes": "Fluffyfoot Bunny – plush toy about 0.30 m long × 0.16 m tall × 0.20 m wide when lying on its side. Main body in soft taupe, ears, limbs and small facial details added as separate parts.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0075,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.16,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[0.1275,0.075,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.14,0.04],"color":[0.62,0.59,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.1275,0.075,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.14,0.04],"color":[0.62,0.59,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"ArmL","shape":"cylinder","pos":[-0.0725,-0.005,0.07],"rot":[0.0,0.0,0.0],"size":[0.03,0.1,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"ArmR","shape":"cylinder","pos":[-0.0725,-0.005,-0.07],"rot":[0.0,0.0,0.0],"size":[0.03,0.1,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cylinder","pos":[-0.1125,-0.105,0.04],"rot":[0.0,0.0,0.0],"size":[0.035,0.08,0.035],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cylinder","pos":[-0.1125,-0.105,-0.04],"rot":[0.0,0.0,0.0],"size":[0.035,0.08,0.035],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.0975,-0.025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.0975,-0.025,-0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.1175,-0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.01],"color":[0.9,0.5,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"StitchBody","shape":"cube","pos":[0.0075,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSide","shape":"cube","pos":[0.0075,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.16,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"sphere","pos":[-0.1325,-0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

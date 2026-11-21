@@ -1,0 +1,13 @@
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.Props.cs b/Assets/Scripts/World/Map/KentuckyMap.Props.cs
+index 7f6e2191..055dd8f8 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.Props.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.Props.cs
+@@ -185,6 +185,8 @@ private static void BuildPoints(Site site)
+                     for (int k = -1; k <= 1; k += 2)
+                     {
+                         if (!NearestFree(site, s.At + new Vector2(k * 2.2f, 0f), 1.2f, out Vector2 at)) continue;
++                        Vector2 jitter = new Vector2(R(rng, -0.2f, 0.2f), R(rng, -0.2f, 0.2f));
++                        at += jitter;
+                         Vector3 at3 = To3(at, 0f);
+                         RaidMesh m = site.Town.Out.Solid(at3);
+                          float pumpYaw = (float)(rng.NextDouble() * 10.0 - 5.0);

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Necklace_GoldRuby", "baseHeight": 0.0725, "name": "Necklace Gold Ruby", "model": "gpt-oss:120b", "notes": "Gold necklace lying flat on the floor (≈0.12 m × 0.08 m): a thin rectangular chain made of four linked cylinders, a small gold clasp at one corner and a ruby pendant hanging just below the bottom link.", "score": 7, "parts": [
+  {"name":"ChainTop","shape":"cylinder","pos":[-0.001,-0.0085,0.043],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ChainBottom","shape":"cylinder","pos":[-0.001,-0.0085,-0.037],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ChainRight","shape":"cylinder","pos":[0.059,-0.0085,0.003],"rot":[90.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ChainLeft","shape":"cylinder","pos":[-0.061,-0.0085,0.003],"rot":[90.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.059,-0.0045,0.003],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.008],"color":[0.65,0.62,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"RubyPendant","shape":"sphere","pos":[-0.001,0.0025,-0.037],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.85,0.07,0.07],"smooth":0.2,"metal":0.0}
+]}

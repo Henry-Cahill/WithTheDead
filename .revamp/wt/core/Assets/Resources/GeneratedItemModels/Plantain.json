@@ -1,0 +1,8 @@
+{"version": 1, "id": "Plantain", "baseHeight": 0.09, "name": "Plantain", "model": "gpt-oss:120b", "notes": "Plantain ~0.35 m long, 0.06 m thick banana‑shaped fruit lying on its side. Main body is a cylinder (axis along X) with rounded ends and a few dark spots for visual detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.35,0.06],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"TipFront","shape":"sphere","pos":[0.205,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"TipBack","shape":"sphere","pos":[-0.205,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[-0.05,-0.009,0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.42,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[0.08,-0.009,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.42,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[0.02,-0.009,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.42,0.38,0.33],"smooth":0.3,"metal":0.0}
+]}

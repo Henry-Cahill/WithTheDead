@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_BandanaTiedTINT", "baseHeight": 0.0725, "name": "Hat Bandana Tied TINT", "model": "gpt-oss:120b", "notes": "Flat bandana (~0.55 m square) laid out like a product photo: thin cloth sheet with a central knot and two hanging tails; frayed corners give a realistic outline.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TailFront","shape":"cube","pos":[0.0,-0.0025,0.35],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TailBack","shape":"cube","pos":[0.0,-0.0025,-0.35],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTL","shape":"cube","pos":[-0.225,-0.0025,-0.225],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTR","shape":"cube","pos":[0.225,-0.0025,-0.225],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBL","shape":"cube","pos":[-0.225,-0.0025,0.225],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBR","shape":"cube","pos":[0.225,-0.0025,0.225],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

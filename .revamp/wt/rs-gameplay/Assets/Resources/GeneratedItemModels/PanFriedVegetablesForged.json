@@ -1,0 +1,9 @@
+{"version": 1, "id": "PanFriedVegetablesForged", "baseHeight": 0.088, "name": "Pan Fried Vegetables Forged", "model": "gpt-oss:120b", "notes": "Shallow forged‑pan fried veg in a sealed metal tin ≈ 0.16 m dia × 0.05 m tall: steel body with top/bottom rims, printed label, and a few green vegetable lumps inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.05,0.16],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.166,0.006,0.166],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.166,0.006,0.166],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.045,0.158],"color":[0.65,0.55,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"VegLump1","shape":"sphere","pos":[-0.035,0.012,0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.025],"color":[0.2,0.6,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"VegLump2","shape":"sphere","pos":[0.02,0.014,-0.03],"rot":[0.0,0.0,0.0],"size":[0.028,0.022,0.022],"color":[0.22,0.58,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"VegLump3","shape":"sphere","pos":[0.04,0.01,0.03],"rot":[0.0,0.0,0.0],"size":[0.032,0.027,0.027],"color":[0.18,0.55,0.25],"smooth":0.05,"metal":0.0}
+]}

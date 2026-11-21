@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_Bandana_Green", "baseHeight": 0.1487, "name": "Hat Bandana Green", "model": "gpt-oss:120b", "notes": "Flat green bandana (≈ 0.55 m × 0.55 m, 3 cm thick) laid out like a product photo. Main cloth body, dark edge frays, a small central knot, two hanging tie‑ends and a faint printed pattern.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0462,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBorder","shape":"cube","pos":[0.0,0.0488,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.55],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"cube","pos":[0.0,0.0762,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.07],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TieFront","shape":"cylinder","pos":[0.0,-0.0287,0.275],"rot":[0.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TieBack","shape":"cylinder","pos":[0.0,-0.0287,-0.275],"rot":[0.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrayTL","shape":"sphere","pos":[-0.245,0.0462,0.245],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrayTR","shape":"sphere","pos":[0.245,0.0462,0.245],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrayBL","shape":"sphere","pos":[-0.245,0.0462,-0.245],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrayBR","shape":"sphere","pos":[0.245,0.0462,-0.245],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pattern","shape":"cube","pos":[0.0,0.0628,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.15],"color":[0.7,0.6,0.8],"smooth":0.05,"metal":0.0}
+]}

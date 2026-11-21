@@ -1,0 +1,11 @@
+{"version": 1, "id": "Grapes", "baseHeight": 0.09, "name": "Grapes", "model": "gpt-oss:120b", "notes": "Loose grapes in a clear plastic clamshell (≈0.12 m × 0.06 m × 0.09 m). Transparent box with thin lid, dark‑green label on front, a small brown stem and six glossy grape ellipsoids forming a loose bunch.", "score": 6, "parts": [
+  {"name":"Box","shape":"cube","pos":[0.0,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.09],"color":[0.9,0.9,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.001,0.03],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.06],"color":[0.2,0.4,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.0,0.01,-0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grape1","shape":"sphere","pos":[-0.015,-0.005,-0.035],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Grape2","shape":"sphere","pos":[0.01,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.023,0.028],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Grape3","shape":"sphere","pos":[-0.02,-0.012,-0.045],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Grape4","shape":"sphere","pos":[0.02,-0.011,-0.025],"rot":[0.0,0.0,0.0],"size":[0.027,0.022,0.027],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Grape5","shape":"sphere","pos":[-0.005,-0.009,0.01],"rot":[0.0,0.0,0.0],"size":[0.026,0.021,0.026],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Grape6","shape":"sphere","pos":[0.015,-0.006,-0.04],"rot":[0.0,0.0,0.0],"size":[0.029,0.024,0.029],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0}
+]}

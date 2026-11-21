@@ -1,0 +1,13 @@
+{"version": 1, "id": "SaladClay", "baseHeight": 0.0875, "name": "Salad Clay", "model": "gpt-oss:120b", "notes": "Small rectangular plastic tub (≈ 0.12 m × 0.08 m × 0.05 m) holding a lump of light‑brown salad‑colored clay. Tub has thin lid, front label and a tiny handle.", "score": 6, "parts": [
+  {"name":"ContainerBody","shape":"cube","pos":[0.0,-0.005,-0.0135],"rot":[0.0,0.0,0.0],"size":[0.12,0.045,0.08],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0215,-0.0135],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.09],"color":[0.85,0.85,0.85],"smooth":0.4,"metal":0.0},
+  {"name":"LidHandle","shape":"cube","pos":[0.0,0.0255,0.0265],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.012],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":0.0},
+  {"name":"ClayLump","shape":"sphere","pos":[-0.01,-0.0125,-0.0335],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.06],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"FrontLabel","shape":"cylinder","pos":[0.0,-0.005,0.0275],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.07],"color":[0.4,0.3,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,-0.004,0.0275],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.072],"color":[0.3,0.22,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.006,0.0275],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.072],"color":[0.3,0.22,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimLeft","shape":"cube","pos":[-0.06,-0.005,-0.0135],"rot":[0.0,0.0,0.0],"size":[0.004,0.045,0.08],"color":[0.85,0.85,0.85],"smooth":0.4,"metal":0.0},
+  {"name":"SideRimRight","shape":"cube","pos":[0.06,-0.005,-0.0135],"rot":[0.0,0.0,0.0],"size":[0.004,0.045,0.08],"color":[0.85,0.85,0.85],"smooth":0.4,"metal":0.0},
+  {"name":"FrontRim","shape":"cube","pos":[0.0,-0.005,0.0265],"rot":[0.0,0.0,0.0],"size":[0.12,0.045,0.004],"color":[0.85,0.85,0.85],"smooth":0.4,"metal":0.0},
+  {"name":"BackRim","shape":"cube","pos":[0.0,-0.005,-0.0535],"rot":[0.0,0.0,0.0],"size":[0.12,0.045,0.004],"color":[0.85,0.85,0.85],"smooth":0.4,"metal":0.0}
+]}

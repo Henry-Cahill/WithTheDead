@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoulderpad_Wood_L", "baseHeight": 0.0825, "name": "Shoulderpad Wood L", "model": "gpt-oss:120b", "notes": "Wooden shoulder pad (left) about 0.25 m wide × 0.15 m tall × 0.02 m thick, with two strap loops and a metal buckle. Main board is light‑oak tint; dark wood trim on edges; steel rivets on the strap.", "score": 7, "parts": [
+  {"name":"Board","shape":"cube","pos":[0.0,-0.0125,-0.007],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[0.0,-0.0075,-0.007],"rot":[0.0,0.0,0.0],"size":[0.252,0.004,0.152],"color":[0.45,0.42,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"Strap","shape":"cylinder","pos":[0.0,0.0075,0.063],"rot":[0.0,0.0,90.0],"size":[0.03,0.25,0.03],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleBase","shape":"cube","pos":[0.115,0.0125,0.063],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.04],"color":[0.5,0.5,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"BuckleBar","shape":"cube","pos":[0.115,0.0095,0.063],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.02],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"HoleL","shape":"cylinder","pos":[-0.09,-0.0125,-0.007],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"HoleR","shape":"cylinder","pos":[0.09,-0.0125,-0.007],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.09,0.0075,0.063],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.09,0.0075,0.063],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBuckle","shape":"sphere","pos":[0.115,0.0175,0.063],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0}
+]}

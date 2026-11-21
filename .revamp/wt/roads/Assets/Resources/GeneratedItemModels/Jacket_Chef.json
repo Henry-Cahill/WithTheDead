@@ -1,0 +1,13 @@
+{"version": 1, "id": "Jacket_Chef", "baseHeight": 0.0737, "name": "Jacket Chef", "model": "gpt-oss:120b", "notes": "Chef jacket laid flat (≈0.75 m long × 0.55 m wide, ~2‑3 cm thick). Main torso panel, two sleeves, a standing collar with opening, front pockets, a button strip, bottom hem and cuffs that touch the sleeve ends.", "score": 6, "parts": [
+  {"name":"TorsoMain","shape":"cube","pos":[-0.055,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.025,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[0.145,-0.0012,0.33],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.145,-0.0012,-0.33],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.33,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.12],"color":[0.9,0.9,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"CollarOpening","shape":"cylinder","pos":[0.33,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.195,0.0063,0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.195,0.0063,-0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonStrip","shape":"cube","pos":[-0.055,0.0042,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.006,0.015],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"HemBottom","shape":"cube","pos":[-0.055,-0.0097,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.008,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.37,-0.0012,0.33],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.37,-0.0012,-0.33],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "BasilSeed", "baseHeight": 0.0642, "name": "Basil Seed", "model": "gpt-oss:120b", "notes": "Small pile of basil seeds ~4 cm across and ~1 cm high; each seed is a tiny flattened ellipsoid (≈4 mm long × 2 mm wide × 1 mm thick). The pile uses about a dozen overlapping seeds to give a readable silhouette from above.", "score": 6, "parts": [
+  {"name":"Seed01","shape":"sphere","pos":[-0.0136,-0.0029,-0.0181],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed02","shape":"sphere","pos":[-0.0106,-0.0029,-0.0141],"rot":[10.0,20.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed03","shape":"sphere","pos":[-0.0066,-0.0029,-0.0201],"rot":[-15.0,5.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed04","shape":"sphere","pos":[-0.0036,-0.0029,-0.0161],"rot":[5.0,-10.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed05","shape":"sphere","pos":[-0.0086,-0.0009,-0.0081],"rot":[20.0,-5.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed06","shape":"sphere","pos":[-0.0046,-0.0009,-0.0031],"rot":[-10.0,15.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed07","shape":"sphere","pos":[-0.0016,0.0001,0.0019],"rot":[0.0,-20.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed08","shape":"sphere","pos":[0.0014,0.0001,0.0059],"rot":[15.0,10.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed09","shape":"sphere","pos":[0.0044,0.0011,0.0099],"rot":[-5.0,-15.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed10","shape":"sphere","pos":[0.0074,0.0021,0.0139],"rot":[10.0,5.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed11","shape":"sphere","pos":[0.0104,0.0021,0.0169],"rot":[-12.0,8.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed12","shape":"sphere","pos":[0.0134,0.0031,0.0199],"rot":[7.0,-12.0,0.0],"size":[0.004,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

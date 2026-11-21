@@ -1,0 +1,9 @@
+{"version": 1, "id": "Chicken_Hen_White_Head", "baseHeight": 0.115, "name": "Chicken Hen White Head", "model": "gpt-oss:120b", "notes": "Chicken hen head ~0.12 m long, 0.10 m wide, 0.08 m tall. Main flesh ellipsoid with beak, red comb and wattle, two dark eyes.", "score": 7, "parts": [
+  {"name":"Skull","shape":"sphere","pos":[0.0,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.11,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Beak","shape":"cylinder","pos":[0.0,0.0,0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.85,0.6,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Comb","shape":"sphere","pos":[0.0,0.01,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.8,0.15,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"Wattle","shape":"sphere","pos":[0.0,-0.015,-0.03],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.8,0.15,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.025,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.025,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"NeckStub","shape":"cylinder","pos":[0.0,-0.03,-0.05],"rot":[90.0,0.0,0.0],"size":[0.018,0.06,0.018],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "CrudeBenchViseParts", "baseHeight": 0.097, "name": "Crude Bench Vise Parts", "model": "gpt-oss:120b", "notes": "Scattered crude bench‑vise components (≈0.30 m total spread): two metal jaws, a long screw with head, two nuts, two washers, a wooden base block, a flat metal plate, a bolt and a spring coil. Overall silhouette is a rough rectangle about 0.3 m × 0.2 m lying on the floor.", "score": 7, "parts": [
+  {"name":"JawL","shape":"cube","pos":[-0.12,-0.0055,0.0075],"rot":[0.0,0.0,5.0],"size":[0.15,0.05,0.08],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"JawR","shape":"cube","pos":[0.12,-0.0055,0.0075],"rot":[0.0,0.0,-5.0],"size":[0.15,0.05,0.08],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBody","shape":"cylinder","pos":[0.0,0.0145,0.0375],"rot":[90.0,0.0,0.0],"size":[0.015,0.18,0.015],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewHead","shape":"cylinder","pos":[0.0,0.0245,0.1275],"rot":[90.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"NutA","shape":"cylinder","pos":[-0.06,-0.0005,-0.0325],"rot":[90.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"NutB","shape":"cylinder","pos":[0.06,-0.0005,-0.0325],"rot":[90.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"WasherA","shape":"cylinder","pos":[-0.06,-0.0055,-0.0725],"rot":[90.0,0.0,0.0],"size":[0.03,0.005,0.03],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"WasherB","shape":"cylinder","pos":[0.06,-0.0055,-0.0725],"rot":[90.0,0.0,0.0],"size":[0.03,0.005,0.03],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"WoodBase","shape":"cube","pos":[0.0,-0.0155,0.0875],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.15],"color":[0.38,0.28,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"MetalPlate","shape":"cube","pos":[0.0,-0.0125,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.1],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Bolt","shape":"cylinder","pos":[-0.02,-0.0025,-0.1125],"rot":[90.0,0.0,0.0],"size":[0.012,0.06,0.012],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"SpringCoil","shape":"sphere","pos":[0.02,-0.0005,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0}
+]}

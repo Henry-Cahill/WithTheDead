@@ -1,0 +1,8 @@
+{"version": 1, "id": "ClayJarGlazed", "baseHeight": 0.185, "name": "Clay Jar Glazed", "model": "gpt-oss:120b", "notes": "Glazed clay jar about 0.25 m tall and 0.15 m wide, standing upright on a slightly flared base with a thin lip at the mouth; a small glossy glaze spot adds visual interest.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.119,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.012,0.16],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.23,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Lip","shape":"cylinder","pos":[0.0,0.121,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.16],"color":[0.65,0.62,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"GlazeSpot","shape":"sphere","pos":[0.05,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.7,0.68,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"InnerShadow","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.22,0.14],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"LipRim","shape":"cylinder","pos":[0.0,0.117,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.004,0.158],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "LeadPipe", "baseHeight": 0.0842, "name": "Lead Pipe", "model": "gpt-oss:120b", "notes": "Lead pipe ~1.20 m long, 4.5 cm diameter, lying on its side (long axis X). Main solid cylinder body with a slightly thicker end‑cap and a blunt tip to read the business end clearly; a few dark scratch marks add detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.025,-0.0003,-0.0023],"rot":[0.0,0.0,90.0],"size":[0.045,1.2,0.045],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":1.0},
+  {"name":"EndCap","shape":"cylinder","pos":[0.565,-0.0003,-0.0023],"rot":[0.0,0.0,90.0],"size":[0.045,0.04,0.045],"color":[0.52,0.52,0.57],"smooth":0.25,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.605,-0.0003,-0.0023],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.3,"metal":1.0},
+  {"name":"ScratchL","shape":"cube","pos":[-0.225,0.0222,0.0127],"rot":[0.0,15.0,0.0],"size":[0.12,0.004,0.008],"color":[0.32,0.32,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"ScratchR","shape":"cube","pos":[0.125,0.0222,-0.0203],"rot":[0.0,-10.0,0.0],"size":[0.09,0.004,0.008],"color":[0.32,0.32,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"RimRing","shape":"cylinder","pos":[-0.615,-0.0003,-0.0023],"rot":[0.0,0.0,90.0],"size":[0.048,0.008,0.048],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":1.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "SugarBeetSugarPot", "baseHeight": 0.1835, "name": "Sugar Beet Sugar Pot", "model": "gpt-oss:120b", "notes": "Upright sugar‑beet sugar pot ~0.18 m diameter × 0.22 m tall. Plastic body (tint 0.75,0.68,0.45), silver screw‑on lid with a thin metal rim and a paper label wrapped around the middle.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.22,0.18],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"LidBase","shape":"cylinder","pos":[0.0,0.1015,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.012,0.19],"color":[0.9,0.9,0.92],"smooth":0.6,"metal":1.0},
+  {"name":"LidRim","shape":"cylinder","pos":[0.0,0.1075,0.0],"rot":[0.0,0.0,0.0],"size":[0.202,0.006,0.202],"color":[0.85,0.84,0.83],"smooth":0.55,"metal":1.0},
+  {"name":"LidHandle","shape":"cylinder","pos":[0.0,0.1135,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.9,0.9,0.92],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.018,0.182],"color":[0.55,0.45,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0255,0.0],"rot":[0.0,0.0,0.0],"size":[0.186,0.004,0.186],"color":[0.4,0.32,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.186,0.004,0.186],"color":[0.4,0.32,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"InnerSugar","shape":"cylinder","pos":[0.0,-0.0335,0.0],"rot":[0.0,0.0,0.0],"size":[0.168,0.18,0.168],"color":[0.95,0.94,0.88],"smooth":0.2,"metal":0.0}
+]}

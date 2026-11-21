@@ -1,0 +1,11 @@
+{"version": 1, "id": "TunaTin_Box", "baseHeight": 0.124, "name": "Tuna Tin Box", "model": "gpt-oss:120b", "notes": "Upright rectangular tuna tin box ~0.07 m wide × 0.045 m deep × 0.12 m tall: metal body and lid, printed label with dark trim on the front face, and a shallow pink‑orange liquid inside representing tuna in oil.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.004,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.045],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.06,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.072,0.008,0.047],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"LabelBorder","shape":"cube","pos":[0.0,-0.004,0.0226],"rot":[0.0,0.0,0.0],"size":[0.059,0.002,0.002],"color":[0.55,0.49,0.33],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,-0.004,0.0228],"rot":[0.0,0.0,0.0],"size":[0.055,0.002,0.002],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"TunaFluid","shape":"sphere","pos":[0.0,-0.054,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.85,0.5,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"TopRim","shape":"cube","pos":[0.0,0.054,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.045],"color":[0.68,0.61,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"BottomRim","shape":"cube","pos":[0.0,-0.062,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.045],"color":[0.68,0.61,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"SideSeamFront","shape":"cube","pos":[0.0,-0.004,0.0221],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.002],"color":[0.68,0.61,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"SideSeamBack","shape":"cube","pos":[0.0,-0.004,-0.0228],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.002],"color":[0.68,0.61,0.38],"smooth":0.55,"metal":0.9}
+]}

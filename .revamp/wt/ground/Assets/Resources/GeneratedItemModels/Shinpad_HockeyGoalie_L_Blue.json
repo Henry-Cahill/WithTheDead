@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shinpad_HockeyGoalie_L_Blue", "baseHeight": 0.11, "name": "Shinpad Hockey Goalie L Blue", "model": "gpt-oss:120b", "notes": "Large hockey goalie shin‑pad approx 0.60 m long × 0.25 m wide × 0.07 m thick, blue‑tinted synthetic‑leather with front/back edge rims, two strap bands, Velcro patch and stitched trim.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.04,0.25],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FrontEdge","shape":"cube","pos":[0.0,0.0,0.11],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BackEdge","shape":"cube","pos":[0.0,0.0,-0.11],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,0.005,0.09],"rot":[0.0,0.0,90.0],"size":[0.02,0.6,0.02],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.005,-0.09],"rot":[0.0,0.0,90.0],"size":[0.02,0.6,0.02],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroPatch","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.06],"color":[0.15,0.15,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"PaddingFront","shape":"sphere","pos":[0.0,0.01,0.09],"rot":[0.0,0.0,0.0],"size":[0.4,0.08,0.12],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"PaddingBack","shape":"sphere","pos":[0.0,0.01,-0.09],"rot":[0.0,0.0,0.0],"size":[0.4,0.08,0.12],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.005,0.115],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.002],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cube","pos":[0.0,-0.005,-0.115],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.002],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0}
+]}

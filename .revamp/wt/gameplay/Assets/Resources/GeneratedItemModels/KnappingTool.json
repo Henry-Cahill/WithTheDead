@@ -1,0 +1,11 @@
+{"version": 1, "id": "KnappingTool", "baseHeight": 0.08, "name": "Knapping Tool", "model": "gpt-oss:120b", "notes": "Knapping tool ~0.18 m long lying on its side: wooden/antler handle (cylinder) with a small stone head (cube + tip), leather strap near the head, metal rivet and pins, capped end and a grain line for detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.02,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StoneHead","shape":"cube","pos":[0.06,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.7,0.7,0.7],"smooth":0.4,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.09,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.7,0.7],"smooth":0.4,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[0.01,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.07,0.022],"color":[0.35,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.005,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"PinL","shape":"cylinder","pos":[0.01,-0.009,0.01],"rot":[0.0,0.0,90.0],"size":[0.004,0.03,0.004],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"PinR","shape":"cylinder","pos":[0.01,-0.009,-0.01],"rot":[0.0,0.0,90.0],"size":[0.004,0.03,0.004],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"GripEnd","shape":"cylinder","pos":[-0.09,-0.011,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.02,0.018],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"GrainLine","shape":"cube","pos":[-0.02,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.002],"color":[0.5,0.48,0.4],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Vambrace_BodyArmour_Right_Army", "baseHeight": 0.076, "name": "Vambrace Body Armour Right Army", "model": "gpt-oss:120b", "notes": "Right‑arm vambrace (army style) – a flat metal fore‑arm plate about 0.28 m long × 0.18 m tall × 0.02 m thick, edged with rounded rims, four rivet studs, a central reinforcement rib and two dark leather strap loops.", "score": 6, "parts": [
+  {"name":"PlateMain","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.18],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RimFront","shape":"cylinder","pos":[0.0,0.005,0.101],"rot":[0.0,0.0,90.0],"size":[0.022,0.28,0.022],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RimBack","shape":"cylinder","pos":[0.0,0.005,-0.101],"rot":[0.0,0.0,90.0],"size":[0.022,0.28,0.022],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RimLeft","shape":"cylinder","pos":[-0.151,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.022,0.18,0.022],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RimRight","shape":"cylinder","pos":[0.151,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.022,0.18,0.022],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"ReinforcementBar","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.008],"color":[0.58,0.55,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"LeatherStrapUpper","shape":"cube","pos":[0.0,0.0005,0.045],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.03],"color":[0.4,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherStrapLower","shape":"cube","pos":[0.0,0.0005,-0.045],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.03],"color":[0.4,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.12,0.006,0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.12,0.006,0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.12,0.006,-0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.12,0.006,-0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0}
+]}

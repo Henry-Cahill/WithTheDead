@@ -1,0 +1,16 @@
+{"version": 1, "id": "Vest_BulletArmy", "baseHeight": 0.0763, "name": "Vest Bullet Army", "model": "gpt-oss:120b", "notes": "Folded tactical vest about 0.45 m wide × 0.60 m tall × 0.025 m thick. Main drab‑tan fabric panel with a front pocket, two shoulder straps, metal buckles and belt loops – the way it would be found dropped on the floor.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.0038,-0.01],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.0,0.0012,0.195],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.2],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[0.0,0.0062,0.295],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapL","shape":"cylinder","pos":[-0.2,0.0062,-0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.45,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapR","shape":"cylinder","pos":[0.2,0.0062,-0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.45,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.2,0.0112,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.2,0.0112,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.215,-0.0013,-0.29],"rot":[0.0,0.0,90.0],"size":[0.018,0.04,0.018],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.215,-0.0013,-0.29],"rot":[0.0,0.0,90.0],"size":[0.018,0.04,0.018],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroStrip","shape":"cube","pos":[0.0,0.0062,-0.29],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.225,-0.0038,-0.01],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.6],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.225,-0.0038,-0.01],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.6],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0,0.0062,-0.01],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.6],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BottomEdge","shape":"cube","pos":[0.0,-0.0138,-0.01],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.6],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

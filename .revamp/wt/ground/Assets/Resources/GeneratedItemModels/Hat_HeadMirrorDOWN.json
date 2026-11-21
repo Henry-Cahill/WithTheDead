@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_HeadMirrorDOWN", "baseHeight": 0.1225, "name": "Hat Head Mirror DOWN", "model": "gpt-oss:120b", "notes": "Flat hat laid out for product view – wide circular brim (0.26 m dia), low rectangular crown (0.24 m × 0.06 m × 0.12 m) in the same tint, a dark inner band and a small silver mirror (≈8 cm square) attached to the front of the crown pointing downwards.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0535,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.22],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cube","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.12,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"MirrorPlate","shape":"cube","pos":[0.0,0.0025,0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.005],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"MirrorEdge","shape":"cylinder","pos":[0.0,0.0025,0.04],"rot":[0.0,0.0,0.0],"size":[0.082,0.006,0.082],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"MirrorTilt","shape":"cube","pos":[0.0,0.0025,0.045],"rot":[-45.0,0.0,0.0],"size":[0.08,0.005,0.08],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0}
+]}

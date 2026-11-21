@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shinpad_HockeyGoalie_R", "baseHeight": 0.0975, "name": "Shinpad Hockey Goalie R", "model": "gpt-oss:120b", "notes": "Hockey goalie shin‑pad ~0.35 m long × 0.15 m wide × 0.04 m thick, foam body with a curved front, two strap bands across the top and metal buckles at each end; three internal ribs for extra padding and a small logo plate on the front.", "score": 6, "parts": [
+  {"name":"MainPad","shape":"cube","pos":[0.0,-0.0175,-0.0412],"rot":[0.0,0.0,0.0],"size":[0.35,0.04,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrontCurve","shape":"sphere","pos":[0.0,0.0075,0.0638],"rot":[0.0,0.0,0.0],"size":[0.35,0.06,0.12],"color":[0.65,0.62,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"FrontStrap","shape":"cylinder","pos":[0.0,0.0075,0.0288],"rot":[0.0,0.0,90.0],"size":[0.025,0.35,0.025],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"BackStrap","shape":"cylinder","pos":[0.0,0.0075,-0.1112],"rot":[0.0,0.0,90.0],"size":[0.025,0.35,0.025],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleFrontLeft","shape":"cube","pos":[-0.165,0.0175,0.0288],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleFrontRight","shape":"cube","pos":[0.165,0.0175,0.0288],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleBackLeft","shape":"cube","pos":[-0.165,0.0175,-0.1112],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleBackRight","shape":"cube","pos":[0.165,0.0175,-0.1112],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RibCenter","shape":"cube","pos":[0.0,-0.0125,-0.0412],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RibFront","shape":"cube","pos":[-0.08,-0.0125,-0.0412],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RibBack","shape":"cube","pos":[0.08,-0.0125,-0.0412],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LogoPlate","shape":"cube","pos":[0.0,0.0075,0.0288],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.4,0.38,0.33],"smooth":0.1,"metal":0.0}
+]}

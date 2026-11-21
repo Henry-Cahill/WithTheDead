@@ -1,0 +1,8 @@
+{"version": 1, "id": "KnifeSushi", "baseHeight": 0.13, "name": "Knife Sushi", "model": "gpt-oss:120b", "notes": "Sushi‑style kitchen knife ~0.38 m long lying on its side (X axis). Thin steel blade (0.24 m) with a modest guard and a short wooden‑tinted handle (0.14 m) ending in a metal pommel. Blade tip shown clearly at +X.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.0458,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.03],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.1658,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Guard","shape":"cylinder","pos":[-0.0542,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"GuardRivet","shape":"sphere","pos":[-0.0542,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.0943,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.1643,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0}
+]}

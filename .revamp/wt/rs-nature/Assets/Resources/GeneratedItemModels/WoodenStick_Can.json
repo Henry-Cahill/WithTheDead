@@ -1,0 +1,8 @@
+{"version": 1, "id": "WoodenStick_Can", "baseHeight": 0.1275, "name": "Wooden Stick Can", "model": "gpt-oss:120b", "notes": "Wooden club ~1.3 m reach: 1.00 m wooden shaft (diameter 5 cm) on its side, metal tin‑can head (15 cm dia × 12 cm tall) attached to the +X end, a leather grip strap mid‑shaft and a thin steel band around the tip for extra weight.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.08,-0.0375,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.0,0.05],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripStrap","shape":"cube","pos":[-0.28,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.3,0.18,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.37,-0.0375,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.7,0.71,0.74],"smooth":0.55,"metal":1.0},
+  {"name":"CanBody","shape":"cylinder","pos":[0.495,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.12,0.15],"color":[0.7,0.71,0.74],"smooth":0.55,"metal":1.0},
+  {"name":"CanTopRim","shape":"cylinder","pos":[0.495,0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.17,0.01,0.17],"color":[0.55,0.56,0.58],"smooth":0.55,"metal":1.0},
+  {"name":"CanLabel","shape":"cylinder","pos":[0.495,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.13],"color":[0.4,0.3,0.2],"smooth":0.12,"metal":0.0}
+]}

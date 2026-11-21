@@ -1,0 +1,9 @@
+{"version": 1, "id": "SeedPaste", "baseHeight": 0.1118, "name": "Seed Paste", "model": "gpt-oss:120b", "notes": "SeedPaste in a small metal tin ≈ 0.12 m diameter × 0.09 m tall, lying on its side (y=0). Includes body, recessed lid, thin top/bottom seams and a paper‑like label with darker trim.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.09,0.12],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.8},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0412,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.008,0.124],"color":[0.72,0.66,0.42],"smooth":0.4,"metal":0.8},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0478,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.008,0.124],"color":[0.72,0.66,0.42],"smooth":0.4,"metal":0.8},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0457,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.012,0.11],"color":[0.78,0.71,0.48],"smooth":0.45,"metal":0.85},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.082,0.108],"color":[0.65,0.55,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0358,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.006,0.11],"color":[0.45,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0423,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.006,0.11],"color":[0.45,0.35,0.2],"smooth":0.2,"metal":0.0}
+]}

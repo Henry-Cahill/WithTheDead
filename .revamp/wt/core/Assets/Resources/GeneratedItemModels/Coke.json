@@ -1,0 +1,8 @@
+{"version": 1, "id": "Coke", "baseHeight": 0.12, "name": "Coke", "model": "gpt-oss:120b", "notes": "Irregular lump of coke about 0.18 m long × 0.12 m wide × 0.08 m high, lying on its side. Main block plus a few protruding clumps give a recognisable silhouette of a pile of fuel.", "score": 6, "parts": [
+  {"name":"MainBlock","shape":"cube","pos":[-0.005,-0.02,-0.0114],"rot":[0.0,0.0,0.0],"size":[0.18,0.08,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ClumpA","shape":"sphere","pos":[0.065,0.03,0.0286],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ClumpB","shape":"sphere","pos":[-0.045,0.01,-0.0414],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"ClumpC","shape":"sphere","pos":[-0.065,0.03,0.0086],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.57,0.55,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"Crack1","shape":"cube","pos":[0.025,-0.04,0.0486],"rot":[0.0,15.0,0.0],"size":[0.12,0.01,0.015],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Crack2","shape":"cube","pos":[-0.025,-0.03,-0.0514],"rot":[0.0,-10.0,0.0],"size":[0.1,0.008,0.012],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0}
+]}

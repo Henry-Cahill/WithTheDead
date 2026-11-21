@@ -1,0 +1,9 @@
+{"version": 1, "id": "WoodenFork", "baseHeight": 0.0675, "name": "Wooden Fork", "model": "gpt-oss:120b", "notes": "Wooden fork ~0.18 m long lying on its side: thin wooden handle (cylinder) along X, a small rear cap, a rectangular head and four narrow prongs extending forward for a clear top‑down silhouette.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0065,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BaseCap","shape":"cylinder","pos":[-0.0715,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.01,0.015],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.0635,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TineL1","shape":"cube","pos":[0.075,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TineL2","shape":"cube","pos":[0.075,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TineR1","shape":"cube","pos":[0.075,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TineR2","shape":"cube","pos":[0.075,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0}
+]}

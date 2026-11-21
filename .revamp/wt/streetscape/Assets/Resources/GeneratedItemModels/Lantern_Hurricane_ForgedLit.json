@@ -1,0 +1,13 @@
+{"version": 1, "id": "Lantern_Hurricane_ForgedLit", "baseHeight": 0.285, "name": "Lantern Hurricane Forged Lit", "model": "gpt-oss:120b", "notes": "Hurricane forged lantern ~0.35 m tall x 0.25 m wide, standing upright on a thin base plate. Metal body with four glass side panels, a rim‑top and domed glass cover, a small cross‑handle, and an orange flame visible inside.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.22,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.28],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":1.0},
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.35,0.25],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.215,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.135,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.26],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"Dome","shape":"sphere","pos":[0.0,0.155,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.12,0.24],"color":[0.65,0.63,0.58],"smooth":0.4,"metal":1.0},
+  {"name":"GlassFront","shape":"cube","pos":[0.0,-0.05,0.1275],"rot":[0.0,0.0,0.0],"size":[0.005,0.3,0.22],"color":[0.85,0.92,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"GlassBack","shape":"cube","pos":[0.0,-0.05,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.005,0.3,0.22],"color":[0.85,0.92,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"GlassLeft","shape":"cube","pos":[-0.1275,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.3,0.005],"color":[0.85,0.92,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"GlassRight","shape":"cube","pos":[0.1275,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.3,0.005],"color":[0.85,0.92,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.215,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"Flame","shape":"sphere","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[1.0,0.5,0.2],"smooth":0.6,"metal":0.0}
+]}

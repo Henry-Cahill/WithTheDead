@@ -1,0 +1,9 @@
+{"version": 1, "id": "Bandage_RightUpperArm", "baseHeight": 0.095, "name": "Bandage Right Upper Arm", "model": "gpt-oss:120b", "notes": "Rolled gauze bandage (~12 cm long, 7 cm diameter) as it would be found on the floor: beige cloth roll wrapped in a thin paper sheath with a cut edge and a small label tag.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cylinder","pos":[0.001,0.0,-0.0036],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"ClothCore","shape":"cylinder","pos":[0.001,-0.0015,-0.0036],"rot":[0.0,0.0,90.0],"size":[0.055,0.115,0.055],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CutEdge","shape":"cube","pos":[-0.059,-0.0015,-0.0036],"rot":[0.0,0.0,0.0],"size":[0.004,0.055,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.021,0.003,0.0314],"rot":[0.0,15.0,0.0],"size":[0.018,0.004,0.01],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.021,0.0045,0.0314],"rot":[0.0,15.0,0.0],"size":[0.012,0.002,0.009],"color":[0.2,0.18,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"SideBand1","shape":"cube","pos":[0.041,0.0,0.0284],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.002],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideBand2","shape":"cube","pos":[-0.039,0.0,-0.0356],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.002],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

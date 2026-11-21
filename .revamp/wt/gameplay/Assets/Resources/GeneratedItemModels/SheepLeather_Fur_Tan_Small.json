@@ -1,0 +1,13 @@
+{"version": 1, "id": "SheepLeather_Fur_Tan_Small", "baseHeight": 0.0788, "name": "Sheep Leather Fur Tan Small", "model": "gpt-oss:120b", "notes": "Small tan sheep‑leather fur patch about 0.20 m × 0.15 m (≈1 kg) lying flat on the floor: a thin rectangular leather backing with short fluffy clumps of fur on top for silhouette detail.", "score": 6, "parts": [
+  {"name":"Backing","shape":"cube","pos":[0.0,-0.0112,0.0005],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.06,0.0037,-0.0395],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.68,0.66,0.58],"smooth":0.12,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.04,0.0037,0.0305],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.68,0.66,0.58],"smooth":0.12,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[-0.07,0.0037,0.0505],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.68,0.66,0.58],"smooth":0.12,"metal":0.0},
+  {"name":"FurClump4","shape":"sphere","pos":[0.07,0.0037,-0.0495],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.68,0.66,0.58],"smooth":0.12,"metal":0.0},
+  {"name":"FurClump5","shape":"sphere","pos":[-0.02,0.0037,0.0705],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.68,0.66,0.58],"smooth":0.12,"metal":0.0},
+  {"name":"FurClump6","shape":"sphere","pos":[0.05,0.0037,-0.0695],"rot":[0.0,0.0,0.0],"size":[0.026,0.026,0.026],"color":[0.68,0.66,0.58],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeTrimTop","shape":"cube","pos":[0.0,-0.0032,0.0755],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.005],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeTrimBottom","shape":"cube","pos":[0.0,-0.0032,-0.0745],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.005],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeTrimLeft","shape":"cube","pos":[-0.1,-0.0032,0.0005],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.15],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeTrimRight","shape":"cube","pos":[0.1,-0.0032,0.0005],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.15],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0}
+]}

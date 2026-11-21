@@ -1,0 +1,12 @@
+{"version": 1, "id": "WoodAxeHead", "baseHeight": 0.1, "name": "Wood Axe Head", "model": "gpt-oss:120b", "notes": "Wood axe head lying on its side (length X). Approx. 0.32 m long × 0.13 m wide × 0.06 m thick, metal with a curved blade front, eye hole for the handle and four rivets around the eye.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[-0.02,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.06,0.13],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"BladeFront","shape":"sphere","pos":[0.12,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.13],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"EyeHole","shape":"cylinder","pos":[-0.07,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"PollBack","shape":"cube","pos":[-0.16,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.13],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetFTop","shape":"cylinder","pos":[-0.07,0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFBottom","shape":"cylinder","pos":[-0.07,-0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"RivetBTop","shape":"cylinder","pos":[-0.07,0.015,-0.06],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"RivetBBottom","shape":"cylinder","pos":[-0.07,-0.015,-0.06],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"CheekL","shape":"cube","pos":[0.03,-0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"CheekR","shape":"cube","pos":[0.03,-0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9}
+]}

@@ -1,0 +1,20 @@
+{"version": 1, "id": "Axe_Sawblade", "baseHeight": 0.105, "name": "Axe Sawblade", "model": "gpt-oss:120b", "notes": "Axe‑Sawblade weapon ~1.4 m long, lying on its side (handle along X). Wooden handle with a metal band, large circular saw disc at the business end, rim and teeth for the blade, plus a few rivets for detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0775,-0.005,0.0225],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.4,0.25,0.15],"smooth":0.15,"metal":0.0},
+  {"name":"WoodCap","shape":"cylinder","pos":[-0.6275,-0.005,0.0225],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.38,0.22,0.13],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.3725,0.0,0.0225],"rot":[0.0,0.0,90.0],"size":[0.09,0.12,0.09],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeDisc","shape":"cylinder","pos":[0.5325,-0.025,0.0225],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeRim","shape":"cylinder","pos":[0.5325,-0.015,0.0225],"rot":[0.0,0.0,0.0],"size":[0.31,0.03,0.31],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth01","shape":"cube","pos":[0.5325,0.005,0.1775],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth02","shape":"cube","pos":[0.5325,0.005,0.1325],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth03","shape":"cube","pos":[0.5325,0.005,0.0825],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth04","shape":"cube","pos":[0.5325,0.005,0.0225],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth05","shape":"cube","pos":[0.5325,0.005,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth06","shape":"cube","pos":[0.5325,0.005,-0.0875],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth07","shape":"cube","pos":[0.5325,0.005,-0.1325],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth08","shape":"cube","pos":[0.5325,0.005,-0.1775],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetA","shape":"cylinder","pos":[0.4025,0.03,0.0525],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetB","shape":"cylinder","pos":[0.4025,0.03,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetC","shape":"cylinder","pos":[0.3425,0.03,0.0525],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetD","shape":"cylinder","pos":[0.3425,0.03,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"AxeSpike","shape":"cube","pos":[0.6225,-0.015,0.0225],"rot":[0.0,0.0,15.0],"size":[0.04,0.02,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

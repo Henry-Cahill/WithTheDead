@@ -1,0 +1,10 @@
+{"version": 1, "id": "HospitalGown", "baseHeight": 0.0825, "name": "Hospital Gown", "model": "gpt-oss:120b", "notes": "Hospital gown ~1.0 m long × 0.45 m wide × 0.025 m thick (cloth): central torso panel, two short side‑sleeves, a front collar band, back hem strip, two waist‑tie ribbons and a small label patch.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.35,-0.01,-0.285],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.35,-0.01,0.285],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.48,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[-0.48,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieL","shape":"cylinder","pos":[-0.2,0.0125,0.08],"rot":[90.0,0.0,0.0],"size":[0.02,0.25,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieR","shape":"cylinder","pos":[-0.2,0.0125,-0.08],"rot":[90.0,0.0,0.0],"size":[0.02,0.25,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.3,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.2],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0}
+]}

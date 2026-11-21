@@ -1,0 +1,12 @@
+{"version": 1, "id": "FudgeePop", "baseHeight": 0.0712, "name": "Fudgee Pop", "model": "gpt-oss:120b", "notes": "Fudgee Pop snack ~10 cm long x 4 cm wide x 2 cm tall, wrapped in a thin tan foil packet with a dark label on the front and a small red twist‑tie at one end. The chocolate‑fudge bar inside is slightly smaller than the wrapper so the silhouette reads clearly from above.", "score": 7, "parts": [
+  {"name":"Wrapper","shape":"cube","pos":[0.0013,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.022,0.045],"color":[0.9,0.85,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"CandyBody","shape":"cube","pos":[0.0013,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.018,0.041],"color":[0.68,0.58,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0013,0.0009,0.0235],"rot":[0.0,0.0,0.0],"size":[0.09,0.003,0.002],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TwistTie","shape":"cylinder","pos":[-0.0537,-0.0001,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.8,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0013,0.0102,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.045],"color":[0.85,0.8,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0013,-0.0103,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.045],"color":[0.85,0.8,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimLeft","shape":"cube","pos":[-0.0577,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.022,0.045],"color":[0.85,0.8,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimRight","shape":"cube","pos":[0.0602,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.022,0.045],"color":[0.85,0.8,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"FrontRim","shape":"cube","pos":[0.0013,-0.0001,0.0235],"rot":[0.0,0.0,0.0],"size":[0.12,0.022,0.002],"color":[0.85,0.8,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"BackRim","shape":"cube","pos":[0.0013,-0.0001,-0.0235],"rot":[0.0,0.0,0.0],"size":[0.12,0.022,0.002],"color":[0.85,0.8,0.65],"smooth":0.05,"metal":0.0}
+]}

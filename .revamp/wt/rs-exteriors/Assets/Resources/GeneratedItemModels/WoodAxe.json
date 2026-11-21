@@ -1,0 +1,12 @@
+{"version": 1, "id": "WoodAxe", "baseHeight": 0.105, "name": "Wood Axe", "model": "gpt-oss:120b", "notes": "Wood axe ~1.2 m long, 5 cm diameter wooden handle lying on its side (X‑axis). Metal head (~12 cm thick) crosses the handle near +X with a forward‑facing blade and rear poll; metal rivets and a steel band add detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.004,-0.01,-0.105],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cube","pos":[0.416,-0.005,-0.105],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.546,0.005,-0.105],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.2],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.546,0.005,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.25],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Poll","shape":"cube","pos":[0.546,0.005,-0.225],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[0.486,0.035,-0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.486,0.035,-0.195],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.606,-0.025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.606,-0.025,-0.195],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"Heel","shape":"cylinder","pos":[-0.554,-0.01,-0.105],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0}
+]}

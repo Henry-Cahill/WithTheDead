@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shoes_Strapped", "baseHeight": 0.09, "name": "Shoes Strapped", "model": "gpt-oss:120b", "notes": "Pair of strapped shoes laid flat like a product photo. Each shoe ≈ 0.28 m long × 0.12 m wide, sole thickness 0.015 m, upper leather‑like layer 0.025 m high and a raised heel at the back that sits directly on the sole. Dark rubber sole, muted‑purple leather upper (tint 0.55 0.5 0.6), two thin straps across the top front and back, and a slightly darker toe cap for visual detail. Shoes are positioned", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.06,-0.0225,-0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.28],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[-0.06,-0.0025,-0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.24],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"HeelL","shape":"cube","pos":[-0.06,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.12,0.045,0.05],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"StrapFrontL","shape":"cube","pos":[-0.06,0.0125,0.11],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.04],"color":[0.65,0.6,0.7],"smooth":0.07,"metal":0.0},
+  {"name":"StrapBackL","shape":"cube","pos":[-0.06,0.0125,-0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.04],"color":[0.65,0.6,0.7],"smooth":0.07,"metal":0.0},
+  {"name":"ToeCapL","shape":"cube","pos":[-0.06,0.0175,0.13],"rot":[0.0,0.0,0.0],"size":[0.11,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.06,-0.0225,-0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.28],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[0.06,-0.0025,-0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.24],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"HeelR","shape":"cube","pos":[0.06,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.12,0.045,0.05],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"StrapFrontR","shape":"cube","pos":[0.06,0.0125,0.11],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.04],"color":[0.65,0.6,0.7],"smooth":0.07,"metal":0.0},
+  {"name":"StrapBackR","shape":"cube","pos":[0.06,0.0125,-0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.04],"color":[0.65,0.6,0.7],"smooth":0.07,"metal":0.0},
+  {"name":"ToeCapR","shape":"cube","pos":[0.06,0.0175,0.13],"rot":[0.0,0.0,0.0],"size":[0.11,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0}
+]}

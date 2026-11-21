@@ -1,0 +1,10 @@
+{"version": 1, "id": "CeramicCrucibleUnfired", "baseHeight": 0.136, "name": "Ceramic Crucible Unfired", "model": "gpt-oss:120b", "notes": "Unfired ceramic crucible lying on its side (axis X). Outer diameter ≈0.15 m, length ≈0.12 m, wall thickness ~1.5 cm, open end capped by a short lip. Light‑brown clay colour (tint 0.6,0.58,0.5) with matte finish; interior shown as slightly lighter cavity. Small clump of loose dry clay nearby for realism.", "score": 7, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.15,0.12,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.108,0.12],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RimLip","shape":"cube","pos":[0.06,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.16],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"RimInnerLip","shape":"cube","pos":[0.06,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.032,0.14],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ClayClump","shape":"sphere","pos":[-0.05,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"ScratchA","shape":"cube","pos":[-0.03,0.015,0.07],"rot":[0.0,15.0,0.0],"size":[0.04,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"ScratchB","shape":"cube","pos":[0.02,0.015,-0.06],"rot":[0.0,-12.0,0.0],"size":[0.05,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.152,0.006,0.152],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0}
+]}

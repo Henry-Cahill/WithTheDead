@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_BoxingBlue", "baseHeight": 0.1303, "name": "Hat Boxing Blue", "model": "gpt-oss:120b", "notes": "Boxing‑style headgear laid flat: wide circular brim (~0.28 m dia, 2 cm thick), padded crown (≈0.12 m high) with side ear cushions, strap tabs and a small front logo. Main colour is the blue tint.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0603,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.5,0.6],"smooth":0.06,"metal":0.0},
+  {"name":"Crown","shape":"sphere","pos":[0.0,0.0097,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.22],"color":[0.55,0.5,0.6],"smooth":0.06,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,0.0137,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.008,0.2],"color":[0.62,0.57,0.68],"smooth":0.06,"metal":0.0},
+  {"name":"BaseBand","shape":"cylinder","pos":[0.0,-0.0428,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.24],"color":[0.44,0.4,0.48],"smooth":0.06,"metal":0.0},
+  {"name":"EarCushionL","shape":"sphere","pos":[-0.09,-0.0203,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.55,0.5,0.6],"smooth":0.06,"metal":0.0},
+  {"name":"EarCushionR","shape":"sphere","pos":[0.09,-0.0203,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.55,0.5,0.6],"smooth":0.06,"metal":0.0},
+  {"name":"StrapTabL","shape":"cube","pos":[-0.07,-0.0083,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.1],"color":[0.2,0.2,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"StrapTabR","shape":"cube","pos":[0.07,-0.0083,-0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.1],"color":[0.2,0.2,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLogo","shape":"cube","pos":[0.0,0.0693,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.02],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"SideVentL","shape":"cube","pos":[-0.12,-0.0303,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.06],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideVentR","shape":"cube","pos":[0.12,-0.0303,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.06],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0}
+]}

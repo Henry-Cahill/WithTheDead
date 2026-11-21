@@ -1,0 +1,12 @@
+{"version": 1, "id": "Trousers_Santa", "baseHeight": 0.085, "name": "Trousers Santa", "model": "gpt-oss:120b", "notes": "Flat Santa‑style trousers, about 1.00 m long × 0.45 m wide × 0.03 m thick (3 cm). Two leg panels, a waistband, front pockets, side seams and white trim give the silhouette. Belt loops now sit on the front of the waistband.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[0.0,-0.01,0.16],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.0,-0.01,-0.16],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[1.02,0.008,0.48],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.25,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[-0.25,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSideSeam","shape":"cylinder","pos":[0.0,-0.01,0.27],"rot":[0.0,0.0,90.0],"size":[0.01,1.0,0.01],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"RightSideSeam","shape":"cylinder","pos":[0.0,-0.01,-0.27],"rot":[0.0,0.0,90.0],"size":[0.01,1.0,0.01],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,1.0,0.008],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.45,0.015,0.18],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[-0.45,0.015,-0.18],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0}
+]}

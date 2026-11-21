@@ -1,0 +1,12 @@
+{"version": 1, "id": "Skirt_Knees_Garbage", "baseHeight": 0.0737, "name": "Skirt Knees Garbage", "model": "gpt-oss:120b", "notes": "Flat knee‑length skirt, 0.55 m long, waist width ≈0.35 m flaring to 0.60 m at the hem, 2.5 cm thick. Includes a waistband, hem band, two front pockets and torn fringe pieces around the bottom edge.", "score": 6, "parts": [
+  {"name":"SkirtBody","shape":"cube","pos":[0.0,-0.0012,0.06],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cylinder","pos":[0.0,0.0063,0.335],"rot":[0.0,0.0,0.0],"size":[0.36,0.008,0.36],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cylinder","pos":[0.0,0.0063,-0.215],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.6],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cylinder","pos":[0.0,-0.0012,0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.55,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.18,0.0063,0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,0.0063,0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FringeFL","shape":"cube","pos":[-0.28,0.0012,-0.205],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.03],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FringeFR","shape":"cube","pos":[0.28,0.0012,-0.205],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.03],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FringeBL","shape":"cube","pos":[-0.28,0.0012,-0.225],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.03],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FringeBR","shape":"cube","pos":[0.28,0.0012,-0.225],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.03],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0}
+]}

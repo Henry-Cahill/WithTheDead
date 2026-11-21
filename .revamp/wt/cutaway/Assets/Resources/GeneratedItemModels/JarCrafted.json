@@ -1,0 +1,8 @@
+{"version": 1, "id": "JarCrafted", "baseHeight": 0.185, "name": "Jar Crafted", "model": "gpt-oss:120b", "notes": "Upright crafted jar about 0.12 m diameter × 0.22 m tall. Glass‑tinted body, thin lip rim, dark wooden/metal lid and a simple label band around the middle.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.22,0.12],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.01,0.13],"color":[0.62,0.6,0.52],"smooth":0.7,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.115,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.09],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.015,0.122],"color":[0.35,0.33,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.124],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0245,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.124],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0}
+]}

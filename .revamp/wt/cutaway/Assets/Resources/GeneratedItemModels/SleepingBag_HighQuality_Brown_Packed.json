@@ -1,0 +1,12 @@
+{"version": 1, "id": "SleepingBag_HighQuality_Brown_Packed", "baseHeight": 0.123, "name": "Sleeping Bag High Quality Brown Packed", "model": "gpt-oss:120b", "notes": "Packed high‑quality brown sleeping bag, rolled on its side. Approx. 0.30 m long (the width of the bag) and 0.12 m diameter. Main brown fabric with a lighter inner lining, zip‑flap end, label strip and a small strap for tying.", "score": 6, "parts": [
+  {"name":"OuterFabric","shape":"cylinder","pos":[-0.0043,-0.003,-0.0045],"rot":[0.0,0.0,90.0],"size":[0.12,0.3,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[-0.0043,-0.005,-0.0045],"rot":[0.0,0.0,90.0],"size":[0.108,0.28,0.108],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdgeCap","shape":"cylinder","pos":[0.1457,-0.003,-0.0045],"rot":[0.0,0.0,90.0],"size":[0.12,0.008,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BottomEdgeCap","shape":"cylinder","pos":[-0.1542,-0.003,-0.0045],"rot":[0.0,0.0,90.0],"size":[0.12,0.008,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ZipFlap","shape":"cube","pos":[0.1507,0.007,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.12],"color":[0.5,0.48,0.42],"smooth":0.08,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.0443,0.002,0.0555],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TieStrap","shape":"cylinder","pos":[-0.1242,0.007,-0.0045],"rot":[0.0,90.0,0.0],"size":[0.015,0.06,0.015],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[-0.0943,0.007,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.004],"color":[0.6,0.55,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.1457,0.002,-0.0045],"rot":[0.0,0.0,90.0],"size":[0.122,0.002,0.122],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[-0.1542,0.002,-0.0045],"rot":[0.0,0.0,90.0],"size":[0.122,0.002,0.122],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

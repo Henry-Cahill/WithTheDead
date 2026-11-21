@@ -1,0 +1,10 @@
+{"version": 1, "id": "SheepLeather_Fur_Tan_Wet", "baseHeight": 0.086, "name": "Sheep Leather Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Wet sheep‑leather hide ~0.60 m × 0.40 m, 2 cm thick, lying flat on the floor. Main sheet plus rolled wet edges and a few small clumps of damp fur give a readable silhouette.", "score": 6, "parts": [
+  {"name":"Sheet","shape":"cube","pos":[0.0,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.4],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeTop","shape":"cylinder","pos":[0.0,-0.001,0.215],"rot":[0.0,0.0,90.0],"size":[0.03,0.6,0.03],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cylinder","pos":[0.0,-0.001,-0.215],"rot":[0.0,0.0,90.0],"size":[0.03,0.6,0.03],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cylinder","pos":[-0.315,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.4,0.03],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"EdgeRight","shape":"cylinder","pos":[0.315,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.4,0.03],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"ClumpA","shape":"sphere","pos":[-0.12,0.006,0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.58,0.56,0.48],"smooth":0.5,"metal":0.0},
+  {"name":"ClumpB","shape":"sphere","pos":[0.18,0.008,-0.12],"rot":[0.0,0.0,0.0],"size":[0.035,0.035,0.035],"color":[0.58,0.56,0.48],"smooth":0.5,"metal":0.0},
+  {"name":"ClumpC","shape":"sphere","pos":[0.05,0.005,0.18],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.58,0.56,0.48],"smooth":0.5,"metal":0.0}
+]}

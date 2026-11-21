@@ -1,0 +1,13 @@
+{"version": 1, "id": "AdhesiveTapeBox", "baseHeight": 0.1008, "name": "Adhesive Tape Box", "model": "gpt-oss:120b", "notes": "Adhesive tape box ~30 cm long × 15 cm wide × 7 cm tall, lying on its side (long axis along X). Cardboard body with a thin lid, a roll of tape half‑protruding from the front and a label on the top. Approx. 12 parts.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0052,-0.0268],"rot":[0.0,0.0,0.0],"size":[0.3,0.07,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0337,-0.0268],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.15],"color":[0.62,0.6,0.52],"smooth":0.2,"metal":0.0},
+  {"name":"TapeRoll","shape":"cylinder","pos":[-0.02,-0.0052,0.0332],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.78,0.78,0.77],"smooth":0.4,"metal":0.0},
+  {"name":"TapeTail","shape":"cube","pos":[-0.02,-0.0052,0.0832],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.04],"color":[0.78,0.78,0.77],"smooth":0.4,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[0.0,0.0377,-0.0268],"rot":[0.0,0.0,0.0],"size":[0.22,0.006,0.12],"color":[0.35,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.0052,0.0487],"rot":[0.0,0.0,0.0],"size":[0.3,0.07,0.002],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.0052,-0.1023],"rot":[0.0,0.0,0.0],"size":[0.3,0.07,0.002],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.1505,-0.0052,-0.0268],"rot":[0.0,0.0,0.0],"size":[0.002,0.07,0.15],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.1505,-0.0052,-0.0268],"rot":[0.0,0.0,0.0],"size":[0.002,0.07,0.15],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.0293,-0.0268],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.15],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.0398,-0.0268],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.15],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0}
+]}

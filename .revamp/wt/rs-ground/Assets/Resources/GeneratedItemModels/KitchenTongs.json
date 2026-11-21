@@ -1,0 +1,8 @@
+{"version": 1, "id": "KitchenTongs", "baseHeight": 0.095, "name": "Kitchen Tongs", "model": "gpt-oss:120b", "notes": "Kitchen tongs ~0.30 m long when opened, lying flat on the floor. A central metal hinge sphere connects two parallel arms that diverge slightly in Z. Silicone‑coated tips sit at the far ends of each arm, and a small lock lever protrudes upward from the hinge.", "score": 7, "parts": [
+  {"name":"Hinge","shape":"sphere","pos":[-0.14,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ArmL","shape":"cylinder","pos":[-0.0,-0.01,-0.015],"rot":[0.0,0.0,90.0],"size":[0.02,0.28,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ArmR","shape":"cylinder","pos":[-0.0,-0.01,0.015],"rot":[0.0,0.0,90.0],"size":[0.02,0.28,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipL","shape":"cylinder","pos":[0.14,-0.01,-0.015],"rot":[0.0,0.0,0.0],"size":[0.04,0.05,0.04],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"TipR","shape":"cylinder","pos":[0.14,-0.01,0.015],"rot":[0.0,0.0,0.0],"size":[0.04,0.05,0.04],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LockLever","shape":"cube","pos":[-0.14,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.4,0.38,0.35],"smooth":0.15,"metal":1.0}
+]}

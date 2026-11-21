@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cudgel_ScrapSheet", "baseHeight": 0.215, "name": "Cudgel Scrap Sheet", "model": "gpt-oss:120b", "notes": "Cudgel made from a wooden handle (1 m long) with a steel scrap‑sheet head (0.25 m × 0.16 m × 0.30 m). The handle lies on its side along X, the heavy metal head sticks out at the +X end; a leather grip band and a metal strap add detail, plus four rivet heads on the front face.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.14,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,1.0,0.08],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[0.135,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,0.12,0.1],"color":[0.25,0.18,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"MetalStrap","shape":"cube","pos":[0.135,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.08],"color":[0.3,0.3,0.35],"smooth":0.3,"metal":0.6},
+  {"name":"HeadBlock","shape":"cube","pos":[0.485,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.16,0.3],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":0.9},
+  {"name":"RivetTL","shape":"cylinder","pos":[0.405,0.04,0.16],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.565,0.04,0.16],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.405,-0.04,0.16],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.565,-0.04,0.16],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"WeightCore","shape":"sphere","pos":[0.485,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"EdgeRimFront","shape":"cylinder","pos":[0.485,0.0,0.165],"rot":[90.0,0.0,0.0],"size":[0.31,0.02,0.31],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":0.9},
+  {"name":"EdgeRimBack","shape":"cylinder","pos":[0.485,0.0,-0.165],"rot":[90.0,0.0,0.0],"size":[0.31,0.02,0.31],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":0.9}
+]}

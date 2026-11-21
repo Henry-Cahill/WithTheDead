@@ -1,0 +1,16 @@
+{"version": 1, "id": "Sponge", "baseHeight": 0.082, "name": "Sponge", "model": "gpt-oss:120b", "notes": "Rectangular kitchen‑type sponge about 0.12 m long × 0.08 m wide × 0.04 m thick, lying flat on the floor (y=0). Main foam block with a light‑brown tint and many small ellipsoidal pores to give a readable porous silhouette.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0008,-0.002,0.0004],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Pore01","shape":"sphere","pos":[-0.0442,0.014,-0.0246],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"Pore02","shape":"sphere","pos":[-0.0142,0.016,0.0284],"rot":[0.0,0.0,0.0],"size":[0.011,0.007,0.011],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"Pore03","shape":"sphere","pos":[0.0307,0.013,-0.0316],"rot":[0.0,0.0,0.0],"size":[0.013,0.009,0.013],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"Pore04","shape":"sphere","pos":[0.0488,0.015,0.0224],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"Pore05","shape":"sphere","pos":[-0.0393,0.011,0.0304],"rot":[0.0,0.0,0.0],"size":[0.009,0.006,0.009],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"Pore06","shape":"sphere","pos":[0.0208,0.018,-0.0346],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"Pore07","shape":"sphere","pos":[-0.0192,0.009,0.0404],"rot":[0.0,0.0,0.0],"size":[0.011,0.007,0.011],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"Pore08","shape":"sphere","pos":[0.0457,0.01,-0.0196],"rot":[0.0,0.0,0.0],"size":[0.009,0.006,0.009],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"Pore09","shape":"sphere","pos":[-0.0292,0.007,-0.0396],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[0.66,0.64,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRoughFront","shape":"cube","pos":[0.0008,0.0,0.0404],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.008],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRoughSideL","shape":"cube","pos":[-0.0592,0.0,0.0004],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.08],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRoughSideR","shape":"cube","pos":[0.0607,0.0,0.0004],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.08],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"CornerChip","shape":"cube","pos":[-0.0573,-0.004,-0.0376],"rot":[15.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.55,0.53,0.46],"smooth":0.07,"metal":0.0}
+]}

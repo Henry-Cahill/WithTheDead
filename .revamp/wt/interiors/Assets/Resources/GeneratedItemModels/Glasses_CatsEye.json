@@ -1,0 +1,9 @@
+{"version": 1, "id": "Glasses_CatsEye", "baseHeight": 0.0695, "name": "Glasses Cats Eye", "model": "gpt-oss:120b", "notes": "Flat cat‑eye glasses laid out as a product photo: total width ≈ 0.38 m, height ≈ 0.16 m, thickness ≈ 0.01 m. Two almond‑shaped lenses, a short bridge that meets both rims, and two thin temples extending outward from the outer rim edges.", "score": 7, "parts": [
+  {"name":"LeftLens","shape":"sphere","pos":[-0.09,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.09],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"RightLens","shape":"sphere","pos":[0.09,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.09],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"LeftTemple","shape":"cylinder","pos":[-0.19,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.13,0.008],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"RightTemple","shape":"cylinder","pos":[0.19,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.13,0.008],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"LeftRim","shape":"cylinder","pos":[-0.09,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.092],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"RightRim","shape":"cylinder","pos":[0.09,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.092],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0}
+]}

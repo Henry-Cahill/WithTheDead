@@ -1,0 +1,8 @@
+{"version": 1, "id": "Dung_Chicken", "baseHeight": 0.076, "name": "Dung Chicken", "model": "gpt-oss:120b", "notes": "Small clump of chicken dung, approx 0.06 m wide × 0.03 m tall (roughly a flattened ellipsoid). Main body with a few irregular bumps for texture; lies flat on the floor.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"sphere","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.06],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BumpA","shape":"sphere","pos":[-0.015,0.009,0.01],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"BumpB","shape":"sphere","pos":[0.02,0.006,-0.012],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.62,0.6,0.53],"smooth":0.08,"metal":0.0},
+  {"name":"BumpC","shape":"sphere","pos":[0.0,0.012,0.018],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.57,0.55,0.47],"smooth":0.08,"metal":0.0},
+  {"name":"Shadow","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.062],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"CrustEdge","shape":"cylinder","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.004,0.062],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

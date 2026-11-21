@@ -1,0 +1,13 @@
+{"version": 1, "id": "GardenFork", "baseHeight": 0.24, "name": "Garden Fork", "model": "gpt-oss:120b", "notes": "Garden fork ~1.5 m long lying on its side (handle along X). Wooden handle with rubber grip, steel head block and four metal tines pointing upward (+Y). Small side braces and bolts add detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0445,-0.16,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.45,0.33,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.5055,-0.15,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.5905,-0.16,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.26],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL1","shape":"cube","pos":[0.6355,0.02,-0.09],"rot":[0.0,0.0,0.0],"size":[0.018,0.32,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL2","shape":"cube","pos":[0.6355,0.02,-0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.32,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR1","shape":"cube","pos":[0.6355,0.02,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.32,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR2","shape":"cube","pos":[0.6355,0.02,0.09],"rot":[0.0,0.0,0.0],"size":[0.018,0.32,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BraceL","shape":"cube","pos":[0.5905,-0.14,-0.13],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BraceR","shape":"cube","pos":[0.5905,-0.14,0.13],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BoltL","shape":"cylinder","pos":[0.6355,-0.135,-0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BoltR","shape":"cylinder","pos":[0.6355,-0.135,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,16 @@
+{"version": 1, "id": "Glasses_Macho", "baseHeight": 0.069, "name": "Glasses Macho", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of Macho sunglasses – total width ≈ 0.18 m, height ≈ 0.06 m, thickness ≈ 0.015 m. Main tinted plastic frame (0.55,0.5,0.6), clear glass lenses, bridge with nose‑pad and two attached temples laid out flat.", "score": 6, "parts": [
+  {"name":"FrameL_Rim","shape":"cylinder","pos":[-0.045,-0.0015,0.06],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.05],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"LensL","shape":"cylinder","pos":[-0.045,-0.0015,0.06],"rot":[0.0,0.0,0.0],"size":[0.042,0.008,0.042],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"FrameR_Rim","shape":"cylinder","pos":[0.045,-0.0015,0.06],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.05],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.045,-0.0015,0.06],"rot":[0.0,0.0,0.0],"size":[0.042,0.008,0.042],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0015,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"NosePad","shape":"sphere","pos":[0.0,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.066,-0.0015,-0.005],"rot":[90.0,0.0,0.0],"size":[0.008,0.13,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleR","shape":"cylinder","pos":[0.066,-0.0015,-0.005],"rot":[90.0,0.0,0.0],"size":[0.008,0.13,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleEndL","shape":"cube","pos":[-0.066,-0.0015,-0.079],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.012],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleEndR","shape":"cube","pos":[0.066,-0.0015,-0.079],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.012],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"ScrewL1","shape":"cube","pos":[-0.07,0.006,0.078],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewL2","shape":"cube","pos":[-0.07,0.006,0.042],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewR1","shape":"cube","pos":[0.07,0.006,0.078],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewR2","shape":"cube","pos":[0.07,0.006,0.042],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0}
+]}

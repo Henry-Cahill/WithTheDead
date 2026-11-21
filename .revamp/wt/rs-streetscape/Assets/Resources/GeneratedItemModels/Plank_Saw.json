@@ -1,0 +1,13 @@
+{"version": 1, "id": "Plank_Saw", "baseHeight": 0.105, "name": "Plank Saw", "model": "gpt-oss:120b", "notes": "Plank saw ~1.3 m long lying on its side (X‑axis). Long metal blade with teeth and a thin front tip, a small metal guard, wooden handle with rubber grip and end‑cap, plus a few rivet details.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[0.1,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[1.1,0.01,0.03],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BladeTeeth","shape":"cube","pos":[0.1,-0.036,0.0175],"rot":[0.0,0.0,0.0],"size":[1.08,0.008,0.005],"color":[0.52,0.52,0.57],"smooth":0.6,"metal":1.0},
+  {"name":"BladeSideRimL","shape":"cube","pos":[0.1,-0.036,-0.0145],"rot":[0.0,0.0,0.0],"size":[1.08,0.008,0.002],"color":[0.52,0.52,0.57],"smooth":0.6,"metal":1.0},
+  {"name":"BladeSideRimR","shape":"cube","pos":[0.1,-0.036,0.0145],"rot":[0.0,0.0,0.0],"size":[1.08,0.008,0.002],"color":[0.52,0.52,0.57],"smooth":0.6,"metal":1.0},
+  {"name":"BladeTip","shape":"cube","pos":[0.625,-0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.03],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Guard","shape":"cylinder","pos":[-0.48,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.08],"color":[0.53,0.53,0.58],"smooth":0.55,"metal":1.0},
+  {"name":"HandleCore","shape":"cylinder","pos":[-0.55,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.2,0.07],"color":[0.4,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.51,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.08,0.09],"color":[0.08,0.08,0.09],"smooth":0.3,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.64,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.38,0.33,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.52,-0.0025,0.03],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[-0.52,-0.0025,-0.03],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0}
+]}

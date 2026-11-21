@@ -1,0 +1,10 @@
+{"version": 1, "id": "VHS_Retail", "baseHeight": 0.08, "name": "VHS Retail", "model": "gpt-oss:120b", "notes": "VHS retail cassette, 0.188 m wide × 0.104 m tall × 0.025 m thick (lying flat on its front face). Main plastic shell with printed label on the front, clear side window showing two reels, and two tiny top screws.", "score": 7, "parts": [
+  {"name":"Shell","shape":"cube","pos":[-0.002,-0.0055,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.188,0.025,0.104],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[-0.002,0.0095,0.0278],"rot":[0.0,0.0,0.0],"size":[0.176,0.002,0.09],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SideWindow","shape":"cube","pos":[0.0885,0.0095,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.002,0.018,0.08],"color":[0.85,0.9,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"ReelL","shape":"cylinder","pos":[0.0885,0.0,-0.0457],"rot":[0.0,0.0,90.0],"size":[0.04,0.015,0.04],"color":[0.2,0.22,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"ReelR","shape":"cylinder","pos":[0.0885,0.0,0.0043],"rot":[0.0,0.0,90.0],"size":[0.04,0.015,0.04],"color":[0.2,0.22,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewTL","shape":"cylinder","pos":[-0.082,0.0075,0.0192],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewTR","shape":"cylinder","pos":[0.078,0.0075,0.0192],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRimTop","shape":"cube","pos":[-0.002,0.0075,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.188,0.002,0.104],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

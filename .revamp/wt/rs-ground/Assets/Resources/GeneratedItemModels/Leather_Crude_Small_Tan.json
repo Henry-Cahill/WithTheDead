@@ -1,0 +1,12 @@
+{"version": 1, "id": "Leather_Crude_Small_Tan", "baseHeight": 0.0789, "name": "Leather Crude Small Tan", "model": "gpt-oss:120b", "notes": "Small crude tan leather scrap about 0.25 m × 0.15 m and ~1‑2 cm thick, lying flat on the floor. Main hide with darker edge strips, a central stitching line, two puncture holes and a little folded corner with a tiny tag.", "score": 6, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[-0.008,-0.0071,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.25,0.012,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[-0.008,-0.0061,0.0625],"rot":[0.0,0.0,0.0],"size":[0.25,0.014,0.008],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[-0.008,-0.0061,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.25,0.014,0.008],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.113,-0.0061,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.008,0.014,0.15],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.129,-0.0061,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.008,0.014,0.15],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cylinder","pos":[-0.008,-0.0041,-0.0085],"rot":[0.0,0.0,90.0],"size":[0.006,0.22,0.006],"color":[0.3,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Hole1","shape":"sphere","pos":[-0.068,-0.0041,0.0315],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"Hole2","shape":"sphere","pos":[0.062,-0.0041,-0.0385],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCorner","shape":"cube","pos":[0.107,-0.0011,0.0565],"rot":[10.0,0.0,15.0],"size":[0.05,0.015,0.05],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LeatherTag","shape":"cylinder","pos":[0.107,0.0089,0.0565],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

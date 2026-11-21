@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cuirass_Bone", "baseHeight": 0.0745, "name": "Cuirass Bone", "model": "gpt-oss:120b", "notes": "Bone cuirass plate about 0.35 m wide × 0.45 m tall × 0.02 m thick, with side extensions and a central spine ridge; laid flat on the floor. Main body in bone tint (0.6,0.58,0.5) with a few small detail bumps.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.45],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LeftSide","shape":"cube","pos":[-0.205,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.45],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RightSide","shape":"cube","pos":[0.205,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.45],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SpineRidge","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.45,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"FrontEdge","shape":"cube","pos":[0.0,0.003,0.215],"rot":[0.0,0.0,0.0],"size":[0.41,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BackEdge","shape":"cube","pos":[0.0,0.003,-0.215],"rot":[0.0,0.0,0.0],"size":[0.41,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"TopTrim","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.41,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.1,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.1,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Detail1","shape":"sphere","pos":[-0.07,0.0035,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Detail2","shape":"sphere","pos":[0.06,0.0035,-0.14],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Bandage_Abdomen", "baseHeight": 0.08, "name": "Bandage Abdomen", "model": "gpt-oss:120b", "notes": "Flat folded abdominal bandage about 0.30 m long × 0.12 m wide × 0.01 m thick, with a small rolled end, three soft folds across its length, a white label patch in the centre and thin stitching strips along the edges.", "score": 6, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEnd","shape":"cylinder","pos":[-0.14,0.0,-0.005],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FoldLeft","shape":"cube","pos":[-0.09,-0.016,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCenter","shape":"cube","pos":[0.0,-0.016,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FoldRight","shape":"cube","pos":[0.09,-0.016,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,-0.0155,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.009,0.02],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,-0.009,-0.005],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cube","pos":[0.0,-0.012,-0.064],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.002],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cube","pos":[0.0,-0.012,0.054],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.002],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFold","shape":"cube","pos":[-0.135,-0.016,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

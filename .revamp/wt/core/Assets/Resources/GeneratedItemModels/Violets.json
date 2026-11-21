@@ -1,0 +1,15 @@
+{"version": 1, "id": "Violets", "baseHeight": 0.098, "name": "Violets", "model": "gpt-oss:120b", "notes": "Small cardboard box (≈0.12 m × 0.07 m × 0.08 m) of edible violets with a thin lid and front label. Inside sit five tiny green stems each ending in a purple violet flower, all lying flat on the floor of the box.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0013,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.08],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0013,0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.125,0.006,0.085],"color":[0.68,0.58,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0013,-0.003,0.041],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.002],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"StemA","shape":"cylinder","pos":[-0.0387,-0.023,-0.025],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.5,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"FlowerA","shape":"sphere","pos":[-0.0137,-0.003,-0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.45,0.1,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"StemB","shape":"cylinder","pos":[0.0213,-0.023,0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.5,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"FlowerB","shape":"sphere","pos":[0.0462,-0.003,0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.45,0.1,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"StemC","shape":"cylinder","pos":[-0.0087,-0.023,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.5,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"FlowerC","shape":"sphere","pos":[0.0163,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.45,0.1,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"StemD","shape":"cylinder","pos":[0.0312,-0.023,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.5,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"FlowerD","shape":"sphere","pos":[0.0563,-0.003,-0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.45,0.1,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"StemE","shape":"cylinder","pos":[-0.0187,-0.023,0.025],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.5,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"FlowerE","shape":"sphere","pos":[0.0063,-0.003,0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.45,0.1,0.6],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "DentedCan", "baseHeight": 0.208, "name": "Dented Can", "model": "gpt-oss:120b", "notes": "Upright dented food can about 0.20 m diameter × 0.28 m tall. Main body is a brushed‑metal cylinder with a recessed lid, thin top/bottom rims, a rectangular label, and three small outward “dents” to hint at damage.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.28,0.2],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.136,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.012,0.212],"color":[0.7,0.65,0.4],"smooth":0.55,"metal":0.9},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.142,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.012,0.212],"color":[0.7,0.65,0.4],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.142,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.012,0.18],"color":[0.68,0.62,0.38],"smooth":0.45,"metal":0.9},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.196,0.19,0.196],"color":[0.8,0.7,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.092,0.0],"rot":[0.0,0.0,0.0],"size":[0.198,0.008,0.198],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.098,0.0],"rot":[0.0,0.0,0.0],"size":[0.198,0.008,0.198],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"DentFront","shape":"cylinder","pos":[0.07,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.06,0.03],"color":[0.68,0.6,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"DentSide","shape":"cylinder","pos":[-0.07,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.05,0.025],"color":[0.68,0.6,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"DentTop","shape":"cylinder","pos":[0.0,0.057,0.07],"rot":[90.0,0.0,0.0],"size":[0.028,0.04,0.028],"color":[0.68,0.6,0.38],"smooth":0.55,"metal":0.9}
+]}

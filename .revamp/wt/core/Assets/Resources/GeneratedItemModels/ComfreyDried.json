@@ -1,0 +1,9 @@
+{"version": 1, "id": "ComfreyDried", "baseHeight": 0.0795, "name": "Comfrey Dried", "model": "gpt-oss:120b", "notes": "Dried comfrey herb bundle about 0.15 m long × 0.05 m wide × 0.03 m thick, lying on its side with a thin brown twine tie around the centre.", "score": 6, "parts": [
+  {"name":"BundleBase","shape":"cube","pos":[-0.0002,-0.0045,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf1","shape":"cube","pos":[-0.0202,0.0055,0.0082],"rot":[5.0,0.0,10.0],"size":[0.12,0.004,0.04],"color":[0.55,0.6,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf2","shape":"cube","pos":[0.0198,0.0025,-0.0168],"rot":[-4.0,0.0,-8.0],"size":[0.13,0.004,0.045],"color":[0.55,0.6,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf3","shape":"cube","pos":[-0.0002,-0.0015,0.0182],"rot":[2.0,0.0,5.0],"size":[0.14,0.003,0.05],"color":[0.55,0.6,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf4","shape":"cube","pos":[-0.0302,-0.0005,-0.0218],"rot":[-3.0,0.0,-12.0],"size":[0.11,0.0035,0.042],"color":[0.55,0.6,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StringTie","shape":"cylinder","pos":[-0.0002,-0.0015,-0.0018],"rot":[0.0,0.0,90.0],"size":[0.015,0.16,0.015],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"TieKnot","shape":"cube","pos":[-0.0002,0.0055,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0}
+]}

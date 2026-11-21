@@ -1,0 +1,15 @@
+{"version": 1, "id": "Claybag", "baseHeight": 0.235, "name": "Claybag", "model": "gpt-oss:120b", "notes": "Claybag ~0.30 m wide x 0.40 m long (when upright) lying on its side: burlap sack body, rope tie with knot, bulging top, a lump of clay inside, small spilled clumps on the floor and a label patch.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.4,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BagTopBulge","shape":"sphere","pos":[0.18,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.35,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RopeBandZ","shape":"cylinder","pos":[0.18,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.34,0.02],"color":[0.3,0.2,0.1],"smooth":0.08,"metal":0.0},
+  {"name":"RopeBandY","shape":"cylinder","pos":[0.18,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.3,0.2,0.1],"smooth":0.08,"metal":0.0},
+  {"name":"RopeKnot","shape":"sphere","pos":[0.18,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.3,0.2,0.1],"smooth":0.08,"metal":0.0},
+  {"name":"ClayLumpInside","shape":"sphere","pos":[-0.09,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.18,0.18],"color":[0.4,0.35,0.3],"smooth":0.02,"metal":0.0},
+  {"name":"SpillLeft","shape":"sphere","pos":[-0.29,-0.14,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.4,0.35,0.3],"smooth":0.02,"metal":0.0},
+  {"name":"SpillRight","shape":"sphere","pos":[-0.29,-0.14,-0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.4,0.35,0.3],"smooth":0.02,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.14,0.005,0.15],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.04],"color":[0.7,0.65,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[-0.04,0.145,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.4,0.01],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.04,-0.135,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.4,0.01],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[0.2,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ClayDust","shape":"sphere","pos":[-0.34,-0.14,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.4,0.35,0.3],"smooth":0.02,"metal":0.0}
+]}

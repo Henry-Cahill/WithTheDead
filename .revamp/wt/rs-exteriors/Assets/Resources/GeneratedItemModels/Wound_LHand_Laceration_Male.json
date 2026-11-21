@@ -1,0 +1,13 @@
+{"version": 1, "id": "Wound_LHand_Laceration_Male", "baseHeight": 0.0754, "name": "Wound LHand Laceration Male", "model": "gpt-oss:120b", "notes": "Lacerated left‑hand tissue chunk ~0.10 m long × 0.07 m wide × 0.02 m thick, lying on its side. Main flesh colour (tint 0.6,0.58,0.5) with darker red blood pools and torn ragged edges for visual clarity.", "score": 6, "parts": [
+  {"name":"FleshBase","shape":"cube","pos":[0.0007,-0.0051,-0.002],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.07],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BloodPool1","shape":"cylinder","pos":[-0.0143,0.0059,0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.04],"color":[0.45,0.05,0.05],"smooth":0.12,"metal":0.0},
+  {"name":"BloodPool2","shape":"cylinder","pos":[0.0257,0.0069,-0.017],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.03],"color":[0.5,0.07,0.07],"smooth":0.12,"metal":0.0},
+  {"name":"TornEdgeL","shape":"cube","pos":[-0.0443,-0.0041,-0.002],"rot":[0.0,0.0,15.0],"size":[0.02,0.018,0.07],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"TornEdgeR","shape":"cube","pos":[0.0457,-0.0041,-0.002],"rot":[0.0,0.0,-12.0],"size":[0.018,0.017,0.07],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"BloodSpotA","shape":"sphere","pos":[-0.0193,0.0079,0.028],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.48,0.04,0.04],"smooth":0.15,"metal":0.0},
+  {"name":"BloodSpotB","shape":"sphere","pos":[0.0187,0.0089,-0.027],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.52,0.06,0.06],"smooth":0.15,"metal":0.0},
+  {"name":"FleshRidge1","shape":"cube","pos":[-0.0293,-0.0001,0.033],"rot":[0.0,20.0,0.0],"size":[0.008,0.012,0.02],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"FleshRidge2","shape":"cube","pos":[0.0327,0.0009,-0.032],"rot":[0.0,-18.0,0.0],"size":[0.009,0.011,0.022],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"BloodDrip","shape":"cylinder","pos":[0.0007,0.0099,-0.002],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.44,0.03,0.03],"smooth":0.12,"metal":0.0},
+  {"name":"FleshEdgeDetail","shape":"sphere","pos":[-0.0473,-0.0031,0.018],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.57,0.55,0.47],"smooth":0.08,"metal":0.0}
+]}

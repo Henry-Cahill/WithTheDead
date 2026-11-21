@@ -1,0 +1,13 @@
+{"version": 1, "id": "Vambrace_BodyArmour_Right_Civ", "baseHeight": 0.12, "name": "Vambrace Body Armour Right Civ", "model": "gpt-oss:120b", "notes": "Right‑hand vambrace (civilian) approx 0.35 m long × 0.12 m wide × 0.04 m thick: steel cuff, leather padding, front plate, top strap with rivets and buckles.", "score": 6, "parts": [
+  {"name":"CuffOuter","shape":"cylinder","pos":[0.0,0.0,-0.0155],"rot":[0.0,0.0,90.0],"size":[0.12,0.35,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"PaddingInner","shape":"cylinder","pos":[0.0,0.0,-0.0155],"rot":[0.0,0.0,90.0],"size":[0.1,0.34,0.1],"color":[0.38,0.33,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,0.0,0.0545],"rot":[0.0,0.0,0.0],"size":[0.34,0.09,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"TopStrap","shape":"cube","pos":[0.0,0.05,0.0545],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.025],"color":[0.35,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.15,0.05,0.0545],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.15,0.05,0.0545],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.12,0.05,0.0715],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.06,0.05,0.0715],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.0,0.05,0.0715],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.06,0.05,0.0715],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet5","shape":"sphere","pos":[0.12,0.05,0.0715],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0}
+]}

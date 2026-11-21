@@ -1,0 +1,18 @@
+{"version": 1, "id": "Shoes_CowboyBoots_Brown", "baseHeight": 0.12, "name": "Shoes Cowboy Boots Brown", "model": "gpt-oss:120b", "notes": "Cowboy boots spread flat, each ≈ 0.34 m long × 0.12 m wide with a raised heel (≈ 0.06 m high) and toe‑cap; built from leather sole & upper, a heel block, toe cap, stitching strips and two metal eyelets per boot.", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.12,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.34],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[-0.12,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.34],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"HeelL","shape":"cube","pos":[-0.255,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"ToeCapL","shape":"cube","pos":[0.015,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"EyeletL1","shape":"cylinder","pos":[0.02,0.015,-0.03],"rot":[0.0,0.0,90.0],"size":[0.01,0.004,0.01],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"EyeletL2","shape":"cylinder","pos":[0.02,0.015,0.03],"rot":[0.0,0.0,90.0],"size":[0.01,0.004,0.01],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"StitchLSide","shape":"cube","pos":[-0.12,-0.015,-0.059],"rot":[0.0,0.0,0.0],"size":[0.32,0.005,0.002],"color":[0.38,0.33,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLFront","shape":"cube","pos":[-0.12,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.005,0.002],"color":[0.38,0.33,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.12,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.34],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[0.12,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.34],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"HeelR","shape":"cube","pos":[-0.015,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"ToeCapR","shape":"cube","pos":[0.255,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.07],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"EyeletR1","shape":"cylinder","pos":[0.26,0.015,-0.03],"rot":[0.0,0.0,90.0],"size":[0.01,0.004,0.01],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"EyeletR2","shape":"cylinder","pos":[0.26,0.015,0.03],"rot":[0.0,0.0,90.0],"size":[0.01,0.004,0.01],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"StitchRSide","shape":"cube","pos":[0.12,-0.015,0.059],"rot":[0.0,0.0,0.0],"size":[0.32,0.005,0.002],"color":[0.38,0.33,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRFront","shape":"cube","pos":[0.12,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.005,0.002],"color":[0.38,0.33,0.43],"smooth":0.05,"metal":0.0}
+]}

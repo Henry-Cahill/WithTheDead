@@ -1,0 +1,11 @@
+{"version": 1, "id": "Vest_Hunting_Camo", "baseHeight": 0.083, "name": "Vest Hunting Camo", "model": "gpt-oss:120b", "notes": "Hunting camo vest, flat‑lay approx. 0.60 m long × 0.45 m wide × 0.025 m thick (2½ cm). Main cloth body with two front pockets, shoulder straps and a couple of Velcro patches for closures.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.015,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.065,0.0055,-0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.18],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.065,0.0055,0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.18],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[0.015,0.013,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.6,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[0.015,-0.013,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.6,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroL","shape":"cube","pos":[-0.235,0.006,-0.18],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.02],"color":[0.3,0.28,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"VelcroR","shape":"cube","pos":[-0.235,0.006,0.18],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.02],"color":[0.3,0.28,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[-0.285,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.45],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BottomHem","shape":"cube","pos":[0.295,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.45],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

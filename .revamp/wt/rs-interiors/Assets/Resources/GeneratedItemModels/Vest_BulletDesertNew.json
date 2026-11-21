@@ -1,0 +1,13 @@
+{"version": 1, "id": "Vest_BulletDesertNew", "baseHeight": 0.1195, "name": "Vest Bullet Desert New", "model": "gpt-oss:120b", "notes": "Desert‑camo bullet‑proof vest laid flat on the ground. Overall size about 0.55 m wide × 0.40 m tall, ~3 cm thick when spread. Main fabric (tint 0.6,0.58,0.5) with darker panel seams, shoulder & belt straps, front/rear utility pouches and metal buckles.", "score": 6, "parts": [
+  {"name":"TorsoBase","shape":"cube","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.008,0.105],"rot":[0.0,0.0,0.0],"size":[0.54,0.028,0.19],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.008,-0.105],"rot":[0.0,0.0,0.0],"size":[0.54,0.028,0.19],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderL","shape":"cube","pos":[-0.275,0.0,0.0],"rot":[0.0,0.0,10.0],"size":[0.6,0.015,0.04],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderR","shape":"cube","pos":[0.275,0.0,0.0],"rot":[0.0,0.0,-10.0],"size":[0.6,0.015,0.04],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BeltStrap","shape":"cube","pos":[0.0,0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.04],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPouch","shape":"cube","pos":[0.0,-0.002,0.12],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.08],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RearPouch","shape":"cube","pos":[0.0,-0.002,-0.12],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.08],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cylinder","pos":[-0.275,-0.001,0.05],"rot":[0.0,0.0,0.0],"size":[0.025,0.006,0.025],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleR","shape":"cylinder","pos":[0.275,-0.001,0.05],"rot":[0.0,0.0,0.0],"size":[0.025,0.006,0.025],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.04],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0}
+]}

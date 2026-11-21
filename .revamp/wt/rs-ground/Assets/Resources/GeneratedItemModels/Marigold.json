@@ -1,0 +1,9 @@
+{"version": 1, "id": "Marigold", "baseHeight": 0.0777, "name": "Marigold", "model": "gpt-oss:120b", "notes": "Small cardboard pack of dried marigold petals (~0.12 m × 0.08 m × 0.03 m). Main body, thin lid, a top label with darker trim, and three loose flower heads inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.08],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.08],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.0163,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.002,0.065],"color":[0.45,0.35,0.2],"smooth":0.04,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0168,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.92,0.9,0.85],"smooth":0.02,"metal":0.0},
+  {"name":"Flower1","shape":"sphere","pos":[-0.03,-0.0053,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.95,0.8,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Flower2","shape":"sphere","pos":[0.02,-0.0053,0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.95,0.8,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Flower3","shape":"sphere","pos":[0.0,-0.0053,-0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.95,0.8,0.3],"smooth":0.1,"metal":0.0}
+]}

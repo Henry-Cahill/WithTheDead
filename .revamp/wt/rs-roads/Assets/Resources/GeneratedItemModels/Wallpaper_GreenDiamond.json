@@ -1,0 +1,9 @@
+{"version": 1, "id": "Wallpaper_GreenDiamond", "baseHeight": 0.145, "name": "Wallpaper Green Diamond", "model": "gpt-oss:120b", "notes": "Wallpaper roll about 1.2 m long, 0.15 m outer diameter with a cardboard core (≈0.07 m dia). Green‑diamond patterned paper (tint 0.6,0.58,0.5) covers the outside; a dark brown label band wraps around the middle. The roll lies on its side (axis along X) resting on the floor.", "score": 7, "parts": [
+  {"name":"OuterPaper","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.15,1.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CardboardCore","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.16,0.04,0.16],"color":[0.3,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.6,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.15,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"cube","pos":[0.6,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.15,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0,0.08,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.01,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BottomEdge","shape":"cube","pos":[0.0,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.01,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

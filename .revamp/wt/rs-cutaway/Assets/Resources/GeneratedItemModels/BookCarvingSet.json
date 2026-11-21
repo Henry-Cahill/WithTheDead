@@ -1,0 +1,13 @@
+{"version": 1, "id": "BookCarvingSet", "baseHeight": 0.09, "name": "Book Carving Set", "model": "gpt-oss:120b", "notes": "Book carving set ~0.30 m long × 0.20 m wide × 0.10 m high, lying on the floor. Main wooden block (the “book”), a leather strap, two carving knives, a gouge, and a small mallet are spread around it for quick visual identification.", "score": 6, "parts": [
+  {"name":"BookBlock","shape":"cube","pos":[-0.0025,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.045,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[-0.0025,0.0225,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.28,0.015],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"KnifeL_Handle","shape":"cylinder","pos":[-0.0725,-0.0175,0.09],"rot":[0.0,0.0,90.0],"size":[0.025,0.12,0.025],"color":[0.55,0.55,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"KnifeL_Blade","shape":"cube","pos":[-0.0725,-0.026,0.1375],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.07],"color":[0.55,0.55,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"KnifeR_Handle","shape":"cylinder","pos":[0.0675,-0.0175,-0.09],"rot":[0.0,0.0,90.0],"size":[0.025,0.12,0.025],"color":[0.55,0.55,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"KnifeR_Blade","shape":"cube","pos":[0.0675,-0.026,-0.1375],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.07],"color":[0.55,0.55,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Gouge_Handle","shape":"cylinder","pos":[-0.0025,-0.015,-0.12],"rot":[0.0,0.0,90.0],"size":[0.03,0.15,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Gouge_Blade","shape":"cube","pos":[-0.0025,-0.022,-0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.016,0.06],"color":[0.55,0.55,0.55],"smooth":0.5,"metal":1.0},
+  {"name":"Mallet_Handle","shape":"cylinder","pos":[0.1175,-0.015,0.06],"rot":[0.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Mallet_Head","shape":"cube","pos":[0.1175,0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.05],"color":[0.55,0.55,0.55],"smooth":0.5,"metal":1.0},
+  {"name":"Pencil","shape":"cylinder","pos":[-0.1225,-0.018,0.04],"rot":[0.0,0.0,90.0],"size":[0.008,0.09,0.008],"color":[0.8,0.7,0.5],"smooth":0.3,"metal":0.0}
+]}

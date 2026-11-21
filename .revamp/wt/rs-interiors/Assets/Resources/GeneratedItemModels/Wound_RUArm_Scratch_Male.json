@@ -1,0 +1,8 @@
+{"version": 1, "id": "Wound_RUArm_Scratch_Male", "baseHeight": 0.0697, "name": "Wound RUArm Scratch Male", "model": "gpt-oss:120b", "notes": "Small piece of torn flesh from a right‑upper‑arm scratch, ~7 cm long x 3 cm wide x 5 mm thick with a few fresh blood droplets. Laid flat on the floor, ragged edge at one side.", "score": 6, "parts": [
+  {"name":"BaseSkin","shape":"cube","pos":[0.0132,-0.0057,-0.0041],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RagEdge","shape":"cube","pos":[-0.0188,-0.0037,-0.0041],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodDrop1","shape":"sphere","pos":[0.0282,0.0023,0.0039],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.05,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"BloodDrop2","shape":"sphere","pos":[0.0032,0.0012,-0.0131],"rot":[15.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.48,0.04,0.04],"smooth":0.3,"metal":0.0},
+  {"name":"Clot","shape":"cylinder","pos":[0.0332,-0.0008,0.0109],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.45,0.03,0.03],"smooth":0.2,"metal":0.0},
+  {"name":"ThinSkinFlap","shape":"cube","pos":[0.0382,-0.0037,0.0159],"rot":[0.0,10.0,0.0],"size":[0.03,0.004,0.01],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

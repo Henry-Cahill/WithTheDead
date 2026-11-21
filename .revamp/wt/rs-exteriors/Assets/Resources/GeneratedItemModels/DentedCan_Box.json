@@ -1,0 +1,13 @@
+{"version": 1, "id": "DentedCan_Box", "baseHeight": 0.13, "name": "Dented Can Box", "model": "gpt-oss:120b", "notes": "Dented metal food box ~0.25 m × 0.18 m × 0.12 m tall, upright on the floor. Main body is a gold‑tinted steel cube with a thin lid, a front label and four visible dents to show damage.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0038,-0.01,0.005],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.18],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.8},
+  {"name":"Lid","shape":"cube","pos":[0.0038,0.06,0.005],"rot":[0.0,0.0,0.0],"size":[0.255,0.02,0.185],"color":[0.65,0.58,0.35],"smooth":0.55,"metal":0.8},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0038,-0.009,0.005],"rot":[0.0,0.0,0.0],"size":[0.235,0.002,0.165],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0038,-0.0075,0.005],"rot":[0.0,0.0,0.0],"size":[0.245,0.002,0.175],"color":[0.45,0.38,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"Dent1","shape":"sphere","pos":[-0.0663,-0.025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":0.8},
+  {"name":"Dent2","shape":"sphere","pos":[0.0838,-0.023,0.035],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":0.8},
+  {"name":"Dent3","shape":"sphere","pos":[-0.0862,-0.022,0.065],"rot":[0.0,0.0,0.0],"size":[0.035,0.035,0.035],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":0.8},
+  {"name":"Dent4","shape":"sphere","pos":[0.1038,-0.028,-0.065],"rot":[0.0,0.0,0.0],"size":[0.038,0.038,0.038],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":0.8},
+  {"name":"CrushedCorner","shape":"cube","pos":[-0.1162,-0.03,-0.085],"rot":[0.0,0.0,0.0],"size":[0.03,0.06,0.03],"color":[0.68,0.6,0.38],"smooth":0.55,"metal":0.8},
+  {"name":"SideRimFront","shape":"cube","pos":[0.0038,-0.01,0.095],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.01],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":0.8},
+  {"name":"SideRimBack","shape":"cube","pos":[0.0038,-0.01,-0.085],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.01],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":0.8}
+]}

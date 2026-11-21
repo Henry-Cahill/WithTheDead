@@ -1,0 +1,206 @@
+        // A piece's build set up (its roots made, inactive at the origin); the caller files it (a fresh piece in _chunks, an
+        // upgrade on the piece it replaces). <paramref name="area"/>: its data, when it was cut out ahead.
+        private Chunk Begin(int cx, int cz, MapRegionIndex region, KentuckyMap.Detail detail, KentuckyMap.Area area)
+        {
+            var c = new Chunk { Cx = cx, Cz = cz, Key = Key(cx, cz), Middle = ChunkMiddle(cx, cz), Detail = detail };
+            c.UvOrigin = new Vector3((float)Wrap((cx + 0.5) * _chunk), 0f, (float)Wrap((cz + 0.5) * _chunk));
+            string name = "Piece " + cx + "_" + cz;
+            // Built inactive at the origin, where the builders' local and world positions agree; moved into place after.
+            c.Root = new GameObject(name);
+            c.Root.SetActive(false);
+            c.Root.transform.SetParent(_streamed, false);
+            c.Root.transform.position = Vector3.zero;
+            c.Overhead = new GameObject(name);
+            c.Overhead.SetActive(false);
+            c.Overhead.transform.SetParent(_overhead, false);
+            c.Overhead.transform.position = Vector3.zero;
+            c.Job = new KentuckyMap.ChunkJob
+            {
+                Build = _build, Region = region, Place = _place.name, Cx = cx, Cz = cz,
+                Seed = unchecked(_layoutSeed * 486187739 + cx * 73856093 ^ cz * 19349663),
+                Root = c.Root.transform, Overhead = c.Overhead.transform, Offset = c.Middle, Detail = detail, Area = area,
+            };
+            c.Steps = KentuckyMap.ChunkSteps(c.Job).GetEnumerator();
+            return c;
+        }
+
+        // One step of a piece's build, with what it makes credited to the piece. False once it's done (or failed).
+        private bool Step(Chunk c)
+        {
+            List<Mesh> meshes = RaidMesh.CreatedMeshes;
+            List<string> signs = DecorTextures.SignsUsed;
+            Vector3 uv = RaidMesh.PlanarOrigin;
+            object owner = Shelter.Owner;
+            Func<string, bool> gate = ItemDatabase.LootGate;
+            Action<string, int> rolled = ItemDatabase.LootRolled;
+            RaidMesh.CreatedMeshes = c.Meshes;
+            DecorTextures.SignsUsed = c.Signs;
+            RaidMesh.PlanarOrigin = c.UvOrigin;
+            Shelter.Owner = c;
+            // A piece's loot is its own (see ApplyLoot): the containers' first roll mustn't count against the Central
+            // Economy either.
+            ItemDatabase.LootGate = null;
+            ItemDatabase.LootRolled = null;
+            try
+            {
+                if (c.Job != null && c.Job.Site != null) c.Job.Site.BeginStep();
+                bool more = c.Steps.MoveNext();
+                if (more) c.LastStep = c.Steps.Current;
+                return more;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("[CloneZ] Building Kentucky at piece " + c.Cx + "_" + c.Cz + (c.Detail == KentuckyMap.Detail.Lite ? " (Lite)" : "")
+                    + " failed" + (c.Replaces != null ? "; it stays in Lite. " : "; it stays open snow. ") + e);
+                c.Failed = true;
+                if (c.Job != null) c.Job.Abandon();
+                return false;
+            }
+            finally
+            {
+                RaidMesh.CreatedMeshes = meshes;
+                DecorTextures.SignsUsed = signs;
+                RaidMesh.PlanarOrigin = uv;
+                Shelter.Owner = owner;
+                ItemDatabase.LootGate = gate;
+                ItemDatabase.LootRolled = rolled;
+            }
+        }
+
+        // A piece whose steps have run: moved into place, its loot rolled (or what was left in it given back) and shown,
+        // in place of the Lite piece it's an upgrade of. A failed piece is laid as bare snow; a failed upgrade is dropped
+        // and the Lite piece stays.
+        private void Finish(Chunk c)
+        {
+            c.Steps = null;
+            Chunk old = c.Replaces;
+            if (c.Failed && old != null)
+            {
+                old.NoUpgrade = true;
+                DropUpgrade(old, false);
+                return;
+            }
+            if (c.Failed)
+            {
+                Clear(c);
+                List<Mesh> meshes = RaidMesh.CreatedMeshes;
+                RaidMesh.CreatedMeshes = c.Meshes;
+                KentuckyMap.BareGround(c.Root.transform, _chunk * 0.5f);
+                RaidMesh.CreatedMeshes = meshes;
+            }
+            else if (c.Job != null && c.Job.Site != null)
+            {
+                _buildings += c.Job.Site.Buildings;
+                _containers += c.Job.Site.Containers;
+                _trees += c.Job.Site.Trees;
+                _lights += c.Job.Town.LightCount;
+            }
+            c.Root.transform.position = c.Middle;
+            c.Overhead.transform.position = c.Middle;
+            if (!c.Failed) ApplyLoot(c);
+            if (old != null)
+            {
+                // The Lite piece goes as the Full one comes (its NavMesh sources with it).
+                old.Upgrade = null;
+                Release(old);
+                if (old.Ready)
+                {
+                    _ready--;
+                    if (old.Detail == KentuckyMap.Detail.Lite) _readyLite--;
+                }
+                _chunks[c.Key] = c;
+                c.Replaces = null;
+                _upgraded++;
+                if (_stats != null) _stats.Upgraded++;
+            }
+            c.Root.SetActive(true);
+            c.Overhead.SetActive(true);
+            c.Ready = true;
+            _ready++;
+            if (c.Detail == KentuckyMap.Detail.Lite) _readyLite++;
+            if (_stats != null)
+            {
+                _stats.Finished++;
+                if (c.Detail == KentuckyMap.Detail.Lite) _stats.FinishedLite++;
+                else _stats.FinishedFull++;
+            }
+            c.SignKeys = new HashSet<string>(c.Signs);
+            c.Signs.Clear();
+            foreach (string key in c.SignKeys) _signUsers[key] = _signUsers.TryGetValue(key, out int n) ? n + 1 : 1;
+            if (!c.Pinned) c.Job = null;
+            if (_navReady)
+            {
+                CollectSources(c);
+                _navDirty = true;
+            }
+            else c.SourcesDirty = true;
+        }
+
+        // Empties a failed piece so it can be laid as bare snow.
+        private void Clear(Chunk c)
+        {
+            Shelter.Forget(c);
+            for (int i = c.Root.transform.childCount - 1; i >= 0; i--) DestroyImmediate(c.Root.transform.GetChild(i).gameObject);
+            for (int i = c.Overhead.transform.childCount - 1; i >= 0; i--) DestroyImmediate(c.Overhead.transform.GetChild(i).gameObject);
+            DestroyMeshes(c.Meshes);
+        }
+
+        private void Unload(Chunk c)
+        {
+            DropUpgrade(c, false);
+            if (c == _building)
+            {
+                _building = null;
+                if (c.Job != null) c.Job.Abandon();
+            }
+            if (c.Ready) Remember(c);
+            Release(c);
+            _chunks.Remove(c.Key);
+            if (c.Ready)
+            {
+                _ready--;
+                if (c.Detail == KentuckyMap.Detail.Lite) _readyLite--;
+            }
+            if (_stats != null) _stats.Unloaded++;
+        }
+
+        // Everything a piece made, gone: its objects, its meshes (once no NavMesh update is reading them), its shelters and
+        // its signs.
+        private void Release(Chunk c)
+        {
+            Shelter.Forget(c);
+            DestroyMaterialCopies(c.Root);
+            DestroyMaterialCopies(c.Overhead);
+            Kill(c.Root);
+            Kill(c.Overhead);
+            _deadMeshes.AddRange(c.Meshes);
+            c.Meshes.Clear();
+            ReleaseSigns(c);
+            if (c.Ready) _navDirty = true;
+            _unloadsSinceSweep++;
+            _prune = true;
+        }
+
+        // The Full piece being built to replace <paramref name="c"/>, dropped (<paramref name="now"/>: destroyed at once, for
+        // a teardown).
+        private void DropUpgrade(Chunk c, bool now)
+        {
+            Chunk u = c.Upgrade;
+            if (u == null) return;
+            c.Upgrade = null;
+            u.Replaces = null;
+            if (_building == u) _building = null;
+            if (u.Job != null) u.Job.Abandon();
+            u.Job = null;
+            u.Steps = null;
+            if (now)
+            {
+                Shelter.Forget(u);
+                DestroyMeshes(u.Meshes);
+                if (u.Root != null) DestroyImmediate(u.Root);
+                if (u.Overhead != null) DestroyImmediate(u.Overhead);
+                return;
+            }
+            Release(u);
+        }
+

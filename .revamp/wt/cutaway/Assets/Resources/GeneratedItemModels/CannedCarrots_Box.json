@@ -1,0 +1,11 @@
+{"version": 1, "id": "CannedCarrots_Box", "baseHeight": 0.208, "name": "Canned Carrots Box", "model": "gpt-oss:120b", "notes": "Rectangular canned carrots tin 0.12 m wide × 0.15 m deep × 0.28 m tall, lying on its side (longest axis X). Main body is brushed metal (tint 0.75,0.68,0.45), with a recessed lid, thin top/bottom seams, and a front label with darker trim.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.28,0.15],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"TopSeam","shape":"cube","pos":[0.0,0.136,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.16],"color":[0.78,0.71,0.47],"smooth":0.55,"metal":0.9},
+  {"name":"BottomSeam","shape":"cube","pos":[0.0,-0.144,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.16],"color":[0.78,0.71,0.47],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.142,0.0],"rot":[0.0,0.0,0.0],"size":[0.115,0.012,0.145],"color":[0.7,0.63,0.4],"smooth":0.55,"metal":0.9},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.008,0.0765],"rot":[0.0,0.0,0.0],"size":[0.11,0.24,0.002],"color":[0.78,0.7,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.114,0.0765],"rot":[0.0,0.0,0.0],"size":[0.115,0.008,0.004],"color":[0.55,0.45,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.13,0.0765],"rot":[0.0,0.0,0.0],"size":[0.115,0.008,0.004],"color":[0.55,0.45,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[-0.061,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.22,0.13],"color":[0.78,0.7,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"SideLabelTrim","shape":"cube","pos":[-0.0615,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.22,0.13],"color":[0.55,0.45,0.3],"smooth":0.08,"metal":0.0}
+]}

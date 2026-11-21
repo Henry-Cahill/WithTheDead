@@ -1,0 +1,12 @@
+{"version": 1, "id": "Trousers_LeatherBlack", "baseHeight": 0.0835, "name": "Trousers Leather Black", "model": "gpt-oss:120b", "notes": "Flat leather trousers ~1 m long × 0.52 m wide × 2‑3 cm thick: waistband, two leg panels, centre seam, front & back pockets with flaps, and metal belt‑loops at the waist.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.485,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.52],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.015,-0.0085,-0.13],"rot":[0.0,0.0,0.0],"size":[0.96,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[-0.015,-0.0085,0.13],"rot":[0.0,0.0,0.0],"size":[0.96,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"SeamCenter","shape":"cube","pos":[-0.015,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.96,0.008,0.04],"color":[0.45,0.42,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[-0.295,0.0125,-0.13],"rot":[0.0,0.0,0.0],"size":[0.25,0.012,0.12],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"FrontPocketFlap","shape":"cube","pos":[-0.295,0.0215,-0.13],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.12],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[-0.395,0.0125,0.13],"rot":[0.0,0.0,0.0],"size":[0.22,0.012,0.12],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"BackPocketFlap","shape":"cube","pos":[-0.395,0.0215,0.13],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.12],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"BeltLoopFront","shape":"cylinder","pos":[0.485,0.0015,-0.2],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"BeltLoopBack","shape":"cylinder","pos":[0.485,0.0015,0.2],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0}
+]}

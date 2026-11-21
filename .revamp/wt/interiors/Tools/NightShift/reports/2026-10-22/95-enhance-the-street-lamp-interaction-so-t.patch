@@ -1,0 +1,59 @@
+diff --git a/Assets/Scripts/World/Map/StreetLampInteraction.cs b/Assets/Scripts/World/Map/StreetLampInteraction.cs
+index a83f9638..9ea27638 100644
+--- a/Assets/Scripts/World/Map/StreetLampInteraction.cs
++++ b/Assets/Scripts/World/Map/StreetLampInteraction.cs
+@@ -15,12 +15,23 @@ internal sealed class StreetLampInteraction : Interactable
+         private StreetLampFlicker _flicker;
+         private string _key;
+         private string _displayName = "Street Lamp";
++        // ---- registration of all street‑lamps in the current raid ----
++        private static readonly List<StreetLampInteraction> s_allLamps = new();
++        private const float BLOCK_RADIUS = 20f; // metres, radius for “nearby lamps” toggle
++        [SerializeField] private AudioSource _audio; // optional, set in inspector
+ 
+         private void Awake()
+         {
+             _light = GetComponent<Light>();
+             _flicker = GetComponent<StreetLampFlicker>();
+             _key = KeyFor("streetlamp", transform.position);
++            _audio = GetComponent<AudioSource>(); // optional click sound
++            s_allLamps.Add(this); // <-- new line
++        }
++
++        private void OnDestroy()
++        {
++            s_allLamps.Remove(this);
+         }
+ 
+         public override string DisplayName => _displayName;
+@@ -32,6 +43,8 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+         {
+             bool on = _light != null && _light.enabled;
+             into.Add(new InteractAction(on ? "Turn off street lamp" : "Turn on street lamp", c => Toggle(c, !on)));
++            into.Add(new InteractAction(on ? "Turn off nearby lamps" : "Turn on nearby lamps", c => ToggleBlock(c, !on)));
++
+         }
+ 
+         private void Toggle(InteractContext ctx, bool on)
+@@ -41,6 +54,21 @@ private void Toggle(InteractContext ctx, bool on)
+             ctx.Notify(on ? "The street lamp clicks on." : "The street lamp clicks off.");
+         }
+ 
++        private void ToggleBlock(InteractContext ctx, bool on)
++        {
++            // toggle this lamp first (so it’s included in the visual change)
++            Toggle(ctx, on);
++            // toggle all neighbours without repeating the click sound
++            foreach (var lamp in GetNearbyLamps())
++            {
++                if (lamp._light != null) lamp._light.enabled = on;
++                if (lamp._flicker != null) lamp._flicker.enabled = on;
++            }
++            // play sound for the primary lamp only
++            if (_audio != null && _audio.clip != null)
++                _audio.Play();
++        }
++
+         public override void CaptureState(FixtureSave save)
+         {
+             // store on/off as bit 0

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Dice", "baseHeight": 0.072, "name": "Dice", "model": "gpt-oss:120b", "notes": "Standard six‑sided die ~0.016 m per side, lying on the floor (center Y = 0.008 m). Main body is a tinted plastic cube with a slightly darker rim and five raised pips on the top face (centre + four corners) for clear silhouette.", "score": 8, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.002,-0.0004],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cube","pos":[0.0,0.003,-0.0004],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.54,0.52,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"PipCenter","shape":"cylinder","pos":[0.0,-0.006,0.0084],"rot":[90.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"PipCornerTL","shape":"cylinder","pos":[0.0045,-0.0015,0.0084],"rot":[90.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"PipCornerTR","shape":"cylinder","pos":[-0.0045,-0.0015,0.0084],"rot":[90.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"PipCornerBL","shape":"cylinder","pos":[0.0045,-0.0105,0.0084],"rot":[90.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"PipCornerBR","shape":"cylinder","pos":[-0.0045,-0.0105,0.0084],"rot":[90.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0}
+]}

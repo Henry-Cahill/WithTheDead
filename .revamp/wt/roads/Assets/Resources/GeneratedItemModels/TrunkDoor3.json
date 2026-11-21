@@ -1,0 +1,15 @@
+{"version": 1, "id": "TrunkDoor3", "baseHeight": 0.095, "name": "Trunk Door3", "model": "gpt-oss:120b", "notes": "Trunk door panel about 1.20 m wide × 0.80 m tall × 2.5 cm thick, wood‑tinted; lying flat on the floor. Includes left/right hinge plates with pins, a metal handle bar and knob, rubber seal along the bottom edge, four small screws, and a front label sticker.", "score": 7, "parts": [
+  {"name":"Panel","shape":"cube","pos":[0.0,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.8],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HingePlateL","shape":"cube","pos":[-0.59,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.12],"color":[0.45,0.42,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"HingePlateR","shape":"cube","pos":[0.59,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.12],"color":[0.45,0.42,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"HingePinL","shape":"cylinder","pos":[-0.59,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"HingePinR","shape":"cylinder","pos":[0.59,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.0,0.0,0.3],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.5,0.5,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"HandleKnob","shape":"sphere","pos":[0.125,0.0,0.3],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewLT","shape":"cylinder","pos":[-0.59,-0.0025,0.05],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewLB","shape":"cylinder","pos":[-0.59,-0.0025,-0.05],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewRT","shape":"cylinder","pos":[0.59,-0.0025,0.05],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewRB","shape":"cylinder","pos":[0.59,-0.0025,-0.05],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"SealBottom","shape":"cube","pos":[0.0,-0.0225,-0.39],"rot":[0.0,0.0,0.0],"size":[1.2,0.005,0.02],"color":[0.2,0.2,0.2],"smooth":0.25,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0095,0.2],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.1],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0}
+]}

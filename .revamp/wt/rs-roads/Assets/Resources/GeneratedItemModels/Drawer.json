@@ -1,0 +1,14 @@
+{"version": 1, "id": "Drawer", "baseHeight": 0.135, "name": "Drawer", "model": "gpt-oss:120b", "notes": "Drawer lying on its side (width X = 0.40 m, depth Z = 0.25 m, height Y = 0.15 m). Wood‑tinted body with front panel, side plates, bottom plate, metal slides, a horizontal pull handle and four corner screws.", "score": 7, "parts": [
+  {"name":"OuterShell","shape":"cube","pos":[0.0,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.4,0.15,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0,0.1075],"rot":[0.0,0.0,0.0],"size":[0.38,0.13,0.015],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.0,0.125],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.1925,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.13,0.23],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.1925,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.13,0.23],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BottomPlate","shape":"cube","pos":[0.0,-0.06,-0.01],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.23],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Slide","shape":"cylinder","pos":[0.0,-0.055,-0.01],"rot":[0.0,0.0,90.0],"size":[0.01,0.35,0.01],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewTL","shape":"sphere","pos":[-0.16,0.065,0.115],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewTR","shape":"sphere","pos":[0.16,0.065,0.115],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBL","shape":"sphere","pos":[-0.16,-0.055,0.115],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBR","shape":"sphere","pos":[0.16,-0.055,0.115],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0,0.122],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.015],"color":[0.7,0.68,0.6],"smooth":0.1,"metal":0.0}
+]}

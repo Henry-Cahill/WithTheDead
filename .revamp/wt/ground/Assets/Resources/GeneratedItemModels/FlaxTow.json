@@ -1,0 +1,14 @@
+{"version": 1, "id": "FlaxTow", "baseHeight": 0.1073, "name": "Flax Tow", "model": "gpt-oss:120b", "notes": "Loose bundle of flax tow ~0.15 m long × 0.07 m wide × 0.04 m thick, lying on the floor. Main mass is a low cube with several thin fibrous cylinders and a few fluffy ellipsoids poking out to give a readable silhouette.", "score": 6, "parts": [
+  {"name":"BaseCube","shape":"cube","pos":[0.0,-0.0273,-0.0042],"rot":[0.0,0.0,0.0],"size":[0.15,0.04,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fiber1","shape":"cylinder","pos":[-0.045,0.0127,-0.0242],"rot":[12.0,0.0,0.0],"size":[0.004,0.07,0.004],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fiber2","shape":"cylinder","pos":[0.03,0.0107,0.0108],"rot":[-8.0,0.0,5.0],"size":[0.004,0.065,0.004],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fiber3","shape":"cylinder","pos":[-0.02,0.0147,0.0208],"rot":[5.0,0.0,-10.0],"size":[0.004,0.06,0.004],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fiber4","shape":"cylinder","pos":[0.045,0.0117,-0.0192],"rot":[-6.0,0.0,8.0],"size":[0.004,0.07,0.004],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fiber5","shape":"cylinder","pos":[-0.03,0.0077,0.0358],"rot":[10.0,0.0,-12.0],"size":[0.004,0.065,0.004],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fiber6","shape":"cylinder","pos":[0.015,0.0137,-0.0392],"rot":[-4.0,0.0,7.0],"size":[0.004,0.06,0.004],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fiber7","shape":"cylinder","pos":[-0.055,0.0097,-0.0042],"rot":[9.0,0.0,-5.0],"size":[0.004,0.07,0.004],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fiber8","shape":"cylinder","pos":[0.055,0.0127,-0.0292],"rot":[-7.0,0.0,10.0],"size":[0.004,0.065,0.004],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FluffSphere1","shape":"sphere","pos":[-0.02,-0.0023,-0.0192],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FluffSphere2","shape":"sphere","pos":[0.025,-0.0003,0.0158],"rot":[0.0,0.0,0.0],"size":[0.016,0.011,0.016],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FluffSphere3","shape":"sphere","pos":[0.0,0.0027,-0.0342],"rot":[0.0,0.0,0.0],"size":[0.014,0.009,0.014],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

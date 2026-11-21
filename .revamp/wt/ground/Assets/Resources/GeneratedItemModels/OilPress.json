@@ -1,0 +1,12 @@
+{"version": 1, "id": "OilPress", "baseHeight": 0.1, "name": "Oil Press", "model": "gpt-oss:120b", "notes": "Compact hand‑crank oil press ~0.25 m wide × 0.12 m deep × 0.10 m tall when lying on its side. Main components: base plate, screw cylinder, pressing plate, collection bowl with lid, crank handle, and a few rivet fasteners.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[-0.0275,-0.03,-0.01],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ScrewCylinder","shape":"cylinder","pos":[-0.0275,0.0,-0.01],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"PressPlate","shape":"cube","pos":[0.1025,0.03,-0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CrankHandle","shape":"cylinder","pos":[-0.1575,0.0,0.04],"rot":[90.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Bowl","shape":"cylinder","pos":[0.1025,-0.005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.14,0.03,0.14],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BowlLid","shape":"cube","pos":[0.1025,0.0125,-0.01],"rot":[0.0,0.0,0.0],"size":[0.14,0.005,0.14],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFL","shape":"cube","pos":[-0.1425,-0.015,-0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":1.0},
+  {"name":"RivetFR","shape":"cube","pos":[-0.1425,-0.015,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":1.0},
+  {"name":"RivetBL","shape":"cube","pos":[0.0875,-0.015,-0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":1.0},
+  {"name":"RivetBR","shape":"cube","pos":[0.0875,-0.015,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":1.0}
+]}

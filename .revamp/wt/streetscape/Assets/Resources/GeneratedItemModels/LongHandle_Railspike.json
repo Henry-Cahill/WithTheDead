@@ -1,0 +1,12 @@
+{"version": 1, "id": "LongHandle_Railspike", "baseHeight": 0.09, "name": "Long Handle Railspike", "model": "gpt-oss:120b", "notes": "Long‑handle railspike ~1.35 m long lying on its side (X axis). Thin metal shaft with a small metal cap at the far end, a rubber‑grip section, a cross guard near the hand, and a pointed spike (base + tip) at the opposite end. Silhouette shows the long rod and the spike clearly.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.07,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.69,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleWrap","shape":"cylinder","pos":[-0.27,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.3,0.06],"color":[0.5,0.45,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[-0.27,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Band","shape":"cylinder","pos":[0.43,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.02,0.05],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeBase","shape":"cube","pos":[0.59,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[0.68,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.37,-0.022,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.35,0.35,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.07,-0.022,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.35,0.35,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.33,-0.022,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.35,0.35,0.38],"smooth":0.2,"metal":1.0}
+]}

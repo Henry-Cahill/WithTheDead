@@ -1,0 +1,15 @@
+{"version": 1, "id": "GrassTuft", "baseHeight": 0.1027, "name": "Grass Tuft", "model": "gpt-oss:120b", "notes": "Loose Grass Tuft ~0.12 m wide, 0.09 m tall. Central ellipsoid core with many thin green blades fanning out at a slight tilt for clear silhouette.", "score": 6, "parts": [
+  {"name":"Core","shape":"sphere","pos":[0.0,-0.0227,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade1","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,0.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade2","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,30.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade3","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,60.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade4","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,90.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade5","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,120.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade6","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,150.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade7","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,-180.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade8","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,-150.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade9","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,-120.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade10","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,-90.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade11","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,-60.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Blade12","shape":"cylinder","pos":[0.0,0.0023,0.0],"rot":[30.0,0.0,-30.0],"size":[0.006,0.09,0.006],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

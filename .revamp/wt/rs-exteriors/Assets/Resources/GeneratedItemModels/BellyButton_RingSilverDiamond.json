@@ -1,0 +1,12 @@
+{"version": 1, "id": "BellyButton_RingSilverDiamond", "baseHeight": 0.063, "name": "Belly Button Ring Silver Diamond", "model": "gpt-oss:120b", "notes": "Belly button ring ~2 cm diameter, thin silver hoop lying flat (disc with inner cut‑out) and a small sparkling diamond set at the front edge. Total height ≈1 mm; diamond sits ~3 mm above the hoop.", "score": 6, "parts": [
+  {"name":"OuterRing","shape":"cylinder","pos":[-0.0005,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"InnerHole","shape":"cylinder","pos":[-0.0005,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.012],"color":[0.15,0.13,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.0085,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[1.0,1.0,1.0],"smooth":0.85,"metal":0.0},
+  {"name":"Clasp","shape":"cylinder","pos":[-0.0095,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBevelL","shape":"cylinder","pos":[-0.0085,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.0025,0.002,0.0025],"color":[0.58,0.56,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeBevelR","shape":"cylinder","pos":[0.0075,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.0025,0.002,0.0025],"color":[0.58,0.56,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.0005,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.62,0.6,0.52],"smooth":0.5,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.0005,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.58,0.56,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.0005,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.12,0.11,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"HighlightEdge","shape":"cylinder","pos":[-0.0005,-0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.0195,0.002,0.0195],"color":[0.9,0.9,0.85],"smooth":0.8,"metal":0.0}
+]}

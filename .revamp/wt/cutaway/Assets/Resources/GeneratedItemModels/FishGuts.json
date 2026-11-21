@@ -1,0 +1,8 @@
+{"version": 1, "id": "FishGuts", "baseHeight": 0.075, "name": "Fish Guts", "model": "gpt-oss:120b", "notes": "Loose fish guts in a small sealed plastic bag, approx 0.12 m wide × 0.08 m deep × 0.02 m thick, with a paper label on top; three interior ellipsoids show the contents.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"GutLump1","shape":"sphere","pos":[-0.02,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.02],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"GutLump2","shape":"sphere","pos":[0.02,-0.001,0.015],"rot":[0.0,0.0,0.0],"size":[0.05,0.025,0.015],"color":[0.58,0.52,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"GutLump3","shape":"sphere","pos":[0.04,0.001,-0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.025],"color":[0.62,0.57,0.36],"smooth":0.05,"metal":0.0},
+  {"name":"SealFlap","shape":"cube","pos":[0.0,0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.7,0.63,0.42],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vambrace_Leather_Left", "baseHeight": 0.12, "name": "Vambrace Leather Left", "model": "gpt-oss:120b", "notes": "Left‑hand leather vambrace, about 0.27 m long × 0.12 m wide × 0.025 m thick. Main curved plate with padded interior, two strap bands on the top surface and four rivet studs at the corners.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Padding","shape":"cube","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.255,0.018,0.11],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[-0.09,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.022,0.12,0.022],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[-0.09,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.022,0.12,0.022],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.13,0.007,0.055],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.28,0.2],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[-0.13,0.007,-0.055],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.28,0.2],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.13,0.007,0.055],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.28,0.2],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.13,0.007,-0.055],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.28,0.2],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBevelTop","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.003,0.12],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeBevelSide","shape":"cube","pos":[0.0,-0.013,0.0615],"rot":[0.0,0.0,0.0],"size":[0.27,0.025,0.003],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0}
+]}

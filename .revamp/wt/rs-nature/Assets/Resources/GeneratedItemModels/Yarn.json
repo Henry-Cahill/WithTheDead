@@ -1,0 +1,11 @@
+{"version": 1, "id": "Yarn", "baseHeight": 0.1543, "name": "Yarn", "model": "gpt-oss:120b", "notes": "Ball of yarn about 0.15 m diameter lying on the floor (center at y=0.075 m). Main fluffy sphere with a slightly darker core, a paper tag and several stray strands give recognisable texture.", "score": 6, "parts": [
+  {"name":"MainBall","shape":"sphere","pos":[-0.0063,-0.0193,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.15,0.15,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Core","shape":"sphere","pos":[-0.0063,-0.0193,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.0737,0.0257,0.0095],"rot":[0.0,15.0,0.0],"size":[0.03,0.005,0.015],"color":[0.9,0.85,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"StrandA","shape":"cylinder","pos":[0.0637,0.0357,0.0395],"rot":[30.0,0.0,45.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandB","shape":"cylinder","pos":[-0.0663,0.0157,-0.0505],"rot":[-20.0,0.0,-30.0],"size":[0.008,0.1,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandC","shape":"cylinder","pos":[0.0337,0.0457,0.0595],"rot":[45.0,0.0,10.0],"size":[0.008,0.13,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandD","shape":"cylinder","pos":[-0.0863,0.0257,0.0495],"rot":[15.0,0.0,-20.0],"size":[0.008,0.11,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandE","shape":"cylinder","pos":[0.0137,-0.0043,-0.0805],"rot":[-35.0,0.0,25.0],"size":[0.008,0.09,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandF","shape":"cylinder","pos":[0.0537,0.0557,-0.0305],"rot":[60.0,0.0,5.0],"size":[0.008,0.14,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Bullets357", "baseHeight": 0.065, "name": "Bullets357", "model": "gpt-oss:120b", "notes": "A loose pile of four .357‑magnum cartridges (brass case + primer disc + rounded bullet tip) lying on their side. Each cartridge ~0.038 m long, 0.009 m diameter; the pile is about 0.04 m wide and 0.01 m thick.", "score": 7, "parts": [
+  {"name":"Case1","shape":"cylinder","pos":[-0.0068,0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.009,0.038,0.009],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"Primer1","shape":"cylinder","pos":[-0.0263,0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.006,0.002,0.006],"color":[0.4,0.38,0.35],"smooth":0.45,"metal":0.6},
+  {"name":"Tip1","shape":"sphere","pos":[0.0173,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.66,0.55],"smooth":0.6,"metal":0.8},
+  {"name":"Case2","shape":"cylinder","pos":[-0.0017,0.0,0.0025],"rot":[0.0,0.0,90.0],"size":[0.009,0.038,0.009],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"Primer2","shape":"cylinder","pos":[-0.0213,0.0,0.0025],"rot":[0.0,0.0,90.0],"size":[0.006,0.002,0.006],"color":[0.4,0.38,0.35],"smooth":0.45,"metal":0.6},
+  {"name":"Tip2","shape":"sphere","pos":[0.0222,0.0,0.0025],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.66,0.55],"smooth":0.6,"metal":0.8},
+  {"name":"Case3","shape":"cylinder","pos":[-0.0118,0.0,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.009,0.038,0.009],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"Primer3","shape":"cylinder","pos":[-0.0312,0.0,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.006,0.002,0.006],"color":[0.4,0.38,0.35],"smooth":0.45,"metal":0.6},
+  {"name":"Tip3","shape":"sphere","pos":[0.0123,0.0,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.66,0.55],"smooth":0.6,"metal":0.8},
+  {"name":"Case4","shape":"cylinder","pos":[0.0032,0.0,0.0075],"rot":[0.0,0.0,90.0],"size":[0.009,0.038,0.009],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"Primer4","shape":"cylinder","pos":[-0.0163,0.0,0.0075],"rot":[0.0,0.0,90.0],"size":[0.006,0.002,0.006],"color":[0.4,0.38,0.35],"smooth":0.45,"metal":0.6},
+  {"name":"Tip4","shape":"sphere","pos":[0.0272,0.0,0.0075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.66,0.55],"smooth":0.6,"metal":0.8}
+]}

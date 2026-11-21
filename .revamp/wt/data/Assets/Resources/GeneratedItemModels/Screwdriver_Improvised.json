@@ -1,0 +1,12 @@
+{"version": 1, "id": "Screwdriver_Improvised", "baseHeight": 0.0785, "name": "Screwdriver Improvised", "model": "gpt-oss:120b", "notes": "Improvised screwdriver‑type melee weapon ~0.80 m long lying on its side (X‑axis). Wooden pole (0.72 m) with a short metal tip, a flat screwdriver blade at the far end, rubber grip mid‑shaft and a blunt wooden butt.", "score": 6, "parts": [
+  {"name":"Pole","shape":"cylinder","pos":[-0.015,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.72,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"MetalTip","shape":"cylinder","pos":[0.355,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.06,0.03],"color":[0.75,0.75,0.78],"smooth":0.4,"metal":1.0},
+  {"name":"TipSeam","shape":"cylinder","pos":[0.355,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.062,0.032],"color":[0.45,0.45,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.395,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.03],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.405,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.01,0.032],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.215,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.036,0.06,0.036],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"ButtCap","shape":"cube","pos":[-0.395,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"ShaftSeamFront","shape":"cylinder","pos":[0.165,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.12,0.032],"color":[0.45,0.45,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"ShaftSeamBack","shape":"cylinder","pos":[-0.195,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.12,0.032],"color":[0.45,0.45,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"TipScrew","shape":"sphere","pos":[0.41,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0}
+]}

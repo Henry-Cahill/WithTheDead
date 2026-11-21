@@ -1,0 +1,17 @@
+{"version": 1, "id": "Corset_Black", "baseHeight": 0.0798, "name": "Corset Black", "model": "gpt-oss:120b", "notes": "Corset Black lying flat on the floor – about 0.50 m wide × 0.35 m tall × 0.025 m thick. Main body in the black‑tint fabric, three steel boning strips, a central dark lacing rope with eyelet beads, crossed tie ribbons and two belt‑loop studs at the bottom corners.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.025,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BoningL","shape":"cylinder","pos":[-0.15,-0.0072,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.35,0.008],"color":[0.85,0.86,0.88],"smooth":0.2,"metal":1.0},
+  {"name":"BoningC","shape":"cylinder","pos":[0.0,-0.0072,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.35,0.008],"color":[0.85,0.86,0.88],"smooth":0.2,"metal":1.0},
+  {"name":"BoningR","shape":"cylinder","pos":[0.15,-0.0072,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.35,0.008],"color":[0.85,0.86,0.88],"smooth":0.2,"metal":1.0},
+  {"name":"LacingRope","shape":"cylinder","pos":[0.0,0.0083,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.35,0.008],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"Eyelet1","shape":"sphere","pos":[0.0,0.0083,-0.12],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.92],"smooth":0.4,"metal":1.0},
+  {"name":"Eyelet2","shape":"sphere","pos":[0.0,0.0083,-0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.92],"smooth":0.4,"metal":1.0},
+  {"name":"Eyelet3","shape":"sphere","pos":[0.0,0.0083,0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.92],"smooth":0.4,"metal":1.0},
+  {"name":"Eyelet4","shape":"sphere","pos":[0.0,0.0083,0.12],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.92],"smooth":0.4,"metal":1.0},
+  {"name":"Tie1","shape":"cube","pos":[0.0,0.0083,-0.09],"rot":[0.0,15.0,0.0],"size":[0.12,0.004,0.02],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"Tie2","shape":"cube","pos":[0.0,0.0083,-0.03],"rot":[0.0,-15.0,0.0],"size":[0.12,0.004,0.02],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"Tie3","shape":"cube","pos":[0.0,0.0083,0.03],"rot":[0.0,15.0,0.0],"size":[0.12,0.004,0.02],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"Tie4","shape":"cube","pos":[0.0,0.0083,0.09],"rot":[0.0,-15.0,0.0],"size":[0.12,0.004,0.02],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"LoopL","shape":"cylinder","pos":[-0.2,0.0123,-0.16],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"LoopR","shape":"cylinder","pos":[0.2,0.0123,-0.16],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "CaseyPic", "baseHeight": 0.0655, "name": "Casey Pic", "model": "gpt-oss:120b", "notes": "Flat photographic print about A4 size (0.35 m × 0.25 m) lying on the floor, 2 mm thick. Main sheet in muted tan tint, with a slightly darker printed area inset by thin borders, a torn corner piece, a faint crease line and a speck of dust.", "score": 8, "parts": [
+  {"name":"Sheet","shape":"cube","pos":[-0.025,-0.0045,-0.025],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderTop","shape":"cube","pos":[-0.025,-0.0045,0.0975],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.005],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderBottom","shape":"cube","pos":[-0.025,-0.0045,-0.1475],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.005],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderLeft","shape":"cube","pos":[-0.1975,-0.0045,-0.025],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderRight","shape":"cube","pos":[0.1475,-0.0045,-0.025],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ImageArea","shape":"cube","pos":[-0.025,-0.0044,-0.025],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.24],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TornCorner","shape":"cube","pos":[0.175,-0.0045,0.125],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.05],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CreaseLine","shape":"cube","pos":[-0.025,-0.0042,-0.025],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.003],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"DustParticle","shape":"sphere","pos":[-0.125,0.0005,-0.105],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":0.0}
+]}

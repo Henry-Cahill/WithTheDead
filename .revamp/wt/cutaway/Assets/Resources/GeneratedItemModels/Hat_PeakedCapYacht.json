@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_PeakedCapYacht", "baseHeight": 0.102, "name": "Hat Peaked Cap Yacht", "model": "gpt-oss:120b", "notes": "Peaked cap yacht hat laid flat: wide circular brim (0.30 m dia, 1 cm thick), low crown cylinder (0.22 m dia × 7 cm high) centred on brim, front visor peak projecting forward (8 cm × 2 cm × 12 cm). Small seam ring around the top of the crown.", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.037,-0.0585],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.003,-0.0585],"rot":[0.0,0.0,0.0],"size":[0.22,0.07,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPeak","shape":"cube","pos":[0.0,-0.022,0.1515],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSeam","shape":"cylinder","pos":[0.0,0.04,-0.0585],"rot":[0.0,0.0,0.0],"size":[0.224,0.004,0.224],"color":[0.45,0.42,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.031,-0.0585],"rot":[0.0,0.0,0.0],"size":[0.306,0.002,0.306],"color":[0.45,0.42,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SideStitchFront","shape":"cube","pos":[0.0,-0.027,0.0915],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.04],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideStitchLeft","shape":"cube","pos":[-0.15,-0.027,-0.0585],"rot":[0.0,90.0,0.0],"size":[0.02,0.002,0.04],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideStitchRight","shape":"cube","pos":[0.15,-0.027,-0.0585],"rot":[0.0,90.0,0.0],"size":[0.02,0.002,0.04],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0}
+]}

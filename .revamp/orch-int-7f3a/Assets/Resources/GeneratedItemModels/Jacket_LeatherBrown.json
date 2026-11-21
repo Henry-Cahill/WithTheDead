@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jacket_LeatherBrown", "baseHeight": 0.0725, "name": "Jacket Leather Brown", "model": "gpt-oss:120b", "notes": "Flat leather jacket about 0.75 m long × 0.50 m wide, 2 cm thick: central torso panel, two spread sleeves, a front collar, zipper strip, two chest pockets, cuffs at sleeve ends and a back hem strip.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.02,0.5],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.0,-0.0025,0.35],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.0,-0.0025,-0.35],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.005,0.215],"rot":[0.0,0.0,0.0],"size":[0.75,0.015,0.07],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"FrontZipper","shape":"cube","pos":[0.0,-0.0025,0.215],"rot":[0.0,0.0,0.0],"size":[0.68,0.02,0.015],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.2,-0.0025,0.215],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.2,-0.0025,0.215],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.275,-0.0025,0.35],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.275,-0.0025,-0.35],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,0.005,-0.215],"rot":[0.0,0.0,0.0],"size":[0.75,0.015,0.07],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0}
+]}

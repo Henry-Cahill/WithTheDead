@@ -1,0 +1,12 @@
+{"version": 1, "id": "NormalBrake2", "baseHeight": 0.08, "name": "Normal Brake2", "model": "gpt-oss:120b", "notes": "Brake assembly about 0.16 m long × 0.09 m wide × 0.04 m tall, lying on its side: a rectangular metal caliper (housing) with two side pistons, four mounting bolts, thin brake pads on the pistons and a flat brake disc resting against the front face.", "score": 6, "parts": [
+  {"name":"Housing","shape":"cube","pos":[0.0,0.0,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.16,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"PistonL","shape":"cylinder","pos":[-0.095,0.0,-0.0425],"rot":[0.0,0.0,90.0],"size":[0.03,0.025,0.03],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"PistonR","shape":"cylinder","pos":[0.095,0.0,-0.0425],"rot":[0.0,0.0,90.0],"size":[0.03,0.025,0.03],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"PadL","shape":"cube","pos":[-0.095,0.0125,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"PadR","shape":"cube","pos":[0.095,0.0125,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"BoltFL","shape":"cylinder","pos":[-0.06,0.0075,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"BoltFR","shape":"cylinder","pos":[-0.06,0.0075,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"BoltRL","shape":"cylinder","pos":[0.06,0.0075,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"BoltRR","shape":"cylinder","pos":[0.06,0.0075,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"Disc","shape":"cylinder","pos":[0.0,-0.015,0.0075],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.15],"color":[0.65,0.62,0.55],"smooth":0.35,"metal":1.0}
+]}

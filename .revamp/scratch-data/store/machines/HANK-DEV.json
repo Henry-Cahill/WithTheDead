@@ -1,0 +1,20 @@
+{
+ "machine": "HANK-DEV",
+ "doing": "idle",
+ "updated": "2026-10-23T21:47:34-05:00",
+ "last": "extracted build bardstown-parts, part 2/3: 8 regions",
+ "stats": {
+  "streets": 1261,
+  "lines": 26,
+  "buildings": 5001,
+  "areas": 113,
+  "relation_areas": 4,
+  "pois": 95,
+  "places": 0,
+  "barriers": 7,
+  "power": 19,
+  "nodes": 141,
+  "signs_faced": 0,
+  "bad_geometry": 0
+ }
+}

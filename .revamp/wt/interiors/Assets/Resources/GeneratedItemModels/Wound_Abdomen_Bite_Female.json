@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wound_Abdomen_Bite_Female", "baseHeight": 0.0675, "name": "Wound Abdomen Bite Female", "model": "gpt-oss:120b", "notes": "Flat rag representing a female abdomen bite wound, approx 0.18 m × 0.12 m × 0.015 m thick. Brown‑gray cloth with torn edges, a couple of folds and bright red blood splatters.", "score": 6, "parts": [
+  {"name":"BaseRag","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldA","shape":"cube","pos":[-0.03,0.0045,0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FoldB","shape":"cube","pos":[0.04,0.0045,-0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.025],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.02,0.0015,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.005,0.012],"color":[0.7,0.12,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.03,0.0015,-0.02],"rot":[0.0,0.0,0.0],"size":[0.022,0.006,0.015],"color":[0.68,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.0,0.0015,0.06],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.01],"color":[0.72,0.14,0.14],"smooth":0.3,"metal":0.0},
+  {"name":"TornCornerL","shape":"cube","pos":[-0.09,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TornCornerR","shape":"cube","pos":[0.09,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TearEdgeTop","shape":"cube","pos":[0.0,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.02],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"TearEdgeBottom","shape":"cube","pos":[0.0,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.02],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0}
+]}

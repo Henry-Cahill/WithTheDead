@@ -1,0 +1,11 @@
+{"version": 1, "id": "Spoon_Bone", "baseHeight": 0.095, "name": "Spoon Bone", "model": "gpt-oss:120b", "notes": "Spoon‑bone melee weapon ~0.80 m long: slender cylindrical handle lying on its side (X axis), a shallow ellipsoidal bowl at the tip, thin back plate and a small rib guard where the handle meets the bowl. Main colour is bone‑grey tint.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0475,-0.017,0.0005],"rot":[0.0,0.0,90.0],"size":[0.03,0.7,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cylinder","pos":[-0.3925,-0.014,0.0005],"rot":[0.0,0.0,90.0],"size":[0.032,0.04,0.032],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BowlBody","shape":"sphere","pos":[0.3325,-0.01,0.0005],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.07],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"BowlRim","shape":"cylinder","pos":[0.3675,0.0,0.0005],"rot":[90.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.55,0.55,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"BackPlate","shape":"cube","pos":[0.3325,-0.017,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.036],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeBevelL","shape":"cube","pos":[0.3325,-0.014,-0.0245],"rot":[0.0,10.0,0.0],"size":[0.07,0.004,0.008],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeBevelR","shape":"cube","pos":[0.3325,-0.014,-0.0105],"rot":[0.0,-10.0,0.0],"size":[0.07,0.004,0.008],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"TipIndent","shape":"cylinder","pos":[0.3925,-0.01,0.0005],"rot":[90.0,0.0,0.0],"size":[0.04,0.006,0.04],"color":[0.5,0.5,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"HandleEndCap","shape":"sphere","pos":[-0.3975,-0.017,0.0005],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0}
+]}

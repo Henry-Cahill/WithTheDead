@@ -1,0 +1,9 @@
+{"version": 1, "id": "ChamomileDried", "baseHeight": 0.09, "name": "Chamomile Dried", "model": "gpt-oss:120b", "notes": "Small cardboard box 0.12 m wide × 0.06 m tall × 0.08 m deep containing dried chamomile. Includes a thin lid, inner paper bag with a dark label and a loose herb pile visible through the opening.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[-0.0038,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.055,0.08],"color":[0.8,0.73,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[-0.0038,0.0265,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.003,0.082],"color":[0.84,0.77,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[-0.0038,0.0,0.041],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.002],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[0.0572,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.015,0.002],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBag","shape":"cube","pos":[-0.0038,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.068],"color":[0.9,0.85,0.7],"smooth":0.08,"metal":0.0},
+  {"name":"HerbPile","shape":"sphere","pos":[-0.0038,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.06],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BagTie","shape":"cylinder","pos":[-0.0038,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.55,0.45,0.3],"smooth":0.1,"metal":0.0}
+]}

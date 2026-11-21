@@ -1,0 +1,9 @@
+{"version": 1, "id": "AthleticCup", "baseHeight": 0.0727, "name": "Athletic Cup", "model": "gpt-oss:120b", "notes": "Athletic cup laid flat as a product‑photo spread: 0.60 m long elastic strap (0.08 m wide × 0.008 m thick) with a molded plastic shell (≈0.07 m diameter, 0.015 m thick) centred on it, inner foam padding and a thin rim for realism.", "score": 6, "parts": [
+  {"name":"StrapBase","shape":"cube","pos":[0.0,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LoopLeft","shape":"cylinder","pos":[-0.285,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LoopRight","shape":"cylinder","pos":[0.285,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CupShell","shape":"cylinder","pos":[0.0,0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"CupRim","shape":"cylinder","pos":[0.0,0.0102,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.002,0.072],"color":[0.4,0.35,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"FoamPadding","shape":"cylinder","pos":[0.0,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.065,0.008,0.065],"color":[0.85,0.86,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,0.0118,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.06],"color":[0.9,0.9,0.95],"smooth":0.1,"metal":0.0}
+]}

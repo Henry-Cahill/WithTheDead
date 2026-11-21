@@ -1,0 +1,10 @@
+{"version": 1, "id": "CannedPeachesOpen", "baseHeight": 0.166, "name": "Canned Peaches Open", "model": "gpt-oss:120b", "notes": "Open canned peaches: metal can 0.20 m diameter × 0.28 m long lying on its side (X‑axis) with the lid rim open at +X. Metal body tinted gold‑brown, thin seam rings, lifted lid rim, a shallow amber liquid surface and three visible peach halves inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0065,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.28,0.2],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.1335,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.212,0.016,0.212],"color":[0.78,0.71,0.48],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.1465,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.212,0.016,0.212],"color":[0.78,0.71,0.48],"smooth":0.55,"metal":0.9},
+  {"name":"LidRim","shape":"cylinder","pos":[0.1485,0.012,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.012,0.18],"color":[0.7,0.65,0.42],"smooth":0.45,"metal":0.85},
+  {"name":"LiquidSurface","shape":"cylinder","pos":[-0.0065,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.004,0.18],"color":[0.92,0.73,0.44],"smooth":0.2,"metal":0.0},
+  {"name":"Peach1","shape":"sphere","pos":[-0.0565,0.02,0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[1.0,0.6,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"Peach2","shape":"sphere","pos":[-0.0265,0.015,-0.03],"rot":[0.0,0.0,0.0],"size":[0.07,0.09,0.07],"color":[1.0,0.6,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"Peach3","shape":"sphere","pos":[0.0235,0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[1.0,0.6,0.3],"smooth":0.3,"metal":0.0}
+]}

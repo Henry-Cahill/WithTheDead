@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClayPipeSegment", "baseHeight": 0.0817, "name": "Clay Pipe Segment", "model": "gpt-oss:120b", "notes": "Clay pipe segment ~0.15 m long × 0.04 m outer Ø, hollow (inner Ø≈0.03 m), lying on its side (axis along X). Includes closed end cap, slight mid‑bulge, rim edge, and a few surface cracks/texture strips for recognisable clay look.", "score": 7, "parts": [
+  {"name":"OuterTube","shape":"cylinder","pos":[0.0,-0.0017,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[0.0,0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.148,0.03],"color":[0.48,0.46,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"ClosedEndCap","shape":"cylinder","pos":[-0.0725,0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.005,0.04],"color":[0.58,0.56,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"RimEdgeL","shape":"cylinder","pos":[-0.075,0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.042,0.002,0.042],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"RimEdgeR","shape":"cylinder","pos":[0.075,0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.042,0.002,0.042],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"MidBulge","shape":"sphere","pos":[0.0,0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.025,0.045],"color":[0.62,0.6,0.52],"smooth":0.22,"metal":0.0},
+  {"name":"Crack1","shape":"sphere","pos":[-0.03,-0.0037,0.015],"rot":[15.0,0.0,0.0],"size":[0.012,0.004,0.002],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Crack2","shape":"sphere","pos":[0.04,-0.0027,-0.012],"rot":[-10.0,5.0,0.0],"size":[0.009,0.003,0.002],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"TextureStrip1","shape":"cube","pos":[-0.02,-0.0007,0.018],"rot":[0.0,0.0,5.0],"size":[0.04,0.002,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"TextureStrip2","shape":"cube","pos":[0.025,-0.0007,-0.02],"rot":[0.0,0.0,-7.0],"size":[0.045,0.002,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

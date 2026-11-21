@@ -1,0 +1,15 @@
+{"version": 1, "id": "Banjo", "baseHeight": 0.185, "name": "Banjo", "model": "gpt-oss:120b", "notes": "Banjo melee weapon ~0.8 m long, lying on its side (X‑axis). Wood neck and body with metal rim & tuning pegs; circular drum head shown at business end.", "score": 6, "parts": [
+  {"name":"BodyShell","shape":"cylinder","pos":[0.2575,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.1,0.25],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.2575,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.12,0.27],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"HeadDisc","shape":"cylinder","pos":[0.2825,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.25,0.02,0.25],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"Neck","shape":"cube","pos":[-0.1175,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Fretboard","shape":"cube","pos":[-0.1175,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.005,0.04],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"PegL1","shape":"cylinder","pos":[-0.3675,-0.01,-0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.6,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"PegL2","shape":"cylinder","pos":[-0.3675,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.6,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"PegR1","shape":"cylinder","pos":[-0.3675,-0.01,0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.6,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"PegR2","shape":"cylinder","pos":[-0.3675,-0.01,0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.6,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"StringL","shape":"cylinder","pos":[-0.1175,-0.02,-0.01],"rot":[0.0,0.0,90.0],"size":[0.005,0.55,0.005],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"StringM","shape":"cylinder","pos":[-0.1175,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.005,0.55,0.005],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"StringR","shape":"cylinder","pos":[-0.1175,-0.02,0.01],"rot":[0.0,0.0,90.0],"size":[0.005,0.55,0.005],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"Bridge","shape":"cube","pos":[0.2575,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0}
+]}

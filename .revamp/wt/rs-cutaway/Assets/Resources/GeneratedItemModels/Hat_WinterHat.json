@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_WinterHat", "baseHeight": 0.17, "name": "Hat Winter Hat", "model": "gpt-oss:120b", "notes": "Flat winter hat laid out flat: 0.25 m brim diameter, 0.14 m tall crown (0.20 m dome), soft pom‑pom on top, thin seam band and a small tag. Fabric tint 0.55 R 0.5 G 0.6 B.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[-0.0063,-0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[-0.0063,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSeam","shape":"cylinder","pos":[-0.0063,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.005,0.21],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PomPomBase","shape":"sphere","pos":[-0.0063,0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Fuzz1","shape":"sphere","pos":[0.0137,0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Fuzz2","shape":"sphere","pos":[-0.0263,0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Fuzz3","shape":"sphere","pos":[-0.0063,0.09,0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.1237,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

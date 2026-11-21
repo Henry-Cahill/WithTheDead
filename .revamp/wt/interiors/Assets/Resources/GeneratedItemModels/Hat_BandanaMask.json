@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_BandanaMask", "baseHeight": 0.0725, "name": "Hat Bandana Mask", "model": "gpt-oss:120b", "notes": "Flat hat‑bandana‑mask laid out as a product photo. Main cloth panel 0.28 m wide × 0.18 m deep × 2.5 cm thick, front mask flap extending forward, side tie strips, dark eye cut‑outs and thin seam/ brim edges for detail.", "score": 6, "parts": [
+  {"name":"BasePanel","shape":"cube","pos":[0.0,0.0,-0.038],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"MaskFlap","shape":"cube","pos":[0.0,0.0,0.092],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieStripL","shape":"cube","pos":[-0.07,0.0,0.012],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieStripR","shape":"cube","pos":[0.07,0.0,0.012],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EyeHoleL","shape":"sphere","pos":[-0.04,0.0045,0.082],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.02],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeHoleR","shape":"sphere","pos":[0.04,0.0045,0.082],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.02],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,0.0015,0.052],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.002],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSideL","shape":"cube","pos":[-0.14,0.0,-0.038],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.18],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSideR","shape":"cube","pos":[0.14,0.0,-0.038],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.18],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeFront","shape":"cube","pos":[0.0,0.0015,0.052],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.008],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeBack","shape":"cube","pos":[0.0,0.0015,-0.128],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.008],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeLeft","shape":"cube","pos":[-0.14,0.0015,-0.038],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeRight","shape":"cube","pos":[0.14,0.0015,-0.038],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

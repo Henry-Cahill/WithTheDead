@@ -1,0 +1,8 @@
+{"version": 1, "id": "StewBowl", "baseHeight": 0.1415, "name": "Stew Bowl", "model": "gpt-oss:120b", "notes": "Upright canned stew 0.12 m diameter × 0.15 m tall: steel body with thin lid, paper label around the side, and a visible stew interior (tinted beige).", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.12],"color":[0.82,0.83,0.86],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0775,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.122],"color":[0.78,0.79,0.82],"smooth":0.45,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.138,0.124],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Stew","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.136,0.108],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.0695,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.124],"color":[0.78,0.79,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.0775,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.124],"color":[0.78,0.79,0.82],"smooth":0.55,"metal":1.0}
+]}

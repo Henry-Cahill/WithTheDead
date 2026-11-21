@@ -1,0 +1,12 @@
+{"version": 1, "id": "SharpBone_Long", "baseHeight": 0.0825, "name": "Sharp Bone Long", "model": "gpt-oss:120b", "notes": "Sharp Bone Long – 0.80 m total length lying on its side (X‑axis). Thin bone blade (0.25 m) with pointed tip, small guard, and a wooden‑capped handle (0.55 m). 10 parts give silhouette plus edge/handle detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.125,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.55,0.04],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.2,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.2,0.2,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.375,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cylinder","pos":[0.14,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.275,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.06],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.275,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.003,0.06],"color":[0.45,0.45,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.385,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"TipRidge","shape":"cube","pos":[0.385,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.06],"color":[0.45,0.45,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BladeRibL","shape":"cube","pos":[0.15,-0.0075,0.03],"rot":[0.0,0.0,0.0],"size":[0.1,0.004,0.008],"color":[0.45,0.45,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BladeRibR","shape":"cube","pos":[0.15,-0.0075,-0.03],"rot":[0.0,0.0,0.0],"size":[0.1,0.004,0.008],"color":[0.45,0.45,0.48],"smooth":0.05,"metal":0.0}
+]}

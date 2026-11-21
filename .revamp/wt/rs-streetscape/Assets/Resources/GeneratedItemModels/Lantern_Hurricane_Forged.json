@@ -1,0 +1,13 @@
+{"version": 1, "id": "Lantern_Hurricane_Forged", "baseHeight": 0.195, "name": "Lantern Hurricane Forged", "model": "gpt-oss:120b", "notes": "Hurricane‑forged lantern about 0.35 m long × 0.25 m wide (diameter). Metal forged body with dark‑tin tint, thin metal rims at each end, four glass panes around the sides, a small front latch and a short curved handle on the top. Lying on its side (axis along X) so the cylinder rests on the floor.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0075,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.25,0.35,0.25],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RimFront","shape":"cylinder","pos":[0.1675,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"RimBack","shape":"cylinder","pos":[-0.1825,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"GlassFront","shape":"cube","pos":[-0.0075,0.0,0.13],"rot":[0.0,0.0,0.0],"size":[0.3,0.24,0.012],"color":[0.7,0.85,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"GlassBack","shape":"cube","pos":[-0.0075,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.3,0.24,0.012],"color":[0.7,0.85,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"GlassTop","shape":"cube","pos":[-0.0075,0.12,0.0],"rot":[90.0,0.0,0.0],"size":[0.3,0.24,0.012],"color":[0.7,0.85,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"GlassBottom","shape":"cube","pos":[-0.0075,-0.12,0.0],"rot":[90.0,0.0,0.0],"size":[0.3,0.24,0.012],"color":[0.7,0.85,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.1725,0.04,0.0],"rot":[0.0,90.0,0.0],"size":[0.04,0.08,0.04],"color":[0.58,0.56,0.48],"smooth":0.35,"metal":1.0},
+  {"name":"Latch","shape":"cube","pos":[0.1125,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.008],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0},
+  {"name":"BasePlate","shape":"cylinder","pos":[-0.1825,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.015,0.22],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"TopPlate","shape":"cylinder","pos":[0.1675,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.015,0.22],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0}
+]}

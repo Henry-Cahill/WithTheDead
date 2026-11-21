@@ -1,0 +1,15 @@
+{"version": 1, "id": "FishFingers", "baseHeight": 0.0985, "name": "Fish Fingers", "model": "gpt-oss:120b", "notes": "Frozen fish fingers in a rectangular cardboard box lying on its side (long axis X): outer brownish box ~0.26 m × 0.12 m × 0.07 m, thin printed label on the front, inner white plastic tray holding eight finger‑shaped pieces (~0.06 m × 0.02 m × 0.015 m) and a clear film cover.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0035,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.26,0.07,0.12],"color":[0.58,0.48,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.0065,0.0589],"rot":[0.0,0.0,0.0],"size":[0.22,0.06,0.002],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.0065,0.0589],"rot":[0.0,0.0,0.0],"size":[0.224,0.064,0.0025],"color":[0.45,0.38,0.28],"smooth":0.1,"metal":0.0},
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.0305,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.24,0.016,0.1],"color":[0.92,0.94,0.96],"smooth":0.4,"metal":0.0},
+  {"name":"WrapperTop","shape":"cube","pos":[0.0,0.0305,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.1],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"FishFinger1","shape":"cube","pos":[-0.09,-0.015,-0.0251],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FishFinger2","shape":"cube","pos":[-0.03,-0.015,-0.0251],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FishFinger3","shape":"cube","pos":[0.03,-0.015,-0.0251],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FishFinger4","shape":"cube","pos":[0.09,-0.015,-0.0251],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FishFinger5","shape":"cube","pos":[-0.09,-0.015,0.0249],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FishFinger6","shape":"cube","pos":[-0.03,-0.015,0.0249],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FishFinger7","shape":"cube","pos":[0.03,-0.015,0.0249],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FishFinger8","shape":"cube","pos":[0.09,-0.015,0.0249],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0}
+]}

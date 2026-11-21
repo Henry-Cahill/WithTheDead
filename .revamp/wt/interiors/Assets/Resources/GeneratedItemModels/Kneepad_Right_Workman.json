@@ -1,0 +1,8 @@
+{"version": 1, "id": "Kneepad_Right_Workman", "baseHeight": 0.084, "name": "Kneepad Right Workman", "model": "gpt-oss:120b", "notes": "Right‑hand workman kneepad ~0.18 m wide × 0.12 m long × 0.04 m thick: curved padded base (fabric tint), thin darker edge rim, a metal buckle strap and stitched detail.", "score": 6, "parts": [
+  {"name":"PadBase","shape":"sphere","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.005,0.122],"color":[0.42,0.4,0.34],"smooth":0.1,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[0.06,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.12],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.09,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.12],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.09,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.12],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

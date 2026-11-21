@@ -1,0 +1,11 @@
+{"version": 1, "id": "CannedBolognese_Box", "baseHeight": 0.1405, "name": "Canned Bolognese Box", "model": "gpt-oss:120b", "notes": "Rectangular canned Bolognese box ~0.12 m × 0.08 m × 0.15 m tall, lying on its side (bottom at y=0). Main parts: thin metal shell, pull‑tab lid, front label with trim, and the reddish sauce interior.", "score": 7, "parts": [
+  {"name":"Shell","shape":"cube","pos":[0.0,-0.0055,-0.004],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.08],"color":[0.75,0.68,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"LidPlate","shape":"cube","pos":[0.0,0.0665,-0.004],"rot":[0.0,0.0,0.0],"size":[0.122,0.006,0.082],"color":[0.68,0.6,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"PullTab","shape":"cylinder","pos":[0.0,0.0745,0.036],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.02],"color":[0.68,0.6,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"Food","shape":"cube","pos":[0.0,-0.0065,-0.004],"rot":[0.0,0.0,0.0],"size":[0.112,0.14,0.072],"color":[0.62,0.22,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0055,0.0365],"rot":[0.0,0.0,0.0],"size":[0.11,0.12,0.002],"color":[0.7,0.65,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.0545,0.0365],"rot":[0.0,0.0,0.0],"size":[0.112,0.006,0.002],"color":[0.45,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.0655,0.0365],"rot":[0.0,0.0,0.0],"size":[0.112,0.006,0.002],"color":[0.45,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SideRimFront","shape":"cube","pos":[-0.058,-0.0055,0.037],"rot":[0.0,0.0,0.0],"size":[0.004,0.15,0.002],"color":[0.68,0.6,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"SideRimBack","shape":"cube","pos":[-0.058,-0.0055,-0.045],"rot":[0.0,0.0,0.0],"size":[0.004,0.15,0.002],"color":[0.68,0.6,0.38],"smooth":0.5,"metal":1.0}
+]}

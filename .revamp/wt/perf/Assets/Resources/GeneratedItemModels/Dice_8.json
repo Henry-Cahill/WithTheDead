@@ -1,0 +1,11 @@
+{"version": 1, "id": "Dice_8", "baseHeight": 0.0765, "name": "Dice 8", "model": "gpt-oss:120b", "notes": "Small octahedral D8 die about 2.5 cm across, lying on the floor (flat side down). Main body is a muted‑plastic cube for silhouette clarity; eight black pips are tiny spheres placed where the faces would be.", "score": 8, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Pip1","shape":"sphere","pos":[0.008,0.0135,0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Pip2","shape":"sphere","pos":[-0.008,0.0135,-0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Pip3","shape":"sphere","pos":[0.008,0.0135,-0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Pip4","shape":"sphere","pos":[-0.008,0.0135,0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Pip5","shape":"sphere","pos":[0.008,-0.0135,0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Pip6","shape":"sphere","pos":[-0.008,-0.0135,-0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Pip7","shape":"sphere","pos":[0.008,-0.0135,-0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Pip8","shape":"sphere","pos":[-0.008,-0.0135,0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0}
+]}

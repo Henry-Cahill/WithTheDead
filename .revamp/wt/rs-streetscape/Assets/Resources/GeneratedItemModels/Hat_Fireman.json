@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_Fireman", "baseHeight": 0.22, "name": "Hat Fireman", "model": "gpt-oss:120b", "notes": "Fireman hat laid flat as a product‑photo: wide brim (28 cm dia), cylindrical crown (20 cm dia, 12 cm tall) topped by a rounded dome, dark leather colour (tint 0.55 0.5 0.6). Includes inner lining, a decorative band, front badge with metal label and two side vents.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.15,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.1325,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.2],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.18],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.18,0.18],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BadgeBase","shape":"cube","pos":[0.0,-0.06,0.0985],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.003],"color":[0.8,0.7,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"BadgeLabel","shape":"cube","pos":[0.0,-0.058,0.1005],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.002],"color":[0.8,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"VentL","shape":"cylinder","pos":[-0.07,-0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"VentR","shape":"cylinder","pos":[0.07,-0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0}
+]}

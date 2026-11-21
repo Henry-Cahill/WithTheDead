@@ -1,0 +1,11 @@
+{"version": 1, "id": "FurTuft_Black", "baseHeight": 0.1688, "name": "Fur Tuft Black", "model": "gpt-oss:120b", "notes": "Small clump of black fur about 0.12 m across, lying on the floor. Central dense core (sphere) with several protruding tufts modelled as ellipsoids that overlap the core to give a fluffy silhouette.", "score": 7, "parts": [
+  {"name":"Core","shape":"sphere","pos":[0.0,-0.0488,0.0018],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffA","shape":"sphere","pos":[0.03,0.0513,0.0218],"rot":[0.0,0.0,0.0],"size":[0.06,0.09,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffB","shape":"sphere","pos":[-0.025,0.0462,-0.0282],"rot":[0.0,0.0,0.0],"size":[0.055,0.08,0.055],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffC","shape":"sphere","pos":[0.02,0.0563,-0.0333],"rot":[0.0,0.0,0.0],"size":[0.05,0.07,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffD","shape":"sphere","pos":[-0.03,0.0613,0.0268],"rot":[0.0,0.0,0.0],"size":[0.058,0.085,0.058],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffE","shape":"sphere","pos":[0.0,0.0712,0.0418],"rot":[0.0,0.0,0.0],"size":[0.045,0.075,0.045],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffF","shape":"sphere","pos":[0.025,0.0432,-0.0382],"rot":[0.0,0.0,0.0],"size":[0.052,0.082,0.052],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RootStub","shape":"cylinder","pos":[0.0,-0.0788,0.0018],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,-0.1077,0.0018],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.12],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

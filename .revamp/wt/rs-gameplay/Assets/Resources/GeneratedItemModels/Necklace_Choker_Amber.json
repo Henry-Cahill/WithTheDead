@@ -1,0 +1,10 @@
+{"version": 1, "id": "Necklace_Choker_Amber", "baseHeight": 0.08, "name": "Necklace Choker Amber", "model": "gpt-oss:120b", "notes": "Amber choker ~0.18 m diameter, 1 cm thick flat disc lying on its side, with a tiny metal clasp at the edge and a small pendant drooping from the front. Four decorative amber beads sit around the rim for visual interest.", "score": 6, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.005,0.01],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.18],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"ClaspBase","shape":"cube","pos":[0.07,0.0075,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.005],"color":[0.32,0.28,0.22],"smooth":0.55,"metal":1.0},
+  {"name":"ClaspPlate","shape":"cube","pos":[0.07,0.0155,0.01],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.002],"color":[0.28,0.24,0.18],"smooth":0.55,"metal":1.0},
+  {"name":"Pendant","shape":"sphere","pos":[0.0,-0.005,-0.095],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.78,0.71,0.44],"smooth":0.35,"metal":0.0},
+  {"name":"Bead1","shape":"sphere","pos":[0.09,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.62,0.6,0.52],"smooth":0.35,"metal":0.0},
+  {"name":"Bead2","shape":"sphere","pos":[-0.09,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.62,0.6,0.52],"smooth":0.35,"metal":0.0},
+  {"name":"Bead3","shape":"sphere","pos":[0.0,0.01,0.1],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.62,0.6,0.52],"smooth":0.35,"metal":0.0},
+  {"name":"Bead4","shape":"sphere","pos":[0.0,0.01,-0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.62,0.6,0.52],"smooth":0.35,"metal":0.0}
+]}

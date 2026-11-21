@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoes_RagWrap", "baseHeight": 0.0855, "name": "Shoes Rag Wrap", "model": "gpt-oss:120b", "notes": "Flat pair of rag‑wrap shoes ~0.5 m total width. Each foot is 0.25 m long × 0.12 m wide × 0.03 m thick sole with a 0.015 m cloth upper, thin stitching line on top and small fabric straps at the toe and heel that sit flush against the shoe body. The right‑hand shoe parts have been moved so they touch the left shoe (no gap between them).", "score": 6, "parts": [
+  {"name":"LeftSole","shape":"cube","pos":[-0.125,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.12],"color":[0.385,0.35,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"RightSole","shape":"cube","pos":[0.125,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.12],"color":[0.385,0.35,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"LeftUpper","shape":"cube","pos":[-0.125,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightUpper","shape":"cube","pos":[0.125,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSeam","shape":"cube","pos":[-0.125,0.0215,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.12],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightSeam","shape":"cube","pos":[0.125,0.0215,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.12],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftToeStrap","shape":"cylinder","pos":[-0.125,0.0215,0.05],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightToeStrap","shape":"cylinder","pos":[0.125,0.0215,0.05],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftHeelLoop","shape":"cylinder","pos":[-0.125,0.0215,-0.05],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightHeelLoop","shape":"cylinder","pos":[0.125,0.0215,-0.05],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

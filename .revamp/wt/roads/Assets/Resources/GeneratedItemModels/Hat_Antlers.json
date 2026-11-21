@@ -1,0 +1,16 @@
+{"version": 1, "id": "Hat_Antlers", "baseHeight": 0.0837, "name": "Hat Antlers", "model": "gpt-oss:120b", "notes": "Flat‑lay hat with a 26 cm brim and 18 cm square crown, plus a pair of antlers spread out left/right. Total footprint ≈ 48 cm wide (including antlers). Fabric colour tint 0.55,0.5,0.6, cloth smoothness.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0163,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cube","pos":[0.0,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"AntlerBaseL","shape":"cylinder","pos":[-0.105,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"AntlerBaseR","shape":"cylinder","pos":[0.105,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StemL","shape":"cylinder","pos":[-0.18,0.0037,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StemR","shape":"cylinder","pos":[0.18,0.0037,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BranchLPos","shape":"cylinder","pos":[-0.24,0.0037,0.035],"rot":[90.0,0.0,0.0],"size":[0.01,0.07,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BranchLNeg","shape":"cylinder","pos":[-0.24,0.0037,-0.035],"rot":[90.0,0.0,-180.0],"size":[0.01,0.07,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TipLPos","shape":"sphere","pos":[-0.24,0.0037,0.07],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TipLNeg","shape":"sphere","pos":[-0.24,0.0037,-0.07],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BranchRPos","shape":"cylinder","pos":[0.24,0.0037,0.035],"rot":[90.0,0.0,0.0],"size":[0.01,0.07,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BranchRNeg","shape":"cylinder","pos":[0.24,0.0037,-0.035],"rot":[90.0,0.0,-180.0],"size":[0.01,0.07,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TipRPos","shape":"sphere","pos":[0.24,0.0037,0.07],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TipRNeg","shape":"sphere","pos":[0.24,0.0037,-0.07],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

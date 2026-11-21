@@ -1,0 +1,14 @@
+{"version": 1, "id": "Chocolate_GalacticDairy", "baseHeight": 0.0695, "name": "Chocolate Galactic Dairy", "model": "gpt-oss:120b", "notes": "Small rectangular chocolate bar with a galaxy‑swirl coating, wrapped in shiny foil and boxed in thin cardboard. Overall size ≈ 0.12 m × 0.06 m × 0.018 m (W × D × H).", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.014,0.05],"color":[0.6,0.55,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"FoilWrap","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.105,0.018,0.055],"color":[0.9,0.88,0.85],"smooth":0.4,"metal":0.2},
+  {"name":"ChocolateCore","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.012,0.045],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.09],"color":[0.55,0.45,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cylinder","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.092],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Swirl1","shape":"sphere","pos":[-0.025,0.0055,0.01],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.4,0.2,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Swirl2","shape":"sphere","pos":[0.015,0.005,-0.018],"rot":[0.0,0.0,0.0],"size":[0.009,0.006,0.009],"color":[0.3,0.6,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Swirl3","shape":"sphere","pos":[0.03,0.006,0.02],"rot":[0.0,0.0,0.0],"size":[0.011,0.007,0.011],"color":[0.8,0.4,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeSeamFront","shape":"cylinder","pos":[0.0,0.0055,0.0275],"rot":[90.0,0.0,0.0],"size":[0.002,0.105,0.002],"color":[0.55,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamBack","shape":"cylinder","pos":[0.0,0.0055,-0.0275],"rot":[90.0,0.0,0.0],"size":[0.002,0.105,0.002],"color":[0.55,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamLeft","shape":"cylinder","pos":[-0.0525,0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.055,0.002],"color":[0.55,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamRight","shape":"cylinder","pos":[0.0525,0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.055,0.002],"color":[0.55,0.5,0.35],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "SleepingBag_BluePlaid_Packed", "baseHeight": 0.18, "name": "Sleeping Bag Blue Plaid Packed", "model": "gpt-oss:120b", "notes": "Packed sleeping bag rolled about 0.75 m long × 0.24 m wide (diameter), blue‑grey plaid tint. Main outer fabric cylinder, inner lining, metal zipper strip, two strap loops and a few contrasting plaid stripes.", "score": 6, "parts": [
+  {"name":"OuterFabric","shape":"cylinder","pos":[0.1625,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.24,0.75,0.24],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.1625,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.74,0.22],"color":[0.7,0.75,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"ZipperStrip","shape":"cube","pos":[-0.1875,0.01,0.115],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.02],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":0.9},
+  {"name":"StrapLoopL","shape":"cube","pos":[-0.1675,0.01,-0.115],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":0.9},
+  {"name":"StrapLoopR","shape":"cube","pos":[-0.1675,0.01,0.115],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":0.9},
+  {"name":"StripeDark1","shape":"cube","pos":[0.0125,0.0,0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.024,0.01],"color":[0.2,0.25,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StripeLight1","shape":"cube","pos":[0.0125,0.0,-0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.024,0.01],"color":[0.8,0.85,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"StripeDark2","shape":"cube","pos":[0.3125,0.0,-0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.024,0.01],"color":[0.2,0.25,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StripeLight2","shape":"cube","pos":[0.3125,0.0,0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.024,0.01],"color":[0.8,0.85,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.1875,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.3,0.33,0.4],"smooth":0.05,"metal":0.0}
+]}

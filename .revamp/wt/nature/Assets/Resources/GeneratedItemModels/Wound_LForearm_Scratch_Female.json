@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wound_LForearm_Scratch_Female", "baseHeight": 0.0702, "name": "Wound LForearm Scratch Female", "model": "gpt-oss:120b", "notes": "Irregular skin‑scrape patch about 12 cm × 8 cm × 1 cm thick, lying flat on the floor. Main colour is a muted flesh tint (0.6,0.58,0.5) with a few dark red blood splatters and ragged torn edges.", "score": 6, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[-0.0045,-0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTopLeft","shape":"cube","pos":[-0.0595,-0.0038,0.035],"rot":[0.0,0.0,15.0],"size":[0.02,0.008,0.01],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTopRight","shape":"cube","pos":[0.0505,-0.0038,0.035],"rot":[0.0,0.0,-12.0],"size":[0.018,0.008,0.01],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottomLeft","shape":"cube","pos":[-0.0625,-0.0038,-0.032],"rot":[0.0,0.0,8.0],"size":[0.022,0.008,0.01],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottomRight","shape":"cube","pos":[0.0555,-0.0038,-0.03],"rot":[0.0,0.0,-10.0],"size":[0.019,0.008,0.01],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.0245,0.0012,0.015],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.03],"color":[0.75,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.0205,0.0012,-0.02],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.78,0.14,0.14],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.0355,0.0012,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.72,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"TornFlapL","shape":"cube","pos":[-0.0645,-0.0008,-0.01],"rot":[0.0,0.0,25.0],"size":[0.015,0.006,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TornFlapR","shape":"cube","pos":[0.0655,-0.0008,0.01],"rot":[0.0,0.0,-22.0],"size":[0.016,0.006,0.028],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

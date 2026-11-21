@@ -1,0 +1,12 @@
+{"version": 1, "id": "Gorget_Denim", "baseHeight": 0.09, "name": "Gorget Denim", "model": "gpt-oss:120b", "notes": "Flat denim sheet 0.70 m × 0.60 m, 2 cm thick with a folded corner, rolled edges and faint stitching; includes a small off‑white tag as you’d find the fabric lying on the ground.", "score": 6, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCorner","shape":"cube","pos":[0.28,0.01,0.24],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollTop","shape":"cylinder","pos":[0.0,0.005,0.295],"rot":[0.0,0.0,90.0],"size":[0.01,0.7,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollBottom","shape":"cylinder","pos":[0.0,0.005,-0.295],"rot":[0.0,0.0,90.0],"size":[0.01,0.7,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollLeft","shape":"cylinder","pos":[-0.345,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.6,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollRight","shape":"cylinder","pos":[0.345,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.6,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineH","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.68,0.004],"color":[0.35,0.33,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineV","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.58,0.004],"color":[0.35,0.33,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.25,-0.005,-0.2],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.04],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"TagString","shape":"cylinder","pos":[-0.25,-0.015,-0.2],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.002],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0}
+]}

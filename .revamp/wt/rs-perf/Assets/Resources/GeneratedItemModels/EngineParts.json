@@ -1,0 +1,13 @@
+{"version": 1, "id": "EngineParts", "baseHeight": 0.08, "name": "Engine Parts", "model": "gpt-oss:120b", "notes": "Loose engine parts about 0.30 m long × 0.20 m wide × 0.05 m thick: a small gear, piston head disc, pipe segment, four bolts with washers and a nut, a valve‑cover fragment, and a scrap metal block.", "score": 7, "parts": [
+  {"name":"Gear","shape":"cylinder","pos":[-0.0725,-0.0125,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"PistonHead","shape":"cylinder","pos":[0.0575,-0.01,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"PipeSegment","shape":"cylinder","pos":[-0.1125,-0.0,0.0575],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Bolt1","shape":"cylinder","pos":[-0.0225,-0.014,-0.0825],"rot":[0.0,0.0,90.0],"size":[0.012,0.05,0.012],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Bolt2","shape":"cylinder","pos":[-0.0175,-0.014,-0.0725],"rot":[0.0,0.0,90.0],"size":[0.012,0.05,0.012],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Bolt3","shape":"cylinder","pos":[-0.0125,-0.014,-0.0925],"rot":[0.0,0.0,90.0],"size":[0.012,0.05,0.012],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Bolt4","shape":"cylinder","pos":[-0.0075,-0.014,-0.0775],"rot":[0.0,0.0,90.0],"size":[0.012,0.05,0.012],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Washer","shape":"cylinder","pos":[-0.0225,-0.018,-0.0875],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Nut","shape":"sphere","pos":[-0.0325,-0.016,-0.0825],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ValveCoverFragment","shape":"cube","pos":[0.1275,-0.005,0.0975],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.06],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ScrapBlock","shape":"cube","pos":[-0.0425,-0.0,-0.1025],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.05],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0}
+]}

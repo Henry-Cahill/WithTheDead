@@ -1,0 +1,14 @@
+{"version": 1, "id": "JacketLong_HolsteinCalfHide", "baseHeight": 0.0862, "name": "Jacket Long Holstein Calf Hide", "model": "gpt-oss:120b", "notes": "Long leather jacket ~0.90 m long × 0.48 m wide, 2‑3 cm thick: torso panel, two angled sleeves, collar, front lapels, side pockets, cuff bands and a bottom hem. Main colour is calf‑hide brown (0.6,0.58,0.5) with darker stitching trim.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.195,-0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.025,0.48],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.195,-0.0153,-0.34],"rot":[0.0,20.0,0.0],"size":[0.7,0.022,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.195,-0.0153,0.34],"rot":[0.0,-20.0,0.0],"size":[0.7,0.022,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.635,0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LapelLeft","shape":"cube","pos":[0.395,-0.0083,0.07],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.02],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"LapelRight","shape":"cube","pos":[0.395,-0.0083,-0.07],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.02],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.195,-0.0083,0.12],"rot":[0.0,0.0,0.0],"size":[0.15,0.012,0.06],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.195,-0.0083,-0.12],"rot":[0.0,0.0,0.0],"size":[0.15,0.012,0.06],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.055,-0.0153,-0.34],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.04],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.055,-0.0153,0.34],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.04],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.245,-0.0098,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.008,0.48],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"StitchTrim","shape":"cube","pos":[0.195,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.88,0.002,0.46],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0}
+]}

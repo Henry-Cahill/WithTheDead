@@ -1,0 +1,12 @@
+{"version": 1, "id": "LongJohns_Crafted_Burlap", "baseHeight": 0.075, "name": "Long Johns Crafted Burlap", "model": "gpt-oss:120b", "notes": "Flat Long Johns (burlap) laid out flat like a product photo – overall size ≈ 0.55 m wide × 1.05 m long × 0.03 m thick. Main pieces: torso panel, two leg panels, waist‑band, cuffs, collar band with neck opening and thin side‑stitch strips.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,0.0,0.2925],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.13,0.0,-0.2325],"rot":[0.0,0.0,0.0],"size":[0.24,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.13,0.0,-0.2325],"rot":[0.0,0.0,0.0],"size":[0.24,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.005,0.0675],"rot":[0.0,0.0,0.0],"size":[0.55,0.01,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.13,0.0,-0.5325],"rot":[0.0,0.0,0.0],"size":[0.24,0.01,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.13,0.0,-0.5325],"rot":[0.0,0.0,0.0],"size":[0.24,0.01,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.0,0.4925],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckOpening","shape":"cylinder","pos":[0.0,0.0,0.5025],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.2725,0.0,0.2925],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.45],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.2725,0.0,0.2925],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.45],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

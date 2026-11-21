@@ -1,0 +1,13 @@
+{"version": 1, "id": "RamenBowl", "baseHeight": 0.1075, "name": "Ramen Bowl", "model": "gpt-oss:120b", "notes": "Beige plastic ramen bowl 0.12 m diameter × 0.07 m tall with a slightly larger white‑tinted lid, orange‑brown soup and pale noodle strands inside; two short wooden chopsticks lie across the lid.", "score": 6, "parts": [
+  {"name":"BowlOuter","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.12],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Soup","shape":"cylinder","pos":[0.0,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.04,0.108],"color":[0.9,0.5,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Noodle1","shape":"sphere","pos":[-0.025,-0.0175,0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.045,0.008],"color":[0.96,0.92,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Noodle2","shape":"sphere","pos":[0.02,-0.0155,-0.018],"rot":[0.0,0.0,0.0],"size":[0.016,0.042,0.009],"color":[0.96,0.92,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Noodle3","shape":"sphere","pos":[-0.03,-0.0195,0.025],"rot":[0.0,0.0,0.0],"size":[0.017,0.04,0.007],"color":[0.96,0.92,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Noodle4","shape":"sphere","pos":[0.015,-0.0135,-0.03],"rot":[0.0,0.0,0.0],"size":[0.019,0.043,0.008],"color":[0.96,0.92,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Noodle5","shape":"sphere","pos":[-0.018,-0.0115,0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.041,0.009],"color":[0.96,0.92,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Noodle6","shape":"sphere","pos":[0.025,-0.0185,-0.022],"rot":[0.0,0.0,0.0],"size":[0.018,0.045,0.008],"color":[0.96,0.92,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.015,0.13],"color":[0.85,0.78,0.55],"smooth":0.25,"metal":0.0},
+  {"name":"ChopstickL","shape":"cylinder","pos":[-0.06,0.0425,0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.18,0.01],"color":[0.45,0.3,0.15],"smooth":0.15,"metal":0.0},
+  {"name":"ChopstickR","shape":"cylinder","pos":[0.06,0.0425,-0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.18,0.01],"color":[0.45,0.3,0.15],"smooth":0.15,"metal":0.0}
+]}

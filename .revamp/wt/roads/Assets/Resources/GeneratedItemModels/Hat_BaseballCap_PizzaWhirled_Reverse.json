@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_BaseballCap_PizzaWhirled_Reverse", "baseHeight": 0.1382, "name": "Hat Baseball Cap Pizza Whirled Reverse", "model": "gpt-oss:120b", "notes": "Baseball cap laid flat, 0.28 m wide × 0.06 m deep × 0.15 m tall overall: thin rectangular brim, rounded crown behind it, front‑facing pizza logo (cheese disc with three pepperoni spheres) and stitched edge detail.", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cube","pos":[0.0,-0.0708,0.03],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cube","pos":[0.0,-0.0767,0.03],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.06],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSphere","shape":"sphere","pos":[0.0,0.0068,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.14,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopDisc","shape":"cube","pos":[0.0,0.0767,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.003,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LogoCheese","shape":"cylinder","pos":[0.0,0.0117,0.1],"rot":[90.0,0.0,0.0],"size":[0.08,0.005,0.08],"color":[0.9,0.85,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"Pepperoni1","shape":"sphere","pos":[-0.02,0.0218,0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"Pepperoni2","shape":"sphere","pos":[0.02,0.0218,0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"Pepperoni3","shape":"sphere","pos":[0.0,0.0368,0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.2,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,-0.0633,0.06],"rot":[0.0,0.0,90.0],"size":[0.005,0.28,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,-0.0633,0.0],"rot":[0.0,0.0,90.0],"size":[0.005,0.28,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.14,-0.0633,0.03],"rot":[90.0,0.0,0.0],"size":[0.005,0.06,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.14,-0.0633,0.03],"rot":[90.0,0.0,0.0],"size":[0.005,0.06,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

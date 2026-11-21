@@ -1,0 +1,15 @@
+{"version": 1, "id": "BoxOfJars", "baseHeight": 0.18, "name": "Box Of Jars", "model": "gpt-oss:120b", "notes": "Cardboard box about 0.40 m long × 0.30 m wide × 0.20 m high lying upright on the floor; its open top shows a few glass jars (≈0.07 m diameter, 0.15 m tall) stacked inside.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,0.02,0.003],"rot":[0.0,0.0,0.0],"size":[0.4,0.2,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BoxSideLeft","shape":"cube","pos":[-0.195,0.02,0.003],"rot":[0.0,0.0,0.0],"size":[0.01,0.18,0.28],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BoxSideRight","shape":"cube","pos":[0.195,0.02,0.003],"rot":[0.0,0.0,0.0],"size":[0.01,0.18,0.28],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BoxFront","shape":"cube","pos":[0.0,0.02,0.148],"rot":[0.0,0.0,0.0],"size":[0.38,0.18,0.01],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BoxBack","shape":"cube","pos":[0.0,0.02,-0.142],"rot":[0.0,0.0,0.0],"size":[0.38,0.18,0.01],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BoxBottom","shape":"cube","pos":[0.0,-0.075,0.003],"rot":[0.0,0.0,0.0],"size":[0.38,0.01,0.28],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Jar1","shape":"cylinder","pos":[-0.12,-0.045,-0.077],"rot":[0.0,0.0,0.0],"size":[0.07,0.15,0.07],"color":[0.9,0.92,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"Jar1Lid","shape":"cylinder","pos":[-0.12,0.035,-0.077],"rot":[0.0,0.0,0.0],"size":[0.072,0.008,0.072],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Jar2","shape":"cylinder","pos":[0.05,-0.045,0.063],"rot":[0.0,0.0,0.0],"size":[0.07,0.15,0.07],"color":[0.9,0.92,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"Jar2Lid","shape":"cylinder","pos":[0.05,0.035,0.063],"rot":[0.0,0.0,0.0],"size":[0.072,0.008,0.072],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Jar3","shape":"cylinder","pos":[0.15,-0.045,-0.117],"rot":[0.0,0.0,0.0],"size":[0.07,0.13,0.07],"color":[0.9,0.92,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"Jar3Lid","shape":"cylinder","pos":[0.15,0.025,-0.117],"rot":[0.0,0.0,0.0],"size":[0.072,0.008,0.072],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"BoxTopFlap","shape":"cube","pos":[0.0,0.115,0.003],"rot":[0.0,0.0,0.0],"size":[0.38,0.01,0.28],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

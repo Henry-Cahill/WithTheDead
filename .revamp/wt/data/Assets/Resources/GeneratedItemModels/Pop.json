@@ -1,0 +1,10 @@
+{"version": 1, "id": "Pop", "baseHeight": 0.1225, "name": "Pop", "model": "gpt-oss:120b", "notes": "Upright aluminum soda‑pop can, about 0.066 m diameter × 0.12 m tall: metal body with bottom and top rims, a thin label in the product tint, dark label trim at top/bottom, and the classic pull‑tab assembly.", "score": 6, "parts": [
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.005,-0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.003,0.07],"color":[0.85,0.86,0.87],"smooth":0.55,"metal":1.0},
+  {"name":"Body","shape":"cylinder","pos":[-0.005,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.114,0.066],"color":[0.85,0.86,0.87],"smooth":0.55,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.005,0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.003,0.07],"color":[0.85,0.86,0.87],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[-0.005,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.065,0.11,0.065],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[-0.005,0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.004,0.066],"color":[0.48,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.005,-0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.004,0.066],"color":[0.48,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"TabBase","shape":"cylinder","pos":[0.02,0.0565,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.004,0.012],"color":[0.85,0.86,0.87],"smooth":0.55,"metal":1.0},
+  {"name":"TabLever","shape":"cube","pos":[0.03,0.0565,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.006],"color":[0.85,0.86,0.87],"smooth":0.55,"metal":1.0}
+]}

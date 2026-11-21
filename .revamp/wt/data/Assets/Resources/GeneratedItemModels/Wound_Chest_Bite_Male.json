@@ -1,0 +1,13 @@
+{"version": 1, "id": "Wound_Chest_Bite_Male", "baseHeight": 0.0775, "name": "Wound Chest Bite Male", "model": "gpt-oss:120b", "notes": "Flat gore patch about 0.18 m × 0.12 m, ~2 cm thick, lying on the floor. Main brown‑flesh slab with two shallow bite‑indent depressions and a few raised blood clots/torn tissue pieces for recognisable silhouette.", "score": 6, "parts": [
+  {"name":"BaseFlesh","shape":"cube","pos":[0.0,-0.0075,-0.0049],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BiteIndentL","shape":"cylinder","pos":[-0.035,-0.0095,-0.0049],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BiteIndentR","shape":"cylinder","pos":[0.035,-0.0095,-0.0049],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BloodClot1","shape":"sphere","pos":[-0.06,0.0045,-0.0249],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.71,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodClot2","shape":"sphere","pos":[0.05,0.0065,0.0251],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.71,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodClot3","shape":"sphere","pos":[0.0,0.0035,-0.0449],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.71,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"TissueRag","shape":"cube","pos":[0.04,-0.0025,0.0401],"rot":[0.0,15.0,0.0],"size":[0.08,0.005,0.03],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SkinFlap","shape":"cube","pos":[-0.06,0.0005,-0.0399],"rot":[0.0,-10.0,0.0],"size":[0.06,0.008,0.02],"color":[0.58,0.56,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"DarkSpot","shape":"sphere","pos":[-0.035,-0.0055,-0.0049],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.05,0.05],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeStripL","shape":"cube","pos":[-0.09,-0.0065,-0.0049],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.12],"color":[0.48,0.46,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeStripR","shape":"cube","pos":[0.09,-0.0065,-0.0049],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.12],"color":[0.48,0.46,0.42],"smooth":0.05,"metal":0.0}
+]}

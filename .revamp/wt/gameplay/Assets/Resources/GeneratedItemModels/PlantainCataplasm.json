@@ -1,0 +1,14 @@
+{"version": 1, "id": "PlantainCataplasm", "baseHeight": 0.08, "name": "Plantain Cataplasm", "model": "gpt-oss:120b", "notes": "Flat plantain poultice about 0.15 m long × 0.10 m wide × 0.02 m thick, with slightly folded edges and a natural‑fiber tie around the centre. Main colour is muted green (tint 0.6,0.58,0.5).", "score": 6, "parts": [
+  {"name":"BaseMass","shape":"cube","pos":[0.0036,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.018,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldEdgeL","shape":"cube","pos":[-0.0564,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.09],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FoldEdgeR","shape":"cube","pos":[0.0636,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.09],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FoldTopL","shape":"cube","pos":[-0.0364,0.004,0.045],"rot":[0.0,0.0,15.0],"size":[0.08,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FoldTopR","shape":"cube","pos":[-0.0364,0.004,-0.045],"rot":[0.0,0.0,-15.0],"size":[0.08,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Tie","shape":"cylinder","pos":[0.0036,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.012,0.04],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"TieLoopL","shape":"cylinder","pos":[-0.0264,0.006,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"TieLoopR","shape":"cylinder","pos":[0.0336,0.006,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LeafVein1","shape":"cube","pos":[-0.0314,0.0075,0.02],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.002],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LeafVein2","shape":"cube","pos":[-0.0314,0.0075,-0.02],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.002],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimL","shape":"cylinder","pos":[-0.0664,-0.0015,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimR","shape":"cylinder","pos":[0.0736,-0.0015,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0}
+]}

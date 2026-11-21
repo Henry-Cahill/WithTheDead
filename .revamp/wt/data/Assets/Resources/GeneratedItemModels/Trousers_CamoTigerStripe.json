@@ -1,0 +1,19 @@
+{"version": 1, "id": "Trousers_CamoTigerStripe", "baseHeight": 0.0875, "name": "Trousers Camo Tiger Stripe", "model": "gpt-oss:120b", "notes": "Flat‑lay trousers (≈1 m long) spread side‑by‑side. Two leg panels (0.22 m wide each) are separated by a thin seam, a waistband bridges the tops, cuffs finish the bottoms, front pocket on the right leg and four belt‑loop cylinders hint at a waist. Three dark tiger‑stripe bands run down each leg for camouflage.", "score": 4, "parts": [
+  {"name":"LegL","shape":"cube","pos":[0.0,-0.0125,-0.12],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.0,-0.0125,0.12],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Seam","shape":"cube","pos":[0.0,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.004,0.008],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.38,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.46],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.46,0.015,-0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.46,0.015,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFront","shape":"cube","pos":[0.25,0.0125,0.18],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.07],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[0.38,0.015,-0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[0.38,0.015,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.46,0.015,-0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[-0.46,0.015,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StripeL1","shape":"cube","pos":[0.0,-0.0095,-0.19],"rot":[0.0,0.0,0.0],"size":[1.0,0.005,0.015],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StripeL2","shape":"cube","pos":[0.0,-0.0095,-0.12],"rot":[0.0,0.0,0.0],"size":[1.0,0.005,0.015],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StripeL3","shape":"cube","pos":[0.0,-0.0095,-0.05],"rot":[0.0,0.0,0.0],"size":[1.0,0.005,0.015],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StripeR1","shape":"cube","pos":[0.0,-0.0095,0.05],"rot":[0.0,0.0,0.0],"size":[1.0,0.005,0.015],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StripeR2","shape":"cube","pos":[0.0,-0.0095,0.12],"rot":[0.0,0.0,0.0],"size":[1.0,0.005,0.015],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StripeR3","shape":"cube","pos":[0.0,-0.0095,0.19],"rot":[0.0,0.0,0.0],"size":[1.0,0.005,0.015],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0}
+]}

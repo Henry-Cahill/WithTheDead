@@ -1,0 +1,11 @@
+{"version": 1, "id": "SutureNeedleBox", "baseHeight": 0.075, "name": "Suture Needle Box", "model": "gpt-oss:120b", "notes": "Small suture‑needle box ~15 cm × 8 cm × 3 cm, lying on its side (long axis along X). Main plastic case with hinged metal lid, internal tray holding four steel needles and a thin white label on the lid.", "score": 6, "parts": [
+  {"name":"CaseBody","shape":"cube","pos":[0.0,0.0,-0.001],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.08],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.004,-0.001],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.082],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"InnerTray","shape":"cube","pos":[0.0,-0.0125,-0.001],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.06],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Needle1","shape":"cylinder","pos":[-0.03,-0.0087,-0.016],"rot":[0.0,0.0,90.0],"size":[0.0025,0.07,0.0025],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Needle2","shape":"cylinder","pos":[-0.01,-0.0087,-0.016],"rot":[0.0,0.0,90.0],"size":[0.0025,0.07,0.0025],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Needle3","shape":"cylinder","pos":[0.01,-0.0087,-0.016],"rot":[0.0,0.0,90.0],"size":[0.0025,0.07,0.0025],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Needle4","shape":"cylinder","pos":[0.03,-0.0087,-0.016],"rot":[0.0,0.0,90.0],"size":[0.0025,0.07,0.0025],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0085,-0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.02],"color":[0.9,0.9,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"Hinge","shape":"cylinder","pos":[-0.07,0.007,0.039],"rot":[0.0,0.0,0.0],"size":[0.006,0.015,0.006],"color":[0.6,0.6,0.6],"smooth":0.3,"metal":0.8}
+]}

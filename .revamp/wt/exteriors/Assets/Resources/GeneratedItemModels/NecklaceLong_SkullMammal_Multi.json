@@ -1,0 +1,14 @@
+{"version": 1, "id": "NecklaceLong_SkullMammal_Multi", "baseHeight": 0.0988, "name": "Necklace Long Skull Mammal Multi", "model": "gpt-oss:120b", "notes": "Long necklace about 0.45 m laid flat on the floor: thin metal chain (cylinder) with alternating link cylinders for silhouette, a small clasp at one end, and three mammal‑skull bone charms spaced along the chain.", "score": 7, "parts": [
+  {"name":"BaseCord","shape":"cylinder","pos":[0.0,-0.0238,-0.005],"rot":[0.0,0.0,90.0],"size":[0.015,0.45,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LinkCross1","shape":"cylinder","pos":[-0.18,-0.0238,-0.005],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LinkCross2","shape":"cylinder","pos":[-0.06,-0.0238,-0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LinkCross3","shape":"cylinder","pos":[0.06,-0.0238,-0.005],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LinkCross4","shape":"cylinder","pos":[0.18,-0.0238,-0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Clasp","shape":"cylinder","pos":[-0.225,-0.0238,-0.005],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SkullL","shape":"sphere","pos":[-0.2,0.0038,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.85,0.8,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"SkullC","shape":"sphere","pos":[0.0,0.0038,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.85,0.8,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"SkullR","shape":"sphere","pos":[0.2,0.0038,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.85,0.8,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"NoseL","shape":"sphere","pos":[-0.2,0.0088,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.78,0.73,0.68],"smooth":0.3,"metal":0.0},
+  {"name":"NoseC","shape":"sphere","pos":[0.0,0.0088,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.78,0.73,0.68],"smooth":0.3,"metal":0.0},
+  {"name":"NoseR","shape":"sphere","pos":[0.2,0.0088,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.78,0.73,0.68],"smooth":0.3,"metal":0.0}
+]}

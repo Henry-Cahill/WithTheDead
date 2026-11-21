@@ -1,0 +1,11 @@
+{"version": 1, "id": "FreshwaterDrum", "baseHeight": 0.0902, "name": "Freshwater Drum", "model": "gpt-oss:120b", "notes": "Freshwater drum packaged in a thin rectangular plastic tray (≈0.32 m L × 0.12 m W × 0.04 m H). The fish is an ellipsoidal body inside the tray, with a foil‑like label on the top lid.", "score": 6, "parts": [
+  {"name":"TrayBody","shape":"cube","pos":[0.0,0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.04,0.12],"color":[0.85,0.8,0.6],"smooth":0.35,"metal":0.0},
+  {"name":"TrayLid","shape":"cube","pos":[0.0,0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.004,0.12],"color":[0.8,0.75,0.55],"smooth":0.35,"metal":0.0},
+  {"name":"FishBody","shape":"sphere","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.06,0.1],"color":[0.78,0.6,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,0.0272,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.28],"color":[0.42,0.33,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrim","shape":"cylinder","pos":[0.0,0.0292,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.26],"color":[0.3,0.22,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"SeamFront","shape":"cylinder","pos":[-0.16,0.0217,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.32,0.004],"color":[0.7,0.65,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"SeamBack","shape":"cylinder","pos":[0.16,0.0217,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.32,0.004],"color":[0.7,0.65,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"SeamLeft","shape":"cylinder","pos":[0.0,0.0217,-0.06],"rot":[90.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.7,0.65,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"SeamRight","shape":"cylinder","pos":[0.0,0.0217,0.06],"rot":[90.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.7,0.65,0.45],"smooth":0.35,"metal":0.0}
+]}

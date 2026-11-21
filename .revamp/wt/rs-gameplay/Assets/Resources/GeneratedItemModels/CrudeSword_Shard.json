@@ -1,0 +1,8 @@
+{"version": 1, "id": "CrudeSword_Shard", "baseHeight": 0.0712, "name": "Crude Sword Shard", "model": "gpt-oss:120b", "notes": "Crude sword shard about 0.32 m long, 0.06 m wide at the base tapering to a point, lying flat on its side (long axis along +X). Main blade is a thin metal slab with two small jagged off‑cuts and a blunt tip.", "score": 6, "parts": [
+  {"name":"BaseBlade","shape":"cube","pos":[-0.0125,-0.0012,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"Tip","shape":"sphere","pos":[0.1275,-0.0012,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"JaggedEdgeL","shape":"cube","pos":[-0.0625,0.0013,0.0287],"rot":[0.0,15.0,0.0],"size":[0.06,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"JaggedEdgeR","shape":"cube","pos":[-0.0625,0.0013,-0.0413],"rot":[0.0,-15.0,0.0],"size":[0.06,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"RustPatch","shape":"sphere","pos":[-0.1325,0.0037,0.0137],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"SideSpike","shape":"cylinder","pos":[0.0675,0.0067,0.0387],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.8}
+]}

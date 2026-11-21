@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shoes_Random", "baseHeight": 0.175, "name": "Shoes Random", "model": "gpt-oss:120b", "notes": "Two casual shoes laid flat side‑by‑side, edges touching (≈0.25 m long × 0.10 m wide each, total thickness ≈5 cm). Upper uses the item tint; dark rubber sole, heel and toe caps add contrast. All right‑shoe parts now contact their left‑shoe counterparts.", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[0.0,-0.0475,0.05],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.1],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.0,-0.0475,-0.05],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.1],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[0.0,-0.02,0.05],"rot":[0.0,0.0,0.0],"size":[0.23,0.04,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[0.0,-0.02,-0.05],"rot":[0.0,0.0,0.0],"size":[0.23,0.04,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelL","shape":"cube","pos":[-0.095,-0.02,0.05],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.1],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"HeelR","shape":"cube","pos":[-0.095,-0.02,-0.05],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.1],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"ToeCapL","shape":"cube","pos":[0.095,-0.02,0.05],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.09],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"ToeCapR","shape":"cube","pos":[0.095,-0.02,-0.05],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.09],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"LaceLineL","shape":"cylinder","pos":[0.0,-0.0,0.05],"rot":[90.0,0.0,0.0],"size":[0.23,0.005,0.23],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LaceLineR","shape":"cylinder","pos":[0.0,-0.0,-0.05],"rot":[90.0,0.0,0.0],"size":[0.23,0.005,0.23],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SoleTrimL","shape":"cube","pos":[0.0,-0.04,0.05],"rot":[0.0,0.0,0.0],"size":[0.25,0.003,0.102],"color":[0.2,0.18,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"SoleTrimR","shape":"cube","pos":[0.0,-0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.25,0.003,0.102],"color":[0.2,0.18,0.22],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "CatFoodBag", "baseHeight": 0.072, "name": "Cat Food Bag", "model": "gpt-oss:120b", "notes": "Cat food bag about 0.38 m long × 0.28 m wide × 0.01 m thick lying flat on the floor. Main plastic body, a thin sealed rim at the top edge, a printed label on the front face and a small zip‑tie securing the seal.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.006,0.02],"rot":[0.0,0.0,0.0],"size":[0.38,0.012,0.28],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SealRim","shape":"cube","pos":[0.0,0.006,0.16],"rot":[0.0,0.0,0.0],"size":[0.38,0.004,0.01],"color":[0.78,0.71,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.004,-0.11],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.12],"color":[0.62,0.53,0.34],"smooth":0.05,"metal":0.0},
+  {"name":"ZipTie","shape":"cylinder","pos":[-0.16,0.01,0.16],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeTrimL","shape":"cube","pos":[-0.19,-0.006,0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.012,0.28],"color":[0.68,0.6,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimR","shape":"cube","pos":[0.19,-0.006,0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.012,0.28],"color":[0.68,0.6,0.4],"smooth":0.05,"metal":0.0}
+]}

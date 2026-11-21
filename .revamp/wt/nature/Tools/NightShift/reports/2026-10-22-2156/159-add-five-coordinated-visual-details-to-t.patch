@@ -1,0 +1,76 @@
+diff --git a/Assets/Scripts/World/RaidMapBuilder.Streets.cs b/Assets/Scripts/World/RaidMapBuilder.Streets.cs
+index 9a1b49c3..117e8b26 100644
+--- a/Assets/Scripts/World/RaidMapBuilder.Streets.cs
++++ b/Assets/Scripts/World/RaidMapBuilder.Streets.cs
+@@ -262,8 +262,7 @@ private static void SidewalkRun(RaidTown town, bool alongX, float coord, int sid
+                     side > 0 ? hw + 0.02f : -hw - 0.27f,
+                     side > 0 ? hw + 0.07f : -hw - 0.22f,
+                     0.051f,
+-                    DecorPalette.Matte(new Color(0.55f, 0.35f, 0.20f)));
+-            }
++                    }
+             // Add subtle metal edging strip along the kerb (30 % chance)
+             if (rng.NextDouble() < 0.3)
+             {
+@@ -293,6 +292,7 @@ private static void SidewalkRun(RaidTown town, bool alongX, float coord, int sid
+         private static void CreateMailbox(RaidTown town, bool alongX, float posAlong, float across)
+         {
+             // post – 0.05 m × 0.75 m × 0.05 m
++
+             Vector3 postCenter = alongX
+                 ? new Vector3(posAlong, 0.38f, across) // y = half height
+                 : new Vector3(across, 0.38f, posAlong);
+@@ -301,16 +301,28 @@ private static void CreateMailbox(RaidTown town, bool alongX, float posAlong, fl
+                 DecorPalette.Matte(FenceWood));
+ 
+             // mailbox body – 0.30 m × 0.20 m × 0.15 m, placed 0.05 m in front of post
++            // ---- mail slot (thin dark rectangle on the front face) ----
++            Vector3 slotOffset = alongX ? new Vector3(0f, 0.12f, 0.08f) : new Vector3(0.08f, 0.12f, 0f);
++            Vector3 slotCenter = bodyCenter + slotOffset;
++            town.Out.Solid(slotCenter).Box(slotCenter,
++                new Vector3(0.22f, 0.14f, 0.01f), // width × height × depth (m)
++                DecorPalette.Matte(new Color(0.12f, 0.10f, 0.08f)));
++
+             Vector3 bodyOffset = alongX ? new Vector3(0f, 0.20f, 0.08f) : new Vector3(0.08f, 0.20f, 0f);
+             Vector3 bodyCenter = postCenter + bodyOffset;
+             town.Out.Solid(bodyCenter).Box(bodyCenter,
+                 new Vector3(0.30f, 0.20f, 0.15f),
+                 DecorPalette.Matte(FenceWood));
+ 
+-            // metal latch – thin cylinder on front edge of box
+             Vector3 latchPos = bodyCenter + (alongX ? new Vector3(0f, 0.10f, 0.08f) : new Vector3(0.08f, 0.10f, 0f));
++
++            // thin metal ring around latch
+             town.Out.Solid(latchPos).Cylinder(latchPos, 0.015f, 0.02f, 12,
+                 DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
++            // ring – slightly larger radius
++            town.Out.Solid(latchPos).Cylinder(latchPos, 0.019f, 0.022f, 12,
++                DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
++
+ 
+             // door flap – thin box at front of mailbox body, hinged on left side
+             Vector3 flapSize = new Vector3(0.12f, 0.18f, 0.02f);
+@@ -337,11 +349,19 @@ private static void CreateMailbox(RaidTown town, bool alongX, float posAlong, fl
+             Vector3 flagPoleBase = bodyCenter + (alongX ? new Vector3(0.15f, 0.20f, 0f) : new Vector3(0f, 0.20f, 0.15f));
+             // snow cap thickness (random 0.02‑0.05 m)
+             float snowHeight = 0.02f + 0.03f * (float)town.Rng.NextDouble();
+-            // adjust flag pole height
+-            town.Out.Solid(flagPoleBase).Cylinder(flagPoleBase, 0.008f, 0.30f - snowHeight, 8,
+-                DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
++            // tiny "MAIL" sign – small wooden rectangle near top of post
++            Vector3 signOffset = alongX ? new Vector3(0f, 0.70f, 0.03f) : new Vector3(0.03f, 0.70f, 0f);
++            Vector3 signCenter = postCenter + signOffset;
++            town.Out.Solid(signCenter).Box(signCenter, new Vector3(0.10f, 0.02f, 0.005f),
++                DecorPalette.Matte(new Color(0.45f, 0.33f, 0.20f)));
++
++            // small hanging cloth mailbag – attached below latch
++            Vector3 bagOffset = alongX ? new Vector3(0f, -0.05f, 0.08f) : new Vector3(0.08f, -0.05f, 0f);
++            Vector3 bagCenter = latchPos + bagOffset;
++            town.Out.Solid(bagCenter).Box(bagCenter, new Vector3(0.08f, 0.12f, 0.06f),
++                DecorPalette.Matte(new Color(0.70f, 0.55f, 0.40f)));
++
+ 
+-            // flag – tiny box at pole top (faded red‑brown cloth)
+             Vector3 flagCenter = flagPoleBase + (alongX ? new Vector3(0f, 0.30f - snowHeight, 0f) : new Vector3(0f, 0.30f - snowHeight, 0f));
+             town.Out.Solid(flagCenter).Box(flagCenter,
+                 new Vector3(0.12f, 0.02f, 0.02f),

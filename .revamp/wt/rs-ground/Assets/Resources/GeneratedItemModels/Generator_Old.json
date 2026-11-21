@@ -1,0 +1,15 @@
+{"version": 1, "id": "Generator_Old", "baseHeight": 0.26, "name": "Generator Old", "model": "gpt-oss:120b", "notes": "Old portable generator ~0.8 m long × 0.45 m wide × 0.30 m high (lying on its side). Chunky metal housing with vent top, front control panel, rear fuel tank, handle bar, two wheels, exhaust pipe, label plate and a few rivets.", "score": 7, "parts": [
+  {"name":"MainCasing","shape":"cube","pos":[0.01,-0.06,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.78,0.28,0.44],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"VentTop","shape":"cube","pos":[0.01,0.09,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.76,0.02,0.44],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"ControlPanel","shape":"cube","pos":[-0.19,0.0,0.2375],"rot":[0.0,0.0,0.0],"size":[0.2,0.1,0.05],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"FuelTank","shape":"cylinder","pos":[-0.24,-0.125,-0.1875],"rot":[0.0,0.0,90.0],"size":[0.15,0.3,0.15],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.31,0.14,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.1,0.1,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"WheelL","shape":"cylinder","pos":[-0.34,-0.16,-0.1875],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.3,0.3,0.32],"smooth":0.5,"metal":1.0},
+  {"name":"WheelR","shape":"cylinder","pos":[0.36,-0.16,-0.1875],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.3,0.3,0.32],"smooth":0.5,"metal":1.0},
+  {"name":"ExhaustPipe","shape":"cylinder","pos":[-0.34,0.0,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"LabelPlate","shape":"cube","pos":[0.16,-0.02,0.2375],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.005],"color":[0.8,0.75,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.34,0.07,0.1925],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.36,0.07,0.1925],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRL","shape":"sphere","pos":[-0.34,0.07,-0.2075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRR","shape":"sphere","pos":[0.36,0.07,-0.2075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0}
+]}

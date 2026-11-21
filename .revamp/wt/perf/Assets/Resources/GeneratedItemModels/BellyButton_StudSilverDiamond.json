@@ -1,0 +1,8 @@
+{"version": 1, "id": "BellyButton_StudSilverDiamond", "baseHeight": 0.064, "name": "Belly Button Stud Silver Diamond", "model": "gpt-oss:120b", "notes": "Belly button stud ~2 cm long: thin silver post lying on its side (X‑axis) with a small round diamond head at the front and a tiny backing plate at the rear.", "score": 7, "parts": [
+  {"name":"Post","shape":"cylinder","pos":[-0.0025,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.015,0.004],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"DiamondHead","shape":"sphere","pos":[0.009,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[1.0,1.0,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"FrontCap","shape":"cylinder","pos":[0.009,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.009,0.002,0.009],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"BackPlate","shape":"cylinder","pos":[-0.0105,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.006],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"BackRidge","shape":"cube","pos":[-0.011,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.006],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":1.0},
+  {"name":"GemFacet","shape":"sphere","pos":[0.009,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.9,0.95,1.0],"smooth":0.9,"metal":0.0}
+]}

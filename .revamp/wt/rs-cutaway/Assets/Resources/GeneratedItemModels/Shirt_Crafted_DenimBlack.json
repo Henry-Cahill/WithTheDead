@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shirt_Crafted_DenimBlack", "baseHeight": 0.076, "name": "Shirt Crafted Denim Black", "model": "gpt-oss:120b", "notes": "Flat denim shirt 0.56 m long × 0.38 m wide × 0.03 m thick, laid flat with neck toward –X. Main body in dark‑denim, metal buttons down the front, simple chest pockets and a collar band.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.025,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.03,0.38],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.025,0.0,0.29],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.025,0.0,-0.29],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.025,0.0,0.39],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.025,0.0,-0.39],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[-0.245,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[-0.245,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.032,0.09],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.155,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.25,0.25,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.055,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.25,0.25,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.045,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.25,0.25,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.145,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.25,0.25,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.245,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.25,0.25,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"PocketR","shape":"cube","pos":[0.075,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.075,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,17 @@
+{"version": 1, "id": "Hat_HockeyMask_Silver", "baseHeight": 0.0725, "name": "Hat Hockey Mask Silver", "model": "gpt-oss:120b", "notes": "Silver hockey mask laid flat (≈0.24 m wide × 0.34 m deep) with a thin metal shell, surrounding brim, front cage‑grid, central vent hole and side ear flaps. Main tint (0.55,0.5,0.6) used for all metal parts; dark grey for the vent opening.", "score": 7, "parts": [
+  {"name":"Shell","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,0.34],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.005,0.18],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BrimBack","shape":"cube","pos":[0.0,-0.005,-0.18],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BrimSideL","shape":"cube","pos":[-0.13,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.34],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BrimSideR","shape":"cube","pos":[0.13,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.34],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CageV1","shape":"cylinder","pos":[-0.07,0.003,0.12],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CageV2","shape":"cylinder","pos":[-0.023,0.003,0.12],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CageV3","shape":"cylinder","pos":[0.023,0.003,0.12],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CageV4","shape":"cylinder","pos":[0.07,0.003,0.12],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CageH1","shape":"cylinder","pos":[0.0,0.003,-0.03],"rot":[0.0,0.0,90.0],"size":[0.006,0.18,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CageH2","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.18,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CageH3","shape":"cylinder","pos":[0.0,0.003,0.03],"rot":[0.0,0.0,90.0],"size":[0.006,0.18,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"VentHole","shape":"cylinder","pos":[0.0,0.002,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.08],"color":[0.2,0.2,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"EarFlapL","shape":"cube","pos":[-0.13,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"EarFlapR","shape":"cube","pos":[0.13,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0}
+]}

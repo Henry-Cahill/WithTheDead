@@ -1,0 +1,9 @@
+{"version": 1, "id": "Chocolate_RoysPBPucks", "baseHeight": 0.08, "name": "Chocolate Roys PBPucks", "model": "gpt-oss:120b", "notes": "Chocolate Roy's PBPucks pack ~0.12 m × 0.08 m × 0.04 m lying flat: cardboard box body, thin foil lid, dark label strip on front, four small chocolate disc‑pucks stacked inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.002,-0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.08],"color":[0.58,0.48,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.018,-0.001],"rot":[0.0,0.0,0.0],"size":[0.118,0.004,0.078],"color":[0.7,0.6,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.002,0.04],"rot":[0.0,0.0,0.0],"size":[0.09,0.004,0.002],"color":[0.4,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"PuckA","shape":"cylinder","pos":[-0.025,-0.016,-0.016],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"PuckB","shape":"cylinder","pos":[0.025,-0.016,-0.016],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"PuckC","shape":"cylinder","pos":[-0.025,-0.016,0.014],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"PuckD","shape":"cylinder","pos":[0.025,-0.016,0.014],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0}
+]}

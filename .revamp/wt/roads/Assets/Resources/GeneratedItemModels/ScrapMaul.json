@@ -1,0 +1,12 @@
+{"version": 1, "id": "ScrapMaul", "baseHeight": 0.1688, "name": "Scrap Maul", "model": "gpt-oss:120b", "notes": "Scrap maul ~1.4 m long lying on its side: rough steel pipe handle (diameter ≈ 8 cm) along X, a chunky metal head at the +X end with a forward spike and rivet details, plus a cloth‑wrap band and a reinforcing metal ring on the handle.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.2,-0.0687,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,1.2,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.9},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.375,-0.0637,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.02,0.09],"color":[0.4,0.35,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"WeightRing","shape":"cylinder","pos":[0.125,-0.0637,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.015,0.09],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":0.9},
+  {"name":"HeadBlock","shape":"cube","pos":[0.525,-0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.2,0.3],"color":[0.58,0.58,0.62],"smooth":0.45,"metal":0.9},
+  {"name":"BackPlate","shape":"cube","pos":[0.39,-0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.18,0.28],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":0.9},
+  {"name":"Spike","shape":"cylinder","pos":[0.725,-0.0887,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":0.9},
+  {"name":"RivetFL","shape":"cylinder","pos":[0.63,0.1013,-0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetFR","shape":"cylinder","pos":[0.63,0.1013,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetRL","shape":"cylinder","pos":[0.42,0.1013,-0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetRR","shape":"cylinder","pos":[0.42,0.1013,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":0.9}
+]}

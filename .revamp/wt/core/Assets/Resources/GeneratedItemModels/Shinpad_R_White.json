@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shinpad_R_White", "baseHeight": 0.087, "name": "Shinpad R White", "model": "gpt-oss:120b", "notes": "White shin‑pad (foam/soft plastic) approx 0.28 m long × 0.15 m wide × 0.025 m thick, lying flat on the floor. Main slab with slight front curvature, a thin strap band across the top and rivet detail at each end.", "score": 6, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[0.0,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.04,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BackBulge","shape":"sphere","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"StrapBand","shape":"cube","pos":[0.0,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.02],"color":[0.35,0.34,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.13,0.023,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.13,0.023,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeLineFront","shape":"cube","pos":[0.0,-0.002,0.0755],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.002],"color":[0.45,0.44,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeLineBack","shape":"cube","pos":[0.0,-0.002,-0.0755],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.002],"color":[0.45,0.44,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"InnerPadding","shape":"cube","pos":[0.0,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.018,0.14],"color":[0.58,0.56,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"SideRimTop","shape":"cube","pos":[0.0,0.0055,0.075],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.002],"color":[0.45,0.44,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"SideRimBottom","shape":"cube","pos":[0.0,-0.0195,0.075],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.002],"color":[0.45,0.44,0.4],"smooth":0.1,"metal":0.0}
+]}

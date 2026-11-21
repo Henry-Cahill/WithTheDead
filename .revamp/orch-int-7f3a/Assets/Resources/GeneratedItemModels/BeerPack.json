@@ -1,0 +1,12 @@
+{"version": 1, "id": "BeerPack", "baseHeight": 0.12, "name": "Beer Pack", "model": "gpt-oss:120b", "notes": "BeerPack – six‑can cardboard carrier (≈0.15 m × 0.12 m × 0.21 m). Brownish cardboard body with thin top/bottom flaps, a short handle strap on the front edge, and six metal cans standing upright inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.12,0.21],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.005,0.212],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"BottomFlap","shape":"cube","pos":[0.0,-0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.005,0.212],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.05,-0.09],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.5,0.45,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Can1","shape":"cylinder","pos":[-0.035,-0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.066,0.12,0.066],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":0.9},
+  {"name":"Can2","shape":"cylinder","pos":[0.035,-0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.066,0.12,0.066],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":0.9},
+  {"name":"Can3","shape":"cylinder","pos":[-0.035,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.12,0.066],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":0.9},
+  {"name":"Can4","shape":"cylinder","pos":[0.035,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.12,0.066],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":0.9},
+  {"name":"Can5","shape":"cylinder","pos":[-0.035,-0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.066,0.12,0.066],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":0.9},
+  {"name":"Can6","shape":"cylinder","pos":[0.035,-0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.066,0.12,0.066],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":0.9}
+]}

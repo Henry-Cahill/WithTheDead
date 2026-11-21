@@ -1,0 +1,10 @@
+{"version": 1, "id": "TortillaChipsBaked", "baseHeight": 0.07, "name": "Tortilla Chips Baked", "model": "gpt-oss:120b", "notes": "Baked tortilla chip snack bag ~0.26 m long × 0.15 m wide × 0.02 m thick, thin plastic/foil pouch lying flat with a resealable top flap, printed label on the top surface and a few chips visible inside.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[-0.035,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.15],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.13,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.15],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.035,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.12],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"Chip1","shape":"cube","pos":[-0.115,-0.004,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.015],"color":[0.55,0.48,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Chip2","shape":"cube","pos":[0.015,-0.005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.025,0.0035,0.012],"color":[0.55,0.48,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Chip3","shape":"cube","pos":[-0.065,-0.003,0.06],"rot":[0.0,0.0,0.0],"size":[0.028,0.004,0.014],"color":[0.55,0.48,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Chip4","shape":"cube","pos":[0.065,-0.004,-0.05],"rot":[0.0,0.0,0.0],"size":[0.022,0.003,0.011],"color":[0.55,0.48,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Chip5","shape":"cube","pos":[-0.125,-0.006,-0.04],"rot":[0.0,0.0,0.0],"size":[0.024,0.0038,0.013],"color":[0.55,0.48,0.3],"smooth":0.2,"metal":0.0}
+]}

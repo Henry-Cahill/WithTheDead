@@ -1,0 +1,12 @@
+{"version": 1, "id": "CandleBox", "baseHeight": 0.1375, "name": "Candle Box", "model": "gpt-oss:120b", "notes": "Candle box ~0.25 m long × 0.15 m wide × 0.12 m high lying on its side: cardboard base, four side panels, thin top lid, a printed front label and three small wax candles stacked inside.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0025,0.07],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.0025,-0.07],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LeftSide","shape":"cube","pos":[-0.12,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RightSide","shape":"cube","pos":[0.12,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TopLid","shape":"cube","pos":[0.0,0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.0125,0.0705],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.002],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"CandleL","shape":"cylinder","pos":[-0.06,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.9,0.9,0.85],"smooth":0.4,"metal":0.0},
+  {"name":"CandleM","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.9,0.9,0.85],"smooth":0.4,"metal":0.0},
+  {"name":"CandleR","shape":"cylinder","pos":[0.06,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.9,0.9,0.85],"smooth":0.4,"metal":0.0}
+]}

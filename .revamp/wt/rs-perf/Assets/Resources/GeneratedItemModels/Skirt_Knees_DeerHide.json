@@ -1,0 +1,14 @@
+{"version": 1, "id": "Skirt_Knees_DeerHide", "baseHeight": 0.0762, "name": "Skirt Knees Deer Hide", "model": "gpt-oss:120b", "notes": "Knee‑length deer‑hide skirt laid flat, approx. 0.60 m long (waist to hem) and 0.48 m wide at the hem, 2.5 cm thick. Main hide panel with flared side panels, waist & hem trim, seam strips, two belt loops, a small label tag and faint stitch lines.", "score": 6, "parts": [
+  {"name":"CentralPanel","shape":"cube","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftFlare","shape":"cube","pos":[-0.195,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightFlare","shape":"cube","pos":[0.195,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.0037,-0.28],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.04],"color":[0.4,0.35,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0037,0.28],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.04],"color":[0.4,0.35,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.15,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.6],"color":[0.4,0.35,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.15,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.6],"color":[0.4,0.35,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.22,0.0088,-0.28],"rot":[0.0,0.0,0.0],"size":[0.018,0.015,0.018],"color":[0.3,0.25,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.22,0.0088,-0.28],"rot":[0.0,0.0,0.0],"size":[0.018,0.015,0.018],"color":[0.3,0.25,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.0,-0.0037,0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.0088,-0.28],"rot":[0.0,0.0,0.0],"size":[0.48,0.002,0.004],"color":[0.7,0.66,0.72],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,0.0088,0.28],"rot":[0.0,0.0,0.0],"size":[0.48,0.002,0.004],"color":[0.7,0.66,0.72],"smooth":0.05,"metal":0.0}
+]}

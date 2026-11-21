@@ -1,0 +1,12 @@
+{"version": 1, "id": "CannedBologneseOpen", "baseHeight": 0.2211, "name": "Canned Bolognese Open", "model": "gpt-oss:120b", "notes": "Open canned Bolognese, 0.20 m diameter × 0.29 m tall. Metal body with top/bottom rims, peeled lid lying beside the can, shallow sauce surface inside, printed label with dark trim bands.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0778,0.0121,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.29,0.2],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.0778,0.1531,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.016,0.212],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.0778,-0.1289,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.016,0.212],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"Lid","shape":"cylinder","pos":[0.0722,-0.1179,0.0],"rot":[0.0,0.0,20.0],"size":[0.22,0.012,0.22],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"LidRing","shape":"cylinder","pos":[0.0722,-0.1119,0.0],"rot":[0.0,0.0,20.0],"size":[0.236,0.004,0.236],"color":[0.47,0.33,0.14],"smooth":0.55,"metal":0.85},
+  {"name":"SauceSurface","shape":"sphere","pos":[-0.0778,0.0121,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.18],"color":[0.81,0.32,0.23],"smooth":0.1,"metal":0.0},
+  {"name":"SauceHighlight","shape":"sphere","pos":[-0.0778,0.0221,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.18],"color":[0.95,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[-0.0778,0.0121,0.0],"rot":[0.0,0.0,0.0],"size":[0.194,0.19,0.194],"color":[0.68,0.55,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[-0.0778,0.1091,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[-0.0778,-0.0849,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0}
+]}

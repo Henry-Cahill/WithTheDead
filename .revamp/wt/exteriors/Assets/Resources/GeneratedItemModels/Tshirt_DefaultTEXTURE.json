@@ -1,0 +1,11 @@
+{"version": 1, "id": "Tshirt_DefaultTEXTURE", "baseHeight": 0.0725, "name": "Tshirt Default TEXTURE", "model": "gpt-oss:120b", "notes": "Flat T‑shirt laid out for a product‑photo view – overall size ~0.70 m long × 0.45 m wide, 2 cm thick. Main torso panel with a thin top collar ring, centre seam line, bottom hem band and short angled sleeves ending in slightly darker cuffs. All parts rest on the floor (y=0) and overlap where needed for a clear silhouette.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarRing","shape":"cylinder","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.008,0.48],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckOpening","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.01,0.34],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.008,0.45],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.002,0.002],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.0,-0.0025,-0.325],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.0,-0.0025,0.325],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.15,0.0,-0.325],"rot":[0.0,0.0,0.0],"size":[0.05,0.025,0.22],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.15,0.0,0.325],"rot":[0.0,0.0,0.0],"size":[0.05,0.025,0.22],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

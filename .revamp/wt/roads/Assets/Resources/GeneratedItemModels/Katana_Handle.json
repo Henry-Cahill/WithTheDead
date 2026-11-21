@@ -1,0 +1,8 @@
+{"version": 1, "id": "Katana_Handle", "baseHeight": 0.0825, "name": "Katana Handle", "model": "gpt-oss:120b", "notes": "Katana handle (tsuka) lying on its side, ~0.25 m long, 4‑4.5 cm diameter. Consists of a wooden core, ray‑skin wrap, metal ferrule at the tang end and a steel pommel cap; a small grip ridge adds visual detail.", "score": 6, "parts": [
+  {"name":"CoreWood","shape":"cylinder","pos":[-0.0137,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RayWrap","shape":"cylinder","pos":[-0.0137,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.25,0.045],"color":[0.45,0.4,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[-0.1287,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Pommel","shape":"sphere","pos":[0.1363,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"GripRidge","shape":"cube","pos":[-0.0137,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.045],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.1487,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.48,0.46,0.4],"smooth":0.15,"metal":0.0}
+]}

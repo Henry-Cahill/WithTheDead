@@ -1,0 +1,14 @@
+{"version": 1, "id": "Raccoon_Kit_Head", "baseHeight": 0.135, "name": "Raccoon Kit Head", "model": "gpt-oss:120b", "notes": "Raccoon kit head ~0.16 m long x 0.12 m tall x 0.14 m wide, lying on its back: main skull ellipsoid, protruding snout, two ears, eyes, nose, mouth opening and a few whisker/cavity details.", "score": 6, "parts": [
+  {"name":"Skull","shape":"sphere","pos":[0.0,-0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.14,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.0,-0.005,0.04],"rot":[90.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.58,0.55,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[-0.05,0.045,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[0.05,0.045,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarInsideL","shape":"sphere","pos":[-0.05,0.04,-0.03],"rot":[0.0,0.0,0.0],"size":[0.03,0.045,0.015],"color":[0.4,0.38,0.33],"smooth":0.04,"metal":0.0},
+  {"name":"EarInsideR","shape":"sphere","pos":[0.05,0.04,-0.03],"rot":[0.0,0.0,0.0],"size":[0.03,0.045,0.015],"color":[0.4,0.38,0.33],"smooth":0.04,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.025,0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.025,0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0,-0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"MouthOpening","shape":"cube","pos":[0.0,-0.015,0.07],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.8,0.6,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WhiskerL1","shape":"cylinder","pos":[-0.02,-0.005,0.07],"rot":[90.0,0.0,0.0],"size":[0.005,0.06,0.005],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"WhiskerR1","shape":"cylinder","pos":[0.02,-0.005,0.07],"rot":[90.0,0.0,0.0],"size":[0.005,0.06,0.005],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0}
+]}

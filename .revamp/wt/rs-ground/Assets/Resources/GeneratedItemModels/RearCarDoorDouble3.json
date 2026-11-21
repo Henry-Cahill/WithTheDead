@@ -1,0 +1,14 @@
+{"version": 1, "id": "RearCarDoorDouble3", "baseHeight": 0.135, "name": "Rear Car Door Double3", "model": "gpt-oss:120b", "notes": "Rear car door double3 – a single large panel about 1.2 m tall × 0.8 m wide × 0.025 m thick, lying flat on its back. Includes painted steel body, internal reinforcement bar, side‑hinge pins, a vertical door handle with lock, and a rectangular window pane of glass.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.8],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.85},
+  {"name":"ReinforcementBar","shape":"cube","pos":[0.0,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.008,0.02],"color":[0.45,0.44,0.42],"smooth":0.12,"metal":0.9},
+  {"name":"WindowPane","shape":"cube","pos":[0.0,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.5],"color":[0.7,0.85,1.0],"smooth":0.25,"metal":0.0},
+  {"name":"DoorHandle","shape":"cylinder","pos":[0.2,0.0,-0.35],"rot":[0.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.55,0.53,0.5],"smooth":0.18,"metal":0.8},
+  {"name":"HandleBase","shape":"cube","pos":[0.2,-0.015,-0.35],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.55,0.53,0.5],"smooth":0.18,"metal":0.8},
+  {"name":"LockMechanism","shape":"cube","pos":[0.25,-0.005,-0.35],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.02],"color":[0.45,0.44,0.42],"smooth":0.2,"metal":0.9},
+  {"name":"HingePinTop","shape":"cylinder","pos":[-0.55,-0.012,0.25],"rot":[0.0,0.0,90.0],"size":[0.02,0.03,0.02],"color":[0.45,0.44,0.42],"smooth":0.2,"metal":0.9},
+  {"name":"HingePinBottom","shape":"cylinder","pos":[-0.55,-0.012,-0.25],"rot":[0.0,0.0,90.0],"size":[0.02,0.03,0.02],"color":[0.45,0.44,0.42],"smooth":0.2,"metal":0.9},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.0075,0.39],"rot":[0.0,0.0,0.0],"size":[1.2,0.005,0.02],"color":[0.55,0.53,0.5],"smooth":0.15,"metal":0.85},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.0075,-0.39],"rot":[0.0,0.0,0.0],"size":[1.2,0.005,0.02],"color":[0.55,0.53,0.5],"smooth":0.15,"metal":0.85},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.595,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.8],"color":[0.55,0.53,0.5],"smooth":0.15,"metal":0.85},
+  {"name":"EdgeRight","shape":"cube","pos":[0.595,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.8],"color":[0.55,0.53,0.5],"smooth":0.15,"metal":0.85}
+]}

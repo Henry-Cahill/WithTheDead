@@ -1,0 +1,13 @@
+{"version": 1, "id": "ThighBodyArmour_L_Civ", "baseHeight": 0.0815, "name": "Thigh Body Armour L Civ", "model": "gpt-oss:120b", "notes": "Left‑thigh civilian body armour, padded plate ~0.35 m long × 0.25 m wide × 0.03 m thick with two fabric straps and edge rivets; laid flat on the floor.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"InnerFoam","shape":"cube","pos":[0.0,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.024,0.23],"color":[0.7,0.68,0.62],"smooth":0.05,"metal":0.0},
+  {"name":"FrontStrap","shape":"cylinder","pos":[0.0,0.0115,0.12],"rot":[90.0,0.0,0.0],"size":[0.02,0.35,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BackStrap","shape":"cylinder","pos":[0.0,0.0115,-0.12],"rot":[90.0,0.0,0.0],"size":[0.02,0.35,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SideStrapL","shape":"cylinder","pos":[-0.165,0.0115,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SideStrapR","shape":"cylinder","pos":[0.165,0.0115,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFrontL","shape":"cube","pos":[-0.08,0.0095,0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontR","shape":"cube","pos":[0.08,0.0095,0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackL","shape":"cube","pos":[-0.08,0.0095,-0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackR","shape":"cube","pos":[0.08,0.0095,-0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeBandTop","shape":"cube","pos":[0.0,0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.004,0.25],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

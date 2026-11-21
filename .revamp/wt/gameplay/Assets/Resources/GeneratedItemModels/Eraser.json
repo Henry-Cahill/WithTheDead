@@ -1,0 +1,12 @@
+{"version": 1, "id": "Eraser", "baseHeight": 0.08, "name": "Eraser", "model": "gpt-oss:120b", "notes": "Simple rectangular eraser about 0.06 m × 0.04 m × 0.02 m lying on its side (long axis along X). Main block, short end‑caps to give rounded ends, a thin printed label, corner rounding spheres and thin side‑rim cylinders for extra silhouette detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.054,0.018,0.036],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CapL","shape":"cylinder","pos":[-0.03,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.006,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CapR","shape":"cylinder","pos":[0.03,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.006,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.001,-0.015],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.012],"color":[0.3,0.2,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"CornerFL","shape":"sphere","pos":[-0.025,0.005,0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerFR","shape":"sphere","pos":[0.025,0.005,0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBL","shape":"sphere","pos":[-0.025,0.005,-0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBR","shape":"sphere","pos":[0.025,0.005,-0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"SideRimL","shape":"cylinder","pos":[-0.028,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"SideRimR","shape":"cylinder","pos":[0.028,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0}
+]}

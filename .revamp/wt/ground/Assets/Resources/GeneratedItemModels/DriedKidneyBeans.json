@@ -1,0 +1,10 @@
+{"version": 1, "id": "DriedKidneyBeans", "baseHeight": 0.24, "name": "Dried Kidney Beans", "model": "gpt-oss:120b", "notes": "Upright cardboard box for dried kidney beans, about 0.25 m wide × 0.35 m tall × 0.15 m deep. Main brown‑tan tint (0.75,0.68,0.45) with a front label and side stripes; thin top & bottom flanges give the box its folded‑edge look.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.33,0.15],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BottomFlange","shape":"cube","pos":[0.0,-0.165,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.03,0.16],"color":[0.7,0.62,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"TopFlange","shape":"cube","pos":[0.0,0.165,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.03,0.16],"color":[0.7,0.62,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.0,0.0785],"rot":[0.0,0.0,0.0],"size":[0.22,0.24,0.004],"color":[0.55,0.48,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0,0.0805],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.002],"color":[0.3,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"SideStripeL","shape":"cube","pos":[-0.115,0.0,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.24,0.004],"color":[0.55,0.48,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"SideStripeR","shape":"cube","pos":[0.115,0.0,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.24,0.004],"color":[0.55,0.48,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"SealTape","shape":"cylinder","pos":[0.0,0.165,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.26,0.03],"color":[0.8,0.75,0.55],"smooth":0.12,"metal":0.0}
+]}

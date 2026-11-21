@@ -1,0 +1,13 @@
+{"version": 1, "id": "Scalpel", "baseHeight": 0.0753, "name": "Scalpel", "model": "gpt-oss:120b", "notes": "Scalpel ~0.75 m long, lying on its side (X‑axis). Main metal blade (sharp edge shown), long thin metal/plastic handle, guard, grip band and a small screw/end‑cap for detail.", "score": 6, "parts": [
+  {"name":"HandleCore","shape":"cylinder","pos":[-0.055,0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.58,0.03],"color":[0.6,0.6,0.64],"smooth":0.35,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.36,0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.35,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[0.23,-0.0118,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.04],"color":[0.5,0.5,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.295,-0.0123,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"cylinder","pos":[0.365,-0.0108,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[0.295,-0.0143,0.011],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.004],"color":[0.9,0.9,0.95],"smooth":0.7,"metal":1.0},
+  {"name":"GripBand","shape":"cube","pos":[-0.1,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.04],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LabelRing","shape":"cylinder","pos":[-0.05,-0.0023,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewEnd","shape":"sphere","pos":[-0.36,-0.0068,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"GripRidgeL","shape":"cube","pos":[-0.12,0.0102,0.018],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.005],"color":[0.45,0.45,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"GripRidgeR","shape":"cube","pos":[-0.12,0.0102,-0.018],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.005],"color":[0.45,0.45,0.5],"smooth":0.2,"metal":0.0}
+]}

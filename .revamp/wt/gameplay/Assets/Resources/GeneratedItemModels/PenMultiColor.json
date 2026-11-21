@@ -1,0 +1,12 @@
+{"version": 1, "id": "PenMultiColor", "baseHeight": 0.0685, "name": "Pen Multi Color", "model": "gpt-oss:120b", "notes": "Pen‑style melee weapon 0.75 m long × 0.015 m diameter, lying on its side (X axis). Three coloured plastic barrel sections, a metal tip, a thin metal clip and two seam rings for detail – all parts touch the main barrel.", "score": 6, "parts": [
+  {"name":"BarrelRed","shape":"cylinder","pos":[-0.261,0.0,-0.0031],"rot":[0.0,0.0,90.0],"size":[0.015,0.24,0.015],"color":[0.8,0.3,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"BarrelGreen","shape":"cylinder","pos":[-0.021,0.0,-0.0031],"rot":[0.0,0.0,90.0],"size":[0.015,0.24,0.015],"color":[0.3,0.8,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"BarrelBase","shape":"cylinder","pos":[0.219,0.0,-0.0031],"rot":[0.0,0.0,90.0],"size":[0.015,0.24,0.015],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"TipMetal","shape":"cylinder","pos":[0.354,-0.0035,-0.0031],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"TipPoint","shape":"sphere","pos":[0.377,0.0005,-0.0031],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Clip","shape":"cube","pos":[-0.321,0.0015,0.0049],"rot":[0.0,15.0,0.0],"size":[0.045,0.003,0.002],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"SeamRing1","shape":"cylinder","pos":[-0.141,0.0,-0.0031],"rot":[0.0,0.0,90.0],"size":[0.017,0.004,0.017],"color":[0.45,0.45,0.48],"smooth":0.35,"metal":0.0},
+  {"name":"SeamRing2","shape":"cylinder","pos":[0.099,0.0,-0.0031],"rot":[0.0,0.0,90.0],"size":[0.017,0.004,0.017],"color":[0.45,0.45,0.48],"smooth":0.35,"metal":0.0},
+  {"name":"GripRing","shape":"cylinder","pos":[-0.171,0.0,-0.0031],"rot":[0.0,0.0,90.0],"size":[0.009,0.02,0.009],"color":[0.3,0.3,0.35],"smooth":0.45,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.021,0.0005,0.0039],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.014],"color":[0.2,0.2,0.22],"smooth":0.2,"metal":0.0}
+]}

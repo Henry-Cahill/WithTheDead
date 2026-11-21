@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_Shellsuit_Green", "baseHeight": 0.0825, "name": "Jacket Shellsuit Green", "model": "gpt-oss:120b", "notes": "Flat shellsuit jacket about 0.55 m wide × 0.50 m tall × 0.04 m thick (laying on its back, neck towards +X). Includes a torso panel, two sleeves, collar strip, cuffs, front zipper, side pockets and thin seam lines for detail.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.04,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.385,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.385,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarStrip","shape":"cube","pos":[0.0,0.0075,0.23],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.385,-0.0025,-0.175],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.385,-0.0025,-0.175],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ZipperLine","shape":"cube","pos":[0.0,0.0025,0.1],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.3],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.0025,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0025,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.02,0.25],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.01],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,0.02,-0.25],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.01],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.275,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.04,0.5],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.275,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.04,0.5],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0}
+]}

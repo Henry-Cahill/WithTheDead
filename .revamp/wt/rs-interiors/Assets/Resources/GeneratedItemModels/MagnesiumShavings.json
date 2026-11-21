@@ -1,0 +1,17 @@
+{"version": 1, "id": "MagnesiumShavings", "baseHeight": 0.0755, "name": "Magnesium Shavings", "model": "gpt-oss:120b", "notes": "A loose pile of magnesium shavings about 5 cm across and 2 cm high, lying on the floor. The shavings are represented by a cluster of small spheres and cubes overlapping to give a fluffy silhouette.", "score": 6, "parts": [
+  {"name":"Shaving01","shape":"sphere","pos":[-0.0115,0.0005,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving02","shape":"sphere","pos":[0.0185,-0.0025,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving03","shape":"sphere","pos":[-0.0195,-0.0045,0.0077],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving04","shape":"sphere","pos":[0.0105,-0.0065,0.0147],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving05","shape":"sphere","pos":[-0.0045,-0.0055,-0.0143],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving06","shape":"cube","pos":[0.0125,-0.0105,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.025,0.008,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving07","shape":"cube","pos":[-0.0145,-0.0085,-0.0103],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.022],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving08","shape":"cube","pos":[0.0185,-0.0095,0.0118],"rot":[0.0,0.0,0.0],"size":[0.022,0.007,0.019],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving09","shape":"cube","pos":[-0.0075,-0.0115,0.0168],"rot":[0.0,0.0,0.0],"size":[0.018,0.005,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving10","shape":"sphere","pos":[0.0005,-0.0015,-0.0123],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving11","shape":"sphere","pos":[-0.0165,-0.0035,0.0097],"rot":[0.0,0.0,0.0],"size":[0.023,0.023,0.023],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving12","shape":"cube","pos":[0.0065,-0.0125,-0.0182],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.014],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving13","shape":"sphere","pos":[0.0225,-0.0055,0.0047],"rot":[0.0,0.0,0.0],"size":[0.019,0.019,0.019],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving14","shape":"cube","pos":[-0.0215,-0.0075,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.021,0.006,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Shaving15","shape":"sphere","pos":[0.0005,-0.0005,0.0138],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

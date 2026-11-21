@@ -1,0 +1,13 @@
+{"version": 1, "id": "Mop", "baseHeight": 0.145, "name": "Mop", "model": "gpt-oss:120b", "notes": "Mop 1.6 m long lying on its side (handle along X, head extending in +Z). Grip → Handle → Ferrule → HeadPlate → HeadTip are contiguous with no gaps; rivets and string bundle sit on the head plate.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cylinder","pos":[-0.735,-0.065,0.0],"rot":[0.0,0.0,90.0],"size":[0.035,0.15,0.035],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.06,-0.065,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,1.2,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":1.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.55,-0.065,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":1.0},
+  {"name":"HeadPlate","shape":"cube","pos":[0.61,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.25],"color":[0.8,0.8,0.85],"smooth":0.4,"metal":0.0},
+  {"name":"HeadTip","shape":"cylinder","pos":[0.68,-0.065,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"StringBundle","shape":"sphere","pos":[0.71,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.15,0.2],"color":[0.9,0.9,0.88],"smooth":0.05,"metal":0.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[0.56,-0.045,0.125],"rot":[90.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.56,-0.045,-0.125],"rot":[90.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.66,-0.045,0.125],"rot":[90.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.66,-0.045,-0.125],"rot":[90.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"StringEnds","shape":"cylinder","pos":[0.71,0.04,0.0],"rot":[45.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.9,0.9,0.88],"smooth":0.05,"metal":0.0}
+]}

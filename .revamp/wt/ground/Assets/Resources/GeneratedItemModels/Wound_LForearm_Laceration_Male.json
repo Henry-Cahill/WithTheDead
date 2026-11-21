@@ -1,0 +1,14 @@
+{"version": 1, "id": "Wound_LForearm_Laceration_Male", "baseHeight": 0.0822, "name": "Wound LForearm Laceration Male", "model": "gpt-oss:120b", "notes": "Chunk of lacerated left‑forearm tissue about 0.30 m long × 0.10 m wide × 0.03 m thick, lying on its side with ragged torn edges and a few fresh blood droplets.", "score": 3, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[-0.0025,-0.0072,0.004],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TearEdgePosX","shape":"cube","pos":[0.1525,-0.0042,0.004],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.08],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TearEdgeNegX","shape":"cube","pos":[-0.1575,-0.0042,0.004],"rot":[0.0,0.0,0.0],"size":[0.06,0.022,0.07],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TearEdgePosZ","shape":"cube","pos":[-0.0025,-0.0042,0.059],"rot":[0.0,0.0,0.0],"size":[0.12,0.024,0.05],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TearEdgeNegZ","shape":"cube","pos":[-0.0025,-0.0042,-0.051],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.045],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FlapTop","shape":"cube","pos":[-0.0025,0.0098,0.024],"rot":[15.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.57,0.54,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"FlapSide","shape":"cube","pos":[-0.0725,0.0058,-0.026],"rot":[0.0,20.0,0.0],"size":[0.06,0.014,0.035],"color":[0.57,0.54,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"BloodDrop1","shape":"sphere","pos":[0.0775,-0.0022,0.034],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.72,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDrop2","shape":"sphere","pos":[-0.0625,-0.0002,-0.036],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.7,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDrop3","shape":"sphere","pos":[0.0175,-0.0032,0.074],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.68,0.09,0.09],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDrop4","shape":"sphere","pos":[-0.1225,-0.0052,-0.016],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.71,0.11,0.11],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDrop5","shape":"sphere","pos":[0.0375,-0.0072,-0.076],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.73,0.13,0.13],"smooth":0.2,"metal":0.0}
+]}

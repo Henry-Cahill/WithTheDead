@@ -1,0 +1,12 @@
+{"version": 1, "id": "FurTuft_Grey", "baseHeight": 0.0797, "name": "Fur Tuft Grey", "model": "gpt-oss:120b", "notes": "Small grey fur tuft about 8 cm wide × 2 cm thick, lying on the floor as a fluffy mound. Main body built from overlapping ellipsoids with a few stray hair‑strand cylinders for detail.", "score": 7, "parts": [
+  {"name":"BaseMound","shape":"sphere","pos":[0.0,-0.0097,0.001],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffA","shape":"sphere","pos":[-0.015,-0.0022,0.011],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.06],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FluffB","shape":"sphere","pos":[0.02,-0.0017,-0.011],"rot":[0.0,0.0,0.0],"size":[0.06,0.022,0.07],"color":[0.59,0.57,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"FluffC","shape":"sphere","pos":[0.015,-0.0057,0.026],"rot":[0.0,0.0,0.0],"size":[0.05,0.018,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffD","shape":"sphere","pos":[-0.02,-0.0067,-0.021],"rot":[0.0,0.0,0.0],"size":[0.045,0.016,0.06],"color":[0.57,0.55,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"Strand1","shape":"cylinder","pos":[-0.025,0.0003,0.001],"rot":[20.0,0.0,0.0],"size":[0.004,0.04,0.004],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"Strand2","shape":"cylinder","pos":[0.03,0.0023,-0.009],"rot":[-15.0,0.0,45.0],"size":[0.004,0.038,0.004],"color":[0.61,0.59,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"Strand3","shape":"cylinder","pos":[0.0,-0.0017,0.031],"rot":[10.0,0.0,90.0],"size":[0.004,0.036,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strand4","shape":"cylinder","pos":[-0.01,-0.0007,-0.027],"rot":[-12.0,0.0,30.0],"size":[0.004,0.035,0.004],"color":[0.59,0.57,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"Strand5","shape":"cylinder","pos":[0.022,0.0013,0.016],"rot":[15.0,0.0,-20.0],"size":[0.004,0.037,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

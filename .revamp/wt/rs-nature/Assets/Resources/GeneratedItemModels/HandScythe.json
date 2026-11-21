@@ -1,0 +1,13 @@
+{"version": 1, "id": "HandScythe", "baseHeight": 0.0912, "name": "Hand Scythe", "model": "gpt-oss:120b", "notes": "Hand scythe ~1.2 m total length lying on its side (handle along X). Wooden handle ~0.8 m, leather grip, small steel guard, 0.6 m long thin metal blade with curved tip and edge bevels.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0375,-0.0087,-0.3425],"rot":[0.0,0.0,90.0],"size":[0.04,0.8,0.04],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherGrip","shape":"cylinder","pos":[-0.0375,-0.0037,-0.3425],"rot":[0.0,0.0,90.0],"size":[0.05,0.6,0.05],"color":[0.35,0.18,0.09],"smooth":0.05,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[0.2825,0.0013,-0.3425],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBase","shape":"cube","pos":[0.3875,0.0113,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.6],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeL","shape":"cube","pos":[0.365,0.0113,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.6],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeR","shape":"cube","pos":[0.41,0.0113,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.6],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.3875,0.0163,0.3175],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeRim","shape":"cylinder","pos":[0.3625,0.0113,-0.3425],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Bolt","shape":"sphere","pos":[0.3425,0.0113,-0.3425],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndCapLeft","shape":"cylinder","pos":[-0.4375,-0.0087,-0.3425],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndCapRight","shape":"cylinder","pos":[0.3625,-0.0087,-0.3425],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

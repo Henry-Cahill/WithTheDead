@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_HalloweenMaskDevil", "baseHeight": 0.09, "name": "Hat Halloween Mask Devil", "model": "gpt-oss:120b", "notes": "Halloween devil mask hat laid flat: 0.28 m brim diameter, 0.03 m thick crown panel, two short horns, dark eye patches, red nose tip and a mouth slit. Main fabric tint (0.55,0.5,0.6) with black trim and dark accents.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TrimBand","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.3],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"MaskFront","shape":"cube","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.025,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[-0.07,0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.07,0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EyeLeft","shape":"cube","pos":[-0.04,0.01,0.055],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.005],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"EyeRight","shape":"cube","pos":[0.04,0.01,0.055],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.005],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"NoseTip","shape":"sphere","pos":[0.0,0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Mouth","shape":"cube","pos":[0.0,-0.0,0.065],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.01],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0}
+]}

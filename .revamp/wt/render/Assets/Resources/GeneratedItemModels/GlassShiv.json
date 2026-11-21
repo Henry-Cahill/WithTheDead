@@ -1,0 +1,10 @@
+{"version": 1, "id": "GlassShiv", "baseHeight": 0.09, "name": "Glass Shiv", "model": "gpt-oss:120b", "notes": "Glass shiv ~0.80 m long lying on its side (X‑axis). Thin glass blade with a rounded tip, a thicker rear “pommel” for balance and a few small chips to suggest breakage. Main colour tint (0.6, 0.6, 0.64), high gloss.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cylinder","pos":[0.005,-0.01,-0.0002],"rot":[0.0,0.0,90.0],"size":[0.04,0.7,0.04],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.355,-0.01,-0.0002],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.04],"color":[0.58,0.58,0.62],"smooth":0.65,"metal":0.0},
+  {"name":"Pommel","shape":"cylinder","pos":[-0.345,0.0,-0.0002],"rot":[0.0,0.0,90.0],"size":[0.06,0.1,0.06],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":0.0},
+  {"name":"EdgeRidgeTop","shape":"cylinder","pos":[0.005,0.015,-0.0002],"rot":[0.0,0.0,90.0],"size":[0.006,0.68,0.006],"color":[0.62,0.62,0.66],"smooth":0.7,"metal":0.0},
+  {"name":"EdgeRidgeBottom","shape":"cylinder","pos":[0.005,-0.025,-0.0002],"rot":[0.0,0.0,90.0],"size":[0.006,0.68,0.006],"color":[0.58,0.58,0.62],"smooth":0.7,"metal":0.0},
+  {"name":"ChipL","shape":"cube","pos":[-0.195,-0.005,0.0148],"rot":[0.0,15.0,0.0],"size":[0.02,0.004,0.03],"color":[0.48,0.48,0.52],"smooth":0.55,"metal":0.0},
+  {"name":"ChipR","shape":"cube","pos":[0.105,-0.008,-0.0182],"rot":[0.0,-10.0,0.0],"size":[0.015,0.003,0.025],"color":[0.48,0.48,0.52],"smooth":0.55,"metal":0.0},
+  {"name":"SideHighlight","shape":"cube","pos":[0.005,0.006,0.0218],"rot":[0.0,0.0,0.0],"size":[0.68,0.004,0.008],"color":[0.65,0.65,0.7],"smooth":0.6,"metal":0.0}
+]}

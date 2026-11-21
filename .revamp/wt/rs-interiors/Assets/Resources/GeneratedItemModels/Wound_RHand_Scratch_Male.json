@@ -1,0 +1,8 @@
+{"version": 1, "id": "Wound_RHand_Scratch_Male", "baseHeight": 0.0672, "name": "Wound RHand Scratch Male", "model": "gpt-oss:120b", "notes": "Small cloth patch (≈ 12 cm × 8 cm) representing a scratched right‑hand wound, thin (~5 mm). Beige base colour with a darker edge trim and a tiny blood spot.", "score": 6, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[0.0015,-0.004,0.0007],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[0.0015,-0.0035,0.0007],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.084],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot","shape":"sphere","pos":[0.0265,-0.001,0.0307],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.78,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"FoldLine","shape":"cube","pos":[-0.0285,-0.001,0.0007],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.004],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRag","shape":"cube","pos":[-0.0535,0.0,-0.0343],"rot":[30.0,0.0,0.0],"size":[0.02,0.008,0.015],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LabelStub","shape":"cube","pos":[-0.0435,0.001,0.0207],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.015],"color":[0.4,0.38,0.32],"smooth":0.05,"metal":0.0}
+]}

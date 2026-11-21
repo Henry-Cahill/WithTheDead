@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wire", "baseHeight": 0.075, "name": "Wire", "model": "gpt-oss:120b", "notes": "Coiled steel wire lying on the floor: a flat disc‑shaped coil ~0.25 m across and 2 cm thick, with several raised loop segments around its edge to hint at the wire’s thickness and a short stray end of wire extending outward.", "score": 7, "parts": [
+  {"name":"CoilBase","shape":"cylinder","pos":[-0.0625,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Loop01","shape":"cylinder","pos":[0.0575,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Loop02","shape":"cylinder","pos":[0.0225,0.0,0.085],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Loop03","shape":"cylinder","pos":[-0.0625,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Loop04","shape":"cylinder","pos":[-0.1475,0.0,0.085],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Loop05","shape":"cylinder","pos":[-0.1825,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Loop06","shape":"cylinder","pos":[-0.1475,0.0,-0.085],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Loop07","shape":"cylinder","pos":[-0.0625,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Loop08","shape":"cylinder","pos":[0.0225,0.0,-0.085],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LooseEnd","shape":"cylinder","pos":[0.0875,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.2,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

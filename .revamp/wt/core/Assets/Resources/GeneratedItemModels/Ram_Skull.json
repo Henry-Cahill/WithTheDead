@@ -1,0 +1,13 @@
+{"version": 1, "id": "Ram_Skull", "baseHeight": 0.135, "name": "Ram Skull", "model": "gpt-oss:120b", "notes": "Ram skull about 0.20 m long × 0.18 m wide × 0.15 m high, lying on its back so the curved horns spread out left‑right. Main bone tinted 0.6 0.58 0.5 with darker eye sockets, keratin‑like horns and a small row of teeth.", "score": 6, "parts": [
+  {"name":"SkullBody","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.15,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[-0.09,0.055,0.03],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.09,0.055,0.03],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.035,0.04,0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.045,0.02],"color":[0.3,0.28,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.035,0.04,0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.045,0.02],"color":[0.3,0.28,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"NasalCavity","shape":"cylinder","pos":[0.0,0.015,0.075],"rot":[90.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.35,0.33,0.27],"smooth":0.05,"metal":0.0},
+  {"name":"Tooth1","shape":"cube","pos":[-0.02,-0.035,0.08],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.014],"color":[0.75,0.73,0.68],"smooth":0.3,"metal":0.0},
+  {"name":"Tooth2","shape":"cube","pos":[0.0,-0.035,0.08],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.014],"color":[0.75,0.73,0.68],"smooth":0.3,"metal":0.0},
+  {"name":"Tooth3","shape":"cube","pos":[0.02,-0.035,0.08],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.014],"color":[0.75,0.73,0.68],"smooth":0.3,"metal":0.0},
+  {"name":"JawBase","shape":"cube","pos":[0.0,-0.03,0.06],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.03],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SkullRim","shape":"cylinder","pos":[0.0,0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.01,0.19],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0}
+]}

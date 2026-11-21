@@ -1,0 +1,10 @@
+{"version": 1, "id": "CopperCup", "baseHeight": 0.1195, "name": "Copper Cup", "model": "gpt-oss:120b", "notes": "Copper cup about 10 cm tall, 8 cm diameter, wall ≈5 mm thick, lying on its side (long axis along X). Main body is a copper‑colored cylinder with a thinner inner cylinder to show thickness, a small rim band at one end and a vertical handle attached to the side.", "score": 6, "parts": [
+  {"name":"BodyOuter","shape":"cylinder","pos":[0.0,-0.0195,-0.002],"rot":[0.0,0.0,90.0],"size":[0.08,0.1,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BodyInner","shape":"cylinder","pos":[0.0,-0.0145,-0.002],"rot":[0.0,0.0,90.0],"size":[0.07,0.09,0.07],"color":[0.45,0.43,0.38],"smooth":0.25,"metal":1.0},
+  {"name":"RimBand","shape":"cube","pos":[0.045,-0.0195,-0.002],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.09],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.0205,0.038],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleCapTop","shape":"sphere","pos":[0.0,0.0505,0.038],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleCapBottom","shape":"sphere","pos":[0.0,-0.0095,0.038],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BottomBase","shape":"cylinder","pos":[-0.045,-0.0195,-0.002],"rot":[0.0,0.0,90.0],"size":[0.08,0.008,0.08],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"TopBase","shape":"cylinder","pos":[0.045,-0.0195,-0.002],"rot":[0.0,0.0,90.0],"size":[0.08,0.008,0.08],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":1.0}
+]}

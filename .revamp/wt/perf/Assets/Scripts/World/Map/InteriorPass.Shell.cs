@@ -1,0 +1,277 @@
+using System.Collections.Generic;
+using UnityEngine;
+using static CloneZ.KentuckyMap;
+
+namespace CloneZ
+{
+    // The inside of a building's outside walls, drawn into its shell while the site is built (cheap geometry, so every Full
+    // site gets it at once, furnished or not): each stretch of wall papered as the room it bounds, with skirting, rail and
+    // cornice, round the doorways; and the inside of every ground-floor window, its casing, sill, sashes and glass and what
+    // the room hangs there. The shell's walls are what the isometric cutaway lifts, so this goes with them.
+    internal static partial class InteriorPass
+    {
+        private const float LiningOff = 0.004f;   // the paper's distance in front of the wall's inner face
+        private const float DoorTop = 2.2f;       // the outside doorways' head (the exterior pass's doors are a little lower)
+        private const float SampleStep = 0.25f;
+
+        private static readonly Color Casing = new Color(0.40f, 0.30f, 0.20f);
+        private static readonly Color SashPaint = new Color(0.78f, 0.76f, 0.70f);
+        private static readonly Color PaneTint = new Color(0.16f, 0.20f, 0.25f);
+        private static readonly Color[] Fabrics =
+        {
+            new Color(0.62f, 0.40f, 0.42f), new Color(0.66f, 0.52f, 0.22f), new Color(0.46f, 0.54f, 0.42f), new Color(0.20f, 0.26f, 0.40f),
+            new Color(0.45f, 0.14f, 0.16f), new Color(0.72f, 0.64f, 0.50f), new Color(0.46f, 0.56f, 0.66f), new Color(0.42f, 0.30f, 0.22f),
+        };
+        private static readonly Color[] StainedGlass =
+        {
+            new Color(0.55f, 0.16f, 0.12f), new Color(0.16f, 0.26f, 0.52f), new Color(0.70f, 0.52f, 0.14f), new Color(0.20f, 0.40f, 0.22f),
+        };
+
+        private static readonly List<int> s_Rooms = new List<int>(128);
+        private static readonly List<float> s_At = new List<float>(128);
+
+        /// <summary>The plan's outside walls lined from inside and its windows dressed, into <paramref name="shell"/>'s walls.</summary>
+        private static void Linings(InteriorPlan plan, BuildingShell shell)
+        {
+            List<Vector2> p = plan.Footprint.Pts;
+            int n = p.Count;
+            float t = plan.Thick, h = plan.WallH;
+            var rng = new System.Random(unchecked(plan.Seed * 31 + 7));
+            Color fabric = Fabrics[rng.Next(Fabrics.Length)];
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 a = p[i], c = p[(i + 1) % n];
+                float len = Vector2.Distance(a, c);
+                if (len < 0.05f) continue;
+                Vector2 d = (c - a) / len, outward = new Vector2(d.y, -d.x);
+                Vector2 prevD = (p[i] - p[(i + n - 1) % n]).normalized, nextD = (p[(i + 2) % n] - c).normalized;
+                float s0 = InnerEnd(prevD, d, t), s1 = len - InnerEnd(d, nextD, t);
+                if (s1 - s0 < 0.1f) continue;
+                RaidMesh m = shell.WallsFacing(outward);
+                float yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                Vector3 inward = new Vector3(-outward.x, 0f, -outward.y);
+
+                // Which room each bit of the wall bounds.
+                s_Rooms.Clear();
+                s_At.Clear();
+                int steps = Mathf.Max(1, Mathf.CeilToInt((s1 - s0) / SampleStep));
+                for (int k = 0; k <= steps; k++)
+                {
+                    float s = Mathf.Lerp(s0, s1, k / (float)steps);
+                    Vector2 inside = plan.ToLocal(a + d * s - outward * (t + 0.35f));
+                    int room = plan.RoomAt(inside);
+                    if (room < 0)
+                    {
+                        room = plan.NearestRoom(inside);
+                        if (room >= 0 && Distance(plan.Rooms[room].R, inside) > 1.2f) room = -1;
+                    }
+                    s_Rooms.Add(room);
+                    s_At.Add(s);
+                }
+                int start = 0;
+                for (int k = 1; k <= steps + 1; k++)
+                {
+                    if (k <= steps && s_Rooms[k] == s_Rooms[start]) continue;
+                    int room = s_Rooms[start];
+                    float from = start == 0 ? s0 : Boundary(plan, a, d, outward, t, s_At[start - 1], s_At[start], s_Rooms[start - 1], room);
+                    float to = k > steps ? s1 : Boundary(plan, a, d, outward, t, s_At[k - 1], s_At[k], room, s_Rooms[k]);
+                    if (room >= 0 && plan.Rooms[room].Design != null && to - from > 0.02f)
+                        Stretch(plan, m, plan.Rooms[room], i, a, d, outward, inward, yaw, from, to, t, h);
+                    start = k;
+                }
+
+                // The windows on this wall, from inside.
+                foreach (WindowSpan w in plan.Record.Windows)
+                {
+                    if (w.Storey != 0 || w.Edge != i) continue;
+                    Vector2 mid = a + d * ((w.From + w.To) * 0.5f) - outward * (t + 0.35f);
+                    int room = plan.RoomAt(plan.ToLocal(mid));
+                    if (room < 0) room = plan.NearestRoom(plan.ToLocal(mid));
+                    PlanRoom r = room >= 0 ? plan.Rooms[room] : null;
+                    if (r != null && r.Design == null) continue;
+                    Window(plan, m, r, a, d, inward, yaw, w, t, fabric, rng);
+                }
+            }
+        }
+
+        // How far along an edge its inner face starts, where the previous edge (direction `before`) meets it (direction
+        // `after`): the wall thickness at a square corner, t·tan(turn/2) in general (negative at an inward corner).
+        private static float InnerEnd(Vector2 before, Vector2 after, float t)
+        {
+            float cross = before.x * after.y - before.y * after.x, dot = Vector2.Dot(before, after);
+            if (Mathf.Abs(cross) < 0.02f && dot > 0f) return 0f;   // straight on
+            float along = t * cross / Mathf.Max(0.05f, 1f + dot);
+            return Mathf.Clamp(along, -2f * t, 4f * t);
+        }
+
+        private static float Distance(Rect r, Vector2 q)
+        {
+            float dx = Mathf.Max(0f, Mathf.Max(r.xMin - q.x, q.x - r.xMax));
+            float dz = Mathf.Max(0f, Mathf.Max(r.yMin - q.y, q.y - r.yMax));
+            return Mathf.Sqrt(dx * dx + dz * dz);
+        }
+
+        // Where along the wall one room's paper gives way to the next's: on the partition's line when the two share one,
+        // else halfway between the samples.
+        private static float Boundary(InteriorPlan plan, Vector2 a, Vector2 d, Vector2 outward, float t, float sa, float sb, int ra, int rb)
+        {
+            if (ra >= 0 && rb >= 0)
+                foreach (PlanWall w in plan.Walls)
+                {
+                    if (!((w.Minus == ra && w.Plus == rb) || (w.Minus == rb && w.Plus == ra))) continue;
+                    Vector2 la = plan.ToLocal(a + d * sa - outward * t), lb = plan.ToLocal(a + d * sb - outward * t);
+                    float ca = w.AlongX ? la.y : la.x, cb = w.AlongX ? lb.y : lb.x;
+                    if (Mathf.Abs(cb - ca) < 1e-4f) break;
+                    float k = (w.Coord - ca) / (cb - ca);
+                    if (k >= -0.5f && k <= 1.5f) return Mathf.Lerp(sa, sb, Mathf.Clamp01(k));
+                }
+            return (sa + sb) * 0.5f;
+        }
+
+        // One room's stretch of an outside wall, from `from` to `to` along the edge: the paper, skirting, rail and cornice,
+        // round any outside doorway in it (with the doorway's casing).
+        private static void Stretch(InteriorPlan plan, RaidMesh m, PlanRoom room, int edge, Vector2 a, Vector2 d, Vector2 outward,
+            Vector3 inward, float yaw, float from, float to, float t, float h)
+        {
+            WallDesign design = room.Design;
+            Surf paper = DecorMaterials.WallInterior(design);
+            Surf trim = DecorPalette.Matte(design.Trim);
+            float cursor = from;
+            // The doorways along this stretch, in order.
+            for (int pass = 0; pass < 8; pass++)
+            {
+                float nextDoor = float.MaxValue, doorHalf = 0f;
+                foreach (Doorway door in plan.Record.Doors)
+                {
+                    if (door.Edge != edge) continue;
+                    float s = Vector2.Dot(door.At - a, d), half = (door.Width > 0.5f ? door.Width : 1.2f) * 0.5f;
+                    if (s + half <= cursor + 0.01f || s - half >= to) continue;
+                    if (s < nextDoor) { nextDoor = s; doorHalf = half; }
+                }
+                if (nextDoor == float.MaxValue) break;
+                float d0 = Mathf.Max(cursor, nextDoor - doorHalf), d1 = Mathf.Min(to, nextDoor + doorHalf);
+                Panel(m, a, d, outward, inward, yaw, cursor, d0, 0f, h, t, paper, trim, design, true);
+                Panel(m, a, d, outward, inward, yaw, d0, d1, DoorTop, h, t, paper, trim, design, false);
+                DoorCasing(m, a, d, outward, inward, yaw, nextDoor, doorHalf, t, trim);
+                cursor = d1;
+            }
+            Panel(m, a, d, outward, inward, yaw, cursor, to, 0f, h, t, paper, trim, design, true);
+        }
+
+        // Paper over the wall from `s0` to `s1` along it and from `y0` to `y1` up it, with the room's trims where they fall.
+        private static void Panel(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, Vector3 inward, float yaw, float s0, float s1,
+            float y0, float y1, float t, in Surf paper, in Surf trim, WallDesign design, bool skirting)
+        {
+            float len = s1 - s0;
+            if (len < 0.02f || y1 - y0 < 0.02f) return;
+            Vector2 mid = a + d * ((s0 + s1) * 0.5f) - outward * (t + LiningOff);
+            m.Upright(KentuckyMap.To3(mid, (y0 + y1) * 0.5f), inward, len, y1 - y0, paper);
+            Vector2 trimAt = a + d * ((s0 + s1) * 0.5f) - outward * (t + LiningOff + 0.008f);
+            if (skirting && y0 < 0.1f) m.Box(KentuckyMap.To3(trimAt, 0.06f), new Vector3(len, 0.12f, 0.016f), yaw, trim);
+            float rail = design.RailHeight;
+            if (rail > y0 + 0.05f && rail < y1 - 0.3f)
+                m.Box(KentuckyMap.To3(a + d * ((s0 + s1) * 0.5f) - outward * (t + LiningOff + 0.012f), rail + 0.01f), new Vector3(len, 0.06f, 0.024f), yaw, trim);
+            m.Box(KentuckyMap.To3(trimAt, y1 - 0.03f), new Vector3(len, 0.06f, 0.02f), yaw, trim);
+        }
+
+        // The inside casing round an outside doorway.
+        private static void DoorCasing(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, Vector3 inward, float yaw, float s, float half,
+            float t, in Surf trim)
+        {
+            Surf wood = DecorPalette.Matte(Casing);
+            float off = t + 0.012f;
+            for (int e = -1; e <= 1; e += 2)
+                m.Box(KentuckyMap.To3(a + d * (s + e * (half + 0.035f)) - outward * off, (DoorTop + 0.07f) * 0.5f), new Vector3(0.07f, DoorTop + 0.07f, 0.024f), yaw, wood);
+            m.Box(KentuckyMap.To3(a + d * s - outward * off, DoorTop + 0.035f), new Vector3(half * 2f + 0.14f, 0.07f, 0.024f), yaw, wood);
+        }
+
+        // A window from inside: the glass and the sashes in the reveal, the casing, the stool, and what the room hangs there —
+        // a home's curtains, a workplace's blind, a church's coloured glass, nothing in a shop or a shed.
+        private static void Window(InteriorPlan plan, RaidMesh m, PlanRoom room, Vector2 a, Vector2 d, Vector3 inward, float yaw,
+            WindowSpan w, float t, Color fabric, System.Random rng)
+        {
+            float width = w.To - w.From, sill = Mathf.Max(0.2f, w.Sill), head = Mathf.Max(sill + 0.3f, w.Head);
+            if (width < 0.3f) return;
+            Vector2 outward = new Vector2(d.y, -d.x);
+            float mid = (w.From + w.To) * 0.5f, hgt = head - sill, cy = (sill + head) * 0.5f;
+            Vector3 c = KentuckyMap.To3(a + d * mid - outward * (t + 0.006f), cy);   // the glazing, just proud of the paper
+            Vector3 along = new Vector3(d.x, 0f, d.y);
+            RoomRole role = room != null ? room.Role : RoomRole.Stock;
+            bool church = role == RoomRole.Nave || role == RoomRole.Narthex || role == RoomRole.Chapel;
+            Color glassTint = church ? StainedGlass[rng.Next(StainedGlass.Length)] : PaneTint;
+            m.Upright(c, inward, width, hgt, church ? DecorPalette.Gloss(glassTint) : DecorPalette.Glass(glassTint));
+            Surf sash = DecorPalette.Matte(SashPaint);
+            // The sashes' frames and the meeting rail; a church's tall lights get leading instead.
+            Vector3 face = c + inward * 0.02f;
+            m.Box(face + Vector3.up * (hgt * 0.5f - 0.025f), new Vector3(width, 0.05f, 0.03f), yaw, sash);
+            m.Box(face - Vector3.up * (hgt * 0.5f - 0.03f), new Vector3(width, 0.06f, 0.03f), yaw, sash);
+            for (int e = -1; e <= 1; e += 2) m.Box(face + along * (e * (width * 0.5f - 0.025f)), new Vector3(0.05f, hgt, 0.03f), yaw, sash);
+            if (church)
+            {
+                Surf lead = DecorPalette.Matte(new Color(0.12f, 0.12f, 0.12f));
+                for (int k = 1; k < 4; k++) m.Box(face + Vector3.up * (hgt * (k / 4f - 0.5f)), new Vector3(width, 0.02f, 0.015f), yaw, lead);
+                m.Box(face, new Vector3(0.02f, hgt, 0.015f), yaw, lead);
+            }
+            else
+            {
+                m.Box(face, new Vector3(width, 0.045f, 0.035f), yaw, sash);
+                m.Box(face, new Vector3(0.025f, hgt, 0.025f), yaw, sash);
+            }
+            // The casing round the opening, and the stool under it.
+            Vector2 at = a + d * mid - outward * (t + 0.012f);
+            Surf wood = DecorPalette.Matte(Casing);
+            for (int e = -1; e <= 1; e += 2)
+                m.Box(KentuckyMap.To3(at + d * (e * (width * 0.5f + 0.035f)), cy), new Vector3(0.07f, hgt + 0.14f, 0.024f), yaw, wood);
+            m.Box(KentuckyMap.To3(at, head + 0.035f), new Vector3(width + 0.14f, 0.07f, 0.024f), yaw, wood);
+            m.Box(KentuckyMap.To3(a + d * mid - outward * (t + 0.03f), sill - 0.01f), new Vector3(width + 0.18f, 0.04f, 0.08f), yaw, wood);
+            if (room == null) return;
+
+            switch (role)
+            {
+                case RoomRole.Living: case RoomRole.Bedroom: case RoomRole.Dining: case RoomRole.Den: case RoomRole.Guest:
+                case RoomRole.Sacristy: case RoomRole.Bar: case RoomRole.Eatery: case RoomRole.Chapel:
+                    Curtains(m, a, d, outward, inward, yaw, mid, width, sill, head, t, fabric, rng);
+                    break;
+                case RoomRole.Kitchen: case RoomRole.Bathroom:
+                    // A cafe curtain over the lower half.
+                    Vector2 cafe = a + d * mid - outward * (t + 0.05f);
+                    float top = cy + 0.05f;
+                    m.Box(KentuckyMap.To3(cafe, top), new Vector3(width + 0.06f, 0.015f, 0.015f), yaw, DecorPalette.Metal(FurnitureBuilder.Brass));
+                    m.Box(KentuckyMap.To3(cafe, (top + sill) * 0.5f), new Vector3(width - 0.04f, top - sill - 0.04f, 0.012f), yaw,
+                        DecorPalette.Matte(Color.Lerp(fabric, Color.white, 0.55f)));
+                    break;
+                case RoomRole.Office: case RoomRole.BackOffice: case RoomRole.OpenOffice: case RoomRole.Squad: case RoomRole.Classroom:
+                case RoomRole.Exam: case RoomRole.Ward: case RoomRole.Waiting: case RoomRole.Lobby: case RoomRole.Records:
+                case RoomRole.Meeting: case RoomRole.Stacks: case RoomRole.BreakRoom: case RoomRole.DayRoom: case RoomRole.Bunks:
+                    // A roller blind, part way down.
+                    float down = hgt * (0.2f + 0.6f * (float)rng.NextDouble());
+                    Vector2 blind = a + d * mid - outward * (t + 0.05f);
+                    m.CylinderX(KentuckyMap.To3(blind, head - 0.04f), 0.025f, width, 8, DecorPalette.Matte(new Color(0.84f, 0.80f, 0.68f)), yaw);
+                    m.Box(KentuckyMap.To3(blind, head - 0.06f - down * 0.5f), new Vector3(width - 0.02f, down, 0.006f), yaw,
+                        DecorPalette.Matte(new Color(0.82f, 0.78f, 0.64f)));
+                    m.Box(KentuckyMap.To3(blind, head - 0.06f - down), new Vector3(width, 0.02f, 0.014f), yaw, DecorPalette.Matte(Casing));
+                    break;
+            }
+        }
+
+        // A pair of curtains on a rod over the casing, drawn back to either side.
+        private static void Curtains(RaidMesh m, Vector2 a, Vector2 d, Vector2 outward, Vector3 inward, float yaw, float mid, float width,
+            float sill, float head, float t, Color fabric, System.Random rng)
+        {
+            float rodY = head + 0.13f, off = t + 0.08f;
+            Vector2 rod = a + d * mid - outward * off;
+            m.Box(KentuckyMap.To3(rod, rodY), new Vector3(width + 0.5f, 0.024f, 0.024f), yaw, DecorPalette.Metal(FurnitureBuilder.Brass));
+            float bottom = sill - 0.12f, hgt = rodY - bottom;
+            Surf cloth = DecorPalette.Matte(fabric), fold = DecorPalette.Matte(fabric * 0.84f);
+            for (int e = -1; e <= 1; e += 2)
+            {
+                float panel = 0.26f + 0.08f * (float)rng.NextDouble();
+                Vector2 at = a + d * (mid + e * (width * 0.5f + 0.17f - panel * 0.3f)) - outward * (off - 0.02f);
+                m.Box(KentuckyMap.To3(at, bottom + hgt * 0.5f), new Vector3(panel, hgt, 0.035f), yaw, cloth);
+                m.Box(KentuckyMap.To3(at - outward * 0.02f + d * (e * 0.05f), bottom + hgt * 0.5f), new Vector3(panel * 0.3f, hgt, 0.02f), yaw, fold);
+                // The tie-back.
+                m.Box(KentuckyMap.To3(at - outward * 0.025f, bottom + hgt * 0.42f), new Vector3(panel + 0.02f, 0.04f, 0.04f), yaw, DecorPalette.Matte(fabric * 0.7f));
+            }
+        }
+    }
+}

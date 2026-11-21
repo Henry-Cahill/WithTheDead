@@ -1,0 +1,11 @@
+{"version": 1, "id": "Saucepan", "baseHeight": 0.2125, "name": "Saucepan", "model": "gpt-oss:120b", "notes": "Saucepan melee weapon ~0.25 m long (including handle) lying on its side; steel body with a short wooden handle attached to the side of the bowl. Main silhouette: cylindrical bowl + rectangular handle bar.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0088,-0.0275,0.0],"rot":[0.0,0.0,90.0],"size":[0.24,0.25,0.24],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0088,-0.0225,0.0],"rot":[0.0,0.0,90.0],"size":[0.26,0.255,0.26],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"Base","shape":"cylinder","pos":[-0.1062,-0.0275,0.0],"rot":[0.0,0.0,90.0],"size":[0.24,0.02,0.24],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HandleBar","shape":"cube","pos":[-0.1062,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.15,0.04],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"HandleKnob","shape":"sphere","pos":[-0.1062,0.1225,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.0612,-0.0275,0.09],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.0788,-0.0275,-0.09],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFront","shape":"sphere","pos":[0.0088,-0.0275,0.11],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBack","shape":"sphere","pos":[0.0088,-0.0275,-0.11],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

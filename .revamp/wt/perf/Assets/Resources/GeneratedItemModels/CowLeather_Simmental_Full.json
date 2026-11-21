@@ -1,0 +1,9 @@
+{"version": 1, "id": "CowLeather_Simmental_Full", "baseHeight": 0.0775, "name": "Cow Leather Simmental Full", "model": "gpt-oss:120b", "notes": "Cow hide laid flat on the floor – approx 1.5 m long × 0.8 m wide × 2.5 cm thick. Main leather slab with rolled‑edge borders, a faint stitching line across the centre and a small tag in one corner.", "score": 7, "parts": [
+  {"name":"HideBase","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[1.5,0.025,0.8],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0025,0.4],"rot":[0.0,0.0,0.0],"size":[1.5,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0025,-0.4],"rot":[0.0,0.0,0.0],"size":[1.5,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.75,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.8],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.75,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.8],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[1.4,0.002,0.005],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.7,0.0125,-0.35],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

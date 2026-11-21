@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_BaseballCapTINT", "baseHeight": 0.125, "name": "Hat Baseball Cap TINT", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out as in a product photo – rounded crown (cylinder) about 0.44 m wide, 0.12 m tall, with a front brim extending ~0.07 m forward. Includes a decorative top button and a thin crown band for seam detail.", "score": 6, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.005,-0.035],"rot":[0.0,0.0,0.0],"size":[0.44,0.12,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cube","pos":[0.0,-0.0625,0.22],"rot":[0.0,0.0,0.0],"size":[0.44,0.005,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBand","shape":"cylinder","pos":[0.0,-0.005,-0.035],"rot":[0.0,0.0,0.0],"size":[0.44,0.004,0.44],"color":[0.495,0.45,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.05,-0.035],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.005,0.185],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.004],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.18,-0.005,-0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.1,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.18,-0.005,-0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.1,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

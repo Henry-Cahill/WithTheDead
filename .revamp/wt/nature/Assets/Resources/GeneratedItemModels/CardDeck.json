@@ -1,0 +1,9 @@
+{"version": 1, "id": "CardDeck", "baseHeight": 0.0685, "name": "Card Deck", "model": "gpt-oss:120b", "notes": "Card deck ~0.09 m long × 0.06 m wide × 0.015 m thick lying flat (long axis along +X, width along +Z). Main stack of paper cards with a thin printed front face and back cover, plus a small logo label on the front.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.0005,-0.001,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontCover","shape":"cube","pos":[-0.0005,0.007,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"BackCover","shape":"cube","pos":[-0.0005,0.007,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.55,0.52,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"LogoLabel","shape":"cube","pos":[-0.0255,0.0075,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.03],"color":[0.4,0.35,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRidgeTop","shape":"cube","pos":[-0.0005,0.0073,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.55,0.53,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeRidgeSideX","shape":"cube","pos":[0.0445,-0.0005,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.06],"color":[0.55,0.53,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeRidgeSideZ","shape":"cube","pos":[-0.0005,-0.0005,0.0295],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.002],"color":[0.55,0.53,0.48],"smooth":0.07,"metal":0.0}
+]}

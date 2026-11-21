@@ -1,0 +1,9 @@
+{"version": 1, "id": "Bleach", "baseHeight": 0.105, "name": "Bleach", "model": "gpt-oss:120b", "notes": "Bleach bottle lying on its side (≈0.24 m long × 0.08 m diameter). Plastic body with a narrower neck, screw‑cap and a white label strip.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.24,0.08],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.06,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.04,0.07],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CapBase","shape":"cylinder","pos":[0.09,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.02,0.09],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":0.0},
+  {"name":"CapTop","shape":"sphere","pos":[0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.078,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.004,0.08],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":0.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.158,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.004,0.08],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.04,0.0,0.041],"rot":[0.0,0.0,0.0],"size":[0.14,0.06,0.002],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0}
+]}

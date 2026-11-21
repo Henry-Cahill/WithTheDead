@@ -1,0 +1,10 @@
+{"version": 1, "id": "ClayShingle", "baseHeight": 0.068, "name": "Clay Shingle", "model": "gpt-oss:120b", "notes": "Clay shingle about 0.30 m long × 0.20 m wide × 0.012 m thick, lying flat on the ground. Main body with raised rim edges all around and a thin central ridge to hint at the overlapping pattern of roof tiles.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.2],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0,0.0,0.101],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0,0.0,-0.101],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.151,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.2],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.151,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.2],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CentralRidge","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.015],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Bump1","shape":"cube","pos":[-0.07,0.006,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Bump2","shape":"cube","pos":[0.08,0.006,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "WoodenMallet", "baseHeight": 0.0963, "name": "Wooden Mallet", "model": "gpt-oss:120b", "notes": "Wooden mallet ~0.38 m long lying on its side, wooden handle along X, chunky rectangular head crossing the handle with a flat striking face to +Z. All wood tinted (0.6,0.6,0.64) with soft‑wood smoothness.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0425,-0.0213,-0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.28,0.025],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Head","shape":"cube","pos":[0.1375,0.0013,-0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.07,0.12],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"StrikingFace","shape":"cube","pos":[0.1375,0.0013,0.058],"rot":[0.0,0.0,0.0],"size":[0.08,0.07,0.004],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"GripRing","shape":"cylinder","pos":[0.0175,-0.0213,-0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.015,0.03],"color":[0.45,0.42,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"HeadRim","shape":"cylinder","pos":[0.1375,0.0013,-0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.09],"color":[0.5,0.5,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"WoodGrain1","shape":"cylinder","pos":[0.0075,-0.0213,0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.25,0.008],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"WoodGrain2","shape":"cylinder","pos":[0.0075,-0.0213,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.25,0.008],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Screwdriver_Old", "baseHeight": 0.0825, "name": "Screwdriver Old", "model": "gpt-oss:120b", "notes": "Old screwdriver melee weapon ~0.60 m long lying on its side (X‑axis). Plastic/wood handle, steel shaft and tip, with a pointed metal end for clear silhouette.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.1255,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"GripRing","shape":"cylinder","pos":[-0.0305,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.005,0.045],"color":[0.45,0.45,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[0.1495,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.2745,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.05,0.015],"color":[0.8,0.78,0.82],"smooth":0.6,"metal":1.0},
+  {"name":"Point","shape":"sphere","pos":[0.2995,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.9,0.88,0.92],"smooth":0.7,"metal":1.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.3005,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.008,0.045],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0}
+]}

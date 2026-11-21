@@ -1,0 +1,10 @@
+{"version": 1, "id": "Bullets38Box", "baseHeight": 0.076, "name": "Bullets38 Box", "model": "gpt-oss:120b", "notes": "Flat rectangular ammo box ~12 cm × 8 cm × 3 cm lying on its side: brown‑grey cardboard shell, thin lid flap, printed label on front, internal divider and a few loose .38 rounds peeking out.", "score": 7, "parts": [
+  {"name":"Shell","shape":"cube","pos":[0.0,-0.001,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.015,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.001,0.0403],"rot":[0.0,0.0,0.0],"size":[0.1,0.018,0.002],"color":[0.32,0.28,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"Divider","shape":"cube","pos":[0.0,-0.001,-0.0213],"rot":[0.0,0.0,0.0],"size":[0.115,0.028,0.002],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Bullet1","shape":"cylinder","pos":[-0.03,0.002,-0.0163],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Bullet2","shape":"cylinder","pos":[0.0,0.002,-0.0163],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Bullet3","shape":"cylinder","pos":[0.03,0.002,-0.0163],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BottomSeal","shape":"cube","pos":[0.0,-0.015,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

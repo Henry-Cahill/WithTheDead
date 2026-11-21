@@ -1,0 +1,11 @@
+{"version": 1, "id": "Scarf_StripeBlueWhite", "baseHeight": 0.0675, "name": "Scarf Stripe Blue White", "model": "gpt-oss:120b", "notes": "Flat striped scarf ~1.6 m long × 0.25 m wide × 0.015 m thick, lying on the floor (centered at X/Z = 0). Base fabric uses the item tint; thin blue‑white stripe panels run across the width.", "score": 7, "parts": [
+  {"name":"BaseFabric","shape":"cube","pos":[0.0,0.0,-0.0003],"rot":[0.0,0.0,0.0],"size":[1.6,0.015,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StripeBlue_1","shape":"cube","pos":[0.0,0.0015,-0.1003],"rot":[0.0,0.0,0.0],"size":[1.6,0.003,0.031],"color":[0.2,0.3,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhite_1","shape":"cube","pos":[0.0,0.0015,-0.0703],"rot":[0.0,0.0,0.0],"size":[1.6,0.003,0.031],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StripeBlue_2","shape":"cube","pos":[0.0,0.0015,-0.0403],"rot":[0.0,0.0,0.0],"size":[1.6,0.003,0.031],"color":[0.2,0.3,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhite_2","shape":"cube","pos":[0.0,0.0015,-0.0103],"rot":[0.0,0.0,0.0],"size":[1.6,0.003,0.031],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StripeBlue_3","shape":"cube","pos":[0.0,0.0015,0.0198],"rot":[0.0,0.0,0.0],"size":[1.6,0.003,0.031],"color":[0.2,0.3,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhite_3","shape":"cube","pos":[0.0,0.0015,0.0498],"rot":[0.0,0.0,0.0],"size":[1.6,0.003,0.031],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StripeBlue_4","shape":"cube","pos":[0.0,0.0015,0.0798],"rot":[0.0,0.0,0.0],"size":[1.6,0.003,0.031],"color":[0.2,0.3,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhite_4","shape":"cube","pos":[0.0,0.0015,0.1098],"rot":[0.0,0.0,0.0],"size":[1.6,0.003,0.031],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0}
+]}

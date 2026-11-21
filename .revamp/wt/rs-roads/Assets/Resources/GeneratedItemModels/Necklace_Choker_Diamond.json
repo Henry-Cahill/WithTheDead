@@ -1,0 +1,9 @@
+{"version": 1, "id": "Necklace_Choker_Diamond", "baseHeight": 0.067, "name": "Necklace Choker Diamond", "model": "gpt-oss:120b", "notes": "Thin choker‑style necklace about 13 cm across, 5 mm thick flat metal band (tint 0.6,0.58,0.5) lying on the floor, with three sparkling diamond studs – one centered front and two offset to the sides.", "score": 6, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.13],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"DiamondFront","shape":"sphere","pos":[0.0,0.001,0.045],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.95,1.0],"smooth":0.85,"metal":0.0},
+  {"name":"DiamondLeft","shape":"sphere","pos":[-0.035,0.001,0.032],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.9,0.95,1.0],"smooth":0.85,"metal":0.0},
+  {"name":"DiamondRight","shape":"sphere","pos":[0.035,0.001,0.032],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.9,0.95,1.0],"smooth":0.85,"metal":0.0},
+  {"name":"Clasp","shape":"cube","pos":[0.0,-0.003,-0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BandEdgeFront","shape":"cube","pos":[0.0,-0.002,0.065],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.004],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BandEdgeBack","shape":"cube","pos":[0.0,-0.002,-0.065],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.004],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0}
+]}

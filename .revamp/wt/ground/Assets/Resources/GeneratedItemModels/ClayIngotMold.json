@@ -1,0 +1,9 @@
+{"version": 1, "id": "ClayIngotMold", "baseHeight": 0.0825, "name": "Clay Ingot Mold", "model": "gpt-oss:120b", "notes": "Clay ingot mold ~12 cm long × 7 cm wide × 4 cm thick, lying on its side (long axis X). Main rectangular body of baked clay with a shallow cavity for the ingot, a small front knob and reinforced corner ribs.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0025,-0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.07],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Cavity","shape":"sphere","pos":[-0.0175,0.0075,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.09,0.025,0.06],"color":[0.48,0.45,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Knob","shape":"cylinder","pos":[0.0425,0.0125,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.015],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"RibL","shape":"cube","pos":[-0.0525,0.0025,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"RibR","shape":"cube","pos":[-0.0525,0.0025,0.0275],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"RibFront","shape":"cube","pos":[-0.0525,0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.015],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"RibBack","shape":"cube","pos":[-0.0525,0.0025,-0.0025],"rot":[0.0,-180.0,0.0],"size":[0.01,0.04,0.015],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0}
+]}

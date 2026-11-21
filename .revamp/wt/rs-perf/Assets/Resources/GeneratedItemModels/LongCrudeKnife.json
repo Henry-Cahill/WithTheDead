@@ -1,0 +1,8 @@
+{"version": 1, "id": "LongCrudeKnife", "baseHeight": 0.0875, "name": "Long Crude Knife", "model": "gpt-oss:120b", "notes": "Long crude knife ~1.05 m total length (0.9 m steel blade + 0.2 m wooden handle). Blade lies along X, tip at +X, pommel at –X. Simple metal guard between blade and handle.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.105,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.005,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.575,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.01,0.01],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.355,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.06],"color":[0.55,0.55,0.58],"smooth":0.4,"metal":0.9},
+  {"name":"Handle","shape":"cylinder","pos":[-0.465,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.2,0.03],"color":[0.45,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.585,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.55,0.58],"smooth":0.4,"metal":0.9},
+  {"name":"TipCap","shape":"sphere","pos":[0.595,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

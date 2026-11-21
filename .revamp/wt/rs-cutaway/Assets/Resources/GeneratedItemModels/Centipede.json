@@ -1,0 +1,14 @@
+{"version": 1, "id": "Centipede", "baseHeight": 0.1305, "name": "Centipede", "model": "gpt-oss:120b", "notes": "Small tin of canned centipede snack – approx 0.09 m diameter × 0.13 m tall. Metal body with recessed lid, tan‑coloured label, and a few segmented ellipsoids inside to hint at the centipede.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.13,0.09],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0555,0.0],"rot":[0.0,0.0,0.0],"size":[0.094,0.008,0.094],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0665,0.0],"rot":[0.0,0.0,0.0],"size":[0.094,0.008,0.094],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0645,0.0],"rot":[0.0,0.0,0.0],"size":[0.088,0.012,0.088],"color":[0.7,0.7,0.73],"smooth":0.45,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.12,0.082],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0515,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.008,0.084],"color":[0.35,0.25,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.008,0.084],"color":[0.35,0.25,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"Segment1","shape":"sphere","pos":[-0.02,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.008],"color":[0.675,0.612,0.405],"smooth":0.05,"metal":0.0},
+  {"name":"Segment2","shape":"sphere","pos":[-0.01,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.008],"color":[0.675,0.612,0.405],"smooth":0.05,"metal":0.0},
+  {"name":"Segment3","shape":"sphere","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.008],"color":[0.675,0.612,0.405],"smooth":0.05,"metal":0.0},
+  {"name":"Segment4","shape":"sphere","pos":[0.01,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.008],"color":[0.675,0.612,0.405],"smooth":0.05,"metal":0.0},
+  {"name":"Segment5","shape":"sphere","pos":[0.02,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.008],"color":[0.675,0.612,0.405],"smooth":0.05,"metal":0.0}
+]}

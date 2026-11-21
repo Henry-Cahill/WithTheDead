@@ -1,0 +1,14 @@
+{"version": 1, "id": "BaseballBat_Nails", "baseHeight": 0.15, "name": "Baseball Bat Nails", "model": "gpt-oss:120b", "notes": "Baseball bat with nails, total length ≈ 0.85 m (handle 0.30 m × 0.06 m dia., barrel 0.55 m long up to 0.14 m dia.). Five short metal spikes around the tip give a clear business‑end silhouette.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.285,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.3,0.06],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.285,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.4,0.4,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.14,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.55,0.14],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[-0.135,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.16,0.04,0.16],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"TipCap","shape":"cylinder","pos":[0.425,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.02,0.14],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[0.425,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.008,0.18],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"Nail1","shape":"cylinder","pos":[0.37,0.0,0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"Nail2","shape":"cylinder","pos":[0.37,0.0,-0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"Nail3","shape":"cylinder","pos":[0.37,0.0,0.03],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"Nail4","shape":"cylinder","pos":[0.37,0.0,-0.03],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"Nail5","shape":"cylinder","pos":[0.37,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"WoodStrip","shape":"cube","pos":[-0.285,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.06],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0}
+]}

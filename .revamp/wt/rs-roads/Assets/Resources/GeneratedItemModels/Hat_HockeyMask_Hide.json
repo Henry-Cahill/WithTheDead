@@ -1,0 +1,17 @@
+{"version": 1, "id": "Hat_HockeyMask_Hide", "baseHeight": 0.07, "name": "Hat Hockey Mask Hide", "model": "gpt-oss:120b", "notes": "Hockey mask made of hide – laid flat like a product photo. Overall outline ~0.28 m wide × 0.35 m tall, 2 cm thick. Main oval shell with side flanges, top/bottom leather bands, two crossing straps, several vent holes and rivet details.", "score": 6, "parts": [
+  {"name":"Shell","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.35],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FlangeLeft","shape":"cube","pos":[-0.16,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.4],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"FlangeRight","shape":"cube","pos":[0.16,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.4],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"TopBand","shape":"cube","pos":[0.0,0.002,0.175],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.02],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BottomBand","shape":"cube","pos":[0.0,0.002,-0.175],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.02],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"StrapTop","shape":"cube","pos":[0.0,0.003,0.07],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.015],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrapBottom","shape":"cube","pos":[0.0,0.003,-0.07],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.015],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"VentFrontLeft","shape":"cylinder","pos":[-0.06,0.0,0.12],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"VentFrontRight","shape":"cylinder","pos":[0.06,0.0,0.12],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"VentBackLeft","shape":"cylinder","pos":[-0.06,0.0,-0.12],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"VentBackRight","shape":"cylinder","pos":[0.06,0.0,-0.12],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.13,0.004,0.165],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.2,0.18,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.13,0.004,0.165],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.2,0.18,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.13,0.004,-0.165],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.2,0.18,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.13,0.004,-0.165],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.2,0.18,0.22],"smooth":0.6,"metal":1.0}
+]}

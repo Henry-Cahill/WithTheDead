@@ -1,0 +1,10 @@
+{"version": 1, "id": "Kneepad_Right", "baseHeight": 0.085, "name": "Kneepad Right", "model": "gpt-oss:120b", "notes": "Right‑hand kneepad ~0.18 m long × 0.12 m wide, ≈2 cm thick with a rounded top surface and a small strap loop on the back side. Brown‑tinted fabric (0.6,0.58,0.5) with a faint metal edge rim.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopCurve","shape":"sphere","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.12],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.09,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.12],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.2},
+  {"name":"EdgeBack","shape":"cube","pos":[-0.09,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.12],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.2},
+  {"name":"EdgeLeft","shape":"cube","pos":[0.0,-0.0025,0.06],"rot":[0.0,0.0,90.0],"size":[0.004,0.025,0.18],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.2},
+  {"name":"EdgeRight","shape":"cube","pos":[0.0,-0.0025,-0.06],"rot":[0.0,0.0,90.0],"size":[0.004,0.025,0.18],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.2},
+  {"name":"StrapLoop","shape":"cylinder","pos":[-0.07,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.6},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.1],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0}
+]}

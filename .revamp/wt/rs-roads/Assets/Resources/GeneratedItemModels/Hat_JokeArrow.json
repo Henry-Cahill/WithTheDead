@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_JokeArrow", "baseHeight": 0.0725, "name": "Hat Joke Arrow", "model": "gpt-oss:120b", "notes": "Flat novelty hat 0.28 m brim diameter × 0.18 m crown height, 2‑3 cm thick. Brim ring, square crown panel, dark band and a forward‑pointing arrow (shaft + tip) with side feathers.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cube","pos":[0.0,-0.0025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.0085,-0.06],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.0075,-0.06],"rot":[0.0,0.0,0.0],"size":[0.24,0.009,0.24],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cube","pos":[0.0,0.0095,-0.06],"rot":[0.0,0.0,0.0],"size":[0.16,0.004,0.16],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"ArrowShaft","shape":"cube","pos":[0.0,0.0025,0.14],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.12],"color":[0.7,0.65,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"ArrowTip","shape":"cylinder","pos":[0.0,0.0025,0.16],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.7,0.65,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"FeatherL","shape":"cube","pos":[-0.025,0.0015,0.1],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.03],"color":[0.7,0.65,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"FeatherR","shape":"cube","pos":[0.025,0.0015,0.1],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.03],"color":[0.7,0.65,0.75],"smooth":0.4,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "SmokeBombSensorV1", "baseHeight": 0.115, "name": "Smoke Bomb Sensor V1", "model": "gpt-oss:120b", "notes": "Long baton‑style melee weapon ~0.8 m long x 0.05 m thick with a compact sensor head at the +X end (≈0.2 m×0.1 m×0.15 m). Main body uses the grey‑blue tint, rubber grip for handling and a blue‑glow sensor lens on the business end.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0825,-0.03,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.05,0.6,0.05],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripMid","shape":"cylinder","pos":[-0.1825,-0.02,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.2,0.22,0.26],"smooth":0.3,"metal":0.0},
+  {"name":"GripEnd","shape":"cylinder","pos":[0.1675,-0.02,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.2,0.22,0.26],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBox","shape":"cube","pos":[0.2675,-0.01,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.18,0.09,0.12],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"SensorLens","shape":"sphere","pos":[0.3375,0.015,0.0525],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.03],"color":[0.2,0.4,0.9],"smooth":0.6,"metal":0.0},
+  {"name":"LensCover","shape":"cylinder","pos":[0.3375,0.01,0.0525],"rot":[90.0,0.0,0.0],"size":[0.09,0.005,0.09],"color":[0.4,0.45,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"ButtonA","shape":"cube","pos":[0.2275,0.025,0.0325],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.8,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"ButtonB","shape":"cube","pos":[0.2275,0.025,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.2,0.8,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BatteryPack","shape":"cube","pos":[0.1975,-0.01,0.0525],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.02],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"MetalRing","shape":"cylinder","pos":[-0.2625,-0.01,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"CableTie","shape":"cylinder","pos":[-0.1325,-0.01,0.0225],"rot":[90.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0}
+]}

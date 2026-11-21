@@ -1,0 +1,14 @@
+{"version": 1, "id": "Plank_Nails", "baseHeight": 0.0885, "name": "Plank Nails", "model": "gpt-oss:120b", "notes": "Plank Nails – a 1.3 m long wooden board lying on its side (X‑axis) with metal nail heads clustered at the forward (+X) end; a short leather strap near the rear for grip.", "score": 7, "parts": [
+  {"name":"Board","shape":"cube","pos":[0.0,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[1.3,0.03,0.12],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Strap","shape":"cylinder","pos":[-0.55,-0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.2,0.015],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Nail1_Shaft","shape":"cylinder","pos":[0.55,0.0015,-0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail1_Head","shape":"sphere","pos":[0.55,0.0225,-0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail2_Shaft","shape":"cylinder","pos":[0.55,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail2_Head","shape":"sphere","pos":[0.55,0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail3_Shaft","shape":"cylinder","pos":[0.55,0.0015,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail3_Head","shape":"sphere","pos":[0.55,0.0225,0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail4_Shaft","shape":"cylinder","pos":[0.6,0.0015,-0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail4_Head","shape":"sphere","pos":[0.6,0.0225,-0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail5_Shaft","shape":"cylinder","pos":[0.6,0.0015,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Nail5_Head","shape":"sphere","pos":[0.6,0.0225,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0}
+]}

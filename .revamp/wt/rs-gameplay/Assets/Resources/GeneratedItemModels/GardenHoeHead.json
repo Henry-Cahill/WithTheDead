@@ -1,0 +1,10 @@
+{"version": 1, "id": "GardenHoeHead", "baseHeight": 0.08, "name": "Garden Hoe Head", "model": "gpt-oss:120b", "notes": "Garden hoe head ~0.30 m long × 0.15 m wide × 0.04 m thick, steel (tint 0.6, 0.58, 0.5). Rectangular body with a forward‑extending blade and a central handle hole; four small rivet heads mark the attachment points.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.15],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.15,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.14],"color":[0.62,0.6,0.52],"smooth":0.55,"metal":1.0},
+  {"name":"HandleHole","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.16,0.03],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[-0.08,0.002,-0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[-0.08,0.002,0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.0,0.002,-0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[-0.0,0.002,0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[-0.17,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.12],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0}
+]}

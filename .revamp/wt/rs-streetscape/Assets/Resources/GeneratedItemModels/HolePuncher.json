@@ -1,0 +1,14 @@
+{"version": 1, "id": "HolePuncher", "baseHeight": 0.1467, "name": "Hole Puncher", "model": "gpt-oss:120b", "notes": "Desktop hole‑puncher ~0.14 m wide × 0.08 m deep × 0.15 m tall when the lever is up. Main metal body, vertical punching die at front, back‑side lever with pull knob, spring, and a small label on top.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0668,0.0025],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,-0.0418,0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.002],"color":[0.58,0.55,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"PunchDie","shape":"cylinder","pos":[0.0,-0.0318,0.0385],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.018],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"LeverArm","shape":"cube","pos":[0.0,0.0132,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LeverKnob","shape":"cylinder","pos":[0.0,0.0793,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"SpringCoil","shape":"cylinder","pos":[0.0,-0.0068,-0.0325],"rot":[90.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewHead","shape":"cylinder","pos":[0.0,-0.0248,0.0385],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.38,0.33],"smooth":0.45,"metal":1.0},
+  {"name":"ScrewShank","shape":"cylinder","pos":[0.0,-0.0368,0.0385],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"TopLabel","shape":"cube","pos":[0.0,-0.0168,0.0025],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,-0.0153,0.0025],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.042],"color":[0.3,0.28,0.24],"smooth":0.1,"metal":0.0},
+  {"name":"RearFootL","shape":"cube","pos":[-0.045,-0.0718,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.01],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"RearFootR","shape":"cube","pos":[0.045,-0.0718,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.01],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0}
+]}

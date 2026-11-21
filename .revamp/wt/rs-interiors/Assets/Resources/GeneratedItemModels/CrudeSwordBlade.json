@@ -1,0 +1,8 @@
+{"version": 1, "id": "CrudeSwordBlade", "baseHeight": 0.36, "name": "Crude Sword Blade", "model": "gpt-oss:120b", "notes": "Crude sword blade ~0.9 m long, 0.07 m wide, 0.012 m thick, lying flat on its side (long axis along +X). Main steel‑ish body, a tapered tip, a shallow fuller groove down the centre, and a small rusted rivet near the hilt.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[-0.05,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.012,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Tip","shape":"cube","pos":[0.4,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.012,0.07],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Fuller","shape":"cylinder","pos":[-0.05,-0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.004,0.6,0.004],"color":[0.38,0.36,0.3],"smooth":0.3,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[-0.4,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.25,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.05,0.007,-0.035],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.07],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[-0.05,0.007,0.035],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.07],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0}
+]}

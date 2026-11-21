@@ -1,0 +1,10 @@
+{"version": 1, "id": "ScrapWeapon_Brake", "baseHeight": 0.165, "name": "Scrap Weapon Brake", "model": "gpt-oss:120b", "notes": "Scrap Weapon Brake – makeshift melee blade about 1.2 m long. Main steel pipe shaft (0.8 m) with a short wooden grip, rubber end‑cap, thin metal guard and a rectangular blade extending forward. Silhouette clear from above: long X‑axis, blade jutting out in +Z.", "score": 6, "parts": [
+  {"name":"ShaftMetal","shape":"cylinder","pos":[0.1275,0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.8,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HandleWood","shape":"cylinder","pos":[-0.4225,0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.3,0.12],"color":[0.35,0.25,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"GripRubber","shape":"cylinder","pos":[-0.6225,0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.05,0.08],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"GuardDisc","shape":"cylinder","pos":[0.5475,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.02,0.2],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.5875,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.3],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet1","shape":"sphere","pos":[0.5675,0.0,0.13],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[0.6075,0.0,0.13],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.5875,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

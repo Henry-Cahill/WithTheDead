@@ -1,0 +1,8 @@
+{"version": 1, "id": "LightBulbCyan", "baseHeight": 0.0975, "name": "Light Bulb Cyan", "model": "gpt-oss:120b", "notes": "Cyan light bulb lying on its side: glass ellipsoid (tinted cyan) with a metal screw‑base at one end and a thin internal filament coil.", "score": 7, "parts": [
+  {"name":"GlassBody","shape":"sphere","pos":[0.01,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Base","shape":"cylinder","pos":[-0.06,0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.3,0.32,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"Filament","shape":"cylinder","pos":[0.01,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.08,0.004],"color":[0.9,0.85,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ThreadRing","shape":"cylinder","pos":[-0.06,0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.017,0.004,0.017],"color":[0.28,0.3,0.33],"smooth":0.55,"metal":1.0},
+  {"name":"GlassBottom","shape":"sphere","pos":[0.01,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"BaseCap","shape":"cylinder","pos":[-0.06,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.006,0.012],"color":[0.25,0.27,0.3],"smooth":0.55,"metal":1.0}
+]}

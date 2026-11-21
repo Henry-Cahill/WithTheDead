@@ -1,0 +1,9 @@
+{"version": 1, "id": "SpearCrude", "baseHeight": 0.09, "name": "Spear Crude", "model": "gpt-oss:120b", "notes": "Crude spear ~1.5 m long: wooden shaft 30 mm diameter, stone‑shaped tip, rope binding near the tip and a simple butt cap. Lying on its side (long axis along X) with the point clearly visible.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.03,-0.015,-0.005],"rot":[0.0,0.0,90.0],"size":[0.03,1.4,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.73,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.06],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"Binding","shape":"cube","pos":[0.65,-0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.03],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"ButtCap","shape":"sphere","pos":[-0.76,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"Notch","shape":"cube","pos":[0.57,-0.015,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"TipRing","shape":"cylinder","pos":[0.68,0.0,-0.005],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"TipEdge","shape":"cube","pos":[0.75,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.0}
+]}

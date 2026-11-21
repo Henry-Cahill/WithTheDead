@@ -1,0 +1,13 @@
+{"version": 1, "id": "PanFriedVegetables", "baseHeight": 0.1085, "name": "Pan Fried Vegetables", "model": "gpt-oss:120b", "notes": "Shallow metal tray (≈0.28 m × 0.22 m) with low walls and a thin lid, holding a few colorful vegetable chunks. Tray is tin‑colored (tint 0.75,0.68,0.45); veg pieces are green, orange and red for quick recognition.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0365,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.22],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.6},
+  {"name":"FrontWall","shape":"cube","pos":[0.0,0.0035,-0.11],"rot":[0.0,0.0,0.0],"size":[0.28,0.06,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.6},
+  {"name":"BackWall","shape":"cube","pos":[0.0,0.0035,0.11],"rot":[0.0,0.0,0.0],"size":[0.28,0.06,0.02],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.6},
+  {"name":"LeftWall","shape":"cube","pos":[-0.13,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.22],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.6},
+  {"name":"RightWall","shape":"cube","pos":[0.13,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.22],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.6},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.041,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.22],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.6},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0475,-0.105],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.018],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"VegGreen1","shape":"sphere","pos":[-0.06,-0.0015,-0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.045,0.055],"color":[0.2,0.6,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"VegGreen2","shape":"sphere","pos":[0.02,0.0015,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.05],"color":[0.25,0.65,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"VegOrange","shape":"sphere","pos":[0.08,-0.0035,-0.02],"rot":[0.0,0.0,0.0],"size":[0.055,0.035,0.045],"color":[0.9,0.5,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"VegRed","shape":"sphere","pos":[-0.03,0.0005,0.07],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.045],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

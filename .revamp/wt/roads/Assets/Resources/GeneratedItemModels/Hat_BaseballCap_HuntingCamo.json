@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_HuntingCamo", "baseHeight": 0.133, "name": "Hat Baseball Cap Hunting Camo", "model": "gpt-oss:120b", "notes": "Flat‑lay baseball cap (hunting camo) ~0.28 m wide × 0.16 m tall × 0.14 m deep: rounded crown, front panel, side panels, stitched edge and a thin rectangular brim all spread out.", "score": 6, "parts": [
+  {"name":"CrownTop","shape":"sphere","pos":[0.0,0.003,-0.045],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownFrontPanel","shape":"cube","pos":[0.0,-0.062,0.015],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSideL","shape":"cube","pos":[-0.07,-0.062,-0.045],"rot":[0.0,-30.0,0.0],"size":[0.12,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSideR","shape":"cube","pos":[0.07,-0.062,-0.045],"rot":[0.0,30.0,0.0],"size":[0.12,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.069,0.075],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimBack","shape":"cube","pos":[0.0,-0.069,-0.105],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimSideL","shape":"cube","pos":[-0.11,-0.069,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.16],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimSideR","shape":"cube","pos":[0.11,-0.069,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.16],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,-0.052,0.015],"rot":[90.0,0.0,0.0],"size":[0.004,0.22,0.004],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,-0.059,0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.3,0.35,0.2],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "cheese_powdered", "baseHeight": 0.1375, "name": "cheese powdered", "model": "gpt-oss:120b", "notes": "Powdered cheese in a small rectangular cardboard box (≈0.12 m × 0.15 m × 0.04 m). Inside sits a thin foil pouch filled with the powder, topped by a simple front label.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.04],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BoxLidFlap","shape":"cube","pos":[0.0,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.04],"color":[0.73,0.66,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"FoilPouch","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.004,0.09],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,-0.0025,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.002],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0025,0.0205],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.002],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"BoxSideSeamL","shape":"cylinder","pos":[-0.06,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.15,0.005],"color":[0.7,0.63,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"BoxSideSeamR","shape":"cylinder","pos":[0.06,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.15,0.005],"color":[0.7,0.63,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"BoxTopEdge","shape":"cylinder","pos":[0.0,0.075,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.12,0.005],"color":[0.7,0.63,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"PowderSurface","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.088,0.002,0.088],"color":[0.78,0.71,0.48],"smooth":0.05,"metal":0.0}
+]}

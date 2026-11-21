@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_Gas2Go_Reverse", "baseHeight": 0.1, "name": "Hat Baseball Cap Gas2 Go Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out like a product photo – rounded crown (base cylinder + low dome), sweat‑band, front brim, side panels, back strap and small logo patch. Overall footprint ≈ 0.44 m wide × 0.30 m deep, height ≈ 0.07 m.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.025,-0.055],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.005,-0.055],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Sweatband","shape":"cylinder","pos":[0.0,-0.02,-0.055],"rot":[0.0,0.0,0.0],"size":[0.176,0.004,0.176],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,-0.008,-0.055],"rot":[0.0,0.0,0.0],"size":[0.182,0.004,0.182],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBrim","shape":"cube","pos":[0.0,-0.035,0.095],"rot":[0.0,0.0,0.0],"size":[0.44,0.01,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Patch","shape":"cube","pos":[0.0,0.005,0.015],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.03],"color":[0.7,0.6,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.0,0.03,-0.055],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BackStrap","shape":"cube","pos":[0.0,-0.015,-0.145],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.07,-0.015,-0.055],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.07,-0.015,-0.055],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "CannedTomato2", "baseHeight": 0.1235, "name": "Canned Tomato2", "model": "gpt-oss:120b", "notes": "Upright canned tomatoes ~0.07 m diameter × 0.12 m tall. Steel body (tin‑colored), thin rolled seams top & bottom, shallow lid rim, red tomato fill visible through a label band.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.12,0.066],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.85},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0535,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.85},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0605,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.85},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0595,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.06],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.85},
+  {"name":"TomatoFill","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.1,0.06],"color":[0.85,0.3,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.11,0.062],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0445,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.008,0.064],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0555,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.008,0.064],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shoulderpad_MetalScrap_L", "baseHeight": 0.0685, "name": "Shoulderpad Metal Scrap L", "model": "gpt-oss:120b", "notes": "Large metal shoulder‑pad scrap about 0.20 m × 0.15 m, ~5 mm thick (≈1 kg). Lying flat with a thin base plate, raised bent edges, several rivet heads and a few dents/ rust patches for visual detail.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0122,-0.0015,0.011],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.15],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.1022,0.0035,0.011],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.15],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.0778,0.0035,0.011],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.15],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[-0.0678,0.002,0.071],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.0922,0.002,0.071],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.0678,0.002,-0.049],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.0922,0.002,-0.049],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Dent1","shape":"sphere","pos":[-0.0278,-0.001,0.011],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"Dent2","shape":"sphere","pos":[0.0322,-0.001,-0.039],"rot":[0.0,0.0,0.0],"size":[0.025,0.0125,0.025],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"Dent3","shape":"sphere","pos":[0.0722,-0.001,0.051],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[0.0622,-0.001,0.081],"rot":[0.0,0.0,0.0],"size":[0.015,0.0075,0.015],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BentCorner","shape":"cube","pos":[-0.0878,0.001,-0.064],"rot":[0.0,15.0,0.0],"size":[0.04,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0}
+]}

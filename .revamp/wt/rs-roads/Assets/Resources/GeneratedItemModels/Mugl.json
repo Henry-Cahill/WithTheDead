@@ -1,0 +1,8 @@
+{"version": 1, "id": "Mugl", "baseHeight": 0.1075, "name": "Mugl", "model": "gpt-oss:120b", "notes": "Mugl – a simple ceramic mug about 0.09 m wide and 0.10 m tall. Lying on its side (long axis along X): main body cylinder, thin rim at the front end, matching base disc at the back, and a modest handle made from a short cylinder sticking out sideways.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,-0.0238],"rot":[0.0,0.0,90.0],"size":[0.09,0.1,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.05,0.0,-0.0238],"rot":[0.0,0.0,90.0],"size":[0.095,0.008,0.095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Base","shape":"cylinder","pos":[-0.05,0.0,-0.0238],"rot":[0.0,0.0,90.0],"size":[0.09,0.008,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.025,0.0312],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"HandleCap","shape":"sphere","pos":[0.0,0.025,0.0613],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"HandleRoot","shape":"sphere","pos":[0.0,0.025,0.0013],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

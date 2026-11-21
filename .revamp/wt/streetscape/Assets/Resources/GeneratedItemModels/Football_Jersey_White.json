@@ -1,0 +1,9 @@
+{"version": 1, "id": "Football_Jersey_White", "baseHeight": 0.098, "name": "Football Jersey White", "model": "gpt-oss:120b", "notes": "Flat football jersey ~0.86 m long × 0.5 m wide × 0.025 m thick (neck towards +X). Main cloth panel, two sleeves angled outward, a low‑profile V‑neck collar, side seam strips and a bottom hem band.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.07,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.57,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.17,-0.0,-0.4],"rot":[0.0,0.0,-15.0],"size":[0.2,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.17,-0.0,0.4],"rot":[0.0,0.0,15.0],"size":[0.2,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.07,0.0075,-0.255],"rot":[0.0,0.0,0.0],"size":[0.7,0.005,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.07,0.0075,0.255],"rot":[0.0,0.0,0.0],"size":[0.7,0.005,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.28,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.008,0.5],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

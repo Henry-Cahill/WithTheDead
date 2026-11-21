@@ -1,0 +1,13 @@
+{"version": 1, "id": "UmbrellaTINTED", "baseHeight": 0.17, "name": "Umbrella TINTED", "model": "gpt-oss:120b", "notes": "Open umbrella lying flat on the ground, overall diameter ≈ 1.2 m, fabric thickness ~2 cm, central shaft 0.2 m tall. Main tinted fabric (RGB 0.6,0.58,0.5) with a metal‑gray shaft and eight thin ribs.", "score": 6, "parts": [
+  {"name":"Canopy","shape":"sphere","pos":[0.0,-0.09,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.04,1.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRing","shape":"cylinder","pos":[0.0,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[1.22,0.02,1.22],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.22,0.04],"color":[0.3,0.3,0.32],"smooth":0.15,"metal":1.0},
+  {"name":"Rib01","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.6,0.018],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Rib02","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[90.0,45.0,0.0],"size":[0.018,0.6,0.018],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Rib03","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[90.0,90.0,0.0],"size":[0.018,0.6,0.018],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Rib04","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[90.0,135.0,0.0],"size":[0.018,0.6,0.018],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Rib05","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[90.0,-180.0,0.0],"size":[0.018,0.6,0.018],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Rib06","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[90.0,-135.0,0.0],"size":[0.018,0.6,0.018],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Rib07","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[90.0,-90.0,0.0],"size":[0.018,0.6,0.018],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Rib08","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[90.0,-45.0,0.0],"size":[0.018,0.6,0.018],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "SwimTrunks_Red", "baseHeight": 0.0762, "name": "Swim Trunks Red", "model": "gpt-oss:120b", "notes": "Swim trunks (red‑tinted) laid flat: two leg panels (~0.16 m wide each, 0.25 m long), a short waist band across the top, thin drawstring loop, front pocket on left leg and side seam strips for definition.", "score": 7, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.09,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.09,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Drawstring","shape":"cylinder","pos":[0.0,0.0137,0.0],"rot":[0.0,0.0,90.0],"size":[0.005,0.35,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFront","shape":"cube","pos":[-0.09,0.0017,0.08],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.04],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLeftOuter","shape":"cube","pos":[-0.17,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.25],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRightOuter","shape":"cube","pos":[0.17,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.25],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FlySeam","shape":"cube","pos":[0.0,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.25],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

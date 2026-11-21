@@ -1,0 +1,8 @@
+{"version": 1, "id": "BottleCrafted", "baseHeight": 0.13, "name": "Bottle Crafted", "model": "gpt-oss:120b", "notes": "Crafted bottle about 0.25 m long × 0.14 m diameter lying on its side: main glass body, narrower neck, cork‑like cap and a thin label strip.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.25,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.115,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,0.06,0.1],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.155,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.45,0.42,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.04,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.14],"color":[0.48,0.46,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"LabelEdgeTop","shape":"cube","pos":[-0.04,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.14],"color":[0.35,0.33,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"LabelEdgeBottom","shape":"cube","pos":[-0.04,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.14],"color":[0.35,0.33,0.28],"smooth":0.2,"metal":0.0}
+]}

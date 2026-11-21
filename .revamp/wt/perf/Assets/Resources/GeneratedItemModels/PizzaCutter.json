@@ -1,0 +1,8 @@
+{"version": 1, "id": "PizzaCutter", "baseHeight": 0.0725, "name": "Pizza Cutter", "model": "gpt-oss:120b", "notes": "Pizza cutter about 0.25 m long: flat steel wheel (12 cm dia × 1 cm thick) lying flat, short wooden/plastic handle (2.5 cm × 20 cm) extending leftwards, rubber grip cap on the far end, tiny screw joining wheel to handle and a thin metal edge rim around the wheel.", "score": 7, "parts": [
+  {"name":"Wheel","shape":"cylinder","pos":[0.107,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.12],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.053,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.2,0.025],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"GripCap","shape":"sphere","pos":[-0.153,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Screw","shape":"cylinder","pos":[0.107,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.107,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.002,0.122],"color":[0.5,0.48,0.44],"smooth":0.6,"metal":1.0},
+  {"name":"BladeFace","shape":"cylinder","pos":[0.107,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.118,0.002,0.118],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0}
+]}

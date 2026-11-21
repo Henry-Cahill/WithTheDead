@@ -1,0 +1,13 @@
+{"version": 1, "id": "Microphone", "baseHeight": 0.09, "name": "Microphone", "model": "gpt-oss:120b", "notes": "Handheld dynamic microphone lying on its side (X‑axis). Main cylindrical body with mesh head, a metal clip, a small base cap, a screw tip, a thin metal ring and four coiled cable loops.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.002,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.18,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"GrilleOuter","shape":"cylinder","pos":[0.098,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.02,0.05],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"GrilleInner","shape":"cylinder","pos":[0.098,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.018,0.04],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Clip","shape":"cylinder","pos":[-0.042,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.75,0.75,0.78],"smooth":0.4,"metal":1.0},
+  {"name":"BaseCap","shape":"cylinder","pos":[-0.102,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.02,0.03],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"ScrewTip","shape":"sphere","pos":[0.108,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"CableLoop1","shape":"cylinder","pos":[-0.072,-0.0225,0.025],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"CableLoop2","shape":"cylinder","pos":[-0.052,-0.0225,-0.025],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"CableLoop3","shape":"cylinder","pos":[-0.032,-0.0225,0.015],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"CableLoop4","shape":"cylinder","pos":[-0.012,-0.0225,-0.015],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"MetalRing","shape":"cylinder","pos":[-0.052,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.008,0.06],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0}
+]}

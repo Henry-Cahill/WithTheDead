@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_RightFoot", "baseHeight": 0.0665, "name": "Bandage Right Foot", "model": "gpt-oss:120b", "notes": "Flat foot bandage pad ~0.12 m long × 0.08 m wide × 0.005 m thick, cloth‑tinted (0.6,0.58,0.5). Slight rolled edges on all four sides and a small paper label on top.", "score": 6, "parts": [
+  {"name":"BasePad","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollTop","shape":"cylinder","pos":[0.0,0.0025,0.044],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollBottom","shape":"cylinder","pos":[0.0,0.0025,-0.044],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideRollLeft","shape":"cylinder","pos":[-0.064,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideRollRight","shape":"cylinder","pos":[0.064,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0}
+]}

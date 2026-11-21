@@ -1,0 +1,12 @@
+{"version": 1, "id": "Trousers_WhiteTEXTURE", "baseHeight": 0.075, "name": "Trousers White TEXTURE", "model": "gpt-oss:120b", "notes": "White trousers (tint 0.6, 0.58, 0.5) laid flat, about 1.0 m long × 0.45 m wide × 0.03 m thick. Main fabric blocks for waist and two legs, with side pockets, waistband strip, seam lines and bottom cuffs – all parts now touch the main body.", "score": 6, "parts": [
+  {"name":"Waist","shape":"cube","pos":[0.4,0.0,0.0025],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.05,0.0,-0.1325],"rot":[0.0,0.0,0.0],"size":[0.75,0.03,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[-0.05,0.0,0.1375],"rot":[0.0,0.0,0.0],"size":[0.75,0.03,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.225,0.0,-0.2025],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.05],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.225,0.0,0.1625],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.05],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.4,0.0125,0.0025],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.45],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SeamL","shape":"cylinder","pos":[-0.05,0.0,-0.1325],"rot":[0.0,0.0,90.0],"size":[0.004,0.75,0.004],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cylinder","pos":[-0.05,0.0,0.1375],"rot":[0.0,0.0,90.0],"size":[0.004,0.75,0.004],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.45,0.0,-0.1325],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.45,0.0,0.1375],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

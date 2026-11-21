@@ -1,0 +1,11 @@
+{"version": 1, "id": "ModernBrake3", "baseHeight": 0.0975, "name": "Modern Brake3", "model": "gpt-oss:120b", "notes": "Modern disc brake (3 kg) lying on the floor: large steel disc (≈0.28 m dia × 0.025 m thick), central hub, four bolt heads around the rim, a small grey‑black caliper with two brake pads attached to its front side.", "score": 6, "parts": [
+  {"name":"Disc","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.28],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Hub","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.07],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"BoltN","shape":"cylinder","pos":[0.0,0.02,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.44,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"BoltE","shape":"cylinder","pos":[0.12,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.44,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"BoltS","shape":"cylinder","pos":[0.0,-0.035,-0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.44,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"BoltW","shape":"cylinder","pos":[-0.12,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.44,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"CaliperBody","shape":"cube","pos":[-0.07,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.06],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"PadL","shape":"cube","pos":[-0.07,0.035,0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.025],"color":[0.25,0.24,0.23],"smooth":0.2,"metal":0.0},
+  {"name":"PadR","shape":"cube","pos":[-0.07,0.035,-0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.025],"color":[0.25,0.24,0.23],"smooth":0.2,"metal":0.0}
+]}

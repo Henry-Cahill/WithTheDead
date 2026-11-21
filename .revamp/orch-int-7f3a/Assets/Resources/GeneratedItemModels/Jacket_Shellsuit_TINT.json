@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_Shellsuit_TINT", "baseHeight": 0.12, "name": "Jacket Shellsuit TINT", "model": "gpt-oss:120b", "notes": "Shell jacket ~0.9 m tall × 1.2 m wide × 0.025 m thick, laid flat. Main body, two sleeves, hood, front zipper, side pockets and cuff trims give a clear silhouette from above.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0025,-0.1375],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.75],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.475,-0.005,0.1125],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.475,-0.005,0.1125],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hood","shape":"cylinder","pos":[0.0,0.0,0.3125],"rot":[0.0,0.0,0.0],"size":[0.32,0.12,0.32],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Zipper","shape":"cylinder","pos":[0.0,0.01,0.2125],"rot":[90.0,0.0,0.0],"size":[0.01,0.6,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.2,-0.0025,0.1625],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.2,-0.0025,0.1625],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.005,0.4625],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.75,-0.005,0.1125],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.75,-0.005,0.1125],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,0.003,0.2375],"rot":[0.0,0.0,0.0],"size":[0.46,0.005,0.01],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSideL","shape":"cube","pos":[-0.475,0.003,0.1125],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.2],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSideR","shape":"cube","pos":[0.475,0.003,0.1125],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.2],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0}
+]}

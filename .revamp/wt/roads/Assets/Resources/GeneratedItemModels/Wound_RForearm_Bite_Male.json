@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wound_RForearm_Bite_Male", "baseHeight": 0.102, "name": "Wound RForearm Bite Male", "model": "gpt-oss:120b", "notes": "Flesh lump roughly the size of a forearm bite (≈0.15 m × 0.07 m × 0.20 m) lying on the floor, with two shallow bite cavities and a few drops of blood splatter. The main body is a flesh‑coloured ellipsoid; bite marks are dark red cylinders cut into the front face; blood droplets are tiny red spheres; a torn skin flap sticks out as a thin rag.", "score": 6, "parts": [
+  {"name":"FleshBody","shape":"sphere","pos":[0.0,-0.007,-0.0189],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BiteHoleL","shape":"cylinder","pos":[-0.025,-0.007,0.0711],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.4,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BiteHoleR","shape":"cylinder","pos":[0.025,-0.007,0.0711],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.4,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BloodDrop1","shape":"sphere","pos":[-0.03,0.028,0.1011],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"BloodDrop2","shape":"sphere","pos":[0.01,0.033,0.1111],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.78,0.12,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"BloodDrop3","shape":"sphere","pos":[0.04,0.023,0.0911],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.1,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"SkinFlap","shape":"cube","pos":[0.0,0.018,-0.0989],"rot":[15.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.55,0.5,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FleshRidge","shape":"cube","pos":[0.0,0.003,-0.1089],"rot":[0.0,0.0,0.0],"size":[0.14,0.01,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Clot1","shape":"sphere","pos":[-0.04,0.003,-0.0889],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.65,0.4,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"Clot2","shape":"sphere","pos":[0.03,0.008,-0.0789],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.62,0.38,0.33],"smooth":0.08,"metal":0.0}
+]}

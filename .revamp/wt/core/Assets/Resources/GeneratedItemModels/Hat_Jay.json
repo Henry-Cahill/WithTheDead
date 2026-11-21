@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_Jay", "baseHeight": 0.1375, "name": "Hat Jay", "model": "gpt-oss:120b", "notes": "Flat‑lay hat 0.28 m brim diameter, crown height ≈0.12 m, cloth tinted purple‑gray (0.55,0.5,0.6). Includes brim disc, raised crown, inner band, stitching trims and a small front patch.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.0635,0.0],"rot":[0.0,0.0,0.0],"size":[0.284,0.008,0.284],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.08,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBase","shape":"cylinder","pos":[0.0,-0.0185,0.0],"rot":[0.0,0.0,0.0],"size":[0.184,0.006,0.184],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"sphere","pos":[0.0,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.06,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.0585,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.008,0.2],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Patch","shape":"cube","pos":[0.0,0.0485,0.075],"rot":[10.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlapL","shape":"cylinder","pos":[-0.14,-0.0675,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.01,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlapR","shape":"cylinder","pos":[0.14,-0.0675,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.01,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Vent","shape":"cylinder","pos":[0.0,0.0575,0.05],"rot":[90.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0}
+]}

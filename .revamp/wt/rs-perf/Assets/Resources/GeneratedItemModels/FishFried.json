@@ -1,0 +1,14 @@
+{"version": 1, "id": "FishFried", "baseHeight": 0.0795, "name": "Fish Fried", "model": "gpt-oss:120b", "notes": "Shallow take‑out tray 0.15 m × 0.10 m × 0.03 m tall, golden fried fish fillets inside. Base and four side walls form the container; a thin foil lid sits on top. 5–6 ellipsoid pieces represent the fish, all using the fry‑gold tint (0.75,0.68,0.45).", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.1],"color":[0.85,0.84,0.8],"smooth":0.12,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,0.0005,0.05],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.008],"color":[0.7,0.65,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,0.0005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.008],"color":[0.7,0.65,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.071,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.1],"color":[0.7,0.65,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.071,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.1],"color":[0.7,0.65,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.004,0.102],"color":[0.9,0.88,0.84],"smooth":0.15,"metal":0.0},
+  {"name":"Fish1","shape":"sphere","pos":[-0.04,-0.0045,0.02],"rot":[0.0,0.0,0.0],"size":[0.045,0.025,0.035],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fish2","shape":"sphere","pos":[0.03,-0.0045,-0.02],"rot":[0.0,0.0,0.0],"size":[0.042,0.023,0.033],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fish3","shape":"sphere","pos":[0.0,-0.0015,0.03],"rot":[0.0,0.0,0.0],"size":[0.038,0.022,0.03],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fish4","shape":"sphere","pos":[-0.02,-0.0025,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.024,0.032],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fish5","shape":"sphere","pos":[0.04,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.043,0.023,0.034],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.12],"color":[0.2,0.3,0.15],"smooth":0.08,"metal":0.0}
+]}

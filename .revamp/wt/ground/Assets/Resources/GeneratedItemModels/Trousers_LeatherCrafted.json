@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_LeatherCrafted", "baseHeight": 0.08, "name": "Trousers Leather Crafted", "model": "gpt-oss:120b", "notes": "Leather trousers laid flat, spread like a product photo. Overall footprint ≈ 1.20 m long (waist‑to‑hem) × 0.60 m wide across the legs, 3 cm thick. Main blocks for waistband, back panel and two pant legs (upper & lower sections), plus thin seam strips and a couple of belt‑loop cylinders.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.3825,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.1125,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.3],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"FrontLeftUpper","shape":"cube","pos":[0.0975,-0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"FrontLeftLower","shape":"cube","pos":[-0.3225,-0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"FrontRightUpper","shape":"cube","pos":[0.0975,-0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"FrontRightLower","shape":"cube","pos":[-0.3225,-0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"CrotchBridge","shape":"cube","pos":[-0.1075,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"SeamFrontL","shape":"cube","pos":[-0.1125,0.016,0.25],"rot":[0.0,0.0,0.0],"size":[0.9,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFrontR","shape":"cube","pos":[-0.1125,0.016,-0.25],"rot":[0.0,0.0,0.0],"size":[0.9,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.1125,0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[0.4225,-0.0,0.18],"rot":[0.0,90.0,0.0],"size":[0.02,0.04,0.02],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.4225,-0.0,-0.18],"rot":[0.0,90.0,0.0],"size":[0.02,0.04,0.02],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0}
+]}

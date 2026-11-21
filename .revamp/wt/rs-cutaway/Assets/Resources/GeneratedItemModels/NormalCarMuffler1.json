@@ -1,0 +1,13 @@
+{"version": 1, "id": "NormalCarMuffler1", "baseHeight": 0.17, "name": "Normal Car Muffler1", "model": "gpt-oss:120b", "notes": "Car muffler ~0.45 m long × 0.15 m diameter, lying on its side (long axis X). Main steel tube with flared inlet/outlet, two internal baffles, a low‑profile mounting plate underneath and a few rust spots for visual interest.", "score": 7, "parts": [
+  {"name":"MainTube","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.15,0.45,0.15],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"InletFlange","shape":"cylinder","pos":[-0.225,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.02,0.22],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"OutletFlange","shape":"cylinder","pos":[0.225,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.02,0.22],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BaffleMid","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.15],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"BaffleFront","shape":"cube","pos":[-0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.1,0.15],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"BaffleRear","shape":"cube","pos":[0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.1,0.15],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"MountPlate","shape":"cube","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.08],"color":[0.5,0.48,0.4],"smooth":0.25,"metal":1.0},
+  {"name":"BoltL","shape":"cylinder","pos":[-0.05,-0.05,0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":1.0},
+  {"name":"BoltR","shape":"cylinder","pos":[-0.05,-0.05,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":1.0},
+  {"name":"RustSpot1","shape":"sphere","pos":[-0.08,0.015,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"RustSpot2","shape":"sphere","pos":[0.07,0.015,-0.04],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0}
+]}

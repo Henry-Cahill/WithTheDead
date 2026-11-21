@@ -1,0 +1,9 @@
+{"version": 1, "id": "Cudgel_Nails", "baseHeight": 0.145, "name": "Cudgel Nails", "model": "gpt-oss:120b", "notes": "Cudgel Nails – blunt melee weapon ~1.45 m long (shaft 1.20 m + nail‑head block 0.25 m). Wooden shaft on its side (X‑axis) with a thick metal‑nail head at the far end; four protruding nails (top, two sides, tip) and a wooden cap on the opposite handle.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.13,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.595,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.14],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"NailTop","shape":"cylinder","pos":[0.595,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.05,0.01],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0},
+  {"name":"NailSidePosZ","shape":"cylinder","pos":[0.595,-0.025,0.095],"rot":[90.0,0.0,0.0],"size":[0.01,0.05,0.01],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0},
+  {"name":"NailSideNegZ","shape":"cylinder","pos":[0.595,-0.025,-0.095],"rot":[90.0,0.0,0.0],"size":[0.01,0.05,0.01],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0},
+  {"name":"NailFront","shape":"cylinder","pos":[0.745,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.05,0.01],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0},
+  {"name":"HandleCap","shape":"sphere","pos":[-0.73,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0}
+]}

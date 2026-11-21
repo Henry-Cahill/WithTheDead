@@ -1,0 +1,15 @@
+{"version": 1, "id": "BurritoRecipe", "baseHeight": 0.0685, "name": "Burrito Recipe", "model": "gpt-oss:120b", "notes": "Recipe card for Burrito, presented in a small brown cardboard envelope. Envelope approx 0.24 m × 0.31 m × 0.015 m, with thin side panels and a front flap. Inside sits a thin off‑white paper card (0.22 m × 0.28 m × 0.002 m) with a dark title stripe and a small white sticker label.", "score": 6, "parts": [
+  {"name":"EnvelopeBack","shape":"cube","pos":[0.0,-0.001,-0.005],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.31],"color":[0.6,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"EnvelopeFrontFlap","shape":"cube","pos":[0.0,-0.001,0.11],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.08],"color":[0.58,0.46,0.28],"smooth":0.12,"metal":0.0},
+  {"name":"EnvelopeSideL","shape":"cube","pos":[-0.1125,-0.001,-0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.31],"color":[0.6,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"EnvelopeSideR","shape":"cube","pos":[0.1125,-0.001,-0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.31],"color":[0.6,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"EnvelopeBottom","shape":"cube","pos":[0.0,-0.001,-0.1525],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.015],"color":[0.6,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"CardBase","shape":"cube","pos":[0.0,-0.0075,-0.005],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.28],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TitleStripe","shape":"cube","pos":[0.0,-0.006,0.125],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.02],"color":[0.3,0.18,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StickerLabel","shape":"cube","pos":[-0.07,-0.006,-0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.03],"color":[0.92,0.93,0.94],"smooth":0.05,"metal":0.0},
+  {"name":"StickerBorder","shape":"cube","pos":[-0.07,-0.0059,-0.085],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.032],"color":[0.3,0.18,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLineTop","shape":"cylinder","pos":[0.0,0.007,0.15],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.002],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"FoldLineSideL","shape":"cylinder","pos":[-0.1125,0.007,-0.005],"rot":[90.0,0.0,0.0],"size":[0.31,0.002,0.002],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"FoldLineSideR","shape":"cylinder","pos":[0.1125,0.007,-0.005],"rot":[90.0,0.0,0.0],"size":[0.31,0.002,0.002],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"EnvelopeSeal","shape":"cylinder","pos":[0.0,0.007,0.15],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.02],"color":[0.3,0.18,0.1],"smooth":0.12,"metal":0.0}
+]}

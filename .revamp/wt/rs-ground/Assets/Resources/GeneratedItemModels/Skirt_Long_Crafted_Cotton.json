@@ -1,0 +1,8 @@
+{"version": 1, "id": "Skirt_Long_Crafted_Cotton", "baseHeight": 0.0715, "name": "Skirt Long Crafted Cotton", "model": "gpt-oss:120b", "notes": "Long cotton skirt ~0.9 m from waist to hem, waist width ≈0.4 m, flared bottom ≈1.2 m across, laid flat on the floor (Y‑up). Main rectangular panel, thin waistband, and a wide disc for the flared hem; cloth colour 0.6 0.58 0.5.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.004,-0.755],"rot":[0.0,0.0,0.0],"size":[0.4,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.0015,-0.355],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.7],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FlareDisc","shape":"cylinder","pos":[0.0,-0.0015,0.145],"rot":[0.0,0.0,0.0],"size":[1.2,0.02,1.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemTrim","shape":"cylinder","pos":[0.0,0.0095,0.145],"rot":[0.0,0.0,0.0],"size":[1.24,0.004,1.24],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.2,-0.0015,-0.355],"rot":[90.0,0.0,0.0],"size":[0.015,0.7,0.015],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.2,-0.0015,-0.355],"rot":[90.0,0.0,0.0],"size":[0.015,0.7,0.015],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoulderpad_MetalSpike_R", "baseHeight": 0.0775, "name": "Shoulderpad Metal Spike R", "model": "gpt-oss:120b", "notes": "Shoulder‑pad 0.26 m wide × 0.22 m tall × 0.02 m thick, metal tint (0.6,0.58,0.5). Four rivet heads on the top surface and a right‑hand spike 0.08 m long protruding from the outer edge.", "score": 7, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[-0.0425,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.22],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.8},
+  {"name":"RimFront","shape":"cube","pos":[-0.0425,0.0045,0.115],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.01],"color":[0.54,0.522,0.45],"smooth":0.15,"metal":0.8},
+  {"name":"RimBack","shape":"cube","pos":[-0.0425,0.0045,-0.115],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.01],"color":[0.54,0.522,0.45],"smooth":0.15,"metal":0.8},
+  {"name":"RimLeft","shape":"cube","pos":[-0.1725,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.22],"color":[0.54,0.522,0.45],"smooth":0.15,"metal":0.8},
+  {"name":"RimRight","shape":"cube","pos":[0.0875,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.22],"color":[0.54,0.522,0.45],"smooth":0.15,"metal":0.8},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.1625,0.0075,-0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[-0.1625,0.0075,0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.0775,0.0075,-0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.0775,0.0075,0.09],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"Spike","shape":"cylinder","pos":[0.1375,0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

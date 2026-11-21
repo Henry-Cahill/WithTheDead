@@ -1,0 +1,8 @@
+{"version": 1, "id": "BagelPlain", "baseHeight": 0.096, "name": "Bagel Plain", "model": "gpt-oss:120b", "notes": "Paper bakery bag (~0.15 m wide × 0.12 m deep × 0.07 m tall) holding up to four plain bagels. Bag is a light‑tan paper cube, front label in darker tint; each bagel is modelled as a flattened ellipsoid (sphere scaled) of the item’s golden‑brown colour.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[-0.005,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.12],"color":[0.85,0.78,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[-0.005,0.011,0.061],"rot":[0.0,0.0,0.0],"size":[0.13,0.004,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bagel1","shape":"sphere","pos":[-0.045,-0.012,-0.02],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Bagel2","shape":"sphere","pos":[0.025,-0.01,0.015],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Bagel3","shape":"sphere","pos":[-0.025,-0.014,0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Bagel4","shape":"sphere","pos":[0.045,-0.016,-0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

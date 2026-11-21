@@ -1,0 +1,10 @@
+{"version": 1, "id": "Earring_LoopLrg_Silver", "baseHeight": 0.062, "name": "Earring Loop Lrg Silver", "model": "gpt-oss:120b", "notes": "Large silver hoop earring ~5 cm diameter, 4 mm wire thickness, lying flat on the floor. Modeled as eight short metal cylinder segments forming a rough circle.", "score": 7, "parts": [
+  {"name":"Segment0","shape":"cylinder","pos":[0.025,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.0196,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Segment1","shape":"cylinder","pos":[0.0177,0.0,0.0177],"rot":[90.0,0.0,-45.0],"size":[0.004,0.0196,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Segment2","shape":"cylinder","pos":[0.0,0.0,0.025],"rot":[90.0,0.0,-90.0],"size":[0.004,0.0196,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Segment3","shape":"cylinder","pos":[-0.0177,0.0,0.0177],"rot":[90.0,0.0,-135.0],"size":[0.004,0.0196,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Segment4","shape":"cylinder","pos":[-0.025,0.0,0.0],"rot":[90.0,0.0,-180.0],"size":[0.004,0.0196,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Segment5","shape":"cylinder","pos":[-0.0177,0.0,-0.0177],"rot":[90.0,0.0,135.0],"size":[0.004,0.0196,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Segment6","shape":"cylinder","pos":[0.0,0.0,-0.025],"rot":[90.0,0.0,90.0],"size":[0.004,0.0196,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Segment7","shape":"cylinder","pos":[0.0177,0.0,-0.0177],"rot":[90.0,0.0,45.0],"size":[0.004,0.0196,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

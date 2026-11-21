@@ -1,0 +1,10 @@
+{"version": 1, "id": "Necklace_DogTag_Female", "baseHeight": 0.0665, "name": "Necklace Dog Tag Female", "model": "gpt-oss:120b", "notes": "Necklace dog‑tag (female) lying flat: a square loop of thin metal chain (~30 cm perimeter) and a rectangular tag (≈5 × 2.5 cm, 3 mm thick) with central hole, small rivet and engraved label on the front.", "score": 7, "parts": [
+  {"name":"ChainTop","shape":"cylinder","pos":[0.0,-0.004,-0.03],"rot":[0.0,0.0,90.0],"size":[0.005,0.06,0.005],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ChainRight","shape":"cylinder","pos":[0.03,-0.004,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.06,0.005],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ChainBottom","shape":"cylinder","pos":[0.0,-0.004,0.03],"rot":[0.0,0.0,90.0],"size":[0.005,0.06,0.005],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ChainLeft","shape":"cylinder","pos":[-0.03,-0.004,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.06,0.005],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TagBody","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.003,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TagHole","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.0,0.0025,0.0125],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"EngraveLabel","shape":"cube","pos":[0.0,0.003,0.014],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.005],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":1.0}
+]}

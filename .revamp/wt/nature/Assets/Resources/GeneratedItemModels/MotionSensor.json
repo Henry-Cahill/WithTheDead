@@ -1,0 +1,14 @@
+{"version": 1, "id": "MotionSensor", "baseHeight": 0.1, "name": "Motion Sensor", "model": "gpt-oss:120b", "notes": "Compact motion‑sensor (≈0.12 m × 0.08 m × 0.03 m) lying on its back: flat plastic housing, front IR lens, two push buttons, a tiny battery‑door panel, and a short metal antenna with base. All parts rest on y=0.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0075,-0.03,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0075,-0.022,0.0285],"rot":[0.0,0.0,0.0],"size":[0.118,0.016,0.002],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"Lens","shape":"sphere","pos":[0.0075,-0.015,0.0325],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.04],"color":[0.78,0.76,0.68],"smooth":0.4,"metal":0.0},
+  {"name":"AntennaBase","shape":"cylinder","pos":[-0.0375,-0.025,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.008,0.01,0.008],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"AntennaRod","shape":"cylinder","pos":[-0.0375,0.01,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.006,0.06,0.006],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"ButtonL","shape":"cylinder","pos":[-0.0125,-0.018,0.0025],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonR","shape":"cylinder","pos":[0.0275,-0.018,0.0025],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BatteryDoor","shape":"cube","pos":[-0.0475,-0.021,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.002],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewTL","shape":"cylinder","pos":[-0.0475,-0.015,0.0175],"rot":[0.0,0.0,0.0],"size":[0.003,0.005,0.003],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewTR","shape":"cylinder","pos":[-0.0475,-0.015,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.003,0.005,0.003],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewBL","shape":"cylinder","pos":[0.0625,-0.015,0.0175],"rot":[0.0,0.0,0.0],"size":[0.003,0.005,0.003],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewBR","shape":"cylinder","pos":[0.0625,-0.015,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.003,0.005,0.003],"color":[0.4,0.4,0.4],"smooth":0.5,"metal":1.0}
+]}

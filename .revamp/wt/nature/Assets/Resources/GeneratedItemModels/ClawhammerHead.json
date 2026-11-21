@@ -1,0 +1,9 @@
+{"version": 1, "id": "ClawhammerHead", "baseHeight": 0.095, "name": "Clawhammer Head", "model": "gpt-oss:120b", "notes": "Claw‑hammer head about 0.12 m wide × 0.04 m thick × 0.07 m long (≈½ kg). Main steel block, rounded striking disc on the +Z side and split claw on the –Z side with two prongs and a connecting bridge. One rivet marks the top edge.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.005,0.0075],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FaceDisc","shape":"cylinder","pos":[0.0,0.0,0.05],"rot":[90.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ClawLeft","shape":"cube","pos":[-0.03,-0.0125,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ClawRight","shape":"cube","pos":[0.03,-0.0125,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ClawBridge","shape":"cube","pos":[0.0,-0.0175,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.0,0.015,0.0075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"EdgeSeam","shape":"cube","pos":[0.0,0.0165,0.0075],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.07],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0}
+]}

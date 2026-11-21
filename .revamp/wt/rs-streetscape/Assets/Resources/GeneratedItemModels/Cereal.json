@@ -1,0 +1,8 @@
+{"version": 1, "id": "Cereal", "baseHeight": 0.2175, "name": "Cereal", "model": "gpt-oss:120b", "notes": "Upright cereal box ~0.19 m wide × 0.30 m tall × 0.06 m deep, cardboard tint (0.75,0.68,0.45). Main body with top flap, front and side label strips, thin top seam band for realism.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.19,0.3,0.06],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.15,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.06],"color":[0.68,0.6,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0075,0.0315],"rot":[0.0,0.0,0.0],"size":[0.165,0.25,0.004],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideLabelL","shape":"cube","pos":[-0.097,-0.0075,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.004,0.25,0.055],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideLabelR","shape":"cube","pos":[0.097,-0.0075,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.004,0.25,0.055],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.0,0.1435,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.196,0.002,0.066],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0}
+]}

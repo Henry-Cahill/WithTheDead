@@ -1,0 +1,9 @@
+{"version": 1, "id": "Shoulderpad_MetalSpikeScrap_L", "baseHeight": 0.09, "name": "Shoulderpad Metal Spike Scrap L", "model": "gpt-oss:120b", "notes": "Scrap metal shoulder‑pad about 0.22 m wide × 0.16 m deep × 0.02 m thick with three rusty spikes (≈6 cm long) jutting upward. Rough gray‑brown tint, low gloss metal.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.16],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.9},
+  {"name":"SpikeFrontL","shape":"cylinder","pos":[-0.07,-0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.9},
+  {"name":"SpikeFrontR","shape":"cylinder","pos":[0.07,-0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.9},
+  {"name":"SpikeBackC","shape":"cylinder","pos":[0.0,-0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.9},
+  {"name":"RustPatch1","shape":"cube","pos":[-0.04,-0.009,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.015],"color":[0.45,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"RustPatch2","shape":"cube","pos":[0.05,-0.009,-0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.012],"color":[0.45,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.16],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.9}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "UnusableWood", "baseHeight": 0.13, "name": "Unusable Wood", "model": "gpt-oss:120b", "notes": "Chunk of unusable wood ~0.40 m long × 0.15 m wide × 0.10 m thick, lying on the floor. Main block with bark strips, two knots, a few splinters, crack lines and a short branch stub for visual interest.", "score": 7, "parts": [
+  {"name":"MainBlock","shape":"cube","pos":[-0.01,-0.03,0.01],"rot":[0.0,0.0,0.0],"size":[0.4,0.08,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BarkStripTop","shape":"cube","pos":[-0.01,0.0175,0.01],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.02],"color":[0.45,0.4,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BarkStripSidePosX","shape":"cube","pos":[0.2,-0.03,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.13],"color":[0.45,0.4,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BarkStripSideNegX","shape":"cube","pos":[-0.22,-0.03,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.13],"color":[0.45,0.4,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"KnotA","shape":"sphere","pos":[-0.11,0.04,0.06],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.3,0.25,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"KnotB","shape":"sphere","pos":[0.11,0.02,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.3,0.25,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"SplinterA","shape":"cube","pos":[0.24,-0.02,-0.03],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SplinterB","shape":"cube","pos":[-0.25,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Crack1","shape":"cube","pos":[-0.01,0.015,-0.03],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.02],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Crack2","shape":"cube","pos":[-0.06,0.013,0.07],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.015],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BranchStub","shape":"cylinder","pos":[-0.11,-0.01,-0.07],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.45,0.4,0.35],"smooth":0.1,"metal":0.0}
+]}

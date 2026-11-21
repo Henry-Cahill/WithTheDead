@@ -1,0 +1,9 @@
+{"version": 1, "id": "WatermelonSeed", "baseHeight": 0.0663, "name": "Watermelon Seed", "model": "gpt-oss:120b", "notes": "Watermelon seed about 2.5 cm long × 1.2 cm wide × 0.4 cm thick, brown‑green tint. A small pile of three overlapping seeds lying on the floor.", "score": 6, "parts": [
+  {"name":"SeedA","shape":"sphere","pos":[-0.006,0.0,0.0],"rot":[10.0,5.0,0.0],"size":[0.025,0.012,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedB","shape":"sphere","pos":[0.0,0.0,-0.003],"rot":[-8.0,12.0,0.0],"size":[0.025,0.012,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedC","shape":"sphere","pos":[0.006,0.0,0.003],"rot":[4.0,-7.0,0.0],"size":[0.025,0.012,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"GroundShadow","shape":"cylinder","pos":[0.0,-0.0019,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"RidgeA","shape":"cylinder","pos":[-0.006,0.002,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.022,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RidgeB","shape":"cylinder","pos":[0.0,0.002,-0.003],"rot":[90.0,0.0,0.0],"size":[0.005,0.022,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RidgeC","shape":"cylinder","pos":[0.006,0.002,0.003],"rot":[90.0,0.0,0.0],"size":[0.005,0.022,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

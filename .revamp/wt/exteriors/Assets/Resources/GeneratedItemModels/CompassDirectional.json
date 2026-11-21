@@ -1,0 +1,8 @@
+{"version": 1, "id": "CompassDirectional", "baseHeight": 0.07, "name": "Compass Directional", "model": "gpt-oss:120b", "notes": "Small magnetic compass ~7 cm diameter x 1.5 cm thick, lying flat on the floor. Main components: metal base disc with a raised rim, clear glass cover, thin steel needle pivoting in the centre, and a tiny metal pin for the hinge.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.014,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.9},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.003,0.074],"color":[0.45,0.44,0.38],"smooth":0.35,"metal":0.8},
+  {"name":"GlassCover","shape":"cylinder","pos":[0.0,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.002,0.068],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Needle","shape":"cube","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.06],"color":[0.8,0.8,0.85],"smooth":0.65,"metal":1.0},
+  {"name":"Pivot","shape":"sphere","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.38,0.35],"smooth":0.55,"metal":0.9},
+  {"name":"NorthMark","shape":"cylinder","pos":[0.028,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.85,0.2,0.2],"smooth":0.3,"metal":0.0}
+]}

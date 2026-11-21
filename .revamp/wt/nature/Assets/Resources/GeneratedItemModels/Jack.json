@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jack", "baseHeight": 0.1475, "name": "Jack", "model": "gpt-oss:120b", "notes": "Scissor‑type car jack about 0.25 m long × 0.15 m wide × 0.22 m tall when resting on the floor. Main metal body (tint 0.6, 0.58, 0.5) with a flat base plate, crossing scissor arms, a short screw‑type lift handle and a small side lock lever. Rivets are now positioned so they sit flush against the scissor arms.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.0775,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ArmA","shape":"cube","pos":[-0.06,-0.0075,0.0],"rot":[0.0,0.0,45.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ArmB","shape":"cube","pos":[-0.06,-0.0075,0.0],"rot":[0.0,0.0,-45.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ArmC","shape":"cube","pos":[0.06,-0.0075,0.0],"rot":[0.0,0.0,45.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ArmD","shape":"cube","pos":[0.06,-0.0075,0.0],"rot":[0.0,0.0,-45.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LiftHandle","shape":"cylinder","pos":[0.0,0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"HandleKnob","shape":"sphere","pos":[0.0,0.0725,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"SideLock","shape":"cube","pos":[-0.115,-0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RivetA","shape":"cylinder","pos":[-0.06,0.0425,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.012,0.004],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"RivetB","shape":"cylinder","pos":[0.06,0.0425,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.012,0.004],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0}
+]}

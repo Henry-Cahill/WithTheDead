@@ -1,0 +1,14 @@
+{"version": 1, "id": "Coffee2", "baseHeight": 0.2025, "name": "Coffee2", "model": "gpt-oss:120b", "notes": "Upright coffee tin ~0.15 m diameter × 0.26 m tall: metal body with top/bottom seams, recessed lid and pull‑tab, paper label in coffee‑tint with dark trim and a small bean logo.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0115,-0.003],"rot":[0.0,0.0,0.0],"size":[0.15,0.26,0.15],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.1225,-0.003],"rot":[0.0,0.0,0.0],"size":[0.158,0.008,0.158],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.1375,-0.003],"rot":[0.0,0.0,0.0],"size":[0.158,0.008,0.158],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.1245,-0.003],"rot":[0.0,0.0,0.0],"size":[0.14,0.012,0.14],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"InnerLid","shape":"cylinder","pos":[0.0,0.1285,-0.003],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.75,0.7,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.1305,-0.003],"rot":[0.0,0.0,0.0],"size":[0.158,0.006,0.158],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.1395,-0.003],"rot":[0.0,0.0,0.0],"size":[0.158,0.006,0.158],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0115,-0.003],"rot":[0.0,0.0,0.0],"size":[0.14,0.2,0.14],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0925,-0.003],"rot":[0.0,0.0,0.0],"size":[0.142,0.008,0.142],"color":[0.42,0.33,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.1155,-0.003],"rot":[0.0,0.0,0.0],"size":[0.142,0.008,0.142],"color":[0.42,0.33,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"PullTab","shape":"cylinder","pos":[0.04,0.1385,-0.003],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"Logo","shape":"sphere","pos":[0.0,-0.0115,0.067],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0}
+]}

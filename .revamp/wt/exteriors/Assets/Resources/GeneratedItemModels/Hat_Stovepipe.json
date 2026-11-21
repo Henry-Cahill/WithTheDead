@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_Stovepipe", "baseHeight": 0.22, "name": "Hat Stovepipe", "model": "gpt-oss:120b", "notes": "Flat stovepipe hat laid on its side for a product‑photo view – square brim plate 0.28 m wide, 2 cm thick; tall crown block 0.30 m long × 12 cm wide; thin felt band around the base of the crown and a small front label.", "score": 7, "parts": [
+  {"name":"BrimPlate","shape":"cube","pos":[0.0,-0.15,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBlock","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.3,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cube","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.14],"color":[0.15,0.12,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.09,0.061],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.002],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.09,0.0625],"rot":[0.0,0.0,0.0],"size":[0.042,0.022,0.002],"color":[0.2,0.15,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"cube","pos":[0.0,0.15,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

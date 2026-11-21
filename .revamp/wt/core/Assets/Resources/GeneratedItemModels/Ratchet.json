@@ -1,0 +1,13 @@
+{"version": 1, "id": "Ratchet", "baseHeight": 0.105, "name": "Ratchet", "model": "gpt-oss:120b", "notes": "Ratchet melee weapon ~1.1 m long, lying on its side (long axis X). Metal handle and gear with rubber grip, gear teeth, socket head and a small pawl lever – all coloured in the given gray‑blue tint. Handle and grip now abut the gear body.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.045,-0.025,0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.8,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.045,-0.02,0.03],"rot":[0.0,0.0,90.0],"size":[0.045,0.78,0.045],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"GearBody","shape":"cube","pos":[0.355,-0.015,0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GearTeethFront","shape":"cube","pos":[0.355,-0.005,0.11],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GearTeethBack","shape":"cube","pos":[0.355,-0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GearTeethLeft","shape":"cube","pos":[0.275,-0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GearTeethRight","shape":"cube","pos":[0.435,-0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Socket","shape":"cylinder","pos":[0.355,-0.015,-0.06],"rot":[90.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Pawl","shape":"cube","pos":[0.305,0.025,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Bolt1","shape":"cylinder","pos":[0.325,0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Bolt2","shape":"cylinder","pos":[0.385,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

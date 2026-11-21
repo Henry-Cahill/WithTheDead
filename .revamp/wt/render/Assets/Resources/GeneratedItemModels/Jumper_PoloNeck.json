@@ -1,0 +1,13 @@
+{"version": 1, "id": "Jumper_PoloNeck", "baseHeight": 0.085, "name": "Jumper Polo Neck", "model": "gpt-oss:120b", "notes": "Flat jumper polo‑neck sweater ~0.58 m wide × 0.78 m long, 2.5 cm thick. Main body panel, two sleeves, a short polo collar band across the front, side stitching, front/back hems, a chest pocket and a simple label.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.78],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.4,-0.0125,0.29],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.4,-0.0125,0.29],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.0,0.0125,0.35],"rot":[0.0,0.0,90.0],"size":[0.025,0.56,0.025],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,-0.0125,0.38],"rot":[0.0,0.0,0.0],"size":[0.58,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,-0.0125,-0.38],"rot":[0.0,0.0,0.0],"size":[0.58,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.285,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.78],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.285,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.78],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"ShoulderSeam","shape":"cube","pos":[0.0,-0.01,0.28],"rot":[0.0,0.0,0.0],"size":[0.58,0.005,0.02],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.15,-0.005,0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0005,0.25],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.04],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0}
+]}

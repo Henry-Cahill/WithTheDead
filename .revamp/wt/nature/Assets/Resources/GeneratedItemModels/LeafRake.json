@@ -1,0 +1,11 @@
+{"version": 1, "id": "LeafRake", "baseHeight": 0.1, "name": "Leaf Rake", "model": "gpt-oss:120b", "notes": "Leaf rake ~1.60 m long lying on its side (X‑axis). Wooden cylinder handle with a rubber grip, short steel ferrule where the head meets the handle, a rectangular steel head plate and five thin metal tines fanning out forward (+Z). Overall silhouette: long thin stick ending in a wide fan of tines.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.0,-0.02,-0.125],"rot":[0.0,0.0,90.0],"size":[0.04,1.6,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.4,0.0,-0.125],"rot":[0.0,0.0,90.0],"size":[0.08,0.2,0.08],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"Ferrule","shape":"cube","pos":[0.68,-0.02,-0.125],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.04],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"HeadPlate","shape":"cube","pos":[0.74,-0.02,-0.125],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.32],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"TineL","shape":"cylinder","pos":[0.69,-0.02,0.16],"rot":[90.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"TineML","shape":"cylinder","pos":[0.715,-0.02,0.16],"rot":[90.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"TineC","shape":"cylinder","pos":[0.74,-0.02,0.16],"rot":[90.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"TineMR","shape":"cylinder","pos":[0.765,-0.02,0.16],"rot":[90.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"TineR","shape":"cylinder","pos":[0.79,-0.02,0.16],"rot":[90.0,0.0,0.0],"size":[0.01,0.25,0.01],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0}
+]}

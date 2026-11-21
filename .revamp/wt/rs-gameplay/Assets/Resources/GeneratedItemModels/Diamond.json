@@ -1,0 +1,10 @@
+{"version": 1, "id": "Diamond", "baseHeight": 0.068, "name": "Diamond", "model": "gpt-oss:120b", "notes": "Diamond ~6 mm across, lying on one facet. Main body is a small ellipsoid with two tapered points and a few thin facet‑plates to give the classic octahedral silhouette.", "score": 6, "parts": [
+  {"name":"Core","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"TopPoint","shape":"cylinder","pos":[0.0,0.006,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"BottomPoint","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"FacetA","shape":"cube","pos":[0.003,-0.0025,0.004],"rot":[0.0,15.0,0.0],"size":[0.002,0.002,0.006],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"FacetB","shape":"cube","pos":[-0.003,-0.0025,-0.004],"rot":[0.0,-15.0,0.0],"size":[0.002,0.002,0.006],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"FacetC","shape":"cube","pos":[0.004,-0.0025,-0.002],"rot":[15.0,0.0,0.0],"size":[0.006,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"FacetD","shape":"cube","pos":[-0.004,-0.0025,0.002],"rot":[-15.0,0.0,0.0],"size":[0.006,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[45.0,0.0,0.0],"size":[0.002,0.012,0.002],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "HempScutched", "baseHeight": 0.1663, "name": "Hemp Scutched", "model": "gpt-oss:120b", "notes": "A burlap sack of scutched hemp lying on its side (X‑axis). The sack is open at the +X end, spilling a loose fibrous pile. Main colour is the hemp tint 0.6 0.58 0.5 with matte cloth finish.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[0.0163,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.4,0.2],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[0.2363,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.2,0.2],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0163,0.0837,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.4,0.018],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0163,-0.0963,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.4,0.018],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RopeTie","shape":"cylinder","pos":[-0.1637,0.0137,0.0],"rot":[0.0,0.0,45.0],"size":[0.012,0.25,0.012],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"FiberClump1","shape":"sphere","pos":[0.1663,0.0137,0.07],"rot":[0.0,0.0,0.0],"size":[0.18,0.08,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberClump2","shape":"sphere","pos":[0.1363,-0.0263,-0.06],"rot":[0.0,0.0,0.0],"size":[0.14,0.07,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberClump3","shape":"sphere","pos":[0.0963,-0.0463,0.02],"rot":[0.0,0.0,0.0],"size":[0.1,0.05,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberClump4","shape":"sphere","pos":[0.0563,-0.0163,-0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberClump5","shape":"sphere","pos":[0.0163,-0.0363,0.04],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BagBase","shape":"cube","pos":[-0.1837,-0.0863,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.22],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0}
+]}

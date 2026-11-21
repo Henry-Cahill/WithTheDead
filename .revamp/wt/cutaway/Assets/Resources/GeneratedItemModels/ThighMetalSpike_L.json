@@ -1,0 +1,11 @@
+{"version": 1, "id": "ThighMetalSpike_L", "baseHeight": 0.22, "name": "Thigh Metal Spike L", "model": "gpt-oss:120b", "notes": "Thigh Metal Spike L lying on its side (~0.48 m long): central steel shaft, pointed tip, base mounting plate with four rivets, a reinforcing rib and a small rust patch for wear.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.015,-0.14,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.03,0.45,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.26,-0.14,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"BasePlate","shape":"cube","pos":[-0.245,-0.1425,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.05],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":1.0},
+  {"name":"Rib","shape":"cylinder","pos":[0.015,0.01,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.015,0.3,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[-0.22,-0.1275,0.0055],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[-0.22,-0.1275,-0.0305],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.27,-0.1275,0.0055],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[-0.27,-0.1275,-0.0305],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[0.115,-0.11,0.0075],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.45,0.25,0.2],"smooth":0.1,"metal":0.0}
+]}

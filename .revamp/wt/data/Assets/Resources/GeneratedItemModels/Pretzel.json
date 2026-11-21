@@ -1,0 +1,10 @@
+{"version": 1, "id": "Pretzel", "baseHeight": 0.095, "name": "Pretzel", "model": "gpt-oss:120b", "notes": "Pretzel snack ~0.14 m across, 0.02 m thick, in a light‑brown paper wrapper (≈0.18 m × 0.04 m × 0.10 m). Pretzel modelled as two crossing cylinders (X and Z) of baked‑dough colour.", "score": 6, "parts": [
+  {"name":"WrapperBase","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.1],"color":[0.85,0.78,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.6,0.5,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"PretzelX","shape":"cylinder","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PretzelZ","shape":"cylinder","pos":[0.0,-0.025,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PretzelCenter","shape":"sphere","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"WrapperSideL","shape":"cube","pos":[-0.085,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.1],"color":[0.85,0.78,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"WrapperSideR","shape":"cube","pos":[0.085,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.1],"color":[0.85,0.78,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"WrapperFront","shape":"cube","pos":[0.0,0.005,0.045],"rot":[0.0,0.0,0.0],"size":[0.18,0.06,0.01],"color":[0.85,0.78,0.6],"smooth":0.1,"metal":0.0}
+]}

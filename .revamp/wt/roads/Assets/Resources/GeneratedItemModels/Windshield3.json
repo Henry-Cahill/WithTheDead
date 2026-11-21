@@ -1,0 +1,10 @@
+{"version": 1, "id": "Windshield3", "baseHeight": 0.0625, "name": "Windshield3", "model": "gpt-oss:120b", "notes": "Windshield glass approx 1.20 m wide × 0.70 m tall × 0.004 m thick (≈8 kg). Thin pane lies flat on the floor, dark‑tinted gray‑brown glass with slightly darker beveled edges and three random surface cracks for visual interest.", "score": 7, "parts": [
+  {"name":"Pane","shape":"cube","pos":[0.0,-0.0005,-0.025],"rot":[0.0,0.0,0.0],"size":[1.2,0.004,0.7],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,-0.0005,0.315],"rot":[0.0,0.0,0.0],"size":[1.2,0.004,0.02],"color":[0.42,0.4,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.0005,-0.365],"rot":[0.0,0.0,0.0],"size":[1.2,0.004,0.02],"color":[0.42,0.4,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.59,-0.0005,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.7],"color":[0.42,0.4,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.59,-0.0005,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.7],"color":[0.42,0.4,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"Crack1","shape":"cylinder","pos":[-0.2,0.0,-0.025],"rot":[0.0,0.0,90.0],"size":[0.005,0.8,0.005],"color":[0.08,0.07,0.06],"smooth":0.1,"metal":0.0},
+  {"name":"Crack2","shape":"cylinder","pos":[0.15,0.0,0.075],"rot":[90.0,0.0,0.0],"size":[0.005,0.6,0.005],"color":[0.08,0.07,0.06],"smooth":0.1,"metal":0.0},
+  {"name":"Crack3","shape":"cylinder","pos":[0.0,0.0,-0.175],"rot":[0.0,30.0,90.0],"size":[0.005,0.7,0.005],"color":[0.08,0.07,0.06],"smooth":0.1,"metal":0.0}
+]}

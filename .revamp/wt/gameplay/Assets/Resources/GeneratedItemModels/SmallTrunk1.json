@@ -1,0 +1,13 @@
+{"version": 1, "id": "SmallTrunk1", "baseHeight": 0.2, "name": "Small Trunk1", "model": "gpt-oss:120b", "notes": "Small wooden trunk (≈0.70 m × 0.35 m × 0.25 m) lying on its side, weight ~30 kg. Main body is solid pine‑tone wood with metal hinges, a steel latch and a short handle bar on the lid.", "score": 7, "parts": [
+  {"name":"BottomPanel","shape":"cube","pos":[0.0,-0.13,0.0225],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.35],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LeftSide","shape":"cube","pos":[-0.34,-0.015,0.0225],"rot":[0.0,0.0,0.0],"size":[0.02,0.25,0.35],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RightSide","shape":"cube","pos":[0.34,-0.015,0.0225],"rot":[0.0,0.0,0.0],"size":[0.02,0.25,0.35],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.015,-0.1425],"rot":[0.0,0.0,0.0],"size":[0.7,0.25,0.02],"color":[0.59,0.57,0.49],"smooth":0.15,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.015,0.1875],"rot":[0.0,0.0,0.0],"size":[0.7,0.25,0.02],"color":[0.59,0.57,0.49],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.1,0.0225],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.35],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HingeL","shape":"cylinder","pos":[-0.15,0.1,-0.1425],"rot":[90.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"HingeR","shape":"cylinder","pos":[0.15,0.1,-0.1425],"rot":[90.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"Latch","shape":"cube","pos":[0.0,-0.015,0.195],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.015],"color":[0.55,0.55,0.56],"smooth":0.45,"metal":1.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.0,0.13,0.1875],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"WoodGrainSeam","shape":"cube","pos":[0.0,-0.015,0.0225],"rot":[0.0,0.0,0.0],"size":[0.7,0.004,0.35],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

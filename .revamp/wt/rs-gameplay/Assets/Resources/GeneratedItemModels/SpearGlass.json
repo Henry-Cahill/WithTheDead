@@ -1,0 +1,12 @@
+{"version": 1, "id": "SpearGlass", "baseHeight": 0.14, "name": "Spear Glass", "model": "gpt-oss:120b", "notes": "Spear‑glass ~1.5 m long, 4 cm shaft diameter, lying on its side (X axis). Central wooden grip, thin metal ferrule and ring near the tip, four small rivets for detail, and a clear glass point at the far end.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.07,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.5,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cube","pos":[-0.27,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.08,0.06],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GuardRing","shape":"cylinder","pos":[0.58,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.71,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"TipRing","shape":"cylinder","pos":[0.63,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.01,0.045],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"GlassTip","shape":"sphere","pos":[0.75,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.8,0.85,0.95],"smooth":0.9,"metal":0.0},
+  {"name":"Rivet1","shape":"cube","pos":[-0.52,-0.05,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Rivet2","shape":"cube","pos":[-0.22,-0.05,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Rivet3","shape":"cube","pos":[0.08,-0.05,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Rivet4","shape":"cube","pos":[0.38,-0.05,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0}
+]}

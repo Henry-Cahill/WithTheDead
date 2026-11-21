@@ -1,0 +1,12 @@
+{"version": 1, "id": "BucketClayCement", "baseHeight": 0.3025, "name": "Bucket Clay Cement", "model": "gpt-oss:120b", "notes": "Bucket of wet clay‑cement (10 kg) tipped onto its side. Metal bucket ~0.30 m long × 0.24 m diameter with a short vertical handle; brownish cement fills the interior and a small spill pool lies on the floor beside it.", "score": 6, "parts": [
+  {"name":"BucketBody","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.24,0.3,0.24],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":0.85},
+  {"name":"BucketRim","shape":"cylinder","pos":[0.0,0.1125,0.0],"rot":[0.0,0.0,90.0],"size":[0.26,0.02,0.26],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":0.85},
+  {"name":"BucketBottom","shape":"cylinder","pos":[0.0,-0.1225,0.0],"rot":[0.0,0.0,90.0],"size":[0.24,0.02,0.24],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":0.85},
+  {"name":"Handle","shape":"cylinder","pos":[0.13,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":0.85},
+  {"name":"CementContent","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.28,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SpillPool","shape":"sphere","pos":[-0.07,-0.1125,0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,0.0675,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.002,0.22],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cylinder","pos":[0.0,0.069,0.0],"rot":[0.0,0.0,90.0],"size":[0.224,0.002,0.224],"color":[0.3,0.27,0.23],"smooth":0.1,"metal":0.0},
+  {"name":"RimCapLeft","shape":"cube","pos":[-0.15,0.1125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.24],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":0.85},
+  {"name":"RimCapRight","shape":"cube","pos":[0.15,0.1125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.24],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":0.85}
+]}

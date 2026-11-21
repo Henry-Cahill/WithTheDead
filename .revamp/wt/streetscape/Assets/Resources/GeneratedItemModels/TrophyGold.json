@@ -1,0 +1,15 @@
+{"version": 1, "id": "TrophyGold", "baseHeight": 0.1975, "name": "Trophy Gold", "model": "gpt-oss:120b", "notes": "Gold trophy about 0.30 m tall: wide circular base, slender stem, cup‑shaped bowl with a thin rim, small globe on top and a decorative ribbon around the stem. Includes subtle details – beveled base edge, inner cup rim, front label with two engraved lines.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.1275,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaseEdge","shape":"cylinder","pos":[0.0,-0.1155,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.004,0.16],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.0,-0.0775,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Ribbon","shape":"cube","pos":[0.0,-0.0875,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"RibbonEndL","shape":"cube","pos":[0.02,-0.0875,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.01],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"RibbonEndR","shape":"cube","pos":[-0.02,-0.0875,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.01],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Cup","shape":"cylinder","pos":[0.0,0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CupInnerRim","shape":"cylinder","pos":[0.0,0.081,0.0],"rot":[0.0,0.0,0.0],"size":[0.116,0.003,0.116],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.005,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Globe","shape":"sphere","pos":[0.0,0.1125,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,-0.1225,0.072],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.002],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"LabelLine1","shape":"cube","pos":[0.0,-0.1225,0.0725],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.002],"color":[0.45,0.43,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"LabelLine2","shape":"cube","pos":[0.0,-0.1225,0.0735],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.002],"color":[0.45,0.43,0.35],"smooth":0.2,"metal":0.0}
+]}

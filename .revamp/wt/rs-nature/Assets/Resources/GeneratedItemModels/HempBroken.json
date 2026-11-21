@@ -1,0 +1,16 @@
+{"version": 1, "id": "HempBroken", "baseHeight": 0.0706, "name": "Hemp Broken", "model": "gpt-oss:120b", "notes": "A small heap of broken hemp fibers (~0.15 m × 0.10 m footprint, ~0.05 m tall). A flat base disc with a bundle of thin cylinders (fibers) lying in random directions and slight tilts to suggest a loose, tangled pile.", "score": 6, "parts": [
+  {"name":"BaseDisc","shape":"cylinder","pos":[0.01,0.0006,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberA","shape":"cylinder","pos":[-0.01,-0.0054,0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberB","shape":"cylinder","pos":[0.05,-0.0054,-0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberC","shape":"cylinder","pos":[-0.02,-0.0054,-0.04],"rot":[20.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberD","shape":"cylinder","pos":[0.03,-0.0054,0.05],"rot":[-15.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberE","shape":"cylinder","pos":[-0.05,-0.0054,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberF","shape":"cylinder","pos":[0.06,-0.0054,0.04],"rot":[90.0,0.0,0.0],"size":[0.008,0.09,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberG","shape":"cylinder","pos":[-0.005,-0.0054,0.02],"rot":[0.0,30.0,90.0],"size":[0.008,0.11,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberH","shape":"cylinder","pos":[0.035,-0.0054,-0.015],"rot":[0.0,-30.0,90.0],"size":[0.008,0.11,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberI","shape":"cylinder","pos":[-0.03,-0.0054,0.045],"rot":[10.0,0.0,90.0],"size":[0.008,0.07,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberJ","shape":"cylinder","pos":[0.04,-0.0054,-0.045],"rot":[-10.0,0.0,90.0],"size":[0.008,0.07,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberK","shape":"cylinder","pos":[0.0,-0.0054,-0.06],"rot":[90.0,15.0,0.0],"size":[0.008,0.09,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberL","shape":"cylinder","pos":[0.02,-0.0054,0.06],"rot":[90.0,-15.0,0.0],"size":[0.008,0.09,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FiberM","shape":"cylinder","pos":[0.01,-0.0054,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.13,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

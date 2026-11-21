@@ -1,0 +1,73 @@
+diff --git a/Assets/Scripts/World/FurnitureBuilder.Lighting.cs b/Assets/Scripts/World/FurnitureBuilder.Lighting.cs
+index 69595b7f..5393458d 100644
+--- a/Assets/Scripts/World/FurnitureBuilder.Lighting.cs
++++ b/Assets/Scripts/World/FurnitureBuilder.Lighting.cs
+@@ -111,7 +111,7 @@ public static Vector3 BreakerBox(RaidMesh m, Vector3 back, Vector3 normal, float
+                     Vector3 c = front + right * (col * 0.055f) + Vector3.up * (0.07f - row * 0.042f);
+                     m.Box(c + normal * 0.006f, new Vector3(0.05f, 0.03f, 0.008f), q, body);
+                     m.Box(c + normal * 0.0125f, new Vector3(0.012f, 0.012f, 0.005f), q, nub);
+-                }
++        }
+             Vector3 main = front + Vector3.up * 0.14f;
+             m.Box(main + normal * 0.006f, new Vector3(0.08f, 0.05f, 0.012f), q, body);
+             m.Upright(front + normal * 0.0035f - Vector3.up * 0.155f - right * 0.07f, normal, 0.06f, 0.075f, DecorMaterials.Paper(0), new Rect(0f, 0f, 1f, 1f));
+@@ -132,12 +132,15 @@ public static void BreakerDoor(RaidMesh m, Vector3 front, Vector3 normal, Vector
+ 
+         /// <summary>The main breaker's handle, drawn thrown down (off) <paramref name="tilt"/> degrees below level from
+         /// <paramref name="pivot"/>; it flips up by turning about <c>Vector3.Cross(normal, Vector3.up)</c>.</summary>
+-        public static void BreakerHandle(RaidMesh m, Vector3 pivot, Vector3 normal, float tilt)
++        /// <summary>A clock hand pointing at twelve from <paramref name="centre"/>, <paramref name="normal"/> off the wall face
++        /// (turn it about the dial's normal through the centre to tell the time).</summary>
++        public static void ClockHand(RaidMesh m, Vector3 centre, Vector3 normal, float length, float width, float lift)
+         {
+-            float a = tilt * Mathf.Deg2Rad;
+-            Vector3 d = (normal * Mathf.Cos(a) - Vector3.up * Mathf.Sin(a)).normalized;
+-            const float len = 0.03f;
+-            m.Box(pivot + d * (len * 0.5f), new Vector3(0.05f, 0.012f, len), Quaternion.LookRotation(d, Vector3.up), M(new Color(0.05f, 0.05f, 0.05f)));
++            const float tail = 0.018f;
++            Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
++            // Box representing the hand: lifted off the face then extended outward
++            Vector3 offset = centre + normal * lift + Vector3.up * ((length - tail) * 0.5f);
++            m.Box(offset, new Vector3(width, length + tail, 0.003f), q, M(Black));
+         }
+ 
+         /// <summary>A round wall clock's case and dial — hour marks and the boss the hands turn on — centred on
+@@ -146,6 +149,8 @@ public static void ClockDial(RaidMesh m, Vector3 at, Vector3 normal)
+         {
+             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
+             Quaternion disc = q * Quaternion.Euler(90f, 0f, 0f);
++            // brass mounting plate (period‑correct steel‑backed frame)
++            m.Box(at - normal * 0.005f, new Vector3(0.34f, 0.004f, 0.01f), q, Mt(new Color(0.78f, 0.62f, 0.45f)));
+             m.Cylinder(at, 0.16f, 0.04f, 16, M(new Color(0.15f, 0.15f, 0.16f)), disc);
+             // Chrome bezel at the clock’s outer rim
+             m.Cylinder(at, 0.165f, 0.004f, 16, Mt(Chrome), disc);
+@@ -160,16 +165,22 @@ public static void ClockDial(RaidMesh m, Vector3 at, Vector3 normal)
+                 m.Box(at + normal * 0.0435f + dir * (0.124f - len * 0.5f), new Vector3(major ? 0.007f : 0.004f, len, 0.002f),
+                     Quaternion.LookRotation(normal, dir), M(Black));
+             }
+-            m.Cylinder(at + normal * 0.043f, 0.008f, 0.009f, 8, M(Black), disc);
++            // battery‑door plate (tiny hinged panel)
++            Vector3 battPos = at + normal * 0.045f + right * 0.08f + Vector3.up * 0.02f;
++            m.Box(battPos, new Vector3(0.04f, 0.02f, 0.001f), q, Mt(new Color(0.68f, 0.61f, 0.52f)));
++            // left hinge
++            m.Cylinder(battPos + Vector3.left * 0.019f, 0.0015f, 0.006f, 6, Mt(new Color(0.78f, 0.62f, 0.45f)), Quaternion.identity);
++            // right hinge
++            m.Cylinder(battPos + Vector3.right * 0.019f, 0.0015f, 0.006f, 6, Mt(new Color(0.78f, 0.62f, 0.45f)), Quaternion.identity);
++
++
+         }
+ 
+-        /// <summary>A clock hand pointing at twelve from <paramref name="centre"/>, <paramref name="lift"/> off the wall face
+-        /// (turn it about the dial's normal through the centre to tell the time).</summary>
+-        public static void ClockHand(RaidMesh m, Vector3 centre, Vector3 normal, float length, float width, float lift)
++        // Helper to draw a very thin quad (implemented as a thin box).
++        private static void FlatQuad(RaidMesh m, Vector3 centre, float width, float height, Quaternion rot, Surf s)
+         {
+-            const float tail = 0.018f;
+-            Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
+-            m.Box(centre + normal * lift + Vector3.up * ((length - tail) * 0.5f), new Vector3(width, length + tail, 0.003f), q, M(Black));
++            // tiny thickness 0.0005 m, oriented by rot
++            m.Box(centre, new Vector3(width, height, 0.0005f), rot, s);
+         }
+ 
+         /// <summary>A framed print hanging level, centred on <paramref name="at"/> (on the wall face): a

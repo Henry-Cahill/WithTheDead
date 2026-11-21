@@ -1,0 +1,13 @@
+{"version": 1, "id": "Animal_BowtieRed", "baseHeight": 0.07, "name": "Animal Bowtie Red", "model": "gpt-oss:120b", "notes": "Flat animal bow‑tie for head wear, approx 0.15 m wide × 0.12 m tall × 0.02 m thick. Central knot, two side loops (outer and inner ribbons), a back strap, stitching detail and a small tag.", "score": 6, "parts": [
+  {"name":"Knot","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LoopL_Outer","shape":"cube","pos":[-0.055,-0.0025,0.0],"rot":[0.0,15.0,0.0],"size":[0.07,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LoopR_Outer","shape":"cube","pos":[0.055,-0.0025,0.0],"rot":[0.0,-15.0,0.0],"size":[0.07,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LoopL_Inner","shape":"cube","pos":[-0.055,-0.0015,0.0],"rot":[0.0,15.0,0.0],"size":[0.06,0.012,0.028],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LoopR_Inner","shape":"cube","pos":[0.055,-0.0015,0.0],"rot":[0.0,-15.0,0.0],"size":[0.06,0.012,0.028],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strap_Back","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.004],"color":[0.3,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.004],"color":[0.3,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.045,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimL","shape":"cube","pos":[-0.055,-0.0005,0.0],"rot":[0.0,15.0,0.0],"size":[0.07,0.003,0.032],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimR","shape":"cube","pos":[0.055,-0.0005,0.0],"rot":[0.0,-15.0,0.0],"size":[0.07,0.003,0.032],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

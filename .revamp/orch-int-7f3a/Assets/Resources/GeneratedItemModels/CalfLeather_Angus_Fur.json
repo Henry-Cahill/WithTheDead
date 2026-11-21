@@ -1,0 +1,13 @@
+{"version": 1, "id": "CalfLeather_Angus_Fur", "baseHeight": 0.0712, "name": "Calf Leather Angus Fur", "model": "gpt-oss:120b", "notes": "Flat calf‑leather sheet (≈ 0.40 m × 0.30 m) about 8 mm thick with a light Angus‑fur nap on the top side. Includes thin edge stitching and a few visible fur tufts.", "score": 7, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,-0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.008,0.3],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FurLayer","shape":"cube","pos":[0.0,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.395,0.002,0.295],"color":[0.7,0.68,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTopZ+","shape":"cylinder","pos":[0.0,-0.0017,0.149],"rot":[0.0,0.0,90.0],"size":[0.002,0.4,0.002],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":0.0},
+  {"name":"StitchTopZ-","shape":"cylinder","pos":[0.0,-0.0017,-0.149],"rot":[0.0,0.0,90.0],"size":[0.002,0.4,0.002],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":0.0},
+  {"name":"StitchSideX+","shape":"cylinder","pos":[0.199,-0.0017,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.3,0.002],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":0.0},
+  {"name":"StitchSideX-","shape":"cylinder","pos":[-0.199,-0.0017,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.3,0.002],"color":[0.3,0.28,0.24],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.12,0.0003,0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.78,0.76,0.62],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.07,0.0003,-0.06],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.78,0.76,0.62],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[0.15,0.0003,0.12],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.78,0.76,0.62],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump4","shape":"sphere","pos":[-0.18,0.0003,-0.14],"rot":[0.0,0.0,0.0],"size":[0.019,0.019,0.019],"color":[0.78,0.76,0.62],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump5","shape":"sphere","pos":[0.03,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.021,0.021,0.021],"color":[0.78,0.76,0.62],"smooth":0.05,"metal":0.0}
+]}

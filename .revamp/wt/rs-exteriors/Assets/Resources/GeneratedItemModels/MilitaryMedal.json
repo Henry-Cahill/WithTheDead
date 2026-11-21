@@ -1,0 +1,13 @@
+{"version": 1, "id": "MilitaryMedal", "baseHeight": 0.0655, "name": "Military Medal", "model": "gpt-oss:120b", "notes": "Bronze‑coloured military medal ~4 cm diameter × 0.5 cm thick; raised star on front, engraved band on back, and an olive‑green ribbon attached to the rim that lies flat against the disc so all ribbon parts touch the main body.", "score": 6, "parts": [
+  {"name":"DiscBody","shape":"cylinder","pos":[0.0,0.0015,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[0.0,0.002,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.042],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"StarFront","shape":"cylinder","pos":[0.0,0.0045,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.62,0.6,0.52],"smooth":0.55,"metal":1.0},
+  {"name":"EngraveBandBack","shape":"cube","pos":[0.0,-0.0025,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.036,0.002,0.008],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[0.0,-0.0045,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"RibbonBase","shape":"cube","pos":[0.0,0.0025,0.0055],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.04],"color":[0.2,0.35,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RibbonTailL","shape":"cylinder","pos":[-0.03,0.0015,0.0055],"rot":[0.0,0.0,90.0],"size":[0.006,0.12,0.006],"color":[0.2,0.35,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RibbonTailR","shape":"cylinder","pos":[0.03,0.0015,0.0055],"rot":[0.0,0.0,90.0],"size":[0.006,0.12,0.006],"color":[0.2,0.35,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RibbonStitchL","shape":"cube","pos":[-0.03,0.0025,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.02],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RibbonStitchR","shape":"cube","pos":[0.03,0.0025,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.02],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RibbonTie","shape":"cube","pos":[0.0,0.0015,0.0255],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.02],"color":[0.2,0.35,0.1],"smooth":0.05,"metal":0.0}
+]}

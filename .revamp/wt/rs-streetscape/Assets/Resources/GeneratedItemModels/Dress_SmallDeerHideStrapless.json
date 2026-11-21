@@ -1,0 +1,13 @@
+{"version": 1, "id": "Dress_SmallDeerHideStrapless", "baseHeight": 0.0732, "name": "Dress Small Deer Hide Strapless", "model": "gpt-oss:120b", "notes": "Strapless deer‑hide dress laid flat, neck towards +X. Overall footprint ≈0.78 m wide × 0.80 m deep, 2–3 cm thick. Main bodice panel (narrow) sits on a wider skirt flare; thin edge bands and dark stitching mark hems and seams.", "score": 6, "parts": [
+  {"name":"BodicePanel","shape":"cube","pos":[0.0,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SkirtFlare","shape":"cube","pos":[0.0,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.02,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontHemBand","shape":"cube","pos":[0.0,0.0017,0.395],"rot":[0.0,0.0,0.0],"size":[0.78,0.005,0.01],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BackHemBand","shape":"cube","pos":[0.0,0.0017,-0.395],"rot":[0.0,0.0,0.0],"size":[0.78,0.005,0.01],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideHemBandL","shape":"cube","pos":[-0.39,0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.8],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideHemBandR","shape":"cube","pos":[0.39,0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.8],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.16,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.45],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.16,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.45],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.0007,0.225],"rot":[0.0,0.0,0.0],"size":[0.32,0.005,0.005],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,-0.0007,-0.225],"rot":[0.0,0.0,0.0],"size":[0.32,0.005,0.005],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"NeckTrim","shape":"cylinder","pos":[0.0,0.0092,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.008,0.14],"color":[0.38,0.33,0.44],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoes_Fancy", "baseHeight": 0.115, "name": "Shoes Fancy", "model": "gpt-oss:120b", "notes": "Two fancy shoes laid flat side‑by‑side (≈0.28 m long × 0.12 m wide each) with a thin gap; sole, upper vamp and small heel are modelled. Overall spread ≈0.6 m across the X axis.", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.16,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.12],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[-0.16,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.08,0.1],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"HeelL","shape":"cylinder","pos":[-0.27,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.07,0.06],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"TongueL","shape":"cube","pos":[-0.04,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.07],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.16,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.12],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[0.16,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.08,0.1],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"HeelR","shape":"cylinder","pos":[0.27,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.07,0.06],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"TongueR","shape":"cube","pos":[0.04,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.07],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"LaceStrip","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.24,0.03],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"HeelCapL","shape":"sphere","pos":[-0.27,0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"HeelCapR","shape":"sphere","pos":[0.27,0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0}
+]}

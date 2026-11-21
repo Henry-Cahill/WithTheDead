@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_ArmyWWII", "baseHeight": 0.0815, "name": "Hat Army WWII", "model": "gpt-oss:120b", "notes": "Flat WWII army cap laid out top‑down (≈0.30 m diameter, 0.03 m thick). Main fabric tinted gray‑purple, with darker trim, inner lining and a small front insignia.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownRim","shape":"cube","pos":[0.0,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.28],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.008,0.36],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.009,0.3],"color":[0.45,0.42,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Lining","shape":"cylinder","pos":[0.0,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.025,0.26],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"FrontInsignia","shape":"cylinder","pos":[0.0,0.0095,0.12],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.04],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideBandLeft","shape":"cube","pos":[-0.14,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.28],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideBandRight","shape":"cube","pos":[0.14,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.28],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RearBand","shape":"cube","pos":[0.0,-0.0065,-0.14],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TopRidgeFront","shape":"cube","pos":[0.0,-0.0035,0.12],"rot":[0.0,0.0,0.0],"size":[0.28,0.006,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TopRidgeBack","shape":"cube","pos":[0.0,-0.0035,-0.12],"rot":[0.0,0.0,0.0],"size":[0.28,0.006,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.28],"color":[0.3,0.28,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"Button","shape":"sphere","pos":[0.0,0.0115,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.28,0.33],"smooth":0.6,"metal":1.0}
+]}

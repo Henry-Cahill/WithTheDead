@@ -1,0 +1,10 @@
+{"version": 1, "id": "InsectRepellent", "baseHeight": 0.1075, "name": "Insect Repellent", "model": "gpt-oss:120b", "notes": "Spray‑can insect repellent ~0.18 m long × 0.08 m diameter lying on its side: molded plastic body (tinted green‑brown), metal spray nozzle cap, thin printed label, small trigger lever and end‑seam rings.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0088,-0.005,-0.0013],"rot":[0.0,0.0,90.0],"size":[0.08,0.18,0.08],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0912,0.0,-0.0013],"rot":[0.0,0.0,90.0],"size":[0.09,0.02,0.09],"color":[0.75,0.75,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Trigger","shape":"cube","pos":[0.0612,0.03,0.0287],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0088,-0.004,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.07],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"SeamFront","shape":"cylinder","pos":[0.0812,-0.0025,-0.0013],"rot":[0.0,0.0,90.0],"size":[0.082,0.005,0.082],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"SeamBack","shape":"cylinder","pos":[-0.0988,-0.0025,-0.0013],"rot":[0.0,0.0,90.0],"size":[0.082,0.005,0.082],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"NozzleRing","shape":"cylinder","pos":[0.0962,0.0,-0.0013],"rot":[0.0,0.0,90.0],"size":[0.095,0.003,0.095],"color":[0.4,0.4,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"GripRidge","shape":"cube","pos":[-0.0488,0.005,0.0338],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.015],"color":[0.5,0.48,0.45],"smooth":0.4,"metal":0.0}
+]}

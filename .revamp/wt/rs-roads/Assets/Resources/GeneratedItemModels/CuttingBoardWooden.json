@@ -1,0 +1,14 @@
+{"version": 1, "id": "CuttingBoardWooden", "baseHeight": 0.0713, "name": "Cutting Board Wooden", "model": "gpt-oss:120b", "notes": "Wooden cutting board ~0.35 m long × 0.25 m wide × 0.02 m thick, laid flat on the floor. Main board with a thin raised rim, shallow juice‑groove around the edge, a small label corner and two dark grain‑line accents.", "score": 7, "parts": [
+  {"name":"BoardBase","shape":"cube","pos":[0.0,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RimXPos","shape":"cube","pos":[0.17,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.022,0.26],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"RimXNeg","shape":"cube","pos":[-0.17,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.022,0.26],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"RimZPos","shape":"cube","pos":[0.0,-0.0003,0.12],"rot":[0.0,0.0,0.0],"size":[0.37,0.022,0.01],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"RimZNeg","shape":"cube","pos":[0.0,-0.0003,-0.12],"rot":[0.0,0.0,0.0],"size":[0.37,0.022,0.01],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"GrooveXPos","shape":"cube","pos":[0.161,0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.23],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"GrooveXNeg","shape":"cube","pos":[-0.161,0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.23],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"GrooveZPos","shape":"cube","pos":[0.0,0.0077,0.112],"rot":[0.0,0.0,0.0],"size":[0.33,0.002,0.008],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"GrooveZNeg","shape":"cube","pos":[0.0,0.0077,-0.112],"rot":[0.0,0.0,0.0],"size":[0.33,0.002,0.008],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.12,0.0097,-0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"GrainLineX","shape":"cylinder","pos":[0.0,0.0102,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.33,0.002],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"GrainLineZ","shape":"cylinder","pos":[0.0,0.0102,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.23,0.002],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0}
+]}

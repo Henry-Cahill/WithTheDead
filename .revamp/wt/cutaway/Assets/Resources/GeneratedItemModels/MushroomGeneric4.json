@@ -1,0 +1,12 @@
+{"version": 1, "id": "MushroomGeneric4", "baseHeight": 0.1015, "name": "Mushroom Generic4", "model": "gpt-oss:120b", "notes": "Loose bunch of four fresh mushrooms about 0.13 m wide × 0.08 m deep × 0.07 m tall, sitting on a thin cardboard tray. Each mushroom has a short stem (cylinder) and a rounded cap (flattened sphere). A clear plastic film covers the whole bundle.", "score": 7, "parts": [
+  {"name":"Tray","shape":"cube","pos":[0.0,-0.0365,0.0018],"rot":[0.0,0.0,0.0],"size":[0.13,0.01,0.08],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Film","shape":"cube","pos":[0.0,0.031,0.0018],"rot":[0.0,0.0,0.0],"size":[0.132,0.002,0.082],"color":[0.95,0.96,0.97],"smooth":0.6,"metal":0.0},
+  {"name":"Stem1","shape":"cylinder","pos":[-0.03,-0.0065,-0.0182],"rot":[0.0,0.0,0.0],"size":[0.015,0.05,0.015],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Cap1","shape":"sphere","pos":[-0.03,0.0285,-0.0182],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.78,0.71,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"Stem2","shape":"cylinder","pos":[0.02,-0.0065,0.0168],"rot":[0.0,0.0,0.0],"size":[0.014,0.045,0.014],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Cap2","shape":"sphere","pos":[0.02,0.026,0.0168],"rot":[0.0,0.0,0.0],"size":[0.038,0.022,0.038],"color":[0.78,0.71,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"Stem3","shape":"cylinder","pos":[-0.015,-0.0065,0.0268],"rot":[0.0,0.0,0.0],"size":[0.016,0.052,0.016],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Cap3","shape":"sphere","pos":[-0.015,0.0295,0.0268],"rot":[0.0,0.0,0.0],"size":[0.042,0.024,0.042],"color":[0.78,0.71,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"Stem4","shape":"cylinder","pos":[0.035,-0.0065,-0.0282],"rot":[0.0,0.0,0.0],"size":[0.015,0.048,0.015],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Cap4","shape":"sphere","pos":[0.035,0.0275,-0.0282],"rot":[0.0,0.0,0.0],"size":[0.039,0.023,0.039],"color":[0.78,0.71,0.48],"smooth":0.1,"metal":0.0}
+]}

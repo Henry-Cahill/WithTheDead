@@ -1,0 +1,13 @@
+{"version": 1, "id": "SteelWool", "baseHeight": 0.215, "name": "Steel Wool", "model": "gpt-oss:120b", "notes": "Loose ball of steel‑wool about 0.14 m across, lying on the floor (center at y≈0.07 m). Main shape is a gray sphere with short metal‑fiber bundles modelled as thin cylinders that protrude from the surface in several directions for clear silhouette detail.", "score": 7, "parts": [
+  {"name":"Ball","shape":"sphere","pos":[0.0,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberXPos","shape":"cylinder","pos":[0.13,-0.035,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberXNeg","shape":"cylinder","pos":[-0.13,-0.035,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberYPos","shape":"cylinder","pos":[0.0,0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberYNeg","shape":"cylinder","pos":[0.0,-0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberZPos","shape":"cylinder","pos":[0.0,-0.035,0.13],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberZNeg","shape":"cylinder","pos":[0.0,-0.035,-0.13],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberDiag1","shape":"cylinder","pos":[0.075,0.04,0.075],"rot":[45.0,0.0,90.0],"size":[0.008,0.14,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberDiag2","shape":"cylinder","pos":[-0.075,0.04,-0.075],"rot":[45.0,0.0,90.0],"size":[0.008,0.14,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberDiag3","shape":"cylinder","pos":[-0.075,-0.11,0.075],"rot":[-45.0,0.0,90.0],"size":[0.008,0.14,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"FiberDiag4","shape":"cylinder","pos":[0.075,-0.11,-0.075],"rot":[-45.0,0.0,90.0],"size":[0.008,0.14,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0}
+]}

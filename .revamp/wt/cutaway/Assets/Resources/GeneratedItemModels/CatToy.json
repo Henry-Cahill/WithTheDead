@@ -1,0 +1,12 @@
+{"version": 1, "id": "CatToy", "baseHeight": 0.1075, "name": "Cat Toy", "model": "gpt-oss:120b", "notes": "Plush cat‑mouse toy about 0.18 m long × 0.09 m wide × 0.08 m tall, lying on its side. Main fabric body in muted brown‑grey, with two ears, a thin tail, stitched seams, black eyes, pink nose and tiny mouth.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.02,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[0.09,0.0375,0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.005],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[0.09,0.0375,-0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.005],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.06,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.02,0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.01],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.02,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.01],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.095,0.0025,0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.095,0.0025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.11,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.8,0.3,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Mouth","shape":"cube","pos":[0.115,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.002],"color":[0.8,0.3,0.3],"smooth":0.1,"metal":0.0}
+]}

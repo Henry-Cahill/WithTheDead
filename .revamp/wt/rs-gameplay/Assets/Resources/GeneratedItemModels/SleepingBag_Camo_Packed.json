@@ -1,0 +1,12 @@
+{"version": 1, "id": "SleepingBag_Camo_Packed", "baseHeight": 0.1275, "name": "Sleeping Bag Camo Packed", "model": "gpt-oss:120b", "notes": "Packed camo sleeping bag rolled into a 2 m long, ~0.12 m diameter cylinder lying on its side (axis along X). Main cloth body with a thin seam band, zip‑closure flap, small label patch and the slightly bulged end caps of the stuff‑sack.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,2.0,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBand","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.124,2.0,0.124],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"ZipFlap","shape":"cube","pos":[-0.95,0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.08],"color":[0.45,0.44,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.6,0.0225,0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.06],"color":[0.4,0.38,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"EndCapFront","shape":"cylinder","pos":[-1.0,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.02,0.13],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapBack","shape":"cylinder","pos":[1.0,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.02,0.13],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StitchDetailL","shape":"cube","pos":[-0.4,-0.0025,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.12],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchDetailR","shape":"cube","pos":[-0.4,-0.0025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.12],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TieStrap","shape":"cube","pos":[-0.9,0.0225,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"CamouflageOverlay","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[1.8,0.002,0.11],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

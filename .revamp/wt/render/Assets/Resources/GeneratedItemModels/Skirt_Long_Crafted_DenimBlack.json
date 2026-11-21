@@ -1,0 +1,10 @@
+{"version": 1, "id": "Skirt_Long_Crafted_DenimBlack", "baseHeight": 0.08, "name": "Skirt Long Crafted Denim Black", "model": "gpt-oss:120b", "notes": "Long denim skirt ~1.0 m length, flares from ~0.4 m waist width to ~0.8 m hem width, 3 cm thick; main panel, flared lower panel, waistband band, two front pockets, side stitching strips and a centre button.", "score": 6, "parts": [
+  {"name":"UpperPanel","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LowerFlare","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.8],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[1.02,0.01,0.42],"color":[0.45,0.43,0.37],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.3,0.0025,0.15],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.25],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.3,0.0025,-0.15],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.25],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[0.0,-0.0035,0.2],"rot":[0.0,0.0,90.0],"size":[0.008,1.0,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.0,-0.0035,-0.2],"rot":[0.0,0.0,90.0],"size":[0.008,1.0,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonCenter","shape":"cylinder","pos":[-0.45,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.018],"color":[0.2,0.18,0.15],"smooth":0.6,"metal":1.0}
+]}

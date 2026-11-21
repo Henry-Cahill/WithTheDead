@@ -1,0 +1,8 @@
+{"version": 1, "id": "SteelSlug", "baseHeight": 0.0678, "name": "Steel Slug", "model": "gpt-oss:120b", "notes": "Steel slug ~30 mm long × 12 mm diameter, lying on its side (axis along X). Main solid steel cylinder with a slightly tapered nose and a tiny recessed base ring for visual detail; all parts touch the body.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.007,-0.0003,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Nose","shape":"sphere","pos":[0.014,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaseRing","shape":"cylinder","pos":[-0.023,0.0007,0.0],"rot":[0.0,0.0,90.0],"size":[0.014,0.002,0.014],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"Groove","shape":"cylinder","pos":[-0.012,-0.0003,0.0],"rot":[0.0,0.0,90.0],"size":[0.011,0.002,0.011],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"TipHighlight","shape":"sphere","pos":[0.02,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.75,0.73,0.68],"smooth":0.6,"metal":1.0},
+  {"name":"ShadowEdge","shape":"cylinder","pos":[-0.019,-0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.0105,0.002,0.0105],"color":[0.45,0.43,0.38],"smooth":0.55,"metal":1.0}
+]}

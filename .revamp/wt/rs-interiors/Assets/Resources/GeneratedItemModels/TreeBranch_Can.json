@@ -1,0 +1,14 @@
+{"version": 1, "id": "TreeBranch_Can", "baseHeight": 0.122, "name": "Tree Branch Can", "model": "gpt-oss:120b", "notes": "Tree‑branch club ≈ 1.10 m long, wooden branch (diameter 0.07 m) with a metal tin can attached at the tip as the business end. Lying on its side, longest axis along X; branch centre slightly back of overall midpoint so the can protrudes forward.", "score": 6, "parts": [
+  {"name":"BranchBody","shape":"cylinder","pos":[-0.081,-0.025,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.07,0.9,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BranchTip","shape":"sphere","pos":[0.369,-0.025,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"CanBody","shape":"cylinder","pos":[0.444,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.12,0.15,0.12],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"CanSeamFront","shape":"cylinder","pos":[0.511,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.124,0.016,0.124],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"CanSeamBack","shape":"cylinder","pos":[0.377,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.124,0.016,0.124],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":1.0},
+  {"name":"CanLid","shape":"cylinder","pos":[0.525,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.122,0.012,0.122],"color":[0.73,0.73,0.77],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.444,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.11,0.12,0.11],"color":[0.42,0.22,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.494,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.112,0.008,0.112],"color":[0.3,0.15,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.394,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.112,0.008,0.112],"color":[0.3,0.15,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"Strap","shape":"cylinder","pos":[-0.081,-0.005,0.0435],"rot":[0.0,0.0,90.0],"size":[0.04,0.5,0.04],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFront","shape":"sphere","pos":[0.519,0.0,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBack","shape":"sphere","pos":[0.379,0.0,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0}
+]}

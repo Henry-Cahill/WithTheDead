@@ -1,0 +1,14 @@
+{"version": 1, "id": "Bandage_RightHand_Blood", "baseHeight": 0.0668, "name": "Bandage Right Hand Blood", "model": "gpt-oss:120b", "notes": "Used bandage for the right hand, stained with blood and a few torn edges. Lying flat on the floor about 0.18 m long × 0.06 m wide × 0.01 m thick.", "score": 7, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RimTop","shape":"cube","pos":[0.0,0.0013,0.028],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.006],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RimBottom","shape":"cube","pos":[0.0,0.0013,-0.028],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.006],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.09,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.06],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.09,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.06],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"TearLFront","shape":"cube","pos":[-0.09,-0.0017,0.028],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TearRBack","shape":"cube","pos":[0.09,-0.0017,-0.028],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FoldRidge","shape":"cube","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.04,0.0042,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.015],"color":[0.7,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[-0.06,0.0042,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.014],"color":[0.68,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.03,0.0042,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.012],"color":[0.72,0.14,0.14],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot4","shape":"sphere","pos":[0.05,0.0042,-0.02],"rot":[0.0,0.0,0.0],"size":[0.017,0.005,0.013],"color":[0.69,0.11,0.11],"smooth":0.2,"metal":0.0}
+]}

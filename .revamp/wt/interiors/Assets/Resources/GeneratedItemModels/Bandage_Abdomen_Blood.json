@@ -1,0 +1,11 @@
+{"version": 1, "id": "Bandage_Abdomen_Blood", "baseHeight": 0.066, "name": "Bandage Abdomen Blood", "model": "gpt-oss:120b", "notes": "Flat abdomen bandage ~0.35 m long × 0.12 m wide × 0.01 m thick, cotton‑tan tint with a few dark blood stains and a torn corner; lying on the floor.", "score": 7, "parts": [
+  {"name":"BandageBase","shape":"cube","pos":[0.0053,-0.001,0.0065],"rot":[0.0,0.0,0.0],"size":[0.35,0.01,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderTop","shape":"cube","pos":[0.0053,0.0,0.0625],"rot":[0.0,0.0,0.0],"size":[0.35,0.012,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BorderBottom","shape":"cube","pos":[0.0053,0.0,-0.0495],"rot":[0.0,0.0,0.0],"size":[0.35,0.012,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BorderLeft","shape":"cube","pos":[-0.1672,0.0,0.0065],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BorderRight","shape":"cube","pos":[0.1777,0.0,0.0065],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.0747,0.005,0.0265],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.022],"color":[0.4,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.0453,0.005,-0.0235],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.018],"color":[0.38,0.04,0.04],"smooth":0.1,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.1253,0.005,0.0565],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.015],"color":[0.42,0.06,0.06],"smooth":0.1,"metal":0.0},
+  {"name":"TornCorner","shape":"cube","pos":[-0.1667,-0.001,-0.0515],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "ClayTileUnfired", "baseHeight": 0.0838, "name": "Clay Tile Unfired", "model": "gpt-oss:120b", "notes": "Unfired clay roof tile ~0.28 m × 0.22 m × 0.015 m thick, lying flat with a slightly raised rim and a couple of dry cracks; includes a tiny dust speck for texture.", "score": 7, "parts": [
+  {"name":"Rim","shape":"cube","pos":[-0.0049,-0.0148,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.24],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TileBase","shape":"cube","pos":[-0.0049,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrackMain","shape":"cube","pos":[-0.0249,0.0042,0.0],"rot":[0.0,0.0,12.0],"size":[0.18,0.002,0.003],"color":[0.35,0.33,0.28],"smooth":0.03,"metal":0.0},
+  {"name":"CrackEdge","shape":"cube","pos":[0.1251,0.0042,0.05],"rot":[0.0,0.0,-8.0],"size":[0.08,0.002,0.003],"color":[0.35,0.33,0.28],"smooth":0.03,"metal":0.0},
+  {"name":"DustSpot","shape":"sphere","pos":[-0.1249,-0.0138,-0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRimLeft","shape":"cube","pos":[-0.1549,-0.0148,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.24],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimRight","shape":"cube","pos":[0.1451,-0.0148,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.24],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimFront","shape":"cube","pos":[-0.0049,-0.0148,0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimBack","shape":"cube","pos":[-0.0049,-0.0148,-0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

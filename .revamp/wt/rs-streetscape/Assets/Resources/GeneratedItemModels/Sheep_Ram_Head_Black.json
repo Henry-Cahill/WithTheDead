@@ -1,0 +1,12 @@
+{"version": 1, "id": "Sheep_Ram_Head_Black", "baseHeight": 0.1602, "name": "Sheep Ram Head Black", "model": "gpt-oss:120b", "notes": "Ram head about 0.30 m wide (horn span) × 0.25 m long × 0.18 m tall. Main skull ellipsoid, two curved horns, ears, nose bump and a small inner‑horn core for contrast.", "score": 6, "parts": [
+  {"name":"Skull","shape":"sphere","pos":[0.0,-0.0302,-0.025],"rot":[0.0,0.0,0.0],"size":[0.18,0.14,0.22],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0,-0.0302,0.095],"rot":[0.0,0.0,0.0],"size":[0.06,0.05,0.08],"color":[0.5,0.48,0.42],"smooth":0.08,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[-0.1,-0.0102,-0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[0.1,-0.0102,-0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"HornBaseL","shape":"cylinder","pos":[-0.13,0.0198,-0.025],"rot":[20.0,0.0,90.0],"size":[0.04,0.14,0.04],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"HornBaseR","shape":"cylinder","pos":[0.13,0.0198,-0.025],"rot":[-20.0,0.0,90.0],"size":[0.04,0.14,0.04],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"HornTipL","shape":"cylinder","pos":[-0.2,0.0798,-0.005],"rot":[30.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.42,0.41,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"HornTipR","shape":"cylinder","pos":[0.2,0.0798,-0.045],"rot":[-30.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.42,0.41,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"HornCoreL","shape":"cylinder","pos":[-0.13,0.0198,-0.025],"rot":[20.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.3,0.29,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"HornCoreR","shape":"cylinder","pos":[0.13,0.0198,-0.025],"rot":[-20.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.3,0.29,0.25],"smooth":0.05,"metal":0.0}
+]}

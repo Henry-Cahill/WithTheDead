@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_BulletDesert", "baseHeight": 0.0875, "name": "Vest Bullet Desert", "model": "gpt-oss:120b", "notes": "Bullet‑proof desert vest, laid flat on the ground (≈0.55 m long × 0.45 m wide × 0.03 m thick). Main kevlar fabric with front/back ballistic plates, shoulder straps and side edge padding; three small metal rivets on the front plate.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.215,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.35],"color":[0.42,0.44,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[-0.215,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.35],"color":[0.42,0.44,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"LeftStrap","shape":"cylinder","pos":[0.25,0.0075,-0.18],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"RightStrap","shape":"cylinder","pos":[0.25,0.0075,0.18],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"LeftEdgePanel","shape":"cube","pos":[0.0,-0.01,-0.235],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightEdgePanel","shape":"cube","pos":[0.0,-0.01,0.235],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[0.215,-0.0055,-0.12],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.5,0.52],"smooth":0.6,"metal":1.0},
+  {"name":"RivetC","shape":"sphere","pos":[0.215,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.5,0.52],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.215,-0.0055,0.12],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.5,0.52],"smooth":0.6,"metal":1.0}
+]}

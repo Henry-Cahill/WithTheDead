@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shirt_Ranger", "baseHeight": 0.0875, "name": "Shirt Ranger", "model": "gpt-oss:120b", "notes": "Flat Ranger shirt ~0.56 m wide × 0.74 m long (including sleeves), 3 cm thick: torso panel, two angled sleeves with cuffs, collar band and neck opening, chest pocket, three front buttons, bottom hem.", "score": 7, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0125,0.01],"rot":[0.0,0.0,0.0],"size":[0.5,0.03,0.7],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.36,-0.0125,0.06],"rot":[0.0,-20.0,0.0],"size":[0.22,0.03,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.36,-0.0125,0.06],"rot":[0.0,20.0,0.0],"size":[0.22,0.03,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.5,-0.0125,0.06],"rot":[0.0,-20.0,0.0],"size":[0.04,0.03,0.12],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.5,-0.0125,0.06],"rot":[0.0,20.0,0.0],"size":[0.04,0.03,0.12],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.0125,0.16],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.12],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.0,0.0075,0.16],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.15,-0.0025,0.26],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.0,0.0025,0.06],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0,0.0025,-0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0,0.0025,-0.24],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,-0.0175,-0.34],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

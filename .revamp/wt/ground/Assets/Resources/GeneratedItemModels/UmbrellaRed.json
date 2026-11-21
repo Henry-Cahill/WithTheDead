@@ -1,0 +1,10 @@
+{"version": 1, "id": "UmbrellaRed", "baseHeight": 0.2, "name": "Umbrella Red", "model": "gpt-oss:120b", "notes": "Umbrella (red canopy) ~1.2 m long when open, 0.75 m radius dome lying on the floor: fabric canopy, wooden‑tinted shaft, black metal handle, a few ribs for detail and a metallic tip.", "score": 7, "parts": [
+  {"name":"Canopy","shape":"sphere","pos":[0.0,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[1.5,0.2,1.5],"color":[0.9,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[0.0,-0.115,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.6,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.12,0.12,0.12],"smooth":0.4,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.0,0.11,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RibFront","shape":"cylinder","pos":[-0.1,-0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.6,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RibBack","shape":"cylinder","pos":[-0.1,-0.02,0.0],"rot":[90.0,-180.0,0.0],"size":[0.02,0.6,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RibLeft","shape":"cylinder","pos":[-0.1,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.6,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RibRight","shape":"cylinder","pos":[-0.1,-0.02,0.0],"rot":[0.0,-180.0,90.0],"size":[0.02,0.6,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0}
+]}

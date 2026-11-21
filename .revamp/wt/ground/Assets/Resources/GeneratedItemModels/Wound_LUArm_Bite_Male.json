@@ -1,0 +1,11 @@
+{"version": 1, "id": "Wound_LUArm_Bite_Male", "baseHeight": 0.0995, "name": "Wound LUArm Bite Male", "model": "gpt-oss:120b", "notes": "Upper‑left arm flesh chunk ~0.22 m long × 0.12 m wide × 0.04 m thick, with a circular bite dent on the side and a few splattered blood drops. Main colour is muted flesh (0.6,0.58,0.5) plus dark‑red accents for the wound.", "score": 6, "parts": [
+  {"name":"FleshBase","shape":"cube","pos":[-0.025,-0.0195,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BiteDent","shape":"sphere","pos":[0.105,-0.0045,0.0538],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.3,0.02,0.02],"smooth":0.2,"metal":0.0},
+  {"name":"SkinFlap","shape":"cube","pos":[0.065,0.0055,0.0538],"rot":[15.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodDrop1","shape":"sphere","pos":[0.125,0.0205,0.0737],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.05,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"BloodDrop2","shape":"sphere","pos":[0.095,0.0305,0.0238],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.68,0.04,0.04],"smooth":0.3,"metal":0.0},
+  {"name":"BloodDrop3","shape":"sphere","pos":[0.055,0.0155,-0.0462],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.66,0.04,0.04],"smooth":0.3,"metal":0.0},
+  {"name":"TornEdgeL","shape":"cube","pos":[-0.115,-0.0175,0.0437],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TornEdgeR","shape":"cube","pos":[-0.115,-0.0175,-0.0762],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RimHighlight","shape":"cylinder","pos":[0.105,-0.0015,0.0538],"rot":[90.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.4,0.02,0.02],"smooth":0.2,"metal":0.0}
+]}

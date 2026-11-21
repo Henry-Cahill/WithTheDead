@@ -1,0 +1,14 @@
+{"version": 1, "id": "Crystal_Large", "baseHeight": 0.165, "name": "Crystal Large", "model": "gpt-oss:120b", "notes": "Large crystal about 0.4 m long × 0.2 m wide × 0.15 m high lying on its side (long axis along X). Main slab with several pointed spikes and extra facet blocks give a jagged, readable silhouette.", "score": 6, "parts": [
+  {"name":"BaseBody","shape":"cube","pos":[-0.045,-0.045,-0.0404],"rot":[0.0,0.0,0.0],"size":[0.4,0.12,0.2],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"SpikeTop","shape":"cylinder","pos":[-0.165,0.03,-0.0404],"rot":[0.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.62,0.6,0.52],"smooth":0.6,"metal":0.0},
+  {"name":"SpikeSide","shape":"cylinder","pos":[0.18,-0.045,-0.0404],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.62,0.6,0.52],"smooth":0.6,"metal":0.0},
+  {"name":"SpikeFront","shape":"cylinder","pos":[-0.045,-0.045,0.0796],"rot":[90.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.62,0.6,0.52],"smooth":0.6,"metal":0.0},
+  {"name":"FacetFrontLeft","shape":"cube","pos":[-0.165,0.025,0.0196],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":0.0},
+  {"name":"FacetFrontRight","shape":"cube","pos":[0.075,0.025,0.0196],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":0.0},
+  {"name":"CoreEllipsoid","shape":"sphere","pos":[-0.045,-0.015,-0.0404],"rot":[0.0,0.0,0.0],"size":[0.1,0.07,0.1],"color":[0.66,0.64,0.56],"smooth":0.7,"metal":0.0},
+  {"name":"ShardA","shape":"cube","pos":[-0.225,-0.065,-0.1004],"rot":[15.0,0.0,0.0],"size":[0.05,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"ShardB","shape":"cube","pos":[0.055,-0.055,0.0396],"rot":[-10.0,12.0,0.0],"size":[0.04,0.015,0.025],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"ShardC","shape":"cube","pos":[0.005,-0.075,-0.1304],"rot":[8.0,-15.0,0.0],"size":[0.06,0.018,0.032],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"EdgeTrimLeft","shape":"cube","pos":[-0.245,-0.045,-0.1204],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.04],"color":[0.57,0.55,0.47],"smooth":0.55,"metal":0.0},
+  {"name":"EdgeTrimRight","shape":"cube","pos":[0.155,-0.045,-0.1204],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.04],"color":[0.57,0.55,0.47],"smooth":0.55,"metal":0.0}
+]}

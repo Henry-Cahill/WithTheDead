@@ -1,0 +1,8 @@
+{"version": 1, "id": "HotDrinkClay", "baseHeight": 0.124, "name": "Hot Drink Clay", "model": "gpt-oss:120b", "notes": "Clay mug for a hot drink, upright on the floor. Approx. 0.09 m wide × 0.12 m tall with a short rim and a simple side‑handle.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0287,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.12,0.09],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[-0.0287,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.008,0.095],"color":[0.42,0.56,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0462,0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[-0.0287,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.004,0.092],"color":[0.36,0.48,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"BaseFoot","shape":"cylinder","pos":[-0.0287,-0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.04],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"HandleTopConnector","shape":"cylinder","pos":[0.0263,0.051,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.02],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0}
+]}

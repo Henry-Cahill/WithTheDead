@@ -1,0 +1,12 @@
+{"version": 1, "id": "FlameTrapRemote", "baseHeight": 0.15, "name": "Flame Trap Remote", "model": "gpt-oss:120b", "notes": "Flame Trap Remote ~0.9 m long metallic rod with rubber grip and metal tip on the left, remote housing on the right end showing a button, antenna and side lever; laid on its side (long axis X).", "score": 6, "parts": [
+  {"name":"Rod","shape":"cylinder","pos":[-0.02,-0.07,-0.005],"rot":[0.0,0.0,90.0],"size":[0.04,0.7,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.35,-0.06,-0.005],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[-0.4,-0.08,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Housing","shape":"cube","pos":[0.36,-0.06,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.1],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":0.9},
+  {"name":"Button","shape":"cylinder","pos":[0.36,-0.026,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.8,0.3,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"Antenna","shape":"cylinder","pos":[0.36,0.03,-0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.5,0.5,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"Lever","shape":"cube","pos":[0.36,-0.05,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":0.7},
+  {"name":"SeamTop","shape":"cube","pos":[0.36,-0.032,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.1],"color":[0.45,0.45,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"SeamBottom","shape":"cube","pos":[0.36,-0.088,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.1],"color":[0.45,0.45,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"Label","shape":"cube","pos":[0.36,-0.06,0.047],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.002],"color":[0.2,0.2,0.25],"smooth":0.4,"metal":0.0}
+]}

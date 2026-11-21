@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shirt_Jockey03", "baseHeight": 0.076, "name": "Shirt Jockey03", "model": "gpt-oss:120b", "notes": "Flat jockey shirt ~0.56 m long × ~0.45 m wide (including short sleeves), 2.5 cm thick. Main torso panel, angled short sleeves that meet the torso sides, ribbed collar with neck opening, bottom hem band, a centered front stripe, a small logo patch on the left chest and simple cuffs that sit at the sleeve ends.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0275,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.025,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.2375,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.18],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.2375,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.028,0.12],"color":[0.3,0.28,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.4025,-0.0035,0.27],"rot":[0.0,-20.0,0.0],"size":[0.3,0.025,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.4025,-0.0035,-0.27],"rot":[0.0,20.0,0.0],"size":[0.3,0.025,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.5525,-0.0035,0.27],"rot":[0.0,-20.0,0.0],"size":[0.06,0.025,0.04],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.5525,-0.0035,-0.27],"rot":[0.0,20.0,0.0],"size":[0.06,0.025,0.04],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.3075,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.008,0.38],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"FrontStripe","shape":"cube","pos":[-0.0275,-0.0035,0.02],"rot":[0.0,0.0,0.0],"size":[0.56,0.025,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[-0.1475,-0.0035,0.14],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.04],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

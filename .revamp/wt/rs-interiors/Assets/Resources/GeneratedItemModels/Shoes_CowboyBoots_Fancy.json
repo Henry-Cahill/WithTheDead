@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shoes_CowboyBoots_Fancy", "baseHeight": 0.129, "name": "Shoes Cowboy Boots Fancy", "model": "gpt-oss:120b", "notes": "Two fancy cowboy boots laid flat side‑by‑side (sole up). Each boot ≈ 0.35 m long × 0.12 m wide × 0.03 m thick. Includes sole plate, raised heel block, shaft/upper, decorative stitching, a metal buckle and a small strap loop. The boots now touch each other at the centre line (Z = 0).", "score": 7, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.0,-0.0615,-0.06],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"HeelL","shape":"cube","pos":[0.14,-0.014,-0.06],"rot":[0.0,0.0,0.0],"size":[0.07,0.08,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[-0.02,0.006,-0.06],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"StitchUpperL","shape":"cube","pos":[-0.02,0.0675,-0.06],"rot":[0.0,0.0,0.0],"size":[0.24,0.003,0.012],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchHeelL","shape":"cube","pos":[0.14,0.026,-0.06],"rot":[0.0,0.0,0.0],"size":[0.068,0.003,0.12],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.06,0.006,-0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.006,0.015],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LoopL","shape":"cylinder","pos":[-0.05,0.006,-0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"SoleR","shape":"cube","pos":[-0.0,-0.0615,0.06],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"HeelR","shape":"cube","pos":[0.14,-0.014,0.06],"rot":[0.0,0.0,0.0],"size":[0.07,0.08,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[-0.02,0.006,0.06],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"StitchUpperR","shape":"cube","pos":[-0.02,0.0675,0.06],"rot":[0.0,0.0,0.0],"size":[0.24,0.003,0.012],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchHeelR","shape":"cube","pos":[0.14,0.026,0.06],"rot":[0.0,0.0,0.0],"size":[0.068,0.003,0.12],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleR","shape":"cube","pos":[-0.06,0.006,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.006,0.015],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LoopR","shape":"cylinder","pos":[-0.05,0.006,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":1.0}
+]}

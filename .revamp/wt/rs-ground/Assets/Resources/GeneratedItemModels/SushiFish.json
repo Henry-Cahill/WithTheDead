@@ -1,0 +1,11 @@
+{"version": 1, "id": "SushiFish", "baseHeight": 0.0715, "name": "Sushi Fish", "model": "gpt-oss:120b", "notes": "Plastic sushi‑fish tray (≈0.12 m × 0.08 m × 0.02 m) with a thin clear lid, a pinkish fish‑slice pack of four pieces, a small soy‑sauce packet on the side, a green wasabi dot and a simple label on the front.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[-0.0108,-0.004,0.0035],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.95,0.95,0.96],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[-0.0108,0.006,0.0035],"rot":[0.0,0.0,0.0],"size":[0.122,0.005,0.082],"color":[0.95,0.95,0.96],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0108,-0.0035,-0.0345],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.02],"color":[0.6,0.54,0.36],"smooth":0.2,"metal":0.0},
+  {"name":"SoySaucePacket","shape":"cube","pos":[0.0593,-0.004,0.0035],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.015],"color":[0.3,0.15,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"WasabiDot","shape":"sphere","pos":[-0.0408,0.0065,0.0235],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.2,0.8,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"FishSlice1","shape":"sphere","pos":[-0.0358,0.0065,-0.0115],"rot":[0.0,0.0,0.0],"size":[0.028,0.008,0.016],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FishSlice2","shape":"sphere","pos":[-0.0108,0.0065,0.0035],"rot":[0.0,0.0,0.0],"size":[0.028,0.008,0.016],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FishSlice3","shape":"sphere","pos":[0.0142,0.0065,0.0185],"rot":[0.0,0.0,0.0],"size":[0.028,0.008,0.016],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FishSlice4","shape":"sphere","pos":[-0.0258,0.0065,0.0235],"rot":[0.0,0.0,0.0],"size":[0.028,0.008,0.016],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0}
+]}

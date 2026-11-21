@@ -1,0 +1,9 @@
+{"version": 1, "id": "StoneWheelSmall", "baseHeight": 0.085, "name": "Stone Wheel Small", "model": "gpt-oss:120b", "notes": "Small stone wheel ~0.40 m diameter × 0.05 m thick (≈15 kg). Lying flat on the floor: central hub, thin rim and two cross‑wise spokes for silhouette clarity.", "score": 7, "parts": [
+  {"name":"MainDisc","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.05,0.4],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.42,0.045,0.42],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Hub","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.05,0.1],"color":[0.58,0.56,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"SpokeX","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SpokeZ","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.3,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SpokeX_EndCap","shape":"cylinder","pos":[0.15,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SpokeZ_EndCap","shape":"cylinder","pos":[0.0,0.0,0.15],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0}
+]}

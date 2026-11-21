@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_RightHand", "baseHeight": 0.0775, "name": "Bandage Right Hand", "model": "gpt-oss:120b", "notes": "Bandage Right Hand – small gauze roll about 0.12 m long when unrolled, rolled into a ~0.03 m diameter cylinder lying on the floor (axis along X). Main cloth colour is a muted tan (tint 0.6, 0.58, 0.5) with soft cloth smoothness.", "score": 6, "parts": [
+  {"name":"RollBody","shape":"cylinder","pos":[0.001,-0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.059,-0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.008,0.032],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldedEdge","shape":"cube","pos":[-0.057,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.032],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ShadowLayer","shape":"cube","pos":[0.001,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.02],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.031,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.015],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.061,0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.004,0.032],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

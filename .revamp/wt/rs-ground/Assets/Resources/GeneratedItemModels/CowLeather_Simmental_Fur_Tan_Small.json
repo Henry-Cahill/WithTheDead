@@ -1,0 +1,11 @@
+{"version": 1, "id": "CowLeather_Simmental_Fur_Tan_Small", "baseHeight": 0.0762, "name": "Cow Leather Simmental Fur Tan Small", "model": "gpt-oss:120b", "notes": "Small tan cow‑leather piece with a thin fur nap – about 0.18 m long × 0.12 m wide × 0.02 m thick. Flat slab, fuzzy rounded corners and light stitching around the perimeter.", "score": 6, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FurCornerFL","shape":"sphere","pos":[-0.07,0.0088,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.65,0.62,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"FurCornerFR","shape":"sphere","pos":[-0.07,0.0088,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.65,0.62,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"FurCornerBL","shape":"sphere","pos":[0.07,0.0088,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.65,0.62,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"FurCornerBR","shape":"sphere","pos":[0.07,0.0088,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.65,0.62,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.0043,0.058],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.008],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.0043,-0.058],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.008],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cube","pos":[-0.088,-0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.12],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cube","pos":[0.088,-0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.12],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0}
+]}

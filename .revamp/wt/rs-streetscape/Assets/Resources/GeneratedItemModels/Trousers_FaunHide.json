@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_FaunHide", "baseHeight": 0.0755, "name": "Trousers Faun Hide", "model": "gpt-oss:120b", "notes": "Flat faun‑hide trousers laid out as a product photo – total length ~1 m, width across both legs ~0.60 m (including small gap), thickness 3 cm. Main panels for each leg, waistband, centre seam, side pockets and bottom hems give the recognizable outline.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.15,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.88],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.15,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.88],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CentreSeam","shape":"cube","pos":[0.0,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.031,0.88],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.0075,0.25],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.2],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0075,0.25],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.2],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[-0.15,0.0,-0.5],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[0.15,0.0,-0.5],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFrontL","shape":"cylinder","pos":[-0.28,0.0,0.45],"rot":[0.0,0.0,90.0],"size":[0.03,0.02,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFrontR","shape":"cylinder","pos":[0.28,0.0,0.45],"rot":[0.0,0.0,90.0],"size":[0.03,0.02,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBackL","shape":"cylinder","pos":[-0.28,0.0,-0.4],"rot":[0.0,0.0,90.0],"size":[0.03,0.02,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBackR","shape":"cylinder","pos":[0.28,0.0,-0.4],"rot":[0.0,0.0,90.0],"size":[0.03,0.02,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

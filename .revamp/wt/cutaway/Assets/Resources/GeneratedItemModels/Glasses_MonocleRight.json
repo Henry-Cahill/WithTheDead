@@ -1,0 +1,9 @@
+{"version": 1, "id": "Glasses_MonocleRight", "baseHeight": 0.065, "name": "Glasses Monocle Right", "model": "gpt-oss:120b", "notes": "Monocle right‑eye accessory laid flat (≈0.06 m diameter, 0.004 m thick). Main metal frame, clear glass lens inset, tiny hinge sphere, short decorative chain extending leftwards.", "score": 7, "parts": [
+  {"name":"FrameOuter","shape":"cylinder","pos":[0.0605,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.004,0.058],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"RimInner","shape":"cylinder","pos":[0.0605,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.054,0.004,0.054],"color":[0.45,0.4,0.5],"smooth":0.35,"metal":1.0},
+  {"name":"Lens","shape":"cylinder","pos":[0.0605,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.05],"color":[0.7,0.85,0.95],"smooth":0.65,"metal":0.0},
+  {"name":"HingeSphere","shape":"sphere","pos":[0.0315,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.55,0.5,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"ChainStrip","shape":"cube","pos":[-0.0295,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.008],"color":[0.55,0.5,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"ChainClasp","shape":"cube","pos":[-0.0845,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.55,0.5,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"ScrewTop","shape":"sphere","pos":[0.0605,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.45,0.4,0.5],"smooth":0.6,"metal":1.0}
+]}

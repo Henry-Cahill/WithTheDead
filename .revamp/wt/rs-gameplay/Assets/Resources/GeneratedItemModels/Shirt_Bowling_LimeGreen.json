@@ -1,0 +1,17 @@
+{"version": 1, "id": "Shirt_Bowling_LimeGreen", "baseHeight": 0.08, "name": "Shirt Bowling Lime Green", "model": "gpt-oss:120b", "notes": "Flat bowling shirt ≈ 0.75 m long × 0.55 m wide, 3 cm thick: main torso panel, two side‑sleeves, ribbed collar, front placket with five metal buttons, left chest pocket and cuffs at the sleeve ends.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0075,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.1575,-0.005,0.375],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.1575,-0.005,-0.375],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.1575,-0.005,0.525],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.04],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.1575,-0.005,-0.525],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.04],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[-0.3225,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[-0.3225,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.036,0.09],"color":[0.35,0.34,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Placket","shape":"cube","pos":[-0.1425,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.032,0.5],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.1325,0.005,0.18],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.1325,0.005,0.09],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[-0.1325,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[-0.1325,0.005,-0.09],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Button5","shape":"cylinder","pos":[-0.1325,0.005,-0.18],"rot":[90.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.2925,-0.005,0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.3375,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.55],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0}
+]}

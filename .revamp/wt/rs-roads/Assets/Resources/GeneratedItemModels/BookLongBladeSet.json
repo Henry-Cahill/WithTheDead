@@ -1,0 +1,15 @@
+{"version": 1, "id": "BookLongBladeSet", "baseHeight": 0.08, "name": "Book Long Blade Set", "model": "gpt-oss:120b", "notes": "Closed ‘book’ (0.30 m wide × 0.25 m deep × 0.02 m thick) lying flat on the floor, tinted dull‑brown. Four long blades (≈0.80 m length, 2 cm wide) protrude from the front face in a fan pattern; each blade has a short wooden/ leather grip. Small metal rivets mark the book’s corners.", "score": 6, "parts": [
+  {"name":"BookBody","shape":"cube","pos":[0.0,-0.005,-0.405],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.145,0.01,-0.525],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.145,0.01,-0.525],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.145,0.01,-0.285],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.145,0.01,-0.285],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Blade1Body","shape":"cylinder","pos":[-0.09,0.0,0.13],"rot":[90.0,0.0,0.0],"size":[0.02,0.8,0.02],"color":[0.78,0.78,0.79],"smooth":0.6,"metal":1.0},
+  {"name":"Blade1Handle","shape":"cylinder","pos":[-0.09,0.0,-0.25],"rot":[90.0,0.0,0.0],"size":[0.04,0.1,0.04],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Blade2Body","shape":"cylinder","pos":[-0.03,0.0,0.13],"rot":[90.0,0.0,0.0],"size":[0.02,0.8,0.02],"color":[0.78,0.78,0.79],"smooth":0.6,"metal":1.0},
+  {"name":"Blade2Handle","shape":"cylinder","pos":[-0.03,0.0,-0.25],"rot":[90.0,0.0,0.0],"size":[0.04,0.1,0.04],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Blade3Body","shape":"cylinder","pos":[0.03,0.0,0.13],"rot":[90.0,0.0,0.0],"size":[0.02,0.8,0.02],"color":[0.78,0.78,0.79],"smooth":0.6,"metal":1.0},
+  {"name":"Blade3Handle","shape":"cylinder","pos":[0.03,0.0,-0.25],"rot":[90.0,0.0,0.0],"size":[0.04,0.1,0.04],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Blade4Body","shape":"cylinder","pos":[0.09,0.0,0.13],"rot":[90.0,0.0,0.0],"size":[0.02,0.8,0.02],"color":[0.78,0.78,0.79],"smooth":0.6,"metal":1.0},
+  {"name":"Blade4Handle","shape":"cylinder","pos":[0.09,0.0,-0.25],"rot":[90.0,0.0,0.0],"size":[0.04,0.1,0.04],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0}
+]}

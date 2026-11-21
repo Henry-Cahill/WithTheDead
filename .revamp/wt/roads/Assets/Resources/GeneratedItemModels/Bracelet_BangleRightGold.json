@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bracelet_BangleRightGold", "baseHeight": 0.095, "name": "Bracelet Bangle Right Gold", "model": "gpt-oss:120b", "notes": "Gold bangle ~7 cm across, laid flat on the floor (X‑Z plane) as a thin disc 0.008 m thick; simple gold tint with metallic shine and a subtle raised edge detail.", "score": 6, "parts": [
+  {"name":"BandDisc","shape":"sphere","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeRidge","shape":"sphere","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.003,0.064],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"InnerCutout","shape":"sphere","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.15,0.13,0.11],"smooth":0.1,"metal":0.0},
+  {"name":"PolishHighlight","shape":"sphere","pos":[0.018,0.0035,0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[1.0,0.94,0.8],"smooth":0.9,"metal":1.0},
+  {"name":"ShadowEdge","shape":"sphere","pos":[-0.018,-0.0015,-0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":1.0},
+  {"name":"BottomRing","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

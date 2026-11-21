@@ -1,0 +1,11 @@
+{"version": 1, "id": "BookFancy_Prop", "baseHeight": 0.0775, "name": "Book Fancy Prop", "model": "gpt-oss:120b", "notes": "Fancy hardcover book lying flat on the floor (height ≈ 0.28 m, width ≈ 0.22 m, thickness ≈ 0.035 m). Main brown cover with dark spine strip, gold edge trim, off‑white pages and a small red ribbon bookmark.", "score": 7, "parts": [
+  {"name":"CoverBlock","shape":"cube","pos":[-0.029,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.035,0.22],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Pages","shape":"cube","pos":[-0.029,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.025,0.21],"color":[0.9,0.88,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"SpineStrip","shape":"cube","pos":[-0.029,0.0,0.1075],"rot":[0.0,0.0,0.0],"size":[0.28,0.035,0.005],"color":[0.4,0.35,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"GoldEdgeTop","shape":"cube","pos":[-0.029,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.22],"color":[0.85,0.7,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"GoldEdgeBottom","shape":"cube","pos":[-0.029,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.22],"color":[0.85,0.7,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"GoldEdgeFront","shape":"cube","pos":[0.11,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.035,0.22],"color":[0.85,0.7,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"GoldEdgeBack","shape":"cube","pos":[-0.168,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.035,0.22],"color":[0.85,0.7,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"RibbonBookmark","shape":"cylinder","pos":[0.101,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.025,0.006],"color":[0.7,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"TitlePlate","shape":"cube","pos":[0.109,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.02],"color":[0.85,0.7,0.2],"smooth":0.55,"metal":1.0}
+]}

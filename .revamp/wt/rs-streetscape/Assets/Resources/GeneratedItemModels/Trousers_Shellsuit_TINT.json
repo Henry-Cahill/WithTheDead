@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_Shellsuit_TINT", "baseHeight": 0.0737, "name": "Trousers Shellsuit TINT", "model": "gpt-oss:120b", "notes": "Flat shellsuit trousers ~1 m long x 0.6 m wide, 2‑3 cm thick: two leg panels separated by a crotch strip, waistband band at the top, short hem strips, side pockets and four belt‑loop studs.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[0.0,-0.0012,-0.265],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.0,-0.0012,0.265],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchStrip","shape":"cube","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.44,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.45,-0.0012,-0.265],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[-0.45,-0.0012,0.265],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.1,0.0063,0.38],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.1,0.0063,-0.38],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop1","shape":"cylinder","pos":[0.44,-0.0012,-0.22],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop2","shape":"cylinder","pos":[0.44,-0.0012,-0.07],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop3","shape":"cylinder","pos":[0.44,-0.0012,0.07],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop4","shape":"cylinder","pos":[0.44,-0.0012,0.22],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

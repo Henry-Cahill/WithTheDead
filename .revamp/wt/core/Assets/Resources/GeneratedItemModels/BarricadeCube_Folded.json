@@ -1,0 +1,16 @@
+{"version": 1, "id": "BarricadeCube_Folded", "baseHeight": 0.25, "name": "Barricade Cube Folded", "model": "gpt-oss:120b", "notes": "Folded wooden barricade cube ~0.35 m per side, made of nailed timber planks tied with rough rope, lying on the floor.", "score": 7, "parts": [
+  {"name":"BottomPlank","shape":"cube","pos":[0.0,-0.165,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TopPlank","shape":"cube","pos":[0.0,0.155,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontSidePlank","shape":"cube","pos":[0.0,0.0,0.17],"rot":[0.0,0.0,0.0],"size":[0.12,0.35,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BackSidePlank","shape":"cube","pos":[0.0,0.0,-0.17],"rot":[0.0,0.0,0.0],"size":[0.12,0.35,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LeftSidePlank","shape":"cube","pos":[-0.17,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.12,0.35,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RightSidePlank","shape":"cube","pos":[0.17,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.12,0.35,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CrossBrace1","shape":"cube","pos":[0.0,0.0,0.0],"rot":[45.0,0.0,0.0],"size":[0.04,0.35,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"CrossBrace2","shape":"cube","pos":[0.0,0.0,0.0],"rot":[-45.0,0.0,0.0],"size":[0.04,0.35,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"RopeX","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.04,0.38,0.04],"color":[0.35,0.28,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"RopeZ","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.38,0.04],"color":[0.35,0.28,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"NailTL","shape":"cube","pos":[-0.19,0.165,-0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.6},
+  {"name":"NailTR","shape":"cube","pos":[0.19,0.165,-0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.6},
+  {"name":"NailBL","shape":"cube","pos":[-0.19,0.165,0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.6},
+  {"name":"NailBR","shape":"cube","pos":[0.19,0.165,0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.6}
+]}

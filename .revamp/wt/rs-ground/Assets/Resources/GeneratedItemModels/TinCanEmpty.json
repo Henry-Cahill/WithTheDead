@@ -1,0 +1,9 @@
+{"version": 1, "id": "TinCanEmpty", "baseHeight": 0.125, "name": "Tin Can Empty", "model": "gpt-oss:120b", "notes": "Empty tin can lying on its side, about 0.12 m diameter and 0.10 m long (the original height). Main metal body with thin lip rims at both ends and a faint label strip around the centre.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.1,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.05,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.004,0.13],"color":[0.58,0.55,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.05,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.004,0.13],"color":[0.58,0.55,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.07,0.12],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.035,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.006,0.12],"color":[0.45,0.43,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[-0.035,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.006,0.12],"color":[0.45,0.43,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.122,0.002,0.122],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0}
+]}

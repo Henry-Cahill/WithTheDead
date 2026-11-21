@@ -1,0 +1,9 @@
+{"version": 1, "id": "Honey", "baseHeight": 0.1275, "name": "Honey", "model": "gpt-oss:120b", "notes": "Honey jar about 0.12 m tall × 0.08 m wide, standing upright on the floor. Transparent glass body, amber‑tinted honey inside, short metal screw‑on lid and a thin label band.", "score": 6, "parts": [
+  {"name":"GlassBody","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.92,0.88,0.8],"smooth":0.4,"metal":0.0},
+  {"name":"HoneyFill","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.11,0.074],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.92,0.88,0.8],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.3,0.2,0.1],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.078,0.004,0.078],"color":[0.7,0.6,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0}
+]}

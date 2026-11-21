@@ -1,0 +1,13 @@
+{"version": 1, "id": "SheetMetalSnips", "baseHeight": 0.122, "name": "Sheet Metal Snips", "model": "gpt-oss:120b", "notes": "Sheet metal snips used as a melee weapon – overall length ≈ 0.8 m (X‑axis). Two offset handles with circular loops on the ‑X side, crossed thin blades extending to the +X business end, and a central metal pivot.", "score": 6, "parts": [
+  {"name":"HandleL_Rod","shape":"cylinder","pos":[-0.2075,-0.042,0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HandleR_Rod","shape":"cylinder","pos":[-0.2075,-0.042,-0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HandleL_Loop","shape":"cylinder","pos":[-0.3575,-0.002,0.03],"rot":[90.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HandleR_Loop","shape":"cylinder","pos":[-0.3575,-0.002,-0.03],"rot":[90.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"PivotPin","shape":"cylinder","pos":[-0.0575,-0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade_Top","shape":"cube","pos":[0.1925,-0.057,0.015],"rot":[0.0,0.0,0.0],"size":[0.45,0.005,0.025],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade_Bottom","shape":"cube","pos":[0.1925,-0.059,-0.015],"rot":[0.0,0.0,0.0],"size":[0.45,0.005,0.025],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripL","shape":"cylinder","pos":[-0.2075,-0.042,0.07],"rot":[0.0,0.0,90.0],"size":[0.03,0.3,0.03],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"GripR","shape":"cylinder","pos":[-0.2075,-0.042,-0.07],"rot":[0.0,0.0,90.0],"size":[0.03,0.3,0.03],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewL","shape":"sphere","pos":[-0.3575,0.058,0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewR","shape":"sphere","pos":[-0.3575,0.058,-0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Slug2", "baseHeight": 0.1435, "name": "Slug2", "model": "gpt-oss:120b", "notes": "Canned slugs, upright container about 0.12 m diameter × 0.15 m tall. Metal body with rolled seams, a thin pull‑tab lid, tan label (tint 0.75 0.68 0.45) and two small ellipsoidal slug pieces inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0085,-0.002],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.12],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0625,-0.002],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.122],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0795,-0.002],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.122],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0725,-0.002],"rot":[0.0,0.0,0.0],"size":[0.108,0.012,0.108],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"PullTab","shape":"cube","pos":[0.0,0.081,0.053],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0085,-0.002],"rot":[0.0,0.0,0.0],"size":[0.11,0.14,0.11],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0655,-0.002],"rot":[0.0,0.0,0.0],"size":[0.112,0.008,0.112],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0745,-0.002],"rot":[0.0,0.0,0.0],"size":[0.112,0.008,0.112],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0},
+  {"name":"Slug1","shape":"sphere","pos":[-0.02,-0.0535,0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.4,0.6,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Slug2","shape":"sphere","pos":[0.02,-0.0535,-0.022],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.4,0.6,0.3],"smooth":0.05,"metal":0.0}
+]}

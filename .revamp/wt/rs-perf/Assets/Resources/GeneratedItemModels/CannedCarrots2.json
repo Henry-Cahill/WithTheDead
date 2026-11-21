@@ -1,0 +1,10 @@
+{"version": 1, "id": "CannedCarrots2", "baseHeight": 0.2225, "name": "Canned Carrots2", "model": "gpt-oss:120b", "notes": "Upright canned carrots 0.22 m diameter × 0.31 m tall: brushed‑metal body with rolled seams, recessed lid, paper label in the can’s tint and a few orange carrot icons on the label.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.31,0.22],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.1455,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.012,0.224],"color":[0.73,0.66,0.42],"smooth":0.55,"metal":0.85},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.1565,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.012,0.224],"color":[0.73,0.66,0.42],"smooth":0.55,"metal":0.85},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.1565,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.012,0.2],"color":[0.78,0.71,0.48],"smooth":0.45,"metal":0.85},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.206,0.28,0.206],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"CarrotIcon1","shape":"cylinder","pos":[-0.06,-0.0055,0.09],"rot":[0.0,0.0,0.0],"size":[0.018,0.06,0.018],"color":[0.92,0.48,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"CarrotIcon2","shape":"cylinder","pos":[0.0,-0.0055,0.09],"rot":[0.0,0.0,0.0],"size":[0.018,0.06,0.018],"color":[0.92,0.48,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"CarrotIcon3","shape":"cylinder","pos":[0.06,-0.0055,0.09],"rot":[0.0,0.0,0.0],"size":[0.018,0.06,0.018],"color":[0.92,0.48,0.22],"smooth":0.2,"metal":0.0}
+]}

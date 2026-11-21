@@ -1,0 +1,12 @@
+{"version": 1, "id": "NoiseTrapSensorV3", "baseHeight": 0.2325, "name": "Noise Trap Sensor V3", "model": "gpt-oss:120b", "notes": "Long blunt sensor‑staff 1.8 m total length (≈10 m reach in‑game). Main shaft on its side (X axis) with a rubber‑grip handle at the rear, a metal‑tipped sensor head with dome and antennae at the front. Simple silhouette plus detail caps, seam line and button.", "score": 6, "parts": [
+  {"name":"Bar","shape":"cylinder","pos":[0.0,-0.0825,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,1.2,0.06],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.3},
+  {"name":"BarSeam","shape":"cylinder","pos":[0.0,-0.0825,0.0],"rot":[0.0,0.0,90.0],"size":[0.064,1.2,0.064],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":0.5},
+  {"name":"Grip","shape":"cylinder","pos":[-0.85,-0.0825,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.5,0.18],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"GripEndCap","shape":"cube","pos":[-1.09,-0.0825,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.04],"color":[0.3,0.3,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.75,-0.0825,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.15],"color":[0.65,0.65,0.7],"smooth":0.2,"metal":0.3},
+  {"name":"Dome","shape":"sphere","pos":[0.75,0.0825,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.18,0.18],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"AntennaL","shape":"cylinder","pos":[1.0,0.0825,0.05],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"AntennaR","shape":"cylinder","pos":[1.0,0.0825,-0.05],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Button","shape":"cylinder","pos":[0.88,-0.0825,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.1,0.1,0.12],"smooth":0.4,"metal":0.0},
+  {"name":"FrontCap","shape":"cube","pos":[0.905,-0.0825,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.16,0.16],"color":[0.65,0.65,0.7],"smooth":0.2,"metal":0.3}
+]}

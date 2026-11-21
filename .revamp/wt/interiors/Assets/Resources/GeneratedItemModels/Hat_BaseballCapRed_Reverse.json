@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BaseballCapRed_Reverse", "baseHeight": 0.111, "name": "Hat Baseball Cap Red Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out like a product shot – 0.24 m overall diameter, 0.12 m tall crown. Main red‑purple tint (0.55,0.5,0.6). Parts: brim outer rim, inner rim, crown base slab, rounded crown top, stitching line around the base, and a small button on the peak.", "score": 6, "parts": [
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.047,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.047,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.039,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"sphere","pos":[0.0,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.08,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cylinder","pos":[0.0,-0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.18],"color":[0.1,0.1,0.1],"smooth":0.02,"metal":0.0},
+  {"name":"Button","shape":"cylinder","pos":[0.0,0.049,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0}
+]}

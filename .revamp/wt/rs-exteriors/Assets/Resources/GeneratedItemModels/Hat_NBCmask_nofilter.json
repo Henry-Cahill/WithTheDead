@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_NBCmask_nofilter", "baseHeight": 0.1225, "name": "Hat NBCmask nofilter", "model": "gpt-oss:120b", "notes": "Flat product‑view NBC‑mask hat, approx 0.34 m wide × 0.28 m deep × 0.03 m thick when spread out. Includes a wide fabric brim, rounded crown, rubber mask front panel with dual lenses, top vent and side straps.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.01,0.34],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HatCrown","shape":"sphere","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.12,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"MaskBody","shape":"cube","pos":[0.0,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.12],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LensL","shape":"sphere","pos":[-0.06,-0.0325,0.07],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.02],"color":[0.7,0.8,1.0],"smooth":0.6,"metal":1.0},
+  {"name":"LensR","shape":"sphere","pos":[0.06,-0.0325,0.07],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.02],"color":[0.7,0.8,1.0],"smooth":0.6,"metal":1.0},
+  {"name":"Vent","shape":"cylinder","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.11,-0.0325,-0.075],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.11,-0.0325,-0.075],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideBandL","shape":"cube","pos":[-0.11,-0.0445,-0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideBandR","shape":"cube","pos":[0.11,-0.0445,-0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

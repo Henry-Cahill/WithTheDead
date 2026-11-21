@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_RightLowerLeg", "baseHeight": 0.0765, "name": "Bandage Right Lower Leg", "model": "gpt-oss:120b", "notes": "Rolled gauze bandage for the right lower leg, lying flat on the floor. Main cylinder ~0.15 m long, 0.03 m diameter, with a short loose tail to suggest the end of the roll.", "score": 6, "parts": [
+  {"name":"RollBody","shape":"cylinder","pos":[0.0238,-0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.15,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEdge","shape":"cylinder","pos":[0.0238,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.152,0.032],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"cube","pos":[0.1038,-0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TailFold","shape":"cube","pos":[0.1138,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.004,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLine","shape":"cube","pos":[-0.0462,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.028],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Shadow","shape":"cube","pos":[0.0238,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.04],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

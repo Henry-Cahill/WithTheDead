@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Right_MiddleFinger_Gold", "baseHeight": 0.0639, "name": "Ring Right Middle Finger Gold", "model": "gpt-oss:120b", "notes": "Gold ring for the right middle finger, 20 mm outer diameter × 2 mm thick, lying flat on the floor (cylinder upright). Simple high‑gloss gold band; optional small gemstone detail.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0021,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Gem","shape":"sphere","pos":[0.0,0.0009,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.9,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"ShadowEdge","shape":"cube","pos":[0.0,-0.0016,0.0],"rot":[0.0,0.0,0.0],"size":[0.021,0.002,0.021],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"Base","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.3,0.28,0.24],"smooth":0.15,"metal":0.0},
+  {"name":"RimHighlight","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.0195,0.002,0.0195],"color":[0.8,0.78,0.72],"smooth":0.7,"metal":1.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.0021,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.55,0.53,0.48],"smooth":0.5,"metal":1.0}
+]}

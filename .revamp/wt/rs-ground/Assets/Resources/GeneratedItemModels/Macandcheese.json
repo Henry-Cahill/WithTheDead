@@ -1,0 +1,12 @@
+{"version": 1, "id": "Macandcheese", "baseHeight": 0.1095, "name": "Macandcheese", "model": "gpt-oss:120b", "notes": "Upright mac & cheese box about 0.18 m wide × 0.09 m tall × 0.12 m deep: cardboard body with a thin lid, printed label on the front, dark edge trim and a light‑yellow foil tray inside that holds the pasta.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.09,0.12],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0455,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.008,0.122],"color":[0.78,0.71,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0045,0.0615],"rot":[0.0,0.0,0.0],"size":[0.16,0.08,0.002],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.033,0.0615],"rot":[0.0,0.0,0.0],"size":[0.162,0.004,0.004],"color":[0.45,0.35,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.042,0.0615],"rot":[0.0,0.0,0.0],"size":[0.162,0.004,0.004],"color":[0.45,0.35,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"FoilTray","shape":"cube","pos":[0.0,-0.0345,0.0],"rot":[0.0,0.0,0.0],"size":[0.164,0.004,0.104],"color":[0.95,0.9,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0445,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.004,0.182],"color":[0.7,0.6,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0435,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.004,0.182],"color":[0.7,0.6,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"SideRimFront","shape":"cylinder","pos":[0.0,-0.0045,0.061],"rot":[90.0,0.0,0.0],"size":[0.004,0.09,0.004],"color":[0.7,0.6,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"SideRimBack","shape":"cylinder","pos":[0.0,-0.0045,-0.061],"rot":[90.0,0.0,0.0],"size":[0.004,0.09,0.004],"color":[0.7,0.6,0.38],"smooth":0.15,"metal":0.0}
+]}

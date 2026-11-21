@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BandanaTINT", "baseHeight": 0.0752, "name": "Hat Bandana TINT", "model": "gpt-oss:120b", "notes": "Flat hat bandana 0.55 m wide × 0.30 m tall × 0.025 m thick: main fabric, darker hem strips on all edges, two side ties, a central pattern patch and a small knot detail.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemTop","shape":"cube","pos":[0.0,0.0137,0.145],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,0.0137,-0.145],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.27,0.0137,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.27,0.0137,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieL","shape":"cylinder","pos":[-0.315,-0.0003,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieR","shape":"cylinder","pos":[0.315,-0.0003,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PatternCenter","shape":"cube","pos":[0.0,0.0127,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

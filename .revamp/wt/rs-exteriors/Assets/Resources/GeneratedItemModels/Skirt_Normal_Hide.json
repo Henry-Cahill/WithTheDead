@@ -1,0 +1,13 @@
+{"version": 1, "id": "Skirt_Normal_Hide", "baseHeight": 0.0825, "name": "Skirt Normal Hide", "model": "gpt-oss:120b", "notes": "Flat leather skirt about 0.80 m wide × 0.60 m long × 0.025 m thick (hide tint 0.6,0.58,0.5). Main panel with waistband, side flare panels, hem fold, stitching lines and two front belt‑loops.", "score": 7, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.01,0.0038],"rot":[0.0,0.0,0.0],"size":[0.8,0.025,0.6],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0075,0.0038],"rot":[0.0,0.0,0.0],"size":[0.82,0.01,0.6],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FlareLeft","shape":"cube","pos":[-0.5,-0.01,-0.1462],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FlareRight","shape":"cube","pos":[0.5,-0.01,-0.1462],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HemFold","shape":"cube","pos":[0.0,-0.02,-0.2963],"rot":[0.0,0.0,0.0],"size":[0.8,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"SeamFront","shape":"cylinder","pos":[0.0,-0.01,0.3037],"rot":[0.0,0.0,90.0],"size":[0.005,0.8,0.005],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cylinder","pos":[0.0,-0.01,-0.2963],"rot":[0.0,0.0,90.0],"size":[0.005,0.8,0.005],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamLeft","shape":"cylinder","pos":[-0.4,-0.01,0.0038],"rot":[90.0,0.0,0.0],"size":[0.005,0.6,0.005],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cylinder","pos":[0.4,-0.01,0.0038],"rot":[90.0,0.0,0.0],"size":[0.005,0.6,0.005],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.2,0.0125,0.2538],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.2,0.0125,0.2538],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0}
+]}

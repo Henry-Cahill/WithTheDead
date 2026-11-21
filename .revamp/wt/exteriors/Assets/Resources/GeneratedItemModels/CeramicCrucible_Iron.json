@@ -1,0 +1,9 @@
+{"version": 1, "id": "CeramicCrucible_Iron", "baseHeight": 0.1963, "name": "Ceramic Crucible Iron", "model": "gpt-oss:120b", "notes": "Ceramic crucible, about 0.34 m diameter × 0.26 m tall, thick walls, open top with a rim and a short side handle – lying on its side as it would be found on the ground.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0475,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.26,0.34],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[-0.0475,0.1288,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.015,0.36],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BottomBase","shape":"cylinder","pos":[-0.0475,-0.1313,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.01,0.34],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.1325,0.0638,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.5,0.48,0.42],"smooth":0.12,"metal":0.0},
+  {"name":"HandleEndL","shape":"sphere","pos":[0.2075,0.0638,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.5,0.48,0.42],"smooth":0.12,"metal":0.0},
+  {"name":"HandleEndR","shape":"sphere","pos":[0.0575,0.0638,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.5,0.48,0.42],"smooth":0.12,"metal":0.0},
+  {"name":"WallThickness","shape":"cylinder","pos":[-0.0475,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.24,0.3],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

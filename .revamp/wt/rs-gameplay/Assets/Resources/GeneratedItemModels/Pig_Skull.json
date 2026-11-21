@@ -1,0 +1,11 @@
+{"version": 1, "id": "Pig_Skull", "baseHeight": 0.12, "name": "Pig Skull", "model": "gpt-oss:120b", "notes": "Pig skull lying on its side, snout pointing +Z. Main cranium ellipsoid with a rectangular lower jaw, four small teeth, two eye‑socket depressions and a nasal cavity detail.", "score": 6, "parts": [
+  {"name":"Cranium","shape":"sphere","pos":[0.0,0.0,-0.0445],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.22],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[0.0,-0.04,0.1055],"rot":[0.0,0.0,0.0],"size":[0.15,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth1","shape":"cube","pos":[-0.045,-0.04,0.1455],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.018],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth2","shape":"cube","pos":[-0.015,-0.04,0.1455],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.018],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth3","shape":"cube","pos":[0.015,-0.04,0.1455],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.018],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth4","shape":"cube","pos":[0.045,-0.04,0.1455],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.018],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"EyeL","shape":"cylinder","pos":[-0.045,0.02,-0.0845],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"EyeR","shape":"cylinder","pos":[0.045,0.02,-0.0845],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"NoseCavity","shape":"cylinder","pos":[0.0,0.01,0.0255],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0}
+]}

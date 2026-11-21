@@ -1,0 +1,14 @@
+{"version": 1, "id": "Boilersuit_Yellow", "baseHeight": 0.071, "name": "Boilersuit Yellow", "model": "gpt-oss:120b", "notes": "Flat yellow boilersuit laid out flat: torso panel with two long sleeves, and two pant legs below. Main fabric color 0.55,0.5,0.6 (cloth smooth 0.05). Includes central seam, waist belt, chest pocket and cuff trims.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.001,0.45],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.6,-0.001,0.75],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.6,-0.001,0.75],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.125,-0.001,-0.4],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.125,-0.001,-0.4],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CentralSeam","shape":"cube","pos":[0.0,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.005,0.022,0.8],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBelt","shape":"cube","pos":[0.0,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.55,0.008,0.04],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"ChestPocket","shape":"cube","pos":[-0.12,0.0,0.65],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffTrimL","shape":"cube","pos":[-0.6,0.0,0.75],"rot":[0.0,0.0,0.0],"size":[0.71,0.004,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CuffTrimR","shape":"cube","pos":[0.6,0.0,0.75],"rot":[0.0,0.0,0.0],"size":[0.71,0.004,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LegSeamL","shape":"cube","pos":[-0.125,0.0,-0.4],"rot":[0.0,0.0,0.0],"size":[0.005,0.022,0.9],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LegSeamR","shape":"cube","pos":[0.125,0.0,-0.4],"rot":[0.0,0.0,0.0],"size":[0.005,0.022,0.9],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Lantern_Hurricane_SilverLit", "baseHeight": 0.245, "name": "Lantern Hurricane Silver Lit", "model": "gpt-oss:120b", "notes": "Hurricane lantern ~0.28 m diameter × 0.35 m tall, lying upright on the floor: silver‑metal body with ribbed bottom/top rims, a small horizontal handle for hanging, clear glass envelope, black wick and a glowing amber flame inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.01,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.25,0.33,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.17,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.27,0.01,0.27],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.155,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.27,0.01,0.27],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.0,0.17,-0.0155],"rot":[0.0,0.0,90.0],"size":[0.03,0.16,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"GlassEnvelope","shape":"cylinder","pos":[0.0,-0.01,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.28,0.35,0.28],"color":[0.85,0.92,1.0],"smooth":0.7,"metal":0.0},
+  {"name":"InnerFlame","shape":"sphere","pos":[0.0,-0.01,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[1.0,0.55,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Wick","shape":"cylinder","pos":[0.0,-0.045,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.015,0.05,0.015],"color":[0.1,0.08,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewRing","shape":"cylinder","pos":[0.0,-0.01,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.03,0.33,0.03],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.07,0.015,0.1245],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[-0.07,0.016,0.1245],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.062],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"BaseFoot","shape":"cylinder","pos":[0.0,-0.1725,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.28],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0}
+]}

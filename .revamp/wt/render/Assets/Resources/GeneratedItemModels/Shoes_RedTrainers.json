@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shoes_RedTrainers", "baseHeight": 0.1025, "name": "Shoes Red Trainers", "model": "gpt-oss:120b", "notes": "Flat pair of red trainers laid out side‑by‑side (≈0.30 m total width). Each shoe is 0.28 m long, ~0.10 m wide, ~0.08 m tall when spread flat. Parts: rubber sole, fabric upper, rear heel block, front tongue, two lace strips and a small side logo.", "score": 6, "parts": [
+  {"name":"L_Sole","shape":"cube","pos":[-0.15,-0.035,0.015],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.1],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"R_Sole","shape":"cube","pos":[0.15,-0.035,0.015],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.1],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"L_Upper","shape":"cube","pos":[-0.15,0.0075,0.015],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Upper","shape":"cube","pos":[0.15,0.0075,0.015],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_Heel","shape":"cube","pos":[-0.15,-0.0125,-0.085],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.1],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"R_Heel","shape":"cube","pos":[0.15,-0.0125,-0.085],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.1],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"L_Tongue","shape":"cube","pos":[-0.15,0.035,0.095],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"R_Tongue","shape":"cube","pos":[0.15,0.035,0.095],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"L_LaceMid","shape":"cube","pos":[-0.15,0.0295,0.015],"rot":[0.0,0.0,0.0],"size":[0.1,0.003,0.02],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"R_LaceMid","shape":"cube","pos":[0.15,0.0295,0.015],"rot":[0.0,0.0,0.0],"size":[0.1,0.003,0.02],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"L_LaceFront","shape":"cube","pos":[-0.15,0.0295,0.065],"rot":[0.0,0.0,0.0],"size":[0.1,0.003,0.02],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"R_LaceFront","shape":"cube","pos":[0.15,0.0295,0.065],"rot":[0.0,0.0,0.0],"size":[0.1,0.003,0.02],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"L_Logo","shape":"cylinder","pos":[-0.115,0.0075,0.015],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.8,0.8,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"R_Logo","shape":"cylinder","pos":[0.115,0.0075,0.015],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.8,0.8,0.8],"smooth":0.2,"metal":0.0}
+]}

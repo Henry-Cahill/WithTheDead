@@ -1,0 +1,9 @@
+{"version": 1, "id": "FieldHockeyStick_Broken", "baseHeight": 0.085, "name": "Field Hockey Stick Broken", "model": "gpt-oss:120b", "notes": "Broken field‑hockey stick ~1.27 m long, lying on its side (X axis). Two wood shafts split by a small gap, a thin blade at the +X end with a splinter showing the break, and a dark grip‑tape band near the handle.", "score": 6, "parts": [
+  {"name":"ShaftLower","shape":"cylinder","pos":[-0.3375,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.6,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"ShaftUpper","shape":"cylinder","pos":[0.2325,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.5,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripTape","shape":"cylinder","pos":[-0.5525,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.035,0.1,0.035],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"BladeMain","shape":"cube","pos":[0.5575,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.1],"color":[0.7,0.7,0.75],"smooth":0.12,"metal":0.0},
+  {"name":"BladeSplinter","shape":"cube","pos":[0.6175,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.5,0.5,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"CrackGap","shape":"cube","pos":[-0.0475,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.06],"color":[0.4,0.4,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BrokenEndCap","shape":"cube","pos":[-0.0225,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.06],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0}
+]}

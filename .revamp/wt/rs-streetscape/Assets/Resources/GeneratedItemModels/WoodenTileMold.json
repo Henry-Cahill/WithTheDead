@@ -1,0 +1,12 @@
+{"version": 1, "id": "WoodenTileMold", "baseHeight": 0.09, "name": "Wooden Tile Mold", "model": "gpt-oss:120b", "notes": "Wooden tile mold ~30 cm × 20 cm footprint, 5 cm tall, lying flat on its side (long axis along +X). Consists of a thin wooden base, four side walls, a front handle knob and a few metal nail heads.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.02,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,0.01,0.0875],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,0.01,-0.1025],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.145,0.01,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.145,0.01,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HandleKnob","shape":"cylinder","pos":[0.0,0.02,0.0875],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"NailFL","shape":"cylinder","pos":[-0.14,-0.0185,0.0825],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.45,0.44,0.43],"smooth":0.6,"metal":1.0},
+  {"name":"NailFR","shape":"cylinder","pos":[-0.14,-0.0185,-0.0975],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.45,0.44,0.43],"smooth":0.6,"metal":1.0},
+  {"name":"NailBL","shape":"cylinder","pos":[0.14,-0.0185,0.0825],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.45,0.44,0.43],"smooth":0.6,"metal":1.0},
+  {"name":"NailBR","shape":"cylinder","pos":[0.14,-0.0185,-0.0975],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.45,0.44,0.43],"smooth":0.6,"metal":1.0}
+]}

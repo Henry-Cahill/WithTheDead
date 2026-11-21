@@ -1,0 +1,14 @@
+{"version": 1, "id": "ModernCarMuffler1", "baseHeight": 0.145, "name": "Modern Car Muffler1", "model": "gpt-oss:120b", "notes": "Modern car muffler ~0.40 m long × 0.15 m diameter, lying on its side (long axis along X). Main steel shell with inner tube, inlet/outlet flanges, two mounting brackets and a few bolts – simple silhouette for quick recognition.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.15,0.4,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"InnerTube","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.35,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"InletFlange","shape":"cylinder","pos":[-0.21,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.17,0.02,0.17],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"OutletFlange","shape":"cylinder","pos":[0.21,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.17,0.02,0.17],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"MountBracketL","shape":"cube","pos":[0.0,0.045,-0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.02],"color":[0.45,0.43,0.35],"smooth":0.3,"metal":1.0},
+  {"name":"MountBracketR","shape":"cube","pos":[0.0,0.045,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.02],"color":[0.45,0.43,0.35],"smooth":0.3,"metal":1.0},
+  {"name":"BoltInletL","shape":"sphere","pos":[-0.215,0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.28,0.24],"smooth":0.6,"metal":1.0},
+  {"name":"BoltInletR","shape":"sphere","pos":[-0.215,0.015,-0.06],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.28,0.24],"smooth":0.6,"metal":1.0},
+  {"name":"BoltOutletL","shape":"sphere","pos":[0.215,0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.28,0.24],"smooth":0.6,"metal":1.0},
+  {"name":"BoltOutletR","shape":"sphere","pos":[0.215,0.015,-0.06],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.28,0.24],"smooth":0.6,"metal":1.0},
+  {"name":"SeamLine","shape":"cylinder","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.152,0.4,0.152],"color":[0.45,0.43,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"DustCover","shape":"sphere","pos":[0.0,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.28,0.24],"smooth":0.6,"metal":1.0}
+]}

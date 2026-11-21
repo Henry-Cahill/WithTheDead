@@ -1,0 +1,8 @@
+{"version": 1, "id": "SilverCoin", "baseHeight": 0.0629, "name": "Silver Coin", "model": "gpt-oss:120b", "notes": "Silver coin ~2.5 cm diameter, 2 mm thick, lying flat on the floor. Main body is a thin metallic disc with a slightly raised rim and a tiny embossed mark on the front face.", "score": 7, "parts": [
+  {"name":"DiscBody","shape":"cylinder","pos":[0.0,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RaisedRim","shape":"cylinder","pos":[0.0,0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.002,0.028],"color":[0.62,0.6,0.52],"smooth":0.6,"metal":1.0},
+  {"name":"EmbossMark","shape":"cylinder","pos":[0.0,0.001,0.0115],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"BackSideMark","shape":"cylinder","pos":[0.0,0.001,-0.0115],"rot":[90.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[0.0,0.0006,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.58,0.56,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Shadow","shape":"cube","pos":[0.0,-0.0019,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "BadmintonRacket", "baseHeight": 0.1251, "name": "Badminton Racket", "model": "gpt-oss:120b", "notes": "Badminton racket ~0.68 m long: carbon‑fiber shaft 0.58 m, rubber grip 0.12 m at the handle end, thin oval head (rim 0.22 m wide) with a simple string grid. Lying on its side – shaft runs along X, head sticks out at +X.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cylinder","pos":[-0.335,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[-0.045,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.58,0.02],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"HeadRim","shape":"cylinder","pos":[0.285,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":0.0},
+  {"name":"StringH1","shape":"cylinder","pos":[0.285,0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.18,0.004],"color":[0.9,0.9,0.92],"smooth":0.1,"metal":0.0},
+  {"name":"StringH2","shape":"cylinder","pos":[0.285,-0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.18,0.004],"color":[0.9,0.9,0.92],"smooth":0.1,"metal":0.0},
+  {"name":"StringV1","shape":"cylinder","pos":[0.285,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.9,0.9,0.92],"smooth":0.1,"metal":0.0},
+  {"name":"StringV2","shape":"cylinder","pos":[0.285,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.9,0.9,0.92],"smooth":0.1,"metal":0.0},
+  {"name":"StringCross","shape":"cylinder","pos":[0.285,0.0,0.0],"rot":[45.0,0.0,0.0],"size":[0.004,0.18,0.004],"color":[0.9,0.9,0.92],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "SteelIngotMold", "baseHeight": 0.1342, "name": "Steel Ingot Mold", "model": "gpt-oss:120b", "notes": "Steel ingot mold ~0.32 m L × 0.18 m W × 0.12 m H, thick steel walls (~1 cm) with an open top, a removable lid, side handle, four mounting screws, a front imprint label and a small pouring spout.", "score": 7, "parts": [
+  {"name":"OuterShell","shape":"cube","pos":[0.0,-0.0142,-0.015],"rot":[0.0,0.0,0.0],"size":[0.32,0.12,0.18],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"InnerCavity","shape":"cube","pos":[0.0,-0.0142,-0.015],"rot":[0.0,0.0,0.0],"size":[0.3,0.1,0.16],"color":[0.4,0.38,0.33],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0533,-0.015],"rot":[0.0,0.0,0.0],"size":[0.32,0.015,0.18],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.0533,0.075],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewFL","shape":"cylinder","pos":[-0.14,0.0667,0.055],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewFR","shape":"cylinder","pos":[-0.14,0.0667,-0.085],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewBL","shape":"cylinder","pos":[0.14,0.0667,0.055],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewBR","shape":"cylinder","pos":[0.14,0.0667,-0.085],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0142,0.0755],"rot":[0.0,0.0,0.0],"size":[0.1,0.01,0.002],"color":[0.25,0.25,0.28],"smooth":0.05,"metal":1.0},
+  {"name":"Spout","shape":"cylinder","pos":[0.0,0.0533,0.09],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ReinforcementRib","shape":"cube","pos":[0.0,-0.0342,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.55,0.53,0.48],"smooth":0.55,"metal":1.0}
+]}

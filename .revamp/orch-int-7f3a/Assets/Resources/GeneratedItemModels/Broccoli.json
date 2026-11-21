@@ -1,0 +1,11 @@
+{"version": 1, "id": "Broccoli", "baseHeight": 0.124, "name": "Broccoli", "model": "gpt-oss:120b", "notes": "Loose broccoli bunch about 0.25 m long, 0.12 m wide and 0.15 m tall when lying on its side – a short green stalk with a cluster of florets.", "score": 6, "parts": [
+  {"name":"Stalk","shape":"cylinder","pos":[-0.018,-0.044,-0.007],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"FloretA","shape":"sphere","pos":[0.052,-0.014,0.023],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"FloretB","shape":"sphere","pos":[0.072,0.006,-0.027],"rot":[0.0,0.0,0.0],"size":[0.058,0.058,0.058],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"FloretC","shape":"sphere","pos":[0.092,-0.004,0.033],"rot":[0.0,0.0,0.0],"size":[0.054,0.054,0.054],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"FloretD","shape":"sphere","pos":[0.112,0.016,-0.037],"rot":[0.0,0.0,0.0],"size":[0.062,0.062,0.062],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"FloretE","shape":"sphere","pos":[0.072,0.026,0.043],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"FloretF","shape":"sphere","pos":[0.102,0.036,-0.017],"rot":[0.0,0.0,0.0],"size":[0.056,0.056,0.056],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LeafL","shape":"cube","pos":[-0.048,-0.024,0.018],"rot":[15.0,0.0,30.0],"size":[0.02,0.002,0.06],"color":[0.55,0.5,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"LeafR","shape":"cube","pos":[-0.048,-0.024,-0.032],"rot":[15.0,0.0,-30.0],"size":[0.02,0.002,0.06],"color":[0.55,0.5,0.25],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "DeadMousePups", "baseHeight": 0.0825, "name": "Dead Mouse Pups", "model": "gpt-oss:120b", "notes": "Tiny mouse‑pup tin 0.05 m diameter × 0.04 m tall, standing upright on the floor. Body is a brushed‑tin cylinder with a recessed lid, thin paper label wrapped around the middle and subtle rolled seams at top and bottom.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.054,0.004,0.054],"color":[0.73,0.66,0.43],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0205,0.0],"rot":[0.0,0.0,0.0],"size":[0.054,0.004,0.054],"color":[0.73,0.66,0.43],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.006,0.045],"color":[0.6,0.6,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.048,0.036,0.048],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.006,0.05],"color":[0.45,0.38,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.006,0.05],"color":[0.45,0.38,0.2],"smooth":0.12,"metal":0.0}
+]}

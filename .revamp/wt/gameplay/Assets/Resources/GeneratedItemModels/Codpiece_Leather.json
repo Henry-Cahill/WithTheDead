@@ -1,0 +1,9 @@
+{"version": 1, "id": "Codpiece_Leather", "baseHeight": 0.07, "name": "Codpiece Leather", "model": "gpt-oss:120b", "notes": "Leather codpiece ~0.15 m wide × 0.08 m tall × 0.02 m thick, lying flat on the floor. Main leather panel with dark stitching around the edges and a small metal buckle at the front centre.", "score": 6, "parts": [
+  {"name":"Panel","shape":"cube","pos":[0.0,0.0,-0.003],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,0.002,0.041],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.008],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cube","pos":[0.0,0.002,-0.047],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.008],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cube","pos":[-0.075,0.002,-0.003],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.08],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cube","pos":[0.075,0.002,-0.003],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.08],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleRing","shape":"cylinder","pos":[0.0,0.005,0.037],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BucklePin","shape":"cylinder","pos":[0.0,0.007,0.045],"rot":[90.0,0.0,0.0],"size":[0.004,0.012,0.004],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandeau_Hide", "baseHeight": 0.135, "name": "Bandeau Hide", "model": "gpt-oss:120b", "notes": "Flat hide bandeau 0.45 m wide × 0.15 m tall, 0.02 m thick (torso garment). Main panel with darker edge trims, side stitching cylinders and a central leather‑rivet detail.", "score": 6, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.002,0.08],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.01],"color":[0.44,0.4,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.002,-0.08],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.01],"color":[0.44,0.4,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.225,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.15,0.005],"color":[0.35,0.32,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.225,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.15,0.005],"color":[0.35,0.32,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"CenterRivet","shape":"sphere","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.34],"smooth":0.6,"metal":1.0}
+]}

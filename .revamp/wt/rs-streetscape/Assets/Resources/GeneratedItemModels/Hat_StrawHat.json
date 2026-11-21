@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_StrawHat", "baseHeight": 0.2, "name": "Hat Straw Hat", "model": "gpt-oss:120b", "notes": "Straw hat laid flat: wide brim disc 0.60 m diameter × 1.5 cm thick; crown a short cylinder 0.15 m long × 12 cm diameter lying horizontally across the centre of the brim; thin raised rim edge around brim for texture.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.068,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.6],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.15,0.12],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[0.0,-0.059,0.0],"rot":[0.0,0.0,0.0],"size":[0.61,0.003,0.61],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"HatBand","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.015,0.13],"color":[0.45,0.4,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"CrownTopRidge","shape":"cylinder","pos":[0.0,0.075,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.003,0.13],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"CrownBottomRidge","shape":"cylinder","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.003,0.13],"color":[0.48,0.44,0.55],"smooth":0.12,"metal":0.0}
+]}

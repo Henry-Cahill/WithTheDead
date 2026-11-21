@@ -1,0 +1,13 @@
+{"version": 1, "id": "Vambrace_BodyArmour_Left_Police", "baseHeight": 0.0745, "name": "Vambrace Body Armour Left Police", "model": "gpt-oss:120b", "notes": "Left forearm vambrace ~0.35 m long × 0.12 m wide × 0.02 m thick (lying flat on the floor). Main cuff body, four overlapping protective plates, end strap loops and a central buckle.", "score": 6, "parts": [
+  {"name":"CuffBody","shape":"cube","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Plate1","shape":"cube","pos":[-0.1,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":0.6},
+  {"name":"Plate2","shape":"cube","pos":[-0.03,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":0.6},
+  {"name":"Plate3","shape":"cube","pos":[0.04,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":0.6},
+  {"name":"Plate4","shape":"cube","pos":[0.11,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":0.6},
+  {"name":"Buckle","shape":"cylinder","pos":[-0.165,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.014,0.02,0.014],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":0.8},
+  {"name":"LoopLeft","shape":"cylinder","pos":[-0.165,0.0105,0.03],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LoopRight","shape":"cylinder","pos":[-0.165,0.0105,-0.03],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapEnd","shape":"cube","pos":[0.165,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.1,0.0075,0.055],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[-0.1,0.0075,-0.055],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0}
+]}

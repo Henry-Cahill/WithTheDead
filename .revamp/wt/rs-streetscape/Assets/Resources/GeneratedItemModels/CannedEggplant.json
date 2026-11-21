@@ -1,0 +1,9 @@
+{"version": 1, "id": "CannedEggplant", "baseHeight": 0.1918, "name": "Canned Eggplant", "model": "gpt-oss:120b", "notes": "Upright canned eggplant 0.18 m diameter × 0.25 m tall: metal body with rolled seams, recessed lid, and a tinted label (egg‑plant hue) with darker trim bands.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0068,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.25,0.18],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.85},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.1157,0.0],"rot":[0.0,0.0,0.0],"size":[0.192,0.015,0.192],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.85},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.1242,0.0],"rot":[0.0,0.0,0.0],"size":[0.192,0.015,0.192],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.85},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.1258,0.0],"rot":[0.0,0.0,0.0],"size":[0.165,0.012,0.165],"color":[0.72,0.73,0.74],"smooth":0.45,"metal":0.85},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0068,0.0],"rot":[0.0,0.0,0.0],"size":[0.166,0.23,0.166],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.1032,0.0],"rot":[0.0,0.0,0.0],"size":[0.168,0.008,0.168],"color":[0.5,0.4,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.1168,0.0],"rot":[0.0,0.0,0.0],"size":[0.168,0.008,0.168],"color":[0.5,0.4,0.2],"smooth":0.12,"metal":0.0}
+]}

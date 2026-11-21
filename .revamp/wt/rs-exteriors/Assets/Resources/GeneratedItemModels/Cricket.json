@@ -1,0 +1,11 @@
+{"version": 1, "id": "Cricket", "baseHeight": 0.0983, "name": "Cricket", "model": "gpt-oss:120b", "notes": "Small cardboard snack box 0.12 m wide × 0.09 m deep × 0.07 m tall, lid lifted slightly; thin paper label on top showing the cricket tint; a loose pile of 5‑6 crickets (tiny brownish ellipsoids) inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.09],"color":[0.58,0.48,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0342,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.005,0.092],"color":[0.63,0.53,0.34],"smooth":0.08,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0362,-0.02],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.0372,-0.02],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.042],"color":[0.45,0.38,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"Cricket1","shape":"sphere","pos":[-0.025,-0.0182,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.03,0.018],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Cricket2","shape":"sphere","pos":[0.015,-0.0203,0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.028,0.016],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Cricket3","shape":"sphere","pos":[-0.01,-0.0163,0.02],"rot":[0.0,0.0,0.0],"size":[0.017,0.031,0.017],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Cricket4","shape":"sphere","pos":[0.02,-0.0192,-0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.027,0.015],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Cricket5","shape":"sphere","pos":[-0.018,-0.0172,0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.029,0.016],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0}
+]}

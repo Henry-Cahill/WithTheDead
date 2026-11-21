@@ -1,0 +1,10 @@
+{"version": 1, "id": "FlintKnife", "baseHeight": 0.085, "name": "Flint Knife", "model": "gpt-oss:120b", "notes": "Flint knife ~0.70 m long lying on its side (X‑axis). Flint blade (gray) with a short wooden grip and a tiny steel cross‑guard; guard has two rivets. Silhouette clear from above.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.26,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.18,0.04],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[-0.15,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.06],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.14,0.02,0.025],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[-0.14,0.02,-0.025],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.11,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"BladeTip","shape":"cube","pos":[0.32,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.04],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"BladeEdgeLine","shape":"cylinder","pos":[0.11,-0.0095,0.021],"rot":[0.0,90.0,0.0],"size":[0.48,0.002,0.002],"color":[0.45,0.45,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BladeEdgeLineOpp","shape":"cylinder","pos":[0.11,-0.0095,-0.021],"rot":[0.0,90.0,0.0],"size":[0.48,0.002,0.002],"color":[0.45,0.45,0.5],"smooth":0.1,"metal":0.0}
+]}

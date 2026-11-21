@@ -1,0 +1,13 @@
+{"version": 1, "id": "BaconRashers", "baseHeight": 0.0742, "name": "Bacon Rashers", "model": "gpt-oss:120b", "notes": "Bacon rashers in a small sealed tray ≈ 0.15 m × 0.07 m × 0.03 m (L×W×H). Plastic base and thin walls, translucent lid, paper label on front, four thin meat strips stacked inside.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0112,-0.01],"rot":[0.0,0.0,0.0],"size":[0.15,0.006,0.07],"color":[0.82,0.84,0.86],"smooth":0.3,"metal":0.0},
+  {"name":"FrontWall","shape":"cube","pos":[0.0,-0.0013,0.0225],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.005],"color":[0.78,0.8,0.83],"smooth":0.3,"metal":0.0},
+  {"name":"BackWall","shape":"cube","pos":[0.0,-0.0013,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.005],"color":[0.78,0.8,0.83],"smooth":0.3,"metal":0.0},
+  {"name":"LeftWall","shape":"cube","pos":[-0.0725,-0.0013,-0.01],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.07],"color":[0.78,0.8,0.83],"smooth":0.3,"metal":0.0},
+  {"name":"RightWall","shape":"cube","pos":[0.0725,-0.0013,-0.01],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.07],"color":[0.78,0.8,0.83],"smooth":0.3,"metal":0.0},
+  {"name":"LidFilm","shape":"cube","pos":[0.0,0.0132,-0.01],"rot":[0.0,0.0,0.0],"size":[0.148,0.002,0.068],"color":[0.92,0.93,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[-0.02,0.0007,0.025],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.62,0.55,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BaconStrip1","shape":"cube","pos":[0.0,-0.0068,-0.028],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BaconStrip2","shape":"cube","pos":[0.0,-0.0068,-0.016],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BaconStrip3","shape":"cube","pos":[0.0,-0.0068,-0.004],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BaconStrip4","shape":"cube","pos":[0.0,-0.0068,0.008],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "HuntingRifle", "baseHeight": 0.1, "name": "Hunting Rifle", "model": "gpt-oss:120b", "notes": "Hunting rifle ~1.0 m long, barrel along +X. Dark‑metal barrel, wooden stock, polymer grip, boxy magazine, metal trigger guard, front & rear sights.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.1175,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.6,0.03],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Stock","shape":"cube","pos":[-0.3075,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.08,0.15],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cube","pos":[0.2675,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.04],"color":[0.08,0.08,0.09],"smooth":0.05,"metal":0.0},
+  {"name":"Magazine","shape":"cube","pos":[-0.3825,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.02],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.3175,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.05],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"FrontSight","shape":"cube","pos":[0.4375,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.015],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"RearSight","shape":"cube","pos":[-0.2125,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.03],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0}
+]}

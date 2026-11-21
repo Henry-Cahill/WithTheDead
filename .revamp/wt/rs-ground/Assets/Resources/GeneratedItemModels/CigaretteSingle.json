@@ -1,0 +1,8 @@
+{"version": 1, "id": "CigaretteSingle", "baseHeight": 0.0648, "name": "Cigarette Single", "model": "gpt-oss:120b", "notes": "Single cigarette ~8 cm long, 8 mm diameter paper tube with a short (1.5 cm) filter tip. Shown lying on its side (X‑axis). Includes thin cardboard wrapper, paper body, filter, a dark label stripe and subtle end caps.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cylinder","pos":[0.0005,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.0095,0.085,0.0095],"color":[0.6,0.4,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"PaperBody","shape":"cylinder","pos":[-0.007,-0.0007,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.07,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Filter","shape":"cylinder","pos":[0.0355,-0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.009,0.015,0.009],"color":[0.85,0.85,0.85],"smooth":0.2,"metal":0.0},
+  {"name":"LabelStripe","shape":"cube","pos":[-0.007,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.008],"color":[0.4,0.3,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"BodyEndCap","shape":"cylinder","pos":[-0.042,-0.0007,0.0],"rot":[0.0,0.0,90.0],"size":[0.0082,0.002,0.0082],"color":[0.7,0.6,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FilterRing","shape":"cylinder","pos":[0.028,-0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.0092,0.002,0.0092],"color":[0.7,0.6,0.45],"smooth":0.05,"metal":0.0}
+]}

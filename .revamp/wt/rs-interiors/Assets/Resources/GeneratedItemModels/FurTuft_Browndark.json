@@ -1,0 +1,13 @@
+{"version": 1, "id": "FurTuft_Browndark", "baseHeight": 0.1, "name": "Fur Tuft Browndark", "model": "gpt-oss:120b", "notes": "Loose fur tuft about 8 cm across, lying on the floor. Fluffy irregular shape made from a central sphere plus several overlapping ellipsoids and a few stray hair‑like cylinders.", "score": 7, "parts": [
+  {"name":"Core","shape":"sphere","pos":[0.0012,-0.005,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fluff1","shape":"sphere","pos":[0.0262,0.005,0.0187],"rot":[0.0,0.0,0.0],"size":[0.05,0.06,0.045],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fluff2","shape":"sphere","pos":[-0.0288,0.002,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.045,0.055,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fluff3","shape":"sphere","pos":[0.0112,0.01,0.0287],"rot":[0.0,0.0,0.0],"size":[0.04,0.05,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fluff4","shape":"sphere","pos":[-0.0188,0.015,-0.0263],"rot":[0.0,0.0,0.0],"size":[0.045,0.05,0.045],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fluff5","shape":"sphere","pos":[0.0212,0.02,-0.0312],"rot":[0.0,0.0,0.0],"size":[0.035,0.04,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fluff6","shape":"sphere","pos":[-0.0238,0.018,0.0267],"rot":[0.0,0.0,0.0],"size":[0.032,0.038,0.033],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hair1","shape":"cylinder","pos":[0.0312,0.0,-0.0013],"rot":[30.0,0.0,0.0],"size":[0.008,0.07,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hair2","shape":"cylinder","pos":[-0.0268,-0.005,0.0187],"rot":[-20.0,0.0,45.0],"size":[0.006,0.06,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hair3","shape":"cylinder","pos":[0.0162,-0.002,-0.0312],"rot":[10.0,0.0,-30.0],"size":[0.007,0.065,0.007],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hair4","shape":"cylinder","pos":[-0.0088,0.005,-0.0213],"rot":[-15.0,0.0,60.0],"size":[0.005,0.05,0.005],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

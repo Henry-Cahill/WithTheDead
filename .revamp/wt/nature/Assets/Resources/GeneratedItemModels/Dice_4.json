@@ -1,0 +1,10 @@
+{"version": 1, "id": "Dice_4", "baseHeight": 0.0715, "name": "Dice 4", "model": "gpt-oss:120b", "notes": "Four‑sided die (D4) approx 0.03 m wide × 0.02 m tall, lying on a face. Main body is a low‑poly cube tinted stone‑gray; small corner spheres hint at the sharp tetrahedral points and thin cylinders suggest the engraved numbers.", "score": 8, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerTL","shape":"sphere","pos":[-0.013,0.0035,-0.013],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerTR","shape":"sphere","pos":[0.013,0.0035,-0.013],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBL","shape":"sphere","pos":[-0.013,0.0035,0.013],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBR","shape":"sphere","pos":[0.013,0.0035,0.013],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"NumberA","shape":"cylinder","pos":[0.0,0.0095,-0.008],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":0.0},
+  {"name":"NumberB","shape":"cylinder","pos":[-0.008,0.0095,0.006],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":0.0},
+  {"name":"NumberC","shape":"cylinder","pos":[0.008,0.0095,0.006],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":0.0}
+]}

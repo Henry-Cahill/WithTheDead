@@ -1,0 +1,14 @@
+{"version": 1, "id": "Twine", "baseHeight": 0.116, "name": "Twine", "model": "gpt-oss:120b", "notes": "Loose ball of twine about 0.15 m across: central coil lying on its side, several overlapping loops to suggest a tangled pile, a small knot in the centre and frayed ends sticking out.", "score": 6, "parts": [
+  {"name":"CoreCoil","shape":"cylinder","pos":[0.0,-0.041,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LoopA","shape":"cylinder","pos":[-0.04,-0.011,0.0],"rot":[30.0,0.0,45.0],"size":[0.025,0.08,0.025],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LoopB","shape":"cylinder","pos":[0.04,-0.011,0.0],"rot":[-30.0,0.0,-45.0],"size":[0.025,0.08,0.025],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LoopC","shape":"cylinder","pos":[0.0,0.014,0.04],"rot":[0.0,45.0,0.0],"size":[0.022,0.07,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LoopD","shape":"cylinder","pos":[0.0,0.014,-0.04],"rot":[0.0,-45.0,0.0],"size":[0.022,0.07,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrayedEndL","shape":"cylinder","pos":[-0.065,-0.041,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.02,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrayedEndR","shape":"cylinder","pos":[0.065,-0.041,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.02,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Strand1","shape":"cylinder","pos":[-0.02,0.024,0.03],"rot":[20.0,10.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Strand2","shape":"cylinder","pos":[0.02,0.034,-0.03],"rot":[-25.0,5.0,0.0],"size":[0.008,0.045,0.008],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Strand3","shape":"cylinder","pos":[0.03,0.004,0.02],"rot":[10.0,-20.0,0.0],"size":[0.008,0.035,0.008],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Strand4","shape":"cylinder","pos":[-0.03,0.014,-0.02],"rot":[-15.0,-10.0,0.0],"size":[0.008,0.038,0.008],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[0.0,-0.026,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

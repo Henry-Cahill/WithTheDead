@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_Cowboy_CowHide", "baseHeight": 0.145, "name": "Hat Cowboy Cow Hide", "model": "gpt-oss:120b", "notes": "Cowboy hat made of cow‑hide leather, laid flat on the floor: wide low‑profile brim (≈ 0.60 m dia, 2 cm thick), cylindrical crown (≈ 0.25 m dia × 15 cm tall) sitting on the centre of the brim, a dark leather band around the crown and a small steel buckle on the front of the crown.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.15,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,0.0775,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.38,0.34,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[0.0,0.055,0.13],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.005],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleScrewL","shape":"cylinder","pos":[-0.006,0.062,0.1325],"rot":[90.0,0.0,0.0],"size":[0.003,0.008,0.003],"color":[0.6,0.6,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleScrewR","shape":"cylinder","pos":[0.006,0.062,0.1325],"rot":[90.0,0.0,0.0],"size":[0.003,0.008,0.003],"color":[0.6,0.6,0.65],"smooth":0.6,"metal":1.0}
+]}

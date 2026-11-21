@@ -1,0 +1,12 @@
+{"version": 1, "id": "PipeWrench", "baseHeight": 0.093, "name": "Pipe Wrench", "model": "gpt-oss:120b", "notes": "Pipe wrench ~0.45 m long lying on its side (X‑axis). Metal body (tint 0.6,0.6,0.64) with rubber grip, T‑shaped head, fixed jaw (+Z), adjustable jaw (–Z) and a small adjustment knob. Includes rivets and a bolt detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.0,-0.013,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.45,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.45,0.05],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.195,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"FixedJaw","shape":"cube","pos":[0.195,-0.013,0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"AdjustableJaw","shape":"cube","pos":[0.195,-0.013,-0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"AdjustKnob","shape":"sphere","pos":[0.195,0.012,-0.12],"rot":[0.0,0.0,0.0],"size":[0.036,0.036,0.036],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RivetA","shape":"sphere","pos":[-0.22,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"RivetB","shape":"sphere","pos":[0.22,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Bolt","shape":"cylinder","pos":[0.195,0.007,-0.08],"rot":[0.0,0.0,90.0],"size":[0.01,0.02,0.01],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Seam","shape":"cylinder","pos":[0.0,0.012,0.0],"rot":[0.0,0.0,90.0],"size":[0.042,0.45,0.042],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0}
+]}

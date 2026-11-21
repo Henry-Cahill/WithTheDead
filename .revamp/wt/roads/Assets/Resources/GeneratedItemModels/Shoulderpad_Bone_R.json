@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoulderpad_Bone_R", "baseHeight": 0.085, "name": "Shoulderpad Bone R", "model": "gpt-oss:120b", "notes": "Bone‑shaped right shoulder pad about 0.39 m wide × 0.18 m deep × 0.04 m thick, lying on its flat side. Main slab of off‑white bone with rounded ends, a raised central ridge and a strap‑hole near the left edge.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EndCurveL","shape":"sphere","pos":[-0.155,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EndCurveR","shape":"sphere","pos":[0.155,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CentralRidge","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.02],"color":[0.7,0.68,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"StrapHole","shape":"cylinder","pos":[-0.08,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"HoleEdgeL","shape":"cube","pos":[-0.08,0.0,0.0085],"rot":[0.0,0.0,0.0],"size":[0.018,0.04,0.002],"color":[0.45,0.43,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"HoleEdgeR","shape":"cube","pos":[-0.08,0.0,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.018,0.04,0.002],"color":[0.45,0.43,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SurfaceBump1","shape":"cube","pos":[-0.05,0.007,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.006,0.02],"color":[0.62,0.6,0.52],"smooth":0.2,"metal":0.0},
+  {"name":"SurfaceBump2","shape":"cube","pos":[0.04,0.007,-0.07],"rot":[0.0,0.0,0.0],"size":[0.025,0.006,0.018],"color":[0.62,0.6,0.52],"smooth":0.2,"metal":0.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.28],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.28],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

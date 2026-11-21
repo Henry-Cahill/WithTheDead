@@ -1,0 +1,13 @@
+{"version": 1, "id": "Dirtbag", "baseHeight": 0.285, "name": "Dirtbag", "model": "gpt-oss:120b", "notes": "Burlap‑style Dirtbag ~0.6 m long × 0.3 m wide × 0.15 m high when collapsed, lying on its side. Main sack (cotton/burlap texture), rope handles across the top opening, a rough label patch and a few visible clumps of dark soil.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.6,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BagSeam","shape":"cylinder","pos":[0.0,0.07,0.0],"rot":[0.0,0.0,90.0],"size":[0.31,0.6,0.31],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RopeHandleL","shape":"cylinder","pos":[-0.25,0.075,0.12],"rot":[90.0,0.0,0.0],"size":[0.02,0.35,0.02],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"RopeHandleR","shape":"cylinder","pos":[-0.25,0.075,-0.12],"rot":[90.0,0.0,0.0],"size":[0.02,0.35,0.02],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.15,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.5,0.45,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"DirtClump1","shape":"sphere","pos":[-0.1,0.025,0.08],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.35,0.3,0.25],"smooth":0.03,"metal":0.0},
+  {"name":"DirtClump2","shape":"sphere","pos":[0.05,0.055,-0.06],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.33,0.29,0.24],"smooth":0.03,"metal":0.0},
+  {"name":"DirtClump3","shape":"sphere","pos":[-0.2,-0.005,0.12],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.38,0.33,0.28],"smooth":0.03,"metal":0.0},
+  {"name":"BottomFlap","shape":"cube","pos":[-0.28,-0.15,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.15,0.3],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideStrapL","shape":"cylinder","pos":[0.2,-0.045,0.15],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideStrapR","shape":"cylinder","pos":[0.2,-0.045,-0.15],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0}
+]}

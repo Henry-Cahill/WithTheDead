@@ -1,0 +1,12 @@
+{"version": 1, "id": "CanteenMilitary", "baseHeight": 0.1875, "name": "Canteen Military", "model": "gpt-oss:120b", "notes": "Upright military canteen ~0.09 m diameter × 0.23 m tall: thin‑walled metal body, reinforced bottom rim, screw‑on cap with a small pull knob, canvas strap loop on the side and a dark label strip.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0008,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.23,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.0008,-0.1165,0.0],"rot":[0.0,0.0,0.0],"size":[0.102,0.022,0.102],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"TopCap","shape":"cylinder","pos":[-0.0008,0.1075,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.02,0.095],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"CapKnob","shape":"sphere","pos":[-0.0008,0.1175,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"CapThread","shape":"cylinder","pos":[-0.0008,0.0975,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.09],"color":[0.5,0.48,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[0.0442,-0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.0258,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.08],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"RivetTop","shape":"sphere","pos":[-0.0008,0.1075,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.32],"smooth":0.2,"metal":1.0},
+  {"name":"RivetBottom","shape":"sphere","pos":[-0.0008,0.1075,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.32],"smooth":0.2,"metal":1.0},
+  {"name":"RivetSide","shape":"sphere","pos":[-0.0008,0.1075,0.045],"rot":[0.0,0.0,90.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.32],"smooth":0.2,"metal":1.0}
+]}

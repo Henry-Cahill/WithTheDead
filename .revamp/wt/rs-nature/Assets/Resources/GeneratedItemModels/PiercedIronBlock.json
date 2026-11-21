@@ -1,0 +1,8 @@
+{"version": 1, "id": "PiercedIronBlock", "baseHeight": 0.1, "name": "Pierced Iron Block", "model": "gpt-oss:120b", "notes": "Iron block roughly 0.07 m³ (≈7 cm per side) with a few punched holes – two vertical through‑holes and one horizontal across the centre. Lying on its flat face, metal tint 0.6 0.58 0.5.", "score": 7, "parts": [
+  {"name":"Block","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"HoleVLeft","shape":"cylinder","pos":[-0.022,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"HoleVRight","shape":"cylinder","pos":[0.022,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"HoleHCenter","shape":"cylinder","pos":[0.0,0.0,-0.022],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"RustSpot1","shape":"sphere","pos":[-0.018,0.023,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"RustSpot2","shape":"sphere","pos":[0.015,0.025,-0.018],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0}
+]}

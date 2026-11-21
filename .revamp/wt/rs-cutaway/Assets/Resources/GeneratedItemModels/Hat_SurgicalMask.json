@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_SurgicalMask", "baseHeight": 0.063, "name": "Hat Surgical Mask", "model": "gpt-oss:120b", "notes": "Flat surgical mask ~0.17 m wide × 0.09 m tall, 4 mm thick, with three pleat strips, a metal nose‑wire and elastic ear loops extending outward (~0.15 m each side).", "score": 6, "parts": [
+  {"name":"MaskBody","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.17,0.004,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PleatLeft","shape":"cube","pos":[-0.04,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.09],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"PleatCenter","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.09],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"PleatRight","shape":"cube","pos":[0.04,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.09],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"NoseWire","shape":"cube","pos":[0.0,0.0015,0.04],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"LoopLeft","shape":"cylinder","pos":[-0.16,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.15,0.006],"color":[0.45,0.42,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"LoopRight","shape":"cylinder","pos":[0.16,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.15,0.006],"color":[0.45,0.42,0.48],"smooth":0.2,"metal":0.0}
+]}

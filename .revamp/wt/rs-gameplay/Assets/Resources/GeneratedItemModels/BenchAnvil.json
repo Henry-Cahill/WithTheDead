@@ -1,0 +1,11 @@
+{"version": 1, "id": "BenchAnvil", "baseHeight": 0.255, "name": "Bench Anvil", "model": "gpt-oss:120b", "notes": "Bench anvil ~1.0 m long × 0.3 m wide, sits on a thin wooden base (0.05 m high). Main steel block 0.2 m tall, horn extending +X end, raised face‑plate on top, four rivets for detail.", "score": 6, "parts": [
+  {"name":"BaseWood","shape":"cube","pos":[-0.125,-0.17,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.05,0.3],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBody","shape":"cube","pos":[-0.125,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.2,0.3],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Horn","shape":"cylinder","pos":[0.5,0.125,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.25,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"FacePlate","shape":"cube","pos":[-0.175,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.02,0.28],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetFL","shape":"cylinder","pos":[-0.575,0.05,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetFR","shape":"cylinder","pos":[-0.575,0.05,-0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.325,0.05,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.325,0.05,-0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Label","shape":"cube","pos":[-0.425,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.28],"color":[0.5,0.45,0.4],"smooth":0.2,"metal":0.0}
+]}

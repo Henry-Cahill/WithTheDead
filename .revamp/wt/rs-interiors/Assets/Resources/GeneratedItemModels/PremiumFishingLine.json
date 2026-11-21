@@ -1,0 +1,12 @@
+{"version": 1, "id": "PremiumFishingLine", "baseHeight": 0.0764, "name": "Premium Fishing Line", "model": "gpt-oss:120b", "notes": "Coiled premium fishing line on a small cardboard spool, about 0.10 m diameter and 0.02 m thick. Includes outer rim, inner hub with label, a few stray line ends.", "score": 6, "parts": [
+  {"name":"SpoolBody","shape":"cylinder","pos":[-0.0025,0.0064,-0.0024],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"OuterRim","shape":"cylinder","pos":[-0.0025,0.0074,-0.0024],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"InnerHub","shape":"cylinder","pos":[-0.0025,0.0079,-0.0024],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[-0.0025,0.0099,-0.0024],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.02],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[-0.0025,0.0105,-0.0024],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.015],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LineEndA","shape":"cylinder","pos":[0.0425,0.0014,-0.0024],"rot":[0.0,0.0,90.0],"size":[0.002,0.06,0.002],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LineEndB","shape":"cylinder","pos":[-0.0475,0.0014,-0.0024],"rot":[0.0,0.0,-90.0],"size":[0.002,0.05,0.002],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LooseStrand1","shape":"cylinder","pos":[0.0175,-0.0016,0.0376],"rot":[30.0,0.0,0.0],"size":[0.002,0.03,0.002],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LooseStrand2","shape":"cylinder","pos":[-0.0325,-0.0016,-0.0374],"rot":[20.0,0.0,0.0],"size":[0.002,0.025,0.002],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LooseStrand3","shape":"cylinder","pos":[-0.0025,-0.0016,0.0476],"rot":[45.0,0.0,0.0],"size":[0.002,0.04,0.002],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

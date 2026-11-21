@@ -1,0 +1,11 @@
+{"version": 1, "id": "ComfreySeed", "baseHeight": 0.0628, "name": "Comfrey Seed", "model": "gpt-oss:120b", "notes": "A small loose pile of comfrey seeds about 4 cm long × 2 cm wide × 3 mm thick (tint 0.6,0.58,0.5). The main flattened ellipsoid represents the bulk, with a few individual seed‑shaped cubes for readable detail.", "score": 6, "parts": [
+  {"name":"PileBase","shape":"sphere","pos":[0.0007,0.0003,-0.0001],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"cube","pos":[-0.0113,0.0,0.0039],"rot":[0.0,15.0,30.0],"size":[0.006,0.0025,0.003],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed2","shape":"cube","pos":[0.0087,-0.0001,-0.0061],"rot":[0.0,-10.0,45.0],"size":[0.0055,0.0023,0.0032],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed3","shape":"cube","pos":[0.0157,0.0002,0.0099],"rot":[0.0,20.0,-25.0],"size":[0.0062,0.0021,0.003],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed4","shape":"cube","pos":[-0.0173,0.0001,-0.0081],"rot":[0.0,-15.0,10.0],"size":[0.0058,0.0024,0.0031],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed5","shape":"cube","pos":[0.0127,0.0,0.0019],"rot":[0.0,5.0,-40.0],"size":[0.006,0.0022,0.003],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed6","shape":"cube","pos":[-0.0043,-0.0001,-0.0121],"rot":[0.0,-20.0,20.0],"size":[0.0055,0.0023,0.0032],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed7","shape":"cube","pos":[0.0047,0.0002,0.0149],"rot":[0.0,30.0,-10.0],"size":[0.0061,0.0022,0.003],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed8","shape":"cube","pos":[-0.0093,0.0001,-0.0151],"rot":[0.0,-25.0,35.0],"size":[0.0059,0.0024,0.0031],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

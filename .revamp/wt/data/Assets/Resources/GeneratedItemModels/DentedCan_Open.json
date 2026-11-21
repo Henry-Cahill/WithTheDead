@@ -1,0 +1,10 @@
+{"version": 1, "id": "DentedCan_Open", "baseHeight": 0.082, "name": "Dented Can Open", "model": "gpt-oss:120b", "notes": "Dented can‑opener ~15 cm long lying on its side (X axis). Main metal body with a small grip cylinder, a blade protruding upward, hinge pin, screw head and three dent spheres for damage detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0005,-0.007,-0.001],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.0545,-0.007,-0.001],"rot":[0.0,0.0,90.0],"size":[0.03,0.04,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ScrewHead","shape":"cylinder","pos":[-0.0695,0.001,-0.001],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.48,0.42],"smooth":0.45,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.0405,0.013,0.014],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"HingePin","shape":"cylinder","pos":[0.0255,-0.007,-0.001],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Dent1","shape":"sphere","pos":[-0.0295,0.004,0.014],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.48,0.464,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"Dent2","shape":"sphere","pos":[0.0105,0.004,-0.016],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.48,0.464,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"Dent3","shape":"sphere","pos":[0.0605,0.004,-0.001],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.48,0.464,0.4],"smooth":0.6,"metal":1.0}
+]}

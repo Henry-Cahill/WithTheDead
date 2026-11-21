@@ -1,0 +1,12 @@
+{"version": 1, "id": "NormalSuspension2", "baseHeight": 0.105, "name": "Normal Suspension2", "model": "gpt-oss:120b", "notes": "Normal Suspension2 – a compact shock‑absorber piece about 0.35 m long, 0.08 m wide and 0.08 m high when lying on its side. Main steel tube with internal spring coil, end caps, rubber bumpers and a stamped metal tag.", "score": 6, "parts": [
+  {"name":"MainTube","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.35,0.08],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.8},
+  {"name":"SpringCoil","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.85},
+  {"name":"BasePlate","shape":"cube","pos":[-0.16,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.08],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.8},
+  {"name":"TopCap","shape":"cylinder","pos":[0.165,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.8},
+  {"name":"RubberBumperL","shape":"sphere","pos":[-0.185,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"RubberBumperR","shape":"sphere","pos":[0.185,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"MetalTag","shape":"cube","pos":[-0.05,0.03,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.9},
+  {"name":"RustSpot","shape":"sphere","pos":[0.08,0.02,-0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"EndCapRingL","shape":"cylinder","pos":[-0.16,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.008,0.09],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.8},
+  {"name":"EndCapRingR","shape":"cylinder","pos":[0.165,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.008,0.09],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.8}
+]}

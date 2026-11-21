@@ -1,0 +1,10 @@
+{"version": 1, "id": "OujaBoard", "baseHeight": 0.08, "name": "Ouja Board", "model": "gpt-oss:120b", "notes": "Ouija board ~0.60 m × 0.40 m, 2.5 cm thick wooden slab with dark border, white letter‑area surface and a round glassy planchette resting on top. Four tiny metal screws mark the corners.", "score": 6, "parts": [
+  {"name":"Border","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.62,0.03,0.42],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BaseBoard","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LetterArea","shape":"cube","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.004,0.36],"color":[0.92,0.92,0.92],"smooth":0.05,"metal":0.0},
+  {"name":"Planchette","shape":"cylinder","pos":[-0.12,0.0125,0.06],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.08],"color":[0.8,0.85,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"ScrewFL","shape":"sphere","pos":[0.28,0.009,0.18],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.75,0.78],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewFR","shape":"sphere","pos":[0.28,0.009,-0.18],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.75,0.78],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewBL","shape":"sphere","pos":[-0.28,0.009,0.18],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.75,0.78],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewBR","shape":"sphere","pos":[-0.28,0.009,-0.18],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.75,0.78],"smooth":0.3,"metal":1.0}
+]}

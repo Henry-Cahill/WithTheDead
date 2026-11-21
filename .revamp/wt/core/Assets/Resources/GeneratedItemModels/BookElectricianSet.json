@@ -1,0 +1,15 @@
+{"version": 1, "id": "BookElectricianSet", "baseHeight": 0.1005, "name": "Book Electrician Set", "model": "gpt-oss:120b", "notes": "Pile of three electrician manuals (hard‑cover books) with a bookmark, a screwdriver, and a rolled cable lying on the floor. Overall footprint ~0.6 m × 0.5 m, height ≈0.13 m.", "score": 6, "parts": [
+  {"name":"CoverA","shape":"cube","pos":[-0.0925,-0.028,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.2],"color":[0.42,0.41,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"PagesA","shape":"cube","pos":[-0.0925,-0.028,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.245,0.022,0.19],"color":[0.85,0.8,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"CoverB","shape":"cube","pos":[0.0075,-0.0255,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.22,0.022,0.18],"color":[0.44,0.43,0.36],"smooth":0.15,"metal":0.0},
+  {"name":"PagesB","shape":"cube","pos":[0.0075,-0.0255,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.215,0.019,0.165],"color":[0.85,0.8,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"CoverC","shape":"cube","pos":[0.0775,-0.0225,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.24,0.024,0.19],"color":[0.41,0.4,0.33],"smooth":0.15,"metal":0.0},
+  {"name":"PagesC","shape":"cube","pos":[0.0775,-0.0225,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.235,0.021,0.18],"color":[0.85,0.8,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"Bookmark","shape":"cube","pos":[0.0075,-0.015,0.0875],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.1],"color":[0.7,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"ScrewdriverHandle","shape":"cylinder","pos":[-0.1725,-0.0305,0.0175],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.1,0.1,0.12],"smooth":0.4,"metal":0.0},
+  {"name":"ScrewdriverBlade","shape":"cube","pos":[-0.1125,-0.028,0.0175],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"CableRoll","shape":"cylinder","pos":[0.1775,-0.0005,-0.1325],"rot":[0.0,0.0,90.0],"size":[0.08,0.15,0.08],"color":[0.25,0.25,0.3],"smooth":0.5,"metal":0.0},
+  {"name":"CableLabel","shape":"cube","pos":[0.1775,0.0395,-0.1325],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.04],"color":[0.7,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"NotebookCover","shape":"cube","pos":[-0.1425,-0.033,0.0675],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.28],"color":[0.45,0.43,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"NotebookPages","shape":"cube","pos":[-0.1425,-0.033,0.0675],"rot":[0.0,0.0,0.0],"size":[0.215,0.012,0.27],"color":[0.85,0.8,0.7],"smooth":0.05,"metal":0.0}
+]}

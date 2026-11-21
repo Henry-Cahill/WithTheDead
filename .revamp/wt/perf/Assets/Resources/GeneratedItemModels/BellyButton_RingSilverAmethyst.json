@@ -1,0 +1,8 @@
+{"version": 1, "id": "BellyButton_RingSilverAmethyst", "baseHeight": 0.0647, "name": "Belly Button Ring Silver Amethyst", "model": "gpt-oss:120b", "notes": "Belly‑button ring ~2.5 cm diameter silver hoop lying flat, 1.5 mm thick, with a small amethyst oval gem (≈6 × 8 mm) mounted on the front and a tiny clasp detail on one side.", "score": 7, "parts": [
+  {"name":"Hoop","shape":"cylinder","pos":[0.001,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.9,0.9,0.92],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.011,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.005],"color":[0.9,0.9,0.92],"smooth":0.6,"metal":1.0},
+  {"name":"Gem","shape":"sphere","pos":[0.001,0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.45,0.2,0.65],"smooth":0.4,"metal":0.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.01,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.9,0.9,0.92],"smooth":0.6,"metal":1.0},
+  {"name":"ShadowBase","shape":"cylinder","pos":[0.001,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"GemFacet","shape":"cube","pos":[0.001,0.0011,0.0],"rot":[15.0,0.0,0.0],"size":[0.002,0.002,0.003],"color":[0.6,0.4,0.75],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "SmallHandle", "baseHeight": 0.09, "name": "Small Handle", "model": "gpt-oss:120b", "notes": "Small handheld grip ~0.15 m long x 0.04 m diameter, lying on its side (X‑axis). Main steel shaft with a larger metal cap, rubber grip band around the middle, a tiny bolt and screw head, plus a couple of worn‑edge chips for detail.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0082,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0768,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.0082,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.05,0.008,0.05],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Bolt","shape":"cylinder","pos":[0.0518,0.0,0.0235],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.55,0.55,0.55],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewHead","shape":"sphere","pos":[0.0518,0.018,0.0235],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.55,0.55,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"WearChipL","shape":"cube","pos":[-0.0782,0.0,0.0185],"rot":[0.0,15.0,0.0],"size":[0.015,0.005,0.01],"color":[0.35,0.33,0.28],"smooth":0.1,"metal":0.0},
+  {"name":"WearChipR","shape":"cube","pos":[0.0618,0.0,-0.0215],"rot":[0.0,-12.0,0.0],"size":[0.015,0.005,0.01],"color":[0.35,0.33,0.28],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0818,0.0,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.004,0.03,0.06],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.0},
+  {"name":"BasePlate","shape":"cube","pos":[-0.0832,-0.015,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.006,0.03,0.06],"color":[0.55,0.53,0.5],"smooth":0.4,"metal":1.0}
+]}

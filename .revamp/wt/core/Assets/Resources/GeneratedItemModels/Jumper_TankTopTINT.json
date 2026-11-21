@@ -1,0 +1,10 @@
+{"version": 1, "id": "Jumper_TankTopTINT", "baseHeight": 0.0722, "name": "Jumper Tank Top TINT", "model": "gpt-oss:120b", "notes": "Flat‑lay jumper tank top, approx 0.45 m wide × 0.65 m long × 0.02 m thick. Main fabric panel, round neck opening on the +X side, thin hem band, side seam strips, front/back overlay panels and a small label tag.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.035,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.65],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.185,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.022,0.16],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.035,0.0098,-0.315],"rot":[0.0,0.0,0.0],"size":[0.46,0.004,0.02],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.258,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.62],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.188,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.62],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[-0.035,0.0098,0.15],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.32],"color":[0.5,0.45,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[-0.035,0.0098,-0.15],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.32],"color":[0.5,0.45,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.115,0.0112,-0.28],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.03],"color":[0.4,0.38,0.48],"smooth":0.05,"metal":0.0}
+]}

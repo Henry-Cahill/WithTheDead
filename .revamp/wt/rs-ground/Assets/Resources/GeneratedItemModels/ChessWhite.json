@@ -1,0 +1,9 @@
+{"version": 1, "id": "ChessWhite", "baseHeight": 0.0825, "name": "Chess White", "model": "gpt-oss:120b", "notes": "White Staunton‑style pawn (≈4 cm tall) lying on its side: squat rounded base, tapered shaft, small neck and a glossy spherical head. Main colour is the supplied tint; smooth plastic finish.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.006,0.022],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"BaseBevel","shape":"cylinder","pos":[0.0,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.019,0.003,0.019],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[0.0,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.018],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"ShaftBand","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.0025,0.02],"color":[0.45,0.44,0.38],"smooth":0.35,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.85,0.84,0.78],"smooth":0.6,"metal":0.0},
+  {"name":"HeadHighlight","shape":"sphere","pos":[0.0,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[1.0,1.0,1.0],"smooth":0.9,"metal":0.0}
+]}

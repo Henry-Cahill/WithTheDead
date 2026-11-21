@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_Padded_HuntingCamo", "baseHeight": 0.0875, "name": "Jacket Padded Hunting Camo", "model": "gpt-oss:120b", "notes": "Flat padded hunting jacket ~0.70 m long × 0.48 m torso width × 1.20 m total width (including sleeves), 4 cm thick, with collar, front zipper, two chest pockets, cuff bands and internal padding blocks.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.165,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.04,0.48],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.165,-0.0075,-0.415],"rot":[0.0,0.0,0.0],"size":[0.7,0.04,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.165,-0.0075,0.415],"rot":[0.0,0.0,0.0],"size":[0.7,0.04,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.165,0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.08],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontZip","shape":"cube","pos":[0.165,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.02],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.035,-0.0025,-0.12],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.1],"color":[0.48,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.365,-0.0025,-0.12],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.1],"color":[0.48,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.165,0.0025,-0.595],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.04],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.165,0.0025,0.595],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.04],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.165,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.48],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PaddingFront","shape":"cube","pos":[0.165,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.01,0.48],"color":[0.4,0.38,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"ShoulderPadL","shape":"cube","pos":[-0.135,-0.0025,-0.215],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.15],"color":[0.4,0.38,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"ShoulderPadR","shape":"cube","pos":[-0.135,-0.0025,0.215],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.15],"color":[0.4,0.38,0.45],"smooth":0.08,"metal":0.0}
+]}

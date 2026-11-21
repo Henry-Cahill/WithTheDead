@@ -1,0 +1,12 @@
+{"version": 1, "id": "Kneepad_Right_Sport", "baseHeight": 0.17, "name": "Kneepad Right Sport", "model": "gpt-oss:120b", "notes": "Sport kneepad (right‑leg) approx 0.22 m long × 0.18 m wide × 0.025 m thick. Main padded foam core, outer fabric shell, a thin Velcro strap on the back side and a small logo patch. Low‑poly silhouette readable from above.", "score": 6, "parts": [
+  {"name":"PadBody","shape":"cube","pos":[-0.0062,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"FoamCore","shape":"cube","pos":[-0.0062,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.02,0.17],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FabricTop","shape":"cube","pos":[-0.0062,0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.003,0.18],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"VelcroStrap","shape":"cube","pos":[-0.0062,0.0165,-0.07],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.015],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LogoPatch","shape":"cylinder","pos":[-0.0663,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[-0.0062,0.0145,0.09],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.004],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[-0.0062,0.0145,-0.09],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.004],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"SideStrapLoop","shape":"cylinder","pos":[0.1038,0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.025,0.02],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRoundingFront","shape":"cylinder","pos":[-0.0062,0.0,0.09],"rot":[90.0,0.0,0.0],"size":[0.22,0.018,0.22],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRoundingBack","shape":"cylinder","pos":[-0.0062,0.0,-0.09],"rot":[90.0,0.0,0.0],"size":[0.22,0.018,0.22],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0}
+]}

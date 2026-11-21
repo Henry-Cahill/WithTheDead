@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cudgel_Spike", "baseHeight": 0.26, "name": "Cudgel Spike", "model": "gpt-oss:120b", "notes": "Cudgel‑Spike ~1.5 m long, wooden club on its side (X axis) with a metal spike protruding forward (+Z). Wood shaft, grip wrap and grain detail, metal band near centre, thick wood end‑cap, small steel guard around the spike base.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.11,0.0,-0.02],"rot":[0.0,0.0,90.0],"size":[0.1,1.2,0.1],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.61,0.02,-0.02],"rot":[0.0,0.0,90.0],"size":[0.14,0.2,0.14],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[-0.11,0.01,-0.02],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"WoodRing","shape":"cylinder","pos":[0.49,0.01,-0.02],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"EndCap","shape":"cube","pos":[0.59,0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.12],"color":[0.4,0.27,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"SpikeShaft","shape":"cylinder","pos":[0.69,-0.04,-0.02],"rot":[90.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeGuard","shape":"cube","pos":[0.67,-0.04,-0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[0.69,-0.04,0.075],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.7,"metal":1.0},
+  {"name":"GrainL","shape":"cube","pos":[-0.31,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.4,0.03],"color":[0.35,0.22,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"GrainR","shape":"cube","pos":[-0.31,0.0,-0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.4,0.03],"color":[0.35,0.22,0.15],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Ring_Left_MiddleFinger_GoldDiamond", "baseHeight": 0.0657, "name": "Ring Left Middle Finger Gold Diamond", "model": "gpt-oss:120b", "notes": "Gold ring ~2 cm outer diameter, 4 mm thick band with a 5‑mm diamond set by four prongs and a tiny engraved logo. Lying flat on the floor, band centered at origin.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.006,0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.9,0.92,0.95],"smooth":0.8,"metal":0.0},
+  {"name":"ProngFL","shape":"cylinder","pos":[0.005,0.0022,0.001],"rot":[0.0,0.0,0.0],"size":[0.002,0.005,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"ProngFR","shape":"cylinder","pos":[0.005,0.0022,-0.001],"rot":[0.0,0.0,0.0],"size":[0.002,0.005,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"ProngBL","shape":"cylinder","pos":[0.007,0.0022,0.001],"rot":[0.0,0.0,0.0],"size":[0.002,0.005,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"ProngBR","shape":"cylinder","pos":[0.007,0.0022,-0.001],"rot":[0.0,0.0,0.0],"size":[0.002,0.005,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"Engrave","shape":"cube","pos":[-0.005,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.004],"color":[0.48,0.46,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.004],"color":[0.63,0.61,0.53],"smooth":0.15,"metal":1.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.0046,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.004],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":1.0}
+]}

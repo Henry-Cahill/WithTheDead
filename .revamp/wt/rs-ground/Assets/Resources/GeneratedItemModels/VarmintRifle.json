@@ -1,0 +1,11 @@
+{"version": 1, "id": "VarmintRifle", "baseHeight": 0.1, "name": "Varmint Rifle", "model": "gpt-oss:120b", "notes": "Varmint rifle about 1 m long, barrel (0.5 m) lies on its side along +X. Dark‑gray metal parts with a brown wooden stock and polymer grip. Includes barrel, wood stock, polymer grip, trigger guard, magazine, bolt, front and rear sights.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.1713,-0.025,0.0167],"rot":[0.0,0.0,90.0],"size":[0.03,0.5,0.03],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"StockBody","shape":"cube","pos":[-0.2037,0.0,0.0167],"rot":[0.0,0.0,0.0],"size":[0.25,0.08,0.12],"color":[0.42,0.31,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"StockButt","shape":"cube","pos":[-0.3537,0.0,-0.0133],"rot":[0.0,20.0,0.0],"size":[0.1,0.08,0.12],"color":[0.42,0.31,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cube","pos":[0.1213,-0.01,0.0167],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.12],"color":[0.24,0.25,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.1013,-0.03,0.0167],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.12],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"Magazine","shape":"cube","pos":[0.0213,-0.025,0.0167],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.08],"color":[0.3,0.32,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"Bolt","shape":"cube","pos":[0.1713,-0.03,0.0167],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.1],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"FrontSight","shape":"cube","pos":[0.3913,-0.025,0.0667],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.04],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"RearSight","shape":"cube","pos":[-0.3087,-0.025,0.0667],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.04],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0}
+]}

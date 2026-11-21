@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_LeatherBlack", "baseHeight": 0.085, "name": "Jacket Leather Black", "model": "gpt-oss:120b", "notes": "Flat leather jacket about 0.55 m wide × 0.80 m tall, with sleeves extending ~0.35 m each side (total width ≈1.25 m). Main torso panel plus left/right sleeves, collar band, front zipper, two front pockets, cuffs at sleeve ends and a few seam strips for detail.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.8],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.45,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.45,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.015,0.365],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.07],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"Zipper","shape":"cube","pos":[0.0,0.0025,0.395],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.0,0.35],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0,0.35],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.635,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.6],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.635,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.6],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"ShoulderSeamL","shape":"cube","pos":[-0.45,0.0025,0.25],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.01],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"ShoulderSeamR","shape":"cube","pos":[0.45,0.0025,0.25],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.01],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.2725,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.8],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.2725,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.8],"color":[0.468,0.425,0.51],"smooth":0.08,"metal":0.0}
+]}

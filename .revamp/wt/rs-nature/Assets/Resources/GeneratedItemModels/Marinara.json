@@ -1,0 +1,11 @@
+{"version": 1, "id": "Marinara", "baseHeight": 0.1635, "name": "Marinara", "model": "gpt-oss:120b", "notes": "Marinara sauce jar about 0.14 m across and 0.18 m tall: clear glass body, orange‑brown sauce inside, metal screw‑on lid with rim and seal, simple white label with brown trim.", "score": 6, "parts": [
+  {"name":"GlassBody","shape":"cylinder","pos":[0.0,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.18,0.14],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Sauce","shape":"cylinder","pos":[0.0,-0.0185,0.0],"rot":[0.0,0.0,0.0],"size":[0.128,0.17,0.128],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LidBase","shape":"cylinder","pos":[0.0,0.0865,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.12],"color":[0.75,0.73,0.71],"smooth":0.45,"metal":0.85},
+  {"name":"LidRim","shape":"cylinder","pos":[0.0,0.0955,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.006,0.14],"color":[0.68,0.66,0.64],"smooth":0.45,"metal":0.85},
+  {"name":"Seal","shape":"cylinder","pos":[0.0,0.1015,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.004,0.11],"color":[0.6,0.58,0.56],"smooth":0.45,"metal":0.85},
+  {"name":"LabelBack","shape":"cylinder","pos":[0.0,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.132,0.002,0.132],"color":[0.95,0.95,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0177,0.0],"rot":[0.0,0.0,0.0],"size":[0.134,0.002,0.134],"color":[0.45,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,0.0152,0.0],"rot":[0.0,0.0,0.0],"size":[0.134,0.002,0.134],"color":[0.45,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.08],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0}
+]}

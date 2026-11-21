@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_PartyHat_TINT", "baseHeight": 0.135, "name": "Hat Party Hat TINT", "model": "gpt-oss:120b", "notes": "Party hat about 0.25 m long with a 0.15 m diameter brim, laid on its side (cone axis along X). Main purple tint 0.55‑0.50‑0.60, thin decorative ribbon near the base and a pointed tip.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[-0.0855,-0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.15],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"ConeBody","shape":"cylinder","pos":[0.0345,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.15,0.24,0.15],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"Ribbon","shape":"cylinder","pos":[-0.0255,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.015,0.12],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.1545,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"InnerSeam","shape":"cylinder","pos":[-0.0855,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.002,0.152],"color":[0.4,0.38,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[-0.0855,-0.0605,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.002,0.158],"color":[0.3,0.28,0.35],"smooth":0.1,"metal":0.0}
+]}

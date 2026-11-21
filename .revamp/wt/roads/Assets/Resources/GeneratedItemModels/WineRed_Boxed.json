@@ -1,0 +1,11 @@
+{"version": 1, "id": "WineRed_Boxed", "baseHeight": 0.124, "name": "Wine Red Boxed", "model": "gpt-oss:120b", "notes": "Wine‑red boxed food, standing upright (≈0.24 m × 0.12 m × 0.18 m). Cardboard box with thin walls, hinged lid, front label and a lump of packed food inside.", "score": 7, "parts": [
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.008,0.164],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.116,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.12,0.164],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.116,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.12,0.164],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Front","shape":"cube","pos":[0.0,-0.004,0.086],"rot":[0.0,0.0,0.0],"size":[0.224,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Back","shape":"cube","pos":[0.0,-0.004,-0.086],"rot":[0.0,0.0,0.0],"size":[0.224,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.008,0.164],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.006,0.0775],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.002],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"FoodChunk","shape":"sphere","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.6,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"TopFrontStrip","shape":"cube","pos":[0.0,0.058,0.086],"rot":[0.0,0.0,0.0],"size":[0.224,0.004,0.008],"color":[0.7,0.6,0.4],"smooth":0.15,"metal":0.0}
+]}

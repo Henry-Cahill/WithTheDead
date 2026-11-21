@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cuirass_MetalScrap", "baseHeight": 0.1156, "name": "Cuirass Metal Scrap", "model": "gpt-oss:120b", "notes": "Irregular scrap from a cuirass: one main plate with several bent pieces, rods and chunks overlapping, plus a few rust‑stained patches and rivet heads. Approximate footprint ~0.35 m × 0.25 m, overall thickness ~2 cm.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0068,-0.0015,0.0007],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.2],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"BentPlate","shape":"cube","pos":[-0.0432,-0.0,-0.0293],"rot":[10.0,0.0,20.0],"size":[0.22,0.012,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"TwistedRod","shape":"cylinder","pos":[-0.1132,0.001,0.0407],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"ScrapChunk1","shape":"cube","pos":[0.1268,-0.004,0.0707],"rot":[-5.0,15.0,0.0],"size":[0.08,0.01,0.06],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"ScrapChunk2","shape":"sphere","pos":[-0.1232,-0.001,-0.0793],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"RivetHeadL","shape":"cylinder","pos":[0.0268,0.0035,0.0107],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"RivetHeadR","shape":"cylinder","pos":[-0.0232,0.0035,-0.0193],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"RustPatch","shape":"cube","pos":[0.0568,0.006,-0.0193],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.08],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFlange","shape":"cube","pos":[0.0068,0.0055,0.1057],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"HookPiece","shape":"cylinder","pos":[-0.0932,0.002,-0.0593],"rot":[90.0,0.0,45.0],"size":[0.02,0.03,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0}
+]}

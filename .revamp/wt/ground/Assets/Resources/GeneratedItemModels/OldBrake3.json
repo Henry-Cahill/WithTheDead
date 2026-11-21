@@ -1,0 +1,11 @@
+{"version": 1, "id": "OldBrake3", "baseHeight": 0.0755, "name": "Old Brake3", "model": "gpt-oss:120b", "notes": "Old brake disc ~0.28 m diameter × 0.02 m thick, rust‑stained steel with a central hub and four bolt heads around the hub. Lying flat on the floor (y=0).", "score": 7, "parts": [
+  {"name":"DiscBody","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"CentralHub","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.022,0.07],"color":[0.58,0.55,0.48],"smooth":0.5,"metal":0.9},
+  {"name":"BoltHeadFL","shape":"cylinder","pos":[0.12,0.0025,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.9},
+  {"name":"BoltHeadFR","shape":"cylinder","pos":[-0.12,0.0025,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.9},
+  {"name":"BoltHeadRL","shape":"cylinder","pos":[0.12,0.0025,-0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.9},
+  {"name":"BoltHeadRR","shape":"cylinder","pos":[-0.12,0.0025,-0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.9},
+  {"name":"RustPatch1","shape":"sphere","pos":[-0.06,0.0055,0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.72,0.38,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"RustPatch2","shape":"sphere","pos":[0.05,0.0055,-0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.018,0.06],"color":[0.68,0.35,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"RustPatch3","shape":"sphere","pos":[0.0,0.0055,0.09],"rot":[0.0,0.0,0.0],"size":[0.07,0.019,0.07],"color":[0.7,0.4,0.21],"smooth":0.3,"metal":0.0}
+]}

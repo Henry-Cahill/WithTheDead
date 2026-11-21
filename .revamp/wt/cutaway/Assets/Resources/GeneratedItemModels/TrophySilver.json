@@ -1,0 +1,12 @@
+{"version": 1, "id": "TrophySilver", "baseHeight": 0.1975, "name": "Trophy Silver", "model": "gpt-oss:120b", "notes": "Silver trophy about 0.30 m tall, 0.14 × 0.10 m base. Consists of a flat base plate, stepped pedestal, slender column, shallow cup with rim, a small ornamental sphere and a thin rod‑like figure on top, plus a engraved label on the front of the pedestal.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.1275,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Pedestal","shape":"cube","pos":[0.0,-0.0875,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.06,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Column","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.08,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Cup","shape":"cylinder","pos":[0.0,0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.03,0.09],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CupRim","shape":"cylinder","pos":[0.0,0.0545,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.004,0.095],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"OrnamentSphere","shape":"sphere","pos":[0.0,0.0775,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"OrnamentRod","shape":"cylinder","pos":[0.0,0.1175,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0875,0.0365],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.002],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"BaseEdge","shape":"cube","pos":[0.0,-0.1165,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.1],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"PedestalEdge","shape":"cube","pos":[0.0,-0.0555,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.07],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0}
+]}

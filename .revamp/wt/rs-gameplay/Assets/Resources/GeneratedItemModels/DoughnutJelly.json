@@ -1,0 +1,13 @@
+{"version": 1, "id": "DoughnutJelly", "baseHeight": 0.08, "name": "Doughnut Jelly", "model": "gpt-oss:120b", "notes": "Jelly‑filled doughnut in a thin cardboard wrapper (≈0.13 m × 0.09 m × 0.04 m). The wrapper is an open box, the donut sits on its bottom: soft dough cylinder with a glossy jelly topping and a few glaze drips.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.04,0.09],"color":[0.6,0.5,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"WrapperBottom","shape":"cube","pos":[0.0,-0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.09],"color":[0.55,0.45,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"DoughBase","shape":"cylinder","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.09],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"JellyTop","shape":"cylinder","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.9,0.2,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"GlazeDrop1","shape":"sphere","pos":[-0.02,0.008,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.2,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"GlazeDrop2","shape":"sphere","pos":[0.018,0.007,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.9,0.2,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"GlazeDrop3","shape":"sphere","pos":[0.0,0.009,0.025],"rot":[0.0,0.0,0.0],"size":[0.011,0.011,0.011],"color":[0.9,0.2,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"WrapperSideFront","shape":"cube","pos":[0.0,0.0,-0.0455],"rot":[0.0,0.0,0.0],"size":[0.13,0.04,0.002],"color":[0.6,0.5,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"WrapperSideBack","shape":"cube","pos":[0.0,0.0,0.0455],"rot":[0.0,0.0,0.0],"size":[0.13,0.04,0.002],"color":[0.6,0.5,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"WrapperSideLeft","shape":"cube","pos":[-0.0645,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.09],"color":[0.6,0.5,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"WrapperSideRight","shape":"cube","pos":[0.0645,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.09],"color":[0.6,0.5,0.4],"smooth":0.15,"metal":0.0}
+]}

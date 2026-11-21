@@ -1,0 +1,15 @@
+{"version": 1, "id": "Specimen_Octopus", "baseHeight": 0.12, "name": "Specimen Octopus", "model": "gpt-oss:120b", "notes": "Flat octopus specimen ~0.45 m span: soft mantle ellipsoid with eight fleshy arms radiating outward, each arm dotted with two small suction‑cup spheres for texture.", "score": 6, "parts": [
+  {"name":"Mantle","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.22],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"ArmXPos","shape":"cylinder","pos":[0.285,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"ArmXNeg","shape":"cylinder","pos":[-0.285,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"ArmZPos","shape":"cylinder","pos":[0.0,-0.04,0.285],"rot":[90.0,0.0,0.0],"size":[0.04,0.35,0.04],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"ArmZNeg","shape":"cylinder","pos":[0.0,-0.04,-0.285],"rot":[90.0,0.0,0.0],"size":[0.04,0.35,0.04],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SuctionXPosMid","shape":"sphere","pos":[0.3725,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SuctionXPosTip","shape":"sphere","pos":[0.46,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SuctionXNegMid","shape":"sphere","pos":[-0.3725,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SuctionXNegTip","shape":"sphere","pos":[-0.46,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SuctionZPosMid","shape":"sphere","pos":[0.0,-0.025,0.3725],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SuctionZPosTip","shape":"sphere","pos":[0.0,-0.025,0.46],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SuctionZNegMid","shape":"sphere","pos":[0.0,-0.025,-0.3725],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SuctionZNegTip","shape":"sphere","pos":[0.0,-0.025,-0.46],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0}
+]}

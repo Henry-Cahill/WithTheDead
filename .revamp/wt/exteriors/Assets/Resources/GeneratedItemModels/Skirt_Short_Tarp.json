@@ -1,0 +1,13 @@
+{"version": 1, "id": "Skirt_Short_Tarp", "baseHeight": 0.0893, "name": "Skirt Short Tarp", "model": "gpt-oss:120b", "notes": "Short tarp skirt laid flat: main fabric panel 0.60 m wide × 0.30 m long × 0.02 m thick; flared side panels (0.10 m × 0.15 m) extend outward at the bottom edges, a waist‑band strip across the top, a hem strip across the bottom, small rope loops for ties, and thin seam lines along all edges for detail.", "score": 6, "parts": [
+  {"name":"FabricMain","shape":"cube","pos":[0.0,-0.0107,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FlareL","shape":"cube","pos":[-0.35,-0.0107,-0.075],"rot":[0.0,0.0,10.0],"size":[0.1,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FlareR","shape":"cube","pos":[0.35,-0.0107,-0.075],"rot":[0.0,0.0,-10.0],"size":[0.1,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBandTop","shape":"cube","pos":[0.0,-0.0107,0.125],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.05],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemStrip","shape":"cube","pos":[0.0,-0.0107,-0.125],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.05],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoopL","shape":"cylinder","pos":[-0.28,0.0093,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoopR","shape":"cylinder","pos":[0.28,0.0093,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,-0.0087,0.145],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,-0.0087,-0.145],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.31,-0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.31,-0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

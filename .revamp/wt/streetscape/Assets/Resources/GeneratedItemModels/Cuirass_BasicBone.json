@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cuirass_BasicBone", "baseHeight": 0.073, "name": "Cuirass Basic Bone", "model": "gpt-oss:120b", "notes": "Basic bone cuirass lying flat on the floor: a rectangular plate (~0.50 m × 0.68 m) about 2 cm thick, rounded corners, two leather straps crossing front, and four small rivet studs at each corner.", "score": 7, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.68],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CornerFL","shape":"cylinder","pos":[-0.225,-0.003,-0.315],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CornerFR","shape":"cylinder","pos":[0.225,-0.003,-0.315],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[-0.225,-0.003,0.315],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[0.225,-0.003,0.315],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"StrapH","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.006,0.02],"color":[0.2,0.12,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"StrapV","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.68],"color":[0.2,0.12,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.225,0.008,-0.315],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.1,0.1,0.1],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.225,0.008,-0.315],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.1,0.1,0.1],"smooth":0.4,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.225,0.008,0.315],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.1,0.1,0.1],"smooth":0.4,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.225,0.008,0.315],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.1,0.1,0.1],"smooth":0.4,"metal":1.0}
+]}

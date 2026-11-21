@@ -1,0 +1,14 @@
+{"version": 1, "id": "CauliflowerSeed", "baseHeight": 0.068, "name": "Cauliflower Seed", "model": "gpt-oss:120b", "notes": "Small loose pile of cauliflower seeds (~3 cm across) lying on the floor; a thin paper packet half‑open sits beside the mound. Main colour is the seed tint (0.6,0.58,0.5) with a light‑brown paper wrap.", "score": 6, "parts": [
+  {"name":"SeedPileBase","shape":"sphere","pos":[-0.009,-0.0005,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedClump1","shape":"sphere","pos":[-0.017,0.004,0.0017],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.015],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeedClump2","shape":"sphere","pos":[0.001,0.003,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.012,0.005,0.012],"color":[0.6,0.57,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedClump3","shape":"sphere","pos":[-0.015,0.001,-0.0143],"rot":[0.0,0.0,0.0],"size":[0.011,0.004,0.011],"color":[0.59,0.56,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"SeedClump4","shape":"sphere","pos":[-0.001,0.005,0.0047],"rot":[0.0,0.0,0.0],"size":[0.014,0.006,0.014],"color":[0.61,0.59,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"SeedClump5","shape":"sphere","pos":[-0.018,0.0,0.0077],"rot":[0.0,0.0,0.0],"size":[0.01,0.0035,0.01],"color":[0.57,0.54,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"PaperWrap","shape":"cube","pos":[0.009,-0.0055,0.0107],"rot":[0.0,15.0,0.0],"size":[0.03,0.005,0.02],"color":[0.78,0.71,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"WrapFlap","shape":"cube","pos":[0.023,-0.0035,0.0137],"rot":[0.0,0.0,0.0],"size":[0.012,0.003,0.015],"color":[0.78,0.71,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"WrapEdge","shape":"cube","pos":[0.009,-0.0065,-0.0143],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.004],"color":[0.65,0.58,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"SeedDust","shape":"sphere","pos":[0.006,-0.002,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedDust2","shape":"sphere","pos":[-0.021,-0.003,0.0067],"rot":[0.0,0.0,0.0],"size":[0.007,0.0025,0.007],"color":[0.59,0.56,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"SeedDust3","shape":"sphere","pos":[-0.005,0.001,-0.0123],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.006],"color":[0.61,0.59,0.51],"smooth":0.05,"metal":0.0}
+]}

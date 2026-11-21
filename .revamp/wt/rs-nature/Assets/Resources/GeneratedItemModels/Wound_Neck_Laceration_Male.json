@@ -1,0 +1,14 @@
+{"version": 1, "id": "Wound_Neck_Laceration_Male", "baseHeight": 0.09, "name": "Wound Neck Laceration Male", "model": "gpt-oss:120b", "notes": "Irregular flesh‑blood clot about 0.15 m long × 0.08 m wide × 0.03 m thick, lying flat on the floor with ragged edges, a few fresh blood drops and drips, plus darker dried patches for visual detail.", "score": 6, "parts": [
+  {"name":"MainClot","shape":"sphere","pos":[0.0,-0.013,-0.0053],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRagL","shape":"cube","pos":[0.07,-0.0155,-0.0053],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRagR","shape":"cube","pos":[-0.07,-0.0155,-0.0053],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodDrop1","shape":"sphere","pos":[0.04,-0.003,0.0247],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.12,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"BloodDrop2","shape":"sphere","pos":[-0.03,-0.001,-0.0403],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.68,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"DripCyl1","shape":"cylinder","pos":[0.06,-0.003,-0.0253],"rot":[0.0,0.0,0.0],"size":[0.01,0.05,0.01],"color":[0.7,0.12,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"DripCyl2","shape":"cylinder","pos":[-0.045,0.0,0.0347],"rot":[0.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.68,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"DarkPatch","shape":"sphere","pos":[-0.02,-0.013,0.0197],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.4,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Splatter1","shape":"cube","pos":[-0.05,-0.023,0.0347],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.65,0.13,0.13],"smooth":0.5,"metal":0.0},
+  {"name":"Splatter2","shape":"cube","pos":[0.03,-0.024,-0.0503],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.66,0.14,0.14],"smooth":0.5,"metal":0.0},
+  {"name":"ClotRidge","shape":"cube","pos":[0.0,0.002,-0.0053],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.06],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"VeinLine","shape":"cube","pos":[0.0,0.004,-0.0053],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.004],"color":[0.7,0.1,0.1],"smooth":0.6,"metal":0.0}
+]}

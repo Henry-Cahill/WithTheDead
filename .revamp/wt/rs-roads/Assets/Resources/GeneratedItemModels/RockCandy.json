@@ -1,0 +1,10 @@
+{"version": 1, "id": "RockCandy", "baseHeight": 0.084, "name": "Rock Candy", "model": "gpt-oss:120b", "notes": "Small rectangular candy box ~12 cm × 8 cm × 4 cm, lid with thin front label; inside a handful of amber‑tinted rock‑candy crystals (spheres).", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.004,-0.0198],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.62,0.53,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.02,-0.0198],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.082],"color":[0.71,0.62,0.51],"smooth":0.2,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.001,0.0218],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.078],"color":[0.92,0.92,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"CandyA","shape":"sphere","pos":[-0.025,-0.012,-0.0348],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CandyB","shape":"sphere","pos":[0.02,-0.012,-0.0097],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CandyC","shape":"sphere","pos":[-0.03,-0.012,0.0003],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CandyD","shape":"sphere","pos":[0.04,-0.012,-0.0447],"rot":[0.0,0.0,0.0],"size":[0.019,0.019,0.019],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CandyE","shape":"sphere","pos":[0.0,-0.012,-0.0198],"rot":[0.0,0.0,0.0],"size":[0.021,0.021,0.021],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

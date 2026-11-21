@@ -1,0 +1,16 @@
+{"version": 1, "id": "Suit_JacketTINT", "baseHeight": 0.0725, "name": "Suit Jacket TINT", "model": "gpt-oss:120b", "notes": "Flat suit jacket ~0.55 m wide × 0.70 m tall, 2‑3 cm thick. Main fabric tinted (0.6,0.58,0.5) with dark grey metal buttons and simple seams, sleeves spread out to the sides.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.7],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.0,0.33],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LapelLeft","shape":"cube","pos":[-0.335,0.0,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LapelRight","shape":"cube","pos":[0.335,0.0,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.575,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.575,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.905,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.18],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.905,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.18],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.0,0.31],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0,0.31],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.0,0.0,0.2],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0,0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,0.0,-0.33],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

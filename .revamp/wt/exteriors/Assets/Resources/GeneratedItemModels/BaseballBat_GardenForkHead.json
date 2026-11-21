@@ -1,0 +1,8 @@
+{"version": 1, "id": "BaseballBat_GardenForkHead", "baseHeight": 0.1025, "name": "Baseball Bat Garden Fork Head", "model": "gpt-oss:120b", "notes": "Baseball bat‑style weapon ~0.80 m long lying on its side (X axis). Wooden tapered handle, rubber grip, steel barrel ending in a small metal plate with two fork prongs pointing forward (+Z). Overall silhouette shows the fork head clearly.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.074,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.65,0.06],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.329,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.311,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ForkPlate","shape":"cube","pos":[0.381,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngL","shape":"cylinder","pos":[0.391,0.0025,0.035],"rot":[90.0,0.0,0.0],"size":[0.016,0.12,0.016],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngR","shape":"cylinder","pos":[0.391,0.0025,-0.035],"rot":[90.0,0.0,0.0],"size":[0.016,0.12,0.016],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "CeramicCrucible", "baseHeight": 0.1625, "name": "Ceramic Crucible", "model": "gpt-oss:120b", "notes": "Ceramic crucible ~0.15 m diameter × 0.20 m tall, thick walls (~1 cm), open mouth with a thin rim and a small side handle. The body is a hollow cylinder of ceramic (tint 0.6, 0.58, 0.5).", "score": 7, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[-0.025,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.025,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.18,0.13],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.025,0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.005,0.16],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BasePlate","shape":"cylinder","pos":[-0.025,-0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SideHandle","shape":"cylinder","pos":[0.065,0.0275,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.08,0.03],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[-0.025,0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.002,0.158],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0}
+]}

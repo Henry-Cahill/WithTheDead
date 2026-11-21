@@ -1,0 +1,12 @@
+{"version": 1, "id": "Ring_Left_MiddleFinger_Gold", "baseHeight": 0.073, "name": "Ring Left Middle Finger Gold", "model": "gpt-oss:120b", "notes": "Gold ring for the left middle finger, lying flat on its side: a thin polished gold band (≈22 mm Ø × 4 mm thick) with a subtle raised engraving on the top surface and beveled edges for visual depth.", "score": 6, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.004,0.022],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Engrave","shape":"cube","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.006],"color":[0.38,0.35,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"BevelFront","shape":"cube","pos":[0.0,0.0015,0.011],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BevelBack","shape":"cube","pos":[0.0,0.0015,-0.011],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BevelSideL","shape":"cube","pos":[-0.011,0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"BevelSideR","shape":"cube","pos":[0.011,0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[90.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[90.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"SideRimL","shape":"cylinder","pos":[-0.011,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.004,0.022,0.004],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"SideRimR","shape":"cylinder","pos":[0.011,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.004,0.022,0.004],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0}
+]}

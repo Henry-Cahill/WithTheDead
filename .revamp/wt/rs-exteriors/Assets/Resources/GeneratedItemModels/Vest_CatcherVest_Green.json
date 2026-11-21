@@ -1,0 +1,14 @@
+{"version": 1, "id": "Vest_CatcherVest_Green", "baseHeight": 0.0737, "name": "Vest Catcher Vest Green", "model": "gpt-oss:120b", "notes": "Flat catcher‑vest, approx 0.55 m wide × 0.40 m tall × 0.025 m thick, lying on its back. Main torso panel with side panels, a collar band, stitched seams, a row of front buttons and small strap loops at the shoulders.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.285,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.285,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.0,0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.2],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamMid","shape":"cube","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.35],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamShoulder","shape":"cube","pos":[0.0,0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.35],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.0,0.0042,0.14],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0,0.0042,0.08],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0,0.0042,0.02],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.285,0.0042,0.15],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.285,0.0042,0.15],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Patch","shape":"cube","pos":[0.0,0.0113,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0}
+]}

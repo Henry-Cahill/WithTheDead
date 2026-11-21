@@ -1,0 +1,8 @@
+{"version": 1, "id": "HiHis", "baseHeight": 0.0725, "name": "Hi His", "model": "gpt-oss:120b", "notes": "HiHis snack pack ~0.16 m long × 0.08 m wide × 0.025 m thick, lying flat on the floor. Main cardboard body (tint 0.75,0.68,0.45), thin shiny foil top, printed label with darker brown trim.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.025,0.08],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FoilTop","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.08],"color":[0.92,0.88,0.78],"smooth":0.4,"metal":0.2},
+  {"name":"Label","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.06],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"TrimTop","shape":"cube","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.006],"color":[0.3,0.22,0.12],"smooth":0.12,"metal":0.0},
+  {"name":"TrimBottom","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.006],"color":[0.3,0.22,0.12],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.025,0.002],"color":[0.65,0.58,0.4],"smooth":0.2,"metal":0.0}
+]}

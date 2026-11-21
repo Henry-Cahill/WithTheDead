@@ -1,0 +1,8 @@
+{"version": 1, "id": "FurTuft_White", "baseHeight": 0.1075, "name": "Fur Tuft White", "model": "gpt-oss:120b", "notes": "Small white‑fur tuft (~0.1 m wide) lying on the floor: central soft ellipsoid with several fluffy off‑shoots to give a recognizable, puffy silhouette.", "score": 7, "parts": [
+  {"name":"Base","shape":"sphere","pos":[-0.0005,-0.0125,0.002],"rot":[0.0,0.0,0.0],"size":[0.09,0.07,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffR","shape":"sphere","pos":[0.0445,0.0125,0.002],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffL","shape":"sphere","pos":[-0.0455,0.0105,0.002],"rot":[0.0,0.0,0.0],"size":[0.028,0.038,0.022],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffF","shape":"sphere","pos":[-0.0005,0.0225,0.042],"rot":[0.0,0.0,0.0],"size":[0.025,0.035,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffB","shape":"sphere","pos":[-0.0005,0.0175,-0.043],"rot":[0.0,0.0,0.0],"size":[0.027,0.036,0.028],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffTop","shape":"sphere","pos":[0.0295,0.0325,0.037],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

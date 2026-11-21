@@ -1,0 +1,13 @@
+{"version": 1, "id": "Sapling", "baseHeight": 0.3575, "name": "Sapling", "model": "gpt-oss:120b", "notes": "Sapling club ~1.6 m long, wooden brown‑grey trunk (0.07 m dia × 1.4 m) lying on its side with a leafy top. Small bark strips and a knot add texture; an extra root stub caps the rear end. Leaves are green ellipsoids.", "score": 6, "parts": [
+  {"name":"Trunk","shape":"cylinder","pos":[-0.1125,-0.2575,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.07,1.4,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"RootStub","shape":"cylinder","pos":[-0.8875,-0.2575,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.08,0.15,0.08],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[-0.3125,-0.2175,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.5,0.45,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"FoliageMain","shape":"sphere","pos":[0.7875,-0.0325,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.35,0.45,0.35],"color":[0.4,0.7,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LeafCluster1","shape":"sphere","pos":[0.8375,0.1575,0.0875],"rot":[0.0,0.0,0.0],"size":[0.15,0.2,0.15],"color":[0.38,0.68,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"LeafCluster2","shape":"sphere","pos":[0.7375,0.2075,-0.1325],"rot":[0.0,0.0,0.0],"size":[0.13,0.18,0.13],"color":[0.38,0.68,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"LeafCluster3","shape":"sphere","pos":[0.6675,0.0875,0.1375],"rot":[0.0,0.0,0.0],"size":[0.12,0.16,0.12],"color":[0.38,0.68,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"BarkStrip1","shape":"cube","pos":[-0.3125,-0.25,0.0175],"rot":[0.0,0.0,0.0],"size":[0.4,0.015,0.02],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BarkStrip2","shape":"cube","pos":[0.1875,-0.25,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.4,0.015,0.02],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BarkStrip3","shape":"cube","pos":[0.4875,-0.25,0.0075],"rot":[0.0,0.0,0.0],"size":[0.2,0.012,0.018],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BarkStrip4","shape":"cube","pos":[-0.6125,-0.25,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.015],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0}
+]}

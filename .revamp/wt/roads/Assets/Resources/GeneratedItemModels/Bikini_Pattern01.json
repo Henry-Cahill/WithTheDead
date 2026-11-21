@@ -1,0 +1,9 @@
+{"version": 1, "id": "Bikini_Pattern01", "baseHeight": 0.0725, "name": "Bikini Pattern01", "model": "gpt-oss:120b", "notes": "Folded bikini pattern sheet about 0.45 m wide × 0.35 m long, folded in half (≈0.02 m thick) with a visible centre crease and frayed edges; colour is the given tint.", "score": 7, "parts": [
+  {"name":"SheetBase","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterFold","shape":"cube","pos":[0.0,0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.002,0.35],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFrayTop","shape":"cube","pos":[0.0,0.0085,0.175],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.02],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFrayBottom","shape":"cube","pos":[0.0,0.0085,-0.175],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.02],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFrayLeft","shape":"cube","pos":[-0.225,0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.35],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFrayRight","shape":"cube","pos":[0.225,0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.35],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.18,0.0105,0.14],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.02],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0}
+]}

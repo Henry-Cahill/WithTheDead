@@ -1,0 +1,8 @@
+{"version": 1, "id": "FrogMeat", "baseHeight": 0.1215, "name": "Frog Meat", "model": "gpt-oss:120b", "notes": "Small metal tin 0.07 m diameter × 0.12 m tall containing a few frog‑meat pieces (tint 0.75,0.68,0.45). The tin has a thin lid, a simple green label and three meat ellipsoids packed near the bottom.", "score": 6, "parts": [
+  {"name":"CanBody","shape":"cylinder","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.72,0.73,0.78],"smooth":0.55,"metal":0.9},
+  {"name":"CanLid","shape":"cylinder","pos":[0.0,0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.008,0.068],"color":[0.68,0.69,0.73],"smooth":0.55,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[0.0,0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.069,0.004,0.069],"color":[0.15,0.45,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Meat1","shape":"sphere","pos":[-0.015,-0.0265,0.01],"rot":[0.0,0.0,0.0],"size":[0.022,0.025,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Meat2","shape":"sphere","pos":[0.01,-0.0295,-0.012],"rot":[0.0,0.0,0.0],"size":[0.019,0.023,0.016],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Meat3","shape":"sphere","pos":[-0.008,-0.0335,-0.015],"rot":[0.0,0.0,0.0],"size":[0.021,0.024,0.017],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

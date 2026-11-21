@@ -1,0 +1,14 @@
+{"version": 1, "id": "MysteryCan_Box", "baseHeight": 0.1415, "name": "Mystery Can Box", "model": "gpt-oss:120b", "notes": "Upright cardboard Mystery Can Box about 0.30 m wide × 0.20 m deep × 0.15 m tall, with a thin lid, edge seams, front label and tape strip. Three tin cans (≈7 cm dia × 12 cm long) peek out of the front side.", "score": 7, "parts": [
+  {"name":"OuterBox","shape":"cube","pos":[0.0,-0.0065,-0.025],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.2],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LidTop","shape":"cube","pos":[0.0,0.0735,-0.025],"rot":[0.0,0.0,0.0],"size":[0.31,0.01,0.21],"color":[0.7,0.62,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeSeamFront","shape":"cube","pos":[0.0,-0.0065,0.0775],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.005],"color":[0.68,0.6,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamBack","shape":"cube","pos":[0.0,-0.0065,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.005],"color":[0.68,0.6,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamLeft","shape":"cube","pos":[-0.1525,-0.0065,-0.025],"rot":[0.0,0.0,0.0],"size":[0.005,0.15,0.2],"color":[0.68,0.6,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamRight","shape":"cube","pos":[0.1525,-0.0065,-0.025],"rot":[0.0,0.0,0.0],"size":[0.005,0.15,0.2],"color":[0.68,0.6,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0065,0.0765],"rot":[0.0,0.0,0.0],"size":[0.26,0.03,0.002],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"TapeStrip","shape":"cube","pos":[0.0,0.079,-0.025],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.01],"color":[0.8,0.78,0.7],"smooth":0.3,"metal":0.0},
+  {"name":"InnerPad","shape":"cube","pos":[0.0,-0.0765,-0.025],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.18],"color":[0.7,0.62,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Can1","shape":"cylinder","pos":[-0.08,-0.0215,0.095],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":0.9},
+  {"name":"Can2","shape":"cylinder","pos":[-0.02,-0.0215,0.095],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":0.9},
+  {"name":"Can3","shape":"cylinder","pos":[0.04,-0.0215,0.095],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":0.9}
+]}

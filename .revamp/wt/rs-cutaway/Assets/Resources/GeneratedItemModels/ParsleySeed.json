@@ -1,0 +1,8 @@
+{"version": 1, "id": "ParsleySeed", "baseHeight": 0.0686, "name": "Parsley Seed", "model": "gpt-oss:120b", "notes": "A small heap of parsley seeds about 4 cm wide, 1.5 cm thick, shown as a flattened ellipsoid base with three raised seed clumps for texture.", "score": 6, "parts": [
+  {"name":"BasePile","shape":"sphere","pos":[0.0,-0.0011,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"ClumpA","shape":"cube","pos":[-0.018,0.0034,0.011],"rot":[10.0,20.0,-5.0],"size":[0.01,0.008,0.005],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"ClumpB","shape":"cube","pos":[0.021,0.0024,-0.012],"rot":[-8.0,15.0,12.0],"size":[0.009,0.006,0.004],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"ClumpC","shape":"cube","pos":[-0.011,0.0044,-0.016],"rot":[5.0,-12.0,8.0],"size":[0.008,0.007,0.003],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"Scatter","shape":"sphere","pos":[0.015,0.0004,0.014],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"Scatter2","shape":"sphere","pos":[-0.014,0.0004,-0.013],"rot":[0.0,0.0,0.0],"size":[0.011,0.0035,0.0075],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0}
+]}

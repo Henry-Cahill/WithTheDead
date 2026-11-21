@@ -1,0 +1,9 @@
+{"version": 1, "id": "BlockAnvil", "baseHeight": 0.19, "name": "Block Anvil", "model": "gpt-oss:120b", "notes": "Block anvil ~0.50 m long × 0.25 m wide × 0.20 m tall, lying on its side (long axis X). Main steel block with a raised top plate, a small hardy‑hole ring and a tapered horn projecting forward (+Z) from the front face.", "score": 6, "parts": [
+  {"name":"BaseBlock","shape":"cube","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.2,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TopPlate","shape":"cube","pos":[0.0,0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.02,0.23],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HardyRing","shape":"cylinder","pos":[0.0,0.0775,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Horn","shape":"cylinder","pos":[0.22,0.1,0.0],"rot":[90.0,0.0,0.0],"size":[0.06,0.15,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SideRim","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.52,0.02,0.27],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaseFoot","shape":"cylinder","pos":[-0.18,-0.12,-0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaseFootR","shape":"cylinder","pos":[-0.18,-0.12,0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

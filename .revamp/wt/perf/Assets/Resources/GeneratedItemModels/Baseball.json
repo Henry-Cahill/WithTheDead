@@ -1,0 +1,10 @@
+{"version": 1, "id": "Baseball", "baseHeight": 0.0965, "name": "Baseball", "model": "gpt-oss:120b", "notes": "Baseball ~0.073 m diameter lying on the floor: main leather sphere, a dark stitched band crossing the ball in two perpendicular great‑circle rings, and a tiny cork core for visual interest.", "score": 7, "parts": [
+  {"name":"Ball","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.073,0.073,0.073],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"StitchRingX","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.079,0.008],"color":[0.15,0.12,0.08],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRingZ","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.079,0.008],"color":[0.15,0.12,0.08],"smooth":0.05,"metal":0.0},
+  {"name":"CorkCore","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.32,0.22,0.12],"smooth":0.08,"metal":0.0},
+  {"name":"StitchEnd1","shape":"cylinder","pos":[0.0365,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.012,0.006],"color":[0.15,0.12,0.08],"smooth":0.05,"metal":0.0},
+  {"name":"StitchEnd2","shape":"cylinder","pos":[-0.0365,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.012,0.006],"color":[0.15,0.12,0.08],"smooth":0.05,"metal":0.0},
+  {"name":"StitchEnd3","shape":"cylinder","pos":[0.0,0.0,0.0365],"rot":[90.0,0.0,0.0],"size":[0.006,0.012,0.006],"color":[0.15,0.12,0.08],"smooth":0.05,"metal":0.0},
+  {"name":"StitchEnd4","shape":"cylinder","pos":[0.0,0.0,-0.0365],"rot":[90.0,0.0,0.0],"size":[0.006,0.012,0.006],"color":[0.15,0.12,0.08],"smooth":0.05,"metal":0.0}
+]}

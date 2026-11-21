@@ -4,7 +4,7 @@
     publishes the game on its download page for the people you play with.
 
 .DESCRIPTION
-    Build: mirrors this project into a copy beside it (..\CLONE-Z-build, so the editor you have open isn't disturbed) and
+    Build: mirrors this project into a copy in it (Builds\ReleaseProject, so the editor you have open isn't disturbed) and
     runs CloneZ.EditorTools.CloneZBatch.BuildRelease there in a batch editor. The result is Builds\Release\<stamp>\client
     (WithTheDead.exe, for players) and \server (the Linux Dedicated Server), both stamped 0.1.0+<stamp>; a server lets in
     only players on its own build (the editor always gets in). The game carries its Java scripts and the Java runtime they
@@ -12,7 +12,7 @@
     Both get a copy of the world store's current build (WorldStore\), so everyone builds the same Kentucky without the
     NAS. The client gets server.txt, the address its Join box starts at, and updates.txt, where it asks whether a new
     build is out. The build includes uncommitted changes.
-    With -FromMain it builds GitHub's main instead: a clean checkout of origin/main beside the project (..\CLONE-Z-main, a
+    With -FromMain it builds GitHub's main instead: a clean checkout of origin/main in the project (Builds\MainCheckout, a
     git worktree, made the first time), brought up to date first. -Source builds another checkout as it is.
 
     Deploy: copies the server to hts-llm and (re)starts it in Docker (docker\Dockerfile, docker\compose.yaml) as the
@@ -83,12 +83,12 @@ $ErrorActionPreference = 'Stop'
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 $project = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $releases = Join-Path $project 'Builds\Release'
-if (-not $BuildCopy) { $BuildCopy = Join-Path (Split-Path $project -Parent) ((Split-Path $project -Leaf) + '-build') }
+if (-not $BuildCopy) { $BuildCopy = Join-Path $project 'Builds\ReleaseProject' }
 $serverIp = ($ServerHost -split '@')[-1]
 $site = if ($SiteUrl -and $SiteUrl -ne 'none') { $SiteUrl.TrimEnd('/') + '/' } else { $null }
 $utf8 = New-Object Text.UTF8Encoding $false
-# -FromMain's clean checkout of GitHub's main, a git worktree beside the project.
-$mainCheckout = Join-Path (Split-Path $project -Parent) ((Split-Path $project -Leaf) + '-main')
+# -FromMain's clean checkout of GitHub's main, a git worktree in the project's (ignored) Builds folder.
+$mainCheckout = Join-Path $project 'Builds\MainCheckout'
 # What git keeps out on purpose though the game ships it, so a clean checkout lacks it: the radio stations' music.
 $localOnly = 'Assets\StreamingAssets\Music', 'Assets\StreamingAssets\Music.meta'
 

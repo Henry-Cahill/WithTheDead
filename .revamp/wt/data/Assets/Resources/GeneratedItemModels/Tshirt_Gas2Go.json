@@ -1,0 +1,12 @@
+{"version": 1, "id": "Tshirt_Gas2Go", "baseHeight": 0.082, "name": "Tshirt Gas2 Go", "model": "gpt-oss:120b", "notes": "Flat T‑shirt “Gas2 Go” laid out for a product shot – overall footprint ≈0.55 m long (X) × 0.44 m wide (Z) × 0.03 m thick. Main purple‑grey tint (0.55,0.5,0.6) with darker cuffs & collar, a neck opening and a small chest logo for recognisable silhouette.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.1025,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.1025,-0.0095,-0.29],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.1025,-0.0095,0.29],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.1025,-0.007,-0.29],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.04],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.1025,-0.007,0.29],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.04],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.3225,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.24],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.3225,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.022,0.18],"color":[0.12,0.1,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[-0.1675,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.008,0.38],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LogoBase","shape":"cube","pos":[0.2525,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.06],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"LogoDetail","shape":"cylinder","pos":[0.2525,0.012,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.2,0.18,0.22],"smooth":0.05,"metal":0.0}
+]}

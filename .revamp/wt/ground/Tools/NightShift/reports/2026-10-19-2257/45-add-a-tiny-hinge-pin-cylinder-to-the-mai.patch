@@ -1,0 +1,12 @@
+diff --git a/Assets/Scripts/World/StarterHome.Grounds.cs b/Assets/Scripts/World/StarterHome.Grounds.cs
+index a5f7300..552f45d 100644
+--- a/Assets/Scripts/World/StarterHome.Grounds.cs
++++ b/Assets/Scripts/World/StarterHome.Grounds.cs
+@@ -229,6 +229,7 @@ private static void Mailbox(Transform world, RaidMesh m, Vector3 at)
+             door.Cylinder(at + new Vector3(0f, 1.28f, -0.258f), 0.113f, 0.012f, 12, face, Quaternion.Euler(90f, 0f, 0f));
+             door.Box(at + new Vector3(0f, 1.35f, -0.262f), new Vector3(0.04f, 0.018f, 0.01f), DecorPalette.Metal(new Color(0.55f, 0.55f, 0.52f)));
+             FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f);
++            m.Cylinder(at + new Vector3(0f, 1.12f, -0.252f), 0.006f, 0.018f, 12, face);
+ 
+             // The flag: a red arm lying forward along the box's side with the flag at its end; it swings up on the boss.
+             var flag = new RaidMesh();

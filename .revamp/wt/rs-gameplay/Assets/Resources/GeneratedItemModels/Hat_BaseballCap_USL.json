@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BaseballCap_USL", "baseHeight": 0.185, "name": "Hat Baseball Cap USL", "model": "gpt-oss:120b", "notes": "Flat‑lay baseball cap (≈0.25 m brim × 0.18 m crown diameter, 0.015 m thick fabric). Crown cylinder + dome, front/back/side panels and rectangular brim, with a thin stitching line along the brim edge.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0005,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.0145,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0005,0.0645],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0005,-0.0855],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.07,-0.0005,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.07,-0.0005,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cube","pos":[0.0,-0.004,0.0895],"rot":[0.0,0.0,0.0],"size":[0.25,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBrimEdge","shape":"cylinder","pos":[0.0,-0.0,0.0995],"rot":[0.0,0.0,90.0],"size":[0.25,0.002,0.002],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCrownSeam","shape":"cylinder","pos":[0.0,0.007,-0.0105],"rot":[90.0,0.0,0.0],"size":[0.18,0.002,0.002],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0}
+]}

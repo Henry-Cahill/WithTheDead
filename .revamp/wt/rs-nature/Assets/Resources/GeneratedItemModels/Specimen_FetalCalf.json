@@ -1,0 +1,13 @@
+{"version": 1, "id": "Specimen_FetalCalf", "baseHeight": 0.165, "name": "Specimen Fetal Calf", "model": "gpt-oss:120b", "notes": "Fetal calf specimen ~0.55 m long, 0.18 m tall when lying on its side. Main torso slab with a rounded head, four tucked‑up limbs and a short tail; thin rib‑line strips give a hint of anatomy.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0175,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.18,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.2675,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.16,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegFrontL","shape":"cylinder","pos":[0.1325,-0.06,-0.09],"rot":[90.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"LegFrontR","shape":"cylinder","pos":[0.1325,-0.06,0.09],"rot":[90.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"LegHindL","shape":"cylinder","pos":[-0.1675,-0.06,-0.09],"rot":[90.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"LegHindR","shape":"cylinder","pos":[-0.1675,-0.06,0.09],"rot":[90.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.2975,-0.025,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"RibLine1","shape":"cube","pos":[-0.1375,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RibLine2","shape":"cube","pos":[0.0625,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Spine","shape":"cube","pos":[-0.0175,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.012,0.015],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"NeckConnector","shape":"cube","pos":[0.2025,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.012,0.015],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0}
+]}

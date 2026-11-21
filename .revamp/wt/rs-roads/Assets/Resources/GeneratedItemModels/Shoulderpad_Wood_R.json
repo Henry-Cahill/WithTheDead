@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoulderpad_Wood_R", "baseHeight": 0.079, "name": "Shoulderpad Wood R", "model": "gpt-oss:120b", "notes": "Wooden shoulder‑pad (right side) about 0.28 m wide × 0.18 m tall × 0.025 m thick, with rounded corners, a leather strap across the top and a metal buckle; four tiny rivets mark the corners.", "score": 6, "parts": [
+  {"name":"BaseBoard","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[-0.12,-0.004,-0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[0.12,-0.004,-0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CornerTL","shape":"cylinder","pos":[-0.12,-0.004,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CornerTR","shape":"cylinder","pos":[0.12,-0.004,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[0.0,0.011,0.07],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.04],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[-0.12,0.015,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.03],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.12,0.011,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.8],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.12,0.011,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.8],"smooth":0.5,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.12,0.011,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.8],"smooth":0.5,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.12,0.011,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.8],"smooth":0.5,"metal":1.0}
+]}

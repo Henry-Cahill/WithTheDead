@@ -1,0 +1,9 @@
+{"version": 1, "id": "CannedTomatoOpen", "baseHeight": 0.12, "name": "Canned Tomato Open", "model": "gpt-oss:120b", "notes": "Open canned tomatoes ≈ 0.19 m diameter × 0.12 m tall: steel body (open top), thin metal lid lying against the side, red tomato interior visible, side label and a small pull‑tab on the rim of the loose lid.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0648,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.12,0.19],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0648,-0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.008,0.19],"color":[0.73,0.66,0.42],"smooth":0.55,"metal":0.85},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0648,0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.008,0.19],"color":[0.73,0.66,0.42],"smooth":0.55,"metal":0.85},
+  {"name":"TomatoInterior","shape":"cylinder","pos":[0.0648,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.108,0.16],"color":[0.82,0.22,0.18],"smooth":0.3,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[0.1603,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LooseLid","shape":"cylinder","pos":[-0.1252,-0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.008,0.19],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"PullTab","shape":"cylinder","pos":[-0.1452,-0.046,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.02],"color":[0.3,0.3,0.32],"smooth":0.4,"metal":0.0}
+]}

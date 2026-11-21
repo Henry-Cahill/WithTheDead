@@ -1,0 +1,10 @@
+{"version": 1, "id": "SodaCan", "baseHeight": 0.1235, "name": "Soda Can", "model": "gpt-oss:120b", "notes": "Upright soda can ≈ 0.065 m diameter × 0.12 m tall. Main body of tin, thin recessed lid, top‑rim and bottom‑rim, a pull‑tab on the lid, and a printed paper label wrapped around the side.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0035,-0.0112],"rot":[0.0,0.0,0.0],"size":[0.065,0.12,0.065],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.0595,-0.0112],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.0525,-0.0112],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0545,-0.0112],"rot":[0.0,0.0,0.0],"size":[0.062,0.006,0.062],"color":[0.78,0.73,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0035,-0.0112],"rot":[0.0,0.0,0.0],"size":[0.058,0.104,0.058],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"TabBase","shape":"cube","pos":[0.0,0.0585,0.0208],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.012],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"TabLever","shape":"cylinder","pos":[0.0,0.0615,0.0338],"rot":[90.0,0.0,0.0],"size":[0.004,0.025,0.004],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"TabRing","shape":"cylinder","pos":[0.0,0.0555,0.0208],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0}
+]}

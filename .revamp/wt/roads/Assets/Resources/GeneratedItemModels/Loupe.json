@@ -1,0 +1,12 @@
+{"version": 1, "id": "Loupe", "baseHeight": 0.07, "name": "Loupe", "model": "gpt-oss:120b", "notes": "Loupe (magnifying glass) ~6 cm diameter lens with metal rim, thin wooden‑plastic handle extending outward, small screw joint, label on front and a tip cap with tiny LED indicator. Overall footprint ≈0.15 m × 0.07 m, thickness ≤0.01 m.", "score": 6, "parts": [
+  {"name":"FrameOuter","shape":"cylinder","pos":[0.043,-0.002,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"RimInner","shape":"cylinder","pos":[0.043,-0.002,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.064,0.008,0.064],"color":[0.5,0.48,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"Lens","shape":"cylinder","pos":[0.043,-0.002,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.06,0.006,0.06],"color":[0.85,0.9,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"HandleCore","shape":"cylinder","pos":[-0.032,-0.002,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.032,0.0,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"ScrewJoint","shape":"sphere","pos":[-0.002,0.004,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"LabelPlate","shape":"cube","pos":[0.043,0.003,0.0345],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.004],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.038,0.0035,0.0345],"rot":[0.0,0.0,0.0],"size":[0.01,0.002,0.004],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"TipCap","shape":"sphere","pos":[-0.072,-0.002,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":1.0},
+  {"name":"LightLED","shape":"sphere","pos":[-0.065,0.002,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[1.0,0.9,0.5],"smooth":0.8,"metal":0.0}
+]}

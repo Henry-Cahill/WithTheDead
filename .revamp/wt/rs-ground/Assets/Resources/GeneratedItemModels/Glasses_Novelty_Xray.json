@@ -1,0 +1,13 @@
+{"version": 1, "id": "Glasses_Novelty_Xray", "baseHeight": 0.064, "name": "Glasses Novelty Xray", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of X‑ray novelty glasses, approx 0.16 m wide × 0.05 m tall × 0.01 m thick: two tinted lenses with plastic frames, a short bridge, nose pads and folded temples extending outward.", "score": 7, "parts": [
+  {"name":"FrameL","shape":"cylinder","pos":[-0.03,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.05],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FrameR","shape":"cylinder","pos":[0.03,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.05],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"LensL","shape":"cylinder","pos":[-0.03,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.008,0.045],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.03,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.008,0.045],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.012],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"NosePadL","shape":"cube","pos":[-0.01,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.008],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"NosePadR","shape":"cube","pos":[0.01,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.008],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"TempleL","shape":"cube","pos":[-0.115,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleR","shape":"cube","pos":[0.115,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"ScrewL","shape":"cylinder","pos":[-0.055,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.004,0.003],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"ScrewR","shape":"cylinder","pos":[0.055,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.004,0.003],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0}
+]}

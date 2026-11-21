@@ -1,0 +1,14 @@
+{"version": 1, "id": "Creamocle_Melted", "baseHeight": 0.089, "name": "Creamocle Melted", "model": "gpt-oss:120b", "notes": "Melted cheese tub about 0.16 m wide × 0.11 m deep × 0.05 m tall, plastic container with a thin lid, front label and small handle; visible soft cheese inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.009,-0.0192],"rot":[0.0,0.0,0.0],"size":[0.16,0.04,0.11],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.015,-0.0192],"rot":[0.0,0.0,0.0],"size":[0.162,0.008,0.112],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"Lip","shape":"cube","pos":[0.0,0.009,-0.0192],"rot":[0.0,0.0,0.0],"size":[0.162,0.004,0.112],"color":[0.7,0.62,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.009,0.0363],"rot":[0.0,0.0,0.0],"size":[0.158,0.038,0.002],"color":[0.35,0.25,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"TrimTop","shape":"cube","pos":[0.0,0.008,0.0363],"rot":[0.0,0.0,0.0],"size":[0.158,0.004,0.002],"color":[0.25,0.18,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"TrimBottom","shape":"cube","pos":[0.0,-0.026,0.0363],"rot":[0.0,0.0,0.0],"size":[0.158,0.004,0.002],"color":[0.25,0.18,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.009,0.0363],"rot":[0.0,0.0,0.0],"size":[0.158,0.002,0.002],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,-0.009,-0.0747],"rot":[0.0,0.0,0.0],"size":[0.158,0.002,0.002],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"LeftSeam","shape":"cube","pos":[-0.0805,-0.009,-0.0192],"rot":[0.0,0.0,0.0],"size":[0.002,0.038,0.112],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"RightSeam","shape":"cube","pos":[0.0805,-0.009,-0.0192],"rot":[0.0,0.0,0.0],"size":[0.002,0.038,0.112],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.024,0.0557],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.85,0.85,0.9],"smooth":0.35,"metal":0.0},
+  {"name":"CheeseMelt","shape":"sphere","pos":[0.0,0.001,-0.0192],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.09],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,16 @@
+{"version": 1, "id": "Skirt_Knees_Tarp", "baseHeight": 0.0813, "name": "Skirt Knees Tarp", "model": "gpt-oss:120b", "notes": "Knee‑length tarp skirt laid flat (≈0.70 m wide × 0.45 m long × 0.025 m thick). Main body split into front/back panels, a waistband, hem strips, five pleat lines and two belt‑loops for detail.", "score": 6, "parts": [
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0088,0.02],"rot":[0.0,0.0,0.0],"size":[0.71,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0088,-0.02],"rot":[0.0,0.0,0.0],"size":[0.71,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0112,0.245],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.04],"color":[0.5,0.45,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,-0.0088,-0.245],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.04],"color":[0.5,0.45,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,-0.0088,-0.245],"rot":[0.0,-180.0,0.0],"size":[0.7,0.015,0.04],"color":[0.5,0.45,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"PleatL","shape":"cube","pos":[-0.3,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.45],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"PleatC1","shape":"cube","pos":[-0.15,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.45],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"PleatCenter","shape":"cube","pos":[0.0,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.45],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"PleatC2","shape":"cube","pos":[0.15,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.45],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"PleatR","shape":"cube","pos":[0.3,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.45],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.25,0.0112,0.245],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.5,0.45,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.25,0.0112,0.245],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.5,0.45,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"SideSeamLeft","shape":"cube","pos":[-0.355,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.45],"color":[0.48,0.43,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cube","pos":[0.355,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.45],"color":[0.48,0.43,0.54],"smooth":0.05,"metal":0.0}
+]}

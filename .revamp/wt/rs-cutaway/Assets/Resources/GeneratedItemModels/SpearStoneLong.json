@@ -1,0 +1,8 @@
+{"version": 1, "id": "SpearStoneLong", "baseHeight": 0.12, "name": "Spear Stone Long", "model": "gpt-oss:120b", "notes": "Long spear ~1.5 m total length (1.3 m wooden shaft, 0.12 m stone tip). Shaft lies on its side along X with the stone point at +X. Includes metal ferrule and butt‑cap, plus two decorative leather bands.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.06,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.3,0.04],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"StoneTip","shape":"sphere","pos":[0.65,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.575,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.03,0.05],"color":[0.55,0.55,0.58],"smooth":0.55,"metal":1.0},
+  {"name":"ButtCap","shape":"cylinder","pos":[-0.695,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.03,0.05],"color":[0.55,0.55,0.58],"smooth":0.55,"metal":1.0},
+  {"name":"BandFront","shape":"cylinder","pos":[0.14,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.04,0.045],"color":[0.3,0.18,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"BandRear","shape":"cylinder","pos":[-0.26,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.04,0.045],"color":[0.3,0.18,0.12],"smooth":0.1,"metal":0.0}
+]}

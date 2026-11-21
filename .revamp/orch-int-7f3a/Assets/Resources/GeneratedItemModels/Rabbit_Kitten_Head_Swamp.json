@@ -1,0 +1,13 @@
+{"version": 1, "id": "Rabbit_Kitten_Head_Swamp", "baseHeight": 0.155, "name": "Rabbit Kitten Head Swamp", "model": "gpt-oss:120b", "notes": "Rabbit kitten head – swamp colour, lying on its side with the face up. Main skull sphere, two upright ears, a pair of eyes, small nose and mouth detail give a recognizable silhouette.", "score": 6, "parts": [
+  {"name":"Skull","shape":"sphere","pos":[0.0,-0.025,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[-0.045,0.035,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.045,0.035,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.025,-0.015,0.0535],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.07,0.07,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.025,-0.015,0.0535],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.07,0.07,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0,-0.03,0.0655],"rot":[0.0,0.0,0.0],"size":[0.016,0.012,0.014],"color":[0.5,0.45,0.4],"smooth":0.08,"metal":0.0},
+  {"name":"Mouth","shape":"cube","pos":[0.0,-0.04,0.0705],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.008],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"WhiskerL1","shape":"cylinder","pos":[-0.03,-0.035,0.0655],"rot":[0.0,30.0,0.0],"size":[0.004,0.03,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"WhiskerL2","shape":"cylinder","pos":[-0.015,-0.037,0.0655],"rot":[0.0,15.0,0.0],"size":[0.004,0.025,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"WhiskerR1","shape":"cylinder","pos":[0.03,-0.035,0.0655],"rot":[0.0,-30.0,0.0],"size":[0.004,0.03,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"WhiskerR2","shape":"cylinder","pos":[0.015,-0.037,0.0655],"rot":[0.0,-15.0,0.0],"size":[0.004,0.025,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0}
+]}

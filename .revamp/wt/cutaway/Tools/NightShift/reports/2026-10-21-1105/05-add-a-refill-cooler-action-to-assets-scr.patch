@@ -1,0 +1,76 @@
+diff --git a/Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs b/Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs
+index 809dff78..ddd29ec9 100644
+--- a/Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs
++++ b/Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs
+@@ -11,7 +11,8 @@ namespace CloneZ
+     /// </summary>
+     [DisallowMultipleComponent]
+     public class RaidStoreWaterCooler : Interactable, IWaterPoint
+-    {
++        {
++            public override string SaveKey => Interactable.KeyFor("WaterCooler", transform.position);
+         private Transform _body;
+         private Vector3 _taps;
+         private Transform _water;
+@@ -65,7 +66,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+             into.Add(new InteractAction("Check the jug", CheckJug));
+             into.Add(new InteractAction("Try the red tap", TryHot));
+             into.Add(new InteractAction("Listen for glug", ListenGlug));
+-            into.Add(new InteractAction("Inspect cooler", InspectCooler));
++                        into.Add(new InteractAction("Refill cooler", RefillCooler));
+         }
+ 
+         private void CheckJug(InteractContext ctx)
+@@ -85,23 +86,43 @@ private void TryHot(InteractContext ctx)
+             _triedHot = true;
+         }
+ 
+-        private void ListenGlug(InteractContext ctx)
+-        {
+-            ctx.Notify(_drinks > 0 ? "The jug glugs, a fat bubble wobbling up through what's left." : "The jug gives a last hollow glug. That's the end of it.");
+-        }
+-
+-        private void InspectCooler(InteractContext ctx)
++        private void RefillCooler(InteractContext ctx)
+         {
+-            ctx.Notify("A dented plastic water cooler with a faded label; the jug looks like it survived the blackout.");
++            if (_drinks >= CloneZConfig.RaidCoolerJugMax)
++            {
++                ctx.Notify("The jug is already full.");
++                return;
++            }
++            _drinks = CloneZConfig.RaidCoolerJugMax;
++            Refresh();
++            MakeNoise(CloneZConfig.RaidCoolerGlugNoise);
++            ctx.Notify("You top up the cooler; the water swirls up to the brim.");
+         }
+ 
+-
+-        // The water in the jug, from its neck up to the level.
+         private void Refresh()
+         {
+             float fill = Mathf.Clamp01((float)_drinks / CloneZConfig.RaidCoolerJugMax);
+             if (_waterRenderer != null) _waterRenderer.enabled = fill > 0.01f;
+             if (_water != null) _water.localScale = new Vector3(1f, Mathf.Max(0.02f, fill), 1f);
+         }
++
++
++#region Persistence
++        public override void CaptureState(FixtureSave save)
++        {
++            base.CaptureState(save);
++            // Store current drink count and whether the hot tap has been tried.
++            save.State = _drinks;
++            save.A = _triedHot ? 1f : 0f;
++        }
++
++        public override void RestoreState(FixtureSave save)
++        {
++            base.RestoreState(save);
++            _drinks = save.State;
++            _triedHot = Mathf.Approximately(save.A, 1f);
++            Refresh();
++        }
++        #endregion
+     }
+ }

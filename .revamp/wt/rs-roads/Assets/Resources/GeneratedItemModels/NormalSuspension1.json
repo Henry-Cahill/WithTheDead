@@ -1,0 +1,12 @@
+{"version": 1, "id": "NormalSuspension1", "baseHeight": 0.09, "name": "Normal Suspension1", "model": "gpt-oss:120b", "notes": "Coiled rope (Normal Suspension1) about 0.20 m across and 0.02 m thick, lying flat on the floor. Main coil is a brown‑tinted cloth cylinder with two inner layers to suggest winding, short frayed ends sticking out, and a small fabric tag attached at one side.", "score": 6, "parts": [
+  {"name":"OuterCoil","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLayer1","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.018,0.16],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLayer2","shape":"cylinder","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.016,0.12],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrayEndL","shape":"cylinder","pos":[-0.09,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.02,0.06,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FrayEndR","shape":"cylinder","pos":[0.09,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.02,0.06,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TagBase","shape":"cube","pos":[0.07,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.015],"color":[0.3,0.28,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"TagHole","shape":"cylinder","pos":[0.07,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.1,0.09,0.08],"smooth":0.05,"metal":0.0},
+  {"name":"TagString","shape":"cylinder","pos":[0.07,0.01,0.0],"rot":[90.0,0.0,0.0],"size":[0.003,0.04,0.003],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.004,0.21],"color":[0.45,0.43,0.38],"smooth":0.04,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.004,0.21],"color":[0.45,0.43,0.38],"smooth":0.04,"metal":0.0}
+]}

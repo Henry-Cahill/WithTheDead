@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shorts_HockeyPants_UniBlue", "baseHeight": 0.075, "name": "Shorts Hockey Pants Uni Blue", "model": "gpt-oss:120b", "notes": "Flat hockey shorts (uni‑blue) 0.55 m long × 0.30 m wide × 0.03 m thick, laid flat: waistband across the top, central crotch panel, two leg panels left/right, side outer seams, front pockets and a thin stitching line.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchPanel","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.06],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[0.0,0.0,-0.09],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.0,0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.15,0.0,-0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.05],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.05],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"OuterSeamL","shape":"cube","pos":[0.0,0.0,-0.155],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"OuterSeamR","shape":"cube","pos":[0.0,0.0,0.155],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.3],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.3],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

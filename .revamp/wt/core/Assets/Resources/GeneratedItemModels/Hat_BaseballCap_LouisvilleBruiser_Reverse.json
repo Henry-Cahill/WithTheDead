@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BaseballCap_LouisvilleBruiser_Reverse", "baseHeight": 0.0988, "name": "Hat Baseball Cap Louisville Bruiser Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.22 m wide × 0.18 m deep × 0.07 m tall (crown dome + surrounding brim). Main cloth tint 0.55,0.5,0.6; darker brim; small button on top and a front logo patch.", "score": 6, "parts": [
+  {"name":"Crown","shape":"sphere","pos":[0.0,-0.0038,-0.01],"rot":[0.0,0.0,0.0],"size":[0.22,0.07,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.0338,0.12],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimSideL","shape":"cube","pos":[-0.13,-0.0338,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.16],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimSideR","shape":"cube","pos":[0.13,-0.0338,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.16],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimBack","shape":"cube","pos":[0.0,-0.0338,-0.13],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,0.0012,-0.01],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.22],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.0,0.0312,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.85,0.85,0.9],"smooth":0.6,"metal":0.0},
+  {"name":"VentHole","shape":"cylinder","pos":[0.0,-0.0038,-0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.0232,0.06],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.04],"color":[0.9,0.9,0.95],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "ScissorsBluntMedical", "baseHeight": 0.0727, "name": "Scissors Blunt Medical", "model": "gpt-oss:120b", "notes": "Medical blunt scissors ~0.18 m long, 0.06 m wide, 0.015 m thick when lying flat. Two thin steel blades crossing at a central pivot, with rounded metal‑plastic handles on each side and a tiny screw at the joint.", "score": 6, "parts": [
+  {"name":"BladeL","shape":"cube","pos":[-0.07,-0.0108,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BladeR","shape":"cube","pos":[0.07,-0.0108,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeL","shape":"cube","pos":[-0.07,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.015],"color":[0.45,0.44,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeR","shape":"cube","pos":[0.07,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.015],"color":[0.45,0.44,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"PivotScrew","shape":"sphere","pos":[0.0,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.07,-0.0028,-0.025],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.07,-0.0028,0.025],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"GripL","shape":"cylinder","pos":[-0.07,0.0052,-0.025],"rot":[0.0,0.0,90.0],"size":[0.015,0.045,0.015],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"GripR","shape":"cylinder","pos":[0.07,0.0052,0.025],"rot":[0.0,0.0,90.0],"size":[0.015,0.045,0.015],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0093,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.018],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0}
+]}

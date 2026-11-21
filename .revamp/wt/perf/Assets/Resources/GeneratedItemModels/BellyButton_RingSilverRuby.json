@@ -1,0 +1,8 @@
+{"version": 1, "id": "BellyButton_RingSilverRuby", "baseHeight": 0.0643, "name": "Belly Button Ring Silver Ruby", "model": "gpt-oss:120b", "notes": "Belly button ring ~2 cm diameter silver hoop (0.02 m) with thin 2 mm profile, and a 8 mm ruby hanging below it; total height about 1 cm when lying on the floor.", "score": 6, "parts": [
+  {"name":"Hoop","shape":"cylinder","pos":[0.0,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Ruby","shape":"sphere","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.78,0.05,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"DropBase","shape":"cube","pos":[0.0,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"GemMount","shape":"cylinder","pos":[0.0,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"GemSeat","shape":"cylinder","pos":[0.0,-0.0003,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.78,0.05,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"GemTop","shape":"sphere","pos":[0.0,0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.78,0.05,0.05],"smooth":0.3,"metal":0.0}
+]}

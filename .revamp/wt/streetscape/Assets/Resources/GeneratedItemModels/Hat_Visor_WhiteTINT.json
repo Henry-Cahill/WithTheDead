@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_Visor_WhiteTINT", "baseHeight": 0.0712, "name": "Hat Visor White TINT", "model": "gpt-oss:120b", "notes": "Flat visor hat (≈0.16 m wide × 0.20 m long including brim) laid out as a product‑photo spread: thin crown panel with front‑facing brim, dark stitching border and a small logo patch.", "score": 7, "parts": [
+  {"name":"CrownPanel","shape":"cube","pos":[0.0,-0.0037,-0.0403],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.0037,0.0597],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeStitch","shape":"cube","pos":[0.0,-0.0017,-0.0403],"rot":[0.0,0.0,0.0],"size":[0.142,0.003,0.122],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[-0.045,0.0037,-0.0103],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeLeft","shape":"cube","pos":[-0.08,-0.0017,0.0597],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.08],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeRight","shape":"cube","pos":[0.08,-0.0017,0.0597],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.08],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeFront","shape":"cube","pos":[0.0,-0.0017,0.0998],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.003],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeBack","shape":"cube","pos":[0.0,-0.0017,0.0197],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.003],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

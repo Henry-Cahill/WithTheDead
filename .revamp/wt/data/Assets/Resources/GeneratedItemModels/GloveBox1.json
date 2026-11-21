@@ -1,0 +1,12 @@
+{"version": 1, "id": "GloveBox1", "baseHeight": 0.116, "name": "Glove Box1", "model": "gpt-oss:120b", "notes": "Small cardboard glove box ~0.25 m W × 0.15 m D × 0.11 m H, lying on its side (upright) with a hinged lid and front flap. Main tan‑gray tint, thin walls, label on top.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.051,-0.01],"rot":[0.0,0.0,0.0],"size":[0.25,0.01,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.12,-0.001,-0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.09,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.12,-0.001,-0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.09,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,-0.001,0.06],"rot":[0.0,0.0,0.0],"size":[0.23,0.09,0.01],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,-0.001,-0.08],"rot":[0.0,0.0,0.0],"size":[0.23,0.09,0.01],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LidTop","shape":"cube","pos":[0.0,0.048,-0.01],"rot":[0.0,0.0,0.0],"size":[0.25,0.008,0.15],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.054,0.075],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.02],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.05,0.049,-0.01],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,0.049,0.06],"rot":[0.0,0.0,0.0],"size":[0.23,0.002,0.002],"color":[0.5,0.48,0.42],"smooth":0.08,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,0.049,-0.08],"rot":[0.0,0.0,0.0],"size":[0.23,0.002,0.002],"color":[0.5,0.48,0.42],"smooth":0.08,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Dice_00", "baseHeight": 0.068, "name": "Dice 00", "model": "gpt-oss:120b", "notes": "Standard six‑sided die 0.016 m per side (light‑brown plastic) lying on its side; the ‘5’ face is up showing its pip pattern.", "score": 8, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"PipCenter","shape":"cylinder","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"PipFL","shape":"cylinder","pos":[-0.004,0.001,0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"PipFR","shape":"cylinder","pos":[0.004,0.001,0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"PipBL","shape":"cylinder","pos":[-0.004,0.001,-0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"PipBR","shape":"cylinder","pos":[0.004,0.001,-0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0}
+]}

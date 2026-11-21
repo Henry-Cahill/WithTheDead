@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_RightLowerArm_Blood", "baseHeight": 0.0675, "name": "Bandage Right Lower Arm Blood", "model": "gpt-oss:120b", "notes": "Folded gauze bandage about 0.25 m long x 0.07 m wide, 1 cm thick, beige‑tan (tint 0.6,0.58,0.5) with a dark red blood spot on the surface. One short edge is slightly overlapped to suggest it was folded.", "score": 7, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.01,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldEdge","shape":"cube","pos":[-0.115,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.07],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot","shape":"sphere","pos":[0.06,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[0.7,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDropDetail","shape":"sphere","pos":[0.07,-0.0005,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.75,0.15,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDropDetail2","shape":"sphere","pos":[0.045,-0.0005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.68,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[-0.09,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.015],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0}
+]}

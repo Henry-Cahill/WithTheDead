@@ -1,0 +1,11 @@
+{"version": 1, "id": "StoneAnvil", "baseHeight": 0.165, "name": "Stone Anvil", "model": "gpt-oss:120b", "notes": "Stone anvil ~0.45 m long × 0.28 m wide × 0.18 m high (≈40 kg). Main body is a squat block with a tapered top, a pointed horn on the front (+X) side and a flat face on the rear (-X) side. A thin metal rim caps the top edge.", "score": 7, "parts": [
+  {"name":"BaseBlock","shape":"cube","pos":[-0.01,-0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.45,0.18,0.28],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"UpperTaper","shape":"cube","pos":[-0.01,0.045,-0.005],"rot":[0.0,0.0,0.0],"size":[0.35,0.12,0.22],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"Horn","shape":"cylinder","pos":[0.195,0.015,0.135],"rot":[90.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.55,0.53,0.46],"smooth":0.2,"metal":0.0},
+  {"name":"RearFace","shape":"cube","pos":[-0.215,0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.1,0.22],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.01,0.065,-0.005],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.38],"color":[0.4,0.42,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.19,-0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.16,0.28],"color":[0.45,0.44,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.17,-0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.16,0.28],"color":[0.45,0.44,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"FrontEdge","shape":"cube","pos":[0.205,-0.015,0.135],"rot":[0.0,0.0,0.0],"size":[0.02,0.16,0.04],"color":[0.45,0.44,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"RearEdge","shape":"cube","pos":[-0.225,-0.015,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.16,0.04],"color":[0.45,0.44,0.4],"smooth":0.15,"metal":0.0}
+]}

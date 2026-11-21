@@ -1,0 +1,14 @@
+{"version": 1, "id": "GreaveBodyArmour_Left_Army", "baseHeight": 0.1, "name": "Greave Body Armour Left Army", "model": "gpt-oss:120b", "notes": "Left‑leg greave, approx 0.35 m long × 0.15 m front‑to‑back × 0.03 m thick. Main steel shell (army‑tint), interior padding cloth, leather strap with buckle and a few rivets.", "score": 6, "parts": [
+  {"name":"ShellFront","shape":"cube","pos":[0.0,-0.007,0.04],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ShellBack","shape":"cube","pos":[0.0,-0.007,-0.04],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.07],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"SideRimTop","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.01,0.15],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"SideRimBottom","shape":"cube","pos":[0.0,-0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.01,0.15],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Padding","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.02,0.13],"color":[0.4,0.38,0.34],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[-0.12,0.0,0.07],"rot":[0.0,90.0,0.0],"size":[0.015,0.08,0.015],"color":[0.25,0.18,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[-0.12,0.0,-0.07],"rot":[0.0,90.0,0.0],"size":[0.015,0.08,0.015],"color":[0.25,0.18,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[-0.12,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFrontL","shape":"cylinder","pos":[-0.12,0.006,0.03],"rot":[90.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontR","shape":"cylinder","pos":[-0.12,0.006,-0.03],"rot":[90.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackL","shape":"cylinder","pos":[0.12,0.006,0.03],"rot":[90.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackR","shape":"cylinder","pos":[0.12,0.006,-0.03],"rot":[90.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":1.0}
+]}

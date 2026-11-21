@@ -1,0 +1,12 @@
+{"version": 1, "id": "Tequila", "baseHeight": 0.2165, "name": "Tequila", "model": "gpt-oss:120b", "notes": "Upright tequila bottle ~0.30 m tall, 0.09 m diameter body, amber‑tinted glass with a narrower neck, metal screw cap and a dark label that wraps most of the body.", "score": 6, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.0355,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.24,0.09],"color":[0.78,0.71,0.48],"smooth":0.6,"metal":0.0},
+  {"name":"NeckGlass","shape":"cylinder","pos":[0.0,0.1145,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.06,0.05],"color":[0.78,0.71,0.48],"smooth":0.6,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.1495,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.06],"color":[0.32,0.22,0.12],"smooth":0.4,"metal":0.8},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.12,0.09],"color":[0.58,0.53,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0485,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.008,0.092],"color":[0.42,0.33,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0795,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.008,0.092],"color":[0.42,0.33,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"SealRing","shape":"cylinder","pos":[0.0,0.0875,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.006,0.1],"color":[0.78,0.78,0.78],"smooth":0.5,"metal":0.9},
+  {"name":"NeckBand","shape":"cylinder","pos":[0.0,0.0995,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.45,0.38,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"CapRidge","shape":"cube","pos":[0.0,0.1555,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.002,0.064],"color":[0.3,0.2,0.1],"smooth":0.4,"metal":0.8},
+  {"name":"GlassReflection","shape":"cube","pos":[0.0,-0.0355,0.0],"rot":[0.0,0.0,0.0],"size":[0.091,0.242,0.091],"color":[0.9,0.88,0.8],"smooth":0.8,"metal":0.0}
+]}

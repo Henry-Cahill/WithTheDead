@@ -1,0 +1,18 @@
+{"version": 1, "id": "Trousers_HuntingCamo", "baseHeight": 0.0895, "name": "Trousers Hunting Camo", "model": "gpt-oss:120b", "notes": "Flat hunting‑camo trousers laid out like a product photo. Overall length ≈ 1.10 m from waist to ankle, each leg panel ≈ 0.35 m wide and 0.025 m thick, spread apart with ~0.1 m gap. Includes waist band, crotch seam, front pockets, back pocket, knee‑reinforcement patches (now sitting on the legs) and belt‑loops.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[-0.225,-0.017,0.0025],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,1.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.225,-0.017,0.0025],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,1.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0105,0.0025],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchSeam","shape":"cube","pos":[0.0,-0.017,0.3025],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.125,-0.0145,0.5525],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.125,-0.0145,0.5525],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,-0.0145,-0.5475],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.07],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"KneePatchL","shape":"cube","pos":[-0.225,-0.0145,-0.1475],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.1],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"KneePatchR","shape":"cube","pos":[0.225,-0.0145,-0.1475],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.1],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop1","shape":"cylinder","pos":[-0.3,0.0255,0.0025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop2","shape":"cylinder","pos":[-0.2,0.0255,0.0025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop3","shape":"cylinder","pos":[-0.1,0.0255,0.0025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop4","shape":"cylinder","pos":[0.0,0.0255,0.0025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop5","shape":"cylinder","pos":[0.1,0.0255,0.0025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop6","shape":"cylinder","pos":[0.2,0.0255,0.0025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop7","shape":"cylinder","pos":[0.3,0.0255,0.0025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

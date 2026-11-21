@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_ShemaghFull", "baseHeight": 0.105, "name": "Hat Shemagh Full", "model": "gpt-oss:120b", "notes": "Flat full‑shemagh ~1 m square, 0.03 m thick, laid out like a product photo: main sheet with a raised centre fold, corner folds, rolled edges on all sides and a small tied end.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CentreFold","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.6],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCornerTL","shape":"cube","pos":[0.35,-0.0125,0.35],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.2],"color":[0.52,0.48,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCornerTR","shape":"cube","pos":[-0.35,-0.0125,0.35],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.2],"color":[0.52,0.48,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCornerBL","shape":"cube","pos":[0.35,-0.0125,-0.35],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.2],"color":[0.52,0.48,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCornerBR","shape":"cube","pos":[-0.35,-0.0125,-0.35],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.2],"color":[0.52,0.48,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollTop","shape":"cylinder","pos":[0.0,0.005,0.48],"rot":[0.0,0.0,90.0],"size":[0.04,1.0,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollBottom","shape":"cylinder","pos":[0.0,0.005,-0.48],"rot":[0.0,0.0,90.0],"size":[0.04,1.0,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollLeft","shape":"cylinder","pos":[-0.48,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,1.0,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollRight","shape":"cylinder","pos":[0.48,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,1.0,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TieEnd","shape":"cylinder","pos":[-0.35,0.025,-0.35],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0}
+]}

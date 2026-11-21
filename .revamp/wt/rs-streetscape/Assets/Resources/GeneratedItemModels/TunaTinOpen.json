@@ -1,0 +1,10 @@
+{"version": 1, "id": "TunaTinOpen", "baseHeight": 0.1165, "name": "Tuna Tin Open", "model": "gpt-oss:120b", "notes": "Open tuna tin lying on its side (≈0.14 m long × 0.10 m diameter): metal body, thin rim at the opened end, yellow‑brown label around the can, a shallow oil surface and a few pink tuna chunks inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.005,-0.0035,-0.0008],"rot":[0.0,0.0,90.0],"size":[0.1,0.14,0.1],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"Rim","shape":"cylinder","pos":[0.07,0.0015,-0.0008],"rot":[0.0,0.0,90.0],"size":[0.11,0.01,0.11],"color":[0.78,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[-0.005,-0.0035,-0.0008],"rot":[0.0,0.0,90.0],"size":[0.106,0.14,0.106],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"OilSurface","shape":"sphere","pos":[-0.005,-0.0385,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.09,0.004,0.08],"color":[0.92,0.85,0.7],"smooth":0.02,"metal":0.0},
+  {"name":"TunaChunk1","shape":"sphere","pos":[-0.035,-0.0185,0.0243],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.035],"color":[0.9,0.4,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"TunaChunk2","shape":"sphere","pos":[0.015,-0.0215,-0.0307],"rot":[0.0,0.0,0.0],"size":[0.045,0.028,0.04],"color":[0.88,0.38,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"TunaChunk3","shape":"sphere","pos":[-0.02,-0.0255,0.0393],"rot":[0.0,0.0,0.0],"size":[0.038,0.022,0.033],"color":[0.92,0.42,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"TunaChunk4","shape":"sphere","pos":[0.035,-0.0235,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.042,0.024,0.036],"color":[0.89,0.39,0.29],"smooth":0.05,"metal":0.0}
+]}

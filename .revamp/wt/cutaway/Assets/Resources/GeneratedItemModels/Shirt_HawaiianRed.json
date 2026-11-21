@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shirt_HawaiianRed", "baseHeight": 0.0765, "name": "Shirt Hawaiian Red", "model": "gpt-oss:120b", "notes": "Flat Hawaiian shirt 0.58 m long × 0.48 m wide, about 2.5 cm thick, with short sleeves, a small collar, cuffs, bottom hem and four front buttons. A thin bright‑red pattern overlay sits on the front face.", "score": 7, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.11,-0.004,-0.06],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.48],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.26,-0.0055,0.28],"rot":[0.0,0.0,0.0],"size":[0.18,0.022,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.26,-0.0055,-0.4],"rot":[0.0,0.0,0.0],"size":[0.18,0.022,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.39,0.0015,-0.06],"rot":[0.0,0.0,0.0],"size":[0.16,0.03,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.26,-0.0025,0.4],"rot":[0.0,0.0,0.0],"size":[0.18,0.028,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.26,-0.0025,-0.52],"rot":[0.0,0.0,0.0],"size":[0.18,0.028,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.18,-0.0055,-0.06],"rot":[0.0,0.0,0.0],"size":[0.58,0.022,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"sphere","pos":[-0.01,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.3,0.32],"smooth":0.3,"metal":0.0},
+  {"name":"Button2","shape":"sphere","pos":[0.07,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.3,0.32],"smooth":0.3,"metal":0.0},
+  {"name":"Button3","shape":"sphere","pos":[0.15,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.3,0.32],"smooth":0.3,"metal":0.0},
+  {"name":"Button4","shape":"sphere","pos":[0.23,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.3,0.32],"smooth":0.3,"metal":0.0},
+  {"name":"PatternFront","shape":"cube","pos":[0.11,0.009,0.24],"rot":[0.0,0.0,0.0],"size":[0.58,0.002,0.6],"color":[0.9,0.2,0.2],"smooth":0.1,"metal":0.0}
+]}

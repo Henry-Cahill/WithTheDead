@@ -1,0 +1,8 @@
+{"version": 1, "id": "Burrito", "baseHeight": 0.107, "name": "Burrito", "model": "gpt-oss:120b", "notes": "Burrito ~0.22 m long, 0.09 m diameter wrapped in shiny foil with a brown paper label band around the middle. Main tortilla colour uses the item tint; thin metallic foil gives a glossy outer skin; three small ellipsoids hint at meat, cheese and beans inside.", "score": 6, "parts": [
+  {"name":"FoilWrap","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.094,0.22,0.094],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"Tortilla","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.22,0.09],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.004,0.09],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"MeatChunk","shape":"sphere","pos":[-0.06,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.8,0.2,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"CheeseBlob","shape":"sphere","pos":[0.0,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.012],"color":[0.9,0.85,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"BeanCluster","shape":"sphere","pos":[0.06,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.017,0.013,0.013],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0}
+]}

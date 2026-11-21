@@ -1,0 +1,12 @@
+{"version": 1, "id": "SteelRodHalf", "baseHeight": 0.1, "name": "Steel Rod Half", "model": "gpt-oss:120b", "notes": "Steel rod half ~1.10 m long, 0.04 m shaft diameter, lying on its side (X‑axis). Thick blunt head at +X end with rounded tip, rubber‑grip section near –X handle, several rivet/bolt details.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.04,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.1,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripRubber","shape":"cylinder","pos":[-0.49,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.2,0.2,0.22],"smooth":0.25,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.45,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TipSphere","shape":"sphere","pos":[0.55,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndWeight","shape":"sphere","pos":[0.54,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetMid","shape":"cylinder","pos":[-0.04,-0.03,0.022],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.3,0.3,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"RivetMidOpp","shape":"cylinder","pos":[-0.04,-0.03,-0.022],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.3,0.3,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"BoltHead","shape":"cube","pos":[-0.34,-0.025,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.2,0.2,0.22],"smooth":0.25,"metal":0.0},
+  {"name":"BoltShaft","shape":"cylinder","pos":[-0.34,-0.01,0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.2,0.2,0.22],"smooth":0.25,"metal":0.0},
+  {"name":"HeadRing","shape":"cylinder","pos":[0.45,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0}
+]}

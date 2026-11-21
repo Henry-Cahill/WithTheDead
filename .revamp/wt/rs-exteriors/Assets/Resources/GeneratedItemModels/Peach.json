@@ -1,0 +1,8 @@
+{"version": 1, "id": "Peach", "baseHeight": 0.095, "name": "Peach", "model": "gpt-oss:120b", "notes": "Whole peach about 8 cm wide, lying on its side (long axis X). Main ellipsoid skin, central pit, short stem with a leaf, and a couple of surface spots for texture.", "score": 7, "parts": [
+  {"name":"Skin","shape":"sphere","pos":[0.0,0.0,-0.0173],"rot":[0.0,0.0,0.0],"size":[0.09,0.07,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pit","shape":"sphere","pos":[-0.01,0.0,-0.0173],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.0,0.0,0.0377],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.3,0.2,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Leaf","shape":"cube","pos":[0.0,0.01,0.0477],"rot":[30.0,0.0,20.0],"size":[0.03,0.002,0.015],"color":[0.2,0.5,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[0.02,0.005,0.0127],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.012],"color":[0.6,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[-0.025,-0.005,-0.0373],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.009],"color":[0.6,0.3,0.2],"smooth":0.05,"metal":0.0}
+]}

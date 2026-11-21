@@ -1,0 +1,13 @@
+{"version": 1, "id": "SheetMetal", "baseHeight": 0.21, "name": "Sheet Metal", "model": "gpt-oss:120b", "notes": "Flat sheet metal 0.50 m long × 0.30 m wide × 0.01 m thick, lying on the floor. Main panel with folded edges, a bent corner and four rivet‑hole cut‑outs for visual interest.", "score": 7, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0014,-0.006,0.0025],"rot":[0.0,0.0,0.0],"size":[0.5,0.01,0.3],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeFoldTop","shape":"cube","pos":[0.0014,-0.0,0.1475],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeFoldBottom","shape":"cube","pos":[0.0014,-0.0,-0.1425],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeFoldLeft","shape":"cube","pos":[-0.2486,-0.0,0.0025],"rot":[0.0,0.0,90.0],"size":[0.3,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeFoldRight","shape":"cube","pos":[0.2514,-0.0,0.0025],"rot":[0.0,0.0,90.0],"size":[0.3,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"CornerBend","shape":"cube","pos":[-0.2436,0.007,-0.1425],"rot":[0.0,0.0,45.0],"size":[0.02,0.008,0.02],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"RivetHoleTL","shape":"cylinder","pos":[-0.1786,-0.005,0.1225],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.3,0.28,0.22],"smooth":0.2,"metal":1.0},
+  {"name":"RivetHoleTR","shape":"cylinder","pos":[0.1814,-0.005,0.1225],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.3,0.28,0.22],"smooth":0.2,"metal":1.0},
+  {"name":"RivetHoleBL","shape":"cylinder","pos":[-0.1786,-0.005,-0.1175],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.3,0.28,0.22],"smooth":0.2,"metal":1.0},
+  {"name":"RivetHoleBR","shape":"cylinder","pos":[0.1814,-0.005,-0.1175],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.3,0.28,0.22],"smooth":0.2,"metal":1.0},
+  {"name":"RustPatch","shape":"cube","pos":[0.0714,-0.005,0.0025],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.04],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0}
+]}

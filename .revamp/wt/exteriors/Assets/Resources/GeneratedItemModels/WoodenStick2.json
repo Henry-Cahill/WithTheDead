@@ -1,0 +1,8 @@
+{"version": 1, "id": "WoodenStick2", "baseHeight": 0.13, "name": "Wooden Stick2", "model": "gpt-oss:120b", "notes": "Wooden staff ~1.4 m long, 5 cm thick, lying on its side (X‑axis). Main wooden shaft with grain strips, a leather grip near the centre and a rounded hardwood knob ending in a small metal tip for extra impact.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0775,-0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.4,0.05],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GrainStripL","shape":"cylinder","pos":[-0.0775,-0.035,-0.012],"rot":[0.0,0.0,90.0],"size":[0.01,1.38,0.01],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"GrainStripR","shape":"cylinder","pos":[-0.0775,-0.035,0.012],"rot":[0.0,0.0,90.0],"size":[0.01,1.38,0.01],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LeatherGrip","shape":"cube","pos":[-0.0775,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.045],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"Knob","shape":"sphere","pos":[0.6575,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"MetalTip","shape":"cylinder","pos":[0.7525,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.05,0.04],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0}
+]}

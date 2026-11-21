@@ -1,0 +1,11 @@
+{"version": 1, "id": "GreaveSpikeScrap_Right", "baseHeight": 0.1025, "name": "Greave Spike Scrap Right", "model": "gpt-oss:120b", "notes": "Irregular greave‑spike scrap ~20 cm long, 15 cm wide, 5 cm thick with several short metal spikes jutting out; a rust‑stained patch on the top left. Lying flat on its side (y=0).", "score": 7, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.05,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"SpikeRight","shape":"cylinder","pos":[0.11,-0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"SpikeLeft","shape":"cylinder","pos":[-0.11,-0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"SpikeFront","shape":"cylinder","pos":[0.0,-0.0175,0.08],"rot":[90.0,0.0,0.0],"size":[0.018,0.06,0.018],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"SpikeBack","shape":"cylinder","pos":[0.0,-0.0175,-0.08],"rot":[90.0,0.0,0.0],"size":[0.018,0.06,0.018],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"SpikeTop","shape":"cylinder","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[-0.06,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.4,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"DentLeft","shape":"sphere","pos":[-0.08,-0.0275,-0.03],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":1.0},
+  {"name":"DentRight","shape":"sphere","pos":[0.07,-0.0245,0.04],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Lemon", "baseHeight": 0.1, "name": "Lemon", "model": "gpt-oss:120b", "notes": "Lemon about 0.08 m long × 0.06 m wide, lying on its side: ellipsoidal fruit body, short brown stem with base, two small green leaves at the tip, and several shallow dimples for texture.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.0197,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.75,0.68,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"StemBase","shape":"cylinder","pos":[0.0153,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.01,0.008],"color":[0.34,0.22,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.0303,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.02,0.006],"color":[0.34,0.22,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"LeafL","shape":"cube","pos":[0.0353,0.005,0.018],"rot":[0.0,0.0,20.0],"size":[0.03,0.002,0.015],"color":[0.2,0.5,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LeafR","shape":"cube","pos":[0.0353,0.005,-0.018],"rot":[0.0,0.0,-20.0],"size":[0.03,0.002,0.015],"color":[0.2,0.5,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Dimple1","shape":"sphere","pos":[-0.0377,0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.55,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Dimple2","shape":"sphere","pos":[-0.0097,0.015,-0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.55,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Dimple3","shape":"sphere","pos":[0.0003,0.005,0.015],"rot":[0.0,0.0,0.0],"size":[0.006,0.003,0.006],"color":[0.6,0.55,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Dimple4","shape":"sphere","pos":[-0.0347,0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.006,0.003,0.006],"color":[0.6,0.55,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Dimple5","shape":"sphere","pos":[0.0053,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.007,0.0035,0.007],"color":[0.6,0.55,0.35],"smooth":0.4,"metal":0.0}
+]}

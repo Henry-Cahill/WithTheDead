@@ -1,0 +1,10 @@
+{"version": 1, "id": "MeasuringTape", "baseHeight": 0.0774, "name": "Measuring Tape", "model": "gpt-oss:120b", "notes": "Measuring tape (≈1.5 m) lying on the floor: a small rectangular plastic case (0.20 m × 0.07 m × 0.03 m), with a coiled steel strip inside shown as a flat disc, and about 1.2 m of tape laid out straight from the coil. Includes metal tip, lock button and a thin label on the case.", "score": 6, "parts": [
+  {"name":"CaseBody","shape":"cube","pos":[-0.6038,-0.0009,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.07],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"CaseLid","shape":"cube","pos":[-0.6038,0.0146,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.07],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"CoilDisc","shape":"cylinder","pos":[-0.6538,0.0011,0.0175],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.08],"color":[0.78,0.78,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"TapeStrip","shape":"cube","pos":[-0.0537,-0.0149,0.0175],"rot":[0.0,0.0,0.0],"size":[1.2,0.002,0.01],"color":[0.78,0.78,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"TipCube","shape":"cube","pos":[0.6963,-0.0149,0.0175],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.78,0.78,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"LockButton","shape":"cylinder","pos":[-0.6937,0.0021,0.01],"rot":[90.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"LabelPlate","shape":"cube","pos":[-0.6038,0.0156,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.065],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[-0.6038,0.0164,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.059],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0}
+]}

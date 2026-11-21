@@ -1,0 +1,10 @@
+{"version": 1, "id": "KaleSeed", "baseHeight": 0.0643, "name": "Kale Seed", "model": "gpt-oss:120b", "notes": "Small paper seed packet about 0.06 m long × 0.04 m wide × 0.008 m thick (tint 0.6,0.58,0.5) with a thin label on top and a handful of loose kale seeds inside.", "score": 6, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.038],"color":[0.4,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.015,0.0007,-0.01],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.01,-0.0003,0.012],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.008,-0.0013,-0.015],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.012,0.0007,0.004],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.02,0.0002,-0.005],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.018,-0.0008,0.015],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

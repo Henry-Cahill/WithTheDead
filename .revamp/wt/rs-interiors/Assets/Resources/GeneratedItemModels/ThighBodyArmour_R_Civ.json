@@ -1,0 +1,13 @@
+{"version": 1, "id": "ThighBodyArmour_R_Civ", "baseHeight": 0.071, "name": "Thigh Body Armour R Civ", "model": "gpt-oss:120b", "notes": "Civilian right‑leg thigh body armour piece, lying on the floor: a flat protective panel 0.35 m long × 0.15 m wide × 0.015 m thick in a muted tan‑grey (tint 0.6,0.58,0.5). Two strap loops at front/back top and bottom, a wrap‑around strap on each side with metal buckles.", "score": 6, "parts": [
+  {"name":"Panel","shape":"cube","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StrapBandFront","shape":"cube","pos":[0.0,0.001,0.065],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.02],"color":[0.2,0.2,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"StrapBandBack","shape":"cube","pos":[0.0,0.001,-0.065],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.02],"color":[0.2,0.2,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"PadFrontTop","shape":"cylinder","pos":[0.12,0.0065,0.075],"rot":[0.0,0.0,0.0],"size":[0.025,0.005,0.025],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"PadFrontBottom","shape":"cylinder","pos":[-0.12,0.0065,0.075],"rot":[0.0,0.0,0.0],"size":[0.025,0.005,0.025],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"PadBackTop","shape":"cylinder","pos":[0.12,0.0065,-0.075],"rot":[0.0,0.0,0.0],"size":[0.025,0.005,0.025],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"PadBackBottom","shape":"cylinder","pos":[-0.12,0.0065,-0.075],"rot":[0.0,0.0,0.0],"size":[0.025,0.005,0.025],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BuckleFrontTop","shape":"cube","pos":[0.12,0.006,0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.01],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleFrontBottom","shape":"cube","pos":[-0.12,0.006,0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.01],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleBackTop","shape":"cube","pos":[0.12,0.006,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.01],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleBackBottom","shape":"cube","pos":[-0.12,0.006,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.01],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0}
+]}

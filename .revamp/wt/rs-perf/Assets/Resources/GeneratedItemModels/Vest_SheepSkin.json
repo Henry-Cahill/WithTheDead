@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_SheepSkin", "baseHeight": 0.0755, "name": "Vest Sheep Skin", "model": "gpt-oss:120b", "notes": "Sheep‑skin vest lying flat, approx 0.52 m wide × 0.40 m deep × 0.025 m thick. Two side panels with a front flap, small shoulder flaps, top & back stitching lines and three metal buttons sewn onto the front flap.", "score": 6, "parts": [
+  {"name":"PanelL","shape":"cube","pos":[-0.14,-0.003,-0.114],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"PanelR","shape":"cube","pos":[0.14,-0.003,-0.114],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"ShoulderL","shape":"cube","pos":[-0.14,-0.003,0.066],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"ShoulderR","shape":"cube","pos":[0.14,-0.003,0.066],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[0.0,-0.003,0.106],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"TopStitch","shape":"cylinder","pos":[0.0,0.01,-0.114],"rot":[0.0,0.0,90.0],"size":[0.004,0.52,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"BackStitch","shape":"cylinder","pos":[0.0,0.01,-0.314],"rot":[0.0,0.0,90.0],"size":[0.004,0.52,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.0,0.013,0.311],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0,0.01,0.311],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0,0.007,0.311],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0}
+]}

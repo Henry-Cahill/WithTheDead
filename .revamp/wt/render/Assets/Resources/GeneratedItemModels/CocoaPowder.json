@@ -1,0 +1,9 @@
+{"version": 1, "id": "CocoaPowder", "baseHeight": 0.106, "name": "Cocoa Powder", "model": "gpt-oss:120b", "notes": "Paperboard cocoa‑powder tub ~0.22 m wide × 0.15 m deep × 0.09 m tall, standing upright. Thin resealable lid with rim, printed label on front, and a visible powder fill inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.08,0.15],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.038,0.0],"rot":[0.0,0.0,0.0],"size":[0.225,0.008,0.155],"color":[0.82,0.8,0.73],"smooth":0.2,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.008,0.23],"color":[0.7,0.66,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.12],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"PowderFill","shape":"cube","pos":[0.0,-0.026,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.13],"color":[0.38,0.28,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"SealRing","shape":"cylinder","pos":[0.0,0.0425,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.04],"color":[0.65,0.6,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeSeamTop","shape":"cylinder","pos":[0.0,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.222,0.002,0.222],"color":[0.7,0.66,0.48],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Broom", "baseHeight": 0.0875, "name": "Broom", "model": "gpt-oss:120b", "notes": "Broom ~1.6 m long (handle 1.5 m, brush block 0.12 m) lying on its side along X; wooden/metal‑tinted handle with rubber grip, metal band near the head and a rectangular brush base topped by thin bristle cylinders.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.06,-0.0125,-0.04],"rot":[0.0,0.0,90.0],"size":[0.03,1.5,0.03],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.36,-0.0025,-0.04],"rot":[0.0,0.0,90.0],"size":[0.05,0.12,0.05],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.54,-0.0075,-0.04],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"BrushBase","shape":"cube","pos":[0.75,0.0075,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.7,0.7,0.75],"smooth":0.15,"metal":0.0},
+  {"name":"Bristle1","shape":"cylinder","pos":[0.72,-0.0025,0.04],"rot":[90.0,0.0,0.0],"size":[0.005,0.08,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Bristle2","shape":"cylinder","pos":[0.75,-0.0025,0.04],"rot":[90.0,0.0,0.0],"size":[0.005,0.08,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Bristle3","shape":"cylinder","pos":[0.78,-0.0025,0.04],"rot":[90.0,0.0,0.0],"size":[0.005,0.08,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Bristle4","shape":"cylinder","pos":[0.72,0.0175,0.04],"rot":[90.0,0.0,0.0],"size":[0.005,0.08,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Bristle5","shape":"cylinder","pos":[0.75,0.0175,0.04],"rot":[90.0,0.0,0.0],"size":[0.005,0.08,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Bristle6","shape":"cylinder","pos":[0.78,0.0175,0.04],"rot":[90.0,0.0,0.0],"size":[0.005,0.08,0.005],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0}
+]}

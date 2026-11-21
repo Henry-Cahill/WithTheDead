@@ -1,0 +1,9 @@
+{"version": 1, "id": "NoseRing_Gold", "baseHeight": 0.0645, "name": "Nose Ring Gold", "model": "gpt-oss:120b", "notes": "Gold nose ring ~2 cm across, thin hoop about 0.4 cm thick, lying flat on the floor. Main hoop as a short cylinder with a tiny spherical clasp; all parts gold‑tinted, high gloss metal.", "score": 6, "parts": [
+  {"name":"Hoop","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"sphere","pos":[-0.009,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ClaspTop","shape":"sphere","pos":[-0.009,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ClaspBottom","shape":"sphere","pos":[-0.009,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EndCap","shape":"sphere","pos":[0.009,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EndCapTop","shape":"sphere","pos":[0.009,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EndCapBottom","shape":"sphere","pos":[0.009,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

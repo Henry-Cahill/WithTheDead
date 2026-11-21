@@ -1,0 +1,10 @@
+{"version": 1, "id": "Tshirt_HipHop", "baseHeight": 0.08, "name": "Tshirt Hip Hop", "model": "gpt-oss:120b", "notes": "Hip‑hop T‑shirt laid flat, approx 0.58 m long × 0.48 m wide × 0.025 m thick. Main body in tint (0.55,0.5,0.6) with a darker ribbed collar, spread sleeves, front pocket, bottom hem band and a small label tag on the back.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.1025,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.48],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarOuter","shape":"cylinder","pos":[0.385,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.2525,-0.0075,0.365],"rot":[0.0,30.0,0.0],"size":[0.2,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.2525,-0.0075,-0.365],"rot":[0.0,-30.0,0.0],"size":[0.2,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFront","shape":"cube","pos":[0.1525,0.0125,0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.7,0.65,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.185,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.005,0.48],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontStitch","shape":"cube","pos":[0.1025,-0.0075,0.238],"rot":[0.0,0.0,0.0],"size":[0.58,0.003,0.004],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[-0.1475,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.02],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0}
+]}

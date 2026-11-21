@@ -1,0 +1,13 @@
+{"version": 1, "id": "AssaultRifle2", "baseHeight": 0.14, "name": "Assault Rifle2", "model": "gpt-oss:120b", "notes": "Assault rifle ~0.9 m long lying on its side (barrel +X). Dark‑gray metal body, stock at –X, pistol grip & trigger guard near the receiver, 20‑round magazine under the receiver, simple front and rear sights.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.0325,-0.02,0.0125],"rot":[0.0,0.0,90.0],"size":[0.04,0.5,0.04],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"Handguard","shape":"cube","pos":[-0.0175,-0.01,0.0125],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"Receiver","shape":"cube","pos":[0.2325,-0.005,0.0125],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.09],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"Stock","shape":"cube","pos":[-0.3175,-0.01,0.0125],"rot":[0.0,0.0,0.0],"size":[0.25,0.06,0.1],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"PistolGrip","shape":"cube","pos":[0.2525,0.02,0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.06],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.2125,-0.01,0.0125],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"Trigger","shape":"cylinder","pos":[0.2125,0.005,0.0225],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"Magazine","shape":"cube","pos":[0.3825,-0.06,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.06],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"FrontSight","shape":"cube","pos":[0.3125,0.005,0.0125],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"RearSight","shape":"cube","pos":[-0.2675,-0.005,0.0125],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.04],"color":[0.24,0.25,0.28],"smooth":0.45,"metal":0.9},
+  {"name":"BoltCatch","shape":"cylinder","pos":[0.1525,0.005,0.0425],"rot":[0.0,0.0,90.0],"size":[0.008,0.025,0.008],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "RailroadSpikePullerOld", "baseHeight": 0.21, "name": "Railroad Spike Puller Old", "model": "gpt-oss:120b", "notes": "Old railroad spike puller ~1.4 m long lying on its side (X‑axis). Wooden shaft with a wooden grip knob, metal T‑shaped head and forward‑pointing hook. Simple seams and a bolt add detail.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.02,-0.02,-0.11],"rot":[0.0,0.0,90.0],"size":[0.05,1.4,0.05],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripKnob","shape":"cube","pos":[-0.66,-0.025,-0.11],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"ShaftEndCapL","shape":"cylinder","pos":[-0.67,-0.02,-0.11],"rot":[0.0,0.0,90.0],"size":[0.055,0.02,0.055],"color":[0.58,0.58,0.62],"smooth":0.15,"metal":0.0},
+  {"name":"SeamLeft","shape":"cylinder","pos":[-0.63,-0.02,-0.11],"rot":[0.0,0.0,90.0],"size":[0.052,0.008,0.052],"color":[0.55,0.55,0.58],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.57,-0.015,-0.11],"rot":[0.0,0.0,0.0],"size":[0.1,0.06,0.2],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HeadPlate","shape":"cube","pos":[0.57,-0.011,-0.11],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.18],"color":[0.42,0.42,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"Bolt","shape":"sphere","pos":[0.57,-0.0,-0.11],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"HookRod","shape":"cylinder","pos":[0.62,-0.0,0.04],"rot":[0.0,90.0,0.0],"size":[0.04,0.3,0.04],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HookTip","shape":"cylinder","pos":[0.62,0.03,0.19],"rot":[0.0,-180.0,0.0],"size":[0.04,0.1,0.04],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ReinforcementStrap","shape":"cube","pos":[0.42,-0.01,-0.11],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.06],"color":[0.5,0.5,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"SeamRight","shape":"cylinder","pos":[0.7,-0.02,-0.11],"rot":[0.0,0.0,90.0],"size":[0.052,0.008,0.052],"color":[0.55,0.55,0.58],"smooth":0.15,"metal":0.0}
+]}

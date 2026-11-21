@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_HighViz", "baseHeight": 0.072, "name": "Vest High Viz", "model": "gpt-oss:120b", "notes": "High‑visibility safety vest (≈0.70 m long × 0.50 m wide, 2 cm thick) lying flat on the floor, front and back panels overlapped, bright reflective strips across chest and sides, a small front pocket.", "score": 6, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontChestStrip","shape":"cube","pos":[-0.06,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.48],"color":[0.9,0.85,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"BackChestStrip","shape":"cube","pos":[-0.06,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.48],"color":[0.9,0.85,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"FrontSideStripL","shape":"cube","pos":[-0.3,0.001,-0.23],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.9,0.85,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"FrontSideStripR","shape":"cube","pos":[-0.3,0.001,0.23],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.9,0.85,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"BackSideStripL","shape":"cube","pos":[-0.3,0.0055,-0.23],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.9,0.85,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"BackSideStripR","shape":"cube","pos":[-0.3,0.0055,0.23],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.9,0.85,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[-0.25,0.001,-0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.32,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.48],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

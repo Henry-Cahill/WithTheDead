@@ -1,0 +1,8 @@
+{"version": 1, "id": "DoughnutChocolate", "baseHeight": 0.08, "name": "Doughnut Chocolate", "model": "gpt-oss:120b", "notes": "Chocolate‑coated doughnut in a small brown paper box (≈0.12 m × 0.08 m × 0.04 m). Box lies flat on the floor, lid slightly overhanging; front label shows darker trim. Inside the open top a squashed chocolate sphere suggests the doughnut, with a dark‑gray cylinder hinting at the hole.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.084],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.005,0.0415],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.002],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,-0.0035,0.0415],"rot":[0.0,0.0,0.0],"size":[0.11,0.002,0.002],"color":[0.35,0.28,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"InnerDoughnut","shape":"sphere","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.03,0.09],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"HoleHint","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

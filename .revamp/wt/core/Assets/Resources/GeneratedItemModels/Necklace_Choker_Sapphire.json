@@ -1,0 +1,13 @@
+{"version": 1, "id": "Necklace_Choker_Sapphire", "baseHeight": 0.075, "name": "Necklace Choker Sapphire", "model": "gpt-oss:120b", "notes": "Necklace choker sapphire lying on the floor: a thin circular metal band about 0.15 m across, edged with six tiny rivet beads and a small blue‑sapphire pendant hanging from one side.", "score": 6, "parts": [
+  {"name":"OuterRing","shape":"cylinder","pos":[0.0025,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.004,0.16],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"BaseRing","shape":"cylinder","pos":[0.0025,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"InnerRing","shape":"cylinder","pos":[0.0025,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Clasp","shape":"cylinder","pos":[-0.0675,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"SapphireGem","shape":"sphere","pos":[-0.0675,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.1,0.2,0.8],"smooth":0.65,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[0.0775,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Rivet2","shape":"sphere","pos":[0.04,-0.0095,0.0648],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Rivet3","shape":"sphere","pos":[-0.035,-0.0095,0.0648],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Rivet4","shape":"sphere","pos":[-0.0725,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Rivet5","shape":"sphere","pos":[-0.035,-0.0095,-0.0648],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Rivet6","shape":"sphere","pos":[0.04,-0.0095,-0.0648],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9}
+]}

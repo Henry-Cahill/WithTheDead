@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_ArmyService", "baseHeight": 0.6, "name": "Trousers Army Service", "model": "gpt-oss:120b", "notes": "Flat spread army‑service trousers, approx 0.50 m wide (outer leg edges) × 1.05 m long, 3 cm thick. Main fabric (tint 0.55,0.5,0.6) with front/rear pockets and five metal belt loops on the waist.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.525,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.5,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.15,-0.015,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.2,1.05,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.15,-0.015,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.2,1.05,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.15,0.31,0.0562],"rot":[0.0,0.0,0.0],"size":[0.08,0.15,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.15,0.31,0.0562],"rot":[0.0,0.0,0.0],"size":[0.08,0.15,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RearPocketL","shape":"cube","pos":[-0.15,0.06,-0.0638],"rot":[0.0,0.0,0.0],"size":[0.08,0.18,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RearPocketR","shape":"cube","pos":[0.15,0.06,-0.0638],"rot":[0.0,0.0,0.0],"size":[0.08,0.18,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop1","shape":"cylinder","pos":[-0.2,0.525,0.0663],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"BeltLoop2","shape":"cylinder","pos":[-0.1,0.525,0.0663],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"BeltLoop3","shape":"cylinder","pos":[0.0,0.525,0.0663],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"BeltLoop4","shape":"cylinder","pos":[0.1,0.525,0.0663],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"BeltLoop5","shape":"cylinder","pos":[0.2,0.525,0.0663],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0}
+]}

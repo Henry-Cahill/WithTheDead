@@ -1,0 +1,12 @@
+{"version": 1, "id": "AnimalFeedBag", "baseHeight": 0.25, "name": "Animal Feed Bag", "model": "gpt-oss:120b", "notes": "Animal feed sack ~0.5 m long, 0.25 m diameter, lying on its side (X‑axis). Burlap body with top/bottom seams, a rope handle loop near the opening, a simple label, and a few loose feed cubes spilling inside.", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[0.0,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.25,0.5,0.25],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.24,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.24,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.15,0.13,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.55,0.5,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.1,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.08],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Feed1","shape":"cube","pos":[-0.12,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Feed2","shape":"cube","pos":[-0.02,-0.02,-0.06],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Feed3","shape":"cube","pos":[0.08,0.01,0.03],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Feed4","shape":"cube","pos":[0.15,-0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Feed5","shape":"cube","pos":[-0.07,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0}
+]}

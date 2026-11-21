@@ -1,0 +1,13 @@
+{"version": 1, "id": "HopsSeed", "baseHeight": 0.0712, "name": "Hops Seed", "model": "gpt-oss:120b", "notes": "Small hops seed packet about 0.08 m wide × 0.05 m deep × 0.02 m tall lying flat: brown‑green paper sack, thin stitched seams, a printed label on the front, a short twine tie across the top and a handful of individual seeds visible inside.", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0017,-0.0023],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.05],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.0077,-0.0023],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.052],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.0102,-0.0023],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.052],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0017,0.0232],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.002],"color":[0.82,0.77,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[-0.03,0.0068,0.0232],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.01],"color":[0.58,0.55,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"TieString","shape":"cylinder","pos":[0.0,0.0072,0.0232],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.02,0.0003,-0.0123],"rot":[0.0,0.0,0.0],"size":[0.008,0.009,0.007],"color":[0.38,0.55,0.32],"smooth":0.6,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.015,0.0013,0.0027],"rot":[0.0,0.0,0.0],"size":[0.009,0.008,0.008],"color":[0.38,0.55,0.32],"smooth":0.6,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.01,0.0023,0.0127],"rot":[0.0,0.0,0.0],"size":[0.007,0.008,0.009],"color":[0.38,0.55,0.32],"smooth":0.6,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.025,-0.0002,-0.0202],"rot":[0.0,0.0,0.0],"size":[0.008,0.007,0.009],"color":[0.38,0.55,0.32],"smooth":0.6,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.015,0.0018,0.0178],"rot":[0.0,0.0,0.0],"size":[0.009,0.008,0.007],"color":[0.38,0.55,0.32],"smooth":0.6,"metal":0.0}
+]}

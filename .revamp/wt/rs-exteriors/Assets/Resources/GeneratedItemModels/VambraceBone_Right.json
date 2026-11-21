@@ -1,0 +1,13 @@
+{"version": 1, "id": "VambraceBone_Right", "baseHeight": 0.0717, "name": "Vambrace Bone Right", "model": "gpt-oss:120b", "notes": "Right‑arm bone vambrace ~0.25 m long × 0.09 m wide × 0.02 m thick: two overlapping bone plates, a curved rib connector, twin leather straps across the fore‑arm and a small metal buckle; all parts rest on the floor (y=0).", "score": 6, "parts": [
+  {"name":"PlateUpper","shape":"cube","pos":[-0.05,-0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PlateLower","shape":"cube","pos":[0.05,-0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RibConnector","shape":"cylinder","pos":[-0.0,0.0027,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.04,0.018],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cube","pos":[-0.04,-0.0013,0.045],"rot":[0.0,15.0,0.0],"size":[0.14,0.006,0.012],"color":[0.2,0.12,0.05],"smooth":0.15,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[-0.04,-0.0013,-0.045],"rot":[0.0,-15.0,0.0],"size":[0.14,0.006,0.012],"color":[0.2,0.12,0.05],"smooth":0.15,"metal":0.0},
+  {"name":"BuckleBase","shape":"cube","pos":[-0.09,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.018],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BucklePin","shape":"cylinder","pos":[-0.09,0.0027,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.012,0.004],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetUL","shape":"sphere","pos":[-0.08,0.0037,0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.38,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"RivetUR","shape":"sphere","pos":[-0.08,0.0037,-0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.38,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"RivetLL","shape":"sphere","pos":[0.04,0.0037,0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.38,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"RivetLR","shape":"sphere","pos":[0.04,0.0037,-0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.38,0.35],"smooth":0.5,"metal":1.0}
+]}

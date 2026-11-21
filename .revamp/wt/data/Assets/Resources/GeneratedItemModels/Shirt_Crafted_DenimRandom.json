@@ -1,0 +1,18 @@
+{"version": 1, "id": "Shirt_Crafted_DenimRandom", "baseHeight": 0.0755, "name": "Shirt Crafted Denim Random", "model": "gpt-oss:120b", "notes": "Flat denim shirt ≈ 0.55 m long × 0.45 m wide, about 2.5 cm thick (y‑height). Laid on its back with the neck opening pointing toward +X. Main tint (0.6, 0.58, 0.5) with cloth‑like low gloss.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0001,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.1551,-0.003,0.225],"rot":[0.0,-20.0,0.0],"size":[0.18,0.022,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.1551,-0.003,-0.225],"rot":[0.0,20.0,0.0],"size":[0.18,0.022,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.2549,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.16],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.2549,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.12],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.2451,-0.003,0.395],"rot":[0.0,-20.0,0.0],"size":[0.18,0.025,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.2451,-0.003,-0.395],"rot":[0.0,20.0,0.0],"size":[0.18,0.025,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.2701,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.45],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.0199,0.0045,0.08],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0199,0.0045,0.04],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0199,0.0045,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.0199,0.0045,-0.04],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.0199,0.0045,-0.08],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.2751,-0.0015,0.225],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.3],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.2751,-0.0015,-0.225],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.3],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStitch","shape":"cube","pos":[-0.1201,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.45],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

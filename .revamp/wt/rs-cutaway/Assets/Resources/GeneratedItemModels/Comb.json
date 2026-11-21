@@ -1,0 +1,15 @@
+{"version": 1, "id": "Comb", "baseHeight": 0.0725, "name": "Comb", "model": "gpt-oss:120b", "notes": "Flat plastic comb about 0.20 m long × 0.15 m wide × 0.005 m thick, with a row of twelve teeth (each ~0.008 m×0.02 m×0.015 m) protruding from the +Z edge.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.01,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth01","shape":"cube","pos":[-0.075,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth02","shape":"cube","pos":[-0.06,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth03","shape":"cube","pos":[-0.045,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth04","shape":"cube","pos":[-0.03,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth05","shape":"cube","pos":[-0.015,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth06","shape":"cube","pos":[0.0,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth07","shape":"cube","pos":[0.015,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth08","shape":"cube","pos":[0.03,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth09","shape":"cube","pos":[0.045,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth10","shape":"cube","pos":[0.06,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth11","shape":"cube","pos":[0.075,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tooth12","shape":"cube","pos":[0.09,0.0025,0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

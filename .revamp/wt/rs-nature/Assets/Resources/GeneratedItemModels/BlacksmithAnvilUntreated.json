@@ -1,0 +1,12 @@
+{"version": 1, "id": "BlacksmithAnvilUntreated", "baseHeight": 0.175, "name": "Blacksmith Anvil Untreated", "model": "gpt-oss:120b", "notes": "Untreated blacksmith anvil about 0.45 m long × 0.15 m thick × 0.20 m deep, lying on its side (long axis along X). Main block with a forward horn, rear heel, top‑face hole rim and a few rivet details.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.15,0.2],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":1.0},
+  {"name":"HornSphere","shape":"sphere","pos":[0.285,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.08],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":1.0},
+  {"name":"HornBase","shape":"cylinder","pos":[0.225,0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":1.0},
+  {"name":"RearHeel","shape":"cube","pos":[-0.275,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.15,0.2],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":1.0},
+  {"name":"TopHoleRim","shape":"cylinder","pos":[-0.05,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.04],"color":[0.15,0.15,0.15],"smooth":0.2,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.12,0.04,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[-0.12,0.04,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0},
+  {"name":"EdgeStripFront","shape":"cube","pos":[0.225,0.04,0.09],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.02],"color":[0.55,0.53,0.48],"smooth":0.35,"metal":1.0},
+  {"name":"EdgeStripBack","shape":"cube","pos":[-0.225,0.04,-0.09],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.02],"color":[0.55,0.53,0.48],"smooth":0.35,"metal":1.0},
+  {"name":"BottomPlate","shape":"cube","pos":[-0.1,-0.1075,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.18],"color":[0.58,0.56,0.5],"smooth":0.35,"metal":1.0}
+]}

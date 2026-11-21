@@ -1,0 +1,9 @@
+{"version": 1, "id": "Shoulderpad_Bone_L", "baseHeight": 0.0783, "name": "Shoulderpad Bone L", "model": "gpt-oss:120b", "notes": "Bone shoulder‑pad (left) about 0.25 m wide × 0.12 m tall × 0.015 m thick, lying flat on the floor. Main plate with raised front/back ridges, a central bone‑hole and two small decorative knobs at the front corners.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.0093,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0,0.0003,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.24,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RidgeFront","shape":"cube","pos":[0.0,0.0003,0.0505],"rot":[0.0,0.0,0.0],"size":[0.24,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RidgeBack","shape":"cube","pos":[0.0,0.0003,-0.0615],"rot":[0.0,0.0,0.0],"size":[0.24,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BoneHole","shape":"cylinder","pos":[0.0,-0.0093,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.03],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SpikeL","shape":"sphere","pos":[-0.11,0.0083,0.0555],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SpikeR","shape":"sphere","pos":[0.11,0.0083,0.0555],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

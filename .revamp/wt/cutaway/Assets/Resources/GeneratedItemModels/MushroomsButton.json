@@ -1,0 +1,9 @@
+{"version": 1, "id": "MushroomsButton", "baseHeight": 0.146, "name": "Mushrooms Button", "model": "gpt-oss:120b", "notes": "Upright canned button mushrooms ≈ 0.12 m diameter × 0.16 m tall: metal body with rolled seams, recessed lid, and a rectangular‑ish label in the product tint (0.75, 0.68, 0.45) with darker brown trim.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.16,0.12],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.074,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.082,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.012,0.108],"color":[0.73,0.73,0.74],"smooth":0.45,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.106,0.14,0.106],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.064,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.008,0.108],"color":[0.42,0.35,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.072,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.008,0.108],"color":[0.42,0.35,0.22],"smooth":0.12,"metal":0.0}
+]}

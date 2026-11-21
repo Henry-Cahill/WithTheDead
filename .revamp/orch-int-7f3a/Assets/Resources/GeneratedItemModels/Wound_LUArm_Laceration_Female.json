@@ -1,0 +1,9 @@
+{"version": 1, "id": "Wound_LUArm_Laceration_Female", "baseHeight": 0.0732, "name": "Wound LUArm Laceration Female", "model": "gpt-oss:120b", "notes": "Lacerated piece of left upper arm skin/flesh about 0.25 m long × 0.07 m wide × 0.015 m thick, ragged ends and a few dark blood spots as it would be found on the floor.", "score": 6, "parts": [
+  {"name":"MainPatch","shape":"cube","pos":[0.0001,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.1399,-0.0033,0.0],"rot":[0.0,0.0,10.0],"size":[0.03,0.015,0.07],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.1401,-0.0033,0.0],"rot":[0.0,0.0,-8.0],"size":[0.03,0.015,0.07],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"BloodSpotA","shape":"sphere","pos":[-0.0499,0.0072,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.08,0.08],"smooth":0.3,"metal":0.0},
+  {"name":"BloodSpotB","shape":"sphere","pos":[0.0301,0.0072,-0.025],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.45,0.08,0.08],"smooth":0.3,"metal":0.0},
+  {"name":"BloodSpotC","shape":"sphere","pos":[0.0901,0.0072,0.015],"rot":[0.0,0.0,0.0],"size":[0.011,0.011,0.011],"color":[0.45,0.08,0.08],"smooth":0.3,"metal":0.0},
+  {"name":"TissueFold","shape":"cube","pos":[-0.0199,0.0017,0.0],"rot":[0.0,15.0,0.0],"size":[0.08,0.004,0.05],"color":[0.58,0.56,0.48],"smooth":0.06,"metal":0.0}
+]}

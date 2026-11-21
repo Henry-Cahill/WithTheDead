@@ -1,0 +1,11 @@
+{"version": 1, "id": "RailroadSpikeKnife", "baseHeight": 0.1, "name": "Railroad Spike Knife", "model": "gpt-oss:120b", "notes": "Railroad‑spike knife ≈1.0 m long, lying on its side (X‑axis). Metal blade (0.78 m × 0.05 m × 0.02 m) with a pointed tip, wooden‑capped metal handle (0.22 m long, 0.06 m diameter) ending in a pommel sphere, and a small cross‑guard at the junction.", "score": 6, "parts": [
+  {"name":"HandleOuter","shape":"cylinder","pos":[-0.375,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.22,0.06],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"HandleCore","shape":"cylinder","pos":[-0.375,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.22,0.05],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.485,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.265,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.08],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.125,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.02,0.05],"color":[0.6,0.6,0.64],"smooth":0.3,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.515,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[0.125,-0.029,0.025],"rot":[0.0,0.0,0.0],"size":[0.78,0.004,0.002],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewFront","shape":"cylinder","pos":[-0.265,-0.015,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.45,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewBack","shape":"cylinder","pos":[-0.265,-0.015,-0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.45,0.4],"smooth":0.3,"metal":1.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "CommonMallowDried", "baseHeight": 0.082, "name": "Common Mallow Dried", "model": "gpt-oss:120b", "notes": "Small rectangular cardboard pack for dried mallow, ~0.12 m × 0.08 m × 0.04 m tall, standing upright. Includes outer box, top lid rim, paper label on front and a thin layer of the herb inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.002,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LidRim","shape":"cube","pos":[0.0,0.02,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.084],"color":[0.73,0.66,0.43],"smooth":0.1,"metal":0.0},
+  {"name":"BottomSeam","shape":"cube","pos":[0.0,-0.02,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.084],"color":[0.73,0.66,0.43],"smooth":0.1,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.003,0.0412],"rot":[0.0,0.0,0.0],"size":[0.09,0.018,0.002],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.0035,0.0413],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.002],"color":[0.45,0.38,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"HerbPile","shape":"sphere","pos":[0.0,-0.007,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.09,0.018,0.07],"color":[0.55,0.48,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimLeft","shape":"cube","pos":[-0.058,-0.002,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.004,0.04,0.084],"color":[0.73,0.66,0.43],"smooth":0.1,"metal":0.0},
+  {"name":"SideRimRight","shape":"cube","pos":[0.058,-0.002,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.004,0.04,0.084],"color":[0.73,0.66,0.43],"smooth":0.1,"metal":0.0}
+]}

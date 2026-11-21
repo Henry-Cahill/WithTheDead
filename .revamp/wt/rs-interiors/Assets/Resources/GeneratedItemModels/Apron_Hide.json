@@ -1,0 +1,8 @@
+{"version": 1, "id": "Apron_Hide", "baseHeight": 0.1263, "name": "Apron Hide", "model": "gpt-oss:120b", "notes": "Flat leather apron ~0.60 m wide × 0.35 m deep × 0.02 m thick with two hanging straps; brown‑tan hide colour.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0437,0.005],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.35],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.28,0.0062,0.155],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.28,0.0062,0.155],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[0.0,0.0062,-0.145],"rot":[0.0,0.0,0.0],"size":[0.03,0.05,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0387,-0.17],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.0,-0.0587,0.075],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.12],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "SteelBarMold", "baseHeight": 0.0875, "name": "Steel Bar Mold", "model": "gpt-oss:120b", "notes": "Steel Bar Mold ~0.20 m × 0.10 m × 0.04 m (L×W×H), heavy steel block with a recessed cavity, two short side‑handles and a label plate; lies flat on the floor.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"Cavity","shape":"cube","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.036,0.08],"color":[0.35,0.34,0.32],"smooth":0.15,"metal":1.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.09,0.0175,0.06],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.09,0.0175,-0.06],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"LabelPlate","shape":"cube","pos":[0.0,0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"ScrewFL","shape":"cylinder","pos":[-0.09,0.0175,0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.3,0.3,0.3],"smooth":0.2,"metal":1.0},
+  {"name":"ScrewFR","shape":"cylinder","pos":[-0.09,0.0175,-0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.3,0.3,0.3],"smooth":0.2,"metal":1.0},
+  {"name":"ScrewBL","shape":"cylinder","pos":[0.09,0.0175,0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.3,0.3,0.3],"smooth":0.2,"metal":1.0},
+  {"name":"ScrewBR","shape":"cylinder","pos":[0.09,0.0175,-0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.3,0.3,0.3],"smooth":0.2,"metal":1.0}
+]}

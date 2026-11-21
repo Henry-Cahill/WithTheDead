@@ -1,0 +1,12 @@
+{"version": 1, "id": "GreaveSpikeScrap_Left", "baseHeight": 0.112, "name": "Greave Spike Scrap Left", "model": "gpt-oss:120b", "notes": "Irregular greave scrap left‑hand side, ~0.18 m long x 0.08 m wide x 0.02 m thick, lying on its side (X‑axis). Main broken plate with a short metal spike, a few rust bumps and rivets for detail.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[-0.0109,-0.018,-0.0056],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeBase","shape":"cylinder","pos":[-0.0809,0.002,-0.0056],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[-0.0809,0.037,-0.0056],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"RustPatch1","shape":"cube","pos":[0.0291,-0.003,0.0244],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.015],"color":[0.38,0.3,0.22],"smooth":0.08,"metal":0.0},
+  {"name":"RustPatch2","shape":"cube","pos":[-0.0409,-0.003,-0.0306],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.012],"color":[0.35,0.28,0.2],"smooth":0.08,"metal":0.0},
+  {"name":"Rivet1","shape":"cylinder","pos":[-0.0309,-0.003,0.0094],"rot":[0.0,0.0,0.0],"size":[0.005,0.008,0.005],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"cylinder","pos":[0.0491,-0.003,-0.0256],"rot":[0.0,0.0,0.0],"size":[0.005,0.008,0.005],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BentEdge","shape":"cube","pos":[0.0791,-0.013,0.0344],"rot":[0.0,15.0,0.0],"size":[0.05,0.012,0.02],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Chip","shape":"cube","pos":[0.0591,-0.01,-0.0406],"rot":[0.0,-10.0,0.0],"size":[0.03,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[-0.0109,-0.007,-0.0056],"rot":[90.0,0.0,0.0],"size":[0.19,0.004,0.09],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0}
+]}

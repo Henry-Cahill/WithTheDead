@@ -1,0 +1,10 @@
+{"version": 1, "id": "Dip_Salsa", "baseHeight": 0.12, "name": "Dip Salsa", "model": "gpt-oss:120b", "notes": "Plastic dip salsa tub about 0.12 m long × 0.08 m wide × 0.05 m tall, white snap‑on lid, greenish‑yellow salsa inside, front label on the container.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.0023,-0.023,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.08],"color":[0.9,0.9,0.9],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[-0.0023,0.0045,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.122,0.005,0.082],"color":[0.95,0.95,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"Salsa","shape":"cube","pos":[-0.0023,-0.0255,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.108,0.045,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[-0.0023,-0.023,0.0375],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.002],"color":[0.85,0.8,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[-0.0023,-0.003,0.0375],"rot":[0.0,0.0,0.0],"size":[0.102,0.004,0.003],"color":[0.5,0.4,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.0023,-0.043,0.0375],"rot":[0.0,0.0,0.0],"size":[0.102,0.004,0.003],"color":[0.5,0.4,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"SideHandle","shape":"cylinder","pos":[0.0558,-0.013,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.8,0.8,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"RimFront","shape":"cylinder","pos":[-0.0023,0.0,0.0395],"rot":[90.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.85,0.85,0.85],"smooth":0.2,"metal":0.0}
+]}

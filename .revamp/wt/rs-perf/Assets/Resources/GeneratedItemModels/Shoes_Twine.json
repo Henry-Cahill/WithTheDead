@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoes_Twine", "baseHeight": 0.12, "name": "Shoes Twine", "model": "gpt-oss:120b", "notes": "Flat twine shoes laid out flat (≈0.32 m long × 0.12 m wide × 0.03 m thick). Rubber sole, canvas upper panels left/right, front toe‑cap, four horizontal twine laces across the top and a thin central stitch line.", "score": 6, "parts": [
+  {"name":"Sole","shape":"cube","pos":[0.0,-0.027,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.01,0.12],"color":[0.3,0.3,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[0.0,-0.013,0.0525],"rot":[0.0,0.0,0.0],"size":[0.32,0.018,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[0.0,-0.013,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.32,0.018,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ToeCap","shape":"cube","pos":[0.14,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelTab","shape":"cube","pos":[-0.14,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Lace1","shape":"cylinder","pos":[-0.08,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.008,0.12,0.008],"color":[0.45,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"Lace2","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.008,0.12,0.008],"color":[0.45,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"Lace3","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.008,0.12,0.008],"color":[0.45,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"Lace4","shape":"cylinder","pos":[0.04,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.008,0.12,0.008],"color":[0.45,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"StitchCenter","shape":"cube","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.002,0.004],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0}
+]}

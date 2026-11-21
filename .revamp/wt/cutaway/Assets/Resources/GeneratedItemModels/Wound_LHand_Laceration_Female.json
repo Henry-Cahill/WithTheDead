@@ -1,0 +1,11 @@
+{"version": 1, "id": "Wound_LHand_Laceration_Female", "baseHeight": 0.0771, "name": "Wound LHand Laceration Female", "model": "gpt-oss:120b", "notes": "Small torn flesh piece (~0.12 m long × 0.07 m wide × 0.02 m thick) representing a female left‑hand laceration, lying flat on the floor. Main pinkish‑brown tint with darker blood clots and thin red veins.", "score": 6, "parts": [
+  {"name":"BaseFlesh","shape":"cube","pos":[0.0,-0.0079,0.0005],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LumpFront","shape":"sphere","pos":[0.03,0.0046,0.0205],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.03],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"LumpBack","shape":"sphere","pos":[-0.035,0.0046,-0.0245],"rot":[0.0,0.0,0.0],"size":[0.045,0.022,0.032],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"BloodClot","shape":"sphere","pos":[-0.02,-0.0004,0.0005],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.4,0.05,0.05],"smooth":0.2,"metal":0.0},
+  {"name":"TornEdgeFront","shape":"cylinder","pos":[0.0,-0.0079,0.038],"rot":[0.0,0.0,90.0],"size":[0.005,0.12,0.005],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"TornEdgeBack","shape":"cylinder","pos":[0.0,-0.0079,-0.037],"rot":[0.0,0.0,90.0],"size":[0.005,0.12,0.005],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"Vein1","shape":"cylinder","pos":[0.0,-0.0064,0.0155],"rot":[0.0,0.0,90.0],"size":[0.003,0.12,0.003],"color":[0.7,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Vein2","shape":"cylinder","pos":[0.0,-0.0064,-0.0145],"rot":[0.0,0.0,90.0],"size":[0.003,0.12,0.003],"color":[0.7,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SkinFlap","shape":"cube","pos":[0.04,-0.0054,0.0005],"rot":[15.0,0.0,0.0],"size":[0.02,0.008,0.06],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

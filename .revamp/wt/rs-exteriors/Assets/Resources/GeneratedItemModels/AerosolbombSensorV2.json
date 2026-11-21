@@ -1,0 +1,11 @@
+{"version": 1, "id": "AerosolbombSensorV2", "baseHeight": 0.26, "name": "Aerosolbomb Sensor V2", "model": "gpt-oss:120b", "notes": "Aerosolbomb Sensor V2 melee weapon ≈ 1.20 m long, 0.08 m diameter tube with a metal band and sensor label, a vertical trigger grip on the -X end, and a blunt steel head on the +X end.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.11,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,1.2,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.09,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.32,0.09],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"LabelPlate","shape":"cube","pos":[-0.11,0.0,0.045],"rot":[0.0,0.0,90.0],"size":[0.4,0.04,0.002],"color":[0.3,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"BluntHead","shape":"sphere","pos":[0.61,0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"TriggerHandle","shape":"cylinder","pos":[-0.69,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.2,0.04],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.69,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.15,0.06],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.72,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.02,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFront","shape":"sphere","pos":[0.34,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBack","shape":"sphere","pos":[-0.56,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cudgel_SpadeHead", "baseHeight": 0.0862, "name": "Cudgel Spade Head", "model": "gpt-oss:120b", "notes": "Spade‑head weapon ~0.6 m long (X) × 0.15 m wide (Z) × 0.04 m thick (Y). Lying on its side, metal tint 0.6,0.6,0.64. Main flat back plate, a tapered blade body ending in a pointed tip, reinforcing band and edge ribs, with three rivets for visual detail.", "score": 6, "parts": [
+  {"name":"BackPlate","shape":"cube","pos":[-0.2175,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.15],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[-0.0025,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TipCone","shape":"sphere","pos":[0.2025,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.1],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ReinforcementPlate","shape":"cube","pos":[-0.2175,0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.15],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.2775,0.0037,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[-0.2775,0.0037,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetC","shape":"sphere","pos":[-0.2175,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"BladeEdgeL","shape":"cube","pos":[-0.0025,0.0063,0.07],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.02],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeR","shape":"cube","pos":[-0.0025,0.0063,-0.07],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.02],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"TipGuard","shape":"cube","pos":[0.2425,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.02],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0}
+]}

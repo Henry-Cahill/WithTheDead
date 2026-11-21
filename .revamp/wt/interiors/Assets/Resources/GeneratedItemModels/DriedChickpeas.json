@@ -1,0 +1,16 @@
+{"version": 1, "id": "DriedChickpeas", "baseHeight": 0.0975, "name": "Dried Chickpeas", "model": "gpt-oss:120b", "notes": "Loose dried chickpeas in a resealable paper‑plastic bag ~0.18 m × 0.12 m × 0.07 m (L × W × H). Bag body with top seal, front label and a handful of individual beans modelled as small ellipsoids for clear silhouette.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.025,-0.0025,-0.001],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.12],"color":[0.9,0.85,0.75],"smooth":0.15,"metal":0.0},
+  {"name":"SealTop","shape":"cube","pos":[0.025,0.035,-0.001],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.12],"color":[0.85,0.8,0.7],"smooth":0.15,"metal":0.0},
+  {"name":"SealBottom","shape":"cube","pos":[0.025,-0.035,-0.001],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.12],"color":[0.85,0.8,0.7],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.055,0.0025,0.06],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean01","shape":"sphere","pos":[-0.015,0.0075,-0.021],"rot":[0.0,0.0,0.0],"size":[0.016,0.018,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean02","shape":"sphere","pos":[0.055,0.0005,0.009],"rot":[0.0,0.0,0.0],"size":[0.014,0.017,0.013],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean03","shape":"sphere","pos":[0.005,0.0045,0.024],"rot":[0.0,0.0,0.0],"size":[0.015,0.016,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean04","shape":"sphere","pos":[0.085,0.0015,-0.031],"rot":[0.0,0.0,0.0],"size":[0.017,0.019,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean05","shape":"sphere","pos":[-0.045,0.0035,0.029],"rot":[0.0,0.0,0.0],"size":[0.013,0.015,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean06","shape":"sphere","pos":[0.035,-0.0005,-0.041],"rot":[0.0,0.0,0.0],"size":[0.016,0.018,0.013],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean07","shape":"sphere","pos":[-0.005,0.0055,-0.016],"rot":[0.0,0.0,0.0],"size":[0.014,0.016,0.011],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean08","shape":"sphere","pos":[0.065,0.0075,0.034],"rot":[0.0,0.0,0.0],"size":[0.015,0.017,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean09","shape":"sphere","pos":[-0.025,0.0015,-0.026],"rot":[0.0,0.0,0.0],"size":[0.016,0.018,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean10","shape":"sphere","pos":[0.095,0.0045,-0.001],"rot":[0.0,0.0,0.0],"size":[0.017,0.019,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

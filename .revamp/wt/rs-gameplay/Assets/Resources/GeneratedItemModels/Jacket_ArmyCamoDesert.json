@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jacket_ArmyCamoDesert", "baseHeight": 0.15, "name": "Jacket Army Camo Desert", "model": "gpt-oss:120b", "notes": "Flat desert‑camo jacket about 0.55 m wide × 0.75 m deep × 0.025 m thick, sleeves 0.6 m long each, a standing collar, two front pockets and a folded hood on the back. All parts use the fabric tint (0.55,0.5,0.6) with darker trims for details.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.75],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cylinder","pos":[-0.575,0.0,0.05],"rot":[0.0,0.0,90.0],"size":[0.18,0.6,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cylinder","pos":[0.575,0.0,0.05],"rot":[0.0,0.0,90.0],"size":[0.18,0.6,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.0,0.0125,0.43],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.14],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.0,0.27],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0,0.27],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HoodFold","shape":"cube","pos":[0.0,0.0125,-0.3],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.275,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.75],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.275,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.75],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStitch","shape":"cube","pos":[0.0,0.0125,0.38],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.005],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

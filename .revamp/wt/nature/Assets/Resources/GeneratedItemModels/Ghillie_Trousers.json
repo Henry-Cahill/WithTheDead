@@ -1,0 +1,23 @@
+{"version": 1, "id": "Ghillie_Trousers", "baseHeight": 0.2739, "name": "Ghillie Trousers", "model": "gpt-oss:120b", "notes": "Flat‑lay Ghillie trousers ~1 m long, waist 0.60 m wide, two leg panels that taper from ~0.24 m at the thigh to ~0.15 m at the ankle, 3 cm thick.  Includes a waist band, belt loops, front and back pockets, hem caps and a low‑poly camo net overlay (horizontal & vertical strips).  All colours use the garment tint (0.55,0.5,0.6) with darker netting; smooth = 0.05, metal = 0.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.003,-0.48],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.28,0.007,-0.48],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.45,0.42,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.28,0.007,-0.48],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.45,0.42,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLegUpper","shape":"cube","pos":[-0.2,-0.013,-0.205],"rot":[0.0,0.0,0.0],"size":[0.24,0.03,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLegUpper","shape":"cube","pos":[0.2,-0.013,-0.205],"rot":[0.0,0.0,0.0],"size":[0.24,0.03,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLegLower","shape":"cube","pos":[-0.125,-0.013,0.295],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLegLower","shape":"cube","pos":[0.125,-0.013,0.295],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[-0.125,-0.013,0.52],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[0.125,-0.013,0.52],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.12,-0.0055,-0.13],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.12],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.12,-0.0055,-0.13],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.12],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,-0.0055,0.22],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.15],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CamoHBar1","shape":"cube","pos":[0.0,0.0,-0.28],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CamoHBar2","shape":"cube","pos":[0.0,0.0,-0.08],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CamoHBar3","shape":"cube","pos":[0.0,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CamoHBar4","shape":"cube","pos":[0.0,0.0,0.32],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CamoVBarL","shape":"cube","pos":[-0.28,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.005,0.028,1.0],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CamoVBarC","shape":"cube","pos":[0.0,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.005,0.028,1.0],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CamoVBarR","shape":"cube","pos":[0.28,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.005,0.028,1.0],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CamoDiag1","shape":"cube","pos":[0.0,0.0,-0.18],"rot":[0.0,0.0,45.0],"size":[0.6,0.005,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CamoDiag2","shape":"cube","pos":[0.0,0.0,0.22],"rot":[0.0,0.0,-45.0],"size":[0.6,0.005,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0}
+]}

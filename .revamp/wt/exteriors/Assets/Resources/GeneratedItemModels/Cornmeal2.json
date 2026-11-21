@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cornmeal2", "baseHeight": 0.2487, "name": "Cornmeal2", "model": "gpt-oss:120b", "notes": "Sealed cardboard sack of cornmeal (2 kg) 0.25 m wide × 0.20 m deep × 0.35 m tall, laid on its side with the opening facing +Z. Includes a dark brown twist‑tie and a front label.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.35,0.2],"color":[0.78,0.71,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,-0.0088,-0.1015],"rot":[0.0,0.0,0.0],"size":[0.22,0.08,0.002],"color":[0.45,0.33,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0088,0.1015],"rot":[0.0,0.0,0.0],"size":[0.22,0.08,0.002],"color":[0.45,0.33,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Tie","shape":"cylinder","pos":[0.0,0.1612,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.3,0.2,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.1812,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.015,0.18],"color":[0.7,0.63,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BottomSeam","shape":"cube","pos":[0.0,-0.1812,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.2],"color":[0.6,0.53,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamLeft","shape":"cube","pos":[-0.125,-0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.35,0.2],"color":[0.6,0.53,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cube","pos":[0.125,-0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.35,0.2],"color":[0.6,0.53,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.0138,0.1],"rot":[0.0,0.0,0.0],"size":[0.25,0.35,0.015],"color":[0.6,0.53,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,-0.0138,-0.1],"rot":[0.0,0.0,0.0],"size":[0.25,0.35,0.015],"color":[0.6,0.53,0.3],"smooth":0.05,"metal":0.0}
+]}

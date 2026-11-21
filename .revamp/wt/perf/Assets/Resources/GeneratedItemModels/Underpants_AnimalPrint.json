@@ -1,0 +1,11 @@
+{"version": 1, "id": "Underpants_AnimalPrint", "baseHeight": 0.0825, "name": "Underpants Animal Print", "model": "gpt-oss:120b", "notes": "Flat underpants (animal‑print) laid out flat for a product view – overall footprint ≈ 0.35 m × 0.22 m, 3 cm thick. Main cloth panel with waistband strip, side leg openings and a few animal‑print spots.", "score": 6, "parts": [
+  {"name":"BodyPanel","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.006,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegHoleL","shape":"cylinder","pos":[-0.105,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.14],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"LegHoleR","shape":"cylinder","pos":[0.105,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.14],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[-0.09,0.0075,-0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.38,0.28,0.18],"smooth":0.1,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[-0.02,0.0045,0.07],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.42,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[0.06,0.0065,-0.08],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.36,0.26,0.16],"smooth":0.1,"metal":0.0},
+  {"name":"Spot4","shape":"sphere","pos":[0.12,0.0055,0.04],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.4,0.29,0.19],"smooth":0.1,"metal":0.0},
+  {"name":"Spot5","shape":"sphere","pos":[-0.13,0.0035,0.03],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.35,0.25,0.15],"smooth":0.1,"metal":0.0}
+]}

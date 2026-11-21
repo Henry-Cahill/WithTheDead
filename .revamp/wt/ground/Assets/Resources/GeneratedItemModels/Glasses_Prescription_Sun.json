@@ -1,0 +1,9 @@
+{"version": 1, "id": "Glasses_Prescription_Sun", "baseHeight": 0.065, "name": "Glasses Prescription Sun", "model": "gpt-oss:120b", "notes": "Prescription sunglasses laid flat for a product‑photo view (≈0.16 m wide × 0.07 m tall × 0.02 m thick). Two rectangular lenses, metal‑tinted frame bridge, left/right temples, and tiny nose pads.", "score": 7, "parts": [
+  {"name":"LeftLens","shape":"cube","pos":[-0.045,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.045],"color":[0.78,0.82,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"RightLens","shape":"cube","pos":[0.045,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.045],"color":[0.78,0.82,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.01],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.8},
+  {"name":"LeftTemple","shape":"cylinder","pos":[-0.105,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.8},
+  {"name":"RightTemple","shape":"cylinder","pos":[0.105,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.8},
+  {"name":"NosePadL","shape":"cube","pos":[-0.01,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.004],"color":[0.48,0.44,0.55],"smooth":0.4,"metal":0.8},
+  {"name":"NosePadR","shape":"cube","pos":[0.01,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.004],"color":[0.48,0.44,0.55],"smooth":0.4,"metal":0.8}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "DeerLeather_Fur_Tan_Small", "baseHeight": 0.075, "name": "Deer Leather Fur Tan Small", "model": "gpt-oss:120b", "notes": "Small tan deer leather/fur patch about 15 cm × 10 cm, 2 cm thick, lying flat with ragged edges, a folded corner and a few tufts of fur for texture.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.018,0.1],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.085,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.022,0.1],"color":[0.48,0.46,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.085,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.022,0.1],"color":[0.48,0.46,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.004,0.06],"rot":[0.0,0.0,0.0],"size":[0.15,0.022,0.02],"color":[0.48,0.46,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.004,-0.06],"rot":[0.0,0.0,0.0],"size":[0.15,0.022,0.02],"color":[0.48,0.46,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"CornerFold","shape":"cube","pos":[0.065,-0.0025,0.045],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.04],"color":[0.52,0.5,0.44],"smooth":0.07,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.03,0.004,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.68,0.66,0.58],"smooth":0.04,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.04,0.004,0.03],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.68,0.66,0.58],"smooth":0.04,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[-0.05,0.004,0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.68,0.66,0.58],"smooth":0.04,"metal":0.0},
+  {"name":"TornStrip1","shape":"cube","pos":[-0.06,-0.004,-0.045],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.02],"color":[0.48,0.46,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"TornStrip2","shape":"cube","pos":[0.06,-0.004,0.045],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.02],"color":[0.48,0.46,0.4],"smooth":0.07,"metal":0.0}
+]}

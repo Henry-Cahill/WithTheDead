@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_HeadSack_Burlap", "baseHeight": 0.0925, "name": "Hat Head Sack Burlap", "model": "gpt-oss:120b", "notes": "Flat sack‑hat (head sack) laid out for a product view – 0.35 m wide × 0.28 m tall, 2.5 cm thick burlap panel with a rolled top seam, a surrounding brim disc, two draw‑strings crossing over the top and a central knot; stitched edge lines around all sides.", "score": 6, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopRoll","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.35,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimDisc","shape":"cylinder","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.015,0.4],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StringL","shape":"cylinder","pos":[-0.13,0.0125,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StringR","shape":"cylinder","pos":[0.13,0.0125,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[0.0,0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,-0.0055,0.14],"rot":[0.0,0.0,90.0],"size":[0.004,0.35,0.004],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,-0.0055,-0.14],"rot":[0.0,0.0,90.0],"size":[0.004,0.35,0.004],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.175,-0.0055,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.175,-0.0055,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Specimen_Minerals", "baseHeight": 0.16, "name": "Specimen Minerals", "model": "gpt-oss:120b", "notes": "Upright mineral specimen jar about 0.12 m diameter × 0.18 m tall: clear glass body, brushed‑metal screw cap, thin paper label on the front, and a handful of earth‑tone rock lumps inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.18,0.12],"color":[0.92,0.94,0.96],"smooth":0.6,"metal":0.0},
+  {"name":"BaseRing","shape":"cylinder","pos":[0.0,-0.0975,0.0],"rot":[0.0,0.0,0.0],"size":[0.125,0.005,0.125],"color":[0.88,0.9,0.92],"smooth":0.6,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.02,0.13],"color":[0.3,0.3,0.32],"smooth":0.5,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.01,0.061],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.002],"color":[0.85,0.8,0.7],"smooth":0.1,"metal":0.0},
+  {"name":"Rock1","shape":"sphere","pos":[-0.015,-0.06,-0.01],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rock2","shape":"sphere","pos":[0.02,-0.03,0.005],"rot":[0.0,0.0,0.0],"size":[0.025,0.035,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rock3","shape":"sphere","pos":[-0.03,-0.01,0.015],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rock4","shape":"sphere","pos":[0.01,0.02,-0.02],"rot":[0.0,0.0,0.0],"size":[0.028,0.04,0.028],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rock5","shape":"sphere","pos":[-0.025,0.045,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rock6","shape":"sphere","pos":[0.03,-0.05,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rock7","shape":"sphere","pos":[-0.01,0.015,-0.03],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

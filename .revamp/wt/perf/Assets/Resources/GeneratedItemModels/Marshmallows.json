@@ -1,0 +1,13 @@
+{"version": 1, "id": "Marshmallows", "baseHeight": 0.085, "name": "Marshmallows", "model": "gpt-oss:120b", "notes": "Small cardboard box of marshmallows (≈0.12 m × 0.07 m × 0.05 m) in a tan‑tinted package with a white front label; contains four soft white marshmallow spheres.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.07],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.07],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.0,0.0355],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.002],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"FrontRim","shape":"cube","pos":[0.0,0.0,0.036],"rot":[0.0,0.0,0.0],"size":[0.12,0.045,0.002],"color":[0.65,0.55,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"BackRim","shape":"cube","pos":[0.0,0.0,-0.036],"rot":[0.0,0.0,0.0],"size":[0.12,0.045,0.002],"color":[0.65,0.55,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"LeftRim","shape":"cube","pos":[-0.061,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.045,0.07],"color":[0.65,0.55,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"RightRim","shape":"cube","pos":[0.061,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.045,0.07],"color":[0.65,0.55,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"Marshmallow1","shape":"sphere","pos":[-0.025,-0.015,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.95,0.95,0.95],"smooth":0.25,"metal":0.0},
+  {"name":"Marshmallow2","shape":"sphere","pos":[0.025,-0.015,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.95,0.95,0.95],"smooth":0.25,"metal":0.0},
+  {"name":"Marshmallow3","shape":"sphere","pos":[-0.025,-0.015,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.95,0.95,0.95],"smooth":0.25,"metal":0.0},
+  {"name":"Marshmallow4","shape":"sphere","pos":[0.025,-0.015,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.95,0.95,0.95],"smooth":0.25,"metal":0.0}
+]}

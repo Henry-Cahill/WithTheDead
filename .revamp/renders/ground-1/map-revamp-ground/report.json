@@ -1,0 +1,4010 @@
+{
+    "harness": "CloneZ MapShots 1",
+    "started": "2026-10-24 00:25:35",
+    "unity": "6000.7.0a2",
+    "graphics": "Direct3D11 / Intel(R) Arc(TM) A750 Graphics",
+    "worldStore": "C:\\Users\\hlcma\\AppData\\Local\\Temp\\clonez-revamp\\world-f2",
+    "buildId": "ky-local-f2",
+    "attribution": "Map data © OpenStreetMap contributors (ODbL)",
+    "place": "Bardstown",
+    "zone": "bardstown",
+    "placeX": 1524927.1,
+    "placeZ": 1163838.1,
+    "halfSize": 200.0,
+    "quick": false,
+    "exitCode": 0,
+    "exitReason": "ok",
+    "totalSeconds": 23.4,
+    "square": {
+        "built": true,
+        "why": "",
+        "lastStats": "Kentucky map Bardstown (build ky-local-f2): 104 buildings, 121 beyond the edge, 152 street pieces, 433 containers, 10 lights, 0 trees, 4 exits. Map data © OpenStreetMap contributors (ODbL)",
+        "buildMs": 2156.86,
+        "spawnX": 2.5692873001098633,
+        "spawnZ": 14.860841751098633,
+        "spawnYaw": -94.61064910888672,
+        "exits": [
+            "North 3rd Street (north) at 59.9, 197.0",
+            "East Stephen Foster Avenue (east) at 197.0, -62.9",
+            "South 3rd Street (south) at -39.3, -197.0",
+            "West Stephen Foster Avenue (west) at -197.0, 36.7"
+        ],
+        "ceilingRenderers": 92,
+        "dataBuildingsInside": 117,
+        "dataBuildingsAtEdge": 13,
+        "dataBuildingsRing": 134,
+        "dataStreetPieces": 153,
+        "dataLines": 0,
+        "dataAreas": 3,
+        "dataBuildingKinds": "house 64, commercial 50, church 2, canopy 1",
+        "dataAreaKinds": "parking 2, cemetery 1",
+        "dataLineKinds": "",
+        "total": {
+            "name": "all",
+            "gameObjects": 3454,
+            "renderers": 1343,
+            "meshFilters": 1343,
+            "distinctMeshes": 569,
+            "materialSlots": 3028,
+            "distinctMaterials": 44,
+            "lights": 33,
+            "lightsShadowed": 23,
+            "colliders": 3016,
+            "shadowCasters": 1167,
+            "lootContainers": 433,
+            "vertices": 768933,
+            "triangles": 476810,
+            "distinctMeshVertices": 728568
+        },
+        "roots": [
+            {
+                "name": "World",
+                "gameObjects": 3160,
+                "renderers": 1051,
+                "meshFilters": 1051,
+                "distinctMeshes": 277,
+                "materialSlots": 2102,
+                "distinctMaterials": 42,
+                "lights": 33,
+                "lightsShadowed": 23,
+                "colliders": 3016,
+                "shadowCasters": 908,
+                "lootContainers": 433,
+                "vertices": 646959,
+                "triangles": 395599,
+                "distinctMeshVertices": 606594
+            },
+            {
+                "name": "RaidOverhead",
+                "gameObjects": 221,
+                "renderers": 220,
+                "meshFilters": 220,
+                "distinctMeshes": 220,
+                "materialSlots": 582,
+                "distinctMaterials": 18,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 220,
+                "lootContainers": 0,
+                "vertices": 76428,
+                "triangles": 40404,
+                "distinctMeshVertices": 76428
+            },
+            {
+                "name": "RaidScenery",
+                "gameObjects": 73,
+                "renderers": 72,
+                "meshFilters": 72,
+                "distinctMeshes": 72,
+                "materialSlots": 344,
+                "distinctMaterials": 21,
+                "lights": 0,
+                "lightsShadowed": 0,
+                "colliders": 0,
+                "shadowCasters": 39,
+                "lootContainers": 0,
+                "vertices": 45546,
+                "triangles": 40807,
+                "distinctMeshVertices": 45546
+            }
+        ],
+        "log": {
+            "errors": 0,
+            "warnings": 0,
+            "editModeArtefacts": 0,
+            "first": []
+        }
+    },
+    "squarePasses": [
+        {
+            "name": "(read the area)",
+            "ms": 87.76,
+            "maxMs": 87.76,
+            "count": 1
+        },
+        {
+            "name": "(set up the site)",
+            "ms": 0.26,
+            "maxMs": 0.26,
+            "count": 1
+        },
+        {
+            "name": "ground",
+            "ms": 0.51,
+            "maxMs": 0.51,
+            "count": 1
+        },
+        {
+            "name": "water",
+            "ms": 0.0,
+            "maxMs": 0.0,
+            "count": 1
+        },
+        {
+            "name": "fields",
+            "ms": 0.01,
+            "maxMs": 0.01,
+            "count": 1
+        },
+        {
+            "name": "parking",
+            "ms": 57.48,
+            "maxMs": 57.48,
+            "count": 1
+        },
+        {
+            "name": "cemeteries",
+            "ms": 30.5,
+            "maxMs": 30.1,
+            "count": 2
+        },
+        {
+            "name": "grounds",
+            "ms": 0.0,
+            "maxMs": 0.0,
+            "count": 1
+        },
+        {
+            "name": "yards",
+            "ms": 0.03,
+            "maxMs": 0.03,
+            "count": 1
+        },
+        {
+            "name": "snow tone",
+            "ms": 8.96,
+            "maxMs": 8.96,
+            "count": 1
+        },
+        {
+            "name": "streets",
+            "ms": 14.33,
+            "maxMs": 14.33,
+            "count": 1
+        },
+        {
+            "name": "sidewalks",
+            "ms": 20.85,
+            "maxMs": 20.85,
+            "count": 1
+        },
+        {
+            "name": "road markings",
+            "ms": 0.79,
+            "maxMs": 0.79,
+            "count": 1
+        },
+        {
+            "name": "railways",
+            "ms": 0.0,
+            "maxMs": 0.0,
+            "count": 1
+        },
+        {
+            "name": "buildings",
+            "ms": 371.89,
+            "maxMs": 48.68,
+            "count": 41
+        },
+        {
+            "name": "roofs",
+            "ms": 21.45,
+            "maxMs": 21.45,
+            "count": 1
+        },
+        {
+            "name": "roof snow and fence posts",
+            "ms": 2.97,
+            "maxMs": 2.97,
+            "count": 1
+        },
+        {
+            "name": "utility poles",
+            "ms": 22.35,
+            "maxMs": 22.35,
+            "count": 1
+        },
+        {
+            "name": "street lights",
+            "ms": 7.53,
+            "maxMs": 7.53,
+            "count": 1
+        },
+        {
+            "name": "signposts",
+            "ms": 4.55,
+            "maxMs": 4.55,
+            "count": 1
+        },
+        {
+            "name": "hydrants",
+            "ms": 9.29,
+            "maxMs": 9.29,
+            "count": 1
+        },
+        {
+            "name": "lot fences",
+            "ms": 1.57,
+            "maxMs": 1.57,
+            "count": 1
+        },
+        {
+            "name": "snow piles",
+            "ms": 5.01,
+            "maxMs": 5.01,
+            "count": 1
+        },
+        {
+            "name": "parked cars",
+            "ms": 18.56,
+            "maxMs": 18.56,
+            "count": 1
+        },
+        {
+            "name": "trees",
+            "ms": 0.09,
+            "maxMs": 0.09,
+            "count": 1
+        },
+        {
+            "name": "snow drifts",
+            "ms": 29.63,
+            "maxMs": 29.63,
+            "count": 1
+        },
+        {
+            "name": "points",
+            "ms": 1.29,
+            "maxMs": 1.29,
+            "count": 1
+        },
+        {
+            "name": "park litter",
+            "ms": 0.01,
+            "maxMs": 0.01,
+            "count": 1
+        },
+        {
+            "name": "(emit the overhead meshes)",
+            "ms": 20.63,
+            "maxMs": 20.63,
+            "count": 1
+        },
+        {
+            "name": "(emit the outdoor meshes)",
+            "ms": 94.5,
+            "maxMs": 94.5,
+            "count": 1
+        }
+    ],
+    "squarePassesTotalMs": 832.79,
+    "squarePassesError": "",
+    "squarePassesLog": {
+        "errors": 0,
+        "warnings": 0,
+        "editModeArtefacts": 0,
+        "first": []
+    },
+    "spots": [
+        {
+            "id": "spawn",
+            "title": "The raid's opening frame: the survivor's spawn on Court Square, at the game's starting zoom",
+            "why": "KentuckyMap.Build's spawn (the sidewalk spot nearest the place's centre), facing along the street",
+            "found": true,
+            "x": 2.5692873001098633,
+            "z": 14.860841751098633,
+            "yaw": -94.61064910888672
+        },
+        {
+            "id": "downtown",
+            "title": "Downtown Bardstown: the middle of the square, on Court Square",
+            "why": "the place's own point in places.json (its OSM place node, which the square is built around), moved 16.8 m onto the nearest street",
+            "found": true,
+            "x": -7.699251174926758,
+            "z": 14.982329368591309,
+            "yaw": 0.0
+        },
+        {
+            "id": "residential",
+            "title": "The densest residential street: West Flaget Street, 5 homes within 30 m",
+            "why": "of the points every 6 m along the square's residential streets, the one with the most houses, apartments and trailers within 30 m",
+            "found": true,
+            "x": -131.81922912597656,
+            "z": 183.1038360595703,
+            "yaw": 0.0
+        },
+        {
+            "id": "intersection",
+            "title": "The busiest intersection: Court Square / US 31E;US 150 (3 ways in)",
+            "why": "the street node inside the square where the most, and the most important, streets meet (each scores its rank, double when it passes through)",
+            "found": true,
+            "x": 2.299999952316284,
+            "z": 18.200000762939453,
+            "yaw": 0.0
+        },
+        {
+            "id": "green",
+            "title": "Green: a cemetery, 5,927 m² inside the square",
+            "why": "the biggest park, cemetery, playground, pitch or golf course inside the square (grass, meadow and orchard count half)",
+            "found": true,
+            "x": -135.9110870361328,
+            "z": -100.23208618164063,
+            "yaw": 0.0
+        },
+        {
+            "id": "parking",
+            "title": "Parking: parking 'Free Municipal Parking', 2,442 m² inside the square",
+            "why": "the biggest parking area inside the square",
+            "found": true,
+            "x": -64.44999694824219,
+            "z": 125.5999984741211,
+            "yaw": 0.0
+        },
+        {
+            "id": "edge",
+            "title": "The square's edge: where West Stephen Foster Avenue leaves it (west), the playable map giving way to the scenery ring",
+            "why": "the best-ranked street crossing the square's edge, nearest its side's middle (how KentuckyMap ranks exits)",
+            "found": true,
+            "x": -200.0,
+            "z": 37.439910888671875,
+            "yaw": 0.0
+        },
+        {
+            "id": "waterway",
+            "title": "",
+            "why": "nothing of the kind in the square",
+            "found": false,
+            "x": 0.0,
+            "z": 0.0,
+            "yaw": 0.0
+        },
+        {
+            "id": "landmark",
+            "title": "Landmark: the biggest building in the square, church 'Bardstown United Methodist Church' (1,231 m² footprint)",
+            "why": "the largest footprint inside the square among churches, schools, warehouses, industrial, civic, hospital, retail, office, hotel and apartment buildings",
+            "found": true,
+            "x": 180.9399871826172,
+            "z": 150.6199951171875,
+            "yaw": 0.0
+        }
+    ],
+    "shots": [
+        {
+            "file": "00_overview.png",
+            "title": "Top-down overview of the whole start square (400 m, red outline) and its scenery ring, roofs on, north up; cyan = spawn, yellow = exits, magenta = the close-up spots",
+            "look": "day",
+            "camera": "top-down orthographic, 592 m square, north up",
+            "x": 0.0,
+            "z": 0.0,
+            "width": 2048,
+            "height": 2048,
+            "renderMs": 3826.84,
+            "meanLuma": 0.6094123721122742,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "00_overview_night.png",
+            "title": "The same overview by night as a raid starts, every map light on and unshadowed (no survivor, so no sight light): where the light is",
+            "look": "night",
+            "camera": "top-down orthographic, 592 m square, north up",
+            "x": 0.0,
+            "z": 0.0,
+            "width": 2048,
+            "height": 2048,
+            "renderMs": 110.43,
+            "meanLuma": 0.06842461228370667,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_spawn_day.png",
+            "title": "The raid's opening frame: the survivor's spawn on Court Square, at the game's starting zoom",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 9 (half-height, m), 20.5 m from the survivor's chest",
+            "x": 2.5692873001098633,
+            "z": 14.860841751098633,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 3295.85,
+            "meanLuma": 0.5862101912498474,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_spawn_night.png",
+            "title": "The raid's opening frame: the survivor's spawn on Court Square, at the game's starting zoom",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 9 (half-height, m), 20.5 m from the survivor's chest",
+            "x": 2.5692873001098633,
+            "z": 14.860841751098633,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 4177.46,
+            "meanLuma": 0.0958106517791748,
+            "darkFraction": 6.24999984211172e-7,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_downtown_day.png",
+            "title": "Downtown Bardstown: the middle of the square, on Court Square",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -7.699251174926758,
+            "z": 14.982329368591309,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 61.86,
+            "meanLuma": 0.5688973069190979,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_downtown_night.png",
+            "title": "Downtown Bardstown: the middle of the square, on Court Square",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -7.699251174926758,
+            "z": 14.982329368591309,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 72.36,
+            "meanLuma": 0.08363785594701767,
+            "darkFraction": 0.0011693750275298953,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_residential_day.png",
+            "title": "The densest residential street: West Flaget Street, 5 homes within 30 m",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -131.81922912597656,
+            "z": 183.1038360595703,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 64.29,
+            "meanLuma": 0.5858464241027832,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_residential_night.png",
+            "title": "The densest residential street: West Flaget Street, 5 homes within 30 m",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -131.81922912597656,
+            "z": 183.1038360595703,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 88.08,
+            "meanLuma": 0.07492811977863312,
+            "darkFraction": 6.24999984211172e-7,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_intersection_day.png",
+            "title": "The busiest intersection: Court Square / US 31E;US 150 (3 ways in)",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 2.299999952316284,
+            "z": 18.200000762939453,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 91.01,
+            "meanLuma": 0.5755005478858948,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_intersection_night.png",
+            "title": "The busiest intersection: Court Square / US 31E;US 150 (3 ways in)",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 2.299999952316284,
+            "z": 18.200000762939453,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 111.98,
+            "meanLuma": 0.0842093676328659,
+            "darkFraction": 0.00028562499210238457,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_green_day.png",
+            "title": "Green: a cemetery, 5,927 m² inside the square",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -135.9110870361328,
+            "z": -100.23208618164063,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 125.93,
+            "meanLuma": 0.5767815709114075,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_green_night.png",
+            "title": "Green: a cemetery, 5,927 m² inside the square",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -135.9110870361328,
+            "z": -100.23208618164063,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 79.45,
+            "meanLuma": 0.07776320725679398,
+            "darkFraction": 0.00007000000186963007,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_parking_day.png",
+            "title": "Parking: parking 'Free Municipal Parking', 2,442 m² inside the square",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -64.44999694824219,
+            "z": 125.5999984741211,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 77.8,
+            "meanLuma": 0.27028578519821167,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_parking_night.png",
+            "title": "Parking: parking 'Free Municipal Parking', 2,442 m² inside the square",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -64.44999694824219,
+            "z": 125.5999984741211,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 124.68,
+            "meanLuma": 0.07099896669387817,
+            "darkFraction": 0.000005625000085274223,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_edge_day.png",
+            "title": "The square's edge: where West Stephen Foster Avenue leaves it (west), the playable map giving way to the scenery ring",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -200.0,
+            "z": 37.439910888671875,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 72.2,
+            "meanLuma": 0.5522630214691162,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_edge_night.png",
+            "title": "The square's edge: where West Stephen Foster Avenue leaves it (west), the playable map giving way to the scenery ring",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -200.0,
+            "z": 37.439910888671875,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 90.95,
+            "meanLuma": 0.07756993919610977,
+            "darkFraction": 0.0001250000059371814,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_landmark_day.png",
+            "title": "Landmark: the biggest building in the square, church 'Bardstown United Methodist Church' (1,231 m² footprint)",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 180.9399871826172,
+            "z": 150.6199951171875,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 81.46,
+            "meanLuma": 0.5902948975563049,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "iso_landmark_night.png",
+            "title": "Landmark: the biggest building in the square, church 'Bardstown United Methodist Church' (1,231 m² footprint)",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": 180.9399871826172,
+            "z": 150.6199951171875,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 63.02,
+            "meanLuma": 0.08069099485874176,
+            "darkFraction": 0.000001249999968422344,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "tp_downtown_day.png",
+            "title": "Third-person shoulder view from the raid's spawn on Court Square (downtown), looking along the street",
+            "look": "day",
+            "camera": "shoulder: perspective fov 55, pitch 8, heading 265",
+            "x": 2.5692873001098633,
+            "z": 14.860841751098633,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 78.72,
+            "meanLuma": 0.47924748063087463,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "tp_downtown_night.png",
+            "title": "Third-person shoulder view from the raid's spawn on Court Square (downtown), looking along the street",
+            "look": "night",
+            "camera": "shoulder: perspective fov 55, pitch 8, heading 265",
+            "x": 2.5692873001098633,
+            "z": 14.860841751098633,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 75.91,
+            "meanLuma": 0.1433546096086502,
+            "darkFraction": 0.34590062499046326,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "tp_residential_day.png",
+            "title": "Third-person shoulder view on the sidewalk of West Flaget Street (the densest residential street), looking along it",
+            "look": "day",
+            "camera": "shoulder: perspective fov 55, pitch 8, heading 104",
+            "x": -130.6836395263672,
+            "z": 187.66458129882813,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 80.52,
+            "meanLuma": 0.4818632900714874,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "tp_residential_night.png",
+            "title": "Third-person shoulder view on the sidewalk of West Flaget Street (the densest residential street), looking along it",
+            "look": "night",
+            "camera": "shoulder: perspective fov 55, pitch 8, heading 104",
+            "x": -130.6836395263672,
+            "z": 187.66458129882813,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 95.7,
+            "meanLuma": 0.14075519144535065,
+            "darkFraction": 0.3659999966621399,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "chunks_louisville_top.png",
+            "title": "Streamed look: a 3x3 block of 128 m chunks around downtown Louisville (KentuckyStreamer's way, no scenery ring), top-down, roofs on, north up",
+            "look": "day",
+            "camera": "top-down orthographic, 396 m square, north up",
+            "x": 23.299999237060547,
+            "z": 59.29999923706055,
+            "width": 2048,
+            "height": 2048,
+            "renderMs": 220.95,
+            "meanLuma": 0.592775285243988,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "chunks_louisville_iso_day.png",
+            "title": "Streamed look: downtown Louisville in the isometric view, centred where four chunks meet",
+            "look": "day",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -40.70000076293945,
+            "z": -4.699999809265137,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 57.17,
+            "meanLuma": 0.553406834602356,
+            "darkFraction": 0.0,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        },
+        {
+            "file": "chunks_louisville_iso_night.png",
+            "title": "Streamed look: downtown Louisville in the isometric view, centred where four chunks meet",
+            "look": "night",
+            "camera": "isometric: orthographic, yaw 45, pitch 38, zoom 12.5 (half-height, m), 25.0 m from the survivor's chest",
+            "x": -40.70000076293945,
+            "z": -4.699999809265137,
+            "width": 1600,
+            "height": 1000,
+            "renderMs": 52.56,
+            "meanLuma": 0.07718219608068466,
+            "darkFraction": 0.000455000001238659,
+            "clippedFraction": 0.0,
+            "ok": true,
+            "error": ""
+        }
+    ],
+    "chunks": [
+        {
+            "label": "start-centre",
+            "place": "Bardstown",
+            "cx": 11913,
+            "cz": 9092,
+            "rx": 186,
+            "rz": 142,
+            "regionMissing": false,
+            "regionReadMs": 0.0,
+            "regionIndexMs": 0.0,
+            "totalMs": 60.39,
+            "activateMs": 1.25,
+            "slowestMs": 15.55,
+            "slowestStep": "buildings",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 2.85,
+                    "maxMs": 2.85,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 0.62,
+                    "maxMs": 0.62,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "parking",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "grounds",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "yards",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.69,
+                    "maxMs": 0.69,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 10.77,
+                    "maxMs": 10.77,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 5.88,
+                    "maxMs": 5.88,
+                    "count": 1
+                },
+                {
+                    "name": "road markings",
+                    "ms": 0.2,
+                    "maxMs": 0.2,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 15.55,
+                    "maxMs": 15.55,
+                    "count": 1
+                },
+                {
+                    "name": "roofs",
+                    "ms": 4.92,
+                    "maxMs": 4.92,
+                    "count": 1
+                },
+                {
+                    "name": "roof snow and fence posts",
+                    "ms": 0.29,
+                    "maxMs": 0.29,
+                    "count": 1
+                },
+                {
+                    "name": "utility poles",
+                    "ms": 0.76,
+                    "maxMs": 0.76,
+                    "count": 1
+                },
+                {
+                    "name": "street lights",
+                    "ms": 1.18,
+                    "maxMs": 1.18,
+                    "count": 1
+                },
+                {
+                    "name": "signposts",
+                    "ms": 0.07,
+                    "maxMs": 0.07,
+                    "count": 1
+                },
+                {
+                    "name": "hydrants",
+                    "ms": 0.16,
+                    "maxMs": 0.16,
+                    "count": 1
+                },
+                {
+                    "name": "lot fences",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "snow piles",
+                    "ms": 1.2,
+                    "maxMs": 1.2,
+                    "count": 1
+                },
+                {
+                    "name": "parked cars",
+                    "ms": 0.19,
+                    "maxMs": 0.19,
+                    "count": 1
+                },
+                {
+                    "name": "trees",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "snow drifts",
+                    "ms": 4.63,
+                    "maxMs": 4.63,
+                    "count": 1
+                },
+                {
+                    "name": "points",
+                    "ms": 0.06,
+                    "maxMs": 0.06,
+                    "count": 1
+                },
+                {
+                    "name": "park litter",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "overhead",
+                    "ms": 1.71,
+                    "maxMs": 1.71,
+                    "count": 1
+                },
+                {
+                    "name": "outdoor",
+                    "ms": 8.11,
+                    "maxMs": 8.11,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 64,
+            "bucketLines": 0,
+            "bucketOwned": 8,
+            "bucketForeign": 6,
+            "bucketAreas": 0,
+            "bucketPois": 5,
+            "buildings": 8,
+            "containers": 40,
+            "trees": 0,
+            "lights": 1,
+            "counts": {
+                "name": "start-centre",
+                "gameObjects": 261,
+                "renderers": 118,
+                "meshFilters": 118,
+                "distinctMeshes": 51,
+                "materialSlots": 253,
+                "distinctMaterials": 25,
+                "lights": 2,
+                "lightsShadowed": 1,
+                "colliders": 231,
+                "shadowCasters": 99,
+                "lootContainers": 40,
+                "vertices": 82104,
+                "triangles": 53935,
+                "distinctMeshVertices": 78704
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        },
+        {
+            "label": "rural-5km",
+            "place": "5 km from Bardstown (bearing 60°)",
+            "cx": 11947,
+            "cz": 9112,
+            "rx": 186,
+            "rz": 142,
+            "regionMissing": false,
+            "regionReadMs": 0.0,
+            "regionIndexMs": 0.0,
+            "totalMs": 74.99,
+            "activateMs": 1.54,
+            "slowestMs": 34.4,
+            "slowestStep": "buildings",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 0.09,
+                    "maxMs": 0.09,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 0.19,
+                    "maxMs": 0.19,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "parking",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "grounds",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "yards",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.65,
+                    "maxMs": 0.65,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 0.33,
+                    "maxMs": 0.33,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 0.34,
+                    "maxMs": 0.34,
+                    "count": 1
+                },
+                {
+                    "name": "road markings",
+                    "ms": 0.05,
+                    "maxMs": 0.05,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 44.09,
+                    "maxMs": 34.4,
+                    "count": 2
+                },
+                {
+                    "name": "roofs",
+                    "ms": 3.4,
+                    "maxMs": 3.4,
+                    "count": 1
+                },
+                {
+                    "name": "roof snow and fence posts",
+                    "ms": 0.11,
+                    "maxMs": 0.11,
+                    "count": 1
+                },
+                {
+                    "name": "utility poles",
+                    "ms": 0.66,
+                    "maxMs": 0.66,
+                    "count": 1
+                },
+                {
+                    "name": "street lights",
+                    "ms": 1.77,
+                    "maxMs": 1.77,
+                    "count": 1
+                },
+                {
+                    "name": "signposts",
+                    "ms": 0.24,
+                    "maxMs": 0.24,
+                    "count": 1
+                },
+                {
+                    "name": "hydrants",
+                    "ms": 0.07,
+                    "maxMs": 0.07,
+                    "count": 1
+                },
+                {
+                    "name": "lot fences",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "snow piles",
+                    "ms": 0.54,
+                    "maxMs": 0.54,
+                    "count": 1
+                },
+                {
+                    "name": "parked cars",
+                    "ms": 2.77,
+                    "maxMs": 2.77,
+                    "count": 1
+                },
+                {
+                    "name": "trees",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "snow drifts",
+                    "ms": 2.63,
+                    "maxMs": 2.63,
+                    "count": 1
+                },
+                {
+                    "name": "points",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "park litter",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "overhead",
+                    "ms": 6.28,
+                    "maxMs": 6.28,
+                    "count": 1
+                },
+                {
+                    "name": "outdoor",
+                    "ms": 10.7,
+                    "maxMs": 10.7,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 3,
+            "bucketLines": 0,
+            "bucketOwned": 12,
+            "bucketForeign": 4,
+            "bucketAreas": 0,
+            "bucketPois": 0,
+            "buildings": 12,
+            "containers": 32,
+            "trees": 0,
+            "lights": 1,
+            "counts": {
+                "name": "rural-5km",
+                "gameObjects": 388,
+                "renderers": 104,
+                "meshFilters": 104,
+                "distinctMeshes": 50,
+                "materialSlots": 242,
+                "distinctMaterials": 26,
+                "lights": 5,
+                "lightsShadowed": 4,
+                "colliders": 335,
+                "shadowCasters": 87,
+                "lootContainers": 32,
+                "vertices": 49179,
+                "triangles": 29423,
+                "distinctMeshVertices": 46411
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        },
+        {
+            "label": "louisville-downtown",
+            "place": "Louisville",
+            "cx": 11712,
+            "cz": 9478,
+            "rx": 183,
+            "rz": 148,
+            "regionMissing": false,
+            "regionReadMs": 193.44,
+            "regionIndexMs": 12.69,
+            "totalMs": 275.93,
+            "activateMs": 1.13,
+            "slowestMs": 105.69,
+            "slowestStep": "buildings",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 0.9,
+                    "maxMs": 0.9,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 3.0,
+                    "maxMs": 3.0,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 91.48,
+                    "maxMs": 91.48,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.98,
+                    "maxMs": 0.98,
+                    "count": 1
+                },
+                {
+                    "name": "parking",
+                    "ms": 0.81,
+                    "maxMs": 0.81,
+                    "count": 1
+                },
+                {
+                    "name": "grounds",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "yards",
+                    "ms": 1.65,
+                    "maxMs": 1.65,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.84,
+                    "maxMs": 0.84,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 6.76,
+                    "maxMs": 6.76,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 26.16,
+                    "maxMs": 26.16,
+                    "count": 1
+                },
+                {
+                    "name": "road markings",
+                    "ms": 0.24,
+                    "maxMs": 0.24,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 105.69,
+                    "maxMs": 105.69,
+                    "count": 1
+                },
+                {
+                    "name": "roofs",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "roof snow and fence posts",
+                    "ms": 0.29,
+                    "maxMs": 0.29,
+                    "count": 1
+                },
+                {
+                    "name": "utility poles",
+                    "ms": 0.33,
+                    "maxMs": 0.33,
+                    "count": 1
+                },
+                {
+                    "name": "street lights",
+                    "ms": 0.37,
+                    "maxMs": 0.37,
+                    "count": 1
+                },
+                {
+                    "name": "signposts",
+                    "ms": 0.02,
+                    "maxMs": 0.02,
+                    "count": 1
+                },
+                {
+                    "name": "hydrants",
+                    "ms": 0.1,
+                    "maxMs": 0.1,
+                    "count": 1
+                },
+                {
+                    "name": "lot fences",
+                    "ms": 0.85,
+                    "maxMs": 0.85,
+                    "count": 1
+                },
+                {
+                    "name": "snow piles",
+                    "ms": 0.14,
+                    "maxMs": 0.14,
+                    "count": 1
+                },
+                {
+                    "name": "parked cars",
+                    "ms": 0.2,
+                    "maxMs": 0.2,
+                    "count": 1
+                },
+                {
+                    "name": "trees",
+                    "ms": 1.92,
+                    "maxMs": 1.92,
+                    "count": 1
+                },
+                {
+                    "name": "snow drifts",
+                    "ms": 3.47,
+                    "maxMs": 3.47,
+                    "count": 1
+                },
+                {
+                    "name": "points",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "park litter",
+                    "ms": 15.23,
+                    "maxMs": 15.23,
+                    "count": 1
+                },
+                {
+                    "name": "overhead",
+                    "ms": 8.69,
+                    "maxMs": 8.69,
+                    "count": 1
+                },
+                {
+                    "name": "outdoor",
+                    "ms": 5.74,
+                    "maxMs": 5.74,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 80,
+            "bucketLines": 0,
+            "bucketOwned": 6,
+            "bucketForeign": 9,
+            "bucketAreas": 19,
+            "bucketPois": 0,
+            "buildings": 6,
+            "containers": 30,
+            "trees": 2,
+            "lights": 1,
+            "counts": {
+                "name": "louisville-downtown",
+                "gameObjects": 237,
+                "renderers": 95,
+                "meshFilters": 95,
+                "distinctMeshes": 47,
+                "materialSlots": 222,
+                "distinctMaterials": 31,
+                "lights": 1,
+                "lightsShadowed": 0,
+                "colliders": 202,
+                "shadowCasters": 77,
+                "lootContainers": 30,
+                "vertices": 274218,
+                "triangles": 148173,
+                "distinctMeshVertices": 271850
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        },
+        {
+            "label": "lexington-downtown",
+            "place": "Lexington",
+            "cx": 12577,
+            "cz": 9303,
+            "rx": 196,
+            "rz": 145,
+            "regionMissing": false,
+            "regionReadMs": 614.31,
+            "regionIndexMs": 31.68,
+            "totalMs": 246.0,
+            "activateMs": 0.69,
+            "slowestMs": 171.99,
+            "slowestStep": "ground",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 0.4,
+                    "maxMs": 0.4,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 171.99,
+                    "maxMs": 171.99,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "parking",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "grounds",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "yards",
+                    "ms": 10.07,
+                    "maxMs": 10.07,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 1.07,
+                    "maxMs": 1.07,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 1.34,
+                    "maxMs": 1.34,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 2.85,
+                    "maxMs": 2.85,
+                    "count": 1
+                },
+                {
+                    "name": "road markings",
+                    "ms": 0.14,
+                    "maxMs": 0.14,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "buildings",
+                    "ms": 41.14,
+                    "maxMs": 41.14,
+                    "count": 1
+                },
+                {
+                    "name": "roofs",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "roof snow and fence posts",
+                    "ms": 0.15,
+                    "maxMs": 0.15,
+                    "count": 1
+                },
+                {
+                    "name": "utility poles",
+                    "ms": 0.95,
+                    "maxMs": 0.95,
+                    "count": 1
+                },
+                {
+                    "name": "street lights",
+                    "ms": 0.54,
+                    "maxMs": 0.54,
+                    "count": 1
+                },
+                {
+                    "name": "signposts",
+                    "ms": 0.03,
+                    "maxMs": 0.03,
+                    "count": 1
+                },
+                {
+                    "name": "hydrants",
+                    "ms": 0.21,
+                    "maxMs": 0.21,
+                    "count": 1
+                },
+                {
+                    "name": "lot fences",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "snow piles",
+                    "ms": 0.71,
+                    "maxMs": 0.71,
+                    "count": 1
+                },
+                {
+                    "name": "parked cars",
+                    "ms": 1.1,
+                    "maxMs": 1.1,
+                    "count": 1
+                },
+                {
+                    "name": "trees",
+                    "ms": 5.73,
+                    "maxMs": 5.73,
+                    "count": 1
+                },
+                {
+                    "name": "snow drifts",
+                    "ms": 2.41,
+                    "maxMs": 2.41,
+                    "count": 1
+                },
+                {
+                    "name": "points",
+                    "ms": 0.04,
+                    "maxMs": 0.04,
+                    "count": 1
+                },
+                {
+                    "name": "park litter",
+                    "ms": 0.24,
+                    "maxMs": 0.24,
+                    "count": 1
+                },
+                {
+                    "name": "overhead",
+                    "ms": 1.47,
+                    "maxMs": 1.47,
+                    "count": 1
+                },
+                {
+                    "name": "outdoor",
+                    "ms": 3.33,
+                    "maxMs": 3.33,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 43,
+            "bucketLines": 0,
+            "bucketOwned": 6,
+            "bucketForeign": 8,
+            "bucketAreas": 6,
+            "bucketPois": 5,
+            "buildings": 6,
+            "containers": 30,
+            "trees": 6,
+            "lights": 1,
+            "counts": {
+                "name": "lexington-downtown",
+                "gameObjects": 185,
+                "renderers": 93,
+                "meshFilters": 93,
+                "distinctMeshes": 47,
+                "materialSlots": 209,
+                "distinctMaterials": 29,
+                "lights": 1,
+                "lightsShadowed": 0,
+                "colliders": 172,
+                "shadowCasters": 74,
+                "lootContainers": 30,
+                "vertices": 86247,
+                "triangles": 54329,
+                "distinctMeshVertices": 84055
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        },
+        {
+            "label": "hazard",
+            "place": "Hazard",
+            "cx": 13490,
+            "cz": 8630,
+            "rx": 210,
+            "rz": 134,
+            "regionMissing": false,
+            "regionReadMs": 5.02,
+            "regionIndexMs": 1.31,
+            "totalMs": 12.1,
+            "activateMs": 0.22,
+            "slowestMs": 2.63,
+            "slowestStep": "parking",
+            "steps": [
+                {
+                    "name": "data",
+                    "ms": 0.1,
+                    "maxMs": 0.1,
+                    "count": 1
+                },
+                {
+                    "name": "ground",
+                    "ms": 0.27,
+                    "maxMs": 0.27,
+                    "count": 1
+                },
+                {
+                    "name": "water",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "fields",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "parking",
+                    "ms": 2.63,
+                    "maxMs": 2.63,
+                    "count": 1
+                },
+                {
+                    "name": "grounds",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "yards",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "snow tone",
+                    "ms": 0.55,
+                    "maxMs": 0.55,
+                    "count": 1
+                },
+                {
+                    "name": "streets",
+                    "ms": 0.41,
+                    "maxMs": 0.41,
+                    "count": 1
+                },
+                {
+                    "name": "sidewalks",
+                    "ms": 0.49,
+                    "maxMs": 0.49,
+                    "count": 1
+                },
+                {
+                    "name": "road markings",
+                    "ms": 0.06,
+                    "maxMs": 0.06,
+                    "count": 1
+                },
+                {
+                    "name": "railways",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "roofs",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "roof snow and fence posts",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "utility poles",
+                    "ms": 0.21,
+                    "maxMs": 0.21,
+                    "count": 1
+                },
+                {
+                    "name": "street lights",
+                    "ms": 0.67,
+                    "maxMs": 0.67,
+                    "count": 1
+                },
+                {
+                    "name": "signposts",
+                    "ms": 0.08,
+                    "maxMs": 0.08,
+                    "count": 1
+                },
+                {
+                    "name": "hydrants",
+                    "ms": 0.13,
+                    "maxMs": 0.13,
+                    "count": 1
+                },
+                {
+                    "name": "lot fences",
+                    "ms": 1.37,
+                    "maxMs": 1.37,
+                    "count": 1
+                },
+                {
+                    "name": "snow piles",
+                    "ms": 0.46,
+                    "maxMs": 0.46,
+                    "count": 1
+                },
+                {
+                    "name": "parked cars",
+                    "ms": 0.52,
+                    "maxMs": 0.52,
+                    "count": 1
+                },
+                {
+                    "name": "trees",
+                    "ms": 1.17,
+                    "maxMs": 1.17,
+                    "count": 1
+                },
+                {
+                    "name": "snow drifts",
+                    "ms": 0.83,
+                    "maxMs": 0.83,
+                    "count": 1
+                },
+                {
+                    "name": "points",
+                    "ms": 0.01,
+                    "maxMs": 0.01,
+                    "count": 1
+                },
+                {
+                    "name": "park litter",
+                    "ms": 0.15,
+                    "maxMs": 0.15,
+                    "count": 1
+                },
+                {
+                    "name": "overhead",
+                    "ms": 0.0,
+                    "maxMs": 0.0,
+                    "count": 1
+                },
+                {
+                    "name": "outdoor",
+                    "ms": 1.98,
+                    "maxMs": 1.98,
+                    "count": 1
+                }
+            ],
+            "bucketStreets": 6,
+            "bucketLines": 0,
+            "bucketOwned": 0,
+            "bucketForeign": 1,
+            "bucketAreas": 3,
+            "bucketPois": 0,
+            "buildings": 0,
+            "containers": 0,
+            "trees": 15,
+            "lights": 1,
+            "counts": {
+                "name": "hazard",
+                "gameObjects": 62,
+                "renderers": 30,
+                "meshFilters": 30,
+                "distinctMeshes": 30,
+                "materialSlots": 115,
+                "distinctMaterials": 14,
+                "lights": 1,
+                "lightsShadowed": 0,
+                "colliders": 54,
+                "shadowCasters": 15,
+                "lootContainers": 0,
+                "vertices": 34783,
+                "triangles": 24375,
+                "distinctMeshVertices": 34783
+            },
+            "failed": false,
+            "error": "",
+            "log": {
+                "errors": 0,
+                "warnings": 0,
+                "editModeArtefacts": 0,
+                "first": []
+            }
+        }
+    ],
+    "regions": [
+        {
+            "rx": 186,
+            "rz": 142,
+            "exists": true,
+            "readMs": 100.63,
+            "indexMs": 13.98
+        },
+        {
+            "rx": 186,
+            "rz": 141,
+            "exists": true,
+            "readMs": 26.78,
+            "indexMs": 3.58
+        },
+        {
+            "rx": 185,
+            "rz": 141,
+            "exists": true,
+            "readMs": 13.03,
+            "indexMs": 2.74
+        },
+        {
+            "rx": 185,
+            "rz": 142,
+            "exists": true,
+            "readMs": 13.57,
+            "indexMs": 3.13
+        },
+        {
+            "rx": 183,
+            "rz": 148,
+            "exists": true,
+            "readMs": 193.44,
+            "indexMs": 12.69
+        },
+        {
+            "rx": 196,
+            "rz": 145,
+            "exists": true,
+            "readMs": 614.31,
+            "indexMs": 31.68
+        },
+        {
+            "rx": 210,
+            "rz": 134,
+            "exists": true,
+            "readMs": 5.02,
+            "indexMs": 1.31
+        },
+        {
+            "rx": 182,
+            "rz": 148,
+            "exists": true,
+            "readMs": 129.9,
+            "indexMs": 7.37
+        }
+    ],
+    "louisvilleBlock": {
+        "place": "Louisville",
+        "built": true,
+        "centreCx": 11712,
+        "centreCz": 9478,
+        "totalMs": 900.26,
+        "maxChunkMs": 160.78,
+        "counts": {
+            "name": "Louisville 3x3",
+            "gameObjects": 1937,
+            "renderers": 788,
+            "meshFilters": 788,
+            "distinctMeshes": 365,
+            "materialSlots": 1886,
+            "distinctMaterials": 45,
+            "lights": 15,
+            "lightsShadowed": 6,
+            "colliders": 1664,
+            "shadowCasters": 628,
+            "lootContainers": 242,
+            "vertices": 2692243,
+            "triangles": 1440051,
+            "distinctMeshVertices": 2670531
+        },
+        "chunks": [
+            {
+                "label": "louisville 0,0",
+                "place": "Louisville",
+                "cx": 11712,
+                "cz": 9478,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 111.62,
+                "activateMs": 0.74,
+                "slowestMs": 73.79,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.44,
+                        "maxMs": 0.44,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.72,
+                        "maxMs": 0.72,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 11.3,
+                        "maxMs": 11.3,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.11,
+                        "maxMs": 0.11,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.82,
+                        "maxMs": 0.82,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 1.33,
+                        "maxMs": 1.33,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 4.57,
+                        "maxMs": 4.57,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 73.79,
+                        "maxMs": 73.79,
+                        "count": 1
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 0.23,
+                        "maxMs": 0.23,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.23,
+                        "maxMs": 0.23,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.26,
+                        "maxMs": 0.26,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 0.69,
+                        "maxMs": 0.69,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.26,
+                        "maxMs": 0.26,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 2.62,
+                        "maxMs": 2.62,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 1.18,
+                        "maxMs": 1.18,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 8.9,
+                        "maxMs": 8.9,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 3.61,
+                        "maxMs": 3.61,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 80,
+                "bucketLines": 0,
+                "bucketOwned": 6,
+                "bucketForeign": 9,
+                "bucketAreas": 19,
+                "bucketPois": 0,
+                "buildings": 6,
+                "containers": 30,
+                "trees": 2,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville 0,0",
+                    "gameObjects": 237,
+                    "renderers": 95,
+                    "meshFilters": 95,
+                    "distinctMeshes": 47,
+                    "materialSlots": 222,
+                    "distinctMaterials": 31,
+                    "lights": 1,
+                    "lightsShadowed": 0,
+                    "colliders": 202,
+                    "shadowCasters": 77,
+                    "lootContainers": 30,
+                    "vertices": 274218,
+                    "triangles": 148173,
+                    "distinctMeshVertices": 271850
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 1,0",
+                "place": "Louisville",
+                "cx": 11713,
+                "cz": 9478,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 158.94,
+                "activateMs": 1.39,
+                "slowestMs": 108.72,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.29,
+                        "maxMs": 0.29,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 8.08,
+                        "maxMs": 8.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.63,
+                        "maxMs": 0.63,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.24,
+                        "maxMs": 0.24,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.19,
+                        "maxMs": 0.19,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 121.78,
+                        "maxMs": 108.72,
+                        "count": 2
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 6.62,
+                        "maxMs": 6.62,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.27,
+                        "maxMs": 0.27,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.22,
+                        "maxMs": 0.22,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.05,
+                        "maxMs": 0.05,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 0.12,
+                        "maxMs": 0.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.81,
+                        "maxMs": 0.81,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 0.73,
+                        "maxMs": 0.73,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.03,
+                        "maxMs": 0.03,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 0.27,
+                        "maxMs": 0.27,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 14.5,
+                        "maxMs": 14.5,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 3.74,
+                        "maxMs": 3.74,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 11,
+                "bucketLines": 0,
+                "bucketOwned": 17,
+                "bucketForeign": 0,
+                "bucketAreas": 14,
+                "bucketPois": 2,
+                "buildings": 17,
+                "containers": 75,
+                "trees": 12,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville 1,0",
+                    "gameObjects": 437,
+                    "renderers": 171,
+                    "meshFilters": 171,
+                    "distinctMeshes": 48,
+                    "materialSlots": 293,
+                    "distinctMaterials": 34,
+                    "lights": 4,
+                    "lightsShadowed": 3,
+                    "colliders": 402,
+                    "shadowCasters": 155,
+                    "lootContainers": 75,
+                    "vertices": 521708,
+                    "triangles": 268091,
+                    "distinctMeshVertices": 515620
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville -1,0",
+                "place": "Louisville",
+                "cx": 11711,
+                "cz": 9478,
+                "rx": 182,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 129.9,
+                "regionIndexMs": 7.37,
+                "totalMs": 63.68,
+                "activateMs": 0.85,
+                "slowestMs": 12.5,
+                "slowestStep": "water",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.23,
+                        "maxMs": 0.23,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.44,
+                        "maxMs": 0.44,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 12.5,
+                        "maxMs": 12.5,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 0.04,
+                        "maxMs": 0.04,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.5,
+                        "maxMs": 0.5,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.62,
+                        "maxMs": 0.62,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.91,
+                        "maxMs": 0.91,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 1.88,
+                        "maxMs": 1.88,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.09,
+                        "maxMs": 0.09,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 10.4,
+                        "maxMs": 10.4,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 0.16,
+                        "maxMs": 0.16,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.31,
+                        "maxMs": 0.31,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.43,
+                        "maxMs": 0.43,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.06,
+                        "maxMs": 0.06,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 6.06,
+                        "maxMs": 6.06,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.2,
+                        "maxMs": 0.2,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 3.15,
+                        "maxMs": 3.15,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.45,
+                        "maxMs": 0.45,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 9.05,
+                        "maxMs": 9.05,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 1.18,
+                        "maxMs": 1.18,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 3.33,
+                        "maxMs": 3.33,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 11.59,
+                        "maxMs": 11.59,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 45,
+                "bucketLines": 0,
+                "bucketOwned": 4,
+                "bucketForeign": 1,
+                "bucketAreas": 9,
+                "bucketPois": 0,
+                "buildings": 4,
+                "containers": 15,
+                "trees": 1,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville -1,0",
+                    "gameObjects": 196,
+                    "renderers": 65,
+                    "meshFilters": 65,
+                    "distinctMeshes": 44,
+                    "materialSlots": 200,
+                    "distinctMaterials": 30,
+                    "lights": 1,
+                    "lightsShadowed": 0,
+                    "colliders": 171,
+                    "shadowCasters": 46,
+                    "lootContainers": 15,
+                    "vertices": 100057,
+                    "triangles": 61972,
+                    "distinctMeshVertices": 99105
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 0,1",
+                "place": "Louisville",
+                "cx": 11712,
+                "cz": 9479,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 128.1,
+                "activateMs": 0.87,
+                "slowestMs": 80.04,
+                "slowestStep": "buildings",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.34,
+                        "maxMs": 0.34,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 2.18,
+                        "maxMs": 2.18,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 5.97,
+                        "maxMs": 5.97,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.6,
+                        "maxMs": 0.6,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.97,
+                        "maxMs": 0.97,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 1.36,
+                        "maxMs": 1.36,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 9.36,
+                        "maxMs": 9.36,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.06,
+                        "maxMs": 0.06,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "buildings",
+                        "ms": 80.04,
+                        "maxMs": 80.04,
+                        "count": 1
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 3.15,
+                        "maxMs": 3.15,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.11,
+                        "maxMs": 0.11,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.35,
+                        "maxMs": 0.35,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 3.34,
+                        "maxMs": 3.34,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.17,
+                        "maxMs": 0.17,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 0.45,
+                        "maxMs": 0.45,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 1.86,
+                        "maxMs": 1.86,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.03,
+                        "maxMs": 0.03,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 13.44,
+                        "maxMs": 13.44,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 4.09,
+                        "maxMs": 4.09,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 19,
+                "bucketLines": 0,
+                "bucketOwned": 8,
+                "bucketForeign": 10,
+                "bucketAreas": 3,
+                "bucketPois": 1,
+                "buildings": 8,
+                "containers": 37,
+                "trees": 0,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville 0,1",
+                    "gameObjects": 261,
+                    "renderers": 107,
+                    "meshFilters": 107,
+                    "distinctMeshes": 41,
+                    "materialSlots": 242,
+                    "distinctMaterials": 32,
+                    "lights": 3,
+                    "lightsShadowed": 2,
+                    "colliders": 216,
+                    "shadowCasters": 90,
+                    "lootContainers": 37,
+                    "vertices": 479533,
+                    "triangles": 249747,
+                    "distinctMeshVertices": 476029
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 0,-1",
+                "place": "Louisville",
+                "cx": 11712,
+                "cz": 9477,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 160.78,
+                "activateMs": 0.61,
+                "slowestMs": 119.29,
+                "slowestStep": "roofs",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.49,
+                        "maxMs": 0.49,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.31,
+                        "maxMs": 0.31,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 4.48,
+                        "maxMs": 4.48,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.37,
+                        "maxMs": 0.37,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.8,
+                        "maxMs": 0.8,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 1.27,
+                        "maxMs": 1.27,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 2.3,
+                        "maxMs": 2.3,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.16,
+                        "maxMs": 0.16,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 119.29,
+                        "maxMs": 119.29,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 3.27,
+                        "maxMs": 3.27,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.31,
+                        "maxMs": 0.31,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.45,
+                        "maxMs": 0.45,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 0.94,
+                        "maxMs": 0.94,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.2,
+                        "maxMs": 0.2,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 0.38,
+                        "maxMs": 0.38,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.25,
+                        "maxMs": 0.25,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 2.6,
+                        "maxMs": 2.6,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 1.03,
+                        "maxMs": 1.03,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 18.28,
+                        "maxMs": 18.28,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 3.41,
+                        "maxMs": 3.41,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 40,
+                "bucketLines": 0,
+                "bucketOwned": 4,
+                "bucketForeign": 2,
+                "bucketAreas": 9,
+                "bucketPois": 0,
+                "buildings": 4,
+                "containers": 20,
+                "trees": 3,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville 0,-1",
+                    "gameObjects": 172,
+                    "renderers": 83,
+                    "meshFilters": 83,
+                    "distinctMeshes": 45,
+                    "materialSlots": 224,
+                    "distinctMaterials": 24,
+                    "lights": 2,
+                    "lightsShadowed": 1,
+                    "colliders": 142,
+                    "shadowCasters": 64,
+                    "lootContainers": 20,
+                    "vertices": 550902,
+                    "triangles": 288338,
+                    "distinctMeshVertices": 548774
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 1,1",
+                "place": "Louisville",
+                "cx": 11713,
+                "cz": 9479,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 115.26,
+                "activateMs": 0.55,
+                "slowestMs": 92.47,
+                "slowestStep": "roofs",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.15,
+                        "maxMs": 0.15,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.4,
+                        "maxMs": 0.4,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 6.69,
+                        "maxMs": 6.69,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.78,
+                        "maxMs": 0.78,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.3,
+                        "maxMs": 0.3,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 0.31,
+                        "maxMs": 0.31,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.03,
+                        "maxMs": 0.03,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 92.47,
+                        "maxMs": 92.47,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 0.09,
+                        "maxMs": 0.09,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.15,
+                        "maxMs": 0.15,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.27,
+                        "maxMs": 0.27,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.04,
+                        "maxMs": 0.04,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.06,
+                        "maxMs": 0.06,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.03,
+                        "maxMs": 0.03,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 0.12,
+                        "maxMs": 0.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.01,
+                        "maxMs": 0.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 1.0,
+                        "maxMs": 1.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.04,
+                        "maxMs": 0.04,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 0.21,
+                        "maxMs": 0.21,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 9.3,
+                        "maxMs": 9.3,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 2.75,
+                        "maxMs": 2.75,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 11,
+                "bucketLines": 0,
+                "bucketOwned": 5,
+                "bucketForeign": 1,
+                "bucketAreas": 5,
+                "bucketPois": 3,
+                "buildings": 5,
+                "containers": 25,
+                "trees": 0,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville 1,1",
+                    "gameObjects": 172,
+                    "renderers": 81,
+                    "meshFilters": 81,
+                    "distinctMeshes": 41,
+                    "materialSlots": 159,
+                    "distinctMaterials": 25,
+                    "lights": 1,
+                    "lightsShadowed": 0,
+                    "colliders": 138,
+                    "shadowCasters": 64,
+                    "lootContainers": 25,
+                    "vertices": 340977,
+                    "triangles": 176726,
+                    "distinctMeshVertices": 338993
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville -1,1",
+                "place": "Louisville",
+                "cx": 11711,
+                "cz": 9479,
+                "rx": 182,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 78.98,
+                "activateMs": 0.65,
+                "slowestMs": 51.89,
+                "slowestStep": "roofs",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.21,
+                        "maxMs": 0.21,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.27,
+                        "maxMs": 0.27,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 10.45,
+                        "maxMs": 10.45,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.65,
+                        "maxMs": 0.65,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.62,
+                        "maxMs": 0.62,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.93,
+                        "maxMs": 0.93,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 1.56,
+                        "maxMs": 1.56,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 51.89,
+                        "maxMs": 51.89,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 0.24,
+                        "maxMs": 0.24,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.3,
+                        "maxMs": 0.3,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.34,
+                        "maxMs": 0.34,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.05,
+                        "maxMs": 0.05,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 1.86,
+                        "maxMs": 1.86,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.2,
+                        "maxMs": 0.2,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 0.23,
+                        "maxMs": 0.23,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 2.22,
+                        "maxMs": 2.22,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 0.09,
+                        "maxMs": 0.09,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 3.39,
+                        "maxMs": 3.39,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 3.27,
+                        "maxMs": 3.27,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 44,
+                "bucketLines": 0,
+                "bucketOwned": 5,
+                "bucketForeign": 8,
+                "bucketAreas": 5,
+                "bucketPois": 0,
+                "buildings": 5,
+                "containers": 20,
+                "trees": 0,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville -1,1",
+                    "gameObjects": 200,
+                    "renderers": 76,
+                    "meshFilters": 76,
+                    "distinctMeshes": 44,
+                    "materialSlots": 204,
+                    "distinctMaterials": 27,
+                    "lights": 1,
+                    "lightsShadowed": 0,
+                    "colliders": 174,
+                    "shadowCasters": 58,
+                    "lootContainers": 20,
+                    "vertices": 198980,
+                    "triangles": 109904,
+                    "distinctMeshVertices": 197380
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville 1,-1",
+                "place": "Louisville",
+                "cx": 11713,
+                "cz": 9477,
+                "rx": 183,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 23.45,
+                "activateMs": 0.19,
+                "slowestMs": 7.38,
+                "slowestStep": "fields",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.2,
+                        "maxMs": 0.2,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.3,
+                        "maxMs": 0.3,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 7.38,
+                        "maxMs": 7.38,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.37,
+                        "maxMs": 0.37,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.61,
+                        "maxMs": 0.61,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.83,
+                        "maxMs": 0.83,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 1.39,
+                        "maxMs": 1.39,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 3.01,
+                        "maxMs": 3.01,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.35,
+                        "maxMs": 0.35,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.19,
+                        "maxMs": 0.19,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 1.5,
+                        "maxMs": 1.5,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.19,
+                        "maxMs": 0.19,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 0.33,
+                        "maxMs": 0.33,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.19,
+                        "maxMs": 0.19,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 2.7,
+                        "maxMs": 2.7,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.05,
+                        "maxMs": 0.05,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 0.1,
+                        "maxMs": 0.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 0.6,
+                        "maxMs": 0.6,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 2.84,
+                        "maxMs": 2.84,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 32,
+                "bucketLines": 0,
+                "bucketOwned": 1,
+                "bucketForeign": 4,
+                "bucketAreas": 7,
+                "bucketPois": 6,
+                "buildings": 1,
+                "containers": 5,
+                "trees": 3,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville 1,-1",
+                    "gameObjects": 82,
+                    "renderers": 44,
+                    "meshFilters": 44,
+                    "distinctMeshes": 37,
+                    "materialSlots": 161,
+                    "distinctMaterials": 21,
+                    "lights": 1,
+                    "lightsShadowed": 0,
+                    "colliders": 56,
+                    "shadowCasters": 26,
+                    "lootContainers": 5,
+                    "vertices": 59943,
+                    "triangles": 42758,
+                    "distinctMeshVertices": 59583
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            },
+            {
+                "label": "louisville -1,-1",
+                "place": "Louisville",
+                "cx": 11711,
+                "cz": 9477,
+                "rx": 182,
+                "rz": 148,
+                "regionMissing": false,
+                "regionReadMs": 0.0,
+                "regionIndexMs": 0.0,
+                "totalMs": 59.45,
+                "activateMs": 0.59,
+                "slowestMs": 28.93,
+                "slowestStep": "roofs",
+                "steps": [
+                    {
+                        "name": "data",
+                        "ms": 0.24,
+                        "maxMs": 0.24,
+                        "count": 1
+                    },
+                    {
+                        "name": "ground",
+                        "ms": 0.35,
+                        "maxMs": 0.35,
+                        "count": 1
+                    },
+                    {
+                        "name": "water",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "fields",
+                        "ms": 11.42,
+                        "maxMs": 11.42,
+                        "count": 1
+                    },
+                    {
+                        "name": "parking",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "grounds",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "yards",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow tone",
+                        "ms": 0.69,
+                        "maxMs": 0.69,
+                        "count": 1
+                    },
+                    {
+                        "name": "streets",
+                        "ms": 0.87,
+                        "maxMs": 0.87,
+                        "count": 1
+                    },
+                    {
+                        "name": "sidewalks",
+                        "ms": 1.87,
+                        "maxMs": 1.87,
+                        "count": 1
+                    },
+                    {
+                        "name": "road markings",
+                        "ms": 0.08,
+                        "maxMs": 0.08,
+                        "count": 1
+                    },
+                    {
+                        "name": "railways",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "roofs",
+                        "ms": 28.93,
+                        "maxMs": 28.93,
+                        "count": 1
+                    },
+                    {
+                        "name": "roof snow and fence posts",
+                        "ms": 0.18,
+                        "maxMs": 0.18,
+                        "count": 1
+                    },
+                    {
+                        "name": "utility poles",
+                        "ms": 0.39,
+                        "maxMs": 0.39,
+                        "count": 1
+                    },
+                    {
+                        "name": "street lights",
+                        "ms": 0.34,
+                        "maxMs": 0.34,
+                        "count": 1
+                    },
+                    {
+                        "name": "signposts",
+                        "ms": 0.02,
+                        "maxMs": 0.02,
+                        "count": 1
+                    },
+                    {
+                        "name": "hydrants",
+                        "ms": 0.07,
+                        "maxMs": 0.07,
+                        "count": 1
+                    },
+                    {
+                        "name": "lot fences",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow piles",
+                        "ms": 0.12,
+                        "maxMs": 0.12,
+                        "count": 1
+                    },
+                    {
+                        "name": "parked cars",
+                        "ms": 0.13,
+                        "maxMs": 0.13,
+                        "count": 1
+                    },
+                    {
+                        "name": "trees",
+                        "ms": 0.53,
+                        "maxMs": 0.53,
+                        "count": 1
+                    },
+                    {
+                        "name": "snow drifts",
+                        "ms": 2.49,
+                        "maxMs": 2.49,
+                        "count": 1
+                    },
+                    {
+                        "name": "points",
+                        "ms": 0.0,
+                        "maxMs": 0.0,
+                        "count": 1
+                    },
+                    {
+                        "name": "park litter",
+                        "ms": 0.29,
+                        "maxMs": 0.29,
+                        "count": 1
+                    },
+                    {
+                        "name": "overhead",
+                        "ms": 3.1,
+                        "maxMs": 3.1,
+                        "count": 1
+                    },
+                    {
+                        "name": "outdoor",
+                        "ms": 7.32,
+                        "maxMs": 7.32,
+                        "count": 1
+                    }
+                ],
+                "bucketStreets": 49,
+                "bucketLines": 0,
+                "bucketOwned": 3,
+                "bucketForeign": 1,
+                "bucketAreas": 10,
+                "bucketPois": 0,
+                "buildings": 3,
+                "containers": 15,
+                "trees": 6,
+                "lights": 1,
+                "counts": {
+                    "name": "louisville -1,-1",
+                    "gameObjects": 178,
+                    "renderers": 66,
+                    "meshFilters": 66,
+                    "distinctMeshes": 42,
+                    "materialSlots": 181,
+                    "distinctMaterials": 23,
+                    "lights": 1,
+                    "lightsShadowed": 0,
+                    "colliders": 163,
+                    "shadowCasters": 48,
+                    "lootContainers": 15,
+                    "vertices": 165925,
+                    "triangles": 94342,
+                    "distinctMeshVertices": 164709
+                },
+                "failed": false,
+                "error": "",
+                "log": {
+                    "errors": 0,
+                    "warnings": 0,
+                    "editModeArtefacts": 0,
+                    "first": []
+                }
+            }
+        ],
+        "seams": "in chunks_louisville_top.png the seams are the lines x = 693 and 1,355 px, y = the same (from the top left); the iso pictures are centred on the corner where four chunks meet (-40.7, -4.7)"
+    },
+    "determinism": {
+        "ran": true,
+        "match": true,
+        "label": "start-centre",
+        "detail": "identical, in the same order",
+        "cx": 11913,
+        "cz": 9092,
+        "objectsA": 261,
+        "objectsB": 261,
+        "meshes": 118,
+        "differingMeshes": 0,
+        "verticesA": 82104,
+        "verticesB": 82104,
+        "trianglesA": 53935,
+        "trianglesB": 53935,
+        "orderedHashA": "5c08d0d1d944da9c",
+        "orderedHashB": "5c08d0d1d944da9c",
+        "unorderedHashA": "1cc5e96fdd44dede",
+        "unorderedHashB": "1cc5e96fdd44dede",
+        "differences": []
+    },
+    "runLog": {
+        "errors": 0,
+        "warnings": 0,
+        "editModeArtefacts": 0,
+        "first": []
+    },
+    "stages": [
+        {
+            "name": "setup",
+            "error": "",
+            "ok": true,
+            "ms": 59.83
+        },
+        {
+            "name": "square: KentuckyMap.Build",
+            "error": "",
+            "ok": true,
+            "ms": 2158.7
+        },
+        {
+            "name": "square: count",
+            "error": "",
+            "ok": true,
+            "ms": 9.16
+        },
+        {
+            "name": "square: pick spots",
+            "error": "",
+            "ok": true,
+            "ms": 78.33
+        },
+        {
+            "name": "square: pictures",
+            "error": "",
+            "ok": true,
+            "ms": 16699.98
+        },
+        {
+            "name": "square: discard",
+            "error": "",
+            "ok": true,
+            "ms": 23.14
+        },
+        {
+            "name": "square: passes (warm rebuild)",
+            "error": "",
+            "ok": true,
+            "ms": 859.33
+        },
+        {
+            "name": "chunks: stress test",
+            "error": "",
+            "ok": true,
+            "ms": 1728.76
+        },
+        {
+            "name": "chunks: Louisville 3x3",
+            "error": "",
+            "ok": true,
+            "ms": 1729.92
+        },
+        {
+            "name": "chunks: determinism",
+            "error": "",
+            "ok": true,
+            "ms": 78.72
+        }
+    ],
+    "notes": []
+}

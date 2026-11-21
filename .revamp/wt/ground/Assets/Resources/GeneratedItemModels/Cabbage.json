@@ -1,0 +1,11 @@
+{"version": 1, "id": "Cabbage", "baseHeight": 0.13, "name": "Cabbage", "model": "gpt-oss:120b", "notes": "Loose cabbage head ~0.16 m across, slightly flattened vertically. Main green ellipsoid, lighter inner core, small stem on top and a few leaf‑like bumps for silhouette.", "score": 6, "parts": [
+  {"name":"OuterHead","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.14,0.16],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"InnerCore","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.07,0.08],"color":[0.9,0.85,0.7],"smooth":0.1,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.05,0.03],"color":[0.55,0.45,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"LeafBump1","shape":"cylinder","pos":[0.06,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBump2","shape":"cylinder","pos":[-0.06,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBump3","shape":"cylinder","pos":[0.0,0.02,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBump4","shape":"cylinder","pos":[0.0,0.02,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBump5","shape":"cylinder","pos":[0.042,0.02,0.042],"rot":[0.0,0.0,0.0],"size":[0.018,0.035,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBump6","shape":"cylinder","pos":[-0.042,0.02,-0.042],"rot":[0.0,0.0,0.0],"size":[0.018,0.035,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

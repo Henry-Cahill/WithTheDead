@@ -1,0 +1,10 @@
+{"version": 1, "id": "DryerLint", "baseHeight": 0.0725, "name": "Dryer Lint", "model": "gpt-oss:120b", "notes": "Loose dryer lint pile about 6 cm across and 2 cm thick, fluffy fibers in a beige‑gray tint. Built from overlapping spheres/ellipsoids for the bulk and a few short cylinders to hint at stray strands.", "score": 6, "parts": [
+  {"name":"Core","shape":"sphere","pos":[-0.0003,0.0,0.0025],"rot":[0.0,0.0,0.0],"size":[0.045,0.025,0.045],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffA","shape":"sphere","pos":[-0.0152,-0.0035,0.0125],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.032],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffB","shape":"sphere","pos":[0.0198,-0.004,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.028,0.017,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffC","shape":"sphere","pos":[-0.0103,-0.005,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.035,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strand1","shape":"cylinder","pos":[0.0147,-0.0075,0.0125],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strand2","shape":"cylinder","pos":[-0.0182,-0.0065,-0.0055],"rot":[90.0,0.0,0.0],"size":[0.008,0.035,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffD","shape":"sphere","pos":[0.0047,-0.002,0.0205],"rot":[0.0,0.0,0.0],"size":[0.022,0.012,0.024],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffE","shape":"sphere","pos":[-0.0222,-0.0035,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.025,0.013,0.027],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

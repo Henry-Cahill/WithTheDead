@@ -1,0 +1,11 @@
+{"version": 1, "id": "SpearLongHead", "baseHeight": 0.085, "name": "Spear Long Head", "model": "gpt-oss:120b", "notes": "Spear long head ~0.32 m long × 0.09 m wide × 0.04 m thick, lying on its side (long axis +X). Metal blade with tapered tip, two side plates, a wooden binding around the middle and four tiny rivets.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[-0.015,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipCone","shape":"sphere","pos":[0.135,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SidePlateL","shape":"cube","pos":[-0.015,-0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SidePlateR","shape":"cube","pos":[-0.015,-0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Binding","shape":"cylinder","pos":[-0.015,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[0.065,-0.0,0.035],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.005],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[0.065,-0.0,-0.035],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.005],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.095,-0.0,0.035],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.005],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[-0.095,-0.0,-0.035],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.005],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0}
+]}

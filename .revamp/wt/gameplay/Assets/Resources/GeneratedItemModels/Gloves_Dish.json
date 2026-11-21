@@ -1,0 +1,14 @@
+{"version": 1, "id": "Gloves_Dish", "baseHeight": 0.07, "name": "Gloves Dish", "model": "gpt-oss:120b", "notes": "Dish gloves (rubber) laid flat side‑by‑side, each ~0.25 m long × 0.12 m wide × 0.015 m thick. Right glove shifted so its inner edge touches the left glove’s outer edge; all parts now contact their own palm block.", "score": 6, "parts": [
+  {"name":"PalmL","shape":"cube","pos":[-0.06,-0.0,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FingersL","shape":"cube","pos":[-0.06,-0.0,0.0625],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"ThumbL","shape":"cylinder","pos":[-0.12,-0.0,0.0025],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.06,-0.0,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.01],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"SeamL_Top","shape":"cube","pos":[-0.06,0.007,0.0225],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.35,0.33,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"SeamL_Bottom","shape":"cube","pos":[-0.06,-0.007,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.05],"color":[0.35,0.33,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"PalmR","shape":"cube","pos":[0.06,-0.0,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FingersR","shape":"cube","pos":[0.06,-0.0,0.0625],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"ThumbR","shape":"cylinder","pos":[0.12,-0.0,0.0025],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.06,-0.0,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.01],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"SeamR_Top","shape":"cube","pos":[0.06,0.007,0.0225],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.35,0.33,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"SeamR_Bottom","shape":"cube","pos":[0.06,-0.007,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.05],"color":[0.35,0.33,0.4],"smooth":0.2,"metal":0.0}
+]}

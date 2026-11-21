@@ -1,0 +1,13 @@
+{"version": 1, "id": "DuctTapeBox", "baseHeight": 0.0973, "name": "Duct Tape Box", "model": "gpt-oss:120b", "notes": "Duct‑tape box ~0.33 m long × 0.15 m wide × 0.07 m tall lying on its side (long axis along +X). Main tan cardboard body, separate lid, thin edge seams, a visible tape roll inside and a front label.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0525,-0.0118,-0.0077],"rot":[0.0,0.0,0.0],"size":[0.33,0.045,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0525,0.0132,-0.0077],"rot":[0.0,0.0,0.0],"size":[0.33,0.025,0.15],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[-0.1025,-0.0118,0.0698],"rot":[0.0,0.0,0.0],"size":[0.02,0.045,0.03],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamLeft","shape":"cube","pos":[-0.1025,-0.0118,-0.0827],"rot":[0.0,0.0,0.0],"size":[0.33,0.002,0.004],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cube","pos":[-0.1025,-0.0118,0.0673],"rot":[0.0,0.0,0.0],"size":[0.33,0.002,0.004],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BottomEdge","shape":"cube","pos":[-0.1025,-0.0358,-0.0077],"rot":[0.0,0.0,0.0],"size":[0.33,0.003,0.15],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[-0.1025,0.0358,-0.0077],"rot":[0.0,0.0,0.0],"size":[0.33,0.003,0.15],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"TapeRoll","shape":"cylinder","pos":[0.0025,0.0008,-0.0077],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.35,0.33,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.2075,0.0057,0.0573],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.004],"color":[0.48,0.46,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"LabelSide","shape":"cube","pos":[0.2075,0.0057,-0.0728],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.004],"color":[0.48,0.46,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"TapeStrip","shape":"cylinder","pos":[-0.0775,0.0008,-0.0077],"rot":[0.0,0.0,90.0],"size":[0.02,0.025,0.02],"color":[0.35,0.33,0.3],"smooth":0.2,"metal":0.0}
+]}

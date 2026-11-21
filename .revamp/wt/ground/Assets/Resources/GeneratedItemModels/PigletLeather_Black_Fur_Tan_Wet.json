@@ -1,0 +1,9 @@
+{"version": 1, "id": "PigletLeather_Black_Fur_Tan_Wet", "baseHeight": 0.0875, "name": "Piglet Leather Black Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Chunk of piglet leather with black fur, still damp. Roughly 0.26 m long × 0.18 m wide × 0.04 m thick (leather), topped by a thin black‑fur layer and a wet glossy film.", "score": 7, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.04,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FurOverlay","shape":"cube","pos":[0.0,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.16],"color":[0.07,0.07,0.08],"smooth":0.1,"metal":0.0},
+  {"name":"WetGloss","shape":"cube","pos":[0.0,0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.18],"color":[0.65,0.62,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeFurL","shape":"cylinder","pos":[-0.13,0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.03,0.02],"color":[0.07,0.07,0.08],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeFurR","shape":"cylinder","pos":[0.13,0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.03,0.02],"color":[0.07,0.07,0.08],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeFurFront","shape":"cylinder","pos":[0.0,0.0175,0.09],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.07,0.07,0.08],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeFurBack","shape":"cylinder","pos":[0.0,0.0175,-0.09],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.07,0.07,0.08],"smooth":0.1,"metal":0.0}
+]}

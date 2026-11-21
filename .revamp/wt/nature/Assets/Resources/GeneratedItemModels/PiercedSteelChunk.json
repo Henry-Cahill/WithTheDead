@@ -1,0 +1,9 @@
+{"version": 1, "id": "PiercedSteelChunk", "baseHeight": 0.075, "name": "Pierced Steel Chunk", "model": "gpt-oss:120b", "notes": "Irregular steel chunk about 12 cm × 7 cm × 2 cm lying flat. Main body is a solid steel block with two pierced holes and rust‑coloured metal rims; a small off‑centre chip gives the piece a jagged silhouette.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.001,-0.005,0.0018],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"HoleA","shape":"cylinder","pos":[-0.024,0.0,0.0018],"rot":[0.0,0.0,0.0],"size":[0.016,0.03,0.016],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"RimA","shape":"cylinder","pos":[-0.024,-0.013,0.0018],"rot":[0.0,0.0,0.0],"size":[0.022,0.004,0.022],"color":[0.55,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"HoleB","shape":"cylinder","pos":[0.031,0.0,0.0218],"rot":[0.0,0.0,0.0],"size":[0.014,0.028,0.014],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"RimB","shape":"cylinder","pos":[0.031,-0.013,0.0218],"rot":[0.0,0.0,0.0],"size":[0.022,0.004,0.022],"color":[0.55,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Chip","shape":"cube","pos":[-0.044,-0.0075,-0.0232],"rot":[0.0,15.0,0.0],"size":[0.03,0.015,0.02],"color":[0.58,0.55,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"TopRidge","shape":"cube","pos":[0.001,0.006,0.0018],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

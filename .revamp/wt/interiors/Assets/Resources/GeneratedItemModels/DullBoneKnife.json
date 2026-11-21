@@ -1,0 +1,12 @@
+{"version": 1, "id": "DullBoneKnife", "baseHeight": 0.0825, "name": "Dull Bone Knife", "model": "gpt-oss:120b", "notes": "Dull Bone Knife ~0.45 m long lying on its side (X‑axis). Bone‑grey blade with a simple rectangular guard, cylindrical handle, small pommel and a metal rivet. Thin edge strips and a top ridge give the blade definition.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0965,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.0965,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.15,0.045],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[-0.0265,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.04],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Rivet","shape":"cylinder","pos":[-0.0265,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.0685,-0.0185,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.04],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.1815,-0.0185,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[0.0685,-0.0185,-0.02],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.002],"color":[0.4,0.4,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.0685,-0.0185,0.02],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.002],"color":[0.4,0.4,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SpineRidge","shape":"cube","pos":[0.0685,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.04],"color":[0.5,0.5,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.1865,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,16 @@
+{"version": 1, "id": "Glasses_SafetyGoggles", "baseHeight": 0.069, "name": "Glasses Safety Goggles", "model": "gpt-oss:120b", "notes": "Flat safety‑goggles laid out like a product photo – two clear lenses in the centre, surrounding plastic/metal frame, extended elastic straps left and right, central bridge and nose‑pad, with four tiny screws on the frame corners. Overall footprint ≈ 0.38 m wide (including straps) × 0.12 m deep × 0.02 m thick.", "score": 7, "parts": [
+  {"name":"LeftLens","shape":"sphere","pos":[-0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.018,0.07],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"RightLens","shape":"sphere","pos":[0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.018,0.07],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"LensEdgeL","shape":"cylinder","pos":[-0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.018,0.074],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"LensEdgeR","shape":"cylinder","pos":[0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.018,0.074],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.006,0.02],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.006,0.02],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"StrapLeft","shape":"cube","pos":[-0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"NosePad","shape":"cube","pos":[0.0,-0.004,-0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.01],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewTL","shape":"cylinder","pos":[-0.07,0.006,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewTR","shape":"cylinder","pos":[0.07,0.006,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewBL","shape":"cylinder","pos":[-0.07,-0.006,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewBR","shape":"cylinder","pos":[0.07,-0.006,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":1.0}
+]}

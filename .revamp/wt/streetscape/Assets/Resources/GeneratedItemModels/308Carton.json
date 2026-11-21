@@ -1,0 +1,13 @@
+{"version": 1, "id": "308Carton", "baseHeight": 0.099, "name": "308 Carton", "model": "gpt-oss:120b", "notes": "Large cardboard shipping carton (~0.5 m × 0.35 m × 0.15 m) lying on its side (thin face down). Main box body, folded top flap, bottom flap, two tape strips along the long edges and a printed label on the top surface.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.35],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.015,0.21],"rot":[30.0,0.0,0.0],"size":[0.5,0.015,0.07],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"BottomFlap","shape":"cube","pos":[0.0,-0.015,-0.21],"rot":[-30.0,0.0,0.0],"size":[0.5,0.015,0.07],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"TapeLongL","shape":"cube","pos":[-0.22,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.005,0.008],"color":[0.75,0.73,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"TapeLongR","shape":"cube","pos":[0.22,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.005,0.008],"color":[0.75,0.73,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.18],"color":[0.65,0.62,0.58],"smooth":0.08,"metal":0.0},
+  {"name":"LabelPrint","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.16],"color":[0.4,0.38,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"SideRimFront","shape":"cube","pos":[0.0,-0.002,0.1755],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.002],"color":[0.55,0.53,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"SideRimBack","shape":"cube","pos":[0.0,-0.002,-0.1755],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.002],"color":[0.55,0.53,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRimLeft","shape":"cube","pos":[-0.25,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.35],"color":[0.55,0.53,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRimRight","shape":"cube","pos":[0.25,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.35],"color":[0.55,0.53,0.48],"smooth":0.12,"metal":0.0}
+]}

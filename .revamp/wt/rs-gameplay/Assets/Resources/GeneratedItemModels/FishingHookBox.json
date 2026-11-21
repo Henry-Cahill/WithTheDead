@@ -1,0 +1,16 @@
+{"version": 1, "id": "FishingHookBox", "baseHeight": 0.0865, "name": "Fishing Hook Box", "model": "gpt-oss:120b", "notes": "Small rectangular fishing‑hook box ~0.15 m × 0.10 m × 0.05 m, closed with a thin lid, cardboard body (tint 0.6,0.58,0.5), metal latch and label on the front, interior tray and a few visible metal hooks.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.004,-0.001],"rot":[0.0,0.0,0.0],"size":[0.15,0.045,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0225,-0.001],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.102],"color":[0.65,0.62,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"InnerTray","shape":"cube","pos":[0.0,-0.004,-0.001],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.09],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.004,0.047],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.004],"color":[0.3,0.28,0.22],"smooth":0.08,"metal":0.0},
+  {"name":"Latch","shape":"cylinder","pos":[0.0,0.0135,0.047],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"SideStripL","shape":"cube","pos":[-0.0675,-0.004,-0.001],"rot":[0.0,0.0,0.0],"size":[0.015,0.045,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideStripR","shape":"cube","pos":[0.0675,-0.004,-0.001],"rot":[0.0,0.0,0.0],"size":[0.015,0.045,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrontStrip","shape":"cube","pos":[0.0,-0.004,0.045],"rot":[0.0,0.0,0.0],"size":[0.15,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BackStrip","shape":"cube","pos":[0.0,-0.004,-0.047],"rot":[0.0,0.0,0.0],"size":[0.15,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Hook1","shape":"cylinder","pos":[-0.04,0.0185,-0.021],"rot":[0.0,0.0,90.0],"size":[0.004,0.02,0.004],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"Hook2","shape":"cylinder","pos":[0.03,0.0185,0.014],"rot":[0.0,0.0,90.0],"size":[0.004,0.018,0.004],"color":[0.78,0.78,0.78],"smooth":0.65,"metal":1.0},
+  {"name":"Hook3","shape":"cylinder","pos":[-0.02,0.0185,0.029],"rot":[0.0,0.0,90.0],"size":[0.004,0.019,0.004],"color":[0.79,0.79,0.79],"smooth":0.65,"metal":1.0},
+  {"name":"Hook4","shape":"cylinder","pos":[0.05,0.0185,-0.031],"rot":[0.0,0.0,90.0],"size":[0.004,0.017,0.004],"color":[0.77,0.77,0.77],"smooth":0.65,"metal":1.0},
+  {"name":"Hook5","shape":"cylinder","pos":[-0.05,0.0185,0.019],"rot":[0.0,0.0,90.0],"size":[0.004,0.016,0.004],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0}
+]}

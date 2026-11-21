@@ -1,0 +1,11 @@
+{"version": 1, "id": "Necklace_Choker_Bone", "baseHeight": 0.0755, "name": "Necklace Choker Bone", "model": "gpt-oss:120b", "notes": "Bone choker ~0.25 m across, 1‑2 cm thick flat loop lying on its side; main bone band with a small metal clasp and two decorative ridge studs.", "score": 6, "parts": [
+  {"name":"BandMain","shape":"sphere","pos":[0.005,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BandRidgeTop","shape":"cube","pos":[0.005,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.18],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BandRidgeBottom","shape":"cube","pos":[0.005,-0.0135,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.18],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"ClaspBase","shape":"cylinder","pos":[-0.115,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.025,0.015],"color":[0.3,0.28,0.24],"smooth":0.4,"metal":0.0},
+  {"name":"ClaspBar","shape":"cube","pos":[-0.11,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.008,0.01],"color":[0.3,0.28,0.24],"smooth":0.4,"metal":0.0},
+  {"name":"StudL","shape":"sphere","pos":[-0.045,0.0095,0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"StudR","shape":"sphere","pos":[-0.045,0.0095,-0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeTrimL","shape":"cube","pos":[-0.125,-0.0005,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeTrimR","shape":"cube","pos":[-0.125,-0.0005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

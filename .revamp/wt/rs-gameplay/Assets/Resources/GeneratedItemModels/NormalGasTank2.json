@@ -1,0 +1,10 @@
+{"version": 1, "id": "NormalGasTank2", "baseHeight": 0.1975, "name": "Normal Gas Tank2", "model": "gpt-oss:120b", "notes": "Cylindrical steel gas tank, about 0.5 m long × 0.25 m diameter, lying on its side (long axis along X). Main body with thin end caps, a valve protrusion, a small top‑handle knob and a faint label strip.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0075,-0.01],"rot":[0.0,0.0,90.0],"size":[0.25,0.5,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"EndCapL","shape":"cylinder","pos":[-0.255,-0.0075,-0.01],"rot":[0.0,0.0,90.0],"size":[0.26,0.02,0.26],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.9},
+  {"name":"EndCapR","shape":"cylinder","pos":[0.255,-0.0075,-0.01],"rot":[0.0,0.0,90.0],"size":[0.26,0.02,0.26],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.9},
+  {"name":"ValveStem","shape":"cylinder","pos":[0.18,-0.0075,0.12],"rot":[90.0,0.0,0.0],"size":[0.05,0.07,0.05],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":0.9},
+  {"name":"ValveCap","shape":"cylinder","pos":[0.18,-0.0075,0.155],"rot":[90.0,0.0,0.0],"size":[0.045,0.02,0.045],"color":[0.45,0.44,0.38],"smooth":0.6,"metal":0.9},
+  {"name":"HandleKnob","shape":"cylinder","pos":[0.0,0.0975,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":0.9},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.05,-0.0025,-0.13],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.07],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,-0.0075,-0.01],"rot":[0.0,0.0,90.0],"size":[0.255,0.008,0.255],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":0.9}
+]}

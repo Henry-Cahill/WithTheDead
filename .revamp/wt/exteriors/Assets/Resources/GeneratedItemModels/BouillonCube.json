@@ -1,0 +1,9 @@
+{"version": 1, "id": "BouillonCube", "baseHeight": 0.077, "name": "Bouillon Cube", "model": "gpt-oss:120b", "notes": "Small bouillon cube pack 6 cm × 4 cm × 3 cm lying on its side: thin cardboard box with a lid, front label, and four beige cubes (2 × 2) inside. Cubes are the food itself; the box is light‑tan cardboard.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.002,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.06,0.028,0.04],"color":[0.6,0.5,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.015,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.062,0.004,0.042],"color":[0.6,0.5,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.001,0.0205],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CubeFL","shape":"cube","pos":[-0.012,-0.008,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CubeFR","shape":"cube","pos":[-0.012,-0.008,0.0075],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CubeBL","shape":"cube","pos":[0.012,-0.008,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CubeBR","shape":"cube","pos":[0.012,-0.008,0.0075],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

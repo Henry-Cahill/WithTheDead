@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BaseballCap_BodyChisel_Reverse", "baseHeight": 0.14, "name": "Hat Baseball Cap Body Chisel Reverse", "model": "gpt-oss:120b", "notes": "Flat spread baseball cap (reverse‑chisel style) ~0.22 m wide × 0.12 m deep × 0.13 m tall. Main crown in the tint, cloth‑smooth; brim pieces around front and sides; a small white logo patch on the front.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cube","pos":[0.0,-0.065,-0.02],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.015,-0.02],"rot":[0.0,0.0,0.0],"size":[0.22,0.13,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.0725,0.06],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimSideL","shape":"cube","pos":[-0.13,-0.0725,-0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimSideR","shape":"cube","pos":[0.13,-0.0725,-0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.049,0.025],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.002],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.105,-0.049,-0.02],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.1],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.105,-0.049,-0.02],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.1],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,-0.048,-0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0}
+]}

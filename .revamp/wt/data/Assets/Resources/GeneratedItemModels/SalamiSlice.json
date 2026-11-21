@@ -1,0 +1,8 @@
+{"version": 1, "id": "SalamiSlice", "baseHeight": 0.066, "name": "Salami Slice", "model": "gpt-oss:120b", "notes": "Salami slice ~12 cm long × 4 cm wide × 8 mm thick lying flat on the floor. Thin cardboard tray underneath and a clear‑plastic wrap covering the top; rounded ends model the natural casing.", "score": 6, "parts": [
+  {"name":"Tray","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.125,0.002,0.045],"color":[0.8,0.7,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SliceBody","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EndCasingL","shape":"sphere","pos":[-0.06,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EndCasingR","shape":"sphere","pos":[0.06,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PlasticWrap","shape":"cube","pos":[0.0,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.003,0.042],"color":[0.93,0.94,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.045,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.025],"color":[0.6,0.45,0.3],"smooth":0.1,"metal":0.0}
+]}

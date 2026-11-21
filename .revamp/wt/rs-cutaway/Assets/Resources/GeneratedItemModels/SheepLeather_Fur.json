@@ -1,0 +1,14 @@
+{"version": 1, "id": "SheepLeather_Fur", "baseHeight": 0.1162, "name": "Sheep Leather Fur", "model": "gpt-oss:120b", "notes": "Loose bundle of sheep leather fur, roughly a 15 cm diameter mound ~10 cm high, lying on the floor as a fluffy irregular pile. Main body is a soft sphere with several smaller fluff spheres and a few rolled strips to suggest fur‑tufts.", "score": 6, "parts": [
+  {"name":"BasePad","shape":"cube","pos":[-0.0013,-0.0512,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"MainClump","shape":"sphere","pos":[-0.0013,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.09,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FluffA","shape":"sphere","pos":[-0.0413,0.0238,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.05,0.06],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"FluffB","shape":"sphere","pos":[0.0488,0.0138,-0.04],"rot":[0.0,0.0,0.0],"size":[0.055,0.045,0.055],"color":[0.62,0.6,0.52],"smooth":0.2,"metal":0.0},
+  {"name":"FluffC","shape":"sphere","pos":[-0.0312,0.0038,-0.05],"rot":[0.0,0.0,0.0],"size":[0.045,0.04,0.045],"color":[0.59,0.57,0.49],"smooth":0.2,"metal":0.0},
+  {"name":"FluffD","shape":"sphere","pos":[0.0287,0.0338,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.045,0.05],"color":[0.61,0.59,0.51],"smooth":0.2,"metal":0.0},
+  {"name":"FluffE","shape":"sphere","pos":[-0.0213,0.0188,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.04],"color":[0.57,0.55,0.47],"smooth":0.2,"metal":0.0},
+  {"name":"RolledStrip1","shape":"cylinder","pos":[0.0587,-0.0112,0.0],"rot":[0.0,90.0,0.0],"size":[0.015,0.08,0.015],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RolledStrip2","shape":"cylinder","pos":[-0.0612,-0.0062,0.02],"rot":[0.0,90.0,0.0],"size":[0.012,0.07,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"TipFluff1","shape":"sphere","pos":[0.0788,-0.0262,0.04],"rot":[0.0,0.0,0.0],"size":[0.025,0.022,0.025],"color":[0.62,0.6,0.52],"smooth":0.2,"metal":0.0},
+  {"name":"TipFluff2","shape":"sphere","pos":[-0.0713,-0.0242,-0.03],"rot":[0.0,0.0,0.0],"size":[0.028,0.025,0.028],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.0013,-0.0552,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.18],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0}
+]}

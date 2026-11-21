@@ -1,0 +1,11 @@
+{"version": 1, "id": "FISH_DEV_ITEM", "baseHeight": 0.13, "name": "FISH DEV ITEM", "model": "gpt-oss:120b", "notes": "Blunt fish‑shaped melee weapon ~1.6 m long lying on its side (X‑axis). Thick wooden/metal handle with rubber grip, a rectangular head block, stylised fish body and tail made of ellipsoids, small fin, metal rivet and strap for detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.16,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,1.2,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.9},
+  {"name":"Grip","shape":"cylinder","pos":[-0.16,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,1.2,0.06],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[-0.16,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.12],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.44,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":0.9},
+  {"name":"Rivet","shape":"cylinder","pos":[0.52,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.8,0.78,0.76],"smooth":0.6,"metal":1.0},
+  {"name":"HeadCap","shape":"sphere","pos":[0.56,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":0.9},
+  {"name":"FishBody","shape":"sphere","pos":[0.59,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.45,0.55,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FinUpper","shape":"cube","pos":[0.62,0.05,0.0],"rot":[0.0,20.0,0.0],"size":[0.05,0.02,0.12],"color":[0.4,0.5,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Tail","shape":"sphere","pos":[0.72,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.45,0.55,0.5],"smooth":0.2,"metal":0.0}
+]}

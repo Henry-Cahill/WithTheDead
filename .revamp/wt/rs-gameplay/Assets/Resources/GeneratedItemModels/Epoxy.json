@@ -1,0 +1,10 @@
+{"version": 1, "id": "Epoxy", "baseHeight": 0.125, "name": "Epoxy", "model": "gpt-oss:120b", "notes": "Epoxy container 0.12 m diameter × 0.15 m tall, tipped onto its side on the floor; plastic body tinted 0.6 0.58 0.5 with a gray cap and white label. A small spill of epoxy sits beside it as a thin flattened ellipsoid.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0755,0.0,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.12,0.15,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0005,0.0,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.12,0.03,0.12],"color":[0.4,0.42,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.1505,0.0,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.13,0.008,0.13],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0755,0.0005,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.08],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0755,0.001,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.082],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"ResinInside","shape":"cube","pos":[0.0755,-0.015,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.108,0.012,0.108],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Spill","shape":"sphere","pos":[-0.0445,-0.05,0.0225],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.14],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SpillEdge","shape":"sphere","pos":[-0.0445,-0.045,0.0225],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.14],"color":[0.4,0.38,0.33],"smooth":0.1,"metal":0.0}
+]}

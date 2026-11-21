@@ -1,0 +1,15 @@
+{"version": 1, "id": "Wound_Chest_Laceration_Male", "baseHeight": 0.0687, "name": "Wound Chest Laceration Male", "model": "gpt-oss:120b", "notes": "Flat torn flesh patch ~0.20 m × 0.15 m, 1.5 cm thick; ragged edge bits and a few dark blood splatters give the laceration look.", "score": 7, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[0.0,-0.0012,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTopL","shape":"cube","pos":[-0.07,-0.0007,0.0738],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTopR","shape":"cube","pos":[0.07,-0.0007,0.0738],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottomL","shape":"cube","pos":[-0.06,-0.0007,-0.0713],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottomR","shape":"cube","pos":[0.06,-0.0007,-0.0713],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeftMid","shape":"cube","pos":[-0.095,-0.0007,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRightMid","shape":"cube","pos":[0.095,-0.0007,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.03,0.0033,0.0188],"rot":[0.0,0.0,0.0],"size":[0.045,0.008,0.045],"color":[0.7,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.04,0.0023,-0.0312],"rot":[0.0,0.0,0.0],"size":[0.038,0.007,0.038],"color":[0.68,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[-0.06,0.0043,0.0488],"rot":[0.0,0.0,0.0],"size":[0.042,0.009,0.042],"color":[0.72,0.14,0.14],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot4","shape":"sphere","pos":[0.07,0.0013,-0.0612],"rot":[0.0,0.0,0.0],"size":[0.035,0.006,0.035],"color":[0.66,0.09,0.09],"smooth":0.2,"metal":0.0},
+  {"name":"Clot1","shape":"sphere","pos":[-0.08,0.0003,0.0588],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.6,0.05,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"Clot2","shape":"sphere","pos":[0.08,0.0003,-0.0412],"rot":[0.0,0.0,0.0],"size":[0.018,0.005,0.018],"color":[0.6,0.05,0.05],"smooth":0.3,"metal":0.0}
+]}

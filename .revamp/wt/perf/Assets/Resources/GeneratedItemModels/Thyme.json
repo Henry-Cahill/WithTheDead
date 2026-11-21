@@ -1,0 +1,11 @@
+{"version": 1, "id": "Thyme", "baseHeight": 0.084, "name": "Thyme", "model": "gpt-oss:120b", "notes": "Small spice box for dried thyme – about 7 cm wide × 10 cm deep × 2.5 cm tall, cardboard/twine packaging with a front paper label and a loose herb bundle inside.", "score": 6, "parts": [
+  {"name":"BoxShell","shape":"cube","pos":[0.0,0.0015,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.1],"color":[0.58,0.48,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0215,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.072,0.005,0.102],"color":[0.55,0.45,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.007,0.0507],"rot":[0.0,0.0,0.0],"size":[0.062,0.015,0.002],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.0145,0.0507],"rot":[0.0,0.0,0.0],"size":[0.064,0.002,0.002],"color":[0.45,0.35,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.0005,0.0507],"rot":[0.0,0.0,0.0],"size":[0.064,0.002,0.002],"color":[0.45,0.35,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"HerbBundle","shape":"sphere","pos":[0.0,-0.014,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.03],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TieLeft","shape":"cylinder","pos":[-0.028,0.0115,-0.0008],"rot":[90.0,0.0,0.0],"size":[0.004,0.015,0.004],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"TieRight","shape":"cylinder","pos":[0.028,0.0115,-0.0008],"rot":[90.0,0.0,0.0],"size":[0.004,0.015,0.004],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"TieCenter","shape":"cylinder","pos":[0.0,0.0115,-0.0008],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "NormalCarSeat2", "baseHeight": 0.41, "name": "Normal Car Seat2", "model": "gpt-oss:120b", "notes": "Normal car seat (15 kg) lying on the floor, cushion flat on ground with backrest upright at the rear. Overall footprint ≈ 0.55 m wide × 0.48 m deep; total height ≈ 0.62 m (cushion 0.12 m + backrest 0.5 m). Built from upholstery, foam padding, metal frame rails and a small plastic head‑rest.", "score": 7, "parts": [
+  {"name":"Cushion_Upholstery","shape":"cube","pos":[0.0,-0.29,-0.065],"rot":[0.0,0.0,0.0],"size":[0.55,0.12,0.48],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Cushion_Foam","shape":"cube","pos":[0.0,-0.295,-0.065],"rot":[0.0,0.0,0.0],"size":[0.53,0.1,0.46],"color":[0.71,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Backrest_Upholstery","shape":"cube","pos":[0.0,0.03,0.235],"rot":[0.0,0.0,0.0],"size":[0.55,0.5,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Backrest_Foam","shape":"cube","pos":[0.0,0.025,0.235],"rot":[0.0,0.0,0.0],"size":[0.53,0.48,0.1],"color":[0.71,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Frame_FrontRail","shape":"cube","pos":[0.0,-0.32,-0.295],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.02],"color":[0.4,0.42,0.45],"smooth":0.15,"metal":1.0},
+  {"name":"Frame_RearRail","shape":"cube","pos":[0.0,-0.32,0.165],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.02],"color":[0.4,0.42,0.45],"smooth":0.15,"metal":1.0},
+  {"name":"Frame_LeftRail","shape":"cube","pos":[-0.265,-0.29,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.48],"color":[0.4,0.42,0.45],"smooth":0.15,"metal":1.0},
+  {"name":"Frame_RightRail","shape":"cube","pos":[0.265,-0.29,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.48],"color":[0.4,0.42,0.45],"smooth":0.15,"metal":1.0},
+  {"name":"Headrest_Rod","shape":"cylinder","pos":[0.0,0.28,0.235],"rot":[0.0,0.0,90.0],"size":[0.14,0.04,0.14],"color":[0.55,0.57,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"SeatBelt_Anchor","shape":"cube","pos":[-0.2,-0.27,-0.215],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.02],"color":[0.4,0.42,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"Plastic_Trim_Top","shape":"cube","pos":[0.0,0.26,0.235],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.12],"color":[0.7,0.72,0.75],"smooth":0.4,"metal":0.0}
+]}

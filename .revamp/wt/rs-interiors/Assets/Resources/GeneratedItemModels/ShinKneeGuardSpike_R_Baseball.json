@@ -1,0 +1,11 @@
+{"version": 1, "id": "ShinKneeGuardSpike_R_Baseball", "baseHeight": 0.12, "name": "Shin Knee Guard Spike R Baseball", "model": "gpt-oss:120b", "notes": "Shin‑knee guard (≈0.35 m long × 0.12 m wide × 0.02 m thick) with a right‑hand spike (~0.08 m long, 0.01 m radius). Lying on its side, longest axis along X; spike points outward (+Z). Includes a rounded front edge, strap loop and four rivets.", "score": 6, "parts": [
+  {"name":"GuardBody","shape":"cube","pos":[-0.0,0.0,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.35,0.022,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontEdge","shape":"cylinder","pos":[0.165,0.0,-0.0475],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeBase","shape":"cube","pos":[0.08,0.0,0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Spike","shape":"cylinder","pos":[0.08,0.0,0.0675],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[-0.12,0.0,-0.0475],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.13,0.011,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"RivetTR","shape":"sphere","pos":[-0.13,0.011,-0.0875],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.13,0.011,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.13,0.011,-0.0875],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0}
+]}

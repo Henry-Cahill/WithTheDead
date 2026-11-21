@@ -1,0 +1,8 @@
+{"version": 1, "id": "Wound_RUArm_Laceration_Male", "baseHeight": 0.07, "name": "Wound RUArm Laceration Male", "model": "gpt-oss:120b", "notes": "Fleshy tissue slice ~0.30 m long, 0.08 m wide, 1.5 cm thick with a vertical laceration, a small blood pool and clot beside it; all parts rest on the floor (y=0).", "score": 6, "parts": [
+  {"name":"Flesh","shape":"cube","pos":[0.005,-0.0025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Laceration","shape":"cylinder","pos":[0.005,-0.0025,-0.005],"rot":[0.0,0.0,90.0],"size":[0.015,0.28,0.015],"color":[0.45,0.3,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"BloodPool","shape":"sphere","pos":[-0.115,0.0,-0.035],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.4,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"Clot","shape":"sphere","pos":[-0.085,-0.0025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.55,0.3,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"TissueRidge","shape":"cube","pos":[0.145,-0.0075,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SkinFlap","shape":"cube","pos":[0.075,0.0005,-0.005],"rot":[0.0,15.0,0.0],"size":[0.06,0.005,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

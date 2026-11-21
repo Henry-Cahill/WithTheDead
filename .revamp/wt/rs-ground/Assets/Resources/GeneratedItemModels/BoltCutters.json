@@ -1,0 +1,16 @@
+{"version": 1, "id": "BoltCutters", "baseHeight": 0.104, "name": "Bolt Cutters", "model": "gpt-oss:120b", "notes": "Bolt cutters ~0.5 m long lying on their side (X‑axis). Two steel handles cross at the centre with a small pivot; the cutting jaws extend forward (+Z) at the business end and now touch the main body.", "score": 6, "parts": [
+  {"name":"HandleL","shape":"cylinder","pos":[-0.04,-0.028,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.25,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleR","shape":"cylinder","pos":[-0.04,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.25,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"PivotBody","shape":"cube","pos":[0.085,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"PivotPin","shape":"cylinder","pos":[0.085,0.032,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"JawUpper","shape":"cube","pos":[0.115,0.002,0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"JawLower","shape":"cube","pos":[0.115,0.002,-0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.165,0.002,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.005],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.165,0.002,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.005],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"ScrewKnob","shape":"cylinder","pos":[0.065,0.032,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"ScrewThread","shape":"cylinder","pos":[0.065,0.038,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"GripL","shape":"cylinder","pos":[-0.04,-0.028,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.03,0.032],"color":[0.2,0.2,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"GripR","shape":"cylinder","pos":[-0.04,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.03,0.032],"color":[0.2,0.2,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"HandleEndL","shape":"cube","pos":[-0.165,-0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleEndR","shape":"cube","pos":[-0.165,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

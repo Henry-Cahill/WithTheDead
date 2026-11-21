@@ -1,0 +1,13 @@
+{"version": 1, "id": "FlameTrapSensorV1", "baseHeight": 0.175, "name": "Flame Trap Sensor V1", "model": "gpt-oss:120b", "notes": "Long pole‑style melee weapon (≈1.8 m long × 0.04 m thick) with a chunky sensor head at the far end; rubber grip near the handle and two thin antennae on the sensor.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.295,-0.095,-0.0331],"rot":[0.0,0.0,90.0],"size":[0.04,1.8,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-1.045,-0.08,-0.0331],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.22,0.22,0.24],"smooth":0.12,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-1.195,-0.09,-0.0331],"rot":[0.0,0.0,90.0],"size":[0.05,0.02,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SensorBody","shape":"cube","pos":[0.755,-0.04,-0.0331],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.15],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"SensorTop","shape":"cylinder","pos":[0.755,0.075,-0.0331],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"AntennaFront","shape":"cylinder","pos":[1.055,0.075,-0.0331],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.02],"color":[0.2,0.2,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"AntennaSide","shape":"cylinder","pos":[0.985,0.075,0.0369],"rot":[0.0,30.0,90.0],"size":[0.02,0.25,0.02],"color":[0.2,0.2,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"ButtonPanel","shape":"cube","pos":[0.705,-0.035,0.0569],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.5,0.5,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"LEDIndicator","shape":"sphere","pos":[0.705,-0.025,0.0869],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.9,0.2,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"Wiring","shape":"cylinder","pos":[0.555,-0.075,-0.0331],"rot":[0.0,0.0,90.0],"size":[0.01,0.2,0.01],"color":[0.3,0.3,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[-0.695,-0.075,-0.0031],"rot":[0.0,15.0,0.0],"size":[0.12,0.015,0.02],"color":[0.5,0.45,0.48],"smooth":0.25,"metal":0.0}
+]}

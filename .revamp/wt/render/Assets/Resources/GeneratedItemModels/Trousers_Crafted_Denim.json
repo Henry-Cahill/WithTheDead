@@ -1,0 +1,17 @@
+{"version": 1, "id": "Trousers_Crafted_Denim", "baseHeight": 0.0798, "name": "Trousers Crafted Denim", "model": "gpt-oss:120b", "notes": "Denim trousers laid flat: two leg panels (≈1 m long × 0.18 m wide), a full‑width waistband, front & back pockets, central fly seam, side belt‑loops and a centre stitch line. Overall footprint ≈1 m × 0.38 m, thickness 2.5 cm.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[0.0,-0.0072,-0.12],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.0,-0.0072,0.08],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0072,-0.02],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.38],"color":[0.48,0.44,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"FlySeam","shape":"cube","pos":[-0.1,-0.0072,-0.02],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.01],"color":[0.32,0.28,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,-0.0072,-0.02],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.01],"color":[0.3,0.26,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFront","shape":"cube","pos":[-0.2,0.0053,-0.2],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.15],"color":[0.62,0.57,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"PocketBack","shape":"cube","pos":[0.0,0.0072,0.2],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.15],"color":[0.6,0.55,0.66],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL1","shape":"cube","pos":[-0.3,-0.0072,-0.22],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.45,0.4,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL2","shape":"cube","pos":[-0.1,-0.0072,-0.22],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.45,0.4,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL3","shape":"cube","pos":[0.1,-0.0072,-0.22],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.45,0.4,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL4","shape":"cube","pos":[0.3,-0.0072,-0.22],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.45,0.4,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR1","shape":"cube","pos":[-0.3,-0.0072,0.18],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.45,0.4,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR2","shape":"cube","pos":[-0.1,-0.0072,0.18],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.45,0.4,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR3","shape":"cube","pos":[0.1,-0.0072,0.18],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.45,0.4,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR4","shape":"cube","pos":[0.3,-0.0072,0.18],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.01],"color":[0.45,0.4,0.52],"smooth":0.05,"metal":0.0}
+]}

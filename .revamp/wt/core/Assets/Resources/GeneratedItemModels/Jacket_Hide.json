@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jacket_Hide", "baseHeight": 0.075, "name": "Jacket Hide", "model": "gpt-oss:120b", "notes": "Flat leather hide jacket ~0.70 m long × 0.48 m wide × 0.03 m thick: central torso panel, two sleeves laid out to the sides, a front collar, front pockets, cuff bands at sleeve ends, bottom hem strip and a thin zipper line across the front.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.03,0.48],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.2,0.0,-0.34],"rot":[0.0,0.0,0.0],"size":[0.5,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.2,0.0,0.34],"rot":[0.0,0.0,0.0],"size":[0.5,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.2,0.0,-0.46],"rot":[0.0,0.0,0.0],"size":[0.5,0.008,0.04],"color":[0.45,0.42,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.2,0.0,0.46],"rot":[0.0,0.0,0.0],"size":[0.5,0.008,0.04],"color":[0.45,0.42,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.4,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.5],"color":[0.48,0.44,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.3,0.005,-0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.18],"color":[0.5,0.46,0.58],"smooth":0.07,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.3,0.005,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.18],"color":[0.5,0.46,0.58],"smooth":0.07,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.3,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.008,0.48],"color":[0.45,0.42,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"Zipper","shape":"cube","pos":[0.35,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.005],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0}
+]}

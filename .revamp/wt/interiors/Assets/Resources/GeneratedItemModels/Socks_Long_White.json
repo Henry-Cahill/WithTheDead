@@ -1,0 +1,15 @@
+{"version": 1, "id": "Socks_Long_White", "baseHeight": 0.12, "name": "Socks Long White", "model": "gpt-oss:120b", "notes": "Long crew‑length socks laid flat as a product shot. Footprint ≈ 0.32 m (X) × 0.12 m (Z). Two fabric tubes side‑by‑side, rolled cuff at the top, heel and toe bands with rounded tips, thin grey seam lines and ribbing on the cuff for a cloth feel.", "score": 6, "parts": [
+  {"name":"TubeL","shape":"cube","pos":[0.0,-0.013,-0.025],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.04],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"TubeR","shape":"cube","pos":[0.0,-0.013,0.025],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.04],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"Cuff","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.32,0.12],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"CuffRib1","shape":"cube","pos":[-0.14,0.008,-0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"CuffRib2","shape":"cube","pos":[-0.14,0.008,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"HeelBandL","shape":"cylinder","pos":[-0.14,0.011,-0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"HeelBandR","shape":"cylinder","pos":[-0.14,0.011,0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"ToeBandL","shape":"cylinder","pos":[0.14,0.011,-0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"ToeBandR","shape":"cylinder","pos":[0.14,0.011,0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"ToeTipL","shape":"sphere","pos":[0.16,-0.002,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"ToeTipR","shape":"sphere","pos":[0.16,-0.002,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"SeamL","shape":"cube","pos":[-0.08,-0.009,-0.045],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.002],"color":[0.6,0.6,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cube","pos":[-0.08,-0.009,0.045],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.002],"color":[0.6,0.6,0.6],"smooth":0.05,"metal":0.0}
+]}

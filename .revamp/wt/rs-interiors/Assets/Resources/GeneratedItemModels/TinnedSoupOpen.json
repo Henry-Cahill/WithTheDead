@@ -1,0 +1,11 @@
+{"version": 1, "id": "TinnedSoupOpen", "baseHeight": 0.1686, "name": "Tinned Soup Open", "model": "gpt-oss:120b", "notes": "Open tinned soup can ~0.12 m diameter × 0.17 m tall (including lid). Upright on floor, metal body with hinged lid tipped back, yellow‑brown soup visible inside, labelled side.", "score": 7, "parts": [
+  {"name":"CanBody","shape":"cylinder","pos":[0.0,-0.0336,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.12],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"RimBody","shape":"cylinder","pos":[0.0,0.0424,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.124,0.008,0.124],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0574,0.0227],"rot":[45.0,0.0,0.0],"size":[0.12,0.012,0.12],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"RimLid","shape":"cylinder","pos":[0.0,0.0634,0.0227],"rot":[45.0,0.0,0.0],"size":[0.124,0.004,0.124],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0336,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.108,0.14,0.108],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0364,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.112,0.008,0.112],"color":[0.55,0.45,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.1036,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.112,0.008,0.112],"color":[0.55,0.45,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"SoupDome","shape":"sphere","pos":[0.0,-0.0186,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.11,0.04,0.11],"color":[0.88,0.72,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SoupDrop","shape":"sphere","pos":[0.0,-0.0006,0.0127],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.88,0.72,0.4],"smooth":0.05,"metal":0.0}
+]}

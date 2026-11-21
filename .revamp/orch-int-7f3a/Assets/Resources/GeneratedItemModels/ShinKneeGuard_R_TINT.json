@@ -1,0 +1,12 @@
+{"version": 1, "id": "ShinKneeGuard_R_TINT", "baseHeight": 0.0775, "name": "Shin Knee Guard R TINT", "model": "gpt-oss:120b", "notes": "Right‑hand shin knee guard, approx 0.35 m long × 0.12 m wide × 0.015 m thick. Thin metal plate with a modest forward bulge for the shin curve and two thin strap loops across the top. Four rivets at the plate corners and two on each strap give it recognisable detail.", "score": 6, "parts": [
+  {"name":"BodyPlate","shape":"cube","pos":[0.0,-0.01,-0.01],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.0,-0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.04],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":1.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[0.0,0.005,-0.01],"rot":[0.0,0.0,90.0],"size":[0.025,0.35,0.025],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[0.0,-0.0,-0.01],"rot":[0.0,0.0,90.0],"size":[0.025,0.35,0.025],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[0.165,-0.0025,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[-0.165,-0.0025,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.165,-0.0025,-0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[-0.165,-0.0025,-0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"RivetStrapL","shape":"sphere","pos":[-0.165,0.005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"RivetStrapR","shape":"sphere","pos":[0.165,0.005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0}
+]}

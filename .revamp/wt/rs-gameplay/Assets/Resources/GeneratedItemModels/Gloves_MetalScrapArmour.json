@@ -1,0 +1,16 @@
+{"version": 1, "id": "Gloves_MetalScrapArmour", "baseHeight": 0.075, "name": "Gloves Metal Scrap Armour", "model": "gpt-oss:120b", "notes": "Flat pair of metal‑scrap gloves laid side‑by‑side (≈0.36 m total width × 0.25 m length × 0.03 m thickness each). Each glove consists of a padded base block, three overlapping scrap‑metal plates (wrist, mid‑hand and finger sections) and a few rivet studs for detail.", "score": 6, "parts": [
+  {"name":"BaseL","shape":"cube","pos":[-0.09,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"BaseR","shape":"cube","pos":[0.09,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"PlateL_Wrist","shape":"cube","pos":[-0.09,0.003,-0.09],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"PlateL_Mid","shape":"cube","pos":[-0.09,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"PlateL_Fingers","shape":"cube","pos":[-0.09,0.003,0.09],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"PlateR_Wrist","shape":"cube","pos":[0.09,0.003,-0.09],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"PlateR_Mid","shape":"cube","pos":[0.09,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"PlateR_Fingers","shape":"cube","pos":[0.09,0.003,0.09],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"RivetL_Wrist","shape":"cylinder","pos":[-0.09,0.006,-0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"RivetL_Mid","shape":"cylinder","pos":[-0.09,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"RivetL_Fingers","shape":"cylinder","pos":[-0.09,0.006,0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"RivetR_Wrist","shape":"cylinder","pos":[0.09,0.006,-0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"RivetR_Mid","shape":"cylinder","pos":[0.09,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"RivetR_Fingers","shape":"cylinder","pos":[0.09,0.006,0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.01],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0}
+]}

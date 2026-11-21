@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jacket_SimmentalHide", "baseHeight": 0.0745, "name": "Jacket Simmental Hide", "model": "gpt-oss:120b", "notes": "Flat Simmental‑hide jacket ~0.55 m wide × 0.70 m long, 2–3 cm thick: central torso panel, two side sleeves attached to the torso, leather cuffs at the sleeve ends, collar with neck opening, front pockets, and a front hem strip.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.002,-0.035],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.365,-0.002,-0.035],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.365,-0.002,-0.035],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.475,-0.002,-0.035],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.42],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.475,-0.002,-0.035],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.42],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CollarOuter","shape":"cylinder","pos":[0.0,-0.002,0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.0,0.0005,0.2],"rot":[0.0,0.0,0.0],"size":[0.09,0.028,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,-0.007,0.185],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.6,0.55,0.65],"smooth":0.15,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,-0.007,0.185],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.6,0.55,0.65],"smooth":0.15,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,-0.012,0.2],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.04],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0}
+]}

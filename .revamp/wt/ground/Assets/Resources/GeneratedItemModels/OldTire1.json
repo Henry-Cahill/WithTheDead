@@ -1,0 +1,8 @@
+{"version": 1, "id": "OldTire1", "baseHeight": 0.41, "name": "Old Tire1", "model": "gpt-oss:120b", "notes": "Old tire ~0.70 m outer diameter × 0.22 m width, rubber‑tinted (0.6,0.58,0.5). Main outer ring, inner void, and four low tread ribs spaced along the side.", "score": 6, "parts": [
+  {"name":"OuterRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.7,0.22,0.7],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerVoid","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.22,0.3],"color":[0.12,0.12,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"RibL1","shape":"cube","pos":[-0.06,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RibL2","shape":"cube","pos":[-0.02,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RibR1","shape":"cube","pos":[0.02,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RibR2","shape":"cube","pos":[0.06,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

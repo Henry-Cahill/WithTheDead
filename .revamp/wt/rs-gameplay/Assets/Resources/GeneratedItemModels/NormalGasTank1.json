@@ -1,0 +1,10 @@
+{"version": 1, "id": "NormalGasTank1", "baseHeight": 0.21, "name": "Normal Gas Tank1", "model": "gpt-oss:120b", "notes": "Standard steel gas cylinder, 0.70 m long × 0.30 m diameter (≈13 kg). Lying on its side with the main axis along X; includes painted body, end caps, a valve knob, a vent cap and a dark label band.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.03,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.7,0.3],"color":[0.6,0.58,0.5],"smooth":0.22,"metal":0.9},
+  {"name":"EndCapFront","shape":"cylinder","pos":[0.32,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.02,0.3],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.9},
+  {"name":"EndCapBack","shape":"cylinder","pos":[-0.38,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.02,0.3],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.9},
+  {"name":"ValveKnob","shape":"sphere","pos":[0.35,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"VentCap","shape":"cylinder","pos":[-0.23,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":0.9},
+  {"name":"LabelBand","shape":"cube","pos":[-0.03,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.32],"color":[0.48,0.46,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.33,-0.0,0.14],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.38,0.34],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.33,-0.0,-0.14],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.38,0.34],"smooth":0.5,"metal":1.0}
+]}

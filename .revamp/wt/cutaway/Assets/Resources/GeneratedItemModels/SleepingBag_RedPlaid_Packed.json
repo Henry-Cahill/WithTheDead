@@ -1,0 +1,13 @@
+{"version": 1, "id": "SleepingBag_RedPlaid_Packed", "baseHeight": 0.2, "name": "Sleeping Bag Red Plaid Packed", "model": "gpt-oss:120b", "notes": "Packed sleeping bag rolled into a short cylinder ~0.28 m diameter × 0.75 m length, lying on its side. Main fabric (tint 0.6,0.58,0.5) with thin red‑white plaid stripes, a zip‑seam ring, a compression strap loop and a small label tag.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.28,0.75,0.28],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StripeRedA","shape":"cube","pos":[-0.15,0.004,-0.07],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.04],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhiteA","shape":"cube","pos":[-0.15,0.004,-0.04],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.04],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"StripeRedB","shape":"cube","pos":[-0.15,0.004,-0.01],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.04],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhiteB","shape":"cube","pos":[-0.15,0.004,0.02],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.04],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"ZipSeam","shape":"cube","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.006,0.028],"color":[0.4,0.4,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[-0.35,0.025,0.0],"rot":[0.0,90.0,0.0],"size":[0.02,0.04,0.02],"color":[0.3,0.25,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"TagBase","shape":"cube","pos":[-0.33,0.015,0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.04],"color":[0.5,0.45,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"TagText","shape":"cube","pos":[-0.33,0.018,0.07],"rot":[0.0,0.0,0.0],"size":[0.055,0.002,0.035],"color":[0.9,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CompressionBand","shape":"cube","pos":[0.1,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.028],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.002,0.284],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "LargeAnimalBone", "baseHeight": 0.14, "name": "Large Animal Bone", "model": "gpt-oss:120b", "notes": "Large animal bone club ~1.2 m long, thickened blunt end for striking. Main shaft cylinder (0.07 m dia × 0.8 m) lies on its side along X, ending in a larger cylindrical club body (0.14 m dia × 0.4 m) tapering to a smaller section (0.12 m dia × 0.2 m) and a rounded tip sphere. Bone ridges, cracks and a few dust specks add detail.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.38,-0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.8,0.07],"color":[0.6,0.6,0.64],"smooth":0.08,"metal":0.0},
+  {"name":"RidgeShaft1","shape":"cube","pos":[-0.43,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.07],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"RidgeShaft2","shape":"cube","pos":[-0.18,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.07],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"CrackShaft","shape":"cube","pos":[-0.38,-0.0475,0.03],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.38,0.34,0.36],"smooth":0.02,"metal":0.0},
+  {"name":"ClubBase","shape":"cylinder","pos":[0.22,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.4,0.14],"color":[0.6,0.6,0.64],"smooth":0.08,"metal":0.0},
+  {"name":"RidgeClub","shape":"cube","pos":[0.17,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.14],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"ClubMid","shape":"cylinder","pos":[0.52,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.2,0.12],"color":[0.6,0.6,0.64],"smooth":0.08,"metal":0.0},
+  {"name":"TipSphere","shape":"sphere","pos":[0.7,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.16,0.16],"color":[0.6,0.6,0.64],"smooth":0.08,"metal":0.0},
+  {"name":"CrackClub","shape":"cube","pos":[0.37,-0.022,-0.03],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.015],"color":[0.38,0.34,0.36],"smooth":0.02,"metal":0.0},
+  {"name":"BoneDust","shape":"sphere","pos":[-0.68,-0.07,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.38,0.34,0.36],"smooth":0.05,"metal":0.0}
+]}

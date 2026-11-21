@@ -1,0 +1,16 @@
+{"version": 1, "id": "LongJohns_Crafted_Cotton", "baseHeight": 0.0742, "name": "Long Johns Crafted Cotton", "model": "gpt-oss:120b", "notes": "Cotton long‑johns laid flat for a product view. Overall footprint ≈ 0.96 m tall (including legs) × 0.74 m wide. Main torso panel with short sleeves, a simple ribbed collar band, and two leg panels each ending in a cuff/hem. Thin dark strips give the impression of seams and ribbing.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.0017,0.22],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.0037,0.33],"rot":[0.0,0.0,0.0],"size":[0.48,0.008,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"NeckOpening","shape":"cube","pos":[0.0,0.0068,0.335],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.006],"color":[0.12,0.1,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.3,-0.0017,0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.3,-0.0017,0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.3,0.0037,0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.3,0.0037,0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.09,-0.0017,-0.105],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.09,-0.0017,-0.105],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[-0.09,0.0037,-0.33],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.02],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[0.09,0.0037,-0.33],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.02],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamTop","shape":"cube","pos":[-0.24,0.0112,0.22],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.2],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamBottom","shape":"cube","pos":[0.24,0.0112,0.22],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.2],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RibbingMid","shape":"cube","pos":[0.0,0.0112,0.22],"rot":[0.0,0.0,0.0],"size":[0.48,0.004,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

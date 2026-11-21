@@ -1,0 +1,10 @@
+{"version": 1, "id": "CannedPineapple", "baseHeight": 0.177, "name": "Canned Pineapple", "model": "gpt-oss:120b", "notes": "Upright canned pineapple 0.15 m diameter × 0.22 m tall: steel body with raised rims, pull‑tab lid, and a yellow‑green label showing the fruit colour (tint 0.75,0.68,0.45).", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.22,0.15],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.104,0.0],"rot":[0.0,0.0,0.0],"size":[0.162,0.012,0.162],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.108,0.0],"rot":[0.0,0.0,0.0],"size":[0.162,0.012,0.162],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.109,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.012,0.13],"color":[0.73,0.73,0.75],"smooth":0.55,"metal":0.9},
+  {"name":"PullRing","shape":"cylinder","pos":[0.0,0.115,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.73,0.73,0.75],"smooth":0.55,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.145,0.19,0.145],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.088,0.0],"rot":[0.0,0.0,0.0],"size":[0.147,0.008,0.147],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.102,0.0],"rot":[0.0,0.0,0.0],"size":[0.147,0.008,0.147],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BonnieHat_DesertCamo", "baseHeight": 0.1525, "name": "Hat Bonnie Hat Desert Camo", "model": "gpt-oss:120b", "notes": "Desert‑camo “Bonnie” hat laid flat: 0.60 m brim diameter, 0.12 m crown height, 2 cm fabric thickness. Includes wide brim disc, raised crown cylinder + dome, stitched rim, front strap loop and a small camo logo patch.", "score": 6, "parts": [
+  {"name":"BrimDisc","shape":"cylinder","pos":[0.0,-0.0825,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimStitch","shape":"cylinder","pos":[0.0,-0.0715,0.0],"rot":[0.0,0.0,0.0],"size":[0.62,0.004,0.62],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.12,0.32],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.06,0.34],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontStrapLoop","shape":"cylinder","pos":[0.0,0.0275,0.15],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.08,0.0225,0.18],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.02],"color":[0.7,0.65,0.55],"smooth":0.05,"metal":0.0}
+]}

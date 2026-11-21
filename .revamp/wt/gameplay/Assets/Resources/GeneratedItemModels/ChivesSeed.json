@@ -1,0 +1,12 @@
+{"version": 1, "id": "ChivesSeed", "baseHeight": 0.071, "name": "Chives Seed", "model": "gpt-oss:120b", "notes": "Small chives seed packet about 4 cm long × 2 cm wide × 0.8 cm thick lying flat on the floor, with a thin paper flap and a loose pile of six individual seeds inside.", "score": 6, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.036,0.002,0.018],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.042,0.002,0.022],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.012,0.0045,-0.006],"rot":[0.0,0.0,0.0],"size":[0.006,0.0025,0.004],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[-0.006,0.0045,0.004],"rot":[0.0,0.0,0.0],"size":[0.0055,0.0023,0.0038],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[0.008,0.0045,-0.002],"rot":[0.0,0.0,0.0],"size":[0.0062,0.0026,0.0041],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.012,0.0045,0.006],"rot":[0.0,0.0,0.0],"size":[0.0058,0.0024,0.0039],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.004,0.0045,-0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.0025,0.0042],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.003,0.0045,0.008],"rot":[0.0,0.0,0.0],"size":[0.0059,0.0023,0.004],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "FieldHockeyStick_Nails", "baseHeight": 0.09, "name": "Field Hockey Stick Nails", "model": "gpt-oss:120b", "notes": "Field hockey stick (≈1.55 m long) lying on its side – wooden shaft (diameter ≈0.03 m) with a rubber grip at the handle end, a thin metal blade (~0.25 m long × 0.12 m wide × 0.02 m thick) and six short steel nails protruding upward from the front face of the blade for a brutal melee weapon.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.125,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,1.3,0.03],"color":[0.45,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.715,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"BladeCore","shape":"cube","pos":[0.65,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"NailFL","shape":"cylinder","pos":[0.59,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"NailF","shape":"cylinder","pos":[0.65,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"NailFR","shape":"cylinder","pos":[0.71,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"NailBL","shape":"cylinder","pos":[0.59,0.01,0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"NailB","shape":"cylinder","pos":[0.65,0.01,0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"NailBR","shape":"cylinder","pos":[0.71,0.01,0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

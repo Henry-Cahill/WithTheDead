@@ -1,0 +1,11 @@
+{"version": 1, "id": "SpearLargeKnife", "baseHeight": 0.13, "name": "Spear Large Knife", "model": "gpt-oss:120b", "notes": "Large spear‑knife ~1.5 m long lying on its side (X axis). Wooden pole shaft, metal guard near the handle, a broad knife blade sticking out in +Z with a rounded tip, and a metal pommel at the far end. Includes a thin edge highlight and three rivets along the shaft.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.025,-0.05,-0.04],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.45,0.33,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[-0.525,-0.06,-0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.06],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.625,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"BladeBlock","shape":"cube","pos":[0.635,-0.055,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.25],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.635,-0.03,0.125],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.635,-0.053,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.25],"color":[0.8,0.8,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.225,-0.05,-0.04],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"RivetC","shape":"cylinder","pos":[-0.025,-0.05,-0.04],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.175,-0.05,-0.04],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0}
+]}

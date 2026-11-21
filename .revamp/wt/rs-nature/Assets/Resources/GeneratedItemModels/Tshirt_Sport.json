@@ -1,0 +1,13 @@
+{"version": 1, "id": "Tshirt_Sport", "baseHeight": 0.0737, "name": "Tshirt Sport", "model": "gpt-oss:120b", "notes": "Flat sport‑t‑shirt about 0.58 m long × 0.44 m wide × 0.025 m thick, laid flat with angled short sleeves, ribbed collar, cuffs, side seams, bottom hem and a small logo on the front.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0328,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[0.3828,-0.0012,0.3],"rot":[0.0,-20.0,0.0],"size":[0.22,0.022,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.3828,-0.0012,-0.3],"rot":[0.0,20.0,0.0],"size":[0.22,0.022,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.3178,0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.24],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.3178,0.0052,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.014,0.18],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.2522,-0.0097,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.008,0.44],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.5128,-0.0012,0.3],"rot":[0.0,-20.0,0.0],"size":[0.03,0.025,0.09],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.5128,-0.0012,-0.3],"rot":[0.0,20.0,0.0],"size":[0.03,0.025,0.09],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.0328,-0.0012,0.224],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.0328,-0.0012,-0.224],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.008],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Logo","shape":"cylinder","pos":[-0.0672,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.08],"color":[0.9,0.3,0.2],"smooth":0.4,"metal":0.0}
+]}

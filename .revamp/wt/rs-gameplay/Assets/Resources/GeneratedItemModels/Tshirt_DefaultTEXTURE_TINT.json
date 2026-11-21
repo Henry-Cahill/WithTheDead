@@ -1,0 +1,13 @@
+{"version": 1, "id": "Tshirt_DefaultTEXTURE_TINT", "baseHeight": 0.08, "name": "Tshirt Default TEXTURE TINT", "model": "gpt-oss:120b", "notes": "Flat T‑shirt laid out as a product photo – overall length ≈ 0.56 m (X), width including sleeves ≈ 0.86 m, thickness ≈ 0.03 m. Main fabric colour is the tint (0.55, 0.50, 0.60) with slightly darker trims.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.025,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.03,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderBlock","shape":"cube","pos":[0.175,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.032,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.123,-0.005,0.3],"rot":[0.0,-25.0,0.0],"size":[0.16,0.028,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.123,-0.005,-0.3],"rot":[0.0,25.0,0.0],"size":[0.16,0.028,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.081,-0.004,0.391],"rot":[0.0,-25.0,0.0],"size":[0.165,0.03,0.03],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.081,-0.004,-0.391],"rot":[0.0,25.0,0.0],"size":[0.165,0.03,0.03],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.23,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.035,0.16],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.23,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.036,0.13],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.295,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.38],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"FrontFold","shape":"cube","pos":[-0.045,0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.012],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.075,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.06],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_Raccoon", "baseHeight": 0.127, "name": "Hat Raccoon", "model": "gpt-oss:120b", "notes": "Hat Raccoon – flat‑lay product view. Overall footprint ≈ 0.30 m diameter, 0.13 m tall (brim 0.01 m thick, crown 0.12 m high). Main fur tint 0.55 0.5 0.6 with dark raccoon mask patches on the front of the crown.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.062,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"MaskLeft","shape":"cube","pos":[-0.035,0.028,0.101],"rot":[0.0,0.0,0.0],"size":[0.04,0.07,0.02],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"MaskRight","shape":"cube","pos":[0.035,0.028,0.101],"rot":[0.0,0.0,0.0],"size":[0.04,0.07,0.02],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"EarFlapL","shape":"cylinder","pos":[-0.135,-0.052,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.04,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EarFlapR","shape":"cylinder","pos":[0.135,-0.052,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.04,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerRim","shape":"cylinder","pos":[0.0,-0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"cylinder","pos":[0.0,0.063,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

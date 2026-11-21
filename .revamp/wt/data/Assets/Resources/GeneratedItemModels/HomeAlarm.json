@@ -1,0 +1,14 @@
+{"version": 1, "id": "HomeAlarm", "baseHeight": 0.08, "name": "Home Alarm", "model": "gpt-oss:120b", "notes": "Home alarm – rectangular plastic housing about 0.22 m wide × 0.15 m deep × 0.04 m thick (≈1 kg). Lying on its back: main body, recessed front panel with a label, six keypad buttons, a rear speaker‑grill slab, a small LED indicator and a battery‑door flap.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,-0.002],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.001,0.073],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.002],"color":[0.3,0.3,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.04,0.0025,0.0735],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.002],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.07,0.002,-0.022],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0,0.002,-0.022],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.07,0.002,-0.022],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Button4","shape":"cylinder","pos":[-0.07,0.002,-0.002],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.0,0.002,-0.002],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Button6","shape":"cylinder","pos":[0.07,0.002,-0.002],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"SpeakerGrill","shape":"cube","pos":[0.0,0.001,-0.052],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.3,0.3,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"LED","shape":"sphere","pos":[0.09,0.0025,0.072],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.3,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BatteryDoor","shape":"cube","pos":[-0.09,0.002,0.0735],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.002],"color":[0.5,0.5,0.55],"smooth":0.2,"metal":0.0}
+]}

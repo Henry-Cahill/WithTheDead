@@ -1,0 +1,16 @@
+{"version": 1, "id": "CheeseGrater", "baseHeight": 0.0825, "name": "Cheese Grater", "model": "gpt-oss:120b", "notes": "Cheese grater ~0.23 m wide × 0.15 m tall × 0.04 m thick with a short handle (~0.12 m) sticking out the side. Main metal grid (tint 0.6,0.58,0.5), 12 cylindrical holes punched through the thin face.", "score": 7, "parts": [
+  {"name":"Grid","shape":"cube","pos":[-0.06,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.04,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.115,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Hole00","shape":"cylinder","pos":[-0.13,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole01","shape":"cylinder","pos":[-0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole02","shape":"cylinder","pos":[-0.13,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole10","shape":"cylinder","pos":[-0.085,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole11","shape":"cylinder","pos":[-0.085,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole12","shape":"cylinder","pos":[-0.085,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole20","shape":"cylinder","pos":[-0.04,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole21","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole22","shape":"cylinder","pos":[-0.04,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole30","shape":"cylinder","pos":[0.005,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole31","shape":"cylinder","pos":[0.005,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Hole32","shape":"cylinder","pos":[0.005,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.045,0.008],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0}
+]}

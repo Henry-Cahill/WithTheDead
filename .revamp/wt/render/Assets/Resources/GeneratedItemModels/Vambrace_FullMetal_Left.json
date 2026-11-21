@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vambrace_FullMetal_Left", "baseHeight": 0.073, "name": "Vambrace Full Metal Left", "model": "gpt-oss:120b", "notes": "Full‑metal left vambrace, approx 0.28 m long × 0.12 m wide × 0.02 m thick. Main cuff block with raised top edge, front & back leather‑style straps (shown as metal bands), four rivets and a shallow engraved panel on the front.", "score": 6, "parts": [
+  {"name":"MainCuff","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.12],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.12],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,-0.002,0.062],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,-0.002,-0.062],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFrontLeft","shape":"sphere","pos":[-0.09,0.009,0.062],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontRight","shape":"sphere","pos":[0.09,0.009,0.062],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackLeft","shape":"sphere","pos":[-0.09,0.009,-0.062],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackRight","shape":"sphere","pos":[0.09,0.009,-0.062],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"Engraving","shape":"cube","pos":[0.0,-0.001,0.061],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.002],"color":[0.4,0.38,0.32],"smooth":0.55,"metal":1.0}
+]}

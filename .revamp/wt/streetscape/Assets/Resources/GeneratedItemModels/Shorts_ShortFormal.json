@@ -1,0 +1,10 @@
+{"version": 1, "id": "Shorts_ShortFormal", "baseHeight": 0.0765, "name": "Shorts Short Formal", "model": "gpt-oss:120b", "notes": "Formal shorts laid flat on the floor, approx 0.50 m wide × 0.25 m long × 0.03 m thick. Two leg panels with a waist‑band and front/back pockets give a clear silhouette.", "score": 7, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.008,0.05],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegLeft","shape":"cube","pos":[-0.14,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegRight","shape":"cube","pos":[0.14,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.14,0.0045,0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.04],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[-0.14,0.0045,-0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.04],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.25],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.14,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.025],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.14,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.025],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0}
+]}

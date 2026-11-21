@@ -1,0 +1,11 @@
+{"version": 1, "id": "RyeSeed", "baseHeight": 0.0715, "name": "Rye Seed", "model": "gpt-oss:120b", "notes": "Small paper sack of rye seed, about 0.10 m long × 0.07 m wide × 0.015 m thick, lying flat on the floor. Light‑brown bag with a dark label, thin top/bottom seams and a simple tie string; four tiny seed spheres fill the interior.", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.07],"color":[0.78,0.7,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.003,0.07],"color":[0.65,0.55,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.003,0.07],"color":[0.65,0.55,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0,0.034],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.002],"color":[0.4,0.3,0.15],"smooth":0.08,"metal":0.0},
+  {"name":"TieString","shape":"cylinder","pos":[0.0,0.0095,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.06,0.004],"color":[0.5,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.02,0.0005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.03,0.0015,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.04,-0.0005,0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.01,-0.0015,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0}
+]}

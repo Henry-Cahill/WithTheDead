@@ -1,0 +1,8 @@
+{"version": 1, "id": "GreaveSpike_Left", "baseHeight": 0.0762, "name": "Greave Spike Left", "model": "gpt-oss:120b", "notes": "Greave Spike (left) – a solid steel spike about 0.15 m long. Lying on its side with the shaft along X and a pointed tip at +X. Main colour tint 0.6,0.58,0.5, polished metal.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0075,-0.0037,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.0675,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BaseRing","shape":"cylinder","pos":[-0.0675,-0.0037,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Shadow","shape":"cube","pos":[-0.0075,-0.0127,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.04],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.0375,0.0013,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.32],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[-0.0375,0.0013,-0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.32],"smooth":0.5,"metal":1.0}
+]}

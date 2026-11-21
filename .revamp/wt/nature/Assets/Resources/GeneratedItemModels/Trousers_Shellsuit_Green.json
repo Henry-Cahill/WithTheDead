@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_Shellsuit_Green", "baseHeight": 0.0963, "name": "Trousers Shellsuit Green", "model": "gpt-oss:120b", "notes": "Flat shellsuit trousers, green (0.55,0.5,0.6). Approx. 1 m long, each leg 0.22 m wide, 4 cm thick, waistband 0.15 m tall across both legs, front pockets and belt‑loops added for detail.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.14,-0.0138,-0.075],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.85],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.14,-0.0138,-0.075],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.85],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0138,0.425],"rot":[0.0,0.0,0.0],"size":[0.5,0.04,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.14,0.0212,-0.1],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.2],"color":[0.5,0.45,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.14,0.0212,-0.1],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.2],"color":[0.5,0.45,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"SeamMid","shape":"cube","pos":[0.0,-0.0138,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.045,0.85],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLOuter","shape":"cube","pos":[-0.25,-0.0138,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.045,0.85],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamROuter","shape":"cube","pos":[0.25,-0.0138,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.045,0.85],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.18,0.0062,0.48],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[-0.06,0.0062,0.48],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"BeltLoopRL","shape":"cylinder","pos":[0.06,0.0062,0.48],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"BeltLoopRR","shape":"cylinder","pos":[0.18,0.0062,0.48],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0}
+]}

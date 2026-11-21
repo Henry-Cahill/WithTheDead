@@ -1,0 +1,12 @@
+{"version": 1, "id": "BakingTray_Muffin_Recipe", "baseHeight": 0.105, "name": "Baking Tray Muffin Recipe", "model": "gpt-oss:120b", "notes": "Cardboard box (≈0.32 m × 0.09 m × 0.22 m) containing a thin aluminum muffin tray (0.30 × 0.02 × 0.20 m) with six baked muffins (cylinders ~0.08 m dia, 0.05 m tall). Box tint matches recipe colour; foil lid is shiny metal.", "score": 7, "parts": [
+  {"name":"BoxOuter","shape":"cube","pos":[0.0,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.32,0.09,0.22],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BoxLabel","shape":"cube","pos":[0.0,0.0,-0.065],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.18],"color":[0.55,0.45,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"FoilLid","shape":"cube","pos":[0.0,0.044,0.045],"rot":[0.0,0.0,0.0],"size":[0.31,0.002,0.21],"color":[0.92,0.92,0.88],"smooth":0.5,"metal":0.8},
+  {"name":"Tray","shape":"cube","pos":[0.0,-0.035,0.045],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.2],"color":[0.7,0.6,0.4],"smooth":0.3,"metal":0.1},
+  {"name":"Muffin1","shape":"cylinder","pos":[-0.06,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.08],"color":[0.9,0.7,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Muffin2","shape":"cylinder","pos":[0.0,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.08],"color":[0.9,0.7,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Muffin3","shape":"cylinder","pos":[0.06,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.08],"color":[0.9,0.7,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Muffin4","shape":"cylinder","pos":[-0.06,0.0,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.08],"color":[0.9,0.7,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Muffin5","shape":"cylinder","pos":[0.0,0.0,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.08],"color":[0.9,0.7,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Muffin6","shape":"cylinder","pos":[0.06,0.0,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.08],"color":[0.9,0.7,0.4],"smooth":0.2,"metal":0.0}
+]}

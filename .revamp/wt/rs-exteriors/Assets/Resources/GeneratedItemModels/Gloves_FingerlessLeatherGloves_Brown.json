@@ -1,0 +1,13 @@
+{"version": 1, "id": "Gloves_FingerlessLeatherGloves_Brown", "baseHeight": 0.07, "name": "Gloves Fingerless Leather Gloves Brown", "model": "gpt-oss:120b", "notes": "Flat fingerless leather glove laid out for product‑photo view – about 0.28 m long × 0.14 m wide × 0.02 m thick. Main palm panel, thumb base, four separate finger tubes, cuff band, stitching strips, a raised leather fold at the wrist and a small metal rivet.", "score": 6, "parts": [
+  {"name":"Palm","shape":"cube","pos":[0.02,0.0,-0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"ThumbBase","shape":"cube","pos":[-0.06,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FingerPinky","shape":"cube","pos":[-0.025,0.0,0.095],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.05],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FingerRing","shape":"cube","pos":[0.005,0.0,0.1],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FingerMiddle","shape":"cube","pos":[0.035,0.0,0.105],"rot":[0.0,0.0,0.0],"size":[0.022,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FingerIndex","shape":"cube","pos":[0.065,0.0,0.095],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.05],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CuffBand","shape":"cube","pos":[0.02,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.02,0.002,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.002],"color":[0.3,0.25,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"StitchSideThumb","shape":"cube","pos":[-0.06,0.002,-0.06],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.06],"color":[0.3,0.25,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"LeatherFold","shape":"cube","pos":[0.02,0.004,-0.13],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.02],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.02,0.005,-0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0}
+]}

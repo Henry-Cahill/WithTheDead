@@ -1,0 +1,13 @@
+{"version": 1, "id": "RoseSeed", "baseHeight": 0.0725, "name": "Rose Seed", "model": "gpt-oss:120b", "notes": "Small rose‑seed packet ~2.5 cm × 1.8 cm × 0.4 cm lying flat on the ground. Main beige‑taupe paper (tint 0.6,0.58,0.5) with a thin darker label and a few tiny seed ellipsoids inside.", "score": 6, "parts": [
+  {"name":"PaperBase","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.018],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.018],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cylinder","pos":[0.0,0.0,0.009],"rot":[90.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cylinder","pos":[0.0,0.0,-0.009],"rot":[90.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cylinder","pos":[-0.0125,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.002,0.018],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cylinder","pos":[0.0125,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.002,0.018],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.012],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"SeedA","shape":"sphere","pos":[-0.003,-0.0005,0.002],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.2,0.1],"smooth":0.12,"metal":0.0},
+  {"name":"SeedB","shape":"sphere","pos":[0.001,-0.0005,-0.004],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.2,0.1],"smooth":0.12,"metal":0.0},
+  {"name":"SeedC","shape":"sphere","pos":[0.004,-0.0005,0.005],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.2,0.1],"smooth":0.12,"metal":0.0},
+  {"name":"SeedD","shape":"sphere","pos":[-0.005,-0.0005,-0.006],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.2,0.1],"smooth":0.12,"metal":0.0}
+]}

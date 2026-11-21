@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_BaseballCap_LouisvilleBruiser", "baseHeight": 0.1052, "name": "Hat Baseball Cap Louisville Bruiser", "model": "gpt-oss:120b", "notes": "Flat baseball cap (≈0.24 m brim diameter, 0.18 m crown width, 0.07 m tall) laid out like a product photo: rounded crown, front visor panel, side/back panels, low‑profile brim and stitching details.", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.0412,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.24],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0023,0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.07,0.02],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.045,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.045,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0023,-0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.07,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.0378,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.0023,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.002],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.055,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.07,0.12],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.055,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.07,0.12],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cube","pos":[0.0,-0.0023,-0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.002],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0}
+]}

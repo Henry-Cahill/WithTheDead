@@ -1,0 +1,16 @@
+{"version": 1, "id": "Trousers_Denim_Punk", "baseHeight": 0.0762, "name": "Trousers Denim Punk", "model": "gpt-oss:120b", "notes": "Denim punk trousers laid flat (≈1.00 m long × 0.60 m wide × 0.025 m thick). Main panels for each leg, waistband, cuffs, front and back pockets, belt‑loops and a centre seam line give the recognisable silhouette.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0037,-0.48],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.12,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,1.0],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.12,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,1.0],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.12,-0.0037,-0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.48,0.44,0.53],"smooth":0.08,"metal":0.0},
+  {"name":"BackPocketL","shape":"cube","pos":[-0.12,-0.0037,0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.48,0.44,0.53],"smooth":0.08,"metal":0.0},
+  {"name":"BackPocketR","shape":"cube","pos":[0.12,-0.0037,0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.48,0.44,0.53],"smooth":0.08,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.12,-0.0037,0.48],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.12,-0.0037,0.48],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.25,0.0062,-0.48],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.7,0.7,0.7],"smooth":0.2,"metal":1.0},
+  {"name":"BeltLoopML","shape":"cylinder","pos":[-0.1,0.0062,-0.48],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.7,0.7,0.7],"smooth":0.2,"metal":1.0},
+  {"name":"BeltLoopMR","shape":"cylinder","pos":[0.1,0.0062,-0.48],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.7,0.7,0.7],"smooth":0.2,"metal":1.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.25,0.0062,-0.48],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.7,0.7,0.7],"smooth":0.2,"metal":1.0},
+  {"name":"StitchCentre","shape":"cube","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,1.0],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.12,0.0062,-0.275],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0}
+]}

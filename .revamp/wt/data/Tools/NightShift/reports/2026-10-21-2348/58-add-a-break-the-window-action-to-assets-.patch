@@ -1,0 +1,118 @@
+diff --git a/Assets/Scripts/World/Fixtures/HomeWindow.cs b/Assets/Scripts/World/Fixtures/HomeWindow.cs
+index 58797c6d..b182323e 100644
+--- a/Assets/Scripts/World/Fixtures/HomeWindow.cs
++++ b/Assets/Scripts/World/Fixtures/HomeWindow.cs
+@@ -56,14 +56,14 @@ internal struct Setup
+         private Vector3 _point, _normal = Vector3.forward, _along = Vector3.right;
+         private int _outSide;
+         private bool _blind;
+-        private bool _open, _drawn, _latched = true;
++        private bool _open, _drawn, _latched = true, _broken;
+ 
+         // Whether the far side has room to land, worked out for the prompt and reused for a moment.
+         private float _climbCheckedAt = -1f;
+         private int _climbSide;
+         private bool _climbClear;
+ 
+-        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct, _knockAct;
++        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct, _knockAct, _breakAct;
+ 
+         private static readonly Collider[] s_Hits = new Collider[16];
+         private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+@@ -112,7 +112,7 @@ protected virtual void Awake()
+             _lookAct = Look;
+             _climbAct = Climb;
+             _checkAct = c => CheckWindow(c);
+-            _knockAct = c => { MakeNoise(CloneZConfig.WindowNoise); c.Notify("You rap a fist against the window."); };
++            _breakAct = c => BreakWindow(c);
+         }
+ 
+         /// <summary>Makes <paramref name="root"/> (already holding the sash and the curtains, under the window
+@@ -150,7 +150,7 @@ internal static T Attach<T>(GameObject root, BuildPiece piece, in Setup s) where
+ 
+             w._open = s.Open;
+             w._drawn = s.Drawn;
+-            w._latched = !s.Open && !s.Unlatched;
++            w._broken = false;
+             w.Apply(true);
+             return w;
+         }
+@@ -176,6 +176,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+                 into.Add(new InteractAction(draw, _curtainAct));
+                 into.Add(new InteractAction("Check window", _checkAct));
+                 into.Add(new InteractAction("Knock on the window", _knockAct));
++                if (!_broken) into.Add(new InteractAction("Break the window", _breakAct));
+ 
+                 into.Add(new InteractAction(_outSide == 0 ? "Look through the window" : "Look outside", _lookAct)
+                     .Timed(CloneZConfig.WindowLookSeconds, "Looking outside", HumanoidActivity.Use));
+@@ -208,6 +209,7 @@ protected virtual void OnClimbed(InteractContext ctx) { }
+         /// <paramref name="noisy"/>: sashes rattle.</summary>
+         public void SetOpen(bool open, bool noisy)
+         {
++            if (_broken) return;
+             if (_open == open || (open && _latched)) return;
+             _open = open;
+             if (_sash != null) _sash.SetOpen(open);
+@@ -215,12 +217,16 @@ public void SetOpen(bool open, bool noisy)
+             _climbCheckedAt = -1f;
+         }
+ 
+-        private void SetLatched(bool latched, InteractContext ctx)
++        private void BreakWindow(InteractContext ctx)
+         {
+-            if (_latched == latched || (latched && _open)) return;
+-            _latched = latched;
+-            ShowLatch();
+-            if (ctx != null) ctx.Notify(latched ? "You turn the sash lock. The window is latched." : "You turn the sash lock back.");
++            if (_broken)
++            {
++                ctx.Notify("The window is already shattered.");
++                return;
++            }
++            SetBroken(true);
++            MakeNoise(CloneZConfig.WindowNoise);
++            ctx.Notify("You slam the sash and smash the glass – the window is now broken.");
+         }
+ 
+         private void SetDrawn(bool drawn)
+@@ -230,6 +236,15 @@ private void SetDrawn(bool drawn)
+             ShowCurtains();
+         }
+ 
++        private void SetLatched(bool latched, InteractContext ctx)
++        {
++            if (_broken) return;
++            if (_latched == latched || (latched && _open)) return;
++            _latched = latched;
++            ShowLatch();
++            if (ctx != null) ctx.Notify(latched ? "You turn the sash lock. The window is latched." : "You turn the sash lock back.");
++        }
++
+         private void Apply(bool instant)
+         {
+             if (_sash != null) _sash.SetOpen(_open, instant);
+@@ -237,7 +252,6 @@ private void Apply(bool instant)
+             ShowCurtains();
+             _climbCheckedAt = -1f;
+         }
+-
+         private void ShowLatch()
+         {
+             if (_latchShut != null) _latchShut.enabled = _latched;
+@@ -368,13 +382,15 @@ private static bool RoomToStand(Vector3 feet, Transform self)
+             return clear;
+         }
+ 
+-        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_drawn ? 2 : 0) | (_latched ? 4 : 0);
++        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_drawn ? 2 : 0) | (_latched ? 4 : 0) | (_broken ? 8 : 0);
+ 
+         public override void RestoreState(FixtureSave save)
+         {
+             _open = (save.State & 1) != 0;
+             _drawn = (save.State & 2) != 0;
+             _latched = !_open && (save.State & 4) != 0;
++            bool broken = (save.State & 8) != 0;
++            SetBroken(broken);
+             Apply(true);
+         }
+     }

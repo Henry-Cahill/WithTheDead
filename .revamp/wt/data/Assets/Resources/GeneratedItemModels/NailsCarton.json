@@ -1,0 +1,11 @@
+{"version": 1, "id": "NailsCarton", "baseHeight": 0.13, "name": "Nails Carton", "model": "gpt-oss:120b", "notes": "Cardboard nail carton ~0.22 m wide × 0.06 m tall × 0.16 m deep (lying on its side). Main body, four flaps that are flush against the sides of the box, a front label with printed text, a small bulge of steel nails inside and a thin rope tie around the top.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0025,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.06,0.16],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FlapFront","shape":"cube","pos":[0.0025,-0.0075,0.12],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.08],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"FlapBack","shape":"cube","pos":[0.0025,-0.0075,-0.12],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.08],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"FlapLeft","shape":"cube","pos":[-0.11,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.06,0.16],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"FlapRight","shape":"cube","pos":[0.115,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.06,0.16],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0025,-0.04,0.0795],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.06],"color":[0.82,0.78,0.72],"smooth":0.1,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0025,-0.039,0.0795],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.04],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"NailPile","shape":"cylinder","pos":[-0.0475,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"TieString","shape":"cylinder","pos":[0.0025,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.22,0.01],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0}
+]}

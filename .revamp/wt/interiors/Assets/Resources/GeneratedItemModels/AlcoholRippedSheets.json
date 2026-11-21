@@ -1,0 +1,9 @@
+{"version": 1, "id": "AlcoholRippedSheets", "baseHeight": 0.0703, "name": "Alcohol Ripped Sheets", "model": "gpt-oss:120b", "notes": "Pile of three torn sheets (~0.30 m × 0.20 m each, ~5 mm thick) lying on the floor; ragged edges are hinted by a few small paper‑flap bits. Tint is a muted beige (0.6, 0.58, 0.5).", "score": 7, "parts": [
+  {"name":"Sheet1","shape":"cube","pos":[-0.0053,-0.001,-0.0118],"rot":[0.0,0.0,2.0],"size":[0.32,0.005,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Sheet2","shape":"cube","pos":[0.0147,0.0,-0.0218],"rot":[0.0,0.0,-3.0],"size":[0.3,0.005,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Sheet3","shape":"cube","pos":[-0.0203,0.001,0.0032],"rot":[0.0,0.0,1.0],"size":[0.28,0.005,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TearBitA","shape":"cube","pos":[0.1527,0.0025,0.1002],"rot":[0.0,15.0,-10.0],"size":[0.022,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TearBitB","shape":"cube","pos":[-0.1433,0.0025,-0.1038],"rot":[0.0,-12.0,8.0],"size":[0.018,0.007,0.011],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TearBitC","shape":"cube","pos":[0.1197,0.0035,-0.1168],"rot":[0.0,20.0,-5.0],"size":[0.02,0.009,0.01],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TearBitD","shape":"cube","pos":[-0.1553,0.0015,0.1182],"rot":[0.0,-18.0,12.0],"size":[0.016,0.006,0.009],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

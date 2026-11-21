@@ -1,0 +1,10 @@
+{"version": 1, "id": "BerryGeneric4", "baseHeight": 0.0895, "name": "Berry Generic4", "model": "gpt-oss:120b", "notes": "Small berry pack about 0.12 m × 0.08 m × 0.05 m tall: a cardboard‑tinted box with a thin overlapping lid, a front paper label with dark trim, and a few loose berries visible inside.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0045,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.08],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0255,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.082],"color":[0.73,0.65,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0105,0.0408],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.002],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.016,0.0408],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.002],"color":[0.38,0.28,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.005,0.0408],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.002],"color":[0.38,0.28,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"Berry1","shape":"sphere","pos":[-0.03,0.0025,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.12,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"Berry2","shape":"sphere","pos":[0.02,0.0035,0.0092],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.78,0.1,0.13],"smooth":0.4,"metal":0.0},
+  {"name":"Berry3","shape":"sphere","pos":[-0.01,-0.0015,-0.0307],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.82,0.14,0.18],"smooth":0.4,"metal":0.0}
+]}

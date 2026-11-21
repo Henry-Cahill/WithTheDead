@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_SantaHatGreen", "baseHeight": 0.145, "name": "Hat Santa Hat Green", "model": "gpt-oss:120b", "notes": "Flat Santa‑style hat, green tint (0.55,0.5,0.6). Overall spread ≈ 0.30 m wide × 0.25 m tall, ~2 cm thick when laid flat. Consists of a low‑profile brim, a folded crown section and the floppy tip with white fur trim.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.055,-0.09],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WhiteTrimBrim","shape":"cylinder","pos":[0.0,-0.043,-0.09],"rot":[0.0,0.0,0.0],"size":[0.34,0.008,0.34],"color":[1.0,1.0,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"CrownBase","shape":"cube","pos":[0.0,-0.035,-0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSideL","shape":"cube","pos":[-0.07,-0.035,0.065],"rot":[0.0,0.0,15.0],"size":[0.08,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSideR","shape":"cube","pos":[0.07,-0.035,0.065],"rot":[0.0,0.0,-15.0],"size":[0.08,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TipFluff","shape":"sphere","pos":[0.0,0.005,0.19],"rot":[0.0,0.0,0.0],"size":[0.1,0.14,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"WhiteTipFur","shape":"sphere","pos":[0.0,0.055,0.19],"rot":[0.0,0.0,0.0],"size":[0.14,0.06,0.14],"color":[1.0,1.0,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.025,-0.01],"rot":[90.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[1.0,1.0,1.0],"smooth":0.2,"metal":0.0}
+]}

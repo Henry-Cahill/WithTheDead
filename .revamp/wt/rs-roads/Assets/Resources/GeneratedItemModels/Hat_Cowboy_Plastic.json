@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_Cowboy_Plastic", "baseHeight": 0.21, "name": "Hat Cowboy Plastic", "model": "gpt-oss:120b", "notes": "Cowboy plastic hat laid flat for a product‑photo view – 0.60 m outer brim diameter, 0.15 m crown height. Main plastic tint (0.55,0.5,0.6) with dark brown band and a small metallic buckle.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.11,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.6],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.08,0.5],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"CrownFlare","shape":"sphere","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.3,0.7],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"HatBand","shape":"cylinder","pos":[0.0,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.54,0.006,0.54],"color":[0.3,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BuckleBase","shape":"cube","pos":[0.0,-0.037,0.27],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.004],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"BucklePlate","shape":"cube","pos":[0.0,-0.027,0.272],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.002],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"BuckleScrewL","shape":"cube","pos":[-0.012,-0.033,0.274],"rot":[0.0,0.0,0.0],"size":[0.003,0.006,0.002],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BuckleScrewR","shape":"cube","pos":[0.012,-0.033,0.274],"rot":[0.0,0.0,0.0],"size":[0.003,0.006,0.002],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Gloves_LeatherGlovesBlack", "baseHeight": 0.0705, "name": "Gloves Leather Gloves Black", "model": "gpt-oss:120b", "notes": "Two leather gloves laid flat side‑by‑side, now touching at the inner edges (≈0.20 m wide × 0.18 m deep × 0.018 m thick). Each glove has a palm block, four‑finger block, thumb cylinder and thin dark stitching strips that sit directly on their respective palms.", "score": 6, "parts": [
+  {"name":"PalmL","shape":"cube","pos":[-0.045,-0.0005,-0.045],"rot":[0.0,0.0,0.0],"size":[0.09,0.018,0.1],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"FingersL","shape":"cube","pos":[-0.045,-0.0015,0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.016,0.08],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"ThumbL","shape":"cylinder","pos":[-0.09,-0.0005,0.005],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"StitchPalmL","shape":"cube","pos":[-0.045,0.0095,-0.045],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.1],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFingersL","shape":"cube","pos":[-0.045,0.009,0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchThumbL","shape":"cube","pos":[-0.1,0.0095,0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.06],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"PalmR","shape":"cube","pos":[0.045,-0.0005,-0.045],"rot":[0.0,0.0,0.0],"size":[0.09,0.018,0.1],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"FingersR","shape":"cube","pos":[0.045,-0.0015,0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.016,0.08],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"ThumbR","shape":"cylinder","pos":[0.09,-0.0005,0.005],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"StitchPalmR","shape":"cube","pos":[0.045,0.0095,-0.045],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.1],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFingersR","shape":"cube","pos":[0.045,0.009,0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchThumbR","shape":"cube","pos":[0.1,0.0095,0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.06],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0}
+]}

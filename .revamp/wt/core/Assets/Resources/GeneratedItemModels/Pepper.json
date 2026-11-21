@@ -1,0 +1,12 @@
+{"version": 1, "id": "Pepper", "baseHeight": 0.1355, "name": "Pepper", "model": "gpt-oss:120b", "notes": "Small cardboard spice container for pepper, ~0.12 m wide × 0.08 m deep × 0.15 m tall (including lid). Tinted beige body with dark label, and a loose pile of pepper granules inside.", "score": 6, "parts": [
+  {"name":"BottomBase","shape":"cube","pos":[0.0,-0.073,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ContainerBody","shape":"cube","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.14,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0695,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.01,0.082],"color":[0.68,0.58,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.0055,0.041],"rot":[0.0,0.0,0.0],"size":[0.108,0.04,0.002],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelSideLeft","shape":"cube","pos":[-0.0595,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.08],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelSideRight","shape":"cube","pos":[0.0595,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.08],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorderTop","shape":"cube","pos":[0.0,0.0145,0.041],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.002],"color":[0.3,0.22,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorderBottom","shape":"cube","pos":[0.0,-0.0255,0.041],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.002],"color":[0.3,0.22,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"PepperPile","shape":"sphere","pos":[0.0,-0.0655,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.06],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"LidRim","shape":"cube","pos":[0.0,0.0735,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.084],"color":[0.68,0.58,0.35],"smooth":0.07,"metal":0.0}
+]}

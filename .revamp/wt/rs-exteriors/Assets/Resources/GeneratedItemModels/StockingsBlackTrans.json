@@ -1,0 +1,9 @@
+{"version": 1, "id": "StockingsBlackTrans", "baseHeight": 0.105, "name": "Stockings Black Trans", "model": "gpt-oss:120b", "notes": "Two sheer black stockings laid flat on the floor – each leg is a long cylinder (≈ 0.60 m) lying on its side with the waist‑band as a thin cross‑piece. Overall footprint about 0.20 m wide, 0.60 m long and ~0.09 m tall at the thickest point.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cylinder","pos":[0.0175,0.0,-0.05],"rot":[0.0,0.0,90.0],"size":[0.09,0.6,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cylinder","pos":[0.0175,0.0,0.05],"rot":[0.0,0.0,90.0],"size":[0.09,0.6,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.2975,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.2],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamL","shape":"cylinder","pos":[0.0175,0.0,-0.07],"rot":[0.0,0.0,90.0],"size":[0.01,0.58,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cylinder","pos":[0.0175,0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.01,0.58,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FootTipL","shape":"sphere","pos":[-0.2825,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FootTipR","shape":"sphere","pos":[-0.2825,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

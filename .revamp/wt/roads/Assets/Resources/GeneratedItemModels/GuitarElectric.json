@@ -1,0 +1,13 @@
+{"version": 1, "id": "GuitarElectric", "baseHeight": 0.085, "name": "Guitar Electric", "model": "gpt-oss:120b", "notes": "Electric guitar ~1.02 m long lying on its side (X‑axis). Body 0.60 × 0.35 × 0.05 m, neck 0.30 m long × 0.04 m diameter, angled headstock 0.12 × 0.18 × 0.05 m, bridge, two pickups, control knob, two tuners and a thin string bundle.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.2087,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.05,0.35],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.2413,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Headstock","shape":"cube","pos":[0.4513,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.18],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[-0.4587,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"PickupL","shape":"cube","pos":[-0.3287,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.04],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"PickupR","shape":"cube","pos":[-0.0887,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.04],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"ControlKnob","shape":"cylinder","pos":[-0.5088,0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"TunerL","shape":"cylinder","pos":[0.5112,0.01,0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"TunerR","shape":"cylinder","pos":[0.5112,0.01,-0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"Pickguard","shape":"cube","pos":[-0.2587,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.35],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":0.0},
+  {"name":"Strings","shape":"cylinder","pos":[0.0413,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.95,0.002],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0}
+]}

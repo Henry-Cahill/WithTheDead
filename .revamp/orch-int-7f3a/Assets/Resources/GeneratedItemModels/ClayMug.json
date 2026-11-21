@@ -1,0 +1,9 @@
+{"version": 1, "id": "ClayMug", "baseHeight": 0.1205, "name": "Clay Mug", "model": "gpt-oss:120b", "notes": "Clay mug ~0.10 m long × 0.08 m wide (when upright), laid on its side: chunky cylindrical body, thin lip at each end, L‑shaped clay handle, a small chip and a faint label on the side.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0195,-0.0245],"rot":[0.0,0.0,90.0],"size":[0.08,0.1,0.08],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LipTop","shape":"cylinder","pos":[0.047,-0.0195,-0.0245],"rot":[0.0,0.0,90.0],"size":[0.082,0.006,0.082],"color":[0.68,0.66,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"LipBottom","shape":"cylinder","pos":[-0.047,-0.0195,-0.0245],"rot":[0.0,0.0,90.0],"size":[0.082,0.006,0.082],"color":[0.68,0.66,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"HandleVert","shape":"cylinder","pos":[0.0,0.0155,0.0255],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"HandleHoriz","shape":"cylinder","pos":[0.0,0.0505,0.0455],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"Chip","shape":"sphere","pos":[0.04,0.0005,0.0055],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.02,-0.0145,0.0165],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.04],"color":[0.45,0.4,0.35],"smooth":0.05,"metal":0.0}
+]}

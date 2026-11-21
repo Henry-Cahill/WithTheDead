@@ -1,0 +1,12 @@
+{"version": 1, "id": "Garlic", "baseHeight": 0.112, "name": "Garlic", "model": "gpt-oss:120b", "notes": "Garlic head about 5 cm across, with a thin papery wrapper around its middle and eight individual cloves fanning out from the top half. Total height ≈7 cm; sits on floor (y=0).", "score": 6, "parts": [
+  {"name":"WrapperBand","shape":"cylinder","pos":[0.0,-0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.015,0.11],"color":[0.9,0.85,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"BulbCore","shape":"sphere","pos":[0.0,-0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.07,0.09],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Clove1","shape":"sphere","pos":[0.025,0.018,0.015],"rot":[30.0,15.0,0.0],"size":[0.03,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Clove2","shape":"sphere","pos":[-0.022,0.02,-0.018],"rot":[25.0,-10.0,0.0],"size":[0.03,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Clove3","shape":"sphere","pos":[0.018,0.023,-0.022],"rot":[-20.0,20.0,0.0],"size":[0.03,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Clove4","shape":"sphere","pos":[-0.024,0.016,0.022],"rot":[15.0,-25.0,0.0],"size":[0.03,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Clove5","shape":"sphere","pos":[0.028,0.028,0.0],"rot":[-10.0,30.0,0.0],"size":[0.03,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Clove6","shape":"sphere","pos":[-0.03,0.03,0.005],"rot":[20.0,-15.0,0.0],"size":[0.03,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Clove7","shape":"sphere","pos":[0.005,0.038,-0.028],"rot":[-15.0,5.0,0.0],"size":[0.03,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Clove8","shape":"sphere","pos":[-0.006,0.04,0.03],"rot":[10.0,-20.0,0.0],"size":[0.03,0.02,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

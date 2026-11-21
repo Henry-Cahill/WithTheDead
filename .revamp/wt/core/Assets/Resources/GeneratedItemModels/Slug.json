@@ -1,0 +1,10 @@
+{"version": 1, "id": "Slug", "baseHeight": 0.083, "name": "Slug", "model": "gpt-oss:120b", "notes": "Small plastic food container ~0.11 m × 0.07 m × 0.04 m holding up to four edible slugs. Container body with lid and a thin internal tray; each slug is an ellipsoid (≈0.07 m long, 0.025 m wide, 0.02 m tall) in the brown‑tint colour.", "score": 6, "parts": [
+  {"name":"ContainerBody","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.04,0.07],"color":[0.85,0.86,0.9],"smooth":0.25,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.112,0.006,0.072],"color":[0.8,0.81,0.86],"smooth":0.25,"metal":0.0},
+  {"name":"Tray","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.068],"color":[0.92,0.93,0.95],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0205,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.03],"color":[0.45,0.45,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SlugFL","shape":"sphere","pos":[-0.032,0.005,-0.018],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SlugFR","shape":"sphere","pos":[-0.032,0.005,0.018],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SlugBL","shape":"sphere","pos":[0.032,0.005,-0.018],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SlugBR","shape":"sphere","pos":[0.032,0.005,0.018],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

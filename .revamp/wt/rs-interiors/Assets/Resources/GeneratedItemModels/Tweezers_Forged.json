@@ -1,0 +1,8 @@
+{"version": 1, "id": "Tweezers_Forged", "baseHeight": 0.065, "name": "Tweezers Forged", "model": "gpt-oss:120b", "notes": "Forged metal tweezers about 0.15 m long lying flat on the floor: two thin arms (left/right) joined by a short hinge cylinder, with rounded tips. Main colour is the metal tint.", "score": 6, "parts": [
+  {"name":"Joint","shape":"cylinder","pos":[-0.072,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.02,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LeftArm","shape":"cube","pos":[0.003,-0.0,0.006],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RightArm","shape":"cube","pos":[0.003,-0.0,-0.006],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipLeft","shape":"sphere","pos":[0.078,-0.0,0.006],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipRight","shape":"sphere","pos":[0.078,-0.0,-0.006],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Screw","shape":"sphere","pos":[-0.072,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.4,0.38,0.35],"smooth":0.6,"metal":1.0}
+]}

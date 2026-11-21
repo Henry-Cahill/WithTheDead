@@ -1,0 +1,8 @@
+{"version": 1, "id": "Shinpad_HockeyGoalie_R_Red", "baseHeight": 0.24, "name": "Shinpad Hockey Goalie R Red", "model": "gpt-oss:120b", "notes": "Hockey goalie shin‑pad ~0.35 m long × 0.20 m wide × 0.04 m thick, red‑tinted plastic/foam with a curved front bulge and two strap loops on the top edge. Simple silhouette first, then a few detail parts (front curve, strap loops, Velcro patch).", "score": 6, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[0.0,-0.002,-0.035],"rot":[0.0,0.0,0.0],"size":[0.35,0.04,0.2],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontCurve","shape":"sphere","pos":[0.0,0.023,0.045],"rot":[0.0,0.0,0.0],"size":[0.34,0.06,0.18],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.13,0.023,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.13,0.023,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"VelcroPatch","shape":"cube","pos":[-0.12,0.003,-0.115],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.02],"color":[0.9,0.85,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.0,-0.035],"rot":[90.0,0.0,0.0],"size":[0.36,0.006,0.36],"color":[0.5,0.45,0.4],"smooth":0.2,"metal":0.0}
+]}

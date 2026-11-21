@@ -1,0 +1,8 @@
+{"version": 1, "id": "ElbowPad_Left_TINT", "baseHeight": 0.069, "name": "Elbow Pad Left TINT", "model": "gpt-oss:120b", "notes": "Left elbow pad ~0.18 m diameter, 0.015 m thick padded foam (tint 0.6,0.58,0.5) with a darker fabric rim, two crossing straps and a metal buckle; lying flat on the floor.", "score": 6, "parts": [
+  {"name":"MainPad","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.2],"color":[0.48,0.464,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"InnerFoam","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.013,0.16],"color":[0.78,0.754,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL","shape":"cube","pos":[-0.09,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.12],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"StrapR","shape":"cube","pos":[0.09,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.12],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[0.09,-0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0}
+]}

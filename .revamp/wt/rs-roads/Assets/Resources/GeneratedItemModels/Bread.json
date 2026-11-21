@@ -1,0 +1,11 @@
+{"version": 1, "id": "Bread", "baseHeight": 0.1265, "name": "Bread", "model": "gpt-oss:120b", "notes": "Brown paper bag containing a typical loaf of sliced bread (≈0.30 m × 0.10 m × 0.09 m). Bag outer shell, crust and soft interior plus a side label and three visible slices.", "score": 7, "parts": [
+  {"name":"BagOuter","shape":"cube","pos":[0.0,0.001,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.34,0.13,0.14],"color":[0.6,0.5,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BagSeamTop","shape":"cube","pos":[0.0,0.064,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.34,0.005,0.14],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.05,0.001,0.0488],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.9,0.9,0.85],"smooth":0.02,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.05,0.002,0.0488],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.084],"color":[0.55,0.45,0.3],"smooth":0.02,"metal":0.0},
+  {"name":"BreadCrust","shape":"cube","pos":[0.0,-0.019,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.32,0.095,0.11],"color":[0.68,0.58,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"BreadInterior","shape":"cube","pos":[0.0,-0.019,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.08],"color":[0.8,0.75,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"SliceL","shape":"cube","pos":[-0.08,-0.019,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.005,0.09,0.1],"color":[0.78,0.73,0.53],"smooth":0.08,"metal":0.0},
+  {"name":"SliceM","shape":"cube","pos":[0.0,-0.019,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.005,0.09,0.1],"color":[0.78,0.73,0.53],"smooth":0.08,"metal":0.0},
+  {"name":"SliceR","shape":"cube","pos":[0.08,-0.019,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.005,0.09,0.1],"color":[0.78,0.73,0.53],"smooth":0.08,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "TobaccoChewing", "baseHeight": 0.0703, "name": "Tobacco Chewing", "model": "gpt-oss:120b", "notes": "Chewing‑tobacco tin/packet about 0.12 m long × 0.06 m deep × 0.015 m thick, lying flat. Main brown cardboard body, thin metallic foil lid with a raised rim, printed label on top and a few loose brown tobacco bits visible inside.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0067,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.06],"color":[0.85,0.85,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"Rim","shape":"cube","pos":[0.0,0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.064],"color":[0.75,0.73,0.68],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.0092,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.055],"color":[0.9,0.85,0.7],"smooth":0.12,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0093,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.045],"color":[0.3,0.2,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"TobaccoBit1","shape":"sphere","pos":[-0.025,-0.0023,-0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.35,0.28,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TobaccoBit2","shape":"sphere","pos":[0.02,-0.0023,0.01],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.35,0.28,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TobaccoBit3","shape":"sphere","pos":[-0.015,-0.0023,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.35,0.28,0.2],"smooth":0.05,"metal":0.0}
+]}

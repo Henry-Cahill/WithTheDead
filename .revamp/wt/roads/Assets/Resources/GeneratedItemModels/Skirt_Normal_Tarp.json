@@ -1,0 +1,14 @@
+{"version": 1, "id": "Skirt_Normal_Tarp", "baseHeight": 0.0725, "name": "Skirt Normal Tarp", "model": "gpt-oss:120b", "notes": "Flat skirt‑style tarp 1.00 m long × 0.60 m wide, 0.02 m thick (lying on the floor). Includes sewn hems on all sides, four metal grommet eyelets at the corners, a folded corner for visual interest and a small printed label patch.", "score": 7, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemTop","shape":"cube","pos":[0.0,0.0,0.32],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,0.0,-0.32],"rot":[0.0,0.0,0.0],"size":[1.0,0.025,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.52,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.6],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.52,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.6],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GrommetTL","shape":"cylinder","pos":[-0.48,0.0,0.28],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"GrommetTR","shape":"cylinder","pos":[0.48,0.0,0.28],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"GrommetBL","shape":"cylinder","pos":[-0.48,0.0,-0.28],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"GrommetBR","shape":"cylinder","pos":[0.48,0.0,-0.28],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"FoldCorner","shape":"cube","pos":[0.425,0.0025,0.225],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.15],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ReinforcementStrip","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.015,0.02],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.3,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.021,0.12],"color":[0.35,0.33,0.25],"smooth":0.05,"metal":0.0}
+]}

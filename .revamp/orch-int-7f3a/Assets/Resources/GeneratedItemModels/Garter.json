@@ -1,0 +1,12 @@
+{"version": 1, "id": "Garter", "baseHeight": 0.0905, "name": "Garter", "model": "gpt-oss:120b", "notes": "Garter ~0.26 m long × 0.05 m wide × 0.01 m thick, elastic cloth band with a small metal clasp, edge trim and a couple of decorative buttons. Laid flat on the floor, centre at (0,0,0).", "score": 6, "parts": [
+  {"name":"Band","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeL","shape":"cube","pos":[0.0,-0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.003,0.008],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeR","shape":"cube","pos":[0.0,0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.003,0.008],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"Seam","shape":"cube","pos":[0.0,0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.002],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"ClaspBase","shape":"cylinder","pos":[0.115,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"ClaspTop","shape":"cube","pos":[0.115,0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.014,0.004,0.014],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"ButtonL","shape":"sphere","pos":[-0.09,0.009,0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.85,0.7],"smooth":0.5,"metal":0.8},
+  {"name":"ButtonR","shape":"sphere","pos":[0.09,0.009,-0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.85,0.7],"smooth":0.5,"metal":0.8},
+  {"name":"Stitch1","shape":"cube","pos":[-0.07,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.002],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch2","shape":"cube","pos":[0.07,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.002],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0}
+]}

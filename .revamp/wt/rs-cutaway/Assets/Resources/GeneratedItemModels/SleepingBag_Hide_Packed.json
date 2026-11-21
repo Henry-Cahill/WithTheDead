@@ -1,0 +1,8 @@
+{"version": 1, "id": "SleepingBag_Hide_Packed", "baseHeight": 0.155, "name": "Sleeping Bag Hide Packed", "model": "gpt-oss:120b", "notes": "Rolled hide sleeping‑bag bundle ~0.35 m long × 0.18 m diameter (lying on its side). Main body of brown hide, slightly darker rolled ends, a thin leather strap around the middle, a small tag, and a visible folded edge at one end.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.18,0.35,0.18],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EndCapFront","shape":"cylinder","pos":[0.175,0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.19,0.02,0.19],"color":[0.5,0.48,0.4],"smooth":0.08,"metal":0.0},
+  {"name":"EndCapBack","shape":"cylinder","pos":[-0.175,0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.19,0.02,0.19],"color":[0.5,0.48,0.4],"smooth":0.08,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[0.0,0.0075,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.02],"color":[0.33,0.28,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.12,0.0175,0.0925],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.01],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"FoldEdge","shape":"sphere","pos":[-0.15,0.02,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.02],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0}
+]}

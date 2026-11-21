@@ -1,0 +1,12 @@
+{"version": 1, "id": "Plank_Brake", "baseHeight": 0.1, "name": "Plank Brake", "model": "gpt-oss:120b", "notes": "Plank Brake – a flat wooden melee weapon ~1.2 m long, 15 cm wide and 4 cm thick, lying on its side (X‑axis). A short wooden grip at the rear, a metal reinforcing band near the tip, and a tapered steel tip for striking.", "score": 6, "parts": [
+  {"name":"MainPlank","shape":"cube","pos":[-0.06,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.04,0.15],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.51,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.3,0.08],"color":[0.5,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.49,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.012,0.16],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.6,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.16],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[0.49,-0.0,0.07],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.49,-0.0,-0.07],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":1.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[0.14,-0.02,0.075],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.015],"color":[0.45,0.45,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"EdgeTrimOpp","shape":"cube","pos":[0.14,-0.02,-0.075],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.015],"color":[0.45,0.45,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"FrontGuard","shape":"cube","pos":[0.44,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.16],"color":[0.55,0.55,0.58],"smooth":0.3,"metal":1.0},
+  {"name":"RearGuard","shape":"cube","pos":[-0.61,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.16],"color":[0.55,0.55,0.58],"smooth":0.3,"metal":1.0}
+]}

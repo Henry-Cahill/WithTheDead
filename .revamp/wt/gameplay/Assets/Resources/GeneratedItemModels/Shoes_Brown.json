@@ -1,0 +1,8 @@
+{"version": 1, "id": "Shoes_Brown", "baseHeight": 0.095, "name": "Shoes Brown", "model": "gpt-oss:120b", "notes": "Flat shoe layout approx 0.28 m long × 0.12 m wide × 0.07 m high (sole, heel block, front upper, tongue and two laces). Centered at the origin, sole rests on y=0.", "score": 6, "parts": [
+  {"name":"Sole","shape":"cube","pos":[-0.01,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.12],"color":[0.3,0.25,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"HeelBlock","shape":"cube","pos":[-0.1,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.06,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"UpperFront","shape":"cube","pos":[0.06,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"Tongue","shape":"cube","pos":[0.02,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"LaceLeft","shape":"cylinder","pos":[0.06,0.01,-0.03],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.6,0.55,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"LaceRight","shape":"cylinder","pos":[0.06,0.01,0.03],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.6,0.55,0.7],"smooth":0.05,"metal":0.0}
+]}

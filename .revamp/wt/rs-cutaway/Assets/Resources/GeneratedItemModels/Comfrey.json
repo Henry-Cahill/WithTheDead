@@ -1,0 +1,12 @@
+{"version": 1, "id": "Comfrey", "baseHeight": 0.079, "name": "Comfrey", "model": "gpt-oss:120b", "notes": "Comfrey bundle ~12 cm long, thin green leaves fanning out from a central woody stem. Leaves are flat, slightly curved plates; stem is a slender brown‑green cylinder lying on its side.", "score": 6, "parts": [
+  {"name":"Stem","shape":"cylinder","pos":[-0.0085,-0.003,-0.0018],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.45,0.38,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"LeafL1","shape":"cube","pos":[-0.0485,-0.0,0.0232],"rot":[5.0,0.0,25.0],"size":[0.07,0.003,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeafL2","shape":"cube","pos":[-0.0285,-0.0,0.0332],"rot":[-3.0,0.0,15.0],"size":[0.07,0.003,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeafL3","shape":"cube","pos":[-0.0085,-0.0,0.0382],"rot":[2.0,0.0,5.0],"size":[0.07,0.003,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeafR1","shape":"cube","pos":[0.0115,-0.0,-0.0368],"rot":[-4.0,0.0,-10.0],"size":[0.07,0.003,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeafR2","shape":"cube","pos":[0.0315,-0.0,-0.0268],"rot":[6.0,0.0,-20.0],"size":[0.07,0.003,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeafR3","shape":"cube","pos":[0.0515,-0.0,-0.0168],"rot":[-2.0,0.0,-30.0],"size":[0.07,0.003,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeafTipL","shape":"sphere","pos":[-0.0785,-0.0,0.0382],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeafTipR","shape":"sphere","pos":[0.0615,-0.0,-0.0418],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RootClump","shape":"cube","pos":[-0.0085,-0.006,-0.0018],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.02],"color":[0.45,0.38,0.3],"smooth":0.12,"metal":0.0}
+]}

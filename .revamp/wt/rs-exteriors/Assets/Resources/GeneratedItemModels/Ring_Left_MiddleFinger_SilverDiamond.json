@@ -1,0 +1,9 @@
+{"version": 1, "id": "Ring_Left_MiddleFinger_SilverDiamond", "baseHeight": 0.072, "name": "Ring Left Middle Finger Silver Diamond", "model": "gpt-oss:120b", "notes": "Ring for left middle finger, silver band ~22 mm outer dia., 4 mm thick, lying on its side; small faceted diamond (~8 mm) set in a prong at one end of the band.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[-0.0055,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.004,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.0055,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.95],"smooth":0.8,"metal":0.0},
+  {"name":"Prong","shape":"cube","pos":[0.004,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.002],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BandSideL","shape":"cube","pos":[-0.0075,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BandSideR","shape":"cube","pos":[-0.0035,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BandTop","shape":"cube","pos":[-0.0055,0.001,0.011],"rot":[0.0,90.0,0.0],"size":[0.004,0.022,0.002],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BandBottom","shape":"cube","pos":[-0.0055,-0.001,-0.011],"rot":[0.0,90.0,0.0],"size":[0.004,0.022,0.002],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

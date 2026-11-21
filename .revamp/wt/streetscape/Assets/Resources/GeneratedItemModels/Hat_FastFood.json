@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_FastFood", "baseHeight": 0.141, "name": "Hat Fast Food", "model": "gpt-oss:120b", "notes": "Fast‑food paper hat laid flat (≈0.26 m brim diameter, 0.12 m crown height, 2–3 cm thick). Main purple‑gray tint with a red logo patch; includes brim rim, inner seam and upright crown.", "score": 6, "parts": [
+  {"name":"BrimRim","shape":"cylinder","pos":[0.0,-0.069,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.006,0.27],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.066,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.03,0.26],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"InnerSeam","shape":"cylinder","pos":[0.0,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.265,0.004,0.265],"color":[0.45,0.41,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.18],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.071,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.85,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"CrownTop","shape":"cylinder","pos":[0.0,0.071,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0}
+]}

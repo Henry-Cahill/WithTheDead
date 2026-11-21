@@ -1,0 +1,14 @@
+{"version": 1, "id": "LeatherStrips", "baseHeight": 0.0622, "name": "Leather Strips", "model": "gpt-oss:120b", "notes": "Loose leather strips bundle about 0.20 m long × 0.07 m wide × 0.01 m thick, lying on the floor as a small overlapping pile. Each strip is a thin rectangle (≈3‑4 mm thick) of brown‑tan leather.", "score": 6, "parts": [
+  {"name":"Strip1","shape":"cube","pos":[-0.03,0.0,-0.0232],"rot":[2.0,5.0,0.0],"size":[0.2,0.0036,0.018],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip2","shape":"cube","pos":[0.0,0.0,0.0018],"rot":[-1.0,3.0,0.0],"size":[0.18,0.0035,0.016],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip3","shape":"cube","pos":[0.025,0.0,-0.0282],"rot":[1.0,-4.0,0.0],"size":[0.22,0.0037,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip4","shape":"cube","pos":[-0.04,0.0,0.0168],"rot":[3.0,2.0,0.0],"size":[0.19,0.0036,0.017],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip5","shape":"cube","pos":[0.015,0.0,-0.0382],"rot":[-2.0,-3.0,0.0],"size":[0.21,0.0035,0.014],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip6","shape":"cube","pos":[-0.02,0.0,0.0318],"rot":[0.0,6.0,0.0],"size":[0.18,0.0034,0.019],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip7","shape":"cube","pos":[0.035,0.0,-0.0132],"rot":[-3.0,-2.0,0.0],"size":[0.2,0.0036,0.016],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip8","shape":"cube","pos":[-0.015,0.0,-0.0082],"rot":[2.0,1.0,0.0],"size":[0.22,0.0037,0.018],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip9","shape":"cube","pos":[0.01,0.0,0.0218],"rot":[-1.0,-5.0,0.0],"size":[0.19,0.0035,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip10","shape":"cube","pos":[-0.03,0.0,-0.0332],"rot":[3.0,4.0,0.0],"size":[0.21,0.0036,0.017],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip11","shape":"cube","pos":[0.02,0.0,0.0068],"rot":[-2.0,-1.0,0.0],"size":[0.18,0.0034,0.014],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip12","shape":"cube","pos":[-0.005,0.0,-0.0182],"rot":[1.0,3.0,0.0],"size":[0.2,0.0035,0.019],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

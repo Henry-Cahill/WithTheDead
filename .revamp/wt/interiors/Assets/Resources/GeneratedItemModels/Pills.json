@@ -1,0 +1,12 @@
+{"version": 1, "id": "Pills", "baseHeight": 0.0626, "name": "Pills", "model": "gpt-oss:120b", "notes": "Loose tablets (8‑count) about 9 mm wide × 4 mm thick, piled in a small heap ~2 cm across and ~1 cm high on a thin paper packet. Pill colour is the given tint; wrapper is light brown.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cube","pos":[0.005,-0.0014,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.01],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.01,-0.0009,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.009],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Pill01","shape":"sphere","pos":[-0.001,-0.0004,-0.003],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill02","shape":"sphere","pos":[0.002,0.0001,-0.001],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill03","shape":"sphere","pos":[0.005,0.0006,0.001],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill04","shape":"sphere","pos":[0.008,0.0004,0.003],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill05","shape":"sphere","pos":[0.003,-0.0006,0.004],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill06","shape":"sphere","pos":[0.007,-0.0005,-0.004],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill07","shape":"sphere","pos":[0.004,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill08","shape":"sphere","pos":[0.006,-0.0,-0.002],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.009],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

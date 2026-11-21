@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cudgel_Brake", "baseHeight": 0.16, "name": "Cudgel Brake", "model": "gpt-oss:120b", "notes": "Cudgel Brake – melee weapon, reach ≈1.4 m. Wooden shaft 1.20 m long (≈7 cm diameter) with a leather‑wrap grip band, a steel reinforcement band near the head, and a chunky steel head (0.12 × 0.15 × 0.25 m) that spikes forward along +Z. All parts now touch or overlap correctly; total size ≈1.32 m × 0.30 m × 0.35 m.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.06,-0.015,-0.075],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.65,-0.01,-0.075],"rot":[0.0,0.0,90.0],"size":[0.08,0.02,0.08],"color":[0.35,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.1,-0.005,-0.075],"rot":[0.0,0.0,90.0],"size":[0.09,0.015,0.09],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.6,0.025,-0.075],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.25],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Spike","shape":"cylinder","pos":[0.6,0.025,0.125],"rot":[90.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"FlangeL","shape":"cube","pos":[0.6,0.075,-0.075],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.07],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"FlangeR","shape":"cube","pos":[0.6,-0.075,-0.075],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.07],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFrontL","shape":"sphere","pos":[0.6,0.075,0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontR","shape":"sphere","pos":[0.6,-0.075,0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBack","shape":"sphere","pos":[0.6,0.025,-0.155],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0}
+]}

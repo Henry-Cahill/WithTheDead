@@ -1,0 +1,10 @@
+{"version": 1, "id": "WaterSaucepanRiceCopper", "baseHeight": 0.1298, "name": "Water Saucepan Rice Copper", "model": "gpt-oss:120b", "notes": "Copper saucepan (≈0.26 m Ø × 0.12 m tall) lying on its side, open with a lid beside it. Thin copper walls, short curved handle, shallow mound of cooked rice inside. Simple rim and lid knob added for recognisable silhouette.", "score": 6, "parts": [
+  {"name":"PotOuterShell","shape":"cylinder","pos":[-0.025,-0.0098,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.12,0.26],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"PotInnerCavity","shape":"cylinder","pos":[-0.025,-0.0118,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.108,0.24],"color":[0.92,0.89,0.78],"smooth":0.1,"metal":0.0},
+  {"name":"RiceMound","shape":"cylinder","pos":[-0.025,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.94,0.91,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"PotHandle","shape":"cylinder","pos":[0.105,0.0202,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"LidBase","shape":"cylinder","pos":[-0.025,0.0577,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.75,0.68,0.45],"smooth":0.45,"metal":1.0},
+  {"name":"LidKnob","shape":"cylinder","pos":[-0.025,0.0658,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.06],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[-0.025,0.0502,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.006,0.27],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"BasePlate","shape":"cylinder","pos":[-0.025,-0.0598,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.24],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "GamePieceWhite", "baseHeight": 0.0685, "name": "Game Piece White", "model": "gpt-oss:120b", "notes": "White game token ~3 cm dia × 1 cm thick, lying flat. Main body is a smooth disc with a raised rim and a tiny embossed symbol on top for visual interest.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.034,0.002,0.034],"color":[0.7,0.68,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"SymbolBase","shape":"cylinder","pos":[0.0,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"SymbolTop","shape":"cube","pos":[0.0,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.006],"color":[0.4,0.38,0.32],"smooth":0.2,"metal":0.0},
+  {"name":"ShadowEdge","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.032,0.002,0.032],"color":[0.3,0.29,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"TopBevel","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.002,0.028],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0}
+]}

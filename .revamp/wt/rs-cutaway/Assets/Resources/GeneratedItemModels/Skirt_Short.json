@@ -1,0 +1,8 @@
+{"version": 1, "id": "Skirt_Short", "baseHeight": 0.195, "name": "Skirt Short", "model": "gpt-oss:120b", "notes": "Short skirt laid flat for product view – 0.70 m total waist width, 0.25 m length from waist to hem, 0.03 m thickness. Includes a waistband, two flared side panels, a thin hem rim and subtle front pleats.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.12,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.3],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SkirtLeftPanel","shape":"cube","pos":[-0.075,-0.01,0.0],"rot":[0.0,-10.0,0.0],"size":[0.15,0.25,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SkirtRightPanel","shape":"cube","pos":[0.075,-0.01,0.0],"rot":[0.0,10.0,0.0],"size":[0.15,0.25,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemRim","shape":"cylinder","pos":[0.0,0.125,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.5],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PleatFrontL","shape":"cube","pos":[-0.05,-0.02,0.16],"rot":[0.0,0.0,0.0],"size":[0.02,0.22,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PleatFrontR","shape":"cube","pos":[0.05,-0.02,0.16],"rot":[0.0,0.0,0.0],"size":[0.02,0.22,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0}
+]}

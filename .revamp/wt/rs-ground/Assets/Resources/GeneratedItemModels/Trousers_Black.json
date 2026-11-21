@@ -1,0 +1,13 @@
+{"version": 1, "id": "Trousers_Black", "baseHeight": 0.5775, "name": "Trousers Black", "model": "gpt-oss:120b", "notes": "Flat‑lay black trousers ~1.05 m long x 0.60 m wide (including spread gap), 3 cm thick: waist band, two angled leg panels, crotch seam, belt loop, front & back pockets, stitching lines and hems.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.5025,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.15,0.0075,0.0],"rot":[0.0,20.0,0.0],"size":[0.2,1.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.15,0.0075,0.0],"rot":[0.0,-20.0,0.0],"size":[0.2,1.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchSeam","shape":"cube","pos":[0.0,-0.4775,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop","shape":"cylinder","pos":[0.0,-0.4775,0.06],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.15,-0.1675,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.2,0.02],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocketR","shape":"cube","pos":[0.15,-0.1675,-0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.2,0.02],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.05,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,1.02,0.01],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.05,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,1.02,0.01],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.15,-0.5025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.15,-0.5025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

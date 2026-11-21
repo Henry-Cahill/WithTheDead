@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClubHammer", "baseHeight": 0.16, "name": "Club Hammer", "model": "gpt-oss:120b", "notes": "Club hammer ~1.0 m long lying on its side: wooden handle (≈0.8 m) with a rounded butt, metal ball head (≈0.20 m dia) and a short spike, a metal reinforcement band near the head with two rivets, and a flat striking face on the front of the head.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.12,-0.065,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.8,0.07],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Butt","shape":"sphere","pos":[-0.52,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"HeadSphere","shape":"sphere","pos":[0.38,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.2,0.2],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Spike","shape":"cylinder","pos":[0.52,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Band","shape":"cylinder","pos":[0.23,-0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.08],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":0.8},
+  {"name":"RivetL","shape":"sphere","pos":[0.23,-0.055,-0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.23,-0.055,0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"FacePlate","shape":"cube","pos":[0.49,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.08],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":1.0},
+  {"name":"WoodStrip1","shape":"cube","pos":[-0.12,-0.055,-0.02],"rot":[0.0,0.0,0.0],"size":[0.8,0.005,0.015],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"WoodStrip2","shape":"cube","pos":[-0.12,-0.055,0.02],"rot":[0.0,0.0,0.0],"size":[0.8,0.005,0.015],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0}
+]}

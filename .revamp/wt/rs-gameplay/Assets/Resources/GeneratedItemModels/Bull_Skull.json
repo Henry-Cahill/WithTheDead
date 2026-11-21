@@ -1,0 +1,13 @@
+{"version": 1, "id": "Bull_Skull", "baseHeight": 0.2028, "name": "Bull Skull", "model": "gpt-oss:120b", "notes": "Bull skull ~0.35 m long × 0.22 m wide × 0.20 m tall, lying on its side (longest axis along +X). Main cranium sphere, elongated snout ellipsoid, flat jaw slab, two upward‑curving horns, dark eye‑socket indents and a nasal cavity tube.", "score": 6, "parts": [
+  {"name":"Cranium","shape":"sphere","pos":[-0.0075,-0.0228,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"Snout","shape":"sphere","pos":[0.1125,-0.0328,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.1,0.1],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[-0.0775,-0.1028,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.22,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[0.0425,0.0672,0.08],"rot":[0.0,0.0,20.0],"size":[0.03,0.15,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.0425,0.0672,-0.08],"rot":[0.0,0.0,-20.0],"size":[0.03,0.15,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.0325,0.0072,0.045],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.3,0.28,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.0325,0.0072,-0.045],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.3,0.28,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"NasalCavity","shape":"cylinder","pos":[0.1725,-0.0428,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.3,0.28,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"MouthOpening","shape":"cylinder","pos":[-0.0775,-0.0878,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.3,0.28,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"SkullBase","shape":"cube","pos":[-0.0375,-0.0678,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.22,"metal":0.0},
+  {"name":"Ridge","shape":"cube","pos":[0.0125,0.0172,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.12],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

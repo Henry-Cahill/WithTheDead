@@ -1,0 +1,14 @@
+{"version": 1, "id": "JacketLong_HolsteinHide", "baseHeight": 0.0732, "name": "Jacket Long Holstein Hide", "model": "gpt-oss:120b", "notes": "Long leather jacket (Holstein hide) lying flat, approx 0.9 m long × 0.8 m wide (including sleeves) × 2.5 cm thick. Main leather colour 0.6 0.58 0.5 with dark stitching detail.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.9],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,-0.0007,-0.45],"rot":[0.0,0.0,0.0],"size":[0.62,0.025,0.08],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.6,-0.0007,0.35],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.6,-0.0007,0.35],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.9,-0.0007,0.35],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.2],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.9,-0.0007,0.35],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.2],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.18,-0.0007,-0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.15],"color":[0.58,0.56,0.51],"smooth":0.15,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,-0.0007,-0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.15],"color":[0.58,0.56,0.51],"smooth":0.15,"metal":0.0},
+  {"name":"HemStrip","shape":"cube","pos":[0.0,-0.0007,0.45],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.08],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.0122,-0.45],"rot":[0.0,0.0,0.0],"size":[0.62,0.002,0.08],"color":[0.35,0.33,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.6,0.0122,0.35],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.02],"color":[0.35,0.33,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.6,0.0122,0.35],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.02],"color":[0.35,0.33,0.3],"smooth":0.05,"metal":0.0}
+]}

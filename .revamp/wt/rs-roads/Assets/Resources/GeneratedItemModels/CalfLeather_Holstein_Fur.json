@@ -1,0 +1,12 @@
+{"version": 1, "id": "CalfLeather_Holstein_Fur", "baseHeight": 0.1227, "name": "Calf Leather Holstein Fur", "model": "gpt-oss:120b", "notes": "Flat calf‑leather sheet with Holstein fur pattern, ~0.55 m wide × 0.70 m long × 0.008 m thick, lying on the floor slightly folded at two edges and a curled corner; white fur spots added as tiny spheres.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.1336,-0.005,0.167],"rot":[0.0,0.0,0.0],"size":[0.55,0.008,0.7],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FoldEdgeX","shape":"cube","pos":[-0.1414,0.0,0.167],"rot":[0.0,0.0,10.0],"size":[0.55,0.004,0.02],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"FoldEdgeZ","shape":"cube","pos":[0.1336,0.0,-0.183],"rot":[10.0,0.0,0.0],"size":[0.02,0.004,0.7],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"CornerCurl","shape":"cylinder","pos":[-0.1414,0.003,-0.183],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[0.2336,0.0,0.367],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.92,0.92,0.94],"smooth":0.8,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[0.0136,0.0,0.017],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.92,0.92,0.94],"smooth":0.8,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[0.3336,0.0,-0.133],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.92,0.92,0.94],"smooth":0.8,"metal":0.0},
+  {"name":"Spot4","shape":"sphere","pos":[-0.0464,0.0,0.517],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.92,0.92,0.94],"smooth":0.8,"metal":0.0},
+  {"name":"Spot5","shape":"sphere","pos":[0.1836,0.0,-0.283],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.92,0.92,0.94],"smooth":0.8,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.4086,-0.004,0.167],"rot":[90.0,0.0,0.0],"size":[0.008,0.55,0.008],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "MushroomGeneric3", "baseHeight": 0.1215, "name": "Mushroom Generic3", "model": "gpt-oss:120b", "notes": "Canned sliced mushrooms, about 0.07 m across and 0.12 m tall. Metal body with thin seams, slightly recessed lid, beige‑tinted label (RGB 0.75,0.68,0.45) with darker trim, a light‑coloured brine interior and two tiny mushroom caps as ellipsoids.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.115,0.07],"color":[0.81,0.82,0.84],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0495,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.008,0.072],"color":[0.81,0.82,0.84],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.008,0.072],"color":[0.81,0.82,0.84],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.065,0.008,0.065],"color":[0.78,0.79,0.81],"smooth":0.45,"metal":0.85},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.09,0.066],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.037,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.008,0.068],"color":[0.42,0.36,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.008,0.068],"color":[0.42,0.36,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"Brine","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.09,0.064],"color":[0.92,0.88,0.78],"smooth":0.1,"metal":0.0},
+  {"name":"MushroomCapL","shape":"sphere","pos":[-0.015,-0.0315,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.78,0.71,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"MushroomCapR","shape":"sphere","pos":[0.015,-0.0315,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.78,0.71,0.55],"smooth":0.2,"metal":0.0}
+]}

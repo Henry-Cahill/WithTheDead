@@ -1,0 +1,13 @@
+{"version": 1, "id": "Aerosolbomb", "baseHeight": 0.125, "name": "Aerosolbomb", "model": "gpt-oss:120b", "notes": "Aerosol bomb used as a blunt melee weapon – cylinder 0.12 m diameter × 0.27 m long, lying on its side (long axis along X). Main body in the item’s tint, metal spray‑valve at the +X end, safety pin and button detail, thin label strip and seam rings for silhouette.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0205,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.27,0.12],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"LabelStrip","shape":"cylinder","pos":[-0.0205,0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.122,0.26,0.122],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"SeamFront","shape":"cylinder","pos":[0.1145,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.122,0.008,0.122],"color":[0.5,0.5,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"SeamBack","shape":"cylinder","pos":[-0.1555,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.122,0.008,0.122],"color":[0.5,0.5,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"Nozzle","shape":"cylinder","pos":[0.1245,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.035,0.03,0.035],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"ValveCap","shape":"sphere","pos":[0.1495,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.7,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"SafetyPin","shape":"sphere","pos":[0.1095,0.03,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.78,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"GripRing","shape":"cylinder","pos":[-0.0205,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.124,0.006,0.124],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SprayButton","shape":"cube","pos":[0.0995,0.03,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.3,0.3,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"CapRing","shape":"cylinder","pos":[0.1345,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.004,0.04],"color":[0.6,0.6,0.65],"smooth":0.2,"metal":0.0},
+  {"name":"BaseFlange","shape":"cylinder","pos":[-0.1555,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.13,0.008,0.13],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0}
+]}

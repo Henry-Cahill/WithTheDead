@@ -1,0 +1,9 @@
+{"version": 1, "id": "Pig_Piglet_Head_Pink", "baseHeight": 0.15, "name": "Pig Piglet Head Pink", "model": "gpt-oss:120b", "notes": "Piglet head about 0.22 m wide × 0.18 m tall × 0.20 m deep, lying on its side with snout pointing +Z and ears flopping up. Main flesh pink‑gray (tint 0.6,0.58,0.5) plus darker snout, black eyes and a tiny nose tip.", "score": 6, "parts": [
+  {"name":"MainHead","shape":"sphere","pos":[0.0,0.0,-0.0663],"rot":[0.0,0.0,0.0],"size":[0.22,0.18,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.0,0.0,0.0938],"rot":[90.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.55,0.5,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"NoseTip","shape":"sphere","pos":[0.0,0.0,0.1537],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.4,0.3,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[0.14,0.03,-0.0863],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[-0.14,0.03,-0.0863],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.045,0.02,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.02,0.02,0.02],"smooth":0.02,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.045,0.02,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.02,0.02,0.02],"smooth":0.02,"metal":0.0}
+]}

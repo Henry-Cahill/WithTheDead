@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_MassGenfac", "baseHeight": 0.1397, "name": "Hat Baseball Cap Mass Genfac", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out like a product photo – 0.26 m brim diameter, 0.14 m crown height, 0.025 m total thickness. Main cloth colour tint (0.55,0.5,0.6) with a metal button on top and simple stitching details.", "score": 6, "parts": [
+  {"name":"BrimDisc","shape":"cylinder","pos":[0.0,-0.0757,-0.005],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.0698,-0.005],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.2],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.0023,-0.005],"rot":[0.0,0.0,0.0],"size":[0.2,0.14,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.0722,-0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Visor","shape":"cube","pos":[0.0,-0.0678,0.125],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[-0.05,0.0003,0.015],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.0658,0.125],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.002],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.128,-0.0757,-0.005],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.18],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.128,-0.0757,-0.005],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.18],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BackStitch","shape":"cube","pos":[0.0,-0.0757,-0.095],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.002],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0}
+]}

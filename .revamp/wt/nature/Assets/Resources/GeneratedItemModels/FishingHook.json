@@ -1,0 +1,8 @@
+{"version": 1, "id": "FishingHook", "baseHeight": 0.0825, "name": "Fishing Hook", "model": "gpt-oss:120b", "notes": "Fishing hook ~15 cm long lying on its side, steel‑tint 0.6 0.58 0.5: eye loop welded onto the left end of the shank, straight shank along X, two curved bends forming the hook curve, a rounded tip and a tiny barb – all parts now touch or overlap to make one continuous piece.", "score": 7, "parts": [
+  {"name":"EyeLoop","shape":"cylinder","pos":[-0.0538,-0.015,-0.0226],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Shank","shape":"cylinder","pos":[-0.0188,-0.0185,-0.0226],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Bend1","shape":"cylinder","pos":[0.0162,-0.0045,-0.0076],"rot":[0.0,45.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Bend2","shape":"cylinder","pos":[0.0362,0.0055,0.0074],"rot":[0.0,70.0,90.0],"size":[0.008,0.025,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.0512,0.0175,0.0224],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"Barb","shape":"cylinder","pos":[0.0552,0.0205,0.0254],"rot":[0.0,-30.0,90.0],"size":[0.004,0.012,0.004],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0}
+]}

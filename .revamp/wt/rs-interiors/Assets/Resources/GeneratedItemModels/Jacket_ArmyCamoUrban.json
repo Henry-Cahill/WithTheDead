@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jacket_ArmyCamoUrban", "baseHeight": 0.075, "name": "Jacket Army Camo Urban", "model": "gpt-oss:120b", "notes": "Flat army‑camo jacket, approx 0.55 m wide × 0.6 m tall torso, sleeves out to ~1.15 m total spread, 3 cm thick. Main cloth body with collar, front pockets, cuffs, hem and a zip line.", "score": 4, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.003,0.18],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.08],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.575,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.575,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.875,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.22],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.875,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.22],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.007,0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.007,0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,0.007,-0.44],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.08],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ZipLine","shape":"cube","pos":[0.0,0.003,0.18],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.6],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

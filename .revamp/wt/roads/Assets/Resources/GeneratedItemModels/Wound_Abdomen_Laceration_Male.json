@@ -1,0 +1,13 @@
+{"version": 1, "id": "Wound_Abdomen_Laceration_Male", "baseHeight": 0.12, "name": "Wound Abdomen Laceration Male", "model": "gpt-oss:120b", "notes": "Abdominal laceration tissue chunk about 0.15 m long × 0.08 m wide × 0.02 m thick, lying flat with ragged edges and a dark blood pool on top.", "score": 6, "parts": [
+  {"name":"FleshBase","shape":"cube","pos":[0.0,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BloodPool","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.12,0.005,0.12],"color":[0.4,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Clot","shape":"sphere","pos":[-0.03,0.004,0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.55,0.45,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeTL","shape":"cube","pos":[-0.065,-0.003,-0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTR","shape":"cube","pos":[-0.065,-0.003,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBL","shape":"cube","pos":[0.065,-0.003,-0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBR","shape":"cube","pos":[0.065,-0.003,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TornStripL","shape":"cube","pos":[-0.07,-0.006,0.0],"rot":[0.0,15.0,0.0],"size":[0.03,0.01,0.02],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TornStripR","shape":"cube","pos":[0.07,-0.006,0.0],"rot":[0.0,-15.0,0.0],"size":[0.03,0.01,0.02],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BloodDroplet1","shape":"sphere","pos":[-0.04,0.009,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.015],"color":[0.45,0.08,0.08],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDroplet2","shape":"sphere","pos":[0.03,0.011,0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.014,0.012],"color":[0.45,0.08,0.08],"smooth":0.2,"metal":0.0}
+]}

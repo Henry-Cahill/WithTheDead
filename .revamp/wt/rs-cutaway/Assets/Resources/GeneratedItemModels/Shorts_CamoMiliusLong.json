@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shorts_CamoMiliusLong", "baseHeight": 0.0725, "name": "Shorts Camo Milius Long", "model": "gpt-oss:120b", "notes": "Flat layout of camo shorts ~0.40 m wide × 0.25 m long × 0.02 m thick: waist strip, two leg panels, waistband ring, seam trims, side pockets and bottom hem bands.", "score": 6, "parts": [
+  {"name":"WaistPanel","shape":"cube","pos":[0.0,-0.0025,0.0125],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.11,-0.0025,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.11,-0.0025,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cylinder","pos":[0.0,0.005,0.0125],"rot":[0.0,0.0,0.0],"size":[0.42,0.015,0.42],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamWaist","shape":"cube","pos":[0.0,0.0,0.0125],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.002],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLegL","shape":"cube","pos":[-0.11,0.0,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.002],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLegR","shape":"cube","pos":[0.11,0.0,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.002],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.11,0.0025,-0.1575],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.11,0.0025,-0.1575],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBandL","shape":"cube","pos":[-0.11,0.0025,-0.2125],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemBandR","shape":"cube","pos":[0.11,0.0025,-0.2125],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

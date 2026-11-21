@@ -1,0 +1,11 @@
+{"version": 1, "id": "TentBrown_Packed", "baseHeight": 0.195, "name": "Tent Brown Packed", "model": "gpt-oss:120b", "notes": "Brown canvas tent packed as a roll about 1.20 m long × 0.25 m diameter. Main tube of fabric, dark strap band around it, metal grommets at each end, a rectangular label on the side and a thin plastic tie loop near the centre.", "score": 7, "parts": [
+  {"name":"RollBody","shape":"cylinder","pos":[0.0,-0.01,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.25,1.2,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBand","shape":"cylinder","pos":[0.0,0.0,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.27,1.2,0.27],"color":[0.25,0.22,0.18],"smooth":0.08,"metal":0.0},
+  {"name":"GrommetL","shape":"sphere","pos":[-0.55,-0.01,0.1025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.2,"metal":1.0},
+  {"name":"GrommetR","shape":"sphere","pos":[0.55,-0.01,0.1025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.2,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.2,0.0,0.1025],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.12],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[0.0,-0.01,-0.0275],"rot":[0.0,90.0,0.0],"size":[0.03,0.04,0.03],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[0.55,0.04,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapL","shape":"cylinder","pos":[-0.6,-0.01,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.25,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"cylinder","pos":[0.6,-0.01,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.25,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Battery", "baseHeight": 0.0678, "name": "Battery", "model": "gpt-oss:120b", "notes": "AA‑style cylindrical battery, about 5 cm long × 1.4 cm diameter, lying on its side (long axis along X). Main metal body tinted dusty‑brown, two small terminal caps and a thin label strip.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0007,0.0],"rot":[0.0,0.0,90.0],"size":[0.014,0.05,0.014],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"PosTerminal","shape":"cylinder","pos":[0.027,0.0013,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"NegTerminal","shape":"cylinder","pos":[-0.027,0.0013,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.004,0.008],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.0033,0.0045],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.002],"color":[0.4,0.38,0.32],"smooth":0.1,"metal":0.0},
+  {"name":"Ridge","shape":"cube","pos":[0.0,0.0068,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BottomEdge","shape":"cube","pos":[0.0,-0.0042,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

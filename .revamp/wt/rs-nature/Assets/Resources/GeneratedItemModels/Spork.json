@@ -1,0 +1,9 @@
+{"version": 1, "id": "Spork", "baseHeight": 0.0745, "name": "Spork", "model": "gpt-oss:120b", "notes": "Spork ~0.18 m long, plastic beige (tint 0.6,0.58,0.5). Lying on its side with the handle along X; a short rounded spoon‑bowl at one end and three fork tines protruding from the opposite side.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0225,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.12,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0375,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.025,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"SpoonBowl","shape":"sphere","pos":[0.0625,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TineL","shape":"cube","pos":[0.0525,0.0045,0.012],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TineM","shape":"cube","pos":[0.0525,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TineR","shape":"cube","pos":[0.0525,0.0045,-0.012],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"BowlRim","shape":"cylinder","pos":[0.0775,0.0045,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

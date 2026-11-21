@@ -1,0 +1,8 @@
+{"version": 1, "id": "HammerStone", "baseHeight": 0.14, "name": "Hammer Stone", "model": "gpt-oss:120b", "notes": "Stone hammer ~0.95 m long lying on its side: wooden‑style handle (cylinder) along X, a chunky stone head (cube) at the far end with a rounded striking face protruding +Z, a metal reinforcement band near the head and a small wooden butt on the opposite side.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.12,-0.035,-0.03],"rot":[0.0,0.0,90.0],"size":[0.08,0.7,0.08],"color":[0.6,0.55,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.08,-0.03,-0.03],"rot":[0.0,0.0,90.0],"size":[0.09,0.02,0.09],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.355,0.0,-0.03],"rot":[0.0,0.0,0.0],"size":[0.25,0.15,0.2],"color":[0.6,0.6,0.64],"smooth":0.3,"metal":0.0},
+  {"name":"Face","shape":"cylinder","pos":[0.355,0.0,0.095],"rot":[90.0,0.0,0.0],"size":[0.14,0.05,0.14],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.355,0.0,0.125],"rot":[90.0,0.0,0.0],"size":[0.16,0.01,0.16],"color":[0.5,0.5,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"Butt","shape":"cube","pos":[-0.42,-0.035,-0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.1],"color":[0.6,0.55,0.5],"smooth":0.15,"metal":0.0}
+]}

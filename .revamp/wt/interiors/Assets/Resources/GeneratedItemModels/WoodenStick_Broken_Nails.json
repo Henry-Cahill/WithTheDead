@@ -1,0 +1,12 @@
+{"version": 1, "id": "WoodenStick_Broken_Nails", "baseHeight": 0.146, "name": "Wooden Stick Broken Nails", "model": "gpt-oss:120b", "notes": "Wooden stick ~1.10 m long, 4 cm diameter, lying on its side (X‑axis). Wood colour 0.6 0.6 0.64 with a grain line. Five broken steel nails protrude from the business end (+X) in various directions and metal heads, plus a small metal cap on the tip.", "score": 7, "parts": [
+  {"name":"MainStick","shape":"cylinder","pos":[0.0,-0.006,-0.006],"rot":[0.0,0.0,90.0],"size":[0.04,1.1,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GrainLine","shape":"cube","pos":[0.0,-0.001,-0.006],"rot":[0.0,0.0,0.0],"size":[1.1,0.004,0.008],"color":[0.5,0.5,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"TipCap","shape":"cylinder","pos":[0.54,-0.006,-0.006],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"NailUp","shape":"cylinder","pos":[0.53,0.034,-0.006],"rot":[0.0,0.0,0.0],"size":[0.01,0.08,0.01],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"NailUpHead","shape":"sphere","pos":[0.53,0.08,-0.006],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"NailForward","shape":"cylinder","pos":[0.53,-0.006,0.054],"rot":[90.0,0.0,0.0],"size":[0.01,0.08,0.01],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"NailForwardHead","shape":"sphere","pos":[0.53,-0.006,0.1],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"NailDown","shape":"cylinder","pos":[0.53,-0.046,-0.006],"rot":[0.0,0.0,0.0],"size":[0.01,0.08,0.01],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"NailBack","shape":"cylinder","pos":[0.53,-0.006,-0.066],"rot":[90.0,0.0,0.0],"size":[0.01,0.08,0.01],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"NailAngled","shape":"cylinder","pos":[0.53,0.014,0.034],"rot":[45.0,0.0,20.0],"size":[0.01,0.08,0.01],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":1.0}
+]}

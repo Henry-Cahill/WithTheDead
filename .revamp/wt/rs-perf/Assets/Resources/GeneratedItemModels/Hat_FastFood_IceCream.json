@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_FastFood_IceCream", "baseHeight": 0.2375, "name": "Hat Fast Food Ice Cream", "model": "gpt-oss:120b", "notes": "Flat novelty ice‑cream hat, brim ≈ 0.28 m diameter, 1.5 cm thick; short crown ≈ 0.14 m wide × 0.12 m tall; soft‑serve scoop on top (≈ 0.18 m dia). Main fabric tint 0.55 0.50 0.60 with darker rim and pastel ice‑cream colour.", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.17,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.161,0.0],"rot":[0.0,0.0,0.0],"size":[0.306,0.004,0.306],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,-0.1025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.12,0.14],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"CrownSeam","shape":"cylinder","pos":[0.0,-0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.006,0.152],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"ScoopBody","shape":"sphere","pos":[0.0,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.18,0.18],"color":[0.92,0.71,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"ScoopSwirl","shape":"cylinder","pos":[0.0,0.1075,0.0],"rot":[90.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.95,0.8,0.85],"smooth":0.15,"metal":0.0},
+  {"name":"Cherry","shape":"sphere","pos":[0.0,0.1575,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.85,0.15,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Sprinkle1","shape":"cube","pos":[-0.045,0.0775,0.03],"rot":[0.0,30.0,0.0],"size":[0.008,0.012,0.008],"color":[0.9,0.55,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Sprinkle2","shape":"cube","pos":[0.03,0.0875,-0.035],"rot":[15.0,0.0,45.0],"size":[0.008,0.012,0.008],"color":[0.2,0.75,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Sprinkle3","shape":"cube","pos":[0.04,0.0675,0.025],"rot":[-10.0,20.0,0.0],"size":[0.008,0.012,0.008],"color":[0.3,0.45,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Sprinkle4","shape":"cube","pos":[-0.03,0.0825,-0.04],"rot":[5.0,-15.0,30.0],"size":[0.008,0.012,0.008],"color":[0.95,0.85,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPlate","shape":"cube","pos":[0.0,-0.1665,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.7,0.65,0.75],"smooth":0.1,"metal":0.0}
+]}

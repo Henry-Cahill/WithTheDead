@@ -1,0 +1,12 @@
+{"version": 1, "id": "SageSeed", "baseHeight": 0.0657, "name": "Sage Seed", "model": "gpt-oss:120b", "notes": "Loose sage seeds (~20 g) scattered on the floor as a small irregular pile about 0.10 m long × 0.05 m wide and up to ~0.015 m high. Each seed is a tiny flattened ellipsoid in the sage‑seed tint, positioned so every piece touches at least one neighbour.", "score": 6, "parts": [
+  {"name":"Seed1","shape":"sphere","pos":[-0.025,-0.0008,0.0029],"rot":[12.0,5.0,-8.0],"size":[0.012,0.006,0.008],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[-0.015,-0.0003,0.0089],"rot":[-3.0,22.0,15.0],"size":[0.014,0.007,0.009],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.02,-0.0008,0.0149],"rot":[7.0,-14.0,4.0],"size":[0.011,0.005,0.009],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.03,0.0004,-0.0031],"rot":[-10.0,9.0,-12.0],"size":[0.013,0.0065,0.01],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[0.025,-0.0,0.0029],"rot":[5.0,-6.0,18.0],"size":[0.0125,0.006,0.0085],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.01,-0.0,-0.0071],"rot":[-4.0,13.0,-7.0],"size":[0.0145,0.0072,0.0095],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed7","shape":"sphere","pos":[-0.032,-0.0009,0.0099],"rot":[11.0,-3.0,6.0],"size":[0.0105,0.0048,0.0075],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed8","shape":"sphere","pos":[0.02,-0.0002,0.0069],"rot":[-9.0,17.0,-14.0],"size":[0.0132,0.0064,0.0092],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed9","shape":"sphere","pos":[-0.005,0.0002,-0.0131],"rot":[3.0,-19.0,2.0],"size":[0.015,0.0075,0.011],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Seed10","shape":"sphere","pos":[0.018,-0.0005,0.0009],"rot":[-2.0,8.0,-11.0],"size":[0.0115,0.0055,0.008],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

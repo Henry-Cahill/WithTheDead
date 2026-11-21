@@ -1,0 +1,8 @@
+{"version": 1, "id": "Toothpaste", "baseHeight": 0.083, "name": "Toothpaste", "model": "gpt-oss:120b", "notes": "Toothpaste tube 0.15 m long × 0.04 m diameter lying on its side: plastic body, white screw‑cap, a thin printed band around the middle and a small squeeze ridge near the cap.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0008,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0668,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.85,0.85,0.85],"smooth":0.3,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[-0.0008,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.042,0.09,0.042],"color":[0.3,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SqueezeRing","shape":"cylinder","pos":[0.0393,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.005,0.045],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"EndStop","shape":"cube","pos":[-0.0732,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CapRidge","shape":"cube","pos":[0.0742,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.045,0.045],"color":[0.85,0.85,0.85],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Left_MiddleFinger_Silver", "baseHeight": 0.0627, "name": "Ring Left Middle Finger Silver", "model": "gpt-oss:120b", "notes": "Silver ring (left‑middle‑finger) ~0.022 m outer diameter × 0.004 m thick. Main band cylinder, thin raised rims at top/bottom, and a shallow engraved stripe on the outer face.", "score": 6, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[-0.0005,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.004,0.022],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.0005,0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.023,0.002,0.023],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.0005,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.023,0.002,0.023],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"EngraveStripe","shape":"cube","pos":[0.011,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.018],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeHighlight","shape":"cylinder","pos":[-0.0005,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.0225,0.002,0.0225],"color":[0.7,0.68,0.62],"smooth":0.8,"metal":1.0},
+  {"name":"InnerCore","shape":"cylinder","pos":[-0.0005,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.019,0.0035,0.019],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0}
+]}

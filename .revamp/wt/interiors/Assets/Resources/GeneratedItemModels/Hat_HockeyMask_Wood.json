@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_HockeyMask_Wood", "baseHeight": 0.0875, "name": "Hat Hockey Mask Wood", "model": "gpt-oss:120b", "notes": "Flat wooden hockey mask hat laid out flat (~0.28 m wide × 0.18 m deep × 0.025 m thick). Main shell, front visor panel, side wings, strap loops, eye‑hole cutouts and a few metal rivets give the recognizable outline.", "score": 7, "parts": [
+  {"name":"BaseShell","shape":"cube","pos":[0.0,-0.015,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"VisorFront","shape":"cube","pos":[0.0,0.0125,0.0775],"rot":[0.0,0.0,0.0],"size":[0.24,0.03,0.06],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"LeftWing","shape":"cube","pos":[-0.17,-0.015,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RightWing","shape":"cube","pos":[0.17,-0.015,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"TopStrapLoop","shape":"cylinder","pos":[0.0,0.0045,-0.0925],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.03],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"EyeHoleL","shape":"cylinder","pos":[-0.07,-0.015,0.0075],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"EyeHoleR","shape":"cylinder","pos":[0.07,-0.015,0.0075],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"RivetTopCenter","shape":"sphere","pos":[0.0,0.0175,0.0775],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLeftSide","shape":"sphere","pos":[-0.1,0.0175,0.0575],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRightSide","shape":"sphere","pos":[0.1,0.0175,0.0575],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0}
+]}

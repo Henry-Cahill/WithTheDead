@@ -1,0 +1,14 @@
+{"version": 1, "id": "Necklace_SkullMammal_Multi", "baseHeight": 0.105, "name": "Necklace Skull Mammal Multi", "model": "gpt-oss:120b", "notes": "Necklace with a mammal‑skull pendant, tint 0.6 0.58 0.5. Approx. 0.15 m long chain lying flat on the floor (six interlocking links), 0.07 m wide skull pendant hanging down, two tiny horn rods and a few rivet studs for detail.", "score": 7, "parts": [
+  {"name":"Link1","shape":"cylinder","pos":[-0.0745,-0.042,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.02,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"Link2","shape":"cylinder","pos":[-0.0545,-0.042,0.005],"rot":[0.0,10.0,90.0],"size":[0.006,0.02,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"Link3","shape":"cylinder","pos":[-0.0345,-0.042,-0.005],"rot":[0.0,-10.0,90.0],"size":[0.006,0.02,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"Link4","shape":"cylinder","pos":[-0.0145,-0.042,0.005],"rot":[0.0,10.0,90.0],"size":[0.006,0.02,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"Link5","shape":"cylinder","pos":[0.0055,-0.042,-0.005],"rot":[0.0,-10.0,90.0],"size":[0.006,0.02,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"Link6","shape":"cylinder","pos":[0.0255,-0.042,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.02,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"Clasp","shape":"cube","pos":[0.0455,-0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.004],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.9},
+  {"name":"SkullBase","shape":"sphere","pos":[0.0455,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.09,0.06],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[0.0805,0.03,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.65,0.63,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.0805,0.03,-0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.65,0.63,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"RivetFront","shape":"cube","pos":[0.0455,0.035,0.025],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.002],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"RivetBack","shape":"cube","pos":[0.0455,0.035,-0.025],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.002],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Tshirt_WhiteTINT", "baseHeight": 0.08, "name": "Tshirt White TINT", "model": "gpt-oss:120b", "notes": "Flat white T‑shirt laid out for a product view – overall size about 0.68 m long × 0.78 m wide (including sleeves) × 0.03 m thick. Main torso panel, angled short sleeves with cuffs, ribbed collar and neck opening, bottom hem band and a centre fold.", "score": 4, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0075,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.48],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Shoulders","shape":"cube","pos":[0.2275,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.032,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.1575,-0.005,0.36],"rot":[0.0,-30.0,0.0],"size":[0.18,0.028,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.1575,-0.005,-0.36],"rot":[0.0,30.0,0.0],"size":[0.18,0.028,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.1075,-0.004,0.42],"rot":[0.0,-30.0,0.0],"size":[0.16,0.03,0.03],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.1075,-0.004,-0.42],"rot":[0.0,30.0,0.0],"size":[0.16,0.03,0.03],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.2675,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.035,0.16],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.2675,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.036,0.14],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.3325,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.48],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fold","shape":"cube","pos":[-0.0125,0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.012],"color":[0.58,0.53,0.66],"smooth":0.05,"metal":0.0}
+]}

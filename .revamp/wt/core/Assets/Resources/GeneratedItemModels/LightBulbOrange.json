@@ -1,0 +1,10 @@
+{"version": 1, "id": "LightBulbOrange", "baseHeight": 0.105, "name": "Light Bulb Orange", "model": "gpt-oss:120b", "notes": "A standard A‑type incandescent bulb with orange‑tinted glass. Total height ≈ 0.09 m; 60 mm diameter glass sphere on a short metal screw base (22 mm Ø, 10 mm tall) with a narrow glass neck. Includes a thin metallic thread ring and a faint label band for recognisable silhouette.", "score": 7, "parts": [
+  {"name":"BaseCap","shape":"cylinder","pos":[0.0,-0.0435,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.003,0.022],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.01,0.022],"color":[0.68,0.69,0.71],"smooth":0.55,"metal":1.0},
+  {"name":"ThreadRing","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.6,0.61,0.63],"smooth":0.55,"metal":1.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"GlassTop","shape":"sphere","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.058],"color":[0.5,0.45,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"Filament","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.2,0.12,0.08],"smooth":0.4,"metal":0.0},
+  {"name":"ThreadDetail","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.002,0.016],"color":[0.6,0.61,0.63],"smooth":0.55,"metal":1.0}
+]}

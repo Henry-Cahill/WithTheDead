@@ -1,0 +1,18 @@
+{"version": 1, "id": "ScrewsBox", "baseHeight": 0.0865, "name": "Screws Box", "model": "gpt-oss:120b", "notes": "Rectangular cardboard box (≈0.12 m × 0.08 m × 0.04 m) lying on its side with the lid slightly lifted. Four metal screws rest on the opened lid; all screw parts now touch the lid surface.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[-0.0015,-0.0065,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontSide","shape":"cube","pos":[-0.0015,-0.0065,0.0205],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.004],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"BackSide","shape":"cube","pos":[-0.0015,-0.0065,-0.0555],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.004],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"LeftSide","shape":"cube","pos":[-0.0595,-0.0065,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.004,0.04,0.08],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RightSide","shape":"cube","pos":[0.0565,-0.0065,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.004,0.04,0.08],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[-0.0015,0.0155,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[-0.0015,-0.0015,0.0185],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.09],"color":[0.45,0.42,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"Hinge","shape":"cylinder","pos":[0.0565,0.0175,0.0175],"rot":[0.0,0.0,0.0],"size":[0.01,0.002,0.01],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.0},
+  {"name":"Screw1_Shaft","shape":"cylinder","pos":[-0.0415,0.0205,0.0025],"rot":[0.0,0.0,90.0],"size":[0.004,0.03,0.004],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Screw1_Head","shape":"cylinder","pos":[-0.0565,0.0225,0.0025],"rot":[0.0,0.0,90.0],"size":[0.008,0.002,0.008],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Screw2_Shaft","shape":"cylinder","pos":[-0.0315,0.0205,-0.0325],"rot":[0.0,0.0,90.0],"size":[0.004,0.028,0.004],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Screw2_Head","shape":"cylinder","pos":[-0.0465,0.0225,-0.0325],"rot":[0.0,0.0,90.0],"size":[0.008,0.002,0.008],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Screw3_Shaft","shape":"cylinder","pos":[0.0185,0.0205,0.0125],"rot":[90.0,0.0,0.0],"size":[0.004,0.032,0.004],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Screw3_Head","shape":"cylinder","pos":[0.0185,0.0225,0.0275],"rot":[90.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Screw4_Shaft","shape":"cylinder","pos":[0.0335,0.0205,-0.0475],"rot":[90.0,0.0,0.0],"size":[0.004,0.029,0.004],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Screw4_Head","shape":"cylinder","pos":[0.0335,0.0225,-0.0625],"rot":[90.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0}
+]}

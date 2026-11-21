@@ -1,0 +1,12 @@
+{"version": 1, "id": "RicePan", "baseHeight": 0.08, "name": "Rice Pan", "model": "gpt-oss:120b", "notes": "Rectangular shallow metal rice pan (≈0.25 m × 0.20 m × 0.04 m) with two side handles, a thin plastic lid and a visible layer of cooked rice inside.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0175,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.2],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.8},
+  {"name":"SideFront","shape":"cube","pos":[0.0,0.0,0.0938],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.005],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.8},
+  {"name":"SideBack","shape":"cube","pos":[0.0,0.0,-0.1013],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.005],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.8},
+  {"name":"SideLeft","shape":"cube","pos":[-0.1225,0.0,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,0.2],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.8},
+  {"name":"SideRight","shape":"cube","pos":[0.1225,0.0,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,0.2],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.8},
+  {"name":"HandleLeft","shape":"cylinder","pos":[-0.165,0.0,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.03,0.08,0.03],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"HandleRight","shape":"cylinder","pos":[0.165,0.0,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.03,0.08,0.03],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"RiceLayer","shape":"cube","pos":[0.0,-0.0075,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.18],"color":[0.85,0.78,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.017,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.255,0.004,0.205],"color":[0.92,0.93,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"LidLabel","shape":"cylinder","pos":[0.0,0.019,0.0862],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.8,0.2,0.2],"smooth":0.1,"metal":0.0}
+]}

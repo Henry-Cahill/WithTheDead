@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_BuildersRespirator", "baseHeight": 0.095, "name": "Hat Builders Respirator", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a Builders Respirator mask (~0.28 m wide × 0.18 m tall × 0.02 m thick). Shows the crown, rim/brim, side flaps, filter canister, strap loops and a front label.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.021,-0.02],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.22],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.013,-0.02],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SideFlapL","shape":"cube","pos":[-0.12,-0.014,-0.02],"rot":[0.0,0.0,0.0],"size":[0.06,0.018,0.1],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SideFlapR","shape":"cube","pos":[0.12,-0.014,-0.02],"rot":[0.0,0.0,0.0],"size":[0.06,0.018,0.1],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FilterCanister","shape":"sphere","pos":[0.0,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.45,0.44,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Valve","shape":"cylinder","pos":[0.03,0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.45,0.44,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[-0.09,0.015,-0.02],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.45,0.44,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.09,0.015,-0.02],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.45,0.44,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.007,0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,-0.003,-0.02],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.12],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.017,-0.02],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.12],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0}
+]}

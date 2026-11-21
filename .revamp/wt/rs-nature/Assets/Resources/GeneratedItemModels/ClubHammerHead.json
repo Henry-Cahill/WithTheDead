@@ -1,0 +1,13 @@
+{"version": 1, "id": "ClubHammerHead", "baseHeight": 0.12, "name": "Club Hammer Head", "model": "gpt-oss:120b", "notes": "Chunky club‑hammer head ~0.26 m long × 0.16 m wide × 0.12 m tall, metal (tint 0.6, 0.58, 0.5). Lying on its flat side, with a small cylindrical eye for the handle on the rear face and a raised striking plate on the front.", "score": 7, "parts": [
+  {"name":"MainBlock","shape":"cube","pos":[-0.0025,0.0,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.26,0.12,0.16],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.1305,0.0,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.008,0.108,0.152],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"BackCurved","shape":"sphere","pos":[-0.0725,0.0,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.58,0.55,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"HandleEye","shape":"cylinder","pos":[-0.1245,0.0,-0.0035],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"TopRim","shape":"cube","pos":[-0.0025,0.052,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.16],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"BottomRim","shape":"cube","pos":[-0.0025,-0.056,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.16],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"SideRimL","shape":"cube","pos":[-0.0025,0.0,0.0805],"rot":[0.0,0.0,0.0],"size":[0.26,0.12,0.008],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"SideRimR","shape":"cube","pos":[-0.0025,0.0,-0.0875],"rot":[0.0,0.0,0.0],"size":[0.26,0.12,0.008],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[0.1175,0.01,0.0465],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.1175,0.01,-0.0535],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"WeightTag","shape":"cube","pos":[-0.0825,0.01,0.0865],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.35,0.33,0.3],"smooth":0.2,"metal":1.0}
+]}

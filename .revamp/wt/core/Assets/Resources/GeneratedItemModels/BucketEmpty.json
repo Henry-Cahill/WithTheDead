@@ -1,0 +1,8 @@
+{"version": 1, "id": "BucketEmpty", "baseHeight": 0.21, "name": "Bucket Empty", "model": "gpt-oss:120b", "notes": "Empty bucket lying on its side (axis along X). Main body cylinder 0.28 m diameter × 0.25 m length, thin rim at the open end, and a short metal handle loop across the top of the rim.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0025,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.28,0.25,0.28],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.1225,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.015,0.3],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.1225,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"HandleCapL","shape":"cylinder","pos":[0.1225,0.125,0.06],"rot":[0.0,90.0,0.0],"size":[0.02,0.03,0.02],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"HandleCapR","shape":"cylinder","pos":[0.1225,0.125,-0.06],"rot":[0.0,90.0,0.0],"size":[0.02,0.03,0.02],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"BottomFlange","shape":"cylinder","pos":[-0.1275,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.01,0.3],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0}
+]}

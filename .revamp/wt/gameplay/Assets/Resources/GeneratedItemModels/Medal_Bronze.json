@@ -1,0 +1,10 @@
+{"version": 1, "id": "Medal_Bronze", "baseHeight": 0.0655, "name": "Medal Bronze", "model": "gpt-oss:120b", "notes": "Bronze medal ~4 cm diameter x 4 mm thick, lying flat on the floor. Main disc body, slightly larger rim, raised central emblem, two engraved text plates (front & back) and a tiny ribbon loop at the top‑center.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.0045,0.045],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Emblem","shape":"cylinder","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.0025,0.018],"color":[0.58,0.55,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"FrontEngrave","shape":"cylinder","pos":[0.0,-0.0009,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"BackEngrave","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RibbonLoop","shape":"cylinder","pos":[0.0,0.0015,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.3,0.25,0.22],"smooth":0.5,"metal":0.0},
+  {"name":"LoopTie","shape":"cube","pos":[0.0,0.0019,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.3,0.25,0.22],"smooth":0.5,"metal":0.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,-0.0026,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

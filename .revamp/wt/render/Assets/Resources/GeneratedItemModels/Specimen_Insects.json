@@ -1,0 +1,11 @@
+{"version": 1, "id": "Specimen_Insects", "baseHeight": 0.156, "name": "Specimen Insects", "model": "gpt-oss:120b", "notes": "Upright specimen jar ~0.12 m dia × 0.18 m tall, brown‑tinted glass body, metal screw lid and a simple label; six tiny insect ellipsoids inside to hint at the contents.", "score": 7, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.18,0.12],"color":[0.68,0.66,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"LidCap","shape":"cylinder","pos":[0.0,0.089,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.014,0.13],"color":[0.45,0.45,0.45],"smooth":0.5,"metal":0.9},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.006,0.062],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Insect1","shape":"sphere","pos":[-0.015,-0.026,0.01],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.014],"color":[0.55,0.5,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Insect2","shape":"sphere","pos":[0.02,-0.006,-0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.014,0.018],"color":[0.55,0.5,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Insect3","shape":"sphere","pos":[-0.025,0.014,0.02],"rot":[0.0,0.0,0.0],"size":[0.014,0.016,0.012],"color":[0.55,0.5,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Insect4","shape":"sphere","pos":[0.03,-0.016,-0.02],"rot":[0.0,0.0,0.0],"size":[0.018,0.015,0.017],"color":[0.55,0.5,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Insect5","shape":"sphere","pos":[-0.01,0.034,0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.018,0.014],"color":[0.55,0.5,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Insect6","shape":"sphere","pos":[0.01,-0.036,-0.025],"rot":[0.0,0.0,0.0],"size":[0.017,0.013,0.016],"color":[0.55,0.5,0.45],"smooth":0.2,"metal":0.0}
+]}

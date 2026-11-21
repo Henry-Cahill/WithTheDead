@@ -1,0 +1,11 @@
+{"version": 1, "id": "LongMace_Stone", "baseHeight": 0.3, "name": "Long Mace Stone", "model": "gpt-oss:120b", "notes": "Long stone mace ~1.20 m long, 0.07 m shaft diameter, 0.30 m stone head (sphere) with four metal spikes (front, back, up, down). Shaft and head use the stone tint; spikes are metallic.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.105,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.0,0.07],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"HeadCore","shape":"sphere","pos":[0.445,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.3,0.3],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.345,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.02,0.08],"color":[0.4,0.4,0.42],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeFront","shape":"cylinder","pos":[0.445,0.005,0.21],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeBack","shape":"cylinder","pos":[0.445,0.005,-0.21],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeUp","shape":"cylinder","pos":[0.445,0.18,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeDown","shape":"cylinder","pos":[0.445,-0.18,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"HeadFlangeTop","shape":"cube","pos":[0.445,0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.32],"color":[0.5,0.5,0.53],"smooth":0.3,"metal":0.0},
+  {"name":"HeadFlangeBottom","shape":"cube","pos":[0.445,-0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.32],"color":[0.5,0.5,0.53],"smooth":0.3,"metal":0.0}
+]}

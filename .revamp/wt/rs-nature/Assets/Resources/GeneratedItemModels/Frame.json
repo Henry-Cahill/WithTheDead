@@ -1,0 +1,10 @@
+{"version": 1, "id": "Frame", "baseHeight": 0.0725, "name": "Frame", "model": "gpt-oss:120b", "notes": "Wooden picture‑frame lying flat, overall 0.40 m × 0.30 m × 0.02 m thick. Four side strips form the border, with tiny nail heads at each corner as detail.", "score": 7, "parts": [
+  {"name":"TopBar","shape":"cube","pos":[0.0,-0.0025,0.13],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BottomBar","shape":"cube","pos":[0.0,-0.0025,-0.13],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LeftBar","shape":"cube","pos":[-0.18,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RightBar","shape":"cube","pos":[0.18,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"NailTL","shape":"cylinder","pos":[-0.175,0.0075,0.125],"rot":[90.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"NailTR","shape":"cylinder","pos":[0.175,0.0075,0.125],"rot":[90.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"NailBL","shape":"cylinder","pos":[-0.175,0.0075,-0.125],"rot":[90.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"NailBR","shape":"cylinder","pos":[0.175,0.0075,-0.125],"rot":[90.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

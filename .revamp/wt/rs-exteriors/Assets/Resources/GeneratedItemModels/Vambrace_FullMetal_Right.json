@@ -1,0 +1,14 @@
+{"version": 1, "id": "Vambrace_FullMetal_Right", "baseHeight": 0.0825, "name": "Vambrace Full Metal Right", "model": "gpt-oss:120b", "notes": "Full‑metal right vambrace lying on its side (length ≈ 0.32 m, tube Ø ≈ 0.04 m). Main cylindrical tube with front and back steel plates, a thin reinforcing band around the middle, and rows of rivets on each plate.", "score": 6, "parts": [
+  {"name":"MainTube","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.32,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.32,0.045],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,-0.0025,0.0225],"rot":[0.0,0.0,0.0],"size":[0.32,0.04,0.005],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[0.0,-0.0025,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.32,0.04,0.005],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetF1","shape":"cylinder","pos":[-0.12,-0.0025,0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetF2","shape":"cylinder","pos":[-0.04,-0.0025,0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetF3","shape":"cylinder","pos":[0.04,-0.0025,0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetF4","shape":"cylinder","pos":[0.12,-0.0025,0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetB1","shape":"cylinder","pos":[-0.12,-0.0025,-0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetB2","shape":"cylinder","pos":[-0.04,-0.0025,-0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetB3","shape":"cylinder","pos":[0.04,-0.0025,-0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"RivetB4","shape":"cylinder","pos":[0.12,-0.0025,-0.025],"rot":[90.0,0.0,0.0],"size":[0.006,0.005,0.006],"color":[0.7,0.68,0.6],"smooth":0.65,"metal":1.0}
+]}

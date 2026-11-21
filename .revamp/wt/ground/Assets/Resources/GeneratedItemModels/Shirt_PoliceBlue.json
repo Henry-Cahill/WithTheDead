@@ -1,0 +1,17 @@
+{"version": 1, "id": "Shirt_PoliceBlue", "baseHeight": 0.0747, "name": "Shirt Police Blue", "model": "gpt-oss:120b", "notes": "Police‑blue shirt laid flat, approx 0.58 m long × 0.44 m wide × 0.025 m thick. Main torso panel with short sleeves, pointed collar, button row, left chest pocket, cuffs, bottom hem and a centre fold.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.025,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.025,-0.0023,-0.28],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.025,-0.0023,0.28],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.025,0.0002,-0.34],"rot":[0.0,0.0,0.0],"size":[0.58,0.005,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.025,0.0002,0.34],"rot":[0.0,0.0,0.0],"size":[0.58,0.005,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.255,0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.255,0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.08],"color":[0.15,0.15,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.175,0.0032,0.225],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.2,0.2,0.2],"smooth":0.65,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.1,0.0032,0.225],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.2,0.2,0.2],"smooth":0.65,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[-0.025,0.0032,0.225],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.2,0.2,0.2],"smooth":0.65,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.05,0.0032,0.225],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.2,0.2,0.2],"smooth":0.65,"metal":1.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.125,0.0032,0.225],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.2,0.2,0.2],"smooth":0.65,"metal":1.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.145,0.0002,-0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.025,-0.0073,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.005,0.44],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CentreFold","shape":"cube","pos":[-0.025,0.0132,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.01],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "BeautyBerry", "baseHeight": 0.082, "name": "Beauty Berry", "model": "gpt-oss:120b", "notes": "Small snack pack of Beauty Berries, about 12 cm × 7 cm × 4 cm tall. Cardboard box body with a thin lid, a paper label on the front and six plump berries shown inside as ellipsoids.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.002,-0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.07],"color":[0.78,0.71,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.02,-0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.07],"color":[0.73,0.66,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SealRing","shape":"cylinder","pos":[0.0,0.019,-0.001],"rot":[0.0,0.0,0.0],"size":[0.122,0.002,0.072],"color":[0.6,0.55,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.013,0.0355],"rot":[0.0,0.0,0.0],"size":[0.09,0.012,0.002],"color":[0.9,0.88,0.84],"smooth":0.08,"metal":0.0},
+  {"name":"LabelPrint","shape":"cube","pos":[0.0,0.0145,0.036],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.002],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Berry1","shape":"sphere","pos":[-0.03,-0.007,-0.021],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Berry2","shape":"sphere","pos":[0.0,-0.004,-0.011],"rot":[0.0,0.0,0.0],"size":[0.017,0.017,0.017],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Berry3","shape":"sphere","pos":[0.025,-0.006,-0.001],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Berry4","shape":"sphere","pos":[-0.02,-0.005,0.014],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Berry5","shape":"sphere","pos":[0.015,-0.008,0.024],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Berry6","shape":"sphere","pos":[-0.01,-0.007,0.029],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

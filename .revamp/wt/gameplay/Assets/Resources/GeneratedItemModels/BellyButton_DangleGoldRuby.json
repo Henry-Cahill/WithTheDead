@@ -1,0 +1,12 @@
+{"version": 1, "id": "BellyButton_DangleGoldRuby", "baseHeight": 0.068, "name": "Belly Button Dangle Gold Ruby", "model": "gpt-oss:120b", "notes": "Belly‑button dangle gold‑ruby jewelry ~5 cm long: thin gold bar (cylinder) lying flat, two decorative beads, a small clasp at one end, a short vertical chain link and a ruby sphere dangling forward with tiny facet cubes; extra little screws add detail. Overall size ≈0.03 m × 0.02 m × 0.02 m.", "score": 7, "parts": [
+  {"name":"Bar","shape":"cylinder","pos":[-0.0025,0.0015,-0.004],"rot":[0.0,0.0,90.0],"size":[0.005,0.03,0.005],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.0165,0.002,-0.004],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.004],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"BeadL","shape":"sphere","pos":[-0.0075,0.0015,-0.004],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"BeadR","shape":"sphere","pos":[0.0025,0.0015,-0.004],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"ChainLink","shape":"cylinder","pos":[0.0125,-0.0,-0.004],"rot":[0.0,0.0,0.0],"size":[0.003,0.012,0.003],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Ruby","shape":"sphere","pos":[0.0125,-0.0,0.004],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.05,0.05],"smooth":0.4,"metal":0.0},
+  {"name":"FacetA","shape":"cube","pos":[0.0125,-0.0,0.012],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.9,0.1,0.1],"smooth":0.5,"metal":0.0},
+  {"name":"FacetB","shape":"cube","pos":[0.0125,-0.0,-0.012],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.9,0.1,0.1],"smooth":0.5,"metal":0.0},
+  {"name":"ScrewL","shape":"cube","pos":[-0.0195,0.004,-0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.002],"color":[0.4,0.4,0.4],"smooth":0.1,"metal":1.0},
+  {"name":"ScrewR","shape":"cube","pos":[-0.0135,0.004,-0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.002],"color":[0.4,0.4,0.4],"smooth":0.1,"metal":1.0}
+]}

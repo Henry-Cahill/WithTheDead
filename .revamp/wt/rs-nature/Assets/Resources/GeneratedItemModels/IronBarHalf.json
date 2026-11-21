@@ -1,0 +1,8 @@
+{"version": 1, "id": "IronBarHalf", "baseHeight": 0.09, "name": "Iron Bar Half", "model": "gpt-oss:120b", "notes": "Half‑length iron bar ~0.55 m long, lying on its side (long axis X). Thin cylindrical shaft (4 cm dia) with a thicker blunt head (6 cm square cross‑section, 8 cm long). Small rivet at the joint and a rust spot for visual interest.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0075,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.47,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Head","shape":"cube","pos":[0.2675,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"JointRivet","shape":"cylinder","pos":[0.2275,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.02,0.02],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.2975,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.06],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":1.0},
+  {"name":"RustSpot","shape":"sphere","pos":[-0.1075,0.005,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLine","shape":"cube","pos":[-0.1575,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.04],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":1.0}
+]}

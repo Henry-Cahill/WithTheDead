@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoulderpads_Football", "baseHeight": 0.1, "name": "Shoulderpads Football", "model": "gpt-oss:120b", "notes": "Football shoulder pads lying flat on the floor, front side up. Overall size ≈ 0.55 m wide (X) × 0.35 m deep (Z) × 0.07 m thick (Y). Main foam padding tinted 0.6 0.58 0.5 with a thin plastic shell, metal buckles on front and back straps.", "score": 7, "parts": [
+  {"name":"ShellOuter","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.08,0.36],"color":[0.5,0.48,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"FoamCore","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.07,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ChestPlate","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.25],"color":[0.65,0.63,0.55],"smooth":0.07,"metal":0.0},
+  {"name":"FrontStrap","shape":"cylinder","pos":[0.0,0.015,-0.165],"rot":[0.0,0.0,90.0],"size":[0.02,0.5,0.02],"color":[0.3,0.3,0.32],"smooth":0.25,"metal":0.0},
+  {"name":"BackStrap","shape":"cylinder","pos":[0.0,0.015,0.165],"rot":[0.0,0.0,90.0],"size":[0.02,0.5,0.02],"color":[0.3,0.3,0.32],"smooth":0.25,"metal":0.0},
+  {"name":"BuckleFrontL","shape":"cube","pos":[-0.2,0.018,-0.165],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.025],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleFrontR","shape":"cube","pos":[0.2,0.018,-0.165],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.025],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleBackL","shape":"cube","pos":[-0.2,0.018,0.165],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.025],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleBackR","shape":"cube","pos":[0.2,0.018,0.165],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.025],"color":[0.75,0.73,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"SideRimL","shape":"cube","pos":[-0.275,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.07,0.35],"color":[0.48,0.46,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"SideRimR","shape":"cube","pos":[0.275,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.07,0.35],"color":[0.48,0.46,0.38],"smooth":0.12,"metal":0.0}
+]}

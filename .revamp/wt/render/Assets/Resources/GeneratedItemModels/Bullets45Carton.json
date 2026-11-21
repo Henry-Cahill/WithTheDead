@@ -1,0 +1,14 @@
+{"version": 1, "id": "Bullets45Carton", "baseHeight": 0.124, "name": "Bullets45 Carton", "model": "gpt-oss:120b", "notes": "Cardboard ammo carton (45 cal) about 0.35 m long × 0.20 m wide × 0.12 m high, lying on its side (long axis along +X). Main body, reinforced edge strips, top flap, printed label and corner staples give a clear silhouette.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.12,0.2],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.008,0.22],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeStripXPos","shape":"cube","pos":[0.175,-0.034,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.2],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeStripXNeg","shape":"cube","pos":[-0.175,-0.034,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.06,0.2],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeStripZPos","shape":"cube","pos":[0.0,-0.034,0.105],"rot":[0.0,0.0,0.0],"size":[0.35,0.06,0.01],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeStripZNeg","shape":"cube","pos":[0.0,-0.034,-0.105],"rot":[0.0,0.0,0.0],"size":[0.35,0.06,0.01],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[-0.05,0.031,0.101],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.002],"color":[0.4,0.38,0.32],"smooth":0.06,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[-0.05,0.033,0.1015],"rot":[0.0,0.0,0.0],"size":[0.24,0.004,0.002],"color":[0.15,0.12,0.1],"smooth":0.04,"metal":0.0},
+  {"name":"StapleTL","shape":"cylinder","pos":[0.165,0.051,0.095],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"StapleTR","shape":"cylinder","pos":[0.165,0.051,-0.095],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"StapleBL","shape":"cylinder","pos":[-0.165,0.051,0.095],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"StapleBR","shape":"cylinder","pos":[-0.165,0.051,-0.095],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0}
+]}

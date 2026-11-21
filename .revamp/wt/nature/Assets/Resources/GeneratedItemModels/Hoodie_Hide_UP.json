@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hoodie_Hide_UP", "baseHeight": 0.2205, "name": "Hoodie Hide UP", "model": "gpt-oss:120b", "notes": "Flat hide‑hoodie (≈0.6 m wide × 0.8 m long × 0.03 m thick) laid on the ground: main body panel, two sleeves that meet the side edges of the body, a rounded hood with side panels and draw‑string, front pocket and bottom hem. Hide colour 0.60 0.58 0.50.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.1145,0.08],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.8],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.4,-0.1145,0.2],"rot":[0.0,0.0,20.0],"size":[0.2,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.4,-0.1145,0.2],"rot":[0.0,0.0,-20.0],"size":[0.2,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HoodBase","shape":"sphere","pos":[0.0,0.0355,-0.24],"rot":[0.0,0.0,0.0],"size":[0.4,0.25,0.4],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HoodSideL","shape":"cylinder","pos":[-0.15,-0.0095,-0.24],"rot":[90.0,0.0,0.0],"size":[0.08,0.35,0.08],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HoodSideR","shape":"cylinder","pos":[0.15,-0.0095,-0.24],"rot":[90.0,0.0,0.0],"size":[0.08,0.35,0.08],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Drawstring","shape":"cylinder","pos":[0.0,0.0905,-0.24],"rot":[0.0,0.0,90.0],"size":[0.02,0.5,0.02],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"NeckOpening","shape":"cylinder","pos":[0.0,-0.0995,-0.36],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.24],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.0,-0.107,-0.12],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.08],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BottomHem","shape":"cube","pos":[0.0,-0.1255,-0.31],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.02],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0}
+]}

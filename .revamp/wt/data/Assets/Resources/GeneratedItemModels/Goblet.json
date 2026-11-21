@@ -1,0 +1,8 @@
+{"version": 1, "id": "Goblet", "baseHeight": 0.102, "name": "Goblet", "model": "gpt-oss:120b", "notes": "Goblet lying on its side (long axis along X). Total length ≈ 0.24 m: flat base (0.07 m dia × 0.02 m thick), slender stem (0.03 m dia × 0.10 m long) with a decorative band, and a rounded bowl (0.08 m dia × 0.12 m high) ending in a thin rim. Small chipped cube adds wear.", "score": 6, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[-0.113,-0.007,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.54,0.522,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[-0.053,-0.027,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.1,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"StemBand","shape":"cylinder","pos":[-0.023,-0.022,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.7,0.55,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"BowlBody","shape":"cylinder","pos":[0.057,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BowlRim","shape":"cylinder","pos":[0.12,0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.082,0.006,0.082],"color":[0.65,0.63,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Chip","shape":"cube","pos":[0.087,-0.002,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.015],"color":[0.4,0.38,0.33],"smooth":0.1,"metal":0.0}
+]}

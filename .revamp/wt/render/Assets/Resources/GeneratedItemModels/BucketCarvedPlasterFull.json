@@ -1,0 +1,14 @@
+{"version": 1, "id": "BucketCarvedPlasterFull", "baseHeight": 0.23, "name": "Bucket Carved Plaster Full", "model": "gpt-oss:120b", "notes": "Plaster bucket ~0.30 m diameter × 0.35 m tall, matte carved relief bands and a thin loop‑handle; interior filled with lighter plaster visible at the top.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.32,0.3],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.16,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.34],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"InnerFill","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.3,0.28],"color":[0.78,0.76,0.68],"smooth":0.08,"metal":0.0},
+  {"name":"HandleLeft","shape":"cylinder","pos":[-0.18,0.14,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.45,0.44,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"HandleRight","shape":"cylinder","pos":[0.18,0.14,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.45,0.44,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"CarvedBandMid","shape":"cylinder","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.32],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"CarvedBandLow","shape":"cylinder","pos":[0.0,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.32],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"CarvedBandHigh","shape":"cylinder","pos":[0.0,0.11,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.32],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"ReliefFront","shape":"cube","pos":[0.0,0.03,0.155],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.01],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"ReliefBack","shape":"cube","pos":[0.0,0.03,-0.155],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.01],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"ReliefLeft","shape":"cube","pos":[-0.155,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.04],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"ReliefRight","shape":"cube","pos":[0.155,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.04],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0}
+]}

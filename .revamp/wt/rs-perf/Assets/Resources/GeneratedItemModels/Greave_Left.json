@@ -1,0 +1,9 @@
+{"version": 1, "id": "Greave_Left", "baseHeight": 0.12, "name": "Greave Left", "model": "gpt-oss:120b", "notes": "Left greave ~0.38 m long, 0.12 m wide, 0.02 m thick when lying on its side (long axis along X). Main steel shell with inner padded liner, a strap around the upper half and two buckles.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.38,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.36,0.09],"color":[0.32,0.27,0.22],"smooth":0.07,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[0.15,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.12],"color":[0.32,0.27,0.22],"smooth":0.07,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[0.138,0.022,0.05],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.012],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.138,0.022,-0.05],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.012],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"ToePlate","shape":"cube","pos":[-0.185,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HeelPlate","shape":"cube","pos":[0.185,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

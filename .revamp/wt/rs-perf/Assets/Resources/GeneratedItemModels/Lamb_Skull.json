@@ -1,0 +1,14 @@
+{"version": 1, "id": "Lamb_Skull", "baseHeight": 0.13, "name": "Lamb Skull", "model": "gpt-oss:120b", "notes": "Lamb skull ~0.25 m long × 0.18 m wide × 0.12 m tall, lying on its side (long axis along +X). Main cranium ellipsoid, lower jaw block, two short curved horns, recessed eye‑sockets and nasal cavity, a few teeth and a top ridge for silhouette detail.", "score": 6, "parts": [
+  {"name":"Cranium","shape":"sphere","pos":[0.07,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.16],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[-0.06,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[0.13,0.05,0.05],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.13,0.05,-0.05],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"EyeSocketL","shape":"sphere","pos":[0.09,0.015,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.02],"color":[0.42,0.4,0.33],"smooth":0.1,"metal":0.0},
+  {"name":"EyeSocketR","shape":"sphere","pos":[0.09,0.015,-0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.02],"color":[0.42,0.4,0.33],"smooth":0.1,"metal":0.0},
+  {"name":"NasalCavity","shape":"cylinder","pos":[0.12,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.05,0.025],"color":[0.42,0.4,0.33],"smooth":0.1,"metal":0.0},
+  {"name":"ToothUpperL","shape":"cube","pos":[0.155,-0.005,0.015],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.02],"color":[0.45,0.43,0.36],"smooth":0.12,"metal":0.0},
+  {"name":"ToothUpperR","shape":"cube","pos":[0.155,-0.005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.02],"color":[0.45,0.43,0.36],"smooth":0.12,"metal":0.0},
+  {"name":"ToothLowerL","shape":"cube","pos":[-0.08,-0.055,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.018],"color":[0.45,0.43,0.36],"smooth":0.12,"metal":0.0},
+  {"name":"ToothLowerR","shape":"cube","pos":[-0.08,-0.055,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.018],"color":[0.45,0.43,0.36],"smooth":0.12,"metal":0.0},
+  {"name":"TopRidge","shape":"cube","pos":[0.07,0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.12],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0}
+]}

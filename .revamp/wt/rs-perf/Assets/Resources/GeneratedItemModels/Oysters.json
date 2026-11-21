@@ -1,0 +1,12 @@
+{"version": 1, "id": "Oysters", "baseHeight": 0.109, "name": "Oysters", "model": "gpt-oss:120b", "notes": "Tin of oysters ≈ 0.12 m diameter × 0.09 m tall, upright on the floor. Metal body with lid and rim, a sand‑tinted label, and four loose oyster shells inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.09,0.12],"color":[0.71,0.72,0.74],"smooth":0.55,"metal":0.9},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.6,0.61,0.63],"smooth":0.5,"metal":0.9},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.037,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.6,0.61,0.63],"smooth":0.5,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.115,0.008,0.115],"color":[0.78,0.79,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.118,0.01,0.118],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelStripe","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.118,0.002,0.118],"color":[0.5,0.4,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Oyster1","shape":"sphere","pos":[-0.02,-0.029,0.03],"rot":[0.0,0.0,0.0],"size":[0.028,0.014,0.018],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Oyster2","shape":"sphere","pos":[0.015,-0.027,-0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Oyster3","shape":"sphere","pos":[0.01,-0.031,0.02],"rot":[0.0,0.0,0.0],"size":[0.027,0.013,0.017],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Oyster4","shape":"sphere","pos":[-0.03,-0.03,-0.02],"rot":[0.0,0.0,0.0],"size":[0.029,0.014,0.018],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

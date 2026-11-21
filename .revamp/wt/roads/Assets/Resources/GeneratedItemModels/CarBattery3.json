@@ -1,0 +1,11 @@
+{"version": 1, "id": "CarBattery3", "baseHeight": 0.1725, "name": "Car Battery3", "model": "gpt-oss:120b", "notes": "Rectangular car battery ~0.33 m long × 0.22 m wide × 0.185 m tall lying on its side (long axis X). Main plastic case with recessed top, a thin label strip, two lead terminals and three small vent caps.", "score": 7, "parts": [
+  {"name":"Case","shape":"cube","pos":[0.0,-0.02,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.33,0.185,0.22],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"TopPlate","shape":"cube","pos":[0.0,0.0675,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.33,0.01,0.22],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.0175,0.1075],"rot":[0.0,0.0,0.0],"size":[0.33,0.005,0.02],"color":[0.12,0.12,0.14],"smooth":0.05,"metal":0.0},
+  {"name":"TerminalL","shape":"cylinder","pos":[-0.08,0.0925,0.0875],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.78,0.78,0.82],"smooth":0.6,"metal":1.0},
+  {"name":"TerminalR","shape":"cylinder","pos":[0.08,0.0925,0.0875],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.78,0.78,0.82],"smooth":0.6,"metal":1.0},
+  {"name":"VentCapL","shape":"cylinder","pos":[-0.07,0.0825,-0.0825],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.78,0.78,0.82],"smooth":0.6,"metal":1.0},
+  {"name":"VentCapC","shape":"cylinder","pos":[0.0,0.0825,-0.0825],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.78,0.78,0.82],"smooth":0.6,"metal":1.0},
+  {"name":"VentCapR","shape":"cylinder","pos":[0.07,0.0825,-0.0825],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.78,0.78,0.82],"smooth":0.6,"metal":1.0},
+  {"name":"BaseRim","shape":"cube","pos":[0.0,-0.1075,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.34,0.01,0.23],"color":[0.48,0.46,0.4],"smooth":0.2,"metal":0.0}
+]}

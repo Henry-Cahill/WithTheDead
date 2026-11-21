@@ -1,0 +1,8 @@
+{"version": 1, "id": "WaterDrop", "baseHeight": 0.0688, "name": "Water Drop", "model": "gpt-oss:120b", "notes": "Small water drop ~2 cm across lying on the floor: main teardrop‑shaped body, a tiny bright highlight, a faint ripple disc and one little splatter fragment for visual interest.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Highlight","shape":"sphere","pos":[0.0,0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.8,0.78,0.7],"smooth":0.4,"metal":0.0},
+  {"name":"Ripple","shape":"cylinder","pos":[0.0,-0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"Splatter","shape":"sphere","pos":[0.012,0.0013,0.01],"rot":[0.0,0.0,0.0],"size":[0.005,0.007,0.005],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"Shadow","shape":"cylinder","pos":[0.0,-0.0078,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.002,0.028],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"GlossEdge","shape":"cylinder","pos":[0.0,0.0078,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.9,0.88,0.85],"smooth":0.8,"metal":0.0}
+]}

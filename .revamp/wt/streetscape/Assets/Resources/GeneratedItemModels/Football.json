@@ -1,0 +1,13 @@
+{"version": 1, "id": "Football", "baseHeight": 0.17, "name": "Football", "model": "gpt-oss:120b", "notes": "Standard football ~0.22 m diameter lying on its side (centre at y≈0.11 m). Main leather‑tinted sphere with a few raised panel cubes and thin stitching cylinders; front logo patch.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.22,0.22],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"PanelFront","shape":"cube","pos":[0.0,0.005,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.12],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"PanelBack","shape":"cube","pos":[0.0,0.005,-0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.12],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"PanelLeft","shape":"cube","pos":[-0.07,0.005,0.0],"rot":[0.0,90.0,0.0],"size":[0.12,0.018,0.12],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"PanelRight","shape":"cube","pos":[0.07,0.005,0.0],"rot":[0.0,90.0,0.0],"size":[0.12,0.018,0.12],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"PanelTop","shape":"cube","pos":[0.0,0.045,0.0],"rot":[90.0,0.0,0.0],"size":[0.12,0.018,0.12],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,0.014,0.07],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,0.014,-0.07],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.07,0.014,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.07,0.014,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"LogoPatch","shape":"cylinder","pos":[0.0,0.02,0.045],"rot":[90.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[1.0,1.0,1.0],"smooth":0.2,"metal":0.0}
+]}

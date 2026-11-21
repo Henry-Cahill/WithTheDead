@@ -1,0 +1,12 @@
+{"version": 1, "id": "Necklace_Silver", "baseHeight": 0.0702, "name": "Necklace Silver", "model": "gpt-oss:120b", "notes": "Silver necklace ~0.45 m long, flat oval chain 0.015 m wide × 0.008 m thick lying on the floor; simple disc pendant on one side and a tiny clasp on the other. All parts use the silver tint (0.6, 0.58, 0.5) with full metal shine.", "score": 6, "parts": [
+  {"name":"ChainBase","shape":"cube","pos":[-0.0013,-0.0063,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkA","shape":"cylinder","pos":[-0.1812,-0.0008,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.003,0.02,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkB","shape":"cylinder","pos":[-0.0912,-0.0008,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.003,0.02,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkC","shape":"cylinder","pos":[-0.0013,-0.0008,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.003,0.02,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkD","shape":"cylinder","pos":[0.0887,-0.0008,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.003,0.02,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkE","shape":"cylinder","pos":[0.1787,-0.0008,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.003,0.02,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"PendantDisc","shape":"cylinder","pos":[-0.2213,0.0003,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.2238,-0.0043,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ClaspRing","shape":"cylinder","pos":[0.2238,-0.0003,-0.0075],"rot":[90.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeHighlight","shape":"cylinder","pos":[-0.0013,0.0017,-0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.45,0.004],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":1.0}
+]}

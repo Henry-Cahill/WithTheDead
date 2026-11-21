@@ -1,0 +1,12 @@
+{"version": 1, "id": "AligatorGar", "baseHeight": 0.0875, "name": "Aligator Gar", "model": "gpt-oss:120b", "notes": "Aligator Gar packaged in a clear plastic tray (0.22 m × 0.14 m, 3 cm high) with a thin lid. Three pale‑yellowish fish fillet pieces lie on the tray; a simple brown label is printed on the front of the lid.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[-0.0025,-0.0225,-0.0007],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.14],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[-0.0025,-0.0125,0.0643],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.01],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[-0.0025,-0.0125,-0.0658],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.01],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.1075,-0.0125,-0.0007],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.12],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.1025,-0.0125,-0.0007],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.12],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[-0.0025,0.005,-0.0007],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.14],"color":[0.8,0.85,0.95],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0025,0.007,0.0698],"rot":[0.0,0.0,0.0],"size":[0.07,0.012,0.002],"color":[0.3,0.2,0.1],"smooth":0.25,"metal":0.0},
+  {"name":"FilletMain","shape":"sphere","pos":[-0.0225,0.0075,-0.0007],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FilletSide1","shape":"sphere","pos":[0.0775,0.0025,0.0243],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.05],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FilletSide2","shape":"sphere","pos":[0.0775,0.0025,-0.0257],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.05],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

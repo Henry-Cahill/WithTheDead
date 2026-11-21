@@ -1,0 +1,15 @@
+{"version": 1, "id": "Lantern_Hurricane_Silver", "baseHeight": 0.2188, "name": "Lantern Hurricane Silver", "model": "gpt-oss:120b", "notes": "Hurricane lantern ~0.22 m diameter × 0.30 m tall, silver‑metal body with ribbed rim, glass side panels, top lid and front handle. Includes bottom base ring, internal wick holder and a few rivet details.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0187,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.22,0.28,0.22],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.9},
+  {"name":"TopLid","shape":"cylinder","pos":[0.0,0.1312,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.24],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.0,0.1512,0.1212],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"GlassFront","shape":"cube","pos":[0.0,-0.0187,0.0962],"rot":[0.0,0.0,0.0],"size":[0.204,0.24,0.005],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"GlassBack","shape":"cube","pos":[0.0,-0.0187,-0.1138],"rot":[0.0,0.0,0.0],"size":[0.204,0.24,0.005],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"GlassLeft","shape":"cube","pos":[-0.105,-0.0187,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.005,0.24,0.204],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"GlassRight","shape":"cube","pos":[0.105,-0.0187,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.005,0.24,0.204],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"BottomRing","shape":"cylinder","pos":[0.0,-0.1512,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.24],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.9},
+  {"name":"WickHolder","shape":"cylinder","pos":[0.0,-0.1487,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.8},
+  {"name":"RivetFront","shape":"sphere","pos":[0.0,0.1163,0.0962],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBack","shape":"sphere","pos":[0.0,0.1163,-0.1138],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RivetLeft","shape":"sphere","pos":[-0.105,0.1163,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RivetRight","shape":"sphere","pos":[0.105,0.1163,-0.0088],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0}
+]}

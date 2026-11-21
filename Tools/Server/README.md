@@ -56,10 +56,10 @@ All of this was done when the server was set up (1 November 2026); it's here so 
 
 The script does three things:
 
-1. **Build:** it mirrors the project, including uncommitted changes, into `..\CLONE-Z-build`, so the editor you have
+1. **Build:** it mirrors the project, including uncommitted changes, into `Builds\ReleaseProject` (ignored by git), so the editor you have
    open is left alone. It then runs `CloneZ.EditorTools.CloneZBatch.BuildRelease` there in a batch editor. The output
    goes to `Builds\Release\<stamp>\client` (`WithTheDead.exe`) and `\server` (`WithTheDead.x86_64`), with the build log
-   beside them. The first build seeds the copy's `Library` from yours (4.4 GB) and takes a while; later builds only
+   beside them. The first build seeds the copy's `Library` from yours (about 21 GB) and takes a while; later builds only
    import what changed. Both get the map from `Builds\WorldStore`, a copy of the world store's current build that each
    release brings up to date from the NAS. The client also gets `server.txt` (`withthedead.howto.software:7777`), which
    its Join box starts at, and `updates.txt`. With `-FromMain` it builds GitHub's main instead of your working copy
@@ -76,9 +76,9 @@ To run only some of the steps, use `-NoBuild`, `-NoDeploy` or `-NoPublish`. With
 release, or the one named by `-Stamp <stamp>`. `-Port` changes the port everywhere: the server, the container and
 `server.txt`. `-SiteUrl` and `-PublicAddress` point the game at another page or address.
 
-**Building GitHub's main:** `-FromMain` fetches, then brings a clean checkout of `origin/main` beside the project,
-`..\CLONE-Z-main`, up to date (`git checkout --detach --force origin/main`, `git clean -fd` and its Git LFS files) and
-builds that. The checkout is a git worktree, made by the first such build. The build still happens in `..\CLONE-Z-build`
+**Building GitHub's main:** `-FromMain` fetches, then brings a clean checkout of `origin/main` in the project,
+`Builds\MainCheckout`, up to date (`git checkout --detach --force origin/main`, `git clean -fd` and its Git LFS files) and
+builds that. The checkout is a git worktree, made by the first such build. The build still happens in `Builds\ReleaseProject`
 and lands in this project's `Builds\Release`, stamped with main's commit. `-Source <folder>` builds another checkout as it
 is. Git keeps the radio stations' music (`Assets/StreamingAssets/Music`, gigabytes of it) out on purpose, so a clean
 checkout lacks it. `-FromMain` brings it over from your working copy only once main's `.gitignore` keeps it out too, that

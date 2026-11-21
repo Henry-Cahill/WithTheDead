@@ -1,0 +1,10 @@
+{"version": 1, "id": "Sword_Scrap_Broken", "baseHeight": 0.085, "name": "Sword Scrap Broken", "model": "gpt-oss:120b", "notes": "Broken scrap sword ~1.20 m long lying on its side along X. Metal pommel, short wooden‑style hilt, rectangular guard with a rivet, blade split into two segments (small gap to show it’s broken), pointed tip and a rust patch clinging to the upper edge of the second segment.", "score": 7, "parts": [
+  {"name":"Pommel","shape":"sphere","pos":[-0.495,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Hilt","shape":"cylinder","pos":[-0.395,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.235,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[-0.235,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"BladeSeg1","shape":"cube","pos":[-0.05,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeSeg2","shape":"cube","pos":[0.3,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.51,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[0.47,-0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.02],"color":[0.8,0.4,0.1],"smooth":0.2,"metal":0.0}
+]}

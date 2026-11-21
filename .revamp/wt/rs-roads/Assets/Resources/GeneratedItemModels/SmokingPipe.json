@@ -1,0 +1,8 @@
+{"version": 1, "id": "SmokingPipe", "baseHeight": 0.1, "name": "Smoking Pipe", "model": "gpt-oss:120b", "notes": "Smoking pipe ~0.25 m long lying on its side (long axis along X). Wooden stem with short mouthpiece at the far end, a rounded bowl at the opposite end and a thin metal ferrule around the stem near the bowl.", "score": 7, "parts": [
+  {"name":"Stem","shape":"cylinder","pos":[-0.025,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.18,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Mouthpiece","shape":"cylinder","pos":[-0.13,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.03,0.015],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Bowl","shape":"sphere","pos":[0.105,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.035,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.008,0.022],"color":[0.45,0.45,0.46],"smooth":0.6,"metal":1.0},
+  {"name":"BowlRim","shape":"cylinder","pos":[0.13,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.004,0.022],"color":[0.45,0.44,0.42],"smooth":0.55,"metal":0.0},
+  {"name":"BowlBase","shape":"cylinder","pos":[0.105,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.008,0.03],"color":[0.4,0.38,0.35],"smooth":0.55,"metal":0.0}
+]}

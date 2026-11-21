@@ -1,0 +1,10 @@
+{"version": 1, "id": "NormalTire1", "baseHeight": 0.37, "name": "Normal Tire1", "model": "gpt-oss:120b", "notes": "Rubber car tire ~0.60 m outer diameter, 0.20 m width, lying on its side (axis along X). Main rubber ring, black inner hole, steel bead rings at front/back, a thin label strip and a few tread blocks for recognisable silhouette.", "score": 6, "parts": [
+  {"name":"OuterRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.6,0.2,0.6],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"InnerHole","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.25,0.2,0.25],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"BeadFront","shape":"cylinder","pos":[-0.09,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.62,0.02,0.62],"color":[0.4,0.42,0.44],"smooth":0.2,"metal":1.0},
+  {"name":"BeadBack","shape":"cylinder","pos":[0.09,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.62,0.02,0.62],"color":[0.4,0.42,0.44],"smooth":0.2,"metal":1.0},
+  {"name":"TreadBlock1","shape":"cube","pos":[-0.1,0.18,0.12],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.08],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"TreadBlock2","shape":"cube","pos":[0.0,0.18,-0.12],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.08],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"TreadBlock3","shape":"cube","pos":[0.1,0.18,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.08],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.05,0.18],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.12],"color":[0.6,0.1,0.1],"smooth":0.2,"metal":0.0}
+]}

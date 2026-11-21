@@ -1,0 +1,11 @@
+{"version": 1, "id": "Specimen_Centipedes", "baseHeight": 0.1355, "name": "Specimen Centipedes", "model": "gpt-oss:120b", "notes": "Upright specimen jar about 0.12 m diameter × 0.15 m tall lying on the floor. Clear glass body with a metal screw‑cap lid; inside are several preserved brown centipedes (tint 0.6, 0.58, 0.5) modelled as short elongated cylinders.", "score": 6, "parts": [
+  {"name":"JarBody","shape":"cylinder","pos":[-0.0011,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.14,0.12],"color":[0.78,0.84,0.9],"smooth":0.6,"metal":0.0},
+  {"name":"JarRim","shape":"cylinder","pos":[-0.0011,0.0645,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.78,0.84,0.9],"smooth":0.6,"metal":0.0},
+  {"name":"LidCap","shape":"cylinder","pos":[-0.0011,0.0695,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.012,0.11],"color":[0.45,0.42,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"Centipede01","shape":"cylinder","pos":[-0.0211,-0.0355,-0.025],"rot":[0.0,0.0,90.0],"size":[0.018,0.07,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Centipede02","shape":"cylinder","pos":[0.0139,-0.0305,0.03],"rot":[0.0,10.0,90.0],"size":[0.018,0.075,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Centipede03","shape":"cylinder","pos":[-0.0311,-0.0405,0.02],"rot":[0.0,-8.0,90.0],"size":[0.018,0.065,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Centipede04","shape":"cylinder","pos":[0.0239,-0.0335,-0.015],"rot":[0.0,5.0,90.0],"size":[0.018,0.08,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Centipede05","shape":"cylinder","pos":[-0.0111,-0.0375,0.04],"rot":[0.0,-12.0,90.0],"size":[0.018,0.07,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Centipede06","shape":"cylinder","pos":[0.0289,-0.0255,-0.035],"rot":[0.0,15.0,90.0],"size":[0.018,0.072,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Pickles", "baseHeight": 0.1385, "name": "Pickles", "model": "gpt-oss:120b", "notes": "Glass pickle jar ~0.09 m diameter × 0.14 m tall with metal screw‑on lid (total height ≈ 0.18 m). Includes a thin label and three visible pickles inside for quick recognition.", "score": 6, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.14,0.09],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LidMetal","shape":"cylinder","pos":[0.0,0.069,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.015,0.095],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"LidRim","shape":"cylinder","pos":[0.0,0.0765,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.004,0.09],"color":[0.55,0.55,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBack","shape":"cylinder","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.089,0.002,0.089],"color":[0.4,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Pickle1","shape":"sphere","pos":[-0.02,-0.0285,0.01],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pickle2","shape":"sphere","pos":[0.015,0.0115,-0.02],"rot":[0.0,0.0,0.0],"size":[0.017,0.027,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pickle3","shape":"sphere","pos":[0.0,-0.0385,-0.025],"rot":[0.0,0.0,0.0],"size":[0.016,0.022,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "SimpleSyrup", "baseHeight": 0.1805, "name": "Simple Syrup", "model": "gpt-oss:120b", "notes": "Upright simple‑syrup bottle ~0.22 m tall: clear glass body (0.16 m Ø × 0.18 m high), narrower neck, metal screw‑cap, golden syrup liquid inside, thin label around the body with dark trim and subtle lip rims.", "score": 6, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.0295,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.18,0.16],"color":[0.92,0.94,0.96],"smooth":0.6,"metal":0.0},
+  {"name":"NeckGlass","shape":"cylinder","pos":[0.0,0.0805,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.1],"color":[0.92,0.94,0.96],"smooth":0.6,"metal":0.0},
+  {"name":"CapPlastic","shape":"cylinder","pos":[0.0,0.1105,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.3,0.3,0.33],"smooth":0.4,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[0.0,-0.0295,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.16,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cylinder","pos":[0.0,-0.0295,0.0],"rot":[0.0,0.0,0.0],"size":[0.162,0.002,0.162],"color":[0.85,0.78,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0595,0.0],"rot":[0.0,0.0,0.0],"size":[0.164,0.004,0.164],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.1185,0.0],"rot":[0.0,0.0,0.0],"size":[0.164,0.004,0.164],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"BaseRim","shape":"cylinder","pos":[0.0,-0.1175,0.0],"rot":[0.0,0.0,0.0],"size":[0.162,0.004,0.162],"color":[0.92,0.94,0.96],"smooth":0.6,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.0585,0.0],"rot":[0.0,0.0,0.0],"size":[0.162,0.004,0.162],"color":[0.92,0.94,0.96],"smooth":0.6,"metal":0.0},
+  {"name":"ScrewThread","shape":"cylinder","pos":[0.0,0.0955,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.012,0.108],"color":[0.3,0.3,0.33],"smooth":0.4,"metal":0.0}
+]}

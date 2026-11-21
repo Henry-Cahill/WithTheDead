@@ -1,0 +1,9 @@
+{"version": 1, "id": "Book_Prop", "baseHeight": 0.0752, "name": "Book Prop", "model": "gpt-oss:120b", "notes": "Paperback book ~0.22 m wide × 0.28 m tall × 0.03 m thick, lying flat on its cover. Main beige tint (0.6,0.58,0.5) for the covers, lighter paper for pages, with a small dark label on the top cover.", "score": 7, "parts": [
+  {"name":"TopCover","shape":"cube","pos":[0.0,0.0128,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.28],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BottomCover","shape":"cube","pos":[0.0,-0.0132,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.28],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Pages","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.215,0.022,0.275],"color":[0.78,0.76,0.71],"smooth":0.05,"metal":0.0},
+  {"name":"SpineMark","shape":"cube","pos":[-0.105,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.022,0.275],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.35,0.33,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.0142,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.042],"color":[0.25,0.23,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.0123,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.042],"color":[0.25,0.23,0.2],"smooth":0.05,"metal":0.0}
+]}

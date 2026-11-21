@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClosedUmbrellaTINTED", "baseHeight": 0.095, "name": "Closed Umbrella TINTED", "model": "gpt-oss:120b", "notes": "Closed umbrella used as a blunt melee weapon (~1.1 m long) lying on its side. Central steel shaft with wooden‑grip handle, steel tip, folded tinted canopy disc, metal collar at the canopy, two rubber grip bands and two small rivets for detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.515,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.55,0.4,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand1","shape":"cylinder","pos":[-0.485,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.008,0.07],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"GripBand2","shape":"cylinder","pos":[-0.465,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.008,0.07],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[0.025,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.96,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.225,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.7,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.275,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.7,"metal":1.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.305,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"FabricDisc","shape":"cylinder","pos":[0.325,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.01,0.5],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Logo","shape":"cylinder","pos":[0.325,-0.0285,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.12],"color":[0.2,0.2,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.515,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.35,0.35,0.38],"smooth":0.65,"metal":1.0}
+]}

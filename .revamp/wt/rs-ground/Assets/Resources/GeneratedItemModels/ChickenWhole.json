@@ -1,0 +1,10 @@
+{"version": 1, "id": "ChickenWhole", "baseHeight": 0.13, "name": "Chicken Whole", "model": "gpt-oss:120b", "notes": "Whole raw chicken in a thin plastic tray with clear lid, topped by a paper label. Approx. 0.30 m long × 0.18 m wide × 0.12 m high (including tray). Main parts: tray base, lid, meat body, two leg sections, two wing blocks, label.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.22],"color":[0.85,0.85,0.86],"smooth":0.3,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,-0.046,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.008,0.24],"color":[0.9,0.9,0.92],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.044,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.12],"color":[0.42,0.33,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"MeatBody","shape":"sphere","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.12,0.16],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cylinder","pos":[-0.12,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.09,0.04],"color":[0.65,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cylinder","pos":[0.12,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.09,0.04],"color":[0.65,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"WingL","shape":"cube","pos":[-0.07,0.025,0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.1],"color":[0.73,0.66,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"WingR","shape":"cube","pos":[-0.07,0.025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.1],"color":[0.73,0.66,0.44],"smooth":0.05,"metal":0.0}
+]}

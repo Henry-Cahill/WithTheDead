@@ -1,0 +1,12 @@
+{"version": 1, "id": "LongCoat_Hide", "baseHeight": 0.075, "name": "Long Coat Hide", "model": "gpt-oss:120b", "notes": "Flat hide of a long‑coat, ~0.90 m long × 0.60 m wide × 0.02 m thick, laid on the floor with stitched edges and a small leather tag in one corner.", "score": 6, "parts": [
+  {"name":"HideBase","shape":"cube","pos":[0.0,-0.005,0.0025],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.9],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0,-0.0025,0.4475],"rot":[0.0,0.0,90.0],"size":[0.004,0.6,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0,-0.0025,-0.4425],"rot":[0.0,0.0,90.0],"size":[0.004,0.6,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.295,-0.0025,0.0025],"rot":[90.0,0.0,0.0],"size":[0.004,0.9,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.295,-0.0025,0.0025],"rot":[90.0,0.0,0.0],"size":[0.004,0.9,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FoldTop","shape":"cube","pos":[0.0,0.01,0.4425],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FoldBottom","shape":"cube","pos":[0.0,0.01,-0.4375],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLeft","shape":"cube","pos":[-0.295,0.01,0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.9],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FoldRight","shape":"cube","pos":[0.295,0.01,0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.9],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.285,-0.0,-0.4425],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0}
+]}

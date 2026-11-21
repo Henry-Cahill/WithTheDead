@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BaseballCapBlue", "baseHeight": 0.073, "name": "Hat Baseball Cap Blue", "model": "gpt-oss:120b", "notes": "Flat baseball cap (blue tint) laid out for a product‑photo view: shallow dome crown (≈0.26 m dia, 2 cm thick), front brim (≈0.22 m long × 0.14 m wide × 1.5 cm thick) attached to the crown’s front edge, thin stitching rim around the crown, and a small top button.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[-0.1075,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.1325,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRim","shape":"cylinder","pos":[-0.1075,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.004,0.27],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[-0.1075,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.2275,-0.003,0.07],"rot":[0.0,0.0,0.0],"size":[0.005,0.018,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.2275,-0.003,-0.07],"rot":[0.0,0.0,0.0],"size":[0.005,0.018,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

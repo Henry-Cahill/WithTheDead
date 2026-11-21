@@ -1,0 +1,12 @@
+{"version": 1, "id": "MinnowLure", "baseHeight": 0.085, "name": "Minnow Lure", "model": "gpt-oss:120b", "notes": "Minnow‑style fishing lure ~0.12 m long, lying on its side (long axis X). Main body is a short plastic cylinder with a rounded head, two tail fins, two side fins and a tiny metal hook. Small black eye sphere adds detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0235,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.0615,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Eye","shape":"sphere","pos":[0.0715,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"TailFinTop","shape":"cube","pos":[-0.0935,0.015,0.0],"rot":[0.0,20.0,0.0],"size":[0.02,0.015,0.004],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TailFinBottom","shape":"cube","pos":[-0.0935,-0.015,0.0],"rot":[0.0,-20.0,0.0],"size":[0.02,0.015,0.004],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"SideFinL","shape":"cube","pos":[-0.0435,0.005,0.022],"rot":[0.0,0.0,45.0],"size":[0.04,0.008,0.004],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"SideFinR","shape":"cube","pos":[-0.0435,0.005,-0.022],"rot":[0.0,0.0,-45.0],"size":[0.04,0.008,0.004],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"HookBarb","shape":"cylinder","pos":[0.0915,-0.008,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"HookTip","shape":"sphere","pos":[0.1005,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"ShineHighlight","shape":"sphere","pos":[0.0465,0.012,0.012],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.95],"smooth":0.05,"metal":0.0}
+]}

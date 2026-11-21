@@ -1,0 +1,14 @@
+{"version": 1, "id": "CampingTentKit2_Packed", "baseHeight": 0.16, "name": "Camping Tent Kit2 Packed", "model": "gpt-oss:120b", "notes": "Packed camping tent kit ~0.45 m long rolled cylinder (0.20 m diameter) with fabric roll, seam band, tie‑strap and label; bundled aluminium poles tucked beside it, three metal stakes, a small fabric fold and a metal clip for the bag.", "score": 6, "parts": [
+  {"name":"RollBody","shape":"cylinder","pos":[0.0588,0.0,-0.0063],"rot":[0.0,0.0,90.0],"size":[0.2,0.45,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBand","shape":"cube","pos":[0.0588,0.01,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.44,0.02,0.21],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"TieStrap","shape":"cube","pos":[0.0588,0.015,0.0237],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.22],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0588,0.02,-0.0463],"rot":[0.0,0.0,0.0],"size":[0.36,0.005,0.215],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"PoleBundle","shape":"cylinder","pos":[-0.0412,0.04,0.1137],"rot":[0.0,0.0,90.0],"size":[0.08,0.45,0.08],"color":[0.7,0.7,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"PoleTipA","shape":"sphere","pos":[-0.2662,0.04,0.1137],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"PoleTipB","shape":"sphere","pos":[0.1838,0.04,0.1137],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"Stake1","shape":"cube","pos":[0.2588,-0.085,0.0638],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"Stake2","shape":"cube","pos":[0.2787,-0.085,-0.0763],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"Stake3","shape":"cube","pos":[0.2388,-0.085,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"FabricFold","shape":"cube","pos":[-0.1412,0.005,-0.0063],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BagClip","shape":"cylinder","pos":[0.2087,0.03,-0.0063],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.7,0.7,0.75],"smooth":0.4,"metal":1.0}
+]}

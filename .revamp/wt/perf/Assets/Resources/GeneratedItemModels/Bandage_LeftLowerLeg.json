@@ -1,0 +1,9 @@
+{"version": 1, "id": "Bandage_LeftLowerLeg", "baseHeight": 0.0905, "name": "Bandage Left Lower Leg", "model": "gpt-oss:120b", "notes": "Rolled gauze bandage for a left lower leg – cylinder ~0.12 m long, 0.04 m diameter (lying on its side), 2 cm thick, cloth tint 0.6 / 0.58 / 0.5 with a small paper tag attached near one end.", "score": 6, "parts": [
+  {"name":"BandageRoll","shape":"cylinder","pos":[0.0,-0.0095,0.0003],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEndCapFront","shape":"cylinder","pos":[-0.06,-0.0095,0.0003],"rot":[0.0,0.0,90.0],"size":[0.042,0.004,0.042],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RollEndCapBack","shape":"cylinder","pos":[0.06,-0.0095,0.0003],"rot":[0.0,0.0,90.0],"size":[0.042,0.004,0.042],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PaperTag","shape":"cube","pos":[-0.045,0.0155,0.0003],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.015],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Fold1","shape":"sphere","pos":[-0.02,0.0055,0.0183],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fold2","shape":"sphere","pos":[0.03,0.0035,-0.0197],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.0095,0.0003],"rot":[0.0,0.0,90.0],"size":[0.042,0.002,0.042],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_WestMapleCountryClub_Reverse", "baseHeight": 0.13, "name": "Hat Baseball Cap West Maple Country Club Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.22 m brim × 0.12 m crown height, laid out like a product photo. Main tint (0.55,0.5,0.6) for fabric; darker trims for seam, button and logo panel.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.22],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,-0.058,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.2],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.0,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0,0.095],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.004],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,0.0,0.097],"rot":[0.0,0.0,90.0],"size":[0.004,0.12,0.004],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.095,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.12],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cylinder","pos":[-0.095,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.095,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.12],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cylinder","pos":[0.095,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "Bullets9mm", "baseHeight": 0.0648, "name": "Bullets9mm", "model": "gpt-oss:120b", "notes": "Pile of up to 8 × 9 mm cartridges (≈30 mm long × 9.5 mm diameter) lying on the floor. Each round is a metal cylinder with a lead‑gray tint; all cylinders rest on their side and touch at least one neighbour.", "score": 7, "parts": [
+  {"name":"Bullet0","shape":"cylinder","pos":[-0.024,0.0,-0.0161],"rot":[0.0,0.0,90.0],"size":[0.0095,0.03,0.0095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet1","shape":"cylinder","pos":[0.011,0.0,-0.0011],"rot":[0.0,5.0,90.0],"size":[0.0095,0.03,0.0095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet2","shape":"cylinder","pos":[-0.009,0.0,0.0139],"rot":[0.0,-3.0,90.0],"size":[0.0095,0.03,0.0095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet3","shape":"cylinder","pos":[0.011,0.0,-0.0071],"rot":[0.0,2.0,90.0],"size":[0.0095,0.03,0.0095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet4","shape":"cylinder","pos":[-0.022,0.0,0.0089],"rot":[0.0,-4.0,90.0],"size":[0.0095,0.03,0.0095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet5","shape":"cylinder","pos":[-0.019,0.0,-0.0181],"rot":[0.0,6.0,90.0],"size":[0.0095,0.03,0.0095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet6","shape":"cylinder","pos":[-0.026,0.0,-0.0061],"rot":[0.0,-2.0,90.0],"size":[0.0095,0.03,0.0095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet7","shape":"cylinder","pos":[0.026,0.0,0.0189],"rot":[0.0,3.0,90.0],"size":[0.0095,0.03,0.0095],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

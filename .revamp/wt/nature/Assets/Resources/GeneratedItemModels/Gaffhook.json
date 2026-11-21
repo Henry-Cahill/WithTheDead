@@ -1,0 +1,9 @@
+{"version": 1, "id": "Gaffhook", "baseHeight": 0.17, "name": "Gaffhook", "model": "gpt-oss:120b", "notes": "Gaffhook ~1.6 m long melee weapon: metal shaft (8 cm diameter) on its side, wooden grip at the rear, a short metal guard, a thick steel band mid‑shaft, and a curved hook head (stem + curve + rounded tip) at the front.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.015,-0.065,-0.14],"rot":[0.0,0.0,90.0],"size":[0.08,1.6,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"WoodenHandle","shape":"cylinder","pos":[-0.765,-0.045,-0.14],"rot":[0.0,0.0,90.0],"size":[0.12,0.2,0.12],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cylinder","pos":[-0.585,-0.065,-0.14],"rot":[90.0,0.0,0.0],"size":[0.08,0.1,0.08],"color":[0.55,0.55,0.58],"smooth":0.5,"metal":1.0},
+  {"name":"Band","shape":"cylinder","pos":[0.015,-0.065,-0.14],"rot":[0.0,0.0,90.0],"size":[0.09,0.02,0.09],"color":[0.45,0.45,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"HookStem","shape":"cylinder","pos":[0.795,-0.035,-0.14],"rot":[0.0,0.0,0.0],"size":[0.06,0.15,0.06],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HookCurve","shape":"cylinder","pos":[0.795,0.04,-0.04],"rot":[90.0,0.0,0.0],"size":[0.06,0.2,0.06],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HookTip","shape":"sphere","pos":[0.795,0.04,0.13],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

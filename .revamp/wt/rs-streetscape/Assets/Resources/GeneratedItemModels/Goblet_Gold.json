@@ -1,0 +1,8 @@
+{"version": 1, "id": "Goblet_Gold", "baseHeight": 0.1075, "name": "Goblet Gold", "model": "gpt-oss:120b", "notes": "Gold goblet lying on its side: shallow rounded bowl (≈0.06 m long, 0.08 m wide), thin stem (0.05 m long, 0.03 m diameter) and a flared base disc (0.09 m dia., 0.01 m thick). All parts rest on the floor (y=0) with the bowl’s outer rim touching the ground. Gold tint 0.6 / 0.58 / 0.5, polished metal.", "score": 7, "parts": [
+  {"name":"BowlOuter","shape":"cylinder","pos":[0.0288,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.06,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BowlInner","shape":"cylinder","pos":[0.0288,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.055,0.07],"color":[0.48,0.46,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"Stem","shape":"cylinder","pos":[-0.0262,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.05,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaseDisc","shape":"cylinder","pos":[-0.0562,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.01,0.09],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaseRim","shape":"cylinder","pos":[-0.0562,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.095,0.004,0.095],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0538,-0.005,0.0],"rot":[0.0,90.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

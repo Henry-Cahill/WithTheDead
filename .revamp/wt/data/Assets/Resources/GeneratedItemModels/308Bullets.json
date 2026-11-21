@@ -1,0 +1,12 @@
+{"version": 1, "id": "308Bullets", "baseHeight": 0.082, "name": "308 Bullets", "model": "gpt-oss:120b", "notes": "Small ammo packet for .308 (7.62×51 mm) rounds, 8‑round capacity. Cardboard box about 14 cm × 9 cm × 4 cm lying on the floor with a loose pile of eight cylindrical cartridges inside. Bullets are shown as metal cylinders (12 mm Ø × 71 mm long) resting side‑on; the box uses the item tint for its brownish‑olive paper.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.09],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"BoxFlap","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.09],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"Bullet1","shape":"cylinder","pos":[-0.045,-0.01,-0.025],"rot":[0.0,0.0,90.0],"size":[0.012,0.071,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0},
+  {"name":"Bullet2","shape":"cylinder","pos":[-0.015,-0.01,-0.025],"rot":[0.0,0.0,90.0],"size":[0.012,0.071,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0},
+  {"name":"Bullet3","shape":"cylinder","pos":[0.015,-0.01,-0.025],"rot":[0.0,0.0,90.0],"size":[0.012,0.071,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0},
+  {"name":"Bullet4","shape":"cylinder","pos":[0.045,-0.01,-0.025],"rot":[0.0,0.0,90.0],"size":[0.012,0.071,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0},
+  {"name":"Bullet5","shape":"cylinder","pos":[-0.045,-0.0,0.025],"rot":[0.0,0.0,90.0],"size":[0.012,0.071,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0},
+  {"name":"Bullet6","shape":"cylinder","pos":[-0.015,-0.0,0.025],"rot":[0.0,0.0,90.0],"size":[0.012,0.071,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0},
+  {"name":"Bullet7","shape":"cylinder","pos":[0.015,-0.0,0.025],"rot":[0.0,0.0,90.0],"size":[0.012,0.071,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0},
+  {"name":"Bullet8","shape":"cylinder","pos":[0.045,-0.0,0.025],"rot":[0.0,0.0,90.0],"size":[0.012,0.071,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0}
+]}

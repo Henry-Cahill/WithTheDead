@@ -1,0 +1,458 @@
+using UnityEngine;
+
+namespace CloneZ
+{
+    /// <summary>A straight wall line in world axes, as the raid town's door and window builders draw on it: a point lies so
+    /// far along the line, so high, and so far across it toward its +1 side.</summary>
+    internal readonly struct OpeningLine
+    {
+        public readonly bool AlongX;
+        public readonly float Coord;
+
+        public OpeningLine(bool alongX, float coord)
+        {
+            AlongX = alongX;
+            Coord = coord;
+        }
+
+        public Vector3 P(float along, float y, float across)
+            => AlongX ? new Vector3(along, y, Coord + across) : new Vector3(Coord + across, y, along);
+
+        /// <summary>The line's normal toward its <paramref name="side"/> (+1 / -1).</summary>
+        public Vector3 N(int side) => AlongX ? new Vector3(0f, 0f, side) : new Vector3(side, 0f, 0f);
+
+        /// <summary>A box's size: <paramref name="len"/> along the line, <paramref name="h"/> high, <paramref name="thick"/> across.</summary>
+        public Vector3 Size(float len, float h, float thick) => AlongX ? new Vector3(len, h, thick) : new Vector3(thick, h, len);
+
+        public Vector3 Along => AlongX ? Vector3.right : Vector3.forward;
+
+        /// <summary>The yaw (degrees) that turns a builder's local +X along the line.</summary>
+        public float Yaw => AlongX ? 0f : -90f;
+    }
+
+    internal static partial class FurnitureBuilder
+    {
+        #region Raid windows
+        private static readonly Color ShardTint = new Color(0.30f, 0.36f, 0.40f);
+        private static readonly Color PlankWood = new Color(0.50f, 0.40f, 0.28f);
+
+        // A sash's rails: the lower sash's bottom rail is the deeper (it takes the lifts), the upper's a little shallower.
+        private static float SashTopRail(bool lower) => lower ? 0.05f : 0.045f;
+        private static float SashBottomRail(bool lower) => lower ? 0.06f : 0.05f;
+
+        /// <summary>One sash of a double-hung window, <paramref name="w"/> wide between heights <paramref name="y0"/> and
+        /// <paramref name="y1"/>, <paramref name="across"/> from the wall line: stiles, rails and a glazing bar down the middle.
+        /// Its glass is drawn apart (<see cref="OpeningPane"/>, <see cref="OpeningShards"/>) so it can break. The lower sash
+        /// gets a pair of brass lifts on its bottom rail, on the <paramref name="roomSide"/>.</summary>
+        public static void OpeningSash(RaidMesh m, in OpeningLine l, float mid, float w, float y0, float y1, float across,
+            bool lower, int roomSide, Color paint)
+        {
+            Surf frame = M(paint);
+            const float depth = 0.04f;
+            float h = y1 - y0, cy = (y0 + y1) * 0.5f;
+            float s0 = mid - w * 0.5f, s1 = mid + w * 0.5f;
+            float top = SashTopRail(lower), bottom = SashBottomRail(lower);
+            m.Box(l.P(s0 + 0.0225f, cy, across), l.Size(0.045f, h, depth), frame);
+            m.Box(l.P(s1 - 0.0225f, cy, across), l.Size(0.045f, h, depth), frame);
+            m.Box(l.P(mid, y1 - top * 0.5f, across), l.Size(w - 0.09f, top, lower ? depth + 0.005f : depth), frame);
+            m.Box(l.P(mid, y0 + bottom * 0.5f, across), l.Size(w - 0.09f, bottom, lower ? depth : depth + 0.005f), frame);
+            float glass = h - top - bottom;
+            m.Box(l.P(mid, y0 + bottom + glass * 0.5f, across), l.Size(0.03f, glass, 0.03f), frame);
+            // Add tiny brass pull‑knobs on the top rail of each sash (both left and right sides)
+            Surf brass = Mt(Brass);
+            float knobY = y1 - top * 0.5f - 0.01f; // a few centimetres below the top rail
+            float knobDepth = across + roomSide * (depth * 0.5f + 0.008f);
+            // Left knob
+            m.Box(l.P(s0 + 0.0225f, knobY, knobDepth), new Vector3(0.012f, 0.025f, 0.008f), brass);
+            // Right knob
+            m.Box(l.P(s1 - 0.0225f, knobY, knobDepth), new Vector3(0.012f, 0.025f, 0.008f), brass);
+            if (!lower) return;
+            // Existing brass lifts on the lower sash's bottom rail
+            for (int e = -1; e <= 1; e += 2)
+                m.Box(l.P(mid + e * w * 0.25f, y0 + 0.03f, across + roomSide * (depth * 0.5f + 0.008f)), l.Size(0.05f, 0.015f, 0.016f), brass);
+        }
+
+        /// <summary>The glass of a sash drawn by <see cref="OpeningSash"/> (the same measures).</summary>
+        public static void OpeningPane(RaidMesh m, in OpeningLine l, float mid, float w, float y0, float y1, float across, bool lower, Color tint)
+        {
+            float g0 = y0 + SashBottomRail(lower), g1 = y1 - SashTopRail(lower);
+            m.Box(l.P(mid, (g0 + g1) * 0.5f, across), l.Size(w - 0.09f, g1 - g0, 0.006f), Gs(tint));
+        }
+
+        /// <summary>What a smashed sash keeps of its glass: jagged shards in the corners of the panes either side of its
+        /// glazing bar (the same measures as <see cref="OpeningSash"/>).</summary>
+        public static void OpeningShards(RaidMesh m, System.Random rng, in OpeningLine l, float mid, float w, float y0, float y1, float across, bool lower)
+        {
+            float g0 = y0 + SashBottomRail(lower), g1 = y1 - SashTopRail(lower);
+            float e0 = mid - (w - 0.09f) * 0.5f, e1 = mid + (w - 0.09f) * 0.5f;
+            Surf shard = Gs(ShardTint);
+            Vector3 along = l.Along;
+            for (int pane = 0; pane < 2; pane++)
+            {
+                float a0 = pane == 0 ? e0 : mid + 0.015f, a1 = pane == 0 ? mid - 0.015f : e1;
+                for (int c = 0; c < 4; c++)
+                {
+                    if (rng.NextDouble() < 0.2) continue;
+                    bool left = (c & 1) == 0, low = c < 2;
+                    float k = R(rng, 0.04f, 0.1f);
+                    float sa = left ? a0 + k * 0.35f : a1 - k * 0.35f;
+                    float sy = low ? g0 + k * 0.6f : g1 - k * 0.6f;
+                    Vector3 right = along * k, up = Vector3.up * k * R(rng, 1.3f, 2.1f);
+                    // Two-sided: a sliver facing each way.
+                    m.Diamond(l.P(sa, sy, across + 0.002f), right, up, shard);
+                    m.Diamond(l.P(sa, sy, across - 0.002f), -right, up, shard);
+                }
+                // Now and then a long dagger left hanging from the top rail.
+                if (rng.NextDouble() < 0.4)
+                {
+                    float k = R(rng, 0.03f, 0.05f), sa = R(rng, a0 + 0.06f, a1 - 0.06f);
+                    Vector3 right = along * k, up = Vector3.up * R(rng, 0.1f, 0.18f);
+                    m.Diamond(l.P(sa, g1, across + 0.002f), right, up, shard);
+                    m.Diamond(l.P(sa, g1, across - 0.002f), -right, up, shard);
+                }
+            }
+        }
+
+        /// <summary>Planks nailed across the outside of a window (its <paramref name="outside"/> face), a little askew,
+        /// <paramref name="off"/> out from the wall line.</summary>
+        public static void OpeningBoards(RaidMesh m, System.Random rng, in OpeningLine l, float mid, float w, float sill, int outside, float off)
+        {
+            Surf plank = DecorMaterials.Planks(PlankWood), nail = Mt(DarkSteel);
+            Quaternion face = Quaternion.LookRotation(l.N(outside));
+            for (int i = 0; i < 3; i++)
+            {
+                float y = sill + 0.25f + i * 0.38f;
+                Quaternion q = face * Quaternion.Euler(0f, 0f, R(rng, -7f, 7f));
+                Vector3 c = l.P(mid, y, outside * off);
+                m.Box(c, new Vector3(w + 0.3f, 0.16f, 0.03f), q, plank);
+            // Top wooden trim (thin strip along the top edge)
+            m.Box(c + q * new Vector3(0f, 0.076f, 0f), new Vector3(w + 0.3f, 0.008f, 0.032f), q, plank);
+            // Bottom wooden trim
+            m.Box(c + q * new Vector3(0f, -0.076f, 0f), new Vector3(w + 0.3f, 0.008f, 0.032f), q, plank);
+            // Brass corner caps
+            float halfW = (w + 0.3f) * 0.5f;
+            float halfH = 0.16f * 0.5f;
+            for (int sx = -1; sx <= 1; sx += 2)
+                for (int sy = -1; sy <= 1; sy += 2)
+                    m.Box(c + q * new Vector3(sx * halfW, sy * halfH, 0f), new Vector3(0.018f, 0.018f, 0.018f), q, Mt(Brass));
+            // Dark‑steel strap
+            m.Box(c, new Vector3(w + 0.28f, 0.004f, 0.008f), q, Mt(DarkSteel));
+            // Weathered paint patch
+            float offX = R(rng, -0.2f, 0.2f);
+            float offY = R(rng, -0.04f, 0.04f);
+            Vector3 patchPos = c + q * new Vector3(offX, offY, 0f);
+            m.Box(patchPos, new Vector3(0.20f, 0.06f, 0.032f), q, M(PlankWood * 0.85f));
+            // Brass screw‑head
+            Vector3 screwPos = c + q * new Vector3(-halfW + 0.02f, -halfH + 0.02f, 0f);
+            m.Box(screwPos, new Vector3(0.008f, 0.008f, 0.004f), q, Mt(Brass));
+                // Dark‑steel brackets near lower corners of the board for a weathered look
+                for (int e = -1; e <= 1; e += 2)
+                    m.Box(c + q * new Vector3(e * (w * 0.5f - 0.02f), -0.07f, 0f), new Vector3(0.012f, 0.012f, 0.006f), q, nail);
+                // Existing nails (small fasteners)
+                for (int e = -1; e <= 1; e += 2)
+                    m.Box(c + q * new Vector3(e * (w * 0.5f + 0.06f), 0f, 0.016f), new Vector3(0.014f, 0.014f, 0.006f), q, nail);
+            }
+        }
+
+        /// <summary>A window's curtains on its <paramref name="side"/> (the room's): a brass rod with finials over the casing,
+        /// drawn into both <paramref name="open"/> (the panels gathered back to either side with tie-backs) and
+        /// <paramref name="drawn"/> (the panels drawn across in shallow folds). <paramref name="lo"/>..<paramref name="hi"/>
+        /// bound the rod along the wall (the room's corners), <paramref name="face"/> is the wall face's distance from its line.</summary>
+        public static void OpeningCurtains(RaidMesh open, RaidMesh drawn, in OpeningLine l, float mid, float w, float sill, float head,
+            float face, float lo, float hi, int side, Color fabric)
+        {
+            float rodY = head + 0.13f, rodOff = side * (face + 0.075f);
+            float r0 = Mathf.Max(mid - w * 0.5f - 0.25f, lo + 0.06f), r1 = Mathf.Min(mid + w * 0.5f + 0.25f, hi - 0.06f);
+            Surf brass = Mt(Brass);
+            for (int pass = 0; pass < 2; pass++)
+            {
+                RaidMesh m = pass == 0 ? open : drawn;
+                m.Box(l.P((r0 + r1) * 0.5f, rodY, rodOff), l.Size(r1 - r0, 0.024f, 0.024f), brass);
+                // Central brass knob (adjustable height)
+                m.CylinderX(l.P((r0 + r1) * 0.5f, rodY + 0.015f, rodOff), 0.006f, 0.02f, 10, brass, 0f);
+                // Hook dimensions for finial hooks
+                float hookDepth = side * (face + 0.075f + 0.025f);
+                float hookLen = 0.04f;
+                float hookRad = 0.006f;
+                m.Ellipsoid(l.P(r0, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
+                // Left brass eyelet for tie‑back
+                float leftEyePos = r0 + 0.12f; // offset a little inward from finial
+                m.CylinderX(l.P(leftEyePos, rodY, rodOff), 0.004f, 0.008f, 10, brass, 0f);
+                // Left fabric tie‑back strip
+                Vector3 leftStripPos = l.P(leftEyePos, rodY - 0.02f, rodOff + side * (face + 0.045f));
+                m.Box(leftStripPos, new Vector3(0.04f, 0.008f, 0.004f), M(fabric * 0.75f));
+                // Left eyelet washer
+                m.Box(l.P(leftEyePos, rodY - 0.004f, rodOff), new Vector3(0.008f, 0.001f, 0.008f), brass);
+                // Right brass eyelet for tie‑back
+                float rightEyePos = r1 - 0.12f;
+                m.CylinderX(l.P(rightEyePos, rodY, rodOff), 0.004f, 0.008f, 10, brass, 0f);
+                // Right fabric tie‑back strip
+                Vector3 rightStripPos = l.P(rightEyePos, rodY - 0.02f, rodOff + side * (face + 0.045f));
+                m.Box(rightStripPos, new Vector3(0.04f, 0.008f, 0.004f), M(fabric * 0.75f));
+                // Right eyelet washer
+                m.Box(l.P(rightEyePos, rodY - 0.004f, rodOff), new Vector3(0.008f, 0.001f, 0.008f), brass);
+                // Add short brass hook extending outward from left finial
+                m.CylinderX(l.P(r0, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
+                m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
+                // Add short brass hook extending outward from right finial
+                m.CylinderX(l.P(r1, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
+            }
+
+            float top = rodY - 0.015f, bottom = sill + 0.06f, h = top - bottom;
+            for (int e = -1; e <= 1; e += 2)
+            {
+                float c = Mathf.Clamp(mid + e * (w * 0.5f + 0.08f), r0 + 0.14f, r1 - 0.14f);
+                for (int k = 0; k < 3; k++)
+                {
+                    float depth = side * (face + 0.055f + (k % 2) * 0.022f);
+                    open.Box(l.P(c + (k - 1) * 0.085f, bottom + h * 0.5f, depth), l.Size(0.1f, h, 0.028f), M(fabric * (k % 2 == 0 ? 1f : 0.84f)));
+                }
+                open.Box(l.P(c, bottom + h * 0.4f, side * (face + 0.09f)), l.Size(0.3f, 0.04f, 0.012f), M(fabric * 0.7f));
+            }
+
+            float span = r1 - r0 - 0.04f;
+            int folds = Mathf.Max(6, Mathf.RoundToInt(span / 0.11f));
+            float fw = span / folds;
+            for (int k = 0; k < folds; k++)
+            {
+                float along = r0 + 0.02f + (k + 0.5f) * fw;
+                float depth = side * (face + 0.058f + (k % 2) * 0.018f);
+                drawn.Box(l.P(along, bottom + h * 0.5f, depth), l.Size(fw + 0.012f, h, 0.026f), M(fabric * (k % 2 == 0 ? 1f : 0.86f)));
+            }
+        }
+
+        /// <summary>A roller blind hung inside the window's reveal on its <paramref name="side"/>, <paramref name="across"/> from
+        /// the wall line and <paramref name="w"/> wide: rolled up under the head (<paramref name="up"/>) or pulled down to the
+        /// sill (<paramref name="down"/>). A <paramref name="cloth"/> is a blackout cloth instead — a heavier roll tied up with
+        /// cord, or let down in slack folds.</summary>
+        public static void OpeningBlind(RaidMesh up, RaidMesh down, in OpeningLine l, float mid, float w, float sill, float head,
+            float across, int side, Color fabric, bool cloth)
+        {
+            float a = side * across, rollY = head - 0.05f, roll = cloth ? 0.028f : 0.022f;
+            Surf stuff = M(fabric), bar = M(cloth ? fabric * 0.7f : Pine), cord = M(cloth ? new Color(0.55f, 0.50f, 0.38f) : fabric * 0.6f);
+Surf brass = Mt(Brass);
+            for (int pass = 0; pass < 2; pass++)
+                (pass == 0 ? up : down).CylinderX(l.P(mid, rollY, a), roll, w, 10, stuff, l.Yaw);
+
+            if (cloth)
+            {
+                // Rolled up: two cords tied round the roll.
+                for (int e = -1; e <= 1; e += 2)
+                    up.Box(l.P(mid + e * w * 0.3f, rollY, a), l.Size(0.012f, roll * 2f + 0.012f, roll * 2f + 0.012f), cord);
+                // Let down: slack cloth in three hanging folds, tacked at the top corners.
+                float h = rollY - (sill + 0.05f), fw = w / 3f;
+                for (int k = 0; k < 3; k++)
+                    down.Box(l.P(mid - w * 0.5f + (k + 0.5f) * fw, rollY - h * 0.5f, a + side * (k % 2) * 0.008f),
+                        l.Size(fw + 0.01f, h, 0.008f), M(fabric * (k % 2 == 0 ? 1f : 0.82f)));
+                for (int e = -1; e <= 1; e += 2)
+                    down.Box(l.P(mid + e * (w * 0.5f - 0.03f), rollY - 0.02f, a + side * 0.008f), l.Size(0.016f, 0.016f, 0.01f), Mt(DarkSteel));
+                return;
+            }
+
+            // Rolled up: the bottom bar just under the roll, its pull cord and knob hanging below.
+            float upBar = rollY - roll - 0.016f;
+            up.Box(l.P(mid, upBar, a), l.Size(w, 0.018f, 0.014f), bar);
+            up.Box(l.P(mid, upBar - 0.07f, a), l.Size(0.005f, 0.13f, 0.005f), cord);
+            // Small brass knob on the cord attachment point
+            up.Box(l.P(mid, upBar - 0.07f, a), new Vector3(0.018f, 0.004f, 0.018f), brass);
+            // Short brass pull‑hook at the bottom of the cord
+            float upBottomY = upBar - 0.07f - 0.13f;
+            up.Cylinder(l.P(mid, upBottomY, a), 0.004f, 0.02f, 10, brass, Quaternion.identity);
+            // Decorative brass cap on top of the up‑bar
+            up.Box(l.P(mid, upBar, a), new Vector3(0.02f, 0.008f, 0.02f), brass);
+            // Subtle dark‑steel wear strip above the cap
+            up.Box(l.P(mid, upBar + 0.009f, a), new Vector3(0.04f, 0.002f, 0.004f), Mt(DarkSteel));
+            up.Ellipsoid(l.P(mid, upBar - 0.145f, a), new Vector3(0.02f, 0.028f, 0.02f), bar, 6, 4);
+
+            // Pulled down: the cloth over the glazing, the bar at its foot, the cord and knob just clear of the sill.
+            float downBar = sill + 0.13f;
+            down.Box(l.P(mid, (rollY + downBar) * 0.5f, a), l.Size(w, rollY - downBar, 0.005f), stuff);
+            down.Box(l.P(mid, downBar, a), l.Size(w, 0.018f, 0.014f), bar);
+            down.Box(l.P(mid, downBar - 0.045f, a), l.Size(0.005f, 0.07f, 0.005f), cord);
+            // Small brass knob on the down‑bar cord attachment point
+            down.Box(l.P(mid, downBar - 0.045f, a), new Vector3(0.018f, 0.004f, 0.018f), brass);
+            // Short brass pull‑hook at the bottom of the down‑bar cord
+            float downBottomY = downBar - 0.045f - 0.13f;
+            down.Cylinder(l.P(mid, downBottomY, a), 0.004f, 0.02f, 10, brass, Quaternion.identity);
+            // Decorative brass cap on top of the down‑bar
+            down.Box(l.P(mid, downBar, a), new Vector3(0.02f, 0.008f, 0.02f), brass);
+            // Subtle dark‑steel wear strip above the cap
+            down.Box(l.P(mid, downBar + 0.009f, a), new Vector3(0.04f, 0.002f, 0.004f), Mt(DarkSteel));
+            down.Ellipsoid(l.P(mid, downBar - 0.085f, a), new Vector3(0.02f, 0.028f, 0.02f), bar, 6, 4);
+        }
+
+        /// <summary>Louvred shutters either side of a window, on its <paramref name="side"/> (outside) face.</summary>
+        public static void OpeningShutters(RaidMesh m, in OpeningLine l, float mid, float w, float sill, float head, float face, int side, Color paint)
+        {
+            const float sw = 0.26f;
+            float sh = head - sill + 0.1f, cy = (sill + head) * 0.5f;
+            Surf panel = M(paint), slat = M(paint * 0.78f);
+            for (int e = -1; e <= 1; e += 2)
+            {
+                float c = mid + e * (w * 0.5f + 0.07f + sw * 0.5f);
+                m.Box(l.P(c, cy, side * (face + 0.02f)), l.Size(sw, sh, 0.03f), panel);
+                // Brass hinge near top‑outer edge of the panel
+                m.Box(l.P(c, cy + sh * 0.5f - 0.02f, side * (face + 0.04f)), l.Size(0.018f, 0.04f, 0.008f), Mt(Brass));
+                // Brass latch near lower‑outer edge of the panel
+                m.Box(l.P(c, sill + 0.12f, side * (face + 0.045f)), l.Size(0.032f, 0.064f, 0.008f), Mt(Brass));
+                for (float y = sill + 0.04f; y < head + 0.03f; y += 0.075f)
+                    m.Box(l.P(c, y, side * (face + 0.038f)), l.Size(sw - 0.06f, 0.024f, 0.012f), slat);
+                // ← NEW: metal corner brackets at top‑outer corners of each panel
+                // left‑top bracket
+                m.Box(l.P(c - sw * 0.5f + 0.02f, cy + sh * 0.5f - 0.015f, side * (face + 0.03f)),
+                    new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
+                // right‑top bracket
+                m.Box(l.P(c + sw * 0.5f - 0.02f, cy + sh * 0.5f - 0.015f, side * (face + 0.03f)),
+                    new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
+            }
+            // ← NEW: thin dark‑steel chain linking the two shutters
+            {
+                float chainZ = side * (face + 0.04f); // a little in front of the panels
+                float chainY = cy; // vertically centred
+                float chainLen = w + 0.14f + sw; // distance between panel centres
+                m.CylinderX(l.P(mid, chainY, chainZ), 0.004f, chainLen, 10, Mt(DarkSteel), 0f);
+            }
+            // ← NEW: deterministic rust patches (no RNG – offset based on geometry)
+            {
+                Color rustCol = new Color(0.55f, 0.30f, 0.20f);
+                Surf rust = M(rustCol);
+                float rustZ = side * (face + 0.025f);
+                float rustY = cy + 0.03f; // slightly above centre
+                // left panel rust
+                m.Ellipsoid(l.P(mid - w * 0.25f, rustY, rustZ), new Vector3(0.02f, 0.02f, 0.004f), rust, 4, 2);
+                // right panel rust
+                m.Ellipsoid(l.P(mid + w * 0.25f, rustY, rustZ), new Vector3(0.02f, 0.02f, 0.004f), rust, 4, 2);
+            }
+        }
+
+        /// <summary>A painted planter under a window's sill, outside: last summer's flowers dead brown sticks, the soil under a
+        /// cap of snow.</summary>
+        public static void OpeningFlowerBox(RaidMesh m, System.Random rng, in OpeningLine l, float mid, float w, float sill, float face, int side, Color paint)
+        {
+            float across = side * (face + 0.12f);
+            m.Box(l.P(mid, sill - 0.15f, across), l.Size(w + 0.1f, 0.2f, 0.2f), M(paint));
+            m.Box(l.P(mid, sill - 0.055f, across), l.Size(w + 0.04f, 0.012f, 0.16f), M(new Color(0.20f, 0.15f, 0.10f)));
+            Surf stalk = M(new Color(0.34f, 0.27f, 0.18f)), dry = M(new Color(0.44f, 0.36f, 0.24f));
+            int n = Mathf.Max(5, Mathf.RoundToInt(w * 8f));
+            for (int i = 0; i < n; i++)
+            {
+                float along = mid - w * 0.5f + (i + 0.5f) * w / n + R(rng, -0.03f, 0.03f);
+                Vector3 root = l.P(along, sill - 0.05f, across + side * R(rng, -0.05f, 0.05f));
+                Vector3 tip = root + Vector3.up * R(rng, 0.12f, 0.3f) + l.Along * R(rng, -0.06f, 0.06f) + l.N(side) * R(rng, -0.04f, 0.06f);
+                m.Rod(root, tip, 0.012f, Chance(rng, 0.5) ? stalk : dry);
+                if (Chance(rng, 0.35)) m.Ellipsoid(tip, new Vector3(0.035f, 0.025f, 0.035f), dry, 5, 3);
+            }
+            // The snow lying on the soil and along the box's rim.
+            Surf snow = M(DecorProps.SnowWhite);
+            for (int i = 0; i < 4; i++)
+            {
+                float along = mid - w * 0.5f + (i + 0.5f) * w / 4f;
+                m.Ellipsoid(l.P(along, sill - 0.045f, across), l.Size(w / 4f + 0.08f, 0.07f, 0.17f), snow, 6, 3);
+            }
+            // Tiny dark‑steel corner brackets at the planter’s top edges.
+            {
+                float size = R(rng, 0.018f, 0.022f);
+                Vector3 dim = new Vector3(size, size, size);
+                // Front‑left
+                m.Box(l.P(mid - w * 0.5f + 0.04f, sill - 0.05f, across + 0.04f), dim, Mt(DarkSteel));
+                // Front‑right
+                m.Box(l.P(mid + w * 0.5f - 0.04f, sill - 0.05f, across + 0.04f), dim, Mt(DarkSteel));
+                // Back‑left
+                m.Box(l.P(mid - w * 0.5f + 0.04f, sill - 0.05f, across - 0.04f), dim, Mt(DarkSteel));
+                // Back‑right
+                m.Box(l.P(mid + w * 0.5f - 0.04f, sill - 0.05f, across - 0.04f), dim, Mt(DarkSteel));
+            }
+        }
+        #endregion
+
+        #region Raid doors
+        /// <summary>Splintered wood on the floor round a doorway a door has been battered out of — most of it on the
+        /// <paramref name="side"/> it burst toward.</summary>
+        public static void DoorSplinters(RaidMesh m, System.Random rng, in OpeningLine l, float mid, float width, int side, Color wood)
+        {
+            Color raw = Color.Lerp(wood, new Color(0.80f, 0.68f, 0.50f), 0.55f);   // fresh-broken wood is pale inside
+            for (int i = 0; i < 14; i++)
+            {
+                int s = Chance(rng, 0.75) ? side : -side;
+                float along = mid + R(rng, -0.55f, 0.55f) * width;
+                float across = s * R(rng, 0.18f, 1.1f);
+                float len = R(rng, 0.06f, 0.34f), thick = R(rng, 0.012f, 0.04f);
+                Quaternion q = Quaternion.Euler(R(rng, -5f, 5f), R(rng, 0f, 180f), R(rng, -5f, 5f));
+                m.Box(l.P(along, 0.032f + thick * 0.4f, across), new Vector3(len, thick * 0.8f, thick), q, M(V(Chance(rng, 0.6) ? raw : wood, rng, 0.12f)));
+            }
+            // half‑width of the door opening – used for frame placement
+            float halfW = width * 0.5f;
+            // left wooden jamb (weathered timber)
+            m.Box(l.P(mid - halfW - 0.01f, 0.65f, side * 0.02f),
+                new Vector3(0.02f, 1.30f, 0.02f), M(wood));
+            // bottom wooden trim on left jamb
+            m.Box(l.P(mid - halfW - 0.01f, 0.03f, side * 0.02f),
+                new Vector3(0.02f, 0.06f, 0.02f), M(wood));
+            // right wooden jamb
+            m.Box(l.P(mid + halfW + 0.01f, 0.65f, side * 0.02f),
+                new Vector3(0.02f, 1.30f, 0.02f), M(wood));
+            // bottom wooden trim on right jamb
+            m.Box(l.P(mid + halfW + 0.01f, 0.03f, side * 0.02f),
+                new Vector3(0.02f, 0.06f, 0.02f), M(wood));
+            // top lintel, slightly wider than the opening
+            m.Box(l.P(mid, 1.32f, side * 0.02f),
+                new Vector3(width + 0.04f, 0.04f, 0.02f), M(wood));
+            // dark‑steel hinge (period‑correct hardware)
+            m.Box(l.P(mid - halfW + 0.04f, 1.20f, side * 0.045f),
+                new Vector3(0.01f, 0.04f, 0.008f), Mt(DarkSteel));
+            // left‑top iron corner cap
+            m.Box(l.P(mid - halfW - 0.01f, 1.30f, side * (0.02f + 0.009f)),
+                new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
+            // right‑top iron corner cap
+            m.Box(l.P(mid + halfW + 0.01f, 1.30f, side * (0.02f + 0.009f)),
+                new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
+            // door kick‑plate (metal strip across the bottom)
+            m.Box(l.P(mid, 0.04f, side * 0.02f),
+                new Vector3(width, 0.02f, 0.01f), Mt(DarkSteel));
+            // wear strip above kick‑plate
+            m.Box(l.P(mid, 0.062f, side * 0.02f),
+                new Vector3(width, 0.004f, 0.008f), Mt(DarkSteel));
+            // brass wear emboss on lever handle
+            m.Box(l.P(mid + halfW - 0.07f, 0.90f, side * (0.045f + 0.006f)),
+                new Vector3(0.008f, 0.004f, 0.002f), Mt(Brass));
+            // brass lever handle
+            m.CylinderX(l.P(mid + halfW - 0.07f, 0.90f, side * 0.045f),
+                0.006f, 0.12f, 10, Mt(Brass), 0f);
+            // brass lock cylinder (keyhole)
+            m.CylinderX(l.P(mid - halfW + 0.07f, 0.90f, side * 0.045f),
+                0.004f, 0.02f, 10, Mt(Brass), 0f);
+            // brass strike‑plate (moved after handle/lock)
+            m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));
+            // A couple of bigger chunks of the frame and the lock's strike plate.
+            for (int i = 0; i < 2; i++)
+            {
+                Quaternion q = Quaternion.Euler(0f, R(rng, 0f, 180f), 0f);
+                m.Box(l.P(mid + R(rng, -0.4f, 0.4f) * width, 0.05f, side * R(rng, 0.3f, 0.9f)), new Vector3(R(rng, 0.25f, 0.5f), 0.03f, 0.06f), q, M(V(wood, rng, 0.1f)));
+            }
+            // strike plate moved below
+        }
+
+        /// <summary>One band of a roll-up door's steel curtain, <paramref name="len"/> wide between heights <paramref name="y0"/>
+        /// and <paramref name="y1"/>, <paramref name="across"/> from the wall line: a corrugated sheet ribbed on both faces; the
+        /// bottom band carries the heavy bottom bar and a lift handle on each face.</summary>
+        public static void ShutterBand(RaidMesh m, in OpeningLine l, float mid, float len, float y0, float y1, float across, bool bottom)
+        {
+            Surf sheet = Mt(new Color(0.55f, 0.57f, 0.55f)), rib = Mt(new Color(0.44f, 0.46f, 0.45f));
+            float h = y1 - y0;
+            m.Box(l.P(mid, (y0 + y1) * 0.5f, across), l.Size(len, h, 0.012f), sheet);
+            int ribs = Mathf.Max(1, Mathf.RoundToInt(h / 0.075f));
+            for (int i = 0; i < ribs; i++)
+            {
+                float y = y0 + (i + 0.5f) * h / ribs;
+                m.Box(l.P(mid, y, across + 0.008f), l.Size(len, 0.014f, 0.005f), rib);
+                m.Box(l.P(mid, y, across - 0.008f), l.Size(len, 0.014f, 0.005f), rib);
+            }
+            if (!bottom) return;
+            Surf bar = Mt(new Color(0.30f, 0.31f, 0.31f));
+            m.Box(l.P(mid, y0 + 0.025f, across), l.Size(len, 0.05f, 0.035f), bar);
+            for (int s = -1; s <= 1; s += 2)
+                m.Box(l.P(mid, y0 + 0.12f, across + s * 0.022f), l.Size(0.16f, 0.025f, 0.02f), bar);
+        }
+        #endregion
+    }
+}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "TomatoSeed", "baseHeight": 0.0625, "name": "Tomato Seed", "model": "gpt-oss:120b", "notes": "Small paper packet of tomato seeds, about 4 cm × 2 cm × 3 mm lying flat on the floor (y=0). Main brown‑tinted paper body with front/back labels and a few loose seed ellipsoids peeking out.", "score": 7, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0003,0.0095],"rot":[0.0,0.0,0.0],"size":[0.036,0.002,0.018],"color":[0.45,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BackLabel","shape":"cube","pos":[0.0,-0.0003,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.036,0.002,0.018],"color":[0.45,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeSeamTop","shape":"cube","pos":[0.0,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeSeamBottom","shape":"cube","pos":[0.0,-0.0014,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.008,0.0,0.004],"rot":[0.0,0.0,0.0],"size":[0.006,0.005,0.003],"color":[0.75,0.2,0.15],"smooth":0.6,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[-0.004,0.0,-0.003],"rot":[0.0,0.0,0.0],"size":[0.006,0.005,0.003],"color":[0.75,0.2,0.15],"smooth":0.6,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[0.002,0.0,0.001],"rot":[0.0,0.0,0.0],"size":[0.006,0.005,0.003],"color":[0.75,0.2,0.15],"smooth":0.6,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.006,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.006,0.005,0.003],"color":[0.75,0.2,0.15],"smooth":0.6,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.001,0.0,0.006],"rot":[0.0,0.0,0.0],"size":[0.006,0.005,0.003],"color":[0.75,0.2,0.15],"smooth":0.6,"metal":0.0},
+  {"name":"SeedPile","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.008],"color":[0.75,0.2,0.15],"smooth":0.6,"metal":0.0}
+]}

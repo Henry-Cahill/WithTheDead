@@ -1,0 +1,8 @@
+{"version": 1, "id": "ClosedUmbrellaWhite", "baseHeight": 0.1575, "name": "Closed Umbrella White", "model": "gpt-oss:120b", "notes": "Closed umbrella (white) ~0.9 m long, lying on its side with shaft along X. Shaft and tip are metal, a short upward handle stem ends in a rubber knob, and the collapsed canopy is shown as a flattened white dome near the tip.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0675,-0.0825,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.85,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.3775,-0.0825,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleStem","shape":"cylinder","pos":[-0.4925,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"HandleKnob","shape":"sphere","pos":[-0.4925,0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.3,"metal":0.0},
+  {"name":"CanopyDome","shape":"sphere","pos":[0.3925,-0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.07,0.25],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"CanopyRim","shape":"cylinder","pos":[0.3925,-0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.26],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0}
+]}

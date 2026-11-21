@@ -1,0 +1,10 @@
+{"version": 1, "id": "GunPowder", "baseHeight": 0.0838, "name": "Gun Powder", "model": "gpt-oss:120b", "notes": "Loose gun‑powder bag ~0.15 m long × 0.10 m wide × 0.03 m thick, lying flat on the floor. Main beige paper with a dark brown label and thin folded top flap.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0068,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0092,0.0],"rot":[-15.0,0.0,0.0],"size":[0.14,0.006,0.09],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"BottomSeam","shape":"cylinder","pos":[0.0,-0.0228,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.002,0.102],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.02,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.06],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.02,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.06],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"GranulePile","shape":"sphere","pos":[0.0,0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"SideRimL","shape":"cylinder","pos":[-0.075,-0.0068,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.03,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimR","shape":"cylinder","pos":[0.075,-0.0068,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.03,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

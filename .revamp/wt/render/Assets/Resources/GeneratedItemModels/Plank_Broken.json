@@ -1,0 +1,12 @@
+{"version": 1, "id": "Plank_Broken", "baseHeight": 0.1, "name": "Plank Broken", "model": "gpt-oss:120b", "notes": "Broken wooden plank weapon ~1.2 m long, lying on its side (X‑axis). Main rectangular shaft with a jagged broken tip and a few splinter pieces to show the business end clearly. Simple wood grain lines add visual interest.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cube","pos":[-0.03,-0.015,0.0089],"rot":[0.0,0.0,0.0],"size":[1.2,0.05,0.15],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BrokenTipBase","shape":"cube","pos":[0.52,-0.015,0.0089],"rot":[0.0,0.0,0.0],"size":[0.2,0.05,0.15],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"BrokenTipNarrow","shape":"cube","pos":[0.63,-0.015,0.0089],"rot":[0.0,0.0,0.0],"size":[0.1,0.05,0.08],"color":[0.55,0.55,0.58],"smooth":0.12,"metal":0.0},
+  {"name":"SplinterA","shape":"cube","pos":[0.65,0.0,0.0789],"rot":[10.0,-15.0,5.0],"size":[0.04,0.03,0.02],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"SplinterB","shape":"sphere","pos":[0.63,0.01,-0.0811],"rot":[0.0,0.0,0.0],"size":[0.03,0.06,0.03],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"CrackLine","shape":"cube","pos":[-0.13,-0.012,0.0089],"rot":[0.0,5.0,0.0],"size":[1.0,0.005,0.02],"color":[0.45,0.45,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"GrainTop","shape":"cube","pos":[-0.23,-0.012,0.0489],"rot":[0.0,0.0,0.0],"size":[0.9,0.003,0.01],"color":[0.45,0.45,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"GrainBottom","shape":"cube","pos":[-0.23,-0.012,-0.0311],"rot":[0.0,0.0,0.0],"size":[0.9,0.003,0.01],"color":[0.45,0.45,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"CenterRivet","shape":"cylinder","pos":[-0.03,-0.015,0.0089],"rot":[0.0,0.0,0.0],"size":[0.01,0.05,0.01],"color":[0.35,0.3,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.58,-0.015,0.0089],"rot":[0.0,0.0,90.0],"size":[0.015,0.05,0.015],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0}
+]}

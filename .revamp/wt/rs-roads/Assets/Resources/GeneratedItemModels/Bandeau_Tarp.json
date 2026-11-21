@@ -1,0 +1,10 @@
+{"version": 1, "id": "Bandeau_Tarp", "baseHeight": 0.1047, "name": "Bandeau Tarp", "model": "gpt-oss:120b", "notes": "Flat bandeau‑style tarp 0.70 m long × 0.25 m wide × 0.03 m thick, laid out like a product photo. Main fabric panel with dark seam trim and two cylindrical strap loops at each end for tying.", "score": 6, "parts": [
+  {"name":"FabricPanel","shape":"cube","pos":[0.0,-0.0252,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,-0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.006,0.25],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.0417,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.006,0.25],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.352,-0.0252,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.03,0.25],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.352,-0.0252,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.03,0.25],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.35,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.35,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieKnot","shape":"sphere","pos":[0.0,0.0198,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

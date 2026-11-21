@@ -1,0 +1,9 @@
+{"version": 1, "id": "Candle", "baseHeight": 0.0875, "name": "Candle", "model": "gpt-oss:120b", "notes": "Candle lying on its side, 0.18 m long × 0.05 m diameter wax cylinder with a tiny vertical wick at one end, a thin decorative band around the middle and a few small melted‑wax drips where it has fallen.", "score": 7, "parts": [
+  {"name":"WaxBody","shape":"cylinder","pos":[0.0062,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.18,0.05],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Wick","shape":"cylinder","pos":[0.0763,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.02,0.003],"color":[0.12,0.09,0.06],"smooth":0.4,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0062,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.055,0.015,0.055],"color":[0.45,0.42,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"Drip1","shape":"sphere","pos":[-0.0638,-0.0125,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Drip2","shape":"sphere","pos":[-0.0738,-0.017,-0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Drip3","shape":"sphere","pos":[-0.0537,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"MeltedPool","shape":"sphere","pos":[-0.0837,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0}
+]}

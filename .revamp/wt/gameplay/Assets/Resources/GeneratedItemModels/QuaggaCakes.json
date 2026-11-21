@@ -1,0 +1,9 @@
+{"version": 1, "id": "QuaggaCakes", "baseHeight": 0.0985, "name": "Quagga Cakes", "model": "gpt-oss:120b", "notes": "Quagga Cakes – a pack of four small round cakes in a low‑profile cardboard box (≈0.16 m × 0.11 m × 0.07 m). Box lies flat on the floor, lid sits on top; inside are four 6 cm‑diameter, 4 cm‑tall cake cylinders arranged 2×2.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.07,0.11],"color":[0.55,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.034,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.005,0.108],"color":[0.55,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.037,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.09],"color":[0.8,0.7,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CakeFL","shape":"cylinder","pos":[-0.045,-0.0185,-0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CakeFR","shape":"cylinder","pos":[0.045,-0.0185,-0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CakeBL","shape":"cylinder","pos":[-0.045,-0.0185,0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CakeBR","shape":"cylinder","pos":[0.045,-0.0185,0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0}
+]}

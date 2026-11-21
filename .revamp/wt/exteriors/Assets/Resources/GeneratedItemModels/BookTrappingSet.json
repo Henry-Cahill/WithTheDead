@@ -1,0 +1,12 @@
+{"version": 1, "id": "BookTrappingSet", "baseHeight": 0.12, "name": "Book Trapping Set", "model": "gpt-oss:120b", "notes": "Four paperback‑style books (≈0.30 m × 0.20 m × 0.03 m each) stacked on their backs and tied together with a thin rope around the middle; a small metal clamp secures one end of the rope and a yellowish label sits on the front face of the top book. Overall footprint ~0.30 m × 0.20 m, height ≈0.12 m.", "score": 7, "parts": [
+  {"name":"BaseBook","shape":"cube","pos":[-0.0025,-0.045,-0.01],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BookMid1","shape":"cube","pos":[0.0075,-0.015,-0.015],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BookMid2","shape":"cube","pos":[-0.0105,0.015,-0.004],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopBook","shape":"cube","pos":[-0.0025,0.045,-0.01],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RopeBand","shape":"cylinder","pos":[-0.0025,0.0,-0.01],"rot":[0.0,0.0,90.0],"size":[0.015,0.34,0.015],"color":[0.32,0.22,0.12],"smooth":0.4,"metal":0.0},
+  {"name":"MetalClamp","shape":"cube","pos":[0.1575,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.01],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"LabelFront","shape":"cube","pos":[-0.0025,0.0525,0.091],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.002],"color":[0.9,0.85,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Nail1","shape":"sphere","pos":[0.1175,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"Nail2","shape":"sphere","pos":[-0.1225,0.01,-0.03],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"Nail3","shape":"sphere","pos":[-0.0025,0.01,0.11],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.65,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Glasses_SkiGoggles", "baseHeight": 0.071, "name": "Glasses Ski Goggles", "model": "gpt-oss:120b", "notes": "Ski goggles laid flat like a product photo (≈0.28 m wide × 0.09 m tall × 0.02 m thick). Two dark‑gray frames with tinted glass lenses and a black strap across the top.", "score": 7, "parts": [
+  {"name":"LeftFrame","shape":"cube","pos":[-0.14,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.015,0.09],"color":[0.15,0.15,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"RightFrame","shape":"cube","pos":[0.14,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.015,0.09],"color":[0.15,0.15,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.09],"color":[0.15,0.15,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"LeftLens","shape":"cube","pos":[-0.14,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.012,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"RightLens","shape":"cube","pos":[0.14,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.012,0.07],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Strap","shape":"cube","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.04],"color":[0.08,0.08,0.1],"smooth":0.25,"metal":0.0}
+]}

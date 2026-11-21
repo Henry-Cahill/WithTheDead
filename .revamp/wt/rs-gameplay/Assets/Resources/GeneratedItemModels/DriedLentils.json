@@ -1,0 +1,12 @@
+{"version": 1, "id": "DriedLentils", "baseHeight": 0.085, "name": "Dried Lentils", "model": "gpt-oss:120b", "notes": "Flat paper bag of dried lentils, approx 0.30 m × 0.20 m × 0.04 m lying on its side. Rolled seams around the edges and a central label give it a clear silhouette.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.2],"color":[0.75,0.68,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.0,0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.312,0.005,0.212],"color":[0.6,0.55,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"BottomSeam","shape":"cube","pos":[0.0,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.312,0.005,0.212],"color":[0.6,0.55,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"LeftSeam","shape":"cube","pos":[-0.1525,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.04,0.2],"color":[0.6,0.55,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"RightSeam","shape":"cube","pos":[0.1525,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.04,0.2],"color":[0.6,0.55,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.0,0.1025],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.005],"color":[0.6,0.55,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,-0.0,-0.1025],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.005],"color":[0.6,0.55,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.16],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.14],"color":[0.45,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCorner","shape":"cube","pos":[-0.13,0.002,-0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.6,0.55,0.35],"smooth":0.07,"metal":0.0}
+]}

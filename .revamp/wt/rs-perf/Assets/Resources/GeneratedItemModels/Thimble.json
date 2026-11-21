@@ -1,0 +1,8 @@
+{"version": 1, "id": "Thimble", "baseHeight": 0.0755, "name": "Thimble", "model": "gpt-oss:120b", "notes": "Small metal thimble ~2.4 cm diameter, 1.5 cm tall, lying on its side. Main cup (cylinder), rounded dome (sphere) and thin caps at each end for base‑rim detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.005,0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.024,0.015,0.024],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Dome","shape":"sphere","pos":[0.0025,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BaseCap","shape":"cylinder","pos":[-0.0125,0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.004,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0025,0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.028,0.002,0.028],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Highlight","shape":"sphere","pos":[0.0035,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.78,0.7],"smooth":0.9,"metal":1.0},
+  {"name":"ShadowRing","shape":"cylinder","pos":[-0.008,-0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.002,0.022],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0}
+]}

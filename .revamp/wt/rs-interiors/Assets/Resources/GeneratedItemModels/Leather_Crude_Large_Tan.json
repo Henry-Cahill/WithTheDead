@@ -1,0 +1,13 @@
+{"version": 1, "id": "Leather_Crude_Large_Tan", "baseHeight": 0.0705, "name": "Leather Crude Large Tan", "model": "gpt-oss:120b", "notes": "Crude large tan leather hide ~0.60 m × 0.40 m × 0.015 m lying flat: main slab, ragged edge strips, a couple of cut marks, stitched centre line and a small punched hole for realism.", "score": 7, "parts": [
+  {"name":"LeatherBase","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeEndPos","shape":"cube","pos":[0.29,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.4],"color":[0.48,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeEndNeg","shape":"cube","pos":[-0.29,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.4],"color":[0.48,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeSidePos","shape":"cube","pos":[0.0,-0.0005,0.19],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.48,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeSideNeg","shape":"cube","pos":[0.0,-0.0005,-0.19],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.48,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CutMarkA","shape":"cube","pos":[0.0,0.0015,0.07],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.015],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"CutMarkB","shape":"cube","pos":[0.0,0.0015,-0.07],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.015],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCenter","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.002],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"HolePunch","shape":"cylinder","pos":[-0.15,-0.003,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"RagChunk1","shape":"cube","pos":[0.12,0.0075,0.12],"rot":[0.0,15.0,0.0],"size":[0.08,0.006,0.06],"color":[0.48,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RagChunk2","shape":"cube","pos":[-0.18,0.0075,-0.1],"rot":[0.0,-10.0,0.0],"size":[0.07,0.006,0.05],"color":[0.48,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

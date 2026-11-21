@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bra_Straps_Black", "baseHeight": 0.0678, "name": "Bra Straps Black", "model": "gpt-oss:120b", "notes": "Two black bra straps lying flat on the floor, now touching each other edge‑to‑edge. Each strap is ~0.15 m long × 0.02 m wide × 0.01 m thick. Thin stitching runs along the top surface of each strap and a tiny fabric tag sits on the left strap’s end.", "score": 6, "parts": [
+  {"name":"StrapL","shape":"cube","pos":[-0.0025,-0.0027,0.01],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cube","pos":[-0.0025,-0.0027,-0.01],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchL","shape":"cube","pos":[-0.0025,0.0017,0.01],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.004],"color":[0.4,0.38,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"StitchR","shape":"cube","pos":[-0.0025,0.0017,-0.01],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.004],"color":[0.4,0.38,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.0675,0.0017,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.01],"color":[0.8,0.8,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"TagEdge","shape":"cube","pos":[0.0675,0.0068,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.01],"color":[0.5,0.5,0.5],"smooth":0.2,"metal":0.0}
+]}

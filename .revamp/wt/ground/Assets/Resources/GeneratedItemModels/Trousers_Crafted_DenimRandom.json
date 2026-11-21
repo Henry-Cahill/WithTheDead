@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_Crafted_DenimRandom", "baseHeight": 0.0775, "name": "Trousers Crafted Denim Random", "model": "gpt-oss:120b", "notes": "Flat‑lay denim trousers ~1.00 m long, 0.55 m wide (including gap), 0.03 m thick. Main panels: two leg rectangles, waistband, front pockets, belt loops and stitching lines.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[-0.175,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.175,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0025,0.44],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.12],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.175,0.0075,-0.2],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.12],"color":[0.45,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.175,0.0075,-0.2],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.12],"color":[0.45,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.2,-0.0025,0.44],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.22,0.21,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[0.2,-0.0025,0.44],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.22,0.21,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.2,-0.0025,-0.44],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.22,0.21,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[0.2,-0.0025,-0.44],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.22,0.21,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"StitchSideL","shape":"cylinder","pos":[-0.275,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,1.0,0.006],"color":[0.7,0.68,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"StitchSideR","shape":"cylinder","pos":[0.275,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,1.0,0.006],"color":[0.7,0.68,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"StitchCenter","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,1.0,0.006],"color":[0.7,0.68,0.75],"smooth":0.3,"metal":0.0}
+]}

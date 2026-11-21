@@ -1,0 +1,15 @@
+{"version": 1, "id": "Vest_HolsteinHide", "baseHeight": 0.0767, "name": "Vest Holstein Hide", "model": "gpt-oss:120b", "notes": "Flat Holstein‑hide vest ~0.54 m wide × 0.58 m tall × 0.02 m thick, laid flat as a product photo. Main leather body with side seams, top lapel, front overlapping flap, chest pocket (with flap), button line of four metal studs and edge stitching.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0068,-0.0395],"rot":[0.0,0.0,0.0],"size":[0.54,0.02,0.58],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.265,-0.0058,-0.0395],"rot":[0.0,0.0,0.0],"size":[0.01,0.022,0.58],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.265,-0.0058,-0.0395],"rot":[0.0,0.0,0.0],"size":[0.01,0.022,0.58],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"TopLapel","shape":"cube","pos":[0.0,0.0043,0.2505],"rot":[0.0,0.0,0.0],"size":[0.12,0.022,0.04],"color":[0.5,0.45,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[0.0,0.0062,0.2805],"rot":[0.0,0.0,0.0],"size":[0.3,0.021,0.1],"color":[0.53,0.48,0.58],"smooth":0.15,"metal":0.0},
+  {"name":"ChestPocket","shape":"cube","pos":[-0.15,0.0022,0.1605],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.08],"color":[0.48,0.43,0.53],"smooth":0.15,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[-0.15,0.0047,0.2005],"rot":[0.0,0.0,0.0],"size":[0.12,0.012,0.02],"color":[0.5,0.45,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.0,0.0052,0.0805],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0,0.0052,0.0205],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0,0.0052,-0.0395],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.0,0.0052,-0.0995],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"TopStitch","shape":"cube","pos":[0.0,0.0067,0.2505],"rot":[0.0,0.0,0.0],"size":[0.54,0.004,0.002],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BottomStitch","shape":"cube","pos":[0.0,-0.0103,-0.3295],"rot":[0.0,0.0,0.0],"size":[0.54,0.004,0.002],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0}
+]}

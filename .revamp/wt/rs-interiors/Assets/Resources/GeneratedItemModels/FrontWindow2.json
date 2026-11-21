@@ -1,0 +1,13 @@
+{"version": 1, "id": "FrontWindow2", "baseHeight": 0.0865, "name": "Front Window2", "model": "gpt-oss:120b", "notes": "Front window lying flat on the floor, overall ~1.20 m wide × 1.00 m tall × 4 cm thick. Wooden‑tinted frame surrounds a thin glass pane; a vertical and horizontal mullion split the glass into four panes. Small metal screws mark the corners.", "score": 7, "parts": [
+  {"name":"FrameTop","shape":"cube","pos":[0.0,-0.0065,0.46],"rot":[0.0,0.0,0.0],"size":[1.2,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,-0.0065,-0.46],"rot":[0.0,0.0,0.0],"size":[1.2,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.56,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,1.0],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrameRight","shape":"cube","pos":[0.56,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,1.0],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"GlassPane","shape":"cube","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.8],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MullionVert","shape":"cube","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.8],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"MullionHorz","shape":"cube","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewTL","shape":"sphere","pos":[-0.56,0.0185,0.46],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewTR","shape":"sphere","pos":[0.56,0.0185,0.46],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBL","shape":"sphere","pos":[-0.56,0.0185,-0.46],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBR","shape":"sphere","pos":[0.56,0.0185,-0.46],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0}
+]}

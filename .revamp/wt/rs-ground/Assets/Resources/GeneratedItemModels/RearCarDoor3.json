@@ -1,0 +1,17 @@
+{"version": 1, "id": "RearCarDoor3", "baseHeight": 0.09, "name": "Rear Car Door3", "model": "gpt-oss:120b", "notes": "Rear car door (≈0.90 m × 1.20 m × 0.04 m) lying on its side: thin metal panel, rectangular window glass inset, outer trim strips, side‑mounted handle, lock knob, two hinge pins and a few rivets.", "score": 7, "parts": [
+  {"name":"DoorPanel","shape":"cube","pos":[-0.0975,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.04,1.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.8},
+  {"name":"WindowGlass","shape":"cube","pos":[-0.0975,-0.0025,0.25],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.48],"color":[0.7,0.82,0.94],"smooth":0.2,"metal":0.0},
+  {"name":"TrimTop","shape":"cube","pos":[-0.0975,0.0,0.6],"rot":[0.0,0.0,0.0],"size":[0.9,0.008,0.04],"color":[0.65,0.63,0.55],"smooth":0.12,"metal":0.8},
+  {"name":"TrimBottom","shape":"cube","pos":[-0.0975,0.0,-0.6],"rot":[0.0,0.0,0.0],"size":[0.9,0.008,0.04],"color":[0.65,0.63,0.55],"smooth":0.12,"metal":0.8},
+  {"name":"TrimLeft","shape":"cube","pos":[-0.5475,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,1.2],"color":[0.65,0.63,0.55],"smooth":0.12,"metal":0.8},
+  {"name":"TrimRight","shape":"cube","pos":[0.3525,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,1.2],"color":[0.65,0.63,0.55],"smooth":0.12,"metal":0.8},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.4825,-0.005,0.1],"rot":[0.0,0.0,90.0],"size":[0.04,0.22,0.04],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"HandleLever","shape":"cylinder","pos":[0.4825,-0.005,0.18],"rot":[90.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"LockKnob","shape":"sphere","pos":[-0.5375,0.0,-0.5],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.35,0.35,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"HingeTop","shape":"cylinder","pos":[-0.5775,0.0,0.5],"rot":[90.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.45,0.44,0.46],"smooth":0.55,"metal":1.0},
+  {"name":"HingeBottom","shape":"cylinder","pos":[-0.5775,0.0,-0.5],"rot":[90.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.45,0.44,0.46],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.4975,0.007,0.6],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[0.3025,0.007,-0.6],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[-0.4975,0.007,-0.6],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.3025,0.007,0.6],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cow_Head_Angus", "baseHeight": 0.1425, "name": "Cow Head Angus", "model": "gpt-oss:120b", "notes": "Cow head (Angus) ~0.40 m wide (including horns) × 0.30 m deep × 0.25 m tall, lying on its side with horns pointing outward along ±X. Main skull block, protruding snout, two curved horns, small ears, dark eye sockets and nostrils give a clear silhouette.", "score": 6, "parts": [
+  {"name":"MainHead","shape":"cube","pos":[0.0,-0.0225,-0.05],"rot":[0.0,0.0,0.0],"size":[0.28,0.12,0.22],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"Snout","shape":"cube","pos":[0.0,-0.0425,0.11],"rot":[0.0,0.0,0.0],"size":[0.15,0.08,0.1],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[-0.265,0.0475,-0.1],"rot":[0.0,0.0,90.0],"size":[0.07,0.25,0.07],"color":[0.82,0.79,0.71],"smooth":0.2,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.265,0.0475,-0.1],"rot":[0.0,0.0,90.0],"size":[0.07,0.25,0.07],"color":[0.82,0.79,0.71],"smooth":0.2,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[-0.15,0.0175,-0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[0.15,0.0175,-0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.02],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.07,0.0075,-0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.07,0.0075,-0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"NostrilL","shape":"sphere","pos":[-0.03,-0.0425,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.32,0.28,0.24],"smooth":0.07,"metal":0.0},
+  {"name":"NostrilR","shape":"sphere","pos":[0.03,-0.0425,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.32,0.28,0.24],"smooth":0.07,"metal":0.0}
+]}

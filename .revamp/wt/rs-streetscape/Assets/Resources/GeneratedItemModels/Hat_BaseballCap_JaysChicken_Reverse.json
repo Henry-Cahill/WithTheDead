@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_BaseballCap_JaysChicken_Reverse", "baseHeight": 0.076, "name": "Hat Baseball Cap Jays Chicken Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.22 m wide × 0.25 m deep × 0.025 m thick, laid out like a product photo. Main crown panel, surrounding brim, interior lining, front button, stitching lines, side panels and a small logo patch.", "score": 6, "parts": [
+  {"name":"BrimEdge","shape":"cube","pos":[0.0,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.32],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BrimSeam","shape":"cylinder","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.002,0.32],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBody","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownLining","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.018,0.238],"color":[0.495,0.45,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.14,0.002,0.0],"rot":[0.0,5.0,0.0],"size":[0.06,0.02,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.14,0.002,0.0],"rot":[0.0,-5.0,0.0],"size":[0.06,0.02,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonFront","shape":"cylinder","pos":[0.0,0.014,0.09],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,0.013,0.125],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.002],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.11,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.018,0.25],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.11,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.018,0.25],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[-0.05,0.002,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.8,0.2,0.2],"smooth":0.08,"metal":0.0}
+]}

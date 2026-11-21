@@ -1,0 +1,16 @@
+{"version": 1, "id": "TongueDepressorBox", "baseHeight": 0.0772, "name": "Tongue Depressor Box", "model": "gpt-oss:120b", "notes": "Shallow cardboard box ~0.22 m × 0.12 m × 0.025 m lying flat, lid slightly raised; contains several wooden tongue‑depressors (≈0.15 m long, 8 mm diameter) stacked in one layer.", "score": 7, "parts": [
+  {"name":"BoxBase","shape":"cube","pos":[0.0,-0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.0107,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[-0.09,0.0158,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.08],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Depressor1","shape":"cylinder","pos":[-0.07,0.0012,-0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor2","shape":"cylinder","pos":[-0.04,0.0012,-0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor3","shape":"cylinder","pos":[-0.01,0.0012,-0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor4","shape":"cylinder","pos":[0.02,0.0012,-0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor5","shape":"cylinder","pos":[0.05,0.0012,-0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor6","shape":"cylinder","pos":[-0.07,0.0012,0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor7","shape":"cylinder","pos":[-0.04,0.0012,0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor8","shape":"cylinder","pos":[-0.01,0.0012,0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor9","shape":"cylinder","pos":[0.02,0.0012,0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Depressor10","shape":"cylinder","pos":[0.05,0.0012,0.045],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0}
+]}

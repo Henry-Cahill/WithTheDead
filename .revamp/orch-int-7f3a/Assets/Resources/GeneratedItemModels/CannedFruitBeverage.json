@@ -1,0 +1,11 @@
+{"version": 1, "id": "CannedFruitBeverage", "baseHeight": 0.123, "name": "Canned Fruit Beverage", "model": "gpt-oss:120b", "notes": "Upright fruit‑beverage can ~0.13 m diameter × 0.12 m tall: metal body with top/bottom seams, recessed lid, pull‑tab, fruit‑tinted label and a visible liquid interior.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0105,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.132,0.122,0.132],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[-0.0105,0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.138,0.008,0.138],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.0105,-0.059,0.0],"rot":[0.0,0.0,0.0],"size":[0.138,0.008,0.138],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[-0.0105,0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.012,0.124],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"PullTab","shape":"cylinder","pos":[0.0595,0.058,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.04,0.01],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[-0.0105,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.118,0.124],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[-0.0105,0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.126,0.006,0.126],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[-0.0105,-0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.126,0.006,0.126],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[-0.0105,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.09,0.11],"color":[0.92,0.62,0.22],"smooth":0.05,"metal":0.0}
+]}

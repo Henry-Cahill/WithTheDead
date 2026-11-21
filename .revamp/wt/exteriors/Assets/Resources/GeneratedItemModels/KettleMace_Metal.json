@@ -1,0 +1,11 @@
+{"version": 1, "id": "KettleMace_Metal", "baseHeight": 0.28, "name": "Kettle Mace Metal", "model": "gpt-oss:120b", "notes": "Kettle‑Mace (metal) ~1.4 m long: thin metal shaft lying on its side (+X), a heavy spherical head with three short flanges/spikes, and a small pommel at the opposite end. Shaft 0.05 m dia, head 0.30 m dia.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.08,-0.165,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Band","shape":"cylinder","pos":[0.47,-0.16,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"Head","shape":"sphere","pos":[0.67,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.3,0.3],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"FlangeFront","shape":"cylinder","pos":[0.67,-0.04,0.2],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"FlangeBack","shape":"cylinder","pos":[0.67,-0.04,-0.2],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"FlangeTop","shape":"cylinder","pos":[0.67,0.16,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.75,-0.12,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeRight","shape":"cylinder","pos":[0.7,-0.04,0.12],"rot":[90.0,0.0,45.0],"size":[0.02,0.1,0.02],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"SpikeLeft","shape":"cylinder","pos":[0.7,-0.04,-0.12],"rot":[90.0,0.0,-45.0],"size":[0.02,0.1,0.02],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0}
+]}

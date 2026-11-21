@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vambrace_BodyArmour_Left_Army", "baseHeight": 0.0725, "name": "Vambrace Body Armour Left Army", "model": "gpt-oss:120b", "notes": "Left‑arm vambrace, approx 0.35 m long × 0.12 m wide × 0.02 m thick, lying on its side (long axis along X). Metal outer shell with leather padding and two strap bands, plus a few rivets.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"InnerPadding","shape":"cube","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.018,0.11],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[-0.13,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.25,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[0.13,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.25,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[-0.15,0.0025,-0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[-0.15,0.0025,0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.15,0.0025,-0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.15,0.0025,0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeChamferFront","shape":"cube","pos":[-0.175,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.018,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeChamferBack","shape":"cube","pos":[0.175,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.018,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

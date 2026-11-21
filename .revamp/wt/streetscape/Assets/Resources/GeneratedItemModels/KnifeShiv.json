@@ -1,0 +1,8 @@
+{"version": 1, "id": "KnifeShiv", "baseHeight": 0.0765, "name": "Knife Shiv", "model": "gpt-oss:120b", "notes": "Improvised shiv ~0.8 m long lying on its side: slim steel blade (0.25 m) with a tiny point, metal guard, and a plastic‑tinted cylindrical handle (0.55 m).", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.1445,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.55,0.03],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.1445,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.55,0.032],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[0.1405,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.04],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.1405,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.2855,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.04],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.4155,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.02],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0}
+]}

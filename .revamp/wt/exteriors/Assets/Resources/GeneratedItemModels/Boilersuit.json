@@ -1,0 +1,14 @@
+{"version": 1, "id": "Boilersuit", "baseHeight": 0.0775, "name": "Boilersuit", "model": "gpt-oss:120b", "notes": "Flat‑lay boilersuit (~0.55 m wide × 0.75 m front‑back × 1.2 m total spread) in its tint (0.55,0.5,0.6). Main torso panel with sleeves out to the sides and pant legs extending backwards; simple trims – collar band, waistband, front pocket, cuffs.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.0025,0.455],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.75],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.575,-0.0025,0.455],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.575,-0.0025,0.455],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.875,0.0075,0.455],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.875,0.0075,0.455],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.15,-0.0025,-0.32],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.15,-0.0025,-0.32],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegCuffL","shape":"cube","pos":[-0.15,0.0075,-0.72],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.25],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegCuffR","shape":"cube","pos":[0.15,0.0075,-0.72],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.25],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.005,0.805],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.005,0.105],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.0,-0.0025,0.655],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

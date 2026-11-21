@@ -1,0 +1,12 @@
+{"version": 1, "id": "GreaveBodyArmour_Right", "baseHeight": 0.085, "name": "Greave Body Armour Right", "model": "gpt-oss:120b", "notes": "Right greave body‑armour, ~0.35 m long × 0.15 m wide × 0.02 m thick. Main steel plate with a thin rim, two leather straps across the front, foam padding inside, four rivet studs and a small insignia sphere on the front.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cube","pos":[0.0,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.022,0.16],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0},
+  {"name":"StrapUpper","shape":"cylinder","pos":[0.0,0.008,0.07],"rot":[90.0,0.0,0.0],"size":[0.025,0.35,0.025],"color":[0.35,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"StrapLower","shape":"cylinder","pos":[0.0,0.008,-0.07],"rot":[90.0,0.0,0.0],"size":[0.025,0.35,0.025],"color":[0.35,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Padding","shape":"cube","pos":[0.0,-0.0175,0.04],"rot":[0.0,0.0,0.0],"size":[0.33,0.015,0.12],"color":[0.8,0.8,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[-0.165,-0.015,0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.012,0.016],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[0.165,-0.015,0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.012,0.016],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.165,-0.015,-0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.012,0.016],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.165,-0.015,-0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.012,0.016],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"Insignia","shape":"sphere","pos":[0.0,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.2,0.3,0.4],"smooth":0.6,"metal":0.0}
+]}

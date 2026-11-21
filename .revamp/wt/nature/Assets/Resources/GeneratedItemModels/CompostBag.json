@@ -1,0 +1,13 @@
+{"version": 1, "id": "CompostBag", "baseHeight": 0.245, "name": "Compost Bag", "model": "gpt-oss:120b", "notes": "Compost bag ~0.7 m long × 0.35 m diameter, lying on its side (axis along X). Main burlap body with a reinforced rim at the open end, two twine ties, seam strips, bottom cap, a green label and a slight bulge where the bag folds.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.005,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.35,0.7,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RimFront","shape":"cylinder","pos":[0.335,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.37,0.02,0.37],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"BottomCap","shape":"cylinder","pos":[-0.345,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.37,0.02,0.37],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"TieFront","shape":"cylinder","pos":[0.295,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.2,0.04],"color":[0.3,0.25,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"TieBack","shape":"cylinder","pos":[0.295,0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.2,0.04],"color":[0.3,0.25,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"SeamL","shape":"cube","pos":[-0.005,0.005,-0.15],"rot":[0.0,0.0,0.0],"size":[0.68,0.01,0.02],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cube","pos":[-0.005,0.005,0.15],"rot":[0.0,0.0,0.0],"size":[0.68,0.01,0.02],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.35,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.2],"color":[0.4,0.6,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BagFold","shape":"sphere","pos":[0.095,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.12,0.38],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"StitchL","shape":"cube","pos":[-0.155,0.01,-0.15],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.01],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchR","shape":"cube","pos":[0.145,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.01],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,17 @@
+{"version": 1, "id": "Crayfish", "baseHeight": 0.083, "name": "Crayfish", "model": "gpt-oss:120b", "notes": "Frozen crayfish pack – cardboard tray 0.12 m × 0.08 m × 0.04 m tall, hinged lid and a simple front label. Inside three stylised crayfish (main body ellipsoid, fan‑shaped tail, two small claw cylinders) are laid on their side so the silhouette reads clearly from above.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0145,-0.003,0.0025],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.58,0.52,0.34],"smooth":0.35,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0145,0.02,0.0025],"rot":[0.0,0.0,0.0],"size":[0.122,0.006,0.082],"color":[0.58,0.52,0.34],"smooth":0.35,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.0305,0.009,0.0025],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.076],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Crayfish1_Body","shape":"sphere","pos":[-0.0155,-0.008,0.0225],"rot":[0.0,0.0,0.0],"size":[0.032,0.025,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish1_Tail","shape":"sphere","pos":[-0.0155,-0.011,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish1_ClawL","shape":"cylinder","pos":[-0.0305,-0.006,0.0275],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish1_ClawR","shape":"cylinder","pos":[-0.0305,-0.006,0.0175],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish2_Body","shape":"sphere","pos":[0.0145,-0.008,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.032,0.025,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish2_Tail","shape":"sphere","pos":[0.0145,-0.011,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish2_ClawL","shape":"cylinder","pos":[-0.0005,-0.006,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish2_ClawR","shape":"cylinder","pos":[-0.0005,-0.006,-0.0325],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish3_Body","shape":"sphere","pos":[0.0495,-0.008,0.0025],"rot":[0.0,0.0,0.0],"size":[0.032,0.025,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish3_Tail","shape":"sphere","pos":[0.0495,-0.011,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish3_ClawL","shape":"cylinder","pos":[0.0345,-0.006,0.0275],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crayfish3_ClawR","shape":"cylinder","pos":[0.0345,-0.006,0.0175],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

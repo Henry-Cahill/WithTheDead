@@ -1,0 +1,12 @@
+{"version": 1, "id": "WatermelonSliced", "baseHeight": 0.071, "name": "Watermelon Sliced", "model": "gpt-oss:120b", "notes": "Sliced watermelon wedge ~0.25 m long × 0.20 m wide × 0.04 m thick, lying on its flat side. Green rind shell surrounds pink‑red flesh; a few black seed cylinders are embedded in the flesh.", "score": 7, "parts": [
+  {"name":"RindShell","shape":"cube","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.022,0.2],"color":[0.22,0.45,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"FleshCore","shape":"cube","pos":[-0.01,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.018,0.18],"color":[0.45,0.6,0.75],"smooth":0.12,"metal":0.0},
+  {"name":"RindCurve","shape":"sphere","pos":[0.115,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.022,0.2],"color":[0.22,0.45,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"FleshCurve","shape":"sphere","pos":[0.115,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.036,0.018,0.18],"color":[0.45,0.6,0.75],"smooth":0.12,"metal":0.0},
+  {"name":"Seed1","shape":"cylinder","pos":[-0.05,0.001,-0.03],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.05,0.05,0.05],"smooth":0.25,"metal":0.0},
+  {"name":"Seed2","shape":"cylinder","pos":[-0.03,0.001,0.04],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.05,0.05,0.05],"smooth":0.25,"metal":0.0},
+  {"name":"Seed3","shape":"cylinder","pos":[-0.01,0.001,-0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.05,0.05,0.05],"smooth":0.25,"metal":0.0},
+  {"name":"Seed4","shape":"cylinder","pos":[0.02,0.001,0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.05,0.05,0.05],"smooth":0.25,"metal":0.0},
+  {"name":"Seed5","shape":"cylinder","pos":[-0.04,0.001,0.01],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.05,0.05,0.05],"smooth":0.25,"metal":0.0},
+  {"name":"Seed6","shape":"cylinder","pos":[0.01,0.001,-0.04],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.05,0.05,0.05],"smooth":0.25,"metal":0.0}
+]}

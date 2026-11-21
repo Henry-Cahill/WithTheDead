@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_ShemaghFace_Burlap", "baseHeight": 0.0775, "name": "Hat Shemagh Face Burlap", "model": "gpt-oss:120b", "notes": "Flat burlap shemagh‑style head covering (≈0.70 m wide × 1.00 m long × 0.025 m thick). Main cloth body with stitched hems on all sides, two short tie straps at the front corners and a subtle central fold for texture.", "score": 6, "parts": [
+  {"name":"BaseFabric","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,-0.0025,0.49],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.02],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,-0.0025,-0.49],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.02],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.34,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.96],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.34,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.96],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"TieStrapL","shape":"cylinder","pos":[-0.3,0.0075,0.45],"rot":[0.0,0.0,90.0],"size":[0.02,0.15,0.02],"color":[0.42,0.38,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"TieStrapR","shape":"cylinder","pos":[0.3,0.0075,0.45],"rot":[0.0,0.0,90.0],"size":[0.02,0.15,0.02],"color":[0.42,0.38,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"CentralFold","shape":"cube","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.005,0.1],"color":[0.52,0.48,0.58],"smooth":0.05,"metal":0.0}
+]}

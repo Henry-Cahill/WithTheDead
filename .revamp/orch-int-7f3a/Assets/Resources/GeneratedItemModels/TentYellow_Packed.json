@@ -1,0 +1,13 @@
+{"version": 1, "id": "TentYellow_Packed", "baseHeight": 0.15, "name": "Tent Yellow Packed", "model": "gpt-oss:120b", "notes": "Packed yellow tent rolled into a short cylinder ~0.50 m long × 0.18 m diameter. Main fabric roll with inner lining, metal grommets and end caps, a crossing strap with tag, stitching line and extra strap ends for tying.", "score": 6, "parts": [
+  {"name":"FabricRoll","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.5,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerRoll","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.16,0.48,0.16],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapL","shape":"cylinder","pos":[-0.25,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.02,0.18],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"EndCapR","shape":"cylinder","pos":[0.25,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.02,0.18],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"GrommetL","shape":"cylinder","pos":[-0.255,0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.015,0.04],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"GrommetR","shape":"cylinder","pos":[0.255,0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.015,0.04],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"StrapMid","shape":"cube","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.22],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"StrapEndL","shape":"cylinder","pos":[-0.12,0.015,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"StrapEndR","shape":"cylinder","pos":[0.12,0.015,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.08,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.01],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.004],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0}
+]}

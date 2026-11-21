@@ -1,0 +1,12 @@
+{"version": 1, "id": "Bitters", "baseHeight": 0.1837, "name": "Bitters", "model": "gpt-oss:120b", "notes": "Amber glass bitters bottle ~0.09 m diameter x 0.24 m tall (incl. metal screw‑cap). Body and neck are clear amber, dark brown label wraps the mid‑section, liquid fills to just below the neck.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0137,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.2,0.09],"color":[0.85,0.78,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.0862,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.85,0.78,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CapBase","shape":"cylinder","pos":[0.0,0.1062,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.01,0.07],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"CapTop","shape":"cylinder","pos":[0.0,0.1162,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.08],"color":[0.55,0.55,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.018,0.092],"color":[0.65,0.58,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.094,0.004,0.094],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0127,0.0],"rot":[0.0,0.0,0.0],"size":[0.094,0.004,0.094],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[0.0,-0.0338,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.18,0.082],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.1067,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.003,0.07],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.0388,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.004,0.092],"color":[0.85,0.78,0.5],"smooth":0.4,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "GreaveBodyArmour_Left_Civ", "baseHeight": 0.0725, "name": "Greave Body Armour Left Civ", "model": "gpt-oss:120b", "notes": "Left‑side greave (civilian) about 0.35 m long × 0.12 m wide × 0.025 m thick. Main steel front plate, rear leather strap with buckles, thin inner padding and a row of rivets along the front edge.", "score": 7, "parts": [
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,0.0,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"LeatherPad","shape":"cube","pos":[0.0,0.0065,0.0387],"rot":[0.0,0.0,0.0],"size":[0.33,0.004,0.1],"color":[0.5,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BackStrap","shape":"cylinder","pos":[0.0,-0.0005,-0.0763],"rot":[0.0,0.0,90.0],"size":[0.02,0.35,0.02],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"StrapEndL","shape":"cylinder","pos":[-0.175,-0.0005,-0.0763],"rot":[0.0,0.0,0.0],"size":[0.025,0.008,0.025],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"StrapEndR","shape":"cylinder","pos":[0.175,-0.0005,-0.0763],"rot":[0.0,0.0,0.0],"size":[0.025,0.008,0.025],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"RivetTopL","shape":"cylinder","pos":[0.12,0.0055,0.0387],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":0.9},
+  {"name":"RivetTopR","shape":"cylinder","pos":[0.12,0.0055,-0.0512],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":0.9},
+  {"name":"RivetMidL","shape":"cylinder","pos":[0.0,0.0055,0.0387],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":0.9},
+  {"name":"RivetMidR","shape":"cylinder","pos":[0.0,0.0055,-0.0512],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":0.9},
+  {"name":"RivetBotL","shape":"cylinder","pos":[-0.12,0.0055,0.0387],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":0.9},
+  {"name":"RivetBotR","shape":"cylinder","pos":[-0.12,0.0055,-0.0512],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.35,0.33,0.28],"smooth":0.6,"metal":0.9}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BandanaMaskTINT", "baseHeight": 0.0905, "name": "Hat Bandana Mask TINT", "model": "gpt-oss:120b", "notes": "Flat bandana‑mask (≈0.55 m wide × 0.60 m tall) laid out like a product photo. Main cloth panel with dark edge trims, a small nose opening cutout and the two fabric ties hanging from the bottom corners.", "score": 6, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.0005,0.0338],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.0135,0.3337],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.0135,-0.2662],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.275,-0.0005,0.0338],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.6],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.275,-0.0005,0.0338],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.6],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NoseOpening","shape":"cylinder","pos":[0.0,0.0155,0.1837],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.06],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"TieLStem","shape":"cube","pos":[-0.235,-0.0005,-0.2762],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieRStem","shape":"cube","pos":[0.235,-0.0005,-0.2762],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieLTip","shape":"sphere","pos":[-0.235,-0.0005,-0.3063],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieRTip","shape":"sphere","pos":[0.235,-0.0005,-0.3063],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "Tshirt_LongSleeve_SuperColor", "baseHeight": 0.0705, "name": "Tshirt Long Sleeve Super Color", "model": "gpt-oss:120b", "notes": "Flat long‑sleeve T‑shirt laid out for a top‑down product view (≈0.60 m length × 0.30 m torso width × 0.02 m thickness). Main torso panel with a ribbed collar, five front buttons, bottom hem band, two long sleeves that extend outward and end in cuffs. All parts touch or overlap so the silhouette reads clearly as a shirt.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.025,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.025,0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.025,0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.025,0.0,-0.27],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.025,0.0,0.27],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[-0.255,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[-0.255,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.021,0.1],"color":[0.3,0.28,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.305,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.175,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.008,0.016],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.075,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.008,0.016],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.025,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.008,0.016],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.125,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.008,0.016],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.225,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.008,0.016],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0}
+]}

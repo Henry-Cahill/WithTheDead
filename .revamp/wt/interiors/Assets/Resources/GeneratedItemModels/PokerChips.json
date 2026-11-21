@@ -1,0 +1,18 @@
+{"version": 1, "id": "PokerChips", "baseHeight": 0.0612, "name": "Poker Chips", "model": "gpt-oss:120b", "notes": "Loose pile of up to 8 poker chips, each ~38 mm diameter and 2.5 mm thick. Chips lie flat on the floor (y≈0) with slight random X/Z offsets; each chip has a thin darker rim for visual detail.", "score": 6, "parts": [
+  {"name":"Chip1Body","shape":"cylinder","pos":[-0.0105,0.0,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.038,0.0025,0.038],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip1Rim","shape":"cylinder","pos":[-0.0105,0.0001,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.041,0.002,0.041],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Chip2Body","shape":"cylinder","pos":[0.0045,0.0,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.038,0.0025,0.038],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip2Rim","shape":"cylinder","pos":[0.0045,0.0001,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.041,0.002,0.041],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Chip3Body","shape":"cylinder","pos":[-0.0045,0.0,0.0065],"rot":[0.0,0.0,0.0],"size":[0.038,0.0025,0.038],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip3Rim","shape":"cylinder","pos":[-0.0045,0.0001,0.0065],"rot":[0.0,0.0,0.0],"size":[0.041,0.002,0.041],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Chip4Body","shape":"cylinder","pos":[0.0115,0.0,0.0095],"rot":[0.0,0.0,0.0],"size":[0.038,0.0025,0.038],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip4Rim","shape":"cylinder","pos":[0.0115,0.0001,0.0095],"rot":[0.0,0.0,0.0],"size":[0.041,0.002,0.041],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Chip5Body","shape":"cylinder","pos":[-0.0115,0.0,0.0125],"rot":[0.0,0.0,0.0],"size":[0.038,0.0025,0.038],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip5Rim","shape":"cylinder","pos":[-0.0115,0.0001,0.0125],"rot":[0.0,0.0,0.0],"size":[0.041,0.002,0.041],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Chip6Body","shape":"cylinder","pos":[0.0065,0.0,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.038,0.0025,0.038],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip6Rim","shape":"cylinder","pos":[0.0065,0.0001,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.041,0.002,0.041],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Chip7Body","shape":"cylinder","pos":[-0.0005,0.0,0.0005],"rot":[0.0,0.0,0.0],"size":[0.038,0.0025,0.038],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip7Rim","shape":"cylinder","pos":[-0.0005,0.0001,0.0005],"rot":[0.0,0.0,0.0],"size":[0.041,0.002,0.041],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Chip8Body","shape":"cylinder","pos":[-0.0065,0.0,0.0045],"rot":[0.0,0.0,0.0],"size":[0.038,0.0025,0.038],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip8Rim","shape":"cylinder","pos":[-0.0065,0.0001,0.0045],"rot":[0.0,0.0,0.0],"size":[0.041,0.002,0.041],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0}
+]}

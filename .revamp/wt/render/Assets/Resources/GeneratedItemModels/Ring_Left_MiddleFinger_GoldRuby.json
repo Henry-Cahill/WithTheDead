@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Left_MiddleFinger_GoldRuby", "baseHeight": 0.067, "name": "Ring Left Middle Finger Gold Ruby", "model": "gpt-oss:120b", "notes": "Gold ring (≈20 cm diameter, 2 mm thick) lying flat on the ground with a ruby set in the centre. Simple gold band disc plus a ruby sphere and four tiny raised engravings for detail.", "score": 7, "parts": [
+  {"name":"BandDisc","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RubyGem","shape":"sphere","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.85,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"EngraveFront","shape":"cube","pos":[0.008,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.002],"color":[0.54,0.52,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EngraveBack","shape":"cube","pos":[-0.008,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.002],"color":[0.54,0.52,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EngraveLeft","shape":"cube","pos":[0.0,-0.0045,0.008],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.002],"color":[0.54,0.52,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EngraveRight","shape":"cube","pos":[0.0,-0.0045,-0.008],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.002],"color":[0.54,0.52,0.45],"smooth":0.4,"metal":1.0}
+]}

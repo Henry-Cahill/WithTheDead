@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vambrace_Right", "baseHeight": 0.075, "name": "Vambrace Right", "model": "gpt-oss:120b", "notes": "Right forearm vambrace (approx. 0.25 m long × 0.12 m wide × 0.03 m thick). Main leather‑tinted shell with inner padding, a front metal plate, wrist cuff, two crossing straps and a few rivets.", "score": 6, "parts": [
+  {"name":"SleeveBase","shape":"cube","pos":[0.0325,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Padding","shape":"cube","pos":[0.0325,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.11],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.0325,0.0025,0.0625],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.005],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"WristCuff","shape":"cylinder","pos":[-0.0875,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.14],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0325,0.005,0.06],"rot":[0.0,0.0,90.0],"size":[0.015,0.25,0.015],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0325,0.005,-0.06],"rot":[0.0,0.0,90.0],"size":[0.015,0.25,0.015],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.0475,0.005,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[0.0325,0.005,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.1125,0.005,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.0325,0.005,-0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "HandDrill", "baseHeight": 0.115, "name": "Hand Drill", "model": "gpt-oss:120b", "notes": "Hand drill about 0.22 m long × 0.10 m wide × 0.07 m high when lying on its side (long axis along X). Main motor body, rubber grip, trigger, battery pack, chuck with bit and a few screws/label details.", "score": 6, "parts": [
+  {"name":"MotorBody","shape":"cylinder","pos":[-0.0062,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.14,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Chuck","shape":"cylinder","pos":[0.0837,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,0.03,0.1],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.9},
+  {"name":"FrontGuard","shape":"cylinder","pos":[0.0837,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.11,0.005,0.11],"color":[0.45,0.43,0.38],"smooth":0.5,"metal":0.9},
+  {"name":"DrillBit","shape":"cylinder","pos":[0.1088,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.0262,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.3,0.28,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"Trigger","shape":"cube","pos":[-0.0362,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.025],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"BatteryPack","shape":"cube","pos":[-0.0963,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.07,0.06],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0262,-0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.03],"color":[0.35,0.33,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"ScrewL","shape":"cylinder","pos":[-0.0462,-0.0125,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.43,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"ScrewR","shape":"cylinder","pos":[-0.0462,-0.0125,-0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.43,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"Coil","shape":"sphere","pos":[-0.0062,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":0.0}
+]}

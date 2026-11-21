@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shorts_BoxingRed", "baseHeight": 0.0725, "name": "Shorts Boxing Red", "model": "gpt-oss:120b", "notes": "Boxing shorts ~0.30 m long × 0.40 m wide × 0.025 m thick: central waist‑band, two leg panels, side elastic trims, a small fly gap, stitched edges and a bright red logo patch on the front left leg.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.34],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[0.0,-0.0025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.0,-0.0025,0.08],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideTrimL","shape":"cube","pos":[0.0,-0.0025,-0.155],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.008],"color":[0.4,0.38,0.33],"smooth":0.1,"metal":0.0},
+  {"name":"SideTrimR","shape":"cube","pos":[0.0,-0.0025,0.155],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.008],"color":[0.4,0.38,0.33],"smooth":0.1,"metal":0.0},
+  {"name":"FlyGap","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.04],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.07,0.0025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.05,0.012,0.03],"color":[0.8,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"StitchLineL","shape":"cylinder","pos":[0.0,0.005,-0.08],"rot":[0.0,0.0,90.0],"size":[0.004,0.3,0.004],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"StitchLineR","shape":"cylinder","pos":[0.0,0.005,0.08],"rot":[0.0,0.0,90.0],"size":[0.004,0.3,0.004],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"FrontSeam","shape":"cylinder","pos":[0.15,-0.0025,-0.08],"rot":[90.0,0.0,0.0],"size":[0.004,0.14,0.004],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"BackSeam","shape":"cylinder","pos":[-0.15,-0.0025,-0.08],"rot":[90.0,0.0,0.0],"size":[0.004,0.14,0.004],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0}
+]}

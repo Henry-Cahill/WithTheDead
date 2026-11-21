@@ -1,0 +1,8 @@
+{"version": 1, "id": "ChristmasOrnament_Gold3", "baseHeight": 0.1, "name": "Christmas Ornament Gold3", "model": "gpt-oss:120b", "notes": "Round gold‑coated Christmas bauble about 8 cm diameter, lying on its side. Thin metallic cap at the top with a short hanging hook, a decorative band around the equator and a tiny sparkle spot.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.06],"color":[0.78,0.71,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Hook","shape":"cylinder","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.78,0.71,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"EquatorBand","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.72,0.65,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"SparkleSpot","shape":"sphere","pos":[0.02,0.005,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[1.0,1.0,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.078,0.002,0.078],"color":[0.55,0.52,0.45],"smooth":0.5,"metal":0.0}
+]}

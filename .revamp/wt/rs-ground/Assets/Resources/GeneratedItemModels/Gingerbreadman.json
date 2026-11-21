@@ -1,0 +1,13 @@
+{"version": 1, "id": "Gingerbreadman", "baseHeight": 0.104, "name": "Gingerbreadman", "model": "gpt-oss:120b", "notes": "Small cardboard gift‑box (≈0.16 m × 0.12 m × 0.08 m) containing two gingerbread‑man cookies lying flat side‑by‑side. Box has thin walls, a lid and a front label; each cookie is modelled with a short cylindrical torso and a round head.", "score": 6, "parts": [
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.039,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.01,0.12],"color":[0.85,0.78,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"SideXPos","shape":"cube","pos":[0.075,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.07,0.12],"color":[0.85,0.78,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"SideXNeg","shape":"cube","pos":[-0.075,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.07,0.12],"color":[0.85,0.78,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"SideZPos","shape":"cube","pos":[0.0,0.001,0.065],"rot":[0.0,0.0,0.0],"size":[0.16,0.07,0.01],"color":[0.85,0.78,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"SideZNeg","shape":"cube","pos":[0.0,0.001,-0.065],"rot":[0.0,0.0,0.0],"size":[0.16,0.07,0.01],"color":[0.85,0.78,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.162,0.008,0.122],"color":[0.85,0.78,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.008,0.059],"rot":[0.0,0.0,0.0],"size":[0.09,0.005,0.002],"color":[0.92,0.88,0.7],"smooth":0.1,"metal":0.0},
+  {"name":"Torso1","shape":"cylinder","pos":[0.0,-0.009,-0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Head1","shape":"sphere","pos":[0.045,-0.009,-0.025],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Torso2","shape":"cylinder","pos":[0.0,-0.009,0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Head2","shape":"sphere","pos":[0.045,-0.009,0.025],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

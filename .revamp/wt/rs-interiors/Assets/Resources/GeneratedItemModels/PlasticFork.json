@@ -1,0 +1,10 @@
+{"version": 1, "id": "PlasticFork", "baseHeight": 0.067, "name": "Plastic Fork", "model": "gpt-oss:120b", "notes": "Plastic fork ~0.18 m long lying on its side: thin rectangular handle, a short widened head and four tines extending forward. Main body in light‑plastic tint (0.6,0.58,0.5) with a darker grip near the handle base.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cube","pos":[0.0035,0.0,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.0665,0.0,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.012,0.04,0.012],"color":[0.4,0.38,0.35],"smooth":0.45,"metal":0.0},
+  {"name":"GripCap","shape":"sphere","pos":[-0.0865,0.0,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.4,0.38,0.35],"smooth":0.45,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.0735,0.0,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TineL1","shape":"cube","pos":[0.0585,0.0,0.0075],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TineL2","shape":"cube","pos":[0.0685,0.0,0.0075],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TineR1","shape":"cube","pos":[0.0785,0.0,0.0075],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TineR2","shape":"cube","pos":[0.0885,0.0,0.0075],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

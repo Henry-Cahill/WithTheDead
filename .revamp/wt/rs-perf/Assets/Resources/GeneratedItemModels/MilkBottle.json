@@ -1,0 +1,12 @@
+{"version": 1, "id": "MilkBottle", "baseHeight": 0.189, "name": "Milk Bottle", "model": "gpt-oss:120b", "notes": "Milk bottle about 0.25 m tall, 0.07 m wide: clear glass body, thin label, liquid level inside, narrower neck and metal screw‑cap on top.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.039,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.18,0.07],"color":[0.75,0.68,0.45],"smooth":0.45,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.039,0.0],"rot":[0.0,0.0,0.0],"size":[0.069,0.002,0.069],"color":[0.58,0.52,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.065,0.002,0.065],"color":[0.92,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.076,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.05,0.045],"color":[0.75,0.68,0.45],"smooth":0.45,"metal":0.0},
+  {"name":"CapBase","shape":"cylinder","pos":[0.0,0.106,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.05],"color":[0.85,0.84,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"CapThread","shape":"cylinder","pos":[0.0,0.116,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.004,0.045],"color":[0.78,0.77,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"CapTop","shape":"cylinder","pos":[0.0,0.126,0.0],"rot":[0.0,0.0,0.0],"size":[0.048,0.006,0.048],"color":[0.85,0.84,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"RimSeam","shape":"cylinder","pos":[0.0,0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.071,0.002,0.071],"color":[0.55,0.5,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"BaseRing","shape":"cylinder","pos":[0.0,-0.128,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.002,0.075],"color":[0.55,0.5,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Shadow","shape":"cylinder","pos":[0.0,-0.128,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

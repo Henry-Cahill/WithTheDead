@@ -1,0 +1,12 @@
+{"version": 1, "id": "Salmon", "baseHeight": 0.078, "name": "Salmon", "model": "gpt-oss:120b", "notes": "Vacuum‑sealed salmon fillet package about 0.24 m long × 0.10 m wide × 0.026 m high: cardboard tray, thin pinkish plastic film (bottom & top), pink flesh inside, white label on the lid and a tiny water droplet.", "score": 6, "parts": [
+  {"name":"Tray","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.006,0.1],"color":[0.42,0.33,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"BottomFilm","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.09],"color":[0.85,0.8,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Flesh","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopFilm","shape":"cube","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.09],"color":[0.85,0.8,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.06],"color":[0.92,0.92,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"SealStrip","shape":"cube","pos":[0.09,0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.8,0.75,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"WaterDroplet","shape":"sphere","pos":[-0.08,0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.95,0.97,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,0.0095,-0.045],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.002],"color":[0.78,0.73,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,0.0095,0.045],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.002],"color":[0.78,0.73,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.002,0.092],"color":[0.8,0.75,0.55],"smooth":0.4,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "Egg", "baseHeight": 0.0925, "name": "Egg", "model": "gpt-oss:120b", "notes": "Loose chicken egg in a cardboard tray – egg about 0.06 m long × 0.045 m wide, shell tinted light‑yellow (0.75,0.68,0.45). Egg sits on its side in the bottom of a small carton; yolk inside, thin surface crack for visual interest.", "score": 7, "parts": [
+  {"name":"CartonBase","shape":"cube","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.55,0.45,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"CartonSideL","shape":"cube","pos":[-0.058,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.08],"color":[0.55,0.45,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"CartonSideR","shape":"cube","pos":[0.058,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.08],"color":[0.55,0.45,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"CartonBack","shape":"cube","pos":[0.0,-0.0175,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.005],"color":[0.55,0.45,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"CartonFront","shape":"cube","pos":[0.0,-0.0175,0.0425],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.005],"color":[0.55,0.45,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"EggShell","shape":"sphere","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.06,0.045],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Yolk","shape":"sphere","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.025],"color":[0.9,0.75,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Crack","shape":"cylinder","pos":[0.0,0.0315,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.025,0.002],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0}
+]}

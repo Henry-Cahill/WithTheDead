@@ -1,0 +1,8 @@
+{"version": 1, "id": "Needle", "baseHeight": 0.064, "name": "Needle", "model": "gpt-oss:120b", "notes": "Sewing needle ~4 cm long, thin steel shaft (0.004 m dia) lying on its side along X; pointed tip and small eye ring near the opposite end.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.001,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.04,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.021,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EyeRing","shape":"cylinder","pos":[-0.019,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EyeHole","shape":"sphere","pos":[-0.019,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TipCap","shape":"cylinder","pos":[0.02,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.001,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.004],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

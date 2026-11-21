@@ -1,0 +1,9 @@
+{"version": 1, "id": "SpearSteakKnife", "baseHeight": 0.09, "name": "Spear Steak Knife", "model": "gpt-oss:120b", "notes": "Spear‑style steak knife, total length ≈1.4 m. Wooden handle 1.2 m long (cylinder) ending in a small pommel, metal cross‑guard, steel blade 0.18 m long plus a tapered tip. All parts rest on the floor (y=0).", "score": 6, "parts": [
+  {"name":"Pommel","shape":"cylinder","pos":[-0.735,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.08,0.05],"color":[0.4,0.3,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.185,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.4,0.3,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[0.495,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.045],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[0.455,0.015,0.0225],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.455,0.015,-0.0225],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"BladeBase","shape":"cube","pos":[0.665,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.775,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

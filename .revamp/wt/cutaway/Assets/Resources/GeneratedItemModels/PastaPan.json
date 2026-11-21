@@ -1,0 +1,11 @@
+{"version": 1, "id": "PastaPan", "baseHeight": 0.096, "name": "Pasta Pan", "model": "gpt-oss:120b", "notes": "Shallow rectangular pasta pan 0.35 m long × 0.25 m wide × 0.06 m deep, metal body with a thin lid, side handle, printed label and a few yellow‑beige pasta pieces inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0175,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.06,0.25],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.9},
+  {"name":"Lid","shape":"cube","pos":[0.0175,0.032,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.008,0.26],"color":[0.78,0.71,0.48],"smooth":0.45,"metal":0.9},
+  {"name":"Handle","shape":"cylinder","pos":[-0.1575,0.008,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.6,0.55,0.4],"smooth":0.3,"metal":0.9},
+  {"name":"Label","shape":"cube","pos":[0.0175,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.15],"color":[0.55,0.45,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Pasta01","shape":"sphere","pos":[-0.0625,-0.012,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.88,0.78,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Pasta02","shape":"sphere","pos":[0.0675,-0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.86,0.76,0.53],"smooth":0.2,"metal":0.0},
+  {"name":"Pasta03","shape":"sphere","pos":[-0.1025,-0.014,0.08],"rot":[0.0,0.0,0.0],"size":[0.038,0.038,0.038],"color":[0.9,0.8,0.57],"smooth":0.2,"metal":0.0},
+  {"name":"Pasta04","shape":"sphere","pos":[0.1375,-0.013,-0.07],"rot":[0.0,0.0,0.0],"size":[0.042,0.042,0.042],"color":[0.87,0.77,0.54],"smooth":0.2,"metal":0.0},
+  {"name":"Pasta05","shape":"sphere","pos":[0.0175,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.85,0.75,0.52],"smooth":0.2,"metal":0.0}
+]}

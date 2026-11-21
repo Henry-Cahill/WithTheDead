@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shoulderpad_Metal_L", "baseHeight": 0.085, "name": "Shoulderpad Metal L", "model": "gpt-oss:120b", "notes": "Large metal shoulder pad (size ≈ 0.35 m × 0.25 m × 0.03 m) lying on its side. Main plate of brushed steel, two front straps and a grid of eight rivets for detail.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,0.015,0.13],"rot":[0.0,0.0,90.0],"size":[0.02,0.35,0.02],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.015,-0.13],"rot":[0.0,0.0,90.0],"size":[0.02,0.35,0.02],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet01","shape":"cylinder","pos":[-0.12,0.006,-0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.015,0.016],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet02","shape":"cylinder","pos":[-0.04,0.006,-0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.015,0.016],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet03","shape":"cylinder","pos":[0.04,0.006,-0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.015,0.016],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet04","shape":"cylinder","pos":[0.12,0.006,-0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.015,0.016],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet05","shape":"cylinder","pos":[-0.12,0.006,0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.015,0.016],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet06","shape":"cylinder","pos":[-0.04,0.006,0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.015,0.016],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet07","shape":"cylinder","pos":[0.04,0.006,0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.015,0.016],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet08","shape":"cylinder","pos":[0.12,0.006,0.07],"rot":[0.0,0.0,0.0],"size":[0.016,0.015,0.016],"color":[0.4,0.38,0.3],"smooth":0.55,"metal":1.0}
+]}

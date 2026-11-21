@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_Beany", "baseHeight": 0.2225, "name": "Hat Beany", "model": "gpt-oss:120b", "notes": "Flat‑lay beanie hat ~0.22 m wide × 0.20 m long × 0.03 m thick (crown) with a slightly larger brim and a rounded top dome; main fabric tint (0.55,0.5,0.6).", "score": 6, "parts": [
+  {"name":"CrownBody","shape":"cylinder","pos":[0.01,-0.0325,-0.005],"rot":[0.0,0.0,90.0],"size":[0.22,0.2,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerCrown","shape":"cylinder","pos":[0.01,-0.0355,-0.005],"rot":[0.0,0.0,90.0],"size":[0.2,0.18,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[-0.1,-0.0325,-0.005],"rot":[0.0,0.0,90.0],"size":[0.26,0.02,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFold","shape":"cube","pos":[-0.1,-0.0175,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.26],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TopDome","shape":"sphere","pos":[0.01,0.1025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.01,0.0675,-0.005],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSide","shape":"cylinder","pos":[0.01,-0.0325,0.105],"rot":[0.0,90.0,0.0],"size":[0.02,0.2,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.07,-0.0175,0.125],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HatTag","shape":"cube","pos":[-0.07,-0.0225,0.125],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.01],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

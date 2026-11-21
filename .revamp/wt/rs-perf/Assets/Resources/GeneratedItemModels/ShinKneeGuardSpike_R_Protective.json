@@ -1,0 +1,9 @@
+{"version": 1, "id": "ShinKneeGuardSpike_R_Protective", "baseHeight": 0.105, "name": "Shin Knee Guard Spike R Protective", "model": "gpt-oss:120b", "notes": "Shin knee guard protective with right‑hand spike: flat rectangular pad ~0.25 m long × 0.15 m wide × 0.02 m thick, a vertical metal spike 0.07 m tall on the right side of the pad, and a small strap loop for fastening.", "score": 7, "parts": [
+  {"name":"Pad","shape":"cube","pos":[0.0,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Spike","shape":"cylinder","pos":[0.1,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.07,0.03],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[-0.1,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.4,0.38,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0,-0.024,0.075],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.005],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0,-0.024,-0.075],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.005],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RimSideL","shape":"cube","pos":[-0.125,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.15],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RimSideR","shape":"cube","pos":[0.125,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.15],"color":[0.5,0.48,0.45],"smooth":0.55,"metal":1.0}
+]}

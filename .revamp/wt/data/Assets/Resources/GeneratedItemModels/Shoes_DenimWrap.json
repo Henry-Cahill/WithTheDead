@@ -1,0 +1,15 @@
+{"version": 1, "id": "Shoes_DenimWrap", "baseHeight": 0.0722, "name": "Shoes Denim Wrap", "model": "gpt-oss:120b", "notes": "Flat denim‑wrap shoes spread out like a product photo – overall outline about 0.26 m long × 0.11 m wide × 0.04 m thick (sole + upper). Main pieces: rubber sole, denim upper split left/right, toe/heel caps, eyelet studs and a simple lace strip.", "score": 6, "parts": [
+  {"name":"Sole","shape":"cube","pos":[0.0,-0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.11],"color":[0.28,0.28,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"ToeCap","shape":"cube","pos":[0.115,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.11],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelCap","shape":"cube","pos":[-0.115,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.11],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[-0.01,0.0053,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.055],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[-0.01,0.0053,0.0275],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.055],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EyeletL1","shape":"cylinder","pos":[-0.08,0.0083,-0.02],"rot":[90.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.22,0.22,0.24],"smooth":0.3,"metal":0.0},
+  {"name":"EyeletL2","shape":"cylinder","pos":[-0.04,0.0083,-0.02],"rot":[90.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.22,0.22,0.24],"smooth":0.3,"metal":0.0},
+  {"name":"EyeletC","shape":"cylinder","pos":[0.0,0.0083,-0.02],"rot":[90.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.22,0.22,0.24],"smooth":0.3,"metal":0.0},
+  {"name":"EyeletR1","shape":"cylinder","pos":[0.04,0.0083,-0.02],"rot":[90.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.22,0.22,0.24],"smooth":0.3,"metal":0.0},
+  {"name":"EyeletR2","shape":"cylinder","pos":[0.08,0.0083,-0.02],"rot":[90.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.22,0.22,0.24],"smooth":0.3,"metal":0.0},
+  {"name":"LaceStrip","shape":"cylinder","pos":[-0.02,0.0102,-0.02],"rot":[90.0,0.0,0.0],"size":[0.004,0.09,0.004],"color":[0.9,0.85,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"StitchLineL","shape":"cylinder","pos":[-0.08,0.0062,-0.0275],"rot":[90.0,0.0,0.0],"size":[0.002,0.24,0.002],"color":[0.2,0.22,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineR","shape":"cylinder","pos":[-0.08,0.0062,0.0275],"rot":[90.0,0.0,0.0],"size":[0.002,0.24,0.002],"color":[0.2,0.22,0.25],"smooth":0.05,"metal":0.0}
+]}
