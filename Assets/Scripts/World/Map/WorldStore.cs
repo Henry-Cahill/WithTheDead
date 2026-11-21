@@ -10,7 +10,9 @@ namespace CloneZ
     /// The world store, where the build machines put the real-world map (Tools/World): <c>\\192.168.1.170\CLONE-Z</c>
     /// on Windows, <c>/mnt/clonez</c> on the Linux machines, or wherever the <c>CLONEZ_WORLD</c> environment variable
     /// points (a local copy, say). A co-op release carries its own copy beside the game (<see cref="BundledFolder"/>), so a
-    /// friend's game and the server build the same map without the NAS. Opens the build named in <c>world/current.json</c>.
+    /// friend's game and the server build the same map without the NAS. In the editor, when the NAS can't be read, the
+    /// project's own copy in <c>Builds/WorldStore</c> (the one Release.ps1 keeps) stands in for it. Opens the build named in
+    /// <c>world/current.json</c>.
     /// Nothing here throws at its callers: a store that can't be read gives a reason, and the raid falls back to the
     /// procedural town.
     /// </summary>
@@ -32,7 +34,17 @@ namespace CloneZ
                 string set = Environment.GetEnvironmentVariable(RootVariable);
                 if (!string.IsNullOrEmpty(set)) return set;
                 if (s_Bundled != null) return s_Bundled;
-                return Path.DirectorySeparatorChar == '\\' ? @"\\192.168.1.170\CLONE-Z" : "/mnt/clonez";
+                string nas = Path.DirectorySeparatorChar == '\\' ? @"\\192.168.1.170\CLONE-Z" : "/mnt/clonez";
+#if UNITY_EDITOR
+                if (!File.Exists(Path.Combine(nas, "world", "current.json")))
+                {
+                    // The editor's working directory is the project folder, and unlike Application.dataPath it can be read
+                    // from any thread.
+                    string local = Path.Combine(Directory.GetCurrentDirectory(), "Builds", BundledFolder);
+                    if (File.Exists(Path.Combine(local, "world", "current.json"))) return local;
+                }
+#endif
+                return nas;
             }
         }
 
