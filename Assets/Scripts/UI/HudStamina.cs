@@ -11,7 +11,6 @@ namespace CloneZ
     public sealed class HudStamina
     {
         private const float Margin = 18f, IconSize = 36f, BarWidth = 300f, BarHeight = 5f;
-        private static readonly Color Track = new Color(1f, 1f, 1f, 0.16f);
 
         private readonly HudContext _ctx;
         private readonly Image _figure, _fill;
@@ -24,7 +23,7 @@ namespace CloneZ
             _figure = HudUI.Icon(root, "Movement", HudIcon.Stand, HudUI.Ink, Vector2.zero,
                 new Vector2(Margin + IconSize * 0.5f, 14f + IconSize * 0.5f), IconSize);
             _fill = HudUI.Bar(root, "Stamina", Vector2.zero, new Vector2(0f, 0.5f),
-                new Vector2(Margin + IconSize + 8f, 14f + IconSize * 0.5f), new Vector2(BarWidth, BarHeight), Track, HudUI.Ink, out RectTransform bar);
+                new Vector2(Margin + IconSize + 8f, 14f + IconSize * 0.5f), new Vector2(BarWidth, BarHeight), UITheme.Hud.StaminaTrack, HudUI.Ink, out RectTransform bar);
             UITheme.AddShadow(bar.GetComponent<Image>());
         }
 

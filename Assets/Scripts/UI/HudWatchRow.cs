@@ -13,11 +13,6 @@ namespace CloneZ
     {
         private const float Margin = 20f, Top = 16f, RowHeight = 66f, BellSize = 26f, ActivitySize = 30f;
         private const float WatchWidth = 146f, FilterWidth = 98f;
-        private static readonly Color Ghost = new Color(0.247f, 0.824f, 0.78f, 0.075f);
-        private static readonly Color TealDim = new Color(0.247f, 0.824f, 0.78f, 0.85f);
-        private static readonly Color BellIdle = new Color(1f, 1f, 1f, 0.32f);
-        private static readonly Color BellAlarm = new Color(1f, 0.22f, 0.18f, 1f);
-        private static readonly Color Toxic = new Color(0.78f, 0.95f, 0.25f, 1f);
 
         private readonly HudContext _ctx;
         private readonly HudSevenSegment[] _digits = new HudSevenSegment[4];
@@ -45,14 +40,14 @@ namespace CloneZ
             _bellGlow = HudUI.Icon(root, "BellGlow", HudIcon.Glow, Color.clear, new Vector2(1f, 1f),
                 new Vector2(-Margin - BellSize * 0.5f, centreY), BellSize * 2.4f, false);
             _bellGlow.enabled = false;
-            _bell = HudUI.Icon(root, "Bell", HudIcon.Bell, BellIdle, new Vector2(1f, 1f),
+            _bell = HudUI.Icon(root, "Bell", HudIcon.Bell, UITheme.Hud.BellIdle, new Vector2(1f, 1f),
                 new Vector2(-Margin - BellSize * 0.5f, centreY), BellSize);
 
             // Watch.
             float watchRight = -Margin - BellSize - 10f;
             RectTransform watch = HudUI.Panel(root, "Watch", new Vector2(1f, 1f), new Vector2(1f, 1f),
                 new Vector2(watchRight, -Top), new Vector2(WatchWidth, RowHeight), out _);
-            watch.GetComponent<Image>().color = new Color(0.012f, 0.04f, 0.042f, 0.82f);   // a faintly teal LCD face
+            watch.GetComponent<Image>().color = UITheme.Hud.WatchFace;
             BuildWatchFace(watch);
 
             // Activity icon.
@@ -64,7 +59,7 @@ namespace CloneZ
             float filterRight = activityRight - ActivitySize - 10f;
             RectTransform filter = HudUI.Panel(root, "Filter", new Vector2(1f, 1f), new Vector2(1f, 1f),
                 new Vector2(filterRight, -Top), new Vector2(FilterWidth, RowHeight), out _filterFrame);
-            HudUI.Label(filter, "Caption", 12, TextAnchor.UpperLeft, new Color(0.85f, 0.88f, 0.88f, 0.75f),
+            HudUI.Label(filter, "Caption", 12, TextAnchor.UpperLeft, UITheme.Hud.WatchCaption,
                 new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(10f, -7f), new Vector2(80f, 16f)).text = "Filter";
             _filterNumber = HudUI.Label(filter, "Value", 30, TextAnchor.LowerRight, HudUI.Ink,
                 new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(68f, 5f), new Vector2(60f, 34f), FontStyle.Bold);
@@ -84,7 +79,7 @@ namespace CloneZ
             float x = left;
             for (int i = 0; i < 4; i++)
             {
-                _digits[i] = new HudSevenSegment(watch, new Vector2(x, top), digitW, digitH, thick, HudUI.Teal, Ghost);
+                _digits[i] = new HudSevenSegment(watch, new Vector2(x, top), digitW, digitH, thick, HudUI.Teal, UITheme.Hud.WatchGhost);
                 x += digitW + space;
                 if (i == 1)
                 {
@@ -106,7 +101,7 @@ namespace CloneZ
             _ampm = HudUI.Label(watch, "AmPm", 13, TextAnchor.UpperLeft, HudUI.Teal, new Vector2(0f, 1f), new Vector2(0f, 1f),
                 new Vector2(x + 1f, top - 1f), new Vector2(30f, 16f), FontStyle.Bold);
             _ampm.text = "AM";
-            _info = HudUI.Label(watch, "TempDate", 15, TextAnchor.LowerLeft, TealDim, new Vector2(0f, 0f), new Vector2(0f, 0f),
+            _info = HudUI.Label(watch, "TempDate", 15, TextAnchor.LowerLeft, UITheme.Hud.WatchTealDim, new Vector2(0f, 0f), new Vector2(0f, 0f),
                 new Vector2(left, 6f), new Vector2(WatchWidth - left * 2f, 18f));
             _info.text = "";
         }
@@ -178,7 +173,7 @@ namespace CloneZ
                 Color c = HudUI.WithAlpha(low ? HudUI.Danger : HudUI.Ink, p);
                 _filterNumber.color = c;
                 _filterPercent.color = c;
-                _filterFrame.color = Color.Lerp(HudUI.FrameColor, Toxic, p * 0.8f);
+                _filterFrame.color = Color.Lerp(HudUI.FrameColor, UITheme.Hud.Toxic, p * 0.8f);
             }
             else if (low != _filterLow || gas != _filterGas)
             {
@@ -231,15 +226,15 @@ namespace CloneZ
             if (_hunted)
             {
                 float p = HudUI.Pulse(7f, 0.45f);
-                _bell.color = Color.Lerp(HudUI.WithAlpha(BellAlarm, 0.75f), BellAlarm, p);
-                _bellGlow.color = HudUI.WithAlpha(BellAlarm, 0.18f + 0.3f * p);
+                _bell.color = Color.Lerp(HudUI.WithAlpha(UITheme.Hud.BellAlarm, 0.75f), UITheme.Hud.BellAlarm, p);
+                _bellGlow.color = HudUI.WithAlpha(UITheme.Hud.BellAlarm, 0.18f + 0.3f * p);
                 if (!_bellShown) { _bellShown = true; _bellGlow.enabled = true; }
             }
             else if (_bellShown)
             {
                 _bellShown = false;
                 _bellGlow.enabled = false;
-                _bell.color = BellIdle;
+                _bell.color = UITheme.Hud.BellIdle;
             }
         }
     }

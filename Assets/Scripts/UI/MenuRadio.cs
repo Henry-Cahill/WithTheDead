@@ -33,7 +33,7 @@ namespace CloneZ
             UIKit.Size(prev.gameObject, 30f, 26f);
             Button next = UIKit.Button(row, "\u25b8", () => radio.Step(1), UIKit.ButtonColor, 14);
             UIKit.Size(next.gameObject, 30f, 26f);
-            radio._label = UIKit.Label(row, "", 14, new Color(0.68f, 0.71f, 0.76f), TextAnchor.MiddleLeft);
+            radio._label = UIKit.Label(row, "", 14, UITheme.Menu.FootnoteText, TextAnchor.MiddleLeft);
             UIKit.Size(radio._label.gameObject, 580f, 26f);
         }
 

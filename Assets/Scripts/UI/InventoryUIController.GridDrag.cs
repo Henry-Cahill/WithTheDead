@@ -15,9 +15,6 @@ namespace CloneZ
         private const float AutoScrollBand = 28f;      // a held item near a list's top / bottom edge scrolls it
         private const float AutoScrollSpeed = 480f;
 
-        private static readonly Color GFitAll = new Color(0.3f, 0.85f, 0.4f, 0.4f);
-        private static readonly Color GFitPart = new Color(0.95f, 0.75f, 0.25f, 0.4f);
-        private static readonly Color GFitNone = new Color(0.95f, 0.3f, 0.25f, 0.4f);
 
         /// <summary>The item being dragged, where it came from and how it's held.</summary>
         private sealed class DragState
@@ -422,7 +419,7 @@ namespace CloneZ
             if (_preview.GetSiblingIndex() != v.Grid.childCount - 1) _preview.SetAsLastSibling();
             _preview.anchoredPosition = new Vector2(x0 * Cell + 1f, -(y0 * Cell + 1f));
             _preview.sizeDelta = new Vector2((x1 - x0) * Cell - 1f, (y1 - y0) * Cell - 1f);
-            _previewImg.color = fit >= 2 ? GFitAll : fit == 1 ? GFitPart : GFitNone;
+            _previewImg.color = fit >= 2 ? UITheme.Bag.FitAll : fit == 1 ? UITheme.Bag.FitPart : UITheme.Bag.FitNone;
             if (!_preview.gameObject.activeSelf) _preview.gameObject.SetActive(true);
             return true;
         }
@@ -439,7 +436,7 @@ namespace CloneZ
             RectTransform target = _equip[slot].Rt;
             if (_equipPreview.parent != target) _equipPreview.SetParent(target, false);
             if (_equipPreview.GetSiblingIndex() != target.childCount - 1) _equipPreview.SetAsLastSibling();
-            _equipPreviewImg.color = t.Fit > 0 ? GFitAll : GFitNone;
+            _equipPreviewImg.color = t.Fit > 0 ? UITheme.Bag.FitAll : UITheme.Bag.FitNone;
             if (!_equipPreview.gameObject.activeSelf) _equipPreview.gameObject.SetActive(true);
             return true;
         }

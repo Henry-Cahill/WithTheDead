@@ -13,9 +13,6 @@ namespace CloneZ
     public sealed class HudHints
     {
         private const float AutoHideSeconds = 25f, FadeSpeed = 2.5f, ChipHeight = 18f, RowGap = 4f, ChipGap = 8f;
-        private static readonly Color CapColor = new Color(0.20f, 0.22f, 0.28f, 0.92f);
-        private static readonly Color KeyColor = new Color(0.96f, 0.95f, 0.82f, 1f);
-        private static readonly Color ActionColor = new Color(1f, 1f, 1f, 0.72f);
 
         private readonly GameObject _bar;
         private readonly CanvasGroup _group;
@@ -97,15 +94,15 @@ namespace CloneZ
         {
             RectTransform chip = HudUI.Rect(parent, "Chip", new Vector2(0.5f, 0f), new Vector2(0f, 0f), Vector2.zero, new Vector2(10f, ChipHeight));
 
-            Image cap = HudUI.Sliced(chip, "Cap", HudIcon.PanelFill, CapColor, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), Vector2.zero, new Vector2(20f, ChipHeight));
-            Text keyText = HudUI.Label(cap.rectTransform, "Key", 11, TextAnchor.MiddleCenter, KeyColor, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+            Image cap = HudUI.Sliced(chip, "Cap", HudIcon.PanelFill, UITheme.Hud.KeyCap, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), Vector2.zero, new Vector2(20f, ChipHeight));
+            Text keyText = HudUI.Label(cap.rectTransform, "Key", 11, TextAnchor.MiddleCenter, UITheme.Hud.KeyLabel, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
                 Vector2.zero, new Vector2(40f, ChipHeight), FontStyle.Bold);
             keyText.text = key;
             float keyW = Mathf.Ceil(keyText.preferredWidth) + 10f;
             cap.rectTransform.sizeDelta = new Vector2(keyW, ChipHeight);
             keyText.rectTransform.sizeDelta = new Vector2(keyW, ChipHeight);
 
-            Text actText = HudUI.Label(chip, "Action", 12, TextAnchor.MiddleLeft, ActionColor, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
+            Text actText = HudUI.Label(chip, "Action", 12, TextAnchor.MiddleLeft, UITheme.Hud.HintAction, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(keyW + 5f, 0f), new Vector2(60f, ChipHeight));
             actText.text = action;
             float actW = Mathf.Ceil(actText.preferredWidth);

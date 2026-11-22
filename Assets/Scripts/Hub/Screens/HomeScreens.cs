@@ -124,7 +124,7 @@ namespace CloneZ
 
         private void Line(Transform col, string what, string state, string action, System.Func<bool> pay)
         {
-            RectTransform row = HubUI.Row(col, 46f, new Color(1f, 1f, 1f, 0.04f));
+            RectTransform row = HubUI.Row(col, 46f, UITheme.Glass(0.04f));
             HubUI.Cell(row, what, 300f, 17);
             HubUI.Cell(row, state, 320f, 15, UIKit.TextDim);
             HubUI.Btn(row, action, () => { bool ok = pay(); if (ok) HubKit.AfterChange(); Report(ok, ok ? "Paid." : "Not enough money."); Refresh(); }, 250f);
@@ -147,7 +147,7 @@ namespace CloneZ
             foreach (ModuleDef m in Hideout.Modules)
             {
                 int lvl = Hideout.LevelOf(c, m.Id);
-                RectTransform card = HubUI.CardColumn(mods, new Color(1f, 1f, 1f, lvl > 0 ? 0.06f : 0.03f));
+                RectTransform card = HubUI.CardColumn(mods, UITheme.Glass(lvl > 0 ? 0.06f : 0.03f));
                 HubUI.Heading(card, m.Name + "  <size=14><color=#9aa0a8>level " + lvl + "/" + m.Levels.Count + (m.NeedsPower ? " · needs power" : "") + "</color></size>", 18);
                 HubUI.Para(card, m.Blurb, 14, UIKit.TextDim);
                 ModuleLevel next = m.Levels.Find(l => l.Level == lvl + 1);
@@ -186,7 +186,7 @@ namespace CloneZ
                 if (r.Field || Hideout.LevelOf(c, r.Module) < 1) continue;
                 var sb = new System.Text.StringBuilder();
                 foreach ((string id, int n) in r.Inputs) sb.Append(HubUI.Need(id, n, Carried)).Append("  ");
-                RectTransform row = HubUI.Row(crafts, 50f, new Color(1f, 1f, 1f, 0.04f));
+                RectTransform row = HubUI.Row(crafts, 50f, UITheme.Glass(0.04f));
                 HubUI.Cell(row, Hideout.Describe(r) + " <size=12><color=#9aa0a8>(" + Hideout.Get(r.Module).Name + " " + r.ModuleLevel + ", " + r.Minutes.ToString("0") + " min)</color></size>\n<size=13>" + sb + "</size>", 470f, 14);
                 bool can = Hideout.CanCraft(c, r, Carried, out string why);
                 Recipe pick = r;
@@ -233,7 +233,7 @@ namespace CloneZ
             var skills = Actor.LocalPlayer != null ? Actor.LocalPlayer.GetComponent<PlayerSkills>() : null;
             if (skills != null)
                 foreach (PlayerSkills.Skill sk in System.Enum.GetValues(typeof(PlayerSkills.Skill)))
-                    HubUI.LabeledBar(s, sk.ToString(), "Lv " + skills.GetLevel(sk), skills.LevelProgress(sk), new Color(0.5f, 0.75f, 0.45f), 5f);
+                    HubUI.LabeledBar(s, sk.ToString(), "Lv " + skills.GetLevel(sk), skills.LevelProgress(sk), UITheme.Hub.SkillBar, 5f);
 
             HubUI.Card(cols[2]);
             RectTransform f = HubUI.Scroll(cols[2], 0f, 0f, 4f);

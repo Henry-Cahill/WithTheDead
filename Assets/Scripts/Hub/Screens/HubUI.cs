@@ -13,11 +13,11 @@ namespace CloneZ
     /// </summary>
     public static class HubUI
     {
-        public static readonly Color CardColor = new Color(0.095f, 0.107f, 0.126f, 0.98f);
-        public static readonly Color SelectedColor = new Color(0.25f, 0.20f, 0.11f, 0.98f);
-        public static readonly Color HeaderColor = new Color(0.13f, 0.145f, 0.17f, 0.98f);
-        public static readonly Color Info = new Color(0.52f, 0.72f, 0.92f);
-        public static readonly Color Dimmer = new Color(0.42f, 0.45f, 0.50f);
+        public static readonly Color CardColor = UITheme.Hub.CardColor;
+        public static readonly Color SelectedColor = UITheme.Hub.SelectedColor;
+        public static readonly Color HeaderColor = UITheme.Hub.HeaderColor;
+        public static readonly Color Info = UITheme.Hub.Info;
+        public static readonly Color Dimmer = UITheme.Hub.Dimmer;
 
         #region Text and colour
         /// <summary>Returns the colour associated with an item's category, or a default colour for special cases.</summary>
@@ -28,15 +28,15 @@ namespace CloneZ
             if (ArtifactCatalog.IsArtifact(d)) return Color.Lerp(ArtifactCatalog.ColorOf(d.Id), Color.white, 0.25f);
             switch (d.Category)
             {
-                case ItemCategory.Food: return new Color(0.88f, 0.76f, 0.50f);
-                case ItemCategory.Drink: return new Color(0.50f, 0.76f, 0.94f);
-                case ItemCategory.Medical: return new Color(0.94f, 0.52f, 0.52f);
-                case ItemCategory.Weapon: return new Color(0.86f, 0.66f, 0.44f);
-                case ItemCategory.Firearm: return new Color(0.97f, 0.64f, 0.32f);
-                case ItemCategory.Ammo: return new Color(0.90f, 0.82f, 0.48f);
-                case ItemCategory.Material: return new Color(0.70f, 0.64f, 0.56f);
-                case ItemCategory.Clothing: return new Color(0.64f, 0.80f, 0.58f);
-                default: return new Color(0.78f, 0.79f, 0.86f);
+                case ItemCategory.Food: return UITheme.Hub.CatFood;
+                case ItemCategory.Drink: return UITheme.Hub.CatDrink;
+                case ItemCategory.Medical: return UITheme.Hub.CatMedical;
+                case ItemCategory.Weapon: return UITheme.Hub.CatWeapon;
+                case ItemCategory.Firearm: return UITheme.Hub.CatFirearm;
+                case ItemCategory.Ammo: return UITheme.Hub.CatAmmo;
+                case ItemCategory.Material: return UITheme.Hub.CatMaterial;
+                case ItemCategory.Clothing: return UITheme.Hub.CatClothing;
+                default: return UITheme.Hub.CatOther;
             }
         }
 
@@ -268,13 +268,13 @@ namespace CloneZ
             sb.pivot = new Vector2(1f, 0.5f);
             sb.offsetMin = new Vector2(-8f, 3f);
             sb.offsetMax = new Vector2(-2f, -3f);
-            sb.gameObject.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.35f);
+            sb.gameObject.AddComponent<Image>().color = UITheme.Ink(0.35f);
             RectTransform slide = UIKit.Rect("Sliding Area", sb);
             UIKit.Stretch(slide);
             RectTransform handle = UIKit.Rect("Handle", slide);
             UIKit.Stretch(handle);
             var hImg = handle.gameObject.AddComponent<Image>();
-            hImg.color = new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, 0.55f);
+            hImg.color = UITheme.Fade(UIKit.Accent, 0.55f);
             // Add subtle worn‑edge accent: a thin darker overlay inside the handle
             RectTransform edge = UIKit.Rect("Edge", handle);
             // inset a few pixels to create an inner border effect
@@ -282,7 +282,7 @@ namespace CloneZ
             edge.offsetMax = new Vector2(-2f, -2f);
             var edgeImg = edge.gameObject.AddComponent<Image>();
             edgeImg.raycastTarget = false; // edge overlay must not block scrollbar handle
-            edgeImg.color = new Color(0f, 0f, 0f, 0.2f);
+            edgeImg.color = UITheme.Ink(0.2f);
             var bar = sb.gameObject.AddComponent<Scrollbar>();
             bar.handleRect = handle;
             bar.targetGraphic = hImg;
@@ -408,7 +408,7 @@ namespace CloneZ
             border.offsetMax = new Vector2(-1f, -1f);
             var borderImg = border.gameObject.AddComponent<Image>();
             borderImg.raycastTarget = false; // decorative border must not block button clicks
-            borderImg.color = new Color(0f, 0f, 0f, 0.2f);
+            borderImg.color = UITheme.Ink(0.2f);
             b.interactable = interactable;
             Text label = b.GetComponentInChildren<Text>();
             if (label != null)
@@ -418,7 +418,7 @@ namespace CloneZ
                 label.resizeTextForBestFit = true;
                 label.resizeTextMinSize = Mathf.Max(10, fontSize - 5);
                 label.resizeTextMaxSize = fontSize;
-                if (!interactable) label.color = new Color(1f, 1f, 1f, 0.55f);
+                if (!interactable) label.color = UITheme.Glass(0.55f);
             }
             return b;
         }
@@ -461,7 +461,7 @@ namespace CloneZ
             ColorBlock cb = b.colors;
             cb.normalColor = Color.white;
             cb.highlightedColor = Color.white;     // the hover tint comes from the row's tooltip trigger
-            cb.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+            cb.pressedColor = UITheme.Hub.PressedTint;
             cb.selectedColor = Color.white;
             cb.colorMultiplier = 1f;
             cb.fadeDuration = 0.05f;

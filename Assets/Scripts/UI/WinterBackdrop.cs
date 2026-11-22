@@ -18,8 +18,6 @@ namespace CloneZ
             public float Speed, Sway, Rate, Phase, X, Y;
         }
 
-        private static readonly Color Silhouette = new Color(0.028f, 0.032f, 0.048f, 1f);
-        private static readonly Color Lit = new Color(1f, 0.74f, 0.38f, 0.9f);
         private static Texture2D s_Sky, s_Vignette;
         private static Sprite s_Gable;
 
@@ -74,14 +72,14 @@ namespace CloneZ
                 x += w + (float)_rng.NextDouble() * 0.012f;
             }
             // The courthouse's cupola and a church steeple above the roofs, and the water tower off to the east.
-            Block(town, 0.415f, 0.05f, Ground, 150f, Silhouette);
-            Block(town, 0.432f, 0.016f, Ground + 150f, 40f, Silhouette);
+            Block(town, 0.415f, 0.05f, Ground, 150f, UITheme.Winter.Silhouette);
+            Block(town, 0.432f, 0.016f, Ground + 150f, 40f, UITheme.Winter.Silhouette);
             Roof(town, 0.432f, 0.016f, Ground + 190f, 26f);
-            Block(town, 0.215f, 0.012f, Ground, 205f, Silhouette);
+            Block(town, 0.215f, 0.012f, Ground, 205f, UITheme.Winter.Silhouette);
             Roof(town, 0.215f, 0.012f, Ground + 205f, 70f);
             WaterTower(town, 0.76f, Ground);
             // Snow lying in front of it all.
-            Image snow = UIKit.Panel(town, "Snow", new Color(0.70f, 0.74f, 0.82f, 1f));
+            Image snow = UIKit.Panel(town, "Snow", UITheme.Winter.Snow);
             snow.raycastTarget = false;
             RectTransform s = snow.rectTransform;
             s.anchorMin = new Vector2(0f, 0f);
@@ -89,7 +87,7 @@ namespace CloneZ
             s.pivot = new Vector2(0.5f, 0f);
             s.anchoredPosition = Vector2.zero;
             s.sizeDelta = new Vector2(0f, Ground);
-            Image drift = UIKit.Panel(town, "SnowEdge", new Color(0.86f, 0.89f, 0.95f, 1f));
+            Image drift = UIKit.Panel(town, "SnowEdge", UITheme.Winter.SnowEdge);
             drift.raycastTarget = false;
             RectTransform d = drift.rectTransform;
             d.anchorMin = new Vector2(0f, 0f);
@@ -102,7 +100,7 @@ namespace CloneZ
         private void House(RectTransform town, float x, float w, float ground, float h, bool gable)
         {
             float wall = gable ? h * 0.7f : h;
-            Block(town, x, w, ground, wall, Silhouette);
+            Block(town, x, w, ground, wall, UITheme.Winter.Silhouette);
             if (gable) Roof(town, x, w, ground + wall, h * 0.3f);
             // A few lit windows: the town's last lights.
             int lit = _rng.NextDouble() < 0.55 ? 1 + _rng.Next(3) : 0;
@@ -110,7 +108,7 @@ namespace CloneZ
             {
                 float wx = x + w * (0.2f + (float)_rng.NextDouble() * 0.6f);
                 float wy = ground + 10f + (float)_rng.NextDouble() * Mathf.Max(4f, wall - 30f);
-                Image win = UIKit.Panel(town, "Window", Lit);
+                Image win = UIKit.Panel(town, "Window", UITheme.Winter.LitWindow);
                 win.raycastTarget = false;
                 RectTransform r = win.rectTransform;
                 r.anchorMin = r.anchorMax = new Vector2(wx, 0f);
@@ -125,7 +123,7 @@ namespace CloneZ
             const float Legs = 150f, TankH = 46f;
             for (int i = 0; i < 4; i++)
             {
-                Image leg = UIKit.Panel(town, "Leg", Silhouette);
+                Image leg = UIKit.Panel(town, "Leg", UITheme.Winter.Silhouette);
                 leg.raycastTarget = false;
                 RectTransform r = leg.rectTransform;
                 r.anchorMin = r.anchorMax = new Vector2(x, 0f);
@@ -133,7 +131,7 @@ namespace CloneZ
                 r.anchoredPosition = new Vector2(-30f + i * 20f, ground);
                 r.sizeDelta = new Vector2(4f, Legs);
             }
-            Image tank = UIKit.Panel(town, "Tank", Silhouette);
+            Image tank = UIKit.Panel(town, "Tank", UITheme.Winter.Silhouette);
             tank.raycastTarget = false;
             RectTransform t = tank.rectTransform;
             t.anchorMin = t.anchorMax = new Vector2(x, 0f);
@@ -142,7 +140,7 @@ namespace CloneZ
             t.sizeDelta = new Vector2(96f, TankH);
             Image cap = UIKit.Rect("Cap", town).gameObject.AddComponent<Image>();
             cap.sprite = GableSprite();
-            cap.color = Silhouette;
+            cap.color = UITheme.Winter.Silhouette;
             cap.raycastTarget = false;
             RectTransform c = cap.rectTransform;
             c.anchorMin = c.anchorMax = new Vector2(x, 0f);
@@ -150,7 +148,7 @@ namespace CloneZ
             c.anchoredPosition = new Vector2(0f, ground + Legs + TankH);
             c.sizeDelta = new Vector2(100f, 22f);
             // The red beacon on top.
-            Image beacon = UIKit.Panel(town, "Beacon", new Color(0.95f, 0.22f, 0.16f, 0.9f));
+            Image beacon = UIKit.Panel(town, "Beacon", UITheme.Winter.Beacon);
             beacon.raycastTarget = false;
             RectTransform b = beacon.rectTransform;
             b.anchorMin = b.anchorMax = new Vector2(x, 0f);
@@ -175,7 +173,7 @@ namespace CloneZ
         {
             Image img = UIKit.Rect("Roof", town).gameObject.AddComponent<Image>();
             img.sprite = GableSprite();
-            img.color = Silhouette;
+            img.color = UITheme.Winter.Silhouette;
             img.raycastTarget = false;
             RectTransform r = img.rectTransform;
             r.anchorMin = new Vector2(x, 0f);
@@ -193,7 +191,7 @@ namespace CloneZ
             {
                 float near = (float)_rng.NextDouble();
                 float size = Mathf.Lerp(2f, 6.5f, near * near);
-                Image img = UIKit.Panel(area, "Flake", new Color(0.92f, 0.95f, 1f, Mathf.Lerp(0.35f, 0.9f, near)));
+                Image img = UIKit.Panel(area, "Flake", UITheme.Fade(UITheme.Winter.Flake, Mathf.Lerp(0.35f, 0.9f, near)));
                 img.raycastTarget = false;
                 RectTransform r = img.rectTransform;
                 r.anchorMin = r.anchorMax = Vector2.zero;
@@ -239,9 +237,9 @@ namespace CloneZ
             if (s_Sky != null) return s_Sky;
             const int H = 128;
             s_Sky = new Texture2D(2, H, TextureFormat.RGBA32, false) { name = "WinterSky", wrapMode = TextureWrapMode.Clamp, hideFlags = HideFlags.DontSave };
-            var top = new Color(0.015f, 0.022f, 0.045f);
-            var mid = new Color(0.045f, 0.058f, 0.095f);
-            var glow = new Color(0.17f, 0.13f, 0.11f);
+            var top = UITheme.Winter.SkyTop;
+            var mid = UITheme.Winter.SkyMid;
+            var glow = UITheme.Winter.SkyGlow;
             for (int y = 0; y < H; y++)
             {
                 float v = y / (H - 1f);
@@ -263,7 +261,7 @@ namespace CloneZ
                 {
                     float dx = (x + 0.5f) / N - 0.5f, dy = (y + 0.5f) / N - 0.5f;
                     float d = Mathf.Sqrt(dx * dx + dy * dy) / 0.7071f;
-                    s_Vignette.SetPixel(x, y, new Color(0f, 0f, 0f, Mathf.SmoothStep(0f, 0.75f, (d - 0.45f) / 0.55f)));
+                    s_Vignette.SetPixel(x, y, UITheme.Ink(Mathf.SmoothStep(0f, 0.75f, (d - 0.45f) / 0.55f)));
                 }
             s_Vignette.Apply(false, true);
             return s_Vignette;
@@ -280,7 +278,7 @@ namespace CloneZ
                 {
                     float half = (1f - (y + 0.5f) / H) * W * 0.5f;
                     float dx = Mathf.Abs(x + 0.5f - W * 0.5f);
-                    tex.SetPixel(x, y, new Color(1f, 1f, 1f, Mathf.Clamp01(half - dx + 0.5f)));
+                    tex.SetPixel(x, y, UITheme.Glass(Mathf.Clamp01(half - dx + 0.5f)));
                 }
             tex.Apply(false, true);
             s_Gable = Sprite.Create(tex, new Rect(0f, 0f, W, H), new Vector2(0.5f, 0f), 100f);

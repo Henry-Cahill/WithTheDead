@@ -4,15 +4,63 @@ using UnityEngine.UI;
 namespace CloneZ
 {
     /// <summary>
-    /// Shared styling helpers for the code-built UI. Keeps the runtime HUD and
-    /// panels visually consistent (and legible over the bright world) without a
-    /// design asset. Intentionally tiny — just enough to de-duplicate the polish.
+    /// The one palette and the shared styling helpers for the code-built UI. Every colour a screen uses is
+    /// defined here (the core palette below, per-area colours in the UITheme.*.cs partials), so the hub, the
+    /// menus and the HUD read as one game and can be retuned in one place. Screens never write colour literals.
     /// </summary>
-    public static class UITheme
+    public static partial class UITheme
     {
+        #region Core palette
+        public static readonly Color Backdrop = new Color(0.03f, 0.035f, 0.045f, 0.92f);
+        public static readonly Color PanelColor = new Color(0.075f, 0.085f, 0.10f, 0.97f);
+        public static readonly Color PanelLight = new Color(0.12f, 0.135f, 0.155f, 0.97f);
+        public static readonly Color RowColor = new Color(0.10f, 0.11f, 0.13f, 0.95f);
+        public static readonly Color RowAlt = new Color(0.085f, 0.095f, 0.11f, 0.95f);
+        public static readonly Color Accent = new Color(0.86f, 0.62f, 0.22f);
+        public static readonly Color TextColor = new Color(0.90f, 0.91f, 0.93f);
+        public static readonly Color TextDim = new Color(0.58f, 0.62f, 0.68f);
+        public static readonly Color Good = new Color(0.52f, 0.80f, 0.48f);
+        public static readonly Color Bad = new Color(0.88f, 0.40f, 0.34f);
+        public static readonly Color Warn = new Color(0.92f, 0.74f, 0.30f);
+        public static readonly Color ButtonColor = new Color(0.20f, 0.23f, 0.27f);
+        public static readonly Color ButtonAccent = new Color(0.55f, 0.40f, 0.14f);
+        public static readonly Color ButtonMuted = new Color(0.13f, 0.15f, 0.18f, 0.92f);
+        public static readonly Color ButtonDisabled = new Color(0.18f, 0.18f, 0.20f);
+
+        // Widget parts.
+        public static readonly Color ButtonHover = new Color(1.28f, 1.20f, 1.04f, 1f);   // a warm lamp-light hover (tint multiplier)
+        public static readonly Color ButtonPressed = new Color(0.82f, 0.78f, 0.72f, 1f);
+        public static readonly Color ButtonDisabledTint = new Color(0.55f, 0.55f, 0.55f, 0.6f);
+        public static readonly Color Well = new Color(0f, 0f, 0f, 0.25f);                  // scroll lists, insets
+        public static readonly Color Track = new Color(0.16f, 0.18f, 0.21f);               // slider track
+        public static readonly Color Field = new Color(0.05f, 0.055f, 0.065f);             // text input
+        public static readonly Color BarBack = new Color(0f, 0f, 0f, 0.5f);
+
         // A soft drop shadow so light text stays readable over the bright ground.
         public static readonly Color ShadowColor = new Color(0f, 0f, 0f, 0.65f);
+        public static readonly Color ElevateShadow = new Color(0f, 0f, 0f, 0.45f);
         public static readonly Vector2 ShadowOffset = new Vector2(1.4f, -1.4f);
+        #endregion
+
+        #region Colour helpers
+        public static readonly Color Clear = new Color(0f, 0f, 0f, 0f);
+
+        /// <summary>Black at the given opacity: scrims, wells, vignettes.</summary>
+        public static Color Ink(float alpha) => new Color(0f, 0f, 0f, alpha);
+
+        /// <summary>White at the given opacity: hairlines, sheens, faint fills.</summary>
+        public static Color Glass(float alpha) => new Color(1f, 1f, 1f, alpha);
+
+        /// <summary>The same colour at another opacity.</summary>
+        public static Color Fade(Color c, float alpha) => new Color(c.r, c.g, c.b, alpha);
+
+        /// <summary>The colour scaled toward black (k &lt; 1) keeping its alpha unless one is given.</summary>
+        public static Color Shade(Color c, float k, float alpha = -1f) => new Color(c.r * k, c.g * k, c.b * k, alpha < 0f ? c.a : alpha);
+
+        /// <summary>The colour brightened by adding to each channel (clamped), keeping its alpha unless one is given.</summary>
+        public static Color Lift(Color c, float add, float alpha = -1f) =>
+            new Color(Mathf.Min(c.r + add, 1f), Mathf.Min(c.g + add, 1f), Mathf.Min(c.b + add, 1f), alpha < 0f ? c.a : alpha);
+        #endregion
 
         private static Sprite s_Round, s_RoundOutline;
 
@@ -46,7 +94,7 @@ namespace CloneZ
                     float d = new Vector2(Mathf.Max(qx, 0f), Mathf.Max(qy, 0f)).magnitude + Mathf.Min(Mathf.Max(qx, qy), 0f) - radius;
                     float a = Mathf.Clamp01(0.5f - d);
                     if (outline) a *= Mathf.Clamp01(d + ring + 0.5f);
-                    px[y * size + x] = new Color(1f, 1f, 1f, a);
+                    px[y * size + x] = Glass(a);
                 }
             }
             tex.SetPixels(px);
@@ -70,7 +118,7 @@ namespace CloneZ
         {
             if (graphic == null) return;
             var shadow = graphic.gameObject.AddComponent<Shadow>();
-            shadow.effectColor = new Color(0f, 0f, 0f, 0.45f);
+            shadow.effectColor = ElevateShadow;
             shadow.effectDistance = new Vector2(0f, -5f);
         }
 

@@ -14,9 +14,6 @@ namespace CloneZ
     {
         private const float Margin = 32f, Bottom = 30f, IconX = 42f, BarX = 58f, BarWidth = 230f;
         private const float CalmSeconds = 3f, QuietAlpha = 0.28f, WeaponQuietAlpha = 0.42f, FadeSpeed = 2.5f;
-        private static readonly Color Track = new Color(0f, 0f, 0f, 0.45f);
-        private static readonly Color LightOn = new Color(1f, 0.87f, 0.38f, 1f);
-        private static readonly Color NvgOn = new Color(0.45f, 1f, 0.45f, 1f);
         private static readonly HudNeed[] Needs = { HudNeed.Water, HudNeed.Food, HudNeed.Warmth, HudNeed.Battery };
 
         private readonly HudContext _ctx;
@@ -52,10 +49,10 @@ namespace CloneZ
             float healthY = Bottom + 24f, staminaY = Bottom + 8f, needsY = Bottom + 50f;
             _cross = HudUI.Icon(vitals, "Health", HudIcon.Cross, HudUI.Ink, bl, new Vector2(IconX, healthY), 18f);
             _health = new HudTrailBar(vitals, "HealthBar", bl, new Vector2(0f, 0.5f), new Vector2(BarX, healthY), new Vector2(BarWidth, 4f), 4,
-                Track, new Color(1f, 0.86f, 0.78f, 0.7f));
+                UITheme.Hud.FirstPersonTrack, UITheme.Fade(UITheme.Hud.HealthTrail, 0.7f));
             _figure = HudUI.Icon(vitals, "Movement", HudIcon.Stand, HudUI.Ink, bl, new Vector2(IconX, staminaY), 18f);
             _stamina = new HudTrailBar(vitals, "StaminaBar", bl, new Vector2(0f, 0.5f), new Vector2(BarX, staminaY), new Vector2(BarWidth, 3f), 0,
-                Track, new Color(1f, 1f, 1f, 0.3f));
+                UITheme.Hud.FirstPersonTrack, UITheme.Glass(0.3f));
             for (int i = 0; i < Needs.Length; i++)
             {
                 _needs[i] = HudGauge.For(Needs[i], vitals, bl, new Vector2(IconX + i * 26f, needsY), 20f);
@@ -70,7 +67,7 @@ namespace CloneZ
             _ammo = HudUI.Label(weapon, "Ammo", 36, TextAnchor.LowerRight, HudUI.Ink, br, new Vector2(1f, 0f),
                 new Vector2(-Margin, Bottom + 8f), new Vector2(360f, 44f), FontStyle.Bold);
             _magBar = HudUI.Bar(weapon, "Magazine", br, new Vector2(1f, 0.5f), new Vector2(-Margin, Bottom + 3f), new Vector2(150f, 3f),
-                Track, HudUI.Ink, out RectTransform magRoot);
+                UITheme.Hud.FirstPersonTrack, HudUI.Ink, out RectTransform magRoot);
             _magRoot = magRoot.gameObject;
             _name = HudUI.Label(weapon, "Weapon", 13, TextAnchor.LowerRight, HudReadouts.Dim, br, new Vector2(1f, 0f),
                 new Vector2(-Margin, Bottom + 54f), new Vector2(360f, 18f), FontStyle.Bold);
@@ -198,7 +195,7 @@ namespace CloneZ
             {
                 _lightState = ls;
                 HudUI.Show(_light.gameObject, hasLight);
-                _light.color = lightOn ? LightOn : HudUI.WithAlpha(HudUI.Ink, 0.6f);
+                _light.color = lightOn ? UITheme.Hud.LightOn : HudUI.WithAlpha(HudUI.Ink, 0.6f);
             }
             bool hasNvg = gear != null && gear.HasNightVision;
             bool nvgOn = hasNvg && gear.NightVisionOn;
@@ -206,7 +203,7 @@ namespace CloneZ
             if (ns == _nvgState) return;
             _nvgState = ns;
             HudUI.Show(_nvg.gameObject, hasNvg);
-            _nvg.color = nvgOn ? NvgOn : HudUI.WithAlpha(HudUI.Ink, 0.6f);
+            _nvg.color = nvgOn ? UITheme.Hud.NvgOn : HudUI.WithAlpha(HudUI.Ink, 0.6f);
         }
 
         private static void Fade(CanvasGroup g, float target, float dt)

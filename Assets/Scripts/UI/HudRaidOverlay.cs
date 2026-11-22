@@ -12,8 +12,6 @@ namespace CloneZ
     public sealed class HudRaidOverlay
     {
         private const float HeadHeight = 2.2f, DawnWarnSeconds = 300f;
-        private static readonly Color Protection = new Color(0.45f, 1f, 0.45f, 1f);
-        private static readonly Color Extracting = new Color(0.55f, 1f, 0.62f, 1f);
 
         private readonly HudContext _ctx;
         private readonly RectTransform _root;
@@ -31,18 +29,18 @@ namespace CloneZ
             _ctx = ctx;
             _root = root;
 
-            _protection = HudUI.Label(protectionLayer, "SpawnProtection", 20, TextAnchor.MiddleCenter, Protection,
+            _protection = HudUI.Label(protectionLayer, "SpawnProtection", 20, TextAnchor.MiddleCenter, UITheme.Hud.RaidProtection,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(320f, 26f), FontStyle.Bold);
             var outline = _protection.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(0f, 0f, 0f, 0.55f);
+            outline.effectColor = UITheme.Ink(0.55f);
             outline.effectDistance = new Vector2(1f, -1f);
             _protection.enabled = false;
 
             RectTransform bar = HudUI.Rect(root, "Extraction", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -66f), new Vector2(440f, 46f));
-            _extractLabel = HudUI.Label(bar, "Label", 18, TextAnchor.UpperCenter, Extracting, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+            _extractLabel = HudUI.Label(bar, "Label", 18, TextAnchor.UpperCenter, UITheme.Hud.RaidExtracting, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
                 Vector2.zero, new Vector2(440f, 24f), FontStyle.Bold);
             _extractFill = HudUI.Bar(bar, "Progress", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 8f),
-                new Vector2(380f, 8f), new Color(0f, 0f, 0f, 0.6f), Extracting, out RectTransform track);
+                new Vector2(380f, 8f), UITheme.Ink(0.6f), UITheme.Hud.RaidExtracting, out RectTransform track);
             UITheme.AddShadow(track.GetComponent<Image>());
             _extractRoot = bar.gameObject;
             _extractRoot.SetActive(false);

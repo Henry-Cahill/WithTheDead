@@ -42,7 +42,7 @@ namespace CloneZ
             if (_row != null)
             {
                 _baseColor = _row.color;
-                _hoverColor = new Color(0.45f, 0.6f, 0.75f, 0.22f);
+                _hoverColor = UITheme.Tooltip.RowHover;
             }
         }
 

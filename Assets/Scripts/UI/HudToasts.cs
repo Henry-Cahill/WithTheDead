@@ -11,7 +11,6 @@ namespace CloneZ
     {
         private const int Lines = 3;
         private const float Life = 4f, Fade = 0.8f, Bottom = 218f, Spacing = 26f;
-        private static readonly Color ToastColor = new Color(0.97f, 0.92f, 0.76f, 1f);
 
         private readonly Text[] _texts = new Text[Lines];
         private readonly string[] _messages = new string[Lines];
@@ -21,7 +20,7 @@ namespace CloneZ
         {
             for (int i = 0; i < Lines; i++)
             {
-                _texts[i] = HudUI.Label(root, "Toast", 18, TextAnchor.LowerCenter, ToastColor, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
+                _texts[i] = HudUI.Label(root, "Toast", 18, TextAnchor.LowerCenter, UITheme.Hud.Toast, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
                     new Vector2(0f, Bottom + i * Spacing), new Vector2(1000f, 24f));
                 _texts[i].enabled = false;
             }
@@ -56,7 +55,7 @@ namespace CloneZ
                 }
                 _timers[i] -= dt;
                 if (!t.enabled) t.enabled = true;
-                t.color = HudUI.WithAlpha(ToastColor, Mathf.Clamp01(_timers[i] / Fade));
+                t.color = HudUI.WithAlpha(UITheme.Hud.Toast, Mathf.Clamp01(_timers[i] / Fade));
             }
         }
     }

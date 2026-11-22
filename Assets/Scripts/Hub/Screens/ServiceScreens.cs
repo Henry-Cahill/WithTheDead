@@ -95,7 +95,7 @@ namespace CloneZ
 
         private void Treat(Transform col, string what, int cost, bool needed, System.Action heal)
         {
-            RectTransform row = HubUI.Row(col, 44f, new Color(1f, 1f, 1f, 0.04f));
+            RectTransform row = HubUI.Row(col, 44f, UITheme.Glass(0.04f));
             HubUI.Cell(row, what, 420f, 16, needed ? UIKit.TextColor : UIKit.TextDim);
             HubUI.Cell(row, needed ? HubUI.NeedMoney(cost, Carried) : "—", 140f, 15);
             HubUI.Btn(row, "Treat", () =>
@@ -197,7 +197,7 @@ namespace CloneZ
                 float cap = Mathf.Max(0.5f, 1f - 0.08f * s.TimesRepaired);
                 int target = Mathf.RoundToInt(s.Def.MaxCondition * cap);
                 int cost = Mathf.Max(20, Mathf.RoundToInt(Money.BaseValue(s.Def) * 0.35f * (1f - s.Condition01)));
-                RectTransform row = HubUI.Row(side, 44f, new Color(1f, 1f, 1f, 0.04f));
+                RectTransform row = HubUI.Row(side, 44f, UITheme.Glass(0.04f));
                 HubUI.Cell(row, "Repair to " + HubUI.Pct((float)target / s.Def.MaxCondition) + " (repaired " + s.TimesRepaired + "x)", 360f, 15);
                 HubUI.Cell(row, HubUI.NeedMoney(cost, Carried), 110f, 14);
                 HubUI.Btn(row, "Repair", () =>
@@ -224,7 +224,7 @@ namespace CloneZ
                 {
                     bool has = s.Extra != null && s.Extra.Upgrades.Contains(n.Id);
                     bool can = WeaponUpgrades.CanApply(s, n, out string why);
-                    RectTransform row = HubUI.Row(side, 50f, has ? new Color(0.3f, 0.6f, 0.3f, 0.15f) : new Color(1f, 1f, 1f, 0.04f));
+                    RectTransform row = HubUI.Row(side, 50f, has ? UITheme.Hub.OwnedRow : UITheme.Glass(0.04f));
                     HubUI.Cell(row, n.Name + "\n<size=13><color=#9aa0a8>" + n.Effect + (n.Part != null ? " — needs " + Trading.NameOf(n.Part) : "") + "</color></size>", 380f, 15);
                     HubUI.Cell(row, has ? "fitted" : HubUI.NeedMoney(n.Cost, Carried), 110f, 14);
                     if (has) continue;
@@ -262,7 +262,7 @@ namespace CloneZ
             {
                 bool here = h.Id == c.Hub, known = c.UnlockedHubs.Contains(h.Id);
                 int cost = known ? h.TravelCost : h.PassageCost;
-                RectTransform row = HubUI.Row(col, 64f, new Color(1f, 1f, 1f, 0.04f));
+                RectTransform row = HubUI.Row(col, 64f, UITheme.Glass(0.04f));
                 HubUI.Cell(row, h.Name + "\n<size=13><color=#9aa0a8>" + h.Blurb + "</color></size>", 620f, 16);
                 if (here) { HubUI.Cell(row, "You're here", 140f, 14, UIKit.Good); continue; }
                 bool can = c.Level >= h.MinLevel;
@@ -332,7 +332,7 @@ namespace CloneZ
             {
                 if (follower && z.Id != NetSession.HostRaidZone) continue;
                 bool ok = c.Level >= z.MinLevel;
-                RectTransform card = HubUI.CardColumn(zones, s_Zone == z.Id ? new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, 0.18f) : new Color(1f, 1f, 1f, 0.04f));
+                RectTransform card = HubUI.CardColumn(zones, s_Zone == z.Id ? UITheme.Fade(UIKit.Accent, 0.18f) : UITheme.Glass(0.04f));
                 HubUI.Heading(card, z.Name + "  <size=14><color=#9aa0a8>depth " + z.Depth + (ok ? "" : " — level " + z.MinLevel) + "</color></size>", 19);
                 HubUI.Para(card, z.Blurb, 14);
                 HubUI.Para(card, "<i>" + z.Rule + "</i>", 14, UIKit.TextDim);
@@ -449,7 +449,7 @@ namespace CloneZ
 
         private void Rumour(Transform col, string what, int cost, System.Func<string> reveal)
         {
-            RectTransform row = HubUI.Row(col, 44f, new Color(1f, 1f, 1f, 0.04f));
+            RectTransform row = HubUI.Row(col, 44f, UITheme.Glass(0.04f));
             HubUI.Cell(row, what, 420f, 16);
             HubUI.Cell(row, HubUI.NeedMoney(cost, Carried), 120f, 14);
             HubUI.Btn(row, "Pay", () =>

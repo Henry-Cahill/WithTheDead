@@ -28,14 +28,6 @@ namespace CloneZ
         private const float ColumnX = 120f, ItemWidth = 500f, ItemHeight = 54f, ItemGap = 8f, ItemsTop = -196f;
         private const float CardWidth = 420f, BarWidth = 160f;
 
-        private static readonly Color Amber = new Color(0.95f, 0.68f, 0.25f, 1f);
-        private static readonly Color Dim = new Color(0.62f, 0.66f, 0.72f, 1f);
-        private static readonly Color Idle = new Color(0.74f, 0.77f, 0.82f, 1f);
-        private static readonly Color DangerIdle = new Color(0.86f, 0.52f, 0.46f, 1f);
-        private static readonly Color DangerHot = new Color(1f, 0.42f, 0.34f, 1f);
-        private static readonly Color Good = new Color(0.55f, 0.88f, 0.5f, 1f);
-        private static readonly Color Bad = new Color(1f, 0.4f, 0.34f, 1f);
-        private static readonly Color Frost = new Color(0.55f, 0.75f, 1f, 1f);
 
         private static readonly CameraView[] AllViews = { CameraView.Isometric, CameraView.ThirdPerson, CameraView.FirstPerson, CameraView.Bodycam };
         private static readonly CameraView[] EyesOnly = { CameraView.FirstPerson, CameraView.Bodycam };
@@ -216,7 +208,7 @@ Keyboard kbEsc = Keyboard.current;
         private void OnSave()
         {
             GameManager.Instance?.QuickSave();
-            Flash("Game saved", Good);
+            Flash("Game saved", UITheme.Pause.Good);
         }
 
         private void OnQuitToMenu()
@@ -429,22 +421,22 @@ Keyboard kbEsc = Keyboard.current;
                 it.Hover = Mathf.MoveTowards(it.Hover, i == _selected ? 1f : 0f, dt * 9f);
                 float h = Ease(it.Hover);
                 it.Content.anchoredPosition = new Vector2(-22f * (1f - appear) + 10f * h, 0f);
-                it.Highlight.color = new Color(1f, 1f, 1f, 0.11f * h);
-                Color accent = it.Danger ? DangerHot : Amber;
+                it.Highlight.color = UITheme.Glass(0.11f * h);
+                Color accent = it.Danger ? UITheme.Pause.DangerHot : UITheme.Pause.Amber;
                 it.Accent.color = HudUI.WithAlpha(accent, 0.25f + 0.75f * h);
                 it.Accent.rectTransform.sizeDelta = new Vector2(3f + 3f * h, ItemHeight - 16f);
-                Color idle = it.Danger ? DangerIdle : Idle;
-                Color hot = it.Danger ? DangerHot : Color.white;
-                if (it.Danger && _abandonArmed && it == _abandon) idle = hot = HudUI.WithAlpha(DangerHot, HudUI.Pulse(7f, 0.55f));
+                Color idle = it.Danger ? UITheme.Pause.DangerIdle : UITheme.Pause.Idle;
+                Color hot = it.Danger ? UITheme.Pause.DangerHot : Color.white;
+                if (it.Danger && _abandonArmed && it == _abandon) idle = hot = HudUI.WithAlpha(UITheme.Pause.DangerHot, HudUI.Pulse(7f, 0.55f));
                 it.Text.color = Color.Lerp(idle, hot, h);
                 if (it.Kind == ItemKind.Cycle)
                 {
                     string v = it.Value != null ? it.Value() : "";
                     if (!ReferenceEquals(v, it.ShownValue)) { it.ShownValue = v; it.ValueText.text = v; }
-                    Color arrow = Color.Lerp(HudUI.WithAlpha(Dim, 0.5f), Amber, h);
+                    Color arrow = Color.Lerp(HudUI.WithAlpha(UITheme.Pause.Dim, 0.5f), UITheme.Pause.Amber, h);
                     it.LeftArrow.color = arrow;
                     it.RightArrow.color = arrow;
-                    it.ValueText.color = Color.Lerp(Idle, Color.white, h);
+                    it.ValueText.color = Color.Lerp(UITheme.Pause.Idle, Color.white, h);
                 }
             }
 
@@ -569,15 +561,15 @@ Keyboard kbEsc = Keyboard.current;
 
             float t = s.Temperature;
             string feel; Color fc;
-            if (t < CloneZConfig.TempHypothermiaThreshold + 0.02f) { feel = "Freezing"; fc = Frost; }
-            else if (t < 0.25f) { feel = "Very cold"; fc = Frost; }
-            else if (t < 0.33f) { feel = "Cold"; fc = Frost; }
-            else if (t < CloneZConfig.TempComfortLow) { feel = "Chilly"; fc = Frost; }
-            else if (t > CloneZConfig.TempHyperthermiaThreshold - 0.01f) { feel = "Overheating"; fc = Bad; }
-            else if (t > 0.78f) { feel = "Very hot"; fc = Bad; }
+            if (t < CloneZConfig.TempHypothermiaThreshold + 0.02f) { feel = "Freezing"; fc = UITheme.Pause.Frost; }
+            else if (t < 0.25f) { feel = "Very cold"; fc = UITheme.Pause.Frost; }
+            else if (t < 0.33f) { feel = "Cold"; fc = UITheme.Pause.Frost; }
+            else if (t < CloneZConfig.TempComfortLow) { feel = "Chilly"; fc = UITheme.Pause.Frost; }
+            else if (t > CloneZConfig.TempHyperthermiaThreshold - 0.01f) { feel = "Overheating"; fc = UITheme.Pause.Bad; }
+            else if (t > 0.78f) { feel = "Very hot"; fc = UITheme.Pause.Bad; }
             else if (t > 0.7f) { feel = "Hot"; fc = HudUI.Amber; }
             else if (t > CloneZConfig.TempComfortHigh) { feel = "Warm"; fc = HudUI.Amber; }
-            else { feel = "Comfortable"; fc = Good; }
+            else { feel = "Comfortable"; fc = UITheme.Pause.Good; }
             _warmth.text = feel + (s.Wetness >= CloneZConfig.WetnessDampThreshold ? (s.Wetness >= 0.55f ? ", wet" : ", damp") : "");
             _warmth.color = fc;
 
@@ -593,7 +585,7 @@ Keyboard kbEsc = Keyboard.current;
             if (bleeding) _sb.Append(_sb.Length > 0 ? ", bleeding" : "Bleeding");
             bool hurt = _sb.Length > 0;
             _condition.text = hurt ? _sb.ToString() : "No injuries";
-            _condition.color = s.Infected || bleeding ? Bad : hurt ? HudUI.Amber : Good;
+            _condition.color = s.Infected || bleeding ? UITheme.Pause.Bad : hurt ? HudUI.Amber : UITheme.Pause.Good;
             _run.text = RunLine();
         }
 
@@ -636,7 +628,7 @@ Keyboard kbEsc = Keyboard.current;
 
         private static string Percent(float v01) => HudUI.Int(Mathf.RoundToInt(Mathf.Clamp01(v01) * 100f)) + "%";
 
-        private static Color NeedColor(float bad01) => bad01 >= 0.85f ? Bad : bad01 >= 0.6f ? HudUI.Amber : HudUI.Ink;
+        private static Color NeedColor(float bad01) => bad01 >= 0.85f ? UITheme.Pause.Bad : bad01 >= 0.6f ? HudUI.Amber : HudUI.Ink;
 
         private static string Word(float bad01, string fine, string mild, string bad, string worst)
             => bad01 >= 0.92f ? worst : bad01 >= 0.6f ? bad : bad01 >= 0.35f ? mild : fine;
@@ -652,19 +644,19 @@ Keyboard kbEsc = Keyboard.current;
             panel.gameObject.AddComponent<CanvasGroup>();
             _fader = panel.gameObject.AddComponent<UIFader>();   // starts hidden (Awake sets alpha 0)
 
-            // Dim the frozen world, darken its edges, and lay a deep scrim down the left for the menu.
+            // UITheme.Pause.Dim the frozen world, darken its edges, and lay a deep scrim down the left for the menu.
             Image dim = HudUI.Stretch(panel, "Dim").gameObject.AddComponent<Image>();
-            dim.color = new Color(0.02f, 0.025f, 0.035f, 0.5f);
+            dim.color = UITheme.Pause.WorldDim;
             Image vignette = HudUI.Stretch(panel, "Vignette").gameObject.AddComponent<Image>();
             vignette.sprite = HudSprites.Vignette;
-            vignette.color = new Color(0f, 0f, 0f, 0.8f);
+            vignette.color = UITheme.Ink(0.8f);
             vignette.raycastTarget = false;
             RectTransform scrim = HudUI.Rect(panel, "Scrim", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), Vector2.zero, new Vector2(1180f, 0f));
             scrim.anchorMin = Vector2.zero;
             scrim.anchorMax = new Vector2(0f, 1f);
             var scrimImg = scrim.gameObject.AddComponent<Image>();
             scrimImg.sprite = HudSprites.ScrimLeft;
-            scrimImg.color = new Color(0.008f, 0.01f, 0.016f, 0.94f);
+            scrimImg.color = UITheme.Pause.Scrim;
             scrimImg.raycastTarget = false;
 
             BuildColumn(panel);
@@ -678,18 +670,18 @@ Keyboard kbEsc = Keyboard.current;
             _columnGroup = _column.gameObject.AddComponent<CanvasGroup>();
             var top = new Vector2(0f, 1f);
 
-            _eyebrow = HudUI.Label(_column, "Eyebrow", 17, TextAnchor.UpperLeft, Amber, top, top, new Vector2(2f, 0f), new Vector2(ItemWidth + 60f, 24f), FontStyle.Bold);
+            _eyebrow = HudUI.Label(_column, "Eyebrow", 17, TextAnchor.UpperLeft, UITheme.Pause.Amber, top, top, new Vector2(2f, 0f), new Vector2(ItemWidth + 60f, 24f), FontStyle.Bold);
             RectTransform bar = HudUI.Rect(_column, "TitleBar", top, top, new Vector2(-24f, -40f), new Vector2(6f, 74f));
             var barImg = bar.gameObject.AddComponent<Image>();
-            barImg.color = Amber;
+            barImg.color = UITheme.Pause.Amber;
             barImg.raycastTarget = false;
             Text title = HudUI.Label(_column, "Title", 92, TextAnchor.UpperLeft, Color.white, top, top, new Vector2(-6f, -22f), new Vector2(ItemWidth + 60f, 110f), FontStyle.Bold);
             title.text = "PAUSED";
-            _info = HudUI.Label(_column, "Info", 19, TextAnchor.UpperLeft, Dim, top, top, new Vector2(2f, -134f), new Vector2(ItemWidth + 260f, 26f));
+            _info = HudUI.Label(_column, "Info", 19, TextAnchor.UpperLeft, UITheme.Pause.Dim, top, top, new Vector2(2f, -134f), new Vector2(ItemWidth + 260f, 26f));
             RectTransform rule = HudUI.Rect(_column, "Rule", top, top, new Vector2(0f, -176f), new Vector2(ItemWidth, 1f));
             var ruleImg = rule.gameObject.AddComponent<Image>();
             ruleImg.sprite = HudSprites.ScrimLeft;
-            ruleImg.color = new Color(1f, 1f, 1f, 0.28f);
+            ruleImg.color = UITheme.Glass(0.28f);
             ruleImg.raycastTarget = false;
 
             AddAction("RESUME", "ESC", Resume, () => "Back to it. The world stays frozen until you are.");
@@ -713,9 +705,9 @@ Keyboard kbEsc = Keyboard.current;
             for (int i = 0; i < _items.Count; i++) BuildItem(_items[i], i);
 
             float below = ItemsTop - _items.Count * (ItemHeight + ItemGap) - 10f;
-            _description = HudUI.Label(_column, "Description", 18, TextAnchor.UpperLeft, Dim, top, top, new Vector2(2f, below), new Vector2(ItemWidth, 66f));
+            _description = HudUI.Label(_column, "Description", 18, TextAnchor.UpperLeft, UITheme.Pause.Dim, top, top, new Vector2(2f, below), new Vector2(ItemWidth, 66f));
             _description.horizontalOverflow = HorizontalWrapMode.Wrap;
-            _status = HudUI.Label(_column, "Status", 19, TextAnchor.UpperLeft, Good, top, top, new Vector2(2f, below - 70f), new Vector2(ItemWidth, 26f), FontStyle.Bold);
+            _status = HudUI.Label(_column, "Status", 19, TextAnchor.UpperLeft, UITheme.Pause.Good, top, top, new Vector2(2f, below - 70f), new Vector2(ItemWidth, 26f), FontStyle.Bold);
             _status.enabled = false;
         }
 
@@ -756,7 +748,7 @@ wearRt.pivot = new Vector2(0.5f, 0f);
 wearRt.anchoredPosition = new Vector2(0f, 0f);
 wearRt.sizeDelta = new Vector2(0.8f * it.Accent.rectTransform.sizeDelta.x, 2f);
 var wearImg = wearObj.AddComponent<Image>();
-wearImg.color = HudUI.WithAlpha(Dim, 0.4f);
+wearImg.color = HudUI.WithAlpha(UITheme.Pause.Dim, 0.4f);
 wearImg.raycastTarget = false;
 
                      // metal‑cap visual on the accent bar
@@ -769,9 +761,9 @@ wearImg.raycastTarget = false;
                      float w = 5f + (index % 3) * 0.5f;
                      capRt.sizeDelta = new Vector2(w, 4f);
                      var capImg = capObj.AddComponent<Image>();
-                     capImg.color = HudUI.WithAlpha(Dim, 0.6f);
+                     capImg.color = HudUI.WithAlpha(UITheme.Pause.Dim, 0.6f);
                      capImg.raycastTarget = false;
-            it.Text = HudUI.Label(it.Content, "Label", 23, TextAnchor.MiddleLeft, Idle, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
+            it.Text = HudUI.Label(it.Content, "Label", 23, TextAnchor.MiddleLeft, UITheme.Pause.Idle, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(26f, 0f), new Vector2(320f, 30f), FontStyle.Bold);
             // subtle rivet accent for the row
             var rivet = new GameObject($"Rivet{index}");
@@ -782,21 +774,21 @@ wearImg.raycastTarget = false;
             rrt.anchoredPosition = new Vector2(2f, -4f);
             rrt.sizeDelta = new Vector2(4f, 4f);
             var rimg = rivet.AddComponent<Image>();
-            rimg.color = new Color(0.7f, 0.7f, 0.7f, 0.9f);
+            rimg.color = UITheme.Pause.Rivet;
             it.Text.text = it.Label;
 
             if (it.Kind == ItemKind.Action)
             {
                 if (!string.IsNullOrEmpty(it.Key))
                 {
-                    it.KeyText = HudUI.Label(it.Content, "Key", 14, TextAnchor.MiddleRight, HudUI.WithAlpha(Dim, 0.8f), new Vector2(1f, 0.5f),
+                    it.KeyText = HudUI.Label(it.Content, "Key", 14, TextAnchor.MiddleRight, HudUI.WithAlpha(UITheme.Pause.Dim, 0.8f), new Vector2(1f, 0.5f),
                         new Vector2(1f, 0.5f), new Vector2(-18f, 0f), new Vector2(90f, 22f), FontStyle.Bold);
                     it.KeyText.text = it.Key;
                 }
                 return;
             }
 
-            it.ValueText = HudUI.Label(it.Content, "Value", 19, TextAnchor.MiddleCenter, Idle, new Vector2(1f, 0.5f), new Vector2(0.5f, 0.5f),
+            it.ValueText = HudUI.Label(it.Content, "Value", 19, TextAnchor.MiddleCenter, UITheme.Pause.Idle, new Vector2(1f, 0.5f), new Vector2(0.5f, 0.5f),
                 new Vector2(-128f, 0f), new Vector2(170f, 28f), FontStyle.Bold);
             it.LeftArrow = Arrow(it.Content, new Vector2(-232f, 0f), 90f, () => Select(captured, true), () => CycleItem(captured, -1));
             it.RightArrow = Arrow(it.Content, new Vector2(-24f, 0f), -90f, () => Select(captured, true), () => CycleItem(captured, 1));
@@ -809,7 +801,7 @@ wearImg.raycastTarget = false;
             var hit = hitRt.gameObject.AddComponent<Image>();
             hit.color = Color.clear;
             Pointer(hitRt.gameObject, enter, click);
-            Image icon = HudUI.Icon(hitRt, "Arrow", HudIcon.Arrow, Dim, new Vector2(0.5f, 0.5f), Vector2.zero, 15f);
+            Image icon = HudUI.Icon(hitRt, "Arrow", HudIcon.Arrow, UITheme.Pause.Dim, new Vector2(0.5f, 0.5f), Vector2.zero, 15f);
             icon.rectTransform.localRotation = Quaternion.Euler(0f, 0f, rotation);
             return icon;
         }
@@ -825,14 +817,14 @@ wearImg.raycastTarget = false;
         {
             var mid = new Vector2(1f, 0.5f);
             _card = HudUI.Panel(panel, "Survivor", mid, mid, new Vector2(-110f, 10f), new Vector2(CardWidth, 440f), out Image frame);
-            _card.GetComponent<Image>().color = new Color(0.025f, 0.03f, 0.04f, 0.84f);
-            frame.color = new Color(1f, 1f, 1f, 0.1f);
-            UITheme.AddTopAccent(_card, HudUI.WithAlpha(Amber, 0.85f), 3f);
+            _card.GetComponent<Image>().color = UITheme.Pause.Card;
+            frame.color = UITheme.Glass(0.1f);
+            UITheme.AddTopAccent(_card, HudUI.WithAlpha(UITheme.Pause.Amber, 0.85f), 3f);
             _cardGroup = _card.gameObject.AddComponent<CanvasGroup>();
             _cardGroup.blocksRaycasts = false;
 
             var top = new Vector2(0f, 1f);
-            HudUI.Label(_card, "Caption", 14, TextAnchor.UpperLeft, Amber, top, top, new Vector2(24f, -20f), new Vector2(300f, 20f), FontStyle.Bold).text = Spaced("Survivor");
+            HudUI.Label(_card, "Caption", 14, TextAnchor.UpperLeft, UITheme.Pause.Amber, top, top, new Vector2(24f, -20f), new Vector2(300f, 20f), FontStyle.Bold).text = Spaced("Survivor");
             _cardName = HudUI.Label(_card, "Name", 26, TextAnchor.UpperLeft, Color.white, top, top, new Vector2(24f, -42f), new Vector2(CardWidth - 48f, 34f), FontStyle.Bold);
             Rule(_card, -90f);
 
@@ -841,12 +833,12 @@ wearImg.raycastTarget = false;
             _food = Row(_card, 2, "Food");
             _water = Row(_card, 3, "Water");
             _rest = Row(_card, 4, "Rest");
-            HudUI.Label(_card, "WarmthLabel", 17, TextAnchor.MiddleLeft, Dim, top, new Vector2(0f, 0.5f), new Vector2(24f, RowY(5)), new Vector2(100f, 24f)).text = "Warmth";
-            _warmth = HudUI.Label(_card, "Warmth", 17, TextAnchor.MiddleLeft, Good, top, new Vector2(0f, 0.5f), new Vector2(124f, RowY(5)), new Vector2(CardWidth - 148f, 24f), FontStyle.Bold);
+            HudUI.Label(_card, "WarmthLabel", 17, TextAnchor.MiddleLeft, UITheme.Pause.Dim, top, new Vector2(0f, 0.5f), new Vector2(24f, RowY(5)), new Vector2(100f, 24f)).text = "Warmth";
+            _warmth = HudUI.Label(_card, "Warmth", 17, TextAnchor.MiddleLeft, UITheme.Pause.Good, top, new Vector2(0f, 0.5f), new Vector2(124f, RowY(5)), new Vector2(CardWidth - 148f, 24f), FontStyle.Bold);
 
             Rule(_card, RowY(5) - 26f);
-            _condition = HudUI.Label(_card, "Condition", 17, TextAnchor.UpperLeft, Good, top, top, new Vector2(24f, RowY(5) - 40f), new Vector2(CardWidth - 48f, 24f), FontStyle.Bold);
-            _run = HudUI.Label(_card, "Run", 16, TextAnchor.UpperLeft, Dim, top, top, new Vector2(24f, RowY(5) - 70f), new Vector2(CardWidth - 48f, 44f));
+            _condition = HudUI.Label(_card, "Condition", 17, TextAnchor.UpperLeft, UITheme.Pause.Good, top, top, new Vector2(24f, RowY(5) - 40f), new Vector2(CardWidth - 48f, 24f), FontStyle.Bold);
+            _run = HudUI.Label(_card, "Run", 16, TextAnchor.UpperLeft, UITheme.Pause.Dim, top, top, new Vector2(24f, RowY(5) - 70f), new Vector2(CardWidth - 48f, 44f));
             _run.horizontalOverflow = HorizontalWrapMode.Wrap;
         }
 
@@ -856,9 +848,9 @@ wearImg.raycastTarget = false;
         {
             var top = new Vector2(0f, 1f);
             float y = RowY(index);
-            HudUI.Label(card, label, 17, TextAnchor.MiddleLeft, Dim, top, new Vector2(0f, 0.5f), new Vector2(24f, y), new Vector2(100f, 24f)).text = label;
+            HudUI.Label(card, label, 17, TextAnchor.MiddleLeft, UITheme.Pause.Dim, top, new Vector2(0f, 0.5f), new Vector2(24f, y), new Vector2(100f, 24f)).text = label;
             Image fill = HudUI.Bar(card, label + "Bar", top, new Vector2(0f, 0.5f), new Vector2(124f, y), new Vector2(BarWidth, 6f),
-                new Color(1f, 1f, 1f, 0.08f), HudUI.Ink, out _);
+                UITheme.Glass(0.08f), HudUI.Ink, out _);
             Text value = HudUI.Label(card, label + "Value", 16, TextAnchor.MiddleRight, HudUI.Ink, new Vector2(1f, 1f), new Vector2(1f, 0.5f),
                 new Vector2(-24f, y), new Vector2(110f, 24f), FontStyle.Bold);
             return new CardRow { Fill = fill, Value = value };
@@ -868,7 +860,7 @@ wearImg.raycastTarget = false;
         {
             RectTransform rt = HudUI.Rect(parent, "Rule", new Vector2(0.5f, 1f), new Vector2(0.5f, 0.5f), new Vector2(0f, y), new Vector2(CardWidth - 48f, 1f));
             var img = rt.gameObject.AddComponent<Image>();
-            img.color = new Color(1f, 1f, 1f, 0.12f);
+            img.color = UITheme.Glass(0.12f);
             img.raycastTarget = false;
         }
 
@@ -878,10 +870,10 @@ wearImg.raycastTarget = false;
             string hint = GameSession.IsExtraction ? "Raids can't be saved \u2014 reach an exit to keep your kit."
                 : GameSession.IsHub ? "The bar keeps your kit and your stash between raids."
                 : "F5 quick-saves anytime.";
-            HudUI.Label(panel, "Hint", 15, TextAnchor.LowerLeft, HudUI.WithAlpha(Amber, 0.8f), bl, bl, new Vector2(ColumnX, 76f), new Vector2(1200f, 22f)).text = hint;
+            HudUI.Label(panel, "Hint", 15, TextAnchor.LowerLeft, HudUI.WithAlpha(UITheme.Pause.Amber, 0.8f), bl, bl, new Vector2(ColumnX, 76f), new Vector2(1200f, 22f)).text = hint;
             const string key = "<color=#F2EED8><b>";
             const string end = "</b></color>";
-            HudUI.Label(panel, "Controls", 15, TextAnchor.LowerLeft, Dim, bl, bl, new Vector2(ColumnX, 46f), new Vector2(1200f, 22f)).text =
+            HudUI.Label(panel, "Controls", 15, TextAnchor.LowerLeft, UITheme.Pause.Dim, bl, bl, new Vector2(ColumnX, 46f), new Vector2(1200f, 22f)).text =
                 key + "\u2191 \u2193" + end + "  Select        " + key + "\u2190 \u2192" + end + "  Change        "
                 + key + "Enter" + end + "  Confirm        " + key + "Esc" + end + "  Resume        " + key + "V" + end + "  Next view (in play)";
         }

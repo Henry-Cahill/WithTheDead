@@ -43,17 +43,6 @@ namespace CloneZ
         private const float GPollInterval = 0.25f;             // the ground and the containers in reach: 4×/s
         private const float GStatusSeconds = 3.5f;
 
-        private static readonly Color GWinBg = new Color32(0x0d, 0x0f, 0x11, 0xe6);     // 90 %
-        private static readonly Color GBorder = new Color32(0x5a, 0x5f, 0x66, 0xff);
-        private static readonly Color GTitleBg = new Color32(0x1a, 0x1d, 0x21, 0xff);
-        private static readonly Color GHeaderBg = new Color32(0x20, 0x24, 0x29, 0xff);
-        private static readonly Color GButtonBg = new Color32(0x2a, 0x2e, 0x33, 0xff);
-        private static readonly Color GTextDim = new Color(0.64f, 0.67f, 0.72f);
-        private static readonly Color GOver = new Color(0.95f, 0.36f, 0.3f);
-        private static readonly Color GChargeCol = new Color(0.35f, 0.85f, 0.95f);
-        private static readonly Color GAccent = new Color(0.5f, 0.68f, 0.9f);
-        private static readonly Color GGroundTint = new Color(0.42f, 0.4f, 0.34f);
-        private static readonly Color GPocketTint = new Color(0.45f, 0.5f, 0.56f);
         #endregion
 
         #region Grid view types
@@ -209,7 +198,7 @@ namespace CloneZ
             _gridRootRt.offsetMin = Vector2.zero;
             _gridRootRt.offsetMax = Vector2.zero;
             // The lightest of dims: the world stays readable around the windows.
-            _gridRoot.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.12f);
+            _gridRoot.AddComponent<Image>().color = UITheme.Ink(0.12f);
             _gridFader = _gridRoot.AddComponent<UIFader>();
             _groundOrder = CompareGround;
 
@@ -238,8 +227,8 @@ namespace CloneZ
             var w = new GridWindow { Left = left };
             RectTransform root = GRect(name, _gridRootRt);
             GPlace(root, pos.x, pos.y, size.x, size.y);
-            root.gameObject.AddComponent<Image>().color = GWinBg;   // also swallows clicks on the panel
-            GBorderLines(root, GBorder);
+            root.gameObject.AddComponent<Image>().color = UITheme.Bag.GridWindow;   // also swallows clicks on the panel
+            GBorderLines(root, UITheme.Bag.GridBorder);
             w.Root = root;
 
             // Title bar: drag it to move the window. Close (X) and the list-view toggle sit at its right.
@@ -249,17 +238,17 @@ namespace CloneZ
             bar.pivot = new Vector2(0f, 1f);
             bar.offsetMin = new Vector2(1f, -(GTitleH + 1f));
             bar.offsetMax = new Vector2(-1f, -1f);
-            bar.gameObject.AddComponent<Image>().color = GTitleBg;
+            bar.gameObject.AddComponent<Image>().color = UITheme.Bag.GridTitleBar;
             var mover = bar.gameObject.AddComponent<GridDragHandle>();
             mover.Target = root;
             mover.Changed = () => KeepOnScreen(root);
 
-            RectTransform close = (RectTransform)GButton(bar, "Close", "X", 13, new Color(0.4f, 0.16f, 0.16f), Close, out _).transform;
+            RectTransform close = (RectTransform)GButton(bar, "Close", "X", 13, UITheme.Bag.GridCloseButton, Close, out _).transform;
             close.anchorMin = close.anchorMax = close.pivot = new Vector2(1f, 0.5f);
             close.anchoredPosition = new Vector2(-2f, 0f);
             close.sizeDelta = new Vector2(GTitleH - 4f, GTitleH - 4f);
 
-            RectTransform toList = (RectTransform)GButton(bar, "List View", "List view", 11, GButtonBg, () => SetViewMode(false), out _).transform;
+            RectTransform toList = (RectTransform)GButton(bar, "List View", "List view", 11, UITheme.Bag.GridButton, () => SetViewMode(false), out _).transform;
             toList.anchorMin = toList.anchorMax = toList.pivot = new Vector2(1f, 0.5f);
             toList.anchoredPosition = new Vector2(-(GTitleH + 2f), 0f);
             toList.sizeDelta = new Vector2(64f, GTitleH - 4f);
@@ -284,7 +273,7 @@ namespace CloneZ
 
             RectTransform vp = GRect("Viewport", scrollRt);
             GFill(vp, 0f, 0f, 0f, 0f);
-            vp.gameObject.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0f);   // invisible, but catches the wheel
+            vp.gameObject.AddComponent<Image>().color = UITheme.Clear;   // invisible, but catches the wheel
             vp.gameObject.AddComponent<RectMask2D>();
 
             RectTransform content = GRect("Content", vp);
@@ -306,7 +295,7 @@ namespace CloneZ
             sbRt.pivot = new Vector2(1f, 1f);
             sbRt.offsetMin = new Vector2(-(barRight + GScrollbarW), GFootH);
             sbRt.offsetMax = new Vector2(-barRight, -top);
-            sbRt.gameObject.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.04f);
+            sbRt.gameObject.AddComponent<Image>().color = UITheme.Glass(0.04f);
             RectTransform slide = GRect("Sliding Area", sbRt);
             GFill(slide, 0f, 0f, 0f, 0f);
             Image handle = GImage(slide, "Handle", Color.white, raycast: true);
@@ -317,9 +306,9 @@ namespace CloneZ
             sb.direction = Scrollbar.Direction.BottomToTop;
             sb.navigation = new Navigation { mode = Navigation.Mode.None };
             ColorBlock sbc = sb.colors;
-            sbc.normalColor = new Color(1f, 1f, 1f, 0.2f);
-            sbc.highlightedColor = new Color(1f, 1f, 1f, 0.32f);
-            sbc.pressedColor = new Color(1f, 1f, 1f, 0.42f);
+            sbc.normalColor = UITheme.Glass(0.2f);
+            sbc.highlightedColor = UITheme.Glass(0.32f);
+            sbc.pressedColor = UITheme.Glass(0.42f);
             sbc.selectedColor = sbc.normalColor;
             sbc.colorMultiplier = 1f;
             sb.colors = sbc;
@@ -337,7 +326,7 @@ namespace CloneZ
             w.TabStrip = tabs;
 
             // A status line, then the footer buttons — each acting toward the other window.
-            w.Status = GText(root, "Status", 11, TextAnchor.MiddleLeft, GTextDim);
+            w.Status = GText(root, "Status", 11, TextAnchor.MiddleLeft, UITheme.Bag.GridTextDim);
             RectTransform st = w.Status.rectTransform;
             st.anchorMin = Vector2.zero;
             st.anchorMax = new Vector2(1f, 0f);
@@ -357,7 +346,7 @@ namespace CloneZ
             FooterButton(foot, 0.61f, 1.00f, "Transfer / sort options", ShowGridOptions, GridSprites.Gear());
 
             // The resize grip in the bottom-right corner.
-            Image grip = GImage(root, "Resize Grip", new Color(1f, 1f, 1f, 0.45f), raycast: true);
+            Image grip = GImage(root, "Resize Grip", UITheme.Glass(0.45f), raycast: true);
             grip.sprite = GridSprites.Grip();
             RectTransform grt = grip.rectTransform;
             grt.anchorMin = grt.anchorMax = grt.pivot = new Vector2(1f, 0f);
@@ -378,7 +367,7 @@ namespace CloneZ
         // A footer button stretched over a fraction of the footer, so the row scales with the window.
         private void FooterButton(RectTransform foot, float from, float to, string label, UnityEngine.Events.UnityAction onClick, Sprite icon)
         {
-            Button b = GButton(foot, label, label, 12, GButtonBg, onClick, out Text text);
+            Button b = GButton(foot, label, label, 12, UITheme.Bag.GridButton, onClick, out Text text);
             var rt = (RectTransform)b.transform;
             rt.anchorMin = new Vector2(from, 0f);
             rt.anchorMax = new Vector2(to, 1f);
@@ -387,7 +376,7 @@ namespace CloneZ
             rt.offsetMax = new Vector2(to < 1f ? -2f : 0f, 0f);
             if (icon == null) return;
 
-            Image ic = GImage(rt, "Icon", new Color(1f, 1f, 1f, 0.85f));
+            Image ic = GImage(rt, "Icon", UITheme.Glass(0.85f));
             ic.sprite = icon;
             RectTransform irt = ic.rectTransform;
             irt.anchorMin = irt.anchorMax = irt.pivot = new Vector2(0f, 0.5f);
@@ -427,7 +416,7 @@ namespace CloneZ
                 GBorderLines(rt, GridSprites.CellLine);
                 AddRelay(rt.gameObject, GridElement.EquipSlot, i);
 
-                ev.Caption = GText(rt, "Slot", 9, TextAnchor.UpperLeft, GTextDim, shadow: false);
+                ev.Caption = GText(rt, "Slot", 9, TextAnchor.UpperLeft, UITheme.Bag.GridTextDim, shadow: false);
                 GFill(ev.Caption.rectTransform, 3f, 0f, 2f, 1f);
                 ev.Caption.text = slots[i].ToString().ToUpperInvariant();
 
@@ -435,7 +424,7 @@ namespace CloneZ
                 GFill(ev.Name.rectTransform, 3f, 5f, 3f, 10f);
                 BestFit(ev.Name, 8, 11);
 
-                Image barBg = GImage(rt, "Bar", new Color(0f, 0f, 0f, 0.6f));
+                Image barBg = GImage(rt, "Bar", UITheme.Ink(0.6f));
                 ev.BarBg = barBg.rectTransform;
                 ev.BarBg.anchorMin = Vector2.zero;
                 ev.BarBg.anchorMax = new Vector2(1f, 0f);
@@ -472,18 +461,18 @@ namespace CloneZ
             headImg.color = Color.white;
             var headBtn = head.gameObject.AddComponent<Button>();
             headBtn.targetGraphic = headImg;
-            headBtn.colors = Tints(GHeaderBg);
+            headBtn.colors = Tints(UITheme.Bag.GridHeader);
             headBtn.onClick.AddListener(() => ToggleSection(v));
             MouseOnly(headBtn);
             head.gameObject.SetActive(true);
 
             v.HeaderText = GText(head, "Name", 12, TextAnchor.MiddleLeft, Color.white);
             GFill(v.HeaderText.rectTransform, 6f, 0f, 6f, 0f);
-            Image box = GImage(head, "Fold", new Color(1f, 1f, 1f, 0.06f));
+            Image box = GImage(head, "Fold", UITheme.Glass(0.06f));
             v.Toggle = box.rectTransform;
             v.Toggle.anchorMin = v.Toggle.anchorMax = v.Toggle.pivot = new Vector2(0f, 0.5f);
             v.Toggle.sizeDelta = new Vector2(16f, 14f);
-            GBorderLines(v.Toggle, GBorder);
+            GBorderLines(v.Toggle, UITheme.Bag.GridBorder);
             v.ToggleText = GText(v.Toggle, "Glyph", 8, TextAnchor.MiddleCenter, Color.white, shadow: false);
             GFill(v.ToggleText.rectTransform, 0f, 0f, 0f, 0f);
 
@@ -495,13 +484,13 @@ namespace CloneZ
             v.Row.offsetMin = new Vector2(0f, -(GSecHeadH + 4f));
             v.Row.offsetMax = new Vector2(0f, -(GSecHeadH + 4f));
 
-            v.Icon = GImage(v.Row, "Icon", GHeaderBg);
+            v.Icon = GImage(v.Row, "Icon", UITheme.Bag.GridHeader);
             GPlace(v.Icon.rectTransform, 4f, 0f, GIconTile, GIconTile);
-            GBorderLines(v.Icon.rectTransform, GBorder);
+            GBorderLines(v.Icon.rectTransform, UITheme.Bag.GridBorder);
             v.IconGlyph = GText(v.Icon.rectTransform, "Glyph", 14, TextAnchor.MiddleCenter, Color.white);
             GFill(v.IconGlyph.rectTransform, 0f, 0f, 0f, 0f);
             v.IconGlyph.fontStyle = FontStyle.Bold;
-            v.Caption = GText(v.Row, "Load", 10, TextAnchor.UpperCenter, GTextDim);
+            v.Caption = GText(v.Row, "Load", 10, TextAnchor.UpperCenter, UITheme.Bag.GridTextDim);
             GPlace(v.Caption.rectTransform, 0f, -(GIconTile + 2f), GIconTile + 8f, 14f);
 
             Image cells = GImage(v.Row, "Cells", Color.white);
@@ -528,7 +517,7 @@ namespace CloneZ
             t.Count.fontStyle = FontStyle.Bold;
 
             // The condition / charge bar along the bottom.
-            Image barBg = GImage(t.Rt, "Bar", new Color(0f, 0f, 0f, 0.6f));
+            Image barBg = GImage(t.Rt, "Bar", UITheme.Ink(0.6f));
             t.BarBg = barBg.rectTransform;
             t.BarBg.anchorMin = Vector2.zero;
             t.BarBg.anchorMax = new Vector2(1f, 0f);
@@ -543,7 +532,7 @@ namespace CloneZ
             t.BarFill.offsetMax = Vector2.zero;
 
             // The hand badge on the weapon in hand.
-            t.Badge = GImage(t.Rt, "In Hand", new Color(0.55f, 0.95f, 0.6f));
+            t.Badge = GImage(t.Rt, "In Hand", UITheme.Bag.InHandBadge);
             t.Badge.sprite = GridSprites.Hand();
             RectTransform br = t.Badge.rectTransform;
             br.anchorMin = br.anchorMax = br.pivot = Vector2.one;
@@ -558,19 +547,19 @@ namespace CloneZ
         private TabView NewTab(GridWindow w, int index)
         {
             var t = new TabView();
-            t.Bg = GImage(w.TabStrip, "Tab", GTitleBg, raycast: true);
+            t.Bg = GImage(w.TabStrip, "Tab", UITheme.Bag.GridTitleBar, raycast: true);
             t.Rt = t.Bg.rectTransform;
             GPlace(t.Rt, 0f, -index * (GTabW + GTabGap), GTabW, GTabW);
-            GBorderLines(t.Rt, GBorder);
+            GBorderLines(t.Rt, UITheme.Bag.GridBorder);
 
-            Image fill = GImage(t.Rt, "Search", new Color(0.5f, 0.72f, 0.9f, 0.45f));
+            Image fill = GImage(t.Rt, "Search", UITheme.Fade(UITheme.Bag.SearchFill, 0.45f));
             t.Fill = fill.rectTransform;
             t.Fill.anchorMin = Vector2.zero;
             t.Fill.anchorMax = new Vector2(1f, 0f);
             t.Fill.pivot = new Vector2(0.5f, 0f);
             SetTabFill(t, 0f);
 
-            t.Mark = GImage(t.Rt, "Selected", GAccent);
+            t.Mark = GImage(t.Rt, "Selected", UITheme.Bag.BlueAccent);
             RectTransform m = t.Mark.rectTransform;
             m.anchorMin = Vector2.zero;
             m.anchorMax = new Vector2(0f, 1f);
@@ -626,7 +615,7 @@ namespace CloneZ
             float load = _player.Load;
             w.Title.text = FitText(w.Title, GameSession.SurvivorName + "   " + _player.Weight.ToString("0.0") + " / " + _player.Capacity.ToString("0.0"),
                 "", Mathf.Max(60f, w.Title.rectTransform.rect.width));
-            w.Title.color = load >= 1f ? GOver : load >= CloneZConfig.EncumbranceStart ? AmberCol : Color.white;
+            w.Title.color = load >= 1f ? UITheme.Bag.GridOver : load >= CloneZConfig.EncumbranceStart ? UITheme.Bag.ListAmber : Color.white;
             RefreshEquip();
 
             InventoryLayout layout = _player.Layout;
@@ -641,7 +630,7 @@ namespace CloneZ
                     bool over = !s.Unlimited && kg > s.Capacity + 0.001f;
                     string cap = s.Unlimited ? kg.ToString("0.0") + " kg" : kg.ToString("0.#") + " / " + s.Capacity.ToString("0.#");
                     y = BindSection(SectionAt(w, used++), GridSide.Player, s, _player.Inventory, s, s.Width, layout.RowsShown(s),
-                        s.Name, SectionGlyph(s), s.Source != null ? s.Source.Tint : GPocketTint, cap, over, y);
+                        s.Name, SectionGlyph(s), s.Source != null ? s.Source.Tint : UITheme.Bag.PocketTint, cap, over, y);
                 }
             }
             FinishSections(w, used, y);
@@ -707,7 +696,7 @@ namespace CloneZ
             w.Title.text = "Ground   " + floorKg.ToString("0.0") + " kg";
             w.Title.color = Color.white;
             float gy = BindSection(SectionAt(w, 0), GridSide.Ground, null, null, GroundKey, GroundCols, Mathf.Max(GroundMinRows, rows + 1),
-                "Ground", "Grd", GGroundTint, floorKg.ToString("0.#") + " / " + GroundRefKg.ToString("0"), floorKg > GroundRefKg, 0f);
+                "Ground", "Grd", UITheme.Bag.GroundTint, floorKg.ToString("0.#") + " / " + GroundRefKg.ToString("0"), floorKg > GroundRefKg, 0f);
             FinishSections(w, 1, gy);
 
             SectionView gv = w.Sections[0];
@@ -746,7 +735,7 @@ namespace CloneZ
                 v.Icon.color = Color.Lerp(GridSprites.CellFill, tint, 0.45f);
                 v.IconGlyph.text = glyph;
                 v.Caption.text = caption;
-                v.Caption.color = over ? GOver : GTextDim;
+                v.Caption.color = over ? UITheme.Bag.GridOver : UITheme.Bag.GridTextDim;
                 v.Grid.sizeDelta = new Vector2(v.Cols * Cell + 1f, v.Rows * Cell + 1f);
                 h += 4f + Mathf.Max(GIconTile + 16f, v.Rows * Cell + 1f);
             }
@@ -866,13 +855,13 @@ namespace CloneZ
                     tint.a = 1f;
                     ev.BaseColor = Color.Lerp(GridSprites.CellFill, tint, 0.4f);
                     ev.Name.text = p.Def.DisplayName;
-                    ev.Caption.color = new Color(0.82f, 0.85f, 0.9f, 0.85f);
+                    ev.Caption.color = UITheme.Bag.SlotCaption;
                 }
                 else
                 {
-                    ev.BaseColor = new Color(GridSprites.CellFill.r, GridSprites.CellFill.g, GridSprites.CellFill.b, 0.55f);
+                    ev.BaseColor = UITheme.Fade(GridSprites.CellFill, 0.55f);
                     ev.Name.text = "";
-                    ev.Caption.color = new Color(1f, 1f, 1f, 0.3f);
+                    ev.Caption.color = UITheme.Glass(0.3f);
                 }
                 ev.Bg.color = ev.BaseColor;
                 UpdateEquipBar(ev, p);
@@ -886,7 +875,7 @@ namespace CloneZ
             if (!bar) return;
             float f = p.Condition01;
             ev.BarFill.anchorMax = new Vector2(f, 1f);
-            ev.BarFillImg.color = p.Def.UsesCharge ? GChargeCol : WearColor(f);
+            ev.BarFillImg.color = p.Def.UsesCharge ? UITheme.Bag.GridCharge : WearColor(f);
         }
 
         // Left: a tab per section. Right: the ground, then every container in reach (nearest first).
@@ -900,12 +889,12 @@ namespace CloneZ
                 TabView t = TabAt(l, l.TabsUsed++);
                 t.Section = v;
                 t.Container = null;
-                Color tint = v.Section != null && v.Section.Source != null ? v.Section.Source.Tint : GPocketTint;
+                Color tint = v.Section != null && v.Section.Source != null ? v.Section.Source.Tint : UITheme.Bag.PocketTint;
                 tint.a = 1f;
-                t.BaseColor = Color.Lerp(GTitleBg, tint, 0.3f);
+                t.BaseColor = Color.Lerp(UITheme.Bag.GridTitleBar, tint, 0.3f);
                 t.Bg.color = t.BaseColor;
                 t.Glyph.text = v.Section != null ? SectionGlyph(v.Section) : "";
-                t.Glyph.color = v.Collapsed ? new Color(1f, 1f, 1f, 0.4f) : Color.white;
+                t.Glyph.color = v.Collapsed ? UITheme.Glass(0.4f) : Color.white;
                 t.Mark.enabled = false;
                 SetTabFill(t, 0f);
             }
@@ -920,7 +909,7 @@ namespace CloneZ
             TabView g = TabAt(r, r.TabsUsed++);
             g.Section = null;
             g.Container = null;
-            g.BaseColor = Color.Lerp(GTitleBg, GGroundTint, 0.35f);
+            g.BaseColor = Color.Lerp(UITheme.Bag.GridTitleBar, UITheme.Bag.GroundTint, 0.35f);
             g.Bg.color = g.BaseColor;
             g.Glyph.text = "Grd";
             g.Glyph.color = Color.white;
@@ -933,11 +922,11 @@ namespace CloneZ
                 TabView t = TabAt(r, r.TabsUsed++);
                 t.Section = null;
                 t.Container = c;
-                t.BaseColor = Color.Lerp(GTitleBg, ContainerColor(c), 0.4f);
+                t.BaseColor = Color.Lerp(UITheme.Bag.GridTitleBar, ContainerColor(c), 0.4f);
                 t.Bg.color = t.BaseColor;
                 t.Glyph.text = ContainerGlyph(c);
                 bool unsearched = !c.Searched && c.SearchTime > 0f;
-                t.Glyph.color = unsearched ? AmberCol : Color.white;   // still to be rummaged through
+                t.Glyph.color = unsearched ? UITheme.Bag.ListAmber : Color.white;   // still to be rummaged through
                 t.Mark.enabled = c == _openContainer;
                 bool busy = c == searching;
                 if (busy) _searchTab = t;
@@ -1177,7 +1166,7 @@ namespace CloneZ
         {
             if (w == null || w.Status == null) return;
             w.Status.text = message ?? "";
-            w.Status.color = warn ? AmberCol : GTextDim;
+            w.Status.color = warn ? UITheme.Bag.ListAmber : UITheme.Bag.GridTextDim;
             w.StatusTimer = string.IsNullOrEmpty(message) ? 0f : GStatusSeconds;
         }
         #endregion
@@ -1191,8 +1180,8 @@ namespace CloneZ
             if (d.Perishable)
             {
                 FoodState st = s.State;
-                if (st == FoodState.Rotten) c = Color.Lerp(c, new Color(0.3f, 0.36f, 0.12f), 0.6f);
-                else if (st == FoodState.Stale) c = Color.Lerp(c, new Color(0.5f, 0.44f, 0.16f), 0.35f);
+                if (st == FoodState.Rotten) c = Color.Lerp(c, UITheme.Bag.RottenTint, 0.6f);
+                else if (st == FoodState.Stale) c = Color.Lerp(c, UITheme.Bag.StaleTint, 0.35f);
             }
             c.a = 0.96f;
             return c;
@@ -1202,7 +1191,7 @@ namespace CloneZ
         private static bool TileBar(ItemStack s, out float fill, out Color col)
         {
             ItemDef d = s.Def;
-            if (d.UsesCharge) { fill = s.Charge01; col = GChargeCol; return true; }
+            if (d.UsesCharge) { fill = s.Charge01; col = UITheme.Bag.GridCharge; return true; }
             if (d.IsDamageable) { fill = s.Condition01; col = WearColor(fill); return true; }
             fill = 0f;
             col = Color.clear;
@@ -1210,8 +1199,8 @@ namespace CloneZ
         }
 
         private static Color WearColor(float c01) => c01 >= 0.5f
-            ? Color.Lerp(AmberCol, GoodCol, (c01 - 0.5f) * 2f)
-            : Color.Lerp(BadCol, AmberCol, c01 * 2f);
+            ? Color.Lerp(UITheme.Bag.ListAmber, UITheme.Bag.ListGood, (c01 - 0.5f) * 2f)
+            : Color.Lerp(UITheme.Bag.ListBad, UITheme.Bag.ListAmber, c01 * 2f);
 
         private static Color Lit(Color c) { Color l = Color.Lerp(c, Color.white, 0.14f); l.a = c.a; return l; }
         private static Color Faded(Color c) { c.a *= 0.3f; return c; }
@@ -1339,7 +1328,7 @@ namespace CloneZ
             cb.highlightedColor = Lit(normal);
             cb.pressedColor = Color.Lerp(normal, Color.white, 0.24f);
             cb.selectedColor = normal;
-            cb.disabledColor = new Color(normal.r, normal.g, normal.b, normal.a * 0.45f);
+            cb.disabledColor = UITheme.Fade(normal, normal.a * 0.45f);
             cb.colorMultiplier = 1f;
             cb.fadeDuration = 0.06f;
             return cb;
@@ -1369,7 +1358,7 @@ namespace CloneZ
             btn.colors = Tints(bg);
             if (onClick != null) btn.onClick.AddListener(onClick);
             MouseOnly(btn);
-            GBorderLines(rt, new Color(GBorder.r, GBorder.g, GBorder.b, 0.6f));
+            GBorderLines(rt, UITheme.Fade(UITheme.Bag.GridBorder, 0.6f));
 
             text = GText(rt, "Text", fontSize, TextAnchor.MiddleCenter, Color.white, shadow: false);
             GFill(text.rectTransform, 4f, 0f, 4f, 0f);

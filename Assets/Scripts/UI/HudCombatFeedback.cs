@@ -13,10 +13,6 @@ namespace CloneZ
     {
         private const int ArcCount = 4;
         private const float ArcLife = 1.6f, ArcFade = 0.7f, HitLife = 0.22f, KillLife = 0.55f, MeleeReach = 4f;
-        private static readonly Color ArcColor = new Color(0.92f, 0.08f, 0.06f, 1f);
-        private static readonly Color HitColor = new Color(1f, 1f, 1f, 1f);
-        private static readonly Color KillColor = new Color(1f, 0.2f, 0.16f, 1f);
-        private static readonly Color HeadColor = new Color(1f, 0.72f, 0.2f, 1f);
 
         private readonly HudContext _ctx;
         private readonly RectTransform[] _arcRoots = new RectTransform[ArcCount];
@@ -46,7 +42,7 @@ namespace CloneZ
                 RectTransform rt = HudUI.Rect(root, "DamageArc", centre, centre, Vector2.zero, new Vector2(460f, 460f));
                 var img = rt.gameObject.AddComponent<Image>();
                 img.sprite = HudSprites.DamageArc;
-                img.color = HudUI.WithAlpha(ArcColor, 0f);
+                img.color = HudUI.WithAlpha(UITheme.Hud.DamageArc, 0f);
                 img.raycastTarget = false;
                 img.enabled = false;
                 _arcRoots[i] = rt;
@@ -62,7 +58,7 @@ namespace CloneZ
                 img.sprite = HudIcons.Get(HudIcon.White);
                 img.raycastTarget = false;
                 var outline = t.gameObject.AddComponent<Outline>();
-                outline.effectColor = new Color(0f, 0f, 0f, 0.55f);
+                outline.effectColor = UITheme.Ink(0.55f);
                 outline.effectDistance = new Vector2(1f, -1f);
                 _tickRects[i] = t;
                 _ticks[i] = img;
@@ -187,7 +183,7 @@ namespace CloneZ
                 if (!on) continue;
                 float angle = Vector3.SignedAngle(fwd, Flat(_arcFrom[i] - me), Vector3.up);
                 _arcRoots[i].localRotation = Quaternion.Euler(0f, 0f, -angle);
-                img.color = HudUI.WithAlpha(ArcColor, 0.9f * Mathf.Clamp01(_arcLife[i] / ArcFade));
+                img.color = HudUI.WithAlpha(UITheme.Hud.DamageArc, 0.9f * Mathf.Clamp01(_arcLife[i] / ArcFade));
             }
         }
 
@@ -202,7 +198,7 @@ namespace CloneZ
             float pop = 1f - (1f - k) * (1f - k);
             float dist = _kill ? 9f + 8f * pop : 8f + 4f * pop;
             Vector2 size = _kill ? new Vector2(15f, 3f) : new Vector2(11f, 2.5f);
-            Color c = _kill ? (_headshot ? HeadColor : KillColor) : HitColor;
+            Color c = _kill ? (_headshot ? UITheme.Hud.HeadshotMarker : UITheme.Hud.KillMarker) : UITheme.Hud.HitMarker;
             c.a = Mathf.Clamp01(_markerLife / (_markerSpan * 0.6f));
             for (int i = 0; i < 4; i++)
             {

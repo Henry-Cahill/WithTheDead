@@ -13,8 +13,6 @@ namespace CloneZ
     public sealed class HudBodycamView
     {
         private const float Inset = 76f, BracketInset = 44f, BracketArm = 66f, BracketThick = 3f;
-        private static readonly Color OsdColor = new Color(0.96f, 0.96f, 0.92f, 0.95f);
-        private static readonly Color RecRed = new Color(1f, 0.16f, 0.12f, 1f);
         private static readonly string[] Months = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
 
         private readonly HudContext _ctx;
@@ -40,7 +38,7 @@ namespace CloneZ
             _scanlines.rectTransform.SetParent(root, false);
             UIKit.Stretch(_scanlines.rectTransform);
             _scanlines.texture = HudSprites.Scanlines;
-            _scanlines.color = new Color(1f, 1f, 1f, 0.11f);
+            _scanlines.color = UITheme.Glass(0.11f);
             _scanlines.raycastTarget = false;
 
             Bracket(root, new Vector2(0f, 1f), 1f, -1f);
@@ -50,7 +48,7 @@ namespace CloneZ
 
             // Top-left: REC and the tape counter.
             var tl = new Vector2(0f, 1f);
-            _recDot = HudUI.Icon(root, "RecLight", HudIcon.Disc, RecRed, tl, new Vector2(Inset + 10f, -Inset - 4f), 20f);
+            _recDot = HudUI.Icon(root, "RecLight", HudIcon.Disc, UITheme.Hud.BodycamRec, tl, new Vector2(Inset + 10f, -Inset - 4f), 20f);
             Osd(root, "Rec", 32, TextAnchor.MiddleLeft, tl, new Vector2(0f, 0.5f), new Vector2(Inset + 28f, -Inset - 4f), 140f).text = "REC";
             _counter = Osd(root, "Counter", 24, TextAnchor.MiddleLeft, tl, new Vector2(0f, 0.5f), new Vector2(Inset, -Inset - 40f), 220f);
             Osd(root, "Speed", 20, TextAnchor.MiddleLeft, tl, new Vector2(0f, 0.5f), new Vector2(Inset + 128f, -Inset - 40f), 60f).text = "SP";
@@ -74,7 +72,7 @@ namespace CloneZ
             var tc = new Vector2(0.5f, 1f);
             _motion = Osd(root, "Motion", 24, TextAnchor.MiddleCenter, tc, new Vector2(0.5f, 0.5f), new Vector2(0f, -130f), 600f);
             _motion.text = "\u25cf MOTION";
-            _motion.color = RecRed;
+            _motion.color = UITheme.Hud.BodycamRec;
             _motion.enabled = false;
             _warnings = Osd(root, "Warnings", 22, TextAnchor.MiddleCenter, tc, new Vector2(0.5f, 0.5f), new Vector2(0f, -162f), 1000f);
             _warnings.color = HudUI.Amber;
@@ -148,7 +146,7 @@ namespace CloneZ
         private void UpdateBattery()
         {
             bool has = HudReadouts.Need(_ctx, HudNeed.Battery, out float level, out Color c, out _);
-            _battery.Set(has ? level : 1f, has ? c : OsdColor);
+            _battery.Set(has ? level : 1f, has ? c : UITheme.Hud.BodycamOsd);
         }
 
         private void UpdateMagazine(float dt)
@@ -160,11 +158,11 @@ namespace CloneZ
             if (w.Gun == null)
             {
                 _mag.text = w.Weapon != null ? w.Name.ToUpperInvariant() : "";
-                _mag.color = OsdColor;
+                _mag.color = UITheme.Hud.BodycamOsd;
                 return;
             }
             _mag.text = w.Reloading ? "MAG  --/" + HudUI.Int(w.Reserve) : "MAG  " + HudUI.Int(w.Loaded) + "/" + HudUI.Int(w.Reserve);
-            _mag.color = w.Loaded == 0 && !w.Reloading ? HudUI.Danger : w.Low ? HudUI.Amber : OsdColor;
+            _mag.color = w.Loaded == 0 && !w.Reloading ? HudUI.Danger : w.Low ? HudUI.Amber : UITheme.Hud.BodycamOsd;
         }
 
         // A plausible pulse: resting, then up with fear, effort and blood loss; eased so it drifts like a real one.
@@ -187,14 +185,14 @@ namespace CloneZ
             if (bpm == _shownBpm) return;
             _shownBpm = bpm;
             _heart.text = bpm <= 0 ? "HR  ---" : "HR  " + (bpm < 100 ? "0" : "") + HudUI.Int(bpm) + " BPM";
-            _heart.color = bpm >= 150 ? HudUI.Danger : bpm >= 120 ? HudUI.Amber : OsdColor;
+            _heart.color = bpm >= 150 ? HudUI.Danger : bpm >= 120 ? HudUI.Amber : UITheme.Hud.BodycamOsd;
         }
 
         private static Text Osd(Transform parent, string name, int size, TextAnchor align, Vector2 anchor, Vector2 pivot, Vector2 pos, float width)
         {
-            Text t = HudUI.Label(parent, name, size, align, OsdColor, anchor, pivot, pos, new Vector2(width, size + 8f), FontStyle.Bold);
+            Text t = HudUI.Label(parent, name, size, align, UITheme.Hud.BodycamOsd, anchor, pivot, pos, new Vector2(width, size + 8f), FontStyle.Bold);
             var outline = t.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(0f, 0f, 0f, 0.7f);
+            outline.effectColor = UITheme.Ink(0.7f);
             outline.effectDistance = new Vector2(1.2f, -1.2f);
             return t;
         }
@@ -213,7 +211,7 @@ namespace CloneZ
             RectTransform rt = HudUI.Rect(root, "Bracket", corner, pivot, pos, size);
             var img = rt.gameObject.AddComponent<Image>();
             img.sprite = HudIcons.Get(HudIcon.White);
-            img.color = new Color(OsdColor.r, OsdColor.g, OsdColor.b, 0.8f);
+            img.color = UITheme.Fade(UITheme.Hud.BodycamOsd, 0.8f);
             img.raycastTarget = false;
             UITheme.AddShadow(img);
         }

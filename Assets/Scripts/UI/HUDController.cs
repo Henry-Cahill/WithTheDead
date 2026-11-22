@@ -116,7 +116,7 @@ namespace CloneZ
         private static void OnSubtitle(string speaker, string line)
         {
             if (!GameSettings.Current.Subtitles) return;
-            Subtitles.Show(speaker, line, new Color(0.85f, 0.75f, 0.5f), Mathf.Clamp(2.5f + line.Length * 0.05f, 3f, 9f));
+            Subtitles.Show(speaker, line, UITheme.Hud.SubtitleSpeaker, Mathf.Clamp(2.5f + line.Length * 0.05f, 3f, 9f));
         }
 
         /// <summary>Removes HUD event listeners and unbinds from the previously attached player components.</summary>
@@ -400,7 +400,7 @@ namespace CloneZ
             float a = Mathf.Max(lowHp, _damageFlash * 0.55f);
             bool on = a > 0.004f;
             if (_damageVignette.enabled != on) _damageVignette.enabled = on;
-            if (on) _damageVignette.color = new Color(0.82f, 0.06f, 0.06f, a);
+            if (on) _damageVignette.color = UITheme.Fade(UITheme.Hud.DamageVignette, a);
         }
         #endregion
 
@@ -472,7 +472,7 @@ namespace CloneZ
             _damageVignette = vign.gameObject.AddComponent<Image>();
             _damageVignette.sprite = VignetteSprite();
             _damageVignette.raycastTarget = false;
-            _damageVignette.color = new Color(0.82f, 0.06f, 0.06f, 0f);
+            _damageVignette.color = UITheme.Fade(UITheme.Hud.DamageVignette, 0f);
             _damageVignette.enabled = false;
 
             // World-anchored labels sit under every panel.
@@ -503,8 +503,8 @@ namespace CloneZ
 
             // Build on-screen prompts and progress bars for interactions and construction
             BuildPrompts(root);
-            BuildProgressBar(root, "SearchRow", 132f, new Color(0.95f, 0.9f, 0.7f), new Color(0.95f, 0.85f, 0.35f), out _searchRow, out _searchLabel, out _searchFill);
-            BuildProgressBar(root, "BuildRow", 176f, new Color(0.72f, 0.9f, 0.55f), new Color(0.55f, 0.85f, 0.4f), out _buildRow, out _buildLabel, out _buildFill);
+            BuildProgressBar(root, "SearchRow", 132f, UITheme.Hud.SearchText, UITheme.Hud.SearchFill, out _searchRow, out _searchLabel, out _searchFill);
+            BuildProgressBar(root, "BuildRow", 176f, UITheme.Hud.BuildText, UITheme.Hud.BuildFill, out _buildRow, out _buildLabel, out _buildFill);
             _toasts = new HudToasts(root);
             _hintsGroup = _layout.Add(root, "Hints", new Vector2(0.5f, 0f), HudTier.Secondary);
             _hints = new HudHints(_hintsGroup.Rect);
@@ -513,18 +513,18 @@ namespace CloneZ
             _status = new HudStatusRow(_ctx, _iconsGroup.Rect, _boxGroup.Rect);
 
             // Skill level-up toast (upper-centre, fades after a few seconds).
-            _levelUpText = HudUI.Label(root, "LevelUp", 34, TextAnchor.MiddleCenter, new Color(0.5f, 0.95f, 0.55f),
+            _levelUpText = HudUI.Label(root, "LevelUp", 34, TextAnchor.MiddleCenter, UITheme.Hud.LevelUp,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 220f), new Vector2(700f, 80f));
             _levelUpText.enabled = false;
 
             // Water shut-off notice (centre, fades once the mains run dry).
-            _waterNoticeText = HudUI.Label(root, "WaterNotice", 30, TextAnchor.MiddleCenter, new Color(0.55f, 0.8f, 0.98f),
+            _waterNoticeText = HudUI.Label(root, "WaterNotice", 30, TextAnchor.MiddleCenter, UITheme.Hud.WaterNotice,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 150f), new Vector2(900f, 60f));
             _waterNoticeText.text = "THE WATER HAS BEEN SHUT OFF";
             _waterNoticeText.enabled = false;
 
             // Power cut notice (just under the water notice, so both fit if they come together).
-            _powerNoticeText = HudUI.Label(root, "PowerNotice", 30, TextAnchor.MiddleCenter, new Color(1f, 0.82f, 0.45f),
+            _powerNoticeText = HudUI.Label(root, "PowerNotice", 30, TextAnchor.MiddleCenter, UITheme.Hud.PowerNotice,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 105f), new Vector2(900f, 60f));
             _powerNoticeText.text = "THE POWER HAS GONE OUT";
             _powerNoticeText.enabled = false;
@@ -588,17 +588,17 @@ namespace CloneZ
         private void BuildPrompts(RectTransform root)
         {
             // Interaction prompt (bottom-centre, above the key hints).
-            _promptText = HudUI.Label(root, "Prompt", 22, TextAnchor.LowerCenter, new Color(0.95f, 0.9f, 0.55f),
+            _promptText = HudUI.Label(root, "Prompt", 22, TextAnchor.LowerCenter, UITheme.Hud.Prompt,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 92f), new Vector2(900f, 30f));
             _promptText.text = "";
 
             // Sleep prompt (just above the interaction prompt).
-            _sleepPromptText = HudUI.Label(root, "SleepPrompt", 20, TextAnchor.LowerCenter, new Color(0.7f, 0.85f, 1f),
+            _sleepPromptText = HudUI.Label(root, "SleepPrompt", 20, TextAnchor.LowerCenter, UITheme.Hud.SleepPrompt,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 120f), new Vector2(900f, 28f));
             _sleepPromptText.enabled = false;
 
             // Build / farm / water prompt, one line above the sleep prompt (the build palette makes it wide).
-            _buildPromptText = HudUI.Label(root, "BuildPrompt", 19, TextAnchor.LowerCenter, new Color(0.72f, 0.9f, 0.55f),
+            _buildPromptText = HudUI.Label(root, "BuildPrompt", 19, TextAnchor.LowerCenter, UITheme.Hud.BuildText,
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 148f), new Vector2(1300f, 28f));
             _buildPromptText.enabled = false;
         }
@@ -609,7 +609,7 @@ namespace CloneZ
             label = HudUI.Label(rt, "Label", 16, TextAnchor.LowerCenter, labelColor, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
                 new Vector2(0f, 2f), new Vector2(360f, 20f));
             fill = HudUI.Bar(rt, "Bar", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 2f), new Vector2(320f, 8f),
-                new Color(0f, 0f, 0f, 0.6f), fillColor, out RectTransform track);
+                UITheme.Ink(0.6f), fillColor, out RectTransform track);
             UITheme.AddShadow(track.GetComponent<Image>());
             row = rt.gameObject;
             row.SetActive(false);
@@ -620,11 +620,11 @@ namespace CloneZ
             RectTransform rt = HudUI.Stretch(root, "SleepOverlay");
             _sleepOverlay = rt.gameObject;
             var bg = _sleepOverlay.AddComponent<Image>();
-            bg.color = new Color(0.02f, 0.02f, 0.05f, 0.92f);
+            bg.color = UITheme.Hud.SleepBackdrop;
             var outline = _sleepOverlay.AddComponent<Outline>();
-            outline.effectColor = new Color(0.08f, 0.08f, 0.12f, 0.8f);
+            outline.effectColor = UITheme.Hud.SleepOutline;
             outline.effectDistance = new Vector2(3f, 3f);
-            _sleepText = HudUI.Label(rt, "SleepText", 46, TextAnchor.MiddleCenter, new Color(0.8f, 0.85f, 0.95f),
+            _sleepText = HudUI.Label(rt, "SleepText", 46, TextAnchor.MiddleCenter, UITheme.Hud.SleepText,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900f, 220f));
             _sleepText.text = "Sleeping\u2026";
             _sleepOverlay.SetActive(false);
@@ -635,8 +635,8 @@ namespace CloneZ
             RectTransform rt = HudUI.Stretch(root, "GameOver");
             _gameOverPanel = rt.gameObject;
             var bg = _gameOverPanel.AddComponent<Image>();
-            bg.color = new Color(0.05f, 0f, 0f, 0.72f);
-            _gameOverText = HudUI.Label(rt, "GameOverText", 56, TextAnchor.MiddleCenter, new Color(0.85f, 0.1f, 0.1f),
+            bg.color = UITheme.Hud.GameOverBackdrop;
+            _gameOverText = HudUI.Label(rt, "GameOverText", 56, TextAnchor.MiddleCenter, UITheme.Hud.GameOverText,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 400f));
 
             // Add subtle cracked‑glass overlay: four thin white rectangles with low opacity and slight rotation.
@@ -644,22 +644,22 @@ namespace CloneZ
             // Crack 1
             var crack1 = HudUI.Rect(_gameOverPanel.transform as RectTransform, "Crack1", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-120f, -30f), new Vector2(crackLength, 3f));
             var img1 = crack1.gameObject.AddComponent<Image>();
-            img1.color = new Color(1f, 1f, 1f, 0.35f);
+            img1.color = UITheme.Hud.GameOverCrack;
             crack1.localEulerAngles = new Vector3(0f, 0f, -12f);
             // Crack 2
             var crack2 = HudUI.Rect(_gameOverPanel.transform as RectTransform, "Crack2", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(80f, -60f), new Vector2(crackLength, 3f));
             var img2 = crack2.gameObject.AddComponent<Image>();
-            img2.color = new Color(1f, 1f, 1f, 0.35f);
+            img2.color = UITheme.Hud.GameOverCrack;
             crack2.localEulerAngles = new Vector3(0f, 0f, 8f);
             // Crack 3
             var crack3 = HudUI.Rect(_gameOverPanel.transform as RectTransform, "Crack3", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-50f, 120f), new Vector2(crackLength, 3f));
             var img3 = crack3.gameObject.AddComponent<Image>();
-            img3.color = new Color(1f, 1f, 1f, 0.35f);
+            img3.color = UITheme.Hud.GameOverCrack;
             crack3.localEulerAngles = new Vector3(0f, 0f, -5f);
             // Crack 4
             var crack4 = HudUI.Rect(_gameOverPanel.transform as RectTransform, "Crack4", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(130f, 80f), new Vector2(crackLength, 3f));
             var img4 = crack4.gameObject.AddComponent<Image>();
-            img4.color = new Color(1f, 1f, 1f, 0.35f);
+            img4.color = UITheme.Hud.GameOverCrack;
             crack4.localEulerAngles = new Vector3(0f, 0f, 15f);
             _gameOverPanel.SetActive(false);
         }
@@ -677,7 +677,7 @@ namespace CloneZ
                 {
                     float d = Vector2.Distance(new Vector2(x, y), c) / maxD;    // 0 centre .. 1 corner
                     float a = Mathf.Pow(Mathf.InverseLerp(0.35f, 1f, d), 1.6f); // clear centre, ramps in at the edges
-                    tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
+                    tex.SetPixel(x, y, UITheme.Glass(a));
                 }
             tex.Apply();
             _vignetteSprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));

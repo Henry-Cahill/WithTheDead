@@ -40,17 +40,6 @@ namespace CloneZ
             public string PercentText;
         }
 
-        private static readonly Color[] Bad =
-        {
-            new Color(0.80f, 0.70f, 0.30f, 0.92f), new Color(0.86f, 0.52f, 0.20f, 0.92f),
-            new Color(0.82f, 0.30f, 0.16f, 0.94f), new Color(0.66f, 0.10f, 0.10f, 0.96f),
-        };
-        private static readonly Color[] Chill =
-        {
-            new Color(0.45f, 0.62f, 0.85f, 0.92f), new Color(0.32f, 0.52f, 0.88f, 0.92f),
-            new Color(0.22f, 0.40f, 0.85f, 0.94f), new Color(0.16f, 0.28f, 0.78f, 0.96f),
-        };
-
         private readonly HudContext _ctx;
         private readonly Moodle[] _moodles = new Moodle[(int)Kind.Count];
         private readonly RectTransform _column;
@@ -72,9 +61,9 @@ namespace CloneZ
             {
                 var m = new Moodle();
                 m.Root = HudUI.Rect(column, ((Kind)i).ToString(), Vector2.one, Vector2.one, Vector2.zero, new Vector2(Tile, Tile));
-                m.Background = HudUI.Sliced(m.Root, "Tile", HudIcon.PanelFill, Bad[0], Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
+                m.Background = HudUI.Sliced(m.Root, "Tile", HudIcon.PanelFill, UITheme.Hud.MoodleBad[0], Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
                 Stretch(m.Background.rectTransform);
-                Image frame = HudUI.Sliced(m.Root, "Frame", HudIcon.PanelFrame, new Color(0f, 0f, 0f, 0.55f), Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
+                Image frame = HudUI.Sliced(m.Root, "Frame", HudIcon.PanelFrame, UITheme.Ink(0.55f), Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
                 Stretch(frame.rectTransform);
                 m.Glyph = HudUI.Icon(m.Root, "Glyph", HudIcon.Drop, Color.white, new Vector2(0.5f, 0.5f), Vector2.zero, Tile * 0.68f);
                 m.Label = HudUI.Label(m.Root, "Label", 14, TextAnchor.MiddleRight, HudUI.Ink, new Vector2(0f, 0.5f), new Vector2(1f, 0.5f),
@@ -177,7 +166,7 @@ namespace CloneZ
                     }
                     m.ShownLevel = m.Level;
                     m.ShownCold = m.Cold;
-                    if (m.Level > 0) m.Background.color = (m.Cold ? Chill : Bad)[m.Level - 1];
+                    if (m.Level > 0) m.Background.color = (m.Cold ? UITheme.Hud.MoodleChill : UITheme.Hud.MoodleBad)[m.Level - 1];
                 }
                 if (m.Level <= 0) continue;
                 if (!ReferenceEquals(m.Text, m.ShownText)) { m.ShownText = m.Text; m.Label.text = m.Text; }
@@ -185,8 +174,8 @@ namespace CloneZ
                 if (m.Level >= 4)
                 {
                     // The worst level throbs so it can't be missed.
-                    Color c = (m.Cold ? Chill : Bad)[3];
-                    m.Background.color = Color.Lerp(c, new Color(1f, 0.25f, 0.2f, 0.98f), HudUI.Pulse(5f, 0f) * (m.Cold ? 0.15f : 0.45f));
+                    Color c = (m.Cold ? UITheme.Hud.MoodleChill : UITheme.Hud.MoodleBad)[3];
+                    m.Background.color = Color.Lerp(c, UITheme.Hud.MoodleAlarm, HudUI.Pulse(5f, 0f) * (m.Cold ? 0.15f : 0.45f));
                 }
             }
 

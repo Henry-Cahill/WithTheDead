@@ -158,9 +158,9 @@ namespace CloneZ
             prt.anchorMin = prt.anchorMax = new Vector2(0.5f, 0.5f);
             prt.pivot = new Vector2(0.5f, 0.5f);
             prt.sizeDelta = new Vector2(panelW, panelH);
-            _panelRoot.AddComponent<Image>().color = new Color(0.05f, 0.06f, 0.08f, 0.94f);
+            _panelRoot.AddComponent<Image>().color = UITheme.Skills.Panel;
 
-            Label(prt, "Title", new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(panelW, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.9f, 0.65f))
+            Label(prt, "Title", new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(panelW, 40f), 30, TextAnchor.UpperCenter, UITheme.Skills.Title)
                 .text = "SKILLS";
 
             int n = _order.Length;
@@ -175,7 +175,7 @@ namespace CloneZ
                 Color accent = AccentFor(_order[i]);
 
                 // Skill name (left).
-                Label(prt, "Name" + i, new Vector2(0f, 1f), new Vector2(30f, y), new Vector2(300f, 24f), 20, TextAnchor.MiddleLeft, new Color(0.9f, 0.92f, 0.95f))
+                Label(prt, "Name" + i, new Vector2(0f, 1f), new Vector2(30f, y), new Vector2(300f, 24f), 20, TextAnchor.MiddleLeft, UITheme.Skills.Name)
                     .text = PlayerSkills.NameOf(_order[i]);
 
                 // Level (right).
@@ -183,7 +183,7 @@ namespace CloneZ
                 _levelTexts[i].text = "Lv 0";
 
                 // Progress percentage (just left of the bar's right edge).
-                _xpTexts[i] = Label(prt, "Xp" + i, new Vector2(1f, 1f), new Vector2(-30f, y - 26f), new Vector2(90f, 18f), 13, TextAnchor.MiddleRight, new Color(0.7f, 0.74f, 0.8f));
+                _xpTexts[i] = Label(prt, "Xp" + i, new Vector2(1f, 1f), new Vector2(-30f, y - 26f), new Vector2(90f, 18f), 13, TextAnchor.MiddleRight, UITheme.Skills.Progress);
                 _xpTexts[i].text = "0%";
 
                 // Progress bar background.
@@ -193,7 +193,7 @@ namespace CloneZ
                 bgRt.anchorMin = bgRt.anchorMax = new Vector2(0f, 1f); bgRt.pivot = new Vector2(0f, 1f);
                 bgRt.anchoredPosition = new Vector2(30f, y - 28f);
                 bgRt.sizeDelta = new Vector2(panelW - 150f, 10f);
-                bg.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.6f);
+                bg.AddComponent<Image>().color = UITheme.Ink(0.6f);
 
                 // Progress fill (scaled from the left, 0..1).
                 var fillGo = new GameObject("Fill" + i);
@@ -221,13 +221,13 @@ namespace CloneZ
                  sepRt.anchoredPosition = new Vector2(30f, y - 38f);
                  sepRt.sizeDelta = new Vector2(panelW - 150f, 2f);
                  var sepImg = sep.AddComponent<Image>();
-                 sepImg.color = new Color(0.15f, 0.15f, 0.15f, 0.8f);
+                 sepImg.color = UITheme.Skills.Separator;
             }
 
-            Label(prt, "Hint", new Vector2(0.5f, 0f), new Vector2(0f, 16f), new Vector2(panelW, 24f), 16, TextAnchor.LowerCenter, new Color(1f, 1f, 1f, 0.55f))
+            Label(prt, "Hint", new Vector2(0.5f, 0f), new Vector2(0f, 16f), new Vector2(panelW, 24f), 16, TextAnchor.LowerCenter, UITheme.Glass(0.55f))
                 .text = "K  or  Esc  to close";
 
-            UITheme.AddTopAccent(_panelRoot.GetComponent<RectTransform>(), new Color(0.5f, 0.68f, 0.9f, 0.6f));
+            UITheme.AddTopAccent(_panelRoot.GetComponent<RectTransform>(), UITheme.Skills.TopAccent);
             // Add subtle rivet-like accents at the top of the panel
             for (int i = 0; i < 8; i++)
             {
@@ -239,7 +239,7 @@ namespace CloneZ
                 rt.anchoredPosition = new Vector2(-260f + i * 60f, -4f);
                 rt.sizeDelta = new Vector2(8f, 8f);
                 var img = rivet.AddComponent<Image>();
-                img.color = new Color(0.7f, 0.7f, 0.7f, 0.9f);
+                img.color = UITheme.Skills.Rivet;
             }
             // Add corner reinforcement plates to suggest worn metal edges
             var corners = new (string name, Vector2 anchor, Vector2 pos)[] {
@@ -257,7 +257,7 @@ namespace CloneZ
                 rt.anchoredPosition = pos;
                 rt.sizeDelta = new Vector2(6f, 6f);
                 var img = go.AddComponent<Image>();
-                img.color = new Color(0.25f, 0.25f, 0.27f, 0.9f);
+                img.color = UITheme.Skills.CornerPlate;
             }
             _fader = _panelRoot.AddComponent<UIFader>();
         }
@@ -271,18 +271,18 @@ namespace CloneZ
                 case PlayerSkills.Skill.Blunt:
                 case PlayerSkills.Skill.Aiming:
                 case PlayerSkills.Skill.Reloading:
-                    return new Color(0.95f, 0.55f, 0.35f);   // combat
+                    return UITheme.Skills.Combat;
                 case PlayerSkills.Skill.Fitness:
                 case PlayerSkills.Skill.Strength:
-                    return new Color(0.95f, 0.8f, 0.3f);      // physical
+                    return UITheme.Skills.Physical;
                 case PlayerSkills.Skill.Carpentry:
-                    return new Color(0.6f, 0.82f, 0.45f);     // crafting / utility
+                    return UITheme.Skills.Crafting;
                 case PlayerSkills.Skill.Cooking:
-                    return new Color(0.95f, 0.68f, 0.4f);     // cooking / hearth
+                    return UITheme.Skills.Cooking;
                 case PlayerSkills.Skill.Farming:
-                    return new Color(0.5f, 0.78f, 0.4f);      // farming / growth
+                    return UITheme.Skills.Farming;
                 default:
-                    return new Color(0.45f, 0.8f, 0.95f);     // agility / stealth
+                    return UITheme.Skills.Agility;
             }
         }
 

@@ -13,13 +13,6 @@ namespace CloneZ
     public sealed class HudInteraction
     {
         private const float RowHeight = 26f, MenuWidth = 400f, TitleHeight = 30f, Pad = 8f, LabelLift = 0.32f;
-        private static readonly Color FocusColor = new Color(1f, 0.96f, 0.82f, 0.95f);
-        private static readonly Color TitleColor = new Color(1f, 0.86f, 0.45f, 1f);
-        private static readonly Color RowColor = new Color(1f, 1f, 1f, 0.04f);
-        private static readonly Color RowHover = new Color(1f, 0.85f, 0.4f, 0.22f);
-        private static readonly Color KeyColor = new Color(0.96f, 0.95f, 0.82f, 1f);
-        private static readonly Color LabelColor = new Color(0.97f, 0.97f, 0.95f, 1f);
-        private static readonly Color DisabledColor = new Color(0.62f, 0.62f, 0.62f, 0.85f);
 
         private readonly HudContext _ctx;
         private readonly RectTransform _root;
@@ -45,18 +38,18 @@ namespace CloneZ
             _ctx = ctx;
             _root = root;
 
-            _focus = HudUI.Label(worldLayer, "FocusLabel", 16, TextAnchor.MiddleCenter, FocusColor,
+            _focus = HudUI.Label(worldLayer, "FocusLabel", 16, TextAnchor.MiddleCenter, UITheme.Hud.MenuFocus,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(420f, 22f), FontStyle.Bold);
             var outline = _focus.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(0f, 0f, 0f, 0.6f);
+            outline.effectColor = UITheme.Ink(0.6f);
             outline.effectDistance = new Vector2(1f, -1f);
             _focus.enabled = false;
 
             _menu = HudUI.Panel(root, "ActionMenu", new Vector2(0.5f, 0.5f), new Vector2(0f, 1f), Vector2.zero, new Vector2(MenuWidth, 100f), out _);
             _menu.GetComponent<Image>().raycastTarget = true;   // clicks between the rows still land on the menu, not the world
-            _title = HudUI.Label(_menu, "Title", 17, TextAnchor.MiddleLeft, TitleColor, new Vector2(0f, 1f), new Vector2(0f, 1f),
+            _title = HudUI.Label(_menu, "Title", 17, TextAnchor.MiddleLeft, UITheme.Hud.MenuTitle, new Vector2(0f, 1f), new Vector2(0f, 1f),
                 new Vector2(Pad + 2f, -4f), new Vector2(MenuWidth - Pad * 2f, TitleHeight - 6f), FontStyle.Bold);
-            UITheme.AddTopAccent(_menu, new Color(1f, 0.78f, 0.3f, 0.85f), 2f);
+            UITheme.AddTopAccent(_menu, UITheme.Hud.MenuAccent, 2f);
             _menu.gameObject.SetActive(false);
         }
 
@@ -140,8 +133,8 @@ if (!string.Equals(_shownFocus, pi.FocusName))
                 row.Label.text = a.Enabled
                     ? a.Label + (a.IsTimed ? "\u2026" : "")
                     : a.Label + "  <size=12><i>\u2014 " + (a.DisabledReason ?? "not now") + "</i></size>";
-                row.Label.color = a.Enabled ? LabelColor : DisabledColor;
-                row.Key.color = a.Enabled ? KeyColor : DisabledColor;
+                row.Label.color = a.Enabled ? UITheme.Hud.MenuLabel : UITheme.Hud.MenuDisabled;
+                row.Key.color = a.Enabled ? UITheme.Hud.KeyLabel : UITheme.Hud.MenuDisabled;
                 row.Button.interactable = true;   // a click on a disabled entry explains why
             }
             _menu.sizeDelta = new Vector2(MenuWidth, TitleHeight + actions.Count * RowHeight + Pad);
@@ -158,11 +151,11 @@ if (!string.Equals(_shownFocus, pi.FocusName))
             var button = rt.gameObject.AddComponent<Button>();
             button.targetGraphic = bg;
             ColorBlock colors = button.colors;
-            colors.normalColor = RowColor;
-            colors.highlightedColor = RowHover;
-            colors.pressedColor = new Color(1f, 0.8f, 0.3f, 0.35f);
-            colors.selectedColor = RowColor;
-            colors.disabledColor = RowColor;
+            colors.normalColor = UITheme.Hud.MenuRow;
+            colors.highlightedColor = UITheme.Hud.MenuRowHover;
+            colors.pressedColor = UITheme.Hud.MenuRowPressed;
+            colors.selectedColor = UITheme.Hud.MenuRow;
+            colors.disabledColor = UITheme.Hud.MenuRow;
             colors.fadeDuration = 0.05f;
             button.colors = colors;
             int captured = index;
@@ -176,11 +169,11 @@ if (!string.Equals(_shownFocus, pi.FocusName))
                 if (pi != null) pi.ChooseMenu(captured);
             });
 
-            Image cap = HudUI.Sliced(rt, "Cap", HudIcon.PanelFill, new Color(0.20f, 0.22f, 0.28f, 0.95f), new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
+            Image cap = HudUI.Sliced(rt, "Cap", HudIcon.PanelFill, UITheme.Fade(UITheme.Hud.KeyCap, 0.95f), new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(4f, 0f), new Vector2(22f, 18f));
-            Text key = HudUI.Label(cap.rectTransform, "Key", 12, TextAnchor.MiddleCenter, KeyColor, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+            Text key = HudUI.Label(cap.rectTransform, "Key", 12, TextAnchor.MiddleCenter, UITheme.Hud.KeyLabel, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
                 Vector2.zero, new Vector2(22f, 18f), FontStyle.Bold);
-            Text label = HudUI.Label(rt, "Label", 15, TextAnchor.MiddleLeft, LabelColor, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
+            Text label = HudUI.Label(rt, "Label", 15, TextAnchor.MiddleLeft, UITheme.Hud.MenuLabel, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(34f, 0f), new Vector2(MenuWidth - Pad - 40f, RowHeight - 2f));
             label.horizontalOverflow = HorizontalWrapMode.Wrap;
             return new Row { Rect = rt, Background = bg, Key = key, Label = label, Button = button };

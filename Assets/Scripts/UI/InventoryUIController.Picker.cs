@@ -34,7 +34,7 @@ namespace CloneZ
         {
             Text title = Label(window, new Vector2(0f, 1f), new Vector2(x, -PaneTop), new Vector2(PickerW, 28f), 20, TextAnchor.UpperLeft, Color.white);
             title.text = "CONTAINERS";
-            _pickerSubHeader = Label(window, new Vector2(0f, 1f), new Vector2(x, -(PaneTop + 24f)), new Vector2(PickerW, 16f), 14, TextAnchor.UpperLeft, HeaderDim);
+            _pickerSubHeader = Label(window, new Vector2(0f, 1f), new Vector2(x, -(PaneTop + 24f)), new Vector2(PickerW, 16f), 14, TextAnchor.UpperLeft, UITheme.Bag.HeaderDim);
             _pickerContent = Column(window, new Vector2(0f, 1f), new Vector2(x, -ColumnTop), new Vector2(PickerW, listH));
         }
 
@@ -130,7 +130,7 @@ namespace CloneZ
                 kg += w.Def.Weight * w.Count;
             }
             string floorStatus = units == 0 ? "Nothing on the ground" : Plural(units, "item") + "  \u00b7  " + kg.ToString("0.0") + " kg";
-            float y = AddPickerRow(0f, "Floor", "Fl", new Color(0.4f, 0.38f, 0.33f), floorStatus, units == 0 ? TextFaint : TextDim,
+            float y = AddPickerRow(0f, "Floor", "Fl", UITheme.Bag.FloorTint, floorStatus, units == 0 ? UITheme.Bag.TextFaint : UITheme.Bag.ListTextDim,
                 "", _openInventory == null, PickFloor, searching: false);
 
             for (int i = 0; i < _nearby.Count; i++)
@@ -139,14 +139,14 @@ namespace CloneZ
                 bool searching = _pickerSearching != null && c == _pickerSearching;
                 string status;
                 Color statusCol;
-                if (searching) { status = "Searching\u2026"; statusCol = WaterCol; }
-                else if (!c.Searched && c.SearchTime > 0f) { status = "Unsearched"; statusCol = AmberCol; }
+                if (searching) { status = "Searching\u2026"; statusCol = UITheme.Bag.ListWater; }
+                else if (!c.Searched && c.SearchTime > 0f) { status = "Unsearched"; statusCol = UITheme.Bag.ListAmber; }
                 else
                 {
                     // Contents only show once searched, so an unopened crate keeps its secrets.
                     CountContents(c.Contents, out int items, out float ckg);
                     status = items == 0 ? "Empty" : Plural(items, "item") + "  \u00b7  " + ckg.ToString("0.0") + " kg";
-                    statusCol = items == 0 ? TextFaint : TextDim;
+                    statusCol = items == 0 ? UITheme.Bag.TextFaint : UITheme.Bag.ListTextDim;
                 }
                 LootContainer target = c;
                 y = AddPickerRow(y, c.DisplayName, ContainerGlyph(c), ContainerColor(c), status, statusCol,
@@ -172,11 +172,11 @@ namespace CloneZ
             img.color = Color.white;   // the button tint below supplies the actual colour
             var btn = go.AddComponent<Button>();
             btn.targetGraphic = img;
-            Color baseCol = selected ? new Color(0.3f, 0.42f, 0.56f, 0.55f) : new Color(1f, 1f, 1f, 0.05f);
+            Color baseCol = selected ? UITheme.Bag.PickerSelected : UITheme.Glass(0.05f);
             ColorBlock cb = btn.colors;
             cb.normalColor = baseCol;
-            cb.highlightedColor = selected ? baseCol : new Color(0.45f, 0.6f, 0.75f, 0.22f);
-            cb.pressedColor = new Color(0.45f, 0.6f, 0.75f, 0.35f);
+            cb.highlightedColor = selected ? baseCol : UITheme.Bag.PickerHover;
+            cb.pressedColor = UITheme.Bag.PickerPressed;
             cb.selectedColor = baseCol;
             cb.disabledColor = baseCol;
             cb.colorMultiplier = 1f;
@@ -185,7 +185,7 @@ namespace CloneZ
             btn.onClick.AddListener(() => onClick());
             go.SetActive(true);
 
-            if (selected) NewImage(rt, "Selected", new Vector2(0f, 0.5f), Vector2.zero, new Vector2(3f, PickerRowH - 4f), new Color(0.5f, 0.68f, 0.9f));
+            if (selected) NewImage(rt, "Selected", new Vector2(0f, 0.5f), Vector2.zero, new Vector2(3f, PickerRowH - 4f), UITheme.Bag.BlueAccent);
 
             RectTransform sw = NewImage(rt, "Swatch", new Vector2(0f, 0.5f), new Vector2(8f, 0f), new Vector2(28f, 28f), swatch);
             Text g = Label(sw, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(28f, 28f), 12, TextAnchor.MiddleCenter, IconTextColor(swatch));
@@ -194,14 +194,14 @@ namespace CloneZ
             g.raycastTarget = false;
 
             // Name on the top line at full width; status on the second, with the distance at its right.
-            Text n = Label(rt, new Vector2(0f, 1f), new Vector2(44f, -6f), new Vector2(PickerW - 52f, 20f), 15, TextAnchor.UpperLeft, selected ? Color.white : TextMain);
+            Text n = Label(rt, new Vector2(0f, 1f), new Vector2(44f, -6f), new Vector2(PickerW - 52f, 20f), 15, TextAnchor.UpperLeft, selected ? Color.white : UITheme.Bag.TextMain);
             n.raycastTarget = false;
             n.text = FitText(n, name, "", PickerW - 52f);
 
             float statusW = PickerW - 52f;
             if (!string.IsNullOrEmpty(distance))
             {
-                Text d = Label(rt, new Vector2(1f, 1f), new Vector2(-8f, -28f), new Vector2(40f, 16f), 11, TextAnchor.UpperRight, TextFaint);
+                Text d = Label(rt, new Vector2(1f, 1f), new Vector2(-8f, -28f), new Vector2(40f, 16f), 11, TextAnchor.UpperRight, UITheme.Bag.TextFaint);
                 d.raycastTarget = false;
                 d.text = distance;
                 statusW -= 42f;
@@ -213,8 +213,8 @@ namespace CloneZ
 
             if (searching)
             {
-                RectTransform barBg = NewImage(rt, "SearchBar", new Vector2(0f, 0f), new Vector2(44f, 6f), new Vector2(PickerW - 56f, 4f), new Color(0f, 0f, 0f, 0.55f));
-                _pickerSearchFill = NewImage(barBg, "Fill", new Vector2(0f, 0.5f), Vector2.zero, new Vector2(0f, 4f), new Color(0.5f, 0.72f, 0.9f));
+                RectTransform barBg = NewImage(rt, "SearchBar", new Vector2(0f, 0f), new Vector2(44f, 6f), new Vector2(PickerW - 56f, 4f), UITheme.Ink(0.55f));
+                _pickerSearchFill = NewImage(barBg, "Fill", new Vector2(0f, 0.5f), Vector2.zero, new Vector2(0f, 4f), UITheme.Bag.SearchFill);
                 _pickerSearchText = s;
             }
             return y + PickerRowH;
@@ -290,7 +290,7 @@ namespace CloneZ
         {
             Renderer r = c.GetComponent<Renderer>();
             Material m = r != null ? r.sharedMaterial : null;
-            Color col = new Color(0.5f, 0.45f, 0.38f);
+            Color col = UITheme.Bag.ContainerFallback;
             if (m != null)
             {
                 if (m.HasProperty(s_BaseColorId)) col = m.GetColor(s_BaseColorId);

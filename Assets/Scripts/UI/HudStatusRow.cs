@@ -17,9 +17,6 @@ namespace CloneZ
         private const float Margin = 20f, IconSize = 30f, IconBottom = 16f, BoxBottom = 56f, BoxHeight = 30f, BoxWidth = 252f;
         private const float PanelWidth = 300f, RowHeight = 21f;
         private const int MaxRows = 10;
-        private static readonly Color Cold = new Color(0.45f, 0.72f, 1f, 1f);
-        private static readonly Color Hot = new Color(1f, 0.5f, 0.3f, 1f);
-        private static readonly Color Absent = new Color(1f, 1f, 1f, 0.22f);
 
         private sealed class StatusIcon
         {
@@ -115,7 +112,7 @@ namespace CloneZ
                 new Vector2(x, IconBottom + IconSize * 0.5f), new Vector2(2f, 22f));
             var img = rt.gameObject.AddComponent<Image>();
             img.sprite = HudIcons.Get(HudIcon.White);
-            img.color = new Color(1f, 1f, 1f, 0.5f);
+            img.color = UITheme.Glass(0.5f);
             img.raycastTarget = false;
             UITheme.AddShadow(img);
             x -= 2f + 12f;
@@ -138,18 +135,18 @@ namespace CloneZ
         // Helper that builds a small button with the given label, position and width.
         private void TinyButton(RectTransform parent, string label, Vector2 pos, float width)
         {
-            Image bg = HudUI.Sliced(parent, "Button " + label, HudIcon.PanelFill, new Color(0.34f, 0.36f, 0.40f, 0.95f),
+            Image bg = HudUI.Sliced(parent, "Button " + label, HudIcon.PanelFill, UITheme.Hud.StatusButton,
                 new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), pos, new Vector2(width, 18f));
             bg.raycastTarget = true;
-            Image frame = HudUI.Sliced(bg.rectTransform, "Frame", HudIcon.PanelFrame, new Color(1f, 1f, 1f, 0.22f),
+            Image frame = HudUI.Sliced(bg.rectTransform, "Frame", HudIcon.PanelFrame, UITheme.Glass(0.22f),
                 Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
             frame.rectTransform.anchorMax = Vector2.one;
             var button = bg.gameObject.AddComponent<Button>();
             button.targetGraphic = bg;
             ColorBlock colors = button.colors;
-            colors.normalColor = new Color(0.82f, 0.82f, 0.82f, 1f);
+            colors.normalColor = UITheme.Hud.StatusButtonNormal;
             colors.highlightedColor = Color.white;
-            colors.pressedColor = new Color(0.62f, 0.62f, 0.62f, 1f);
+            colors.pressedColor = UITheme.Hud.StatusButtonPressed;
             colors.selectedColor = colors.normalColor;
             button.colors = colors;
             Navigation nav = button.navigation;
@@ -239,7 +236,7 @@ namespace CloneZ
             PlayerGear gear = _ctx.Gear;
 
             float battery = gear != null ? gear.BatteryCharge01 : -1f;
-            if (battery < 0f) SetStatus(_battery, 0f, Absent);
+            if (battery < 0f) SetStatus(_battery, 0f, UITheme.Hud.StatusAbsent);
             else SetStatus(_battery, battery, Severity(1f - battery, 0.7f, 0.9f));
 
             if (stats == null) return;
@@ -301,13 +298,13 @@ namespace CloneZ
             {
                 // Cold side – pulse when very close to hypothermia.
                 bool pulse = temperature < CloneZConfig.TempHypothermiaThreshold + 0.02f;
-                color = pulse ? HudUI.WithAlpha(Cold, HudUI.Pulse(5f, 0.35f)) : Cold;
+                color = pulse ? HudUI.WithAlpha(UITheme.Hud.Cold, HudUI.Pulse(5f, 0.35f)) : UITheme.Hud.Cold;
             }
             else if (temperature > CloneZConfig.TempComfortHigh)
             {
                 // Hot side – pulse when very close to hyperthermia.
                 bool pulse = temperature > CloneZConfig.TempHyperthermiaThreshold - 0.01f;
-                color = pulse ? HudUI.WithAlpha(Hot, HudUI.Pulse(5f, 0.35f)) : Hot;
+                color = pulse ? HudUI.WithAlpha(UITheme.Hud.Hot, HudUI.Pulse(5f, 0.35f)) : UITheme.Hud.Hot;
             }
         }
 
@@ -407,7 +404,7 @@ namespace CloneZ
 
             WaterMains water = WaterMains.Instance;
             bool on = water == null || water.IsOn;
-            SetRunRow(2, "Water", int.MinValue, on ? "ON" : "SHUT OFF", on ? new Color(0.55f, 0.8f, 0.95f) : new Color(0.92f, 0.42f, 0.35f));
+            SetRunRow(2, "Water", int.MinValue, on ? "ON" : "SHUT OFF", on ? UITheme.Hud.WaterOn : UITheme.Hud.WaterOff);
         }
 
         // A stat row: a label on the left and either a duration (seconds) or a fixed string on the right.

@@ -46,7 +46,6 @@ namespace CloneZ
         private const float ListTop = 126f;     // the scrolling item lists
         private const float FooterH = 46f;
 
-        private static readonly Color HeaderDim = new Color(0.66f, 0.7f, 0.76f);
 
         private PlayerInventory _player;
         private PlayerClothing _clothing;
@@ -492,7 +491,7 @@ private void PositionTooltip()
             layerRt.anchorMax = Vector2.one;
             layerRt.offsetMin = Vector2.zero;
             layerRt.offsetMax = Vector2.zero;
-            layer.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
+            layer.AddComponent<Image>().color = UITheme.Clear;
             var dismiss = layer.AddComponent<Button>();
             dismiss.transition = Selectable.Transition.None;
             dismiss.onClick.AddListener(HideMenu);
@@ -510,12 +509,12 @@ private void PositionTooltip()
             float x = Mathf.Clamp(local.x + 2f, r.xMin + 4f, r.xMax - w - 4f);
             float y = Mathf.Clamp(local.y + 2f, r.yMin + h + 4f, r.yMax - 4f);
 
-            RectTransform panel = Panel(layerRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(w, h), new Color(0.07f, 0.08f, 0.1f, 0.98f));
+            RectTransform panel = Panel(layerRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(w, h), UITheme.Bag.MenuPanel);
             panel.pivot = new Vector2(0f, 1f);
             panel.anchoredPosition = new Vector2(x, y);
-            UITheme.AddTopAccent(panel, new Color(0.5f, 0.68f, 0.9f, 0.6f), 2f);
+            UITheme.AddTopAccent(panel, UITheme.Fade(UITheme.Bag.BlueAccent, 0.6f), 2f);
 
-            Text head = Label(panel, new Vector2(0f, 1f), new Vector2(10f, -pad), new Vector2(w - 20f, titleH), 13, TextAnchor.MiddleLeft, new Color(0.6f, 0.66f, 0.74f));
+            Text head = Label(panel, new Vector2(0f, 1f), new Vector2(10f, -pad), new Vector2(w - 20f, titleH), 13, TextAnchor.MiddleLeft, UITheme.Bag.MenuTitle);
             head.text = FitText(head, title, "", w - 20f);
             head.raycastTarget = false;
 
@@ -524,12 +523,12 @@ private void PositionTooltip()
                 MenuOption opt = options[i];
                 System.Action act = opt.Action;
                 Button b = MakeButton(panel, new Vector2(0f, 1f), new Vector2(pad, -(pad + titleH + i * itemH)), new Vector2(w - pad * 2f, itemH - 2f),
-                    opt.Label, new Color(0.17f, 0.19f, 0.23f), () => { HideMenu(); act?.Invoke(); }, 14);
+                    opt.Label, UITheme.Bag.MenuOption, () => { HideMenu(); act?.Invoke(); }, 14);
                 Text bt = b.GetComponentInChildren<Text>();
                 bt.alignment = TextAnchor.MiddleLeft;
                 bt.rectTransform.offsetMin = new Vector2(10f, 0f);
                 b.interactable = opt.Enabled;
-                if (!opt.Enabled) bt.color = new Color(1f, 1f, 1f, 0.38f);
+                if (!opt.Enabled) bt.color = UITheme.Glass(0.38f);
             }
         }
 
@@ -578,8 +577,8 @@ private void PositionTooltip()
                 + (worn > 0 ? "     Wearing " + worn : "");
             _playerHeader.text = FitText(_playerHeader, header, "", ListW);
             // Choose warning colour: red if overloaded, orange if past encumbrance start, otherwise white.
-            Color warn = load >= 1f ? new Color(0.95f, 0.3f, 0.2f)
-                : load >= CloneZConfig.EncumbranceStart ? new Color(0.95f, 0.7f, 0.2f)
+            Color warn = load >= 1f ? UITheme.Bag.WeightOver
+                : load >= CloneZConfig.EncumbranceStart ? UITheme.Bag.WeightHeavy
                 : Color.white;
             _playerHeader.color = warn;
 
@@ -589,7 +588,7 @@ private void PositionTooltip()
                 Vector3 ms = _weightMeterFill.rectTransform.localScale;
                 ms.x = Mathf.Clamp01(load);
                 _weightMeterFill.rectTransform.localScale = ms;
-                _weightMeterFill.color = load >= 1f || load >= CloneZConfig.EncumbranceStart ? warn : new Color(0.5f, 0.72f, 0.5f);
+                _weightMeterFill.color = load >= 1f || load >= CloneZConfig.EncumbranceStart ? warn : UITheme.Bag.WeightFill;
             }
         }
 
@@ -681,13 +680,13 @@ private void PositionTooltip()
             modalRt.SetParent(root, false);
             modalRt.anchorMin = Vector2.zero; modalRt.anchorMax = Vector2.one;
             modalRt.offsetMin = Vector2.zero; modalRt.offsetMax = Vector2.zero;
-            _root.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.55f);
+            _root.AddComponent<Image>().color = UITheme.Ink(0.55f);
             _fader = _root.AddComponent<UIFader>();
 
-            _window = Panel(modalRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(WinW, WinH), new Color(0.11f, 0.12f, 0.14f, 0.98f));
+            _window = Panel(modalRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(WinW, WinH), UITheme.Bag.WindowPanel);
             // four tiny rivets at the window corners – metal fasteners appropriate for a 1993 rural UI
             // size: 8 × 8 pixels; colour: same as the top accent but fully opaque
-            Color rivetColor = new Color(0.5f, 0.68f, 0.9f, 1f);
+            Color rivetColor = UITheme.Bag.BlueAccent;
             // top‑left
             var rivetTL = new GameObject("RivetTL", typeof(RectTransform));
             var rtTL = (RectTransform)rivetTL.transform;
@@ -728,7 +727,7 @@ private void PositionTooltip()
             rtBR.sizeDelta = new Vector2(8f, 8f);
             var imgBR = rtBR.gameObject.AddComponent<Image>();
             imgBR.color = rivetColor;
-            UITheme.AddTopAccent(_window, new Color(0.5f, 0.68f, 0.9f, 0.6f));
+            UITheme.AddTopAccent(_window, UITheme.Fade(UITheme.Bag.BlueAccent, 0.6f));
             // narrow "worn‑seam" decorative line at top of inventory window
             var seam = new GameObject("SeamTop", typeof(RectTransform));
             var seamRt = (RectTransform)seam.transform;
@@ -738,18 +737,18 @@ private void PositionTooltip()
             seamRt.anchoredPosition = Vector2.zero;
             seamRt.sizeDelta = new Vector2(WinW - 40f, 2f);
             var seamImg = seam.AddComponent<Image>();
-            seamImg.color = new Color(0.07f, 0.08f, 0.09f, 0.8f);
+            seamImg.color = UITheme.Bag.Seam;
 
-            Text title = Label(_window, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(600f, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.92f, 0.85f));
+            Text title = Label(_window, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(600f, 40f), 30, TextAnchor.UpperCenter, UITheme.Bag.TitleText);
             title.text = "INVENTORY";
 
-            MakeButton(_window, new Vector2(1f, 1f), new Vector2(-18f, -14f), new Vector2(40f, 34f), "X", new Color(0.5f, 0.15f, 0.15f), Close);
+            MakeButton(_window, new Vector2(1f, 1f), new Vector2(-18f, -14f), new Vector2(40f, 34f), "X", UITheme.Bag.CloseButton, Close);
 
             // Back to the grid windows (the default view).
-            MakeButton(_window, new Vector2(1f, 1f), new Vector2(-66f, -14f), new Vector2(110f, 34f), "Grid view", new Color(0.28f, 0.34f, 0.44f), () => SetViewMode(true));
+            MakeButton(_window, new Vector2(1f, 1f), new Vector2(-66f, -14f), new Vector2(110f, 34f), "Grid view", UITheme.Bag.GridViewButton, () => SetViewMode(true));
 
             // Dump the whole pack onto the floor (top-left, above the bag pane).
-            var dropAllBtn = MakeButton(_window, new Vector2(0f, 1f), new Vector2(18f, -14f), new Vector2(130f, 34f), "Drop All", new Color(0.42f, 0.26f, 0.18f), DropAllStacks);
+            var dropAllBtn = MakeButton(_window, new Vector2(0f, 1f), new Vector2(18f, -14f), new Vector2(130f, 34f), "Drop All", UITheme.Bag.DropAllButton, DropAllStacks);
             // Add decorative lever handle graphic as child
             var lever = new GameObject("Lever", typeof(RectTransform));
             var leverRt = (RectTransform)lever.transform;
@@ -759,10 +758,10 @@ private void PositionTooltip()
             leverRt.anchoredPosition = new Vector2(4f, 0f);
             leverRt.sizeDelta = new Vector2(6f, 12f);
             var leverImg = lever.AddComponent<Image>();
-            leverImg.color = new Color(0.4f, 0.3f, 0.2f, 1f);
+            leverImg.color = UITheme.Bag.Lever;
 
             // Store the whole pack into the open container (shown only while one is open).
-            _storeAllButton = MakeButton(_window, new Vector2(0f, 1f), new Vector2(156f, -14f), new Vector2(130f, 34f), "Store All", new Color(0.28f, 0.34f, 0.44f), StoreAll).gameObject;
+            _storeAllButton = MakeButton(_window, new Vector2(0f, 1f), new Vector2(156f, -14f), new Vector2(130f, 34f), "Store All", UITheme.Bag.StoreAllButton, StoreAll).gameObject;
             _storeAllButton.SetActive(false);
 
             float bagX = Margin;
@@ -780,7 +779,7 @@ private void PositionTooltip()
             wmBgRt.anchorMin = new Vector2(0f, 1f); wmBgRt.anchorMax = new Vector2(0f, 1f); wmBgRt.pivot = new Vector2(0f, 1f);
             wmBgRt.anchoredPosition = new Vector2(bagX, -(PaneTop + 28f));
             wmBgRt.sizeDelta = new Vector2(300f, 6f);
-            wmBg.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.5f);
+            wmBg.AddComponent<Image>().color = UITheme.Ink(0.5f);
 
             var wmFill = new GameObject("WeightMeterFill");
             var wmFillRt = wmFill.AddComponent<RectTransform>();
@@ -789,22 +788,22 @@ private void PositionTooltip()
             wmFillRt.sizeDelta = new Vector2(296f, -2f);
             wmFillRt.anchoredPosition = new Vector2(2f, 0f);
             _weightMeterFill = wmFill.AddComponent<Image>();
-            _weightMeterFill.color = new Color(0.5f, 0.72f, 0.5f);
+            _weightMeterFill.color = UITheme.Bag.WeightFill;
 
             BuildColumnHeader(_window, bagX, -ColumnTop, _bagPane);
             _bagPane.Content = Column(_window, new Vector2(0f, 1f), new Vector2(bagX, -ListTop), new Vector2(ListW, listH));
 
             // ---- the open container, or the FLOOR (middle) ----
             _lootHeader = Label(_window, new Vector2(0f, 1f), new Vector2(lootX, -PaneTop), new Vector2(ListW - 140f, 28f), 20, TextAnchor.UpperLeft, Color.white);
-            _lootSubHeader = Label(_window, new Vector2(0f, 1f), new Vector2(lootX, -(PaneTop + 24f)), new Vector2(ListW - 140f, 16f), 14, TextAnchor.UpperLeft, HeaderDim);
-            MakeButton(_window, new Vector2(0f, 1f), new Vector2(lootX + ListW - 120f, -(PaneTop - 2f)), new Vector2(120f, 30f), "Take All", new Color(0.2f, 0.4f, 0.25f), TakeAll);
+            _lootSubHeader = Label(_window, new Vector2(0f, 1f), new Vector2(lootX, -(PaneTop + 24f)), new Vector2(ListW - 140f, 16f), 14, TextAnchor.UpperLeft, UITheme.Bag.HeaderDim);
+            MakeButton(_window, new Vector2(0f, 1f), new Vector2(lootX + ListW - 120f, -(PaneTop - 2f)), new Vector2(120f, 30f), "Take All", UITheme.Bag.TakeButton, TakeAll);
             BuildColumnHeader(_window, lootX, -ColumnTop, _lootPane);
             _lootPane.Content = Column(_window, new Vector2(0f, 1f), new Vector2(lootX, -ListTop), new Vector2(ListW, listH));
 
             // ---- CONTAINERS (right): everything lootable within reach ----
             BuildPicker(_window, pickX, WinH - ColumnTop - FooterH);
 
-            Label(_window, new Vector2(0.5f, 0f), new Vector2(0f, 14f), new Vector2(WinW - 60f, 24f), 15, TextAnchor.LowerCenter, new Color(1f, 1f, 1f, 0.6f))
+            Label(_window, new Vector2(0.5f, 0f), new Vector2(0f, 14f), new Vector2(WinW - 60f, 24f), 15, TextAnchor.LowerCenter, UITheme.Glass(0.6f))
                 .text = "Double-click to move an item      \u2022      Right-click or \u2026 for more      \u2022      \u25ba opens a stack      \u2022      Click a column title to sort      \u2022      Pick a container on the right      \u2022      E / Esc  close";
 
             BuildGrid(root);      // the grid windows: a sibling of the list modal, under the tooltip
@@ -821,7 +820,7 @@ private void PositionTooltip()
             _tooltipBg.pivot = new Vector2(0f, 1f);
             _tooltipBg.sizeDelta = new Vector2(320f, 120f);
             var bg = _tooltipRoot.AddComponent<Image>();
-            bg.color = new Color(0.06f, 0.07f, 0.09f, 0.96f);
+            bg.color = UITheme.Bag.TooltipBg;
             bg.raycastTarget = false;
 
             _tooltipText = Label(_tooltipBg, new Vector2(0f, 1f), new Vector2(12f, -10f), new Vector2(296f, 100f), 16, TextAnchor.UpperLeft, Color.white);
@@ -866,7 +865,7 @@ private void PositionTooltip()
             vpRt.anchorMin = Vector2.zero; vpRt.anchorMax = Vector2.one;
             vpRt.offsetMin = Vector2.zero; vpRt.offsetMax = Vector2.zero;
             vpRt.pivot = new Vector2(0f, 1f);
-            vpGo.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0f);   // invisible, but catches the scroll wheel
+            vpGo.AddComponent<Image>().color = UITheme.Clear;   // invisible, but catches the scroll wheel
             vpGo.AddComponent<RectMask2D>();
 
             // Content holds the rows; the list builders set its height so it can scroll.
@@ -920,8 +919,8 @@ private void PositionTooltip()
             btn.targetGraphic = img;
             ColorBlock cb = btn.colors;
             cb.normalColor = color;
-            cb.highlightedColor = new Color(Mathf.Min(color.r + 0.12f, 1f), Mathf.Min(color.g + 0.12f, 1f), Mathf.Min(color.b + 0.12f, 1f), 1f);
-            cb.pressedColor = new Color(color.r * 0.8f, color.g * 0.8f, color.b * 0.8f, 1f);
+            cb.highlightedColor = UITheme.Lift(color, 0.12f, 1f);
+            cb.pressedColor = UITheme.Shade(color, 0.8f, 1f);
             cb.selectedColor = cb.highlightedColor;
             cb.fadeDuration = 0.06f;
             btn.colors = cb;
@@ -957,9 +956,9 @@ private void PositionTooltip()
             var btn = go.AddComponent<Button>();
             btn.targetGraphic = img;
             ColorBlock cb = btn.colors;
-            cb.normalColor = new Color(1f, 1f, 1f, 0f);
-            cb.highlightedColor = new Color(1f, 1f, 1f, 0.1f);
-            cb.pressedColor = new Color(1f, 1f, 1f, 0.18f);
+            cb.normalColor = UITheme.Glass(0f);
+            cb.highlightedColor = UITheme.Glass(0.1f);
+            cb.pressedColor = UITheme.Glass(0.18f);
             cb.selectedColor = cb.normalColor;
             cb.disabledColor = cb.normalColor;
             cb.colorMultiplier = 1f;

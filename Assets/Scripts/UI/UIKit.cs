@@ -13,19 +13,20 @@ namespace CloneZ
     /// </summary>
     public static class UIKit
     {
-        public static readonly Color Backdrop = new Color(0.03f, 0.035f, 0.045f, 0.92f);
-        public static readonly Color PanelColor = new Color(0.075f, 0.085f, 0.10f, 0.97f);
-        public static readonly Color PanelLight = new Color(0.12f, 0.135f, 0.155f, 0.97f);
-        public static readonly Color RowColor = new Color(0.10f, 0.11f, 0.13f, 0.95f);
-        public static readonly Color RowAlt = new Color(0.085f, 0.095f, 0.11f, 0.95f);
-        public static readonly Color Accent = new Color(0.86f, 0.62f, 0.22f);
-        public static readonly Color TextColor = new Color(0.90f, 0.91f, 0.93f);
-        public static readonly Color TextDim = new Color(0.58f, 0.62f, 0.68f);
-        public static readonly Color Good = new Color(0.52f, 0.80f, 0.48f);
-        public static readonly Color Bad = new Color(0.88f, 0.40f, 0.34f);
-        public static readonly Color Warn = new Color(0.92f, 0.74f, 0.30f);
-        public static readonly Color ButtonColor = new Color(0.20f, 0.23f, 0.27f);
-        public static readonly Color ButtonAccent = new Color(0.55f, 0.40f, 0.14f);
+        // Shorthands for the core UITheme palette, which most builder code reaches for.
+        public static readonly Color Backdrop = UITheme.Backdrop;
+        public static readonly Color PanelColor = UITheme.PanelColor;
+        public static readonly Color PanelLight = UITheme.PanelLight;
+        public static readonly Color RowColor = UITheme.RowColor;
+        public static readonly Color RowAlt = UITheme.RowAlt;
+        public static readonly Color Accent = UITheme.Accent;
+        public static readonly Color TextColor = UITheme.TextColor;
+        public static readonly Color TextDim = UITheme.TextDim;
+        public static readonly Color Good = UITheme.Good;
+        public static readonly Color Bad = UITheme.Bad;
+        public static readonly Color Warn = UITheme.Warn;
+        public static readonly Color ButtonColor = UITheme.ButtonColor;
+        public static readonly Color ButtonAccent = UITheme.ButtonAccent;
 
         private static Font s_Font;
         /// <summary>Provides the default UI font, loading it lazily from Unity resources.</summary>
@@ -135,10 +136,10 @@ namespace CloneZ
             btn.targetGraphic = img;
             ColorBlock cb = btn.colors;
             cb.normalColor = Color.white;
-            cb.highlightedColor = new Color(1.28f, 1.20f, 1.04f, 1f);   // a warm lamp-light hover
-            cb.pressedColor = new Color(0.82f, 0.78f, 0.72f, 1f);
+            cb.highlightedColor = UITheme.ButtonHover;
+            cb.pressedColor = UITheme.ButtonPressed;
             cb.selectedColor = Color.white;
-            cb.disabledColor = new Color(0.55f, 0.55f, 0.55f, 0.6f);
+            cb.disabledColor = UITheme.ButtonDisabledTint;
             cb.colorMultiplier = 1.2f;
             cb.fadeDuration = 0.06f;
             btn.colors = cb;
@@ -163,7 +164,7 @@ namespace CloneZ
         {
             RectTransform view = Rect(name, parent);
             var bg = view.gameObject.AddComponent<Image>();
-            bg.color = new Color(0f, 0f, 0f, 0.25f);
+            bg.color = UITheme.Well;
             var scroll = view.gameObject.AddComponent<ScrollRect>();
             scroll.horizontal = false;
             scroll.scrollSensitivity = 28f;
@@ -269,14 +270,14 @@ namespace CloneZ
             RectTransform track = Rect("Slider", row);
             Size(track.gameObject, -1f, 22f, 1f);
             var bg = track.gameObject.AddComponent<Image>();
-            bg.color = new Color(0.16f, 0.18f, 0.21f);
+            bg.color = UITheme.Track;
             UITheme.Round(bg);
             RectTransform fillArea = Rect("Fill Area", track);
             Stretch(fillArea, 2f, 2f, 2f, 2f);
             RectTransform fill = Rect("Fill", fillArea);
             Stretch(fill);
             var fillImg = fill.gameObject.AddComponent<Image>();
-            fillImg.color = new Color(Accent.r * 0.7f, Accent.g * 0.7f, Accent.b * 0.7f);
+            fillImg.color = UITheme.Shade(Accent, 0.7f);
             UITheme.Round(fillImg);
             RectTransform handleArea = Rect("Handle Area", track);
             Stretch(handleArea, 6f, 0f, 6f, 0f);
@@ -303,7 +304,7 @@ namespace CloneZ
         {
             RectTransform rt = Rect("Input", parent);
             var bg = rt.gameObject.AddComponent<Image>();
-            bg.color = new Color(0.05f, 0.055f, 0.065f);
+            bg.color = UITheme.Field;
             UITheme.Round(bg);
             Text text = Label(rt, value, fontSize, TextColor, TextAnchor.MiddleLeft);
             text.raycastTarget = false;
@@ -325,7 +326,7 @@ namespace CloneZ
         public static Image Bar(Transform parent, Color fillColor, float value01, float height = 8f)
         {
             RectTransform rt = Rect("Bar", parent);
-            rt.gameObject.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.5f);
+            rt.gameObject.AddComponent<Image>().color = UITheme.BarBack;
             Size(rt.gameObject, -1f, height, 1f);
             RectTransform f = Rect("Fill", rt);
             f.anchorMin = Vector2.zero;
@@ -563,7 +564,7 @@ namespace CloneZ
                 _outline = rt.gameObject.AddComponent<Image>();
                 _outline.sprite = UITheme.RoundOutlineSprite;
                 _outline.type = Image.Type.Sliced;
-                _outline.color = new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, 0.85f);
+                _outline.color = UITheme.Fade(UIKit.Accent, 0.85f);
                 _outline.raycastTarget = false;
             }
             if (_outline != null) _outline.enabled = on;

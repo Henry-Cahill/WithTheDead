@@ -17,11 +17,6 @@ namespace CloneZ
         private const float CardRight = -Margin - 92f - 14f;   // the card's text column ends left of the silhouette
         private const int MaxPips = 30;
         private const float PipStep = 8f;
-        private static readonly Color Track = new Color(0f, 0f, 0f, 0.5f);
-        private static readonly Color Trail = new Color(1f, 0.86f, 0.78f, 0.75f);
-        private static readonly Color PipEmpty = new Color(1f, 1f, 1f, 0.16f);
-        private static readonly Color LightOn = new Color(1f, 0.87f, 0.38f, 1f);
-        private static readonly Color NvgOn = new Color(0.45f, 1f, 0.45f, 1f);
         private static readonly HudNeed[] Needs = { HudNeed.Water, HudNeed.Food, HudNeed.Warmth, HudNeed.Battery };
 
         private readonly HudContext _ctx;
@@ -68,12 +63,12 @@ namespace CloneZ
             _condition.text = "";
 
             _cross = new HudGauge(root, "Health", HudIcon.Cross, HudIcon.CrossFill, false, false, bl, new Vector2(IconX, healthY), 26f);
-            _health = new HudTrailBar(root, "HealthBar", bl, new Vector2(0f, 0.5f), new Vector2(BarX, healthY), new Vector2(BarWidth, 12f), 10, Track, Trail);
+            _health = new HudTrailBar(root, "HealthBar", bl, new Vector2(0f, 0.5f), new Vector2(BarX, healthY), new Vector2(BarWidth, 12f), 10, UITheme.BarBack, UITheme.Fade(UITheme.Hud.HealthTrail, 0.75f));
             _healthNumber = HudUI.Label(root, "HealthValue", 22, TextAnchor.MiddleLeft, HudUI.Ink, bl, new Vector2(0f, 0.5f),
                 new Vector2(BarX + BarWidth + 12f, healthY), new Vector2(70f, 28f), FontStyle.Bold);
 
             _figure = HudUI.Icon(root, "Movement", HudIcon.Stand, HudUI.Ink, bl, new Vector2(IconX, staminaY), 26f);
-            _stamina = new HudTrailBar(root, "StaminaBar", bl, new Vector2(0f, 0.5f), new Vector2(BarX, staminaY), new Vector2(BarWidth, 5f), 0, Track, new Color(1f, 1f, 1f, 0.35f));
+            _stamina = new HudTrailBar(root, "StaminaBar", bl, new Vector2(0f, 0.5f), new Vector2(BarX, staminaY), new Vector2(BarWidth, 5f), 0, UITheme.BarBack, UITheme.Glass(0.35f));
 
             // Bottom-right: the weapon card.
             HudReadouts.CornerShade(root, br, new Vector2(1040f, 460f), 0.5f);
@@ -88,17 +83,17 @@ namespace CloneZ
                 RectTransform pip = HudUI.Rect(root, "Round", br, new Vector2(1f, 0.5f), new Vector2(CardRight - i * PipStep, Bottom + 16f), new Vector2(5f, 13f));
                 var img = pip.gameObject.AddComponent<Image>();
                 img.sprite = HudIcons.Get(HudIcon.White);
-                img.color = PipEmpty;
+                img.color = UITheme.Hud.PipEmpty;
                 img.raycastTarget = false;
                 pip.gameObject.SetActive(false);
                 _pips[i] = img;
             }
             _magBar = HudUI.Bar(root, "Magazine", br, new Vector2(1f, 0.5f), new Vector2(CardRight, Bottom + 16f), new Vector2(220f, 5f),
-                Track, HudUI.Ink, out RectTransform magRoot);
+                UITheme.BarBack, HudUI.Ink, out RectTransform magRoot);
             _magBarRoot = magRoot.gameObject;
             _magBarRoot.SetActive(false);
             _wear = HudUI.Bar(root, "Wear", br, new Vector2(1f, 0.5f), new Vector2(CardRight, Bottom + 16f), new Vector2(200f, 5f),
-                Track, HudUI.Good, out RectTransform wearRoot);
+                UITheme.BarBack, HudUI.Good, out RectTransform wearRoot);
             _wearRoot = wearRoot.gameObject;
             _wearRoot.SetActive(false);
 
@@ -107,7 +102,7 @@ namespace CloneZ
             _light = HudUI.Icon(root, "Light", HudIcon.Flashlight, HudUI.Ink, br, new Vector2(-Margin - 16f, gadgetY), 30f);
             _lightRoot = _light.gameObject;
             _lightBattery = HudUI.Bar(_light.rectTransform, "Battery", new Vector2(0.5f, 0f), new Vector2(0.5f, 1f), new Vector2(0f, -2f),
-                new Vector2(26f, 3f), Track, HudUI.Good, out _);
+                new Vector2(26f, 3f), UITheme.BarBack, HudUI.Good, out _);
             _nvg = HudUI.Icon(root, "NightVision", HudIcon.Goggles, HudUI.Ink, br, new Vector2(-Margin - 16f - 40f, gadgetY), 30f);
             _nvgRoot = _nvg.gameObject;
             _lightRoot.SetActive(false);
@@ -154,7 +149,7 @@ namespace CloneZ
             for (int i = 0; i < Needs.Length; i++)
             {
                 bool has = HudReadouts.Need(_ctx, Needs[i], out float level, out Color c, out _);
-                if (!has) c = new Color(1f, 1f, 1f, 0.2f);
+                if (!has) c = UITheme.Glass(0.2f);
                 _needs[i].Set(has ? level : 0f, c);
             }
             UpdateCondition(s);
@@ -276,7 +271,7 @@ namespace CloneZ
             if (loaded == _shownLoadedPips) return;
             _shownLoadedPips = loaded;
             // Rounds empty from the far end toward the gun, like a magazine seen from the side.
-            for (int i = 0; i < capacity; i++) _pips[i].color = i < loaded ? HudUI.Ink : PipEmpty;
+            for (int i = 0; i < capacity; i++) _pips[i].color = i < loaded ? HudUI.Ink : UITheme.Hud.PipEmpty;
         }
         #endregion
 
@@ -290,7 +285,7 @@ namespace CloneZ
             {
                 _lightState = ls;
                 HudUI.Show(_lightRoot, hasLight);
-                _light.color = lightOn ? LightOn : HudUI.WithAlpha(HudUI.Ink, 0.7f);
+                _light.color = lightOn ? UITheme.Hud.LightOn : HudUI.WithAlpha(HudUI.Ink, 0.7f);
             }
             if (hasLight)
             {
@@ -305,7 +300,7 @@ namespace CloneZ
             if (ns == _nvgState) return;
             _nvgState = ns;
             HudUI.Show(_nvgRoot, hasNvg);
-            _nvg.color = nvgOn ? NvgOn : HudUI.WithAlpha(HudUI.Ink, 0.7f);
+            _nvg.color = nvgOn ? UITheme.Hud.NvgOn : HudUI.WithAlpha(HudUI.Ink, 0.7f);
         }
     }
 }

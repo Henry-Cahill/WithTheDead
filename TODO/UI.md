@@ -22,12 +22,18 @@ accessibility, localization readiness and UI performance.
 - Input is the Input System with one map per camera view, keyboard and mouse only
   ([GameInput.cs](../Assets/Scripts/Core/GameInput.cs#L49)). Only the pause menu reads a gamepad
   ([PauseMenuController.cs](../Assets/Scripts/UI/PauseMenuController.cs#L359)).
-- A theme rework is under way and uncommitted: `MainMenuController.cs` (+209 lines), `UIKit.cs` (+105), `UITheme.cs`
-  (+66) and the new title-screen radio, `MenuRadio.cs`.
+- Colours all come from one palette: [UITheme.cs](../Assets/Scripts/UI/UITheme.cs) (core colours and the
+  `Ink`/`Glass`/`Fade`/`Shade`/`Lift` helpers) plus per-area partials (`UITheme.Hud.cs`, `.Inventory.cs`, `.Panels.cs`,
+  `.Menus.cs`). Screens hold no colour literals.
 
 ## P1 — next up
 
-- [ ] **Finish the theme rework and commit it** · P1 · M · Polish
+- [x] **Finish the theme rework and commit it** · P1 · M · Polish
+  - **Done 2026-11-21:** Every screen in `Assets/Scripts/UI` and `Hub/Screens` now reads its colours from `UITheme`
+    (about 370 literals moved, values unchanged). `UIKit`'s palette, `HudUI`'s and `HubUI`'s public colours are aliases
+    of theme entries. Contrast check (WCAG, text on its panel over a black night and over bright snow): raised the HUD
+    panel to 82 % opacity and lightened `Hud.Danger` and `Hub.Dimmer` so every readout and secondary text is at least
+    4.5:1. The rest of the in-progress work was already committed.
   - **Why:** The new theme is half-applied. The title screen still declares its own colours (`TitleRed`, `CardColor`,
     `CardActive`… [MainMenuController.cs](../Assets/Scripts/UI/MainMenuController.cs#L24)), and other screens use
     literal colours: the skills panel ([SkillsPanelController.cs](../Assets/Scripts/UI/SkillsPanelController.cs#L161))

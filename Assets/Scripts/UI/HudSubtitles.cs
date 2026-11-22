@@ -73,7 +73,7 @@ namespace CloneZ
                 if (_timers[i] > 0f) _timers[i] -= dt;
                 bool on = !blocked && _timers[i] > 0f;
                 if (t.enabled != on) t.enabled = on;
-                if (on) t.color = HudUI.WithAlpha(new Color(0.96f, 0.96f, 0.93f, 1f), Mathf.Clamp01(_timers[i] / Fade));
+                if (on) t.color = HudUI.WithAlpha(UITheme.Hud.SubtitleText, Mathf.Clamp01(_timers[i] / Fade));
             }
         }
     }

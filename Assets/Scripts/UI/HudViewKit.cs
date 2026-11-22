@@ -12,9 +12,9 @@ namespace CloneZ
     /// </summary>
     public static class HudReadouts
     {
-        public static readonly Color Cold = new Color(0.45f, 0.72f, 1f, 1f);
-        public static readonly Color Hot = new Color(1f, 0.5f, 0.3f, 1f);
-        public static readonly Color Dim = new Color(0.70f, 0.73f, 0.78f, 0.9f);
+        public static readonly Color Cold = UITheme.Hud.Cold;
+        public static readonly Color Hot = UITheme.Hud.Hot;
+        public static readonly Color Dim = UITheme.Hud.Dim;
 
         /// <summary>White while fine, amber past <paramref name="warnAt"/>, pulsing red past <paramref name="criticalAt"/> (bad01: 1 = worst).</summary>
         public static Color Severity(float bad01, float warnAt, float criticalAt)
@@ -86,7 +86,7 @@ namespace CloneZ
         public static Color Health(float hp01)
         {
             Color c = HudUI.Condition(hp01);
-            return hp01 < 0.25f ? Color.Lerp(c, new Color(1f, 0.85f, 0.8f, 1f), (1f - HudUI.Pulse(5f, 0f)) * 0.35f) : c;
+            return hp01 < 0.25f ? Color.Lerp(c, UITheme.Hud.LowHealthFlash, (1f - HudUI.Pulse(5f, 0f)) * 0.35f) : c;
         }
 
         /// <summary>The stamina colour: white, amber when low, pulsing red when spent.</summary>
@@ -122,7 +122,7 @@ namespace CloneZ
         /// <summary>A large soft dark shade centred on a screen corner, so light text stays readable over snow.</summary>
         public static Image CornerShade(Transform parent, Vector2 corner, Vector2 size, float alpha)
         {
-            Image img = HudUI.Icon(parent, "Shade", HudIcon.Glow, new Color(0f, 0f, 0f, alpha), corner, Vector2.zero, 1f, false);
+            Image img = HudUI.Icon(parent, "Shade", HudIcon.Glow, UITheme.Ink(alpha), corner, Vector2.zero, 1f, false);
             img.preserveAspect = false;
             img.rectTransform.sizeDelta = size;
             return img;
@@ -220,7 +220,7 @@ namespace CloneZ
                 RectTransform tick = HudUI.Rect(Root, "Tick", new Vector2(i / (float)segments, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2f, size.y + 2f));
                 var img = tick.gameObject.AddComponent<Image>();
                 img.sprite = HudIcons.Get(HudIcon.White);
-                img.color = new Color(0f, 0f, 0f, 0.62f);
+                img.color = UITheme.Ink(0.62f);
                 img.raycastTarget = false;
             }
             _quant = Mathf.Max(64f, size.x);

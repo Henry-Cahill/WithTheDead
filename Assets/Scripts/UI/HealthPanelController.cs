@@ -17,24 +17,6 @@ namespace CloneZ
     {
         private const int MaxRows = 6;
 
-        // Cached colours to avoid per‑frame allocations
-        private static readonly Color PainHigh = new Color(0.9f, 0.3f, 0.25f);
-        private static readonly Color PainMid = new Color(0.95f, 0.7f, 0.25f);
-        private static readonly Color PainLow = new Color(0.72f, 0.85f, 0.72f);
-        private static readonly Color PanicHigh = new Color(0.9f, 0.35f, 0.4f);
-        private static readonly Color PanicMid = new Color(0.9f, 0.62f, 0.4f);
-        private static readonly Color PanicLow = new Color(0.74f, 0.76f, 0.9f);
-        private static readonly Color TempCold = new Color(0.5f, 0.72f, 0.95f);
-        private static readonly Color TempHot = new Color(0.95f, 0.5f, 0.4f);
-        private static readonly Color TempNormal = new Color(0.72f, 0.85f, 0.75f);
-        private static readonly Color SicknessHigh = new Color(0.85f, 0.85f, 0.3f);
-        private static readonly Color SicknessMid = new Color(0.8f, 0.82f, 0.5f);
-        private static readonly Color SicknessLow = new Color(0.72f, 0.85f, 0.72f);
-        private static readonly Color ClothingLabel = new Color(0.95f, 0.96f, 0.98f, 1f);
-        private static readonly Color ClothingLabelDisabled = new Color(0.8f, 0.82f, 0.86f, 0.5f);
-        private static readonly Color ButtonLabelEnabled = new Color(0.95f, 0.96f, 0.98f, 1f);
-        private static readonly Color ButtonLabelDisabled = new Color(0.95f, 0.96f, 0.98f, 0.4f);
-
         private PlayerWounds _wounds;
         private PlayerStats _stats;
         private PlayerInventory _inventory;
@@ -208,9 +190,9 @@ namespace CloneZ
             int painPct = Mathf.RoundToInt(_stats.PainNormalized * 100f);
             _painText.text = "PAIN  " + painPct + "%" +
                 (_wounds.PainkillersActive ? "   <size=16><color=#7fd0ff>(painkillers)</color></size>" : "");
-            _painText.color = _stats.PainNormalized > 0.6f ? PainHigh
-                : _stats.PainNormalized > 0.3f ? PainMid
-                : PainLow;
+            _painText.color = _stats.PainNormalized > 0.6f ? UITheme.Health.PainHigh
+                : _stats.PainNormalized > 0.3f ? UITheme.Health.PainMid
+                : UITheme.Health.PainLow;
 
             // Panic.
             if (_panicText != null)
@@ -220,9 +202,9 @@ namespace CloneZ
                 _panicText.text = "PANIC  " + panicPct + "%   <size=15><color=#b0a6d6>(" + word + ")</color></size>" +
                     (_panic != null && _panic.BetaBlockersActive ? "  <size=15><color=#9fd0ff>(beta blockers)</color></size>" : "");
                 int lvl = _panic != null ? _panic.Level : 0;
-                _panicText.color = lvl >= 3 ? PanicHigh
-                    : lvl >= 2 ? PanicMid
-                    : PanicLow;
+                _panicText.color = lvl >= 3 ? UITheme.Health.PanicHigh
+                    : lvl >= 2 ? UITheme.Health.PanicMid
+                    : UITheme.Health.PanicLow;
             }
 
             // Body temperature & wetness.
@@ -234,9 +216,9 @@ namespace CloneZ
                 string wetDesc = _temperature != null ? _temperature.WetDescriptor : "";
                 _thermalText.text = "TEMP  " + Mathf.RoundToInt(t * 100f) + "%  <size=15><color=#b9c2cc>(" + desc + ")</color></size>" +
                     "     \u00b7     WET  " + Mathf.RoundToInt(wet * 100f) + "%  <size=15><color=#b9c2cc>(" + wetDesc + ")</color></size>";
-                _thermalText.color = t < 0.30f ? TempCold
-                    : t > 0.80f ? TempHot
-                    : TempNormal;
+                _thermalText.color = t < 0.30f ? UITheme.Health.TempCold
+                    : t > 0.80f ? UITheme.Health.TempHot
+                    : UITheme.Health.TempNormal;
             }
 
             // Stomach / food poisoning.
@@ -246,9 +228,9 @@ namespace CloneZ
                 string word = _nutrition != null ? _nutrition.Descriptor : "Fine";
                 int lvl = _nutrition != null ? _nutrition.Level : 0;
                 _sicknessText.text = "STOMACH  " + sickPct + "%   <size=15><color=#b6c69a>(" + word + ")</color></size>";
-                _sicknessText.color = lvl >= 3 ? SicknessHigh
-                    : lvl >= 1 ? SicknessMid
-                : SicknessLow;
+                _sicknessText.color = lvl >= 3 ? UITheme.Health.SicknessHigh
+                    : lvl >= 1 ? UITheme.Health.SicknessMid
+                : UITheme.Health.SicknessLow;
             }
 
             // Worn clothing — a header plus one take-off button per body slot.
@@ -272,13 +254,13 @@ namespace CloneZ
                         string cc = c01 > 0.66f ? "#7fc98a" : c01 > 0.33f ? "#d9c14a" : "#d9694a";
                         _clothingLbls[i].text = "<size=12><color=#9aa6b2>" + slotName + "</color></size>\n" + worn.DisplayName
                             + "  <size=11><color=" + cc + ">" + Mathf.RoundToInt(c01 * 100f) + "%</color></size>";
-                        _clothingLbls[i].color = ClothingLabel;
+                        _clothingLbls[i].color = UITheme.Health.ButtonLabel;
                         _clothingBtns[i].interactable = true;
                     }
                     else
                     {
                         _clothingLbls[i].text = "<size=12><color=#9aa6b2>" + slotName + "</color></size>\n<color=#6a7078>\u2014</color>";
-                        _clothingLbls[i].color = ClothingLabelDisabled;
+                        _clothingLbls[i].color = UITheme.Health.ClothingLabelDisabled;
                         _clothingBtns[i].interactable = false;
                     }
                 }
@@ -342,7 +324,7 @@ namespace CloneZ
             if (btn == null) return;
             label.text = name + "  x" + count;
             btn.interactable = usable;
-            label.color = usable ? ButtonLabelEnabled : ButtonLabelDisabled;
+            label.color = usable ? UITheme.Health.ButtonLabel : UITheme.Health.ButtonLabelDisabled;
         }
 
         private static string DescribeWound(Wound w)
@@ -388,7 +370,7 @@ namespace CloneZ
             prt.anchorMin = prt.anchorMax = new Vector2(0.5f, 0.5f);
             prt.pivot = new Vector2(0.5f, 0.5f);
             prt.sizeDelta = new Vector2(panelW, panelH);
-            _panelRoot.AddComponent<Image>().color = new Color(0.06f, 0.05f, 0.06f, 0.95f);
+            _panelRoot.AddComponent<Image>().color = UITheme.Health.Panel;
 
 // Add a thin dark trim around the panel for a worn‑metal frame effect
 var trimGo = new GameObject("PanelTrim");
@@ -397,7 +379,7 @@ trimRt.SetParent(prt, false);
 trimRt.anchorMin = trimRt.anchorMax = new Vector2(0.5f, 0.5f);
 trimRt.pivot = new Vector2(0.5f, 0.5f);
 trimRt.sizeDelta = new Vector2(panelW + 4f, panelH + 4f);
-trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
+trimGo.AddComponent<Image>().color = UITheme.Health.Trim;
 
 // Add rivet decorations at the panel corners
     Rivet(prt, new Vector2(-panelW / 2 + 8f, panelH / 2 - 8f)); // top‑left
@@ -418,24 +400,24 @@ trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
     float snowHeight = 6f; // modest height for a light snow layer
     snowRt.anchoredPosition = new Vector2(0f, -panelH / 2 + snowHeight / 2f);
     snowRt.sizeDelta = new Vector2(panelW, snowHeight);
-    snow.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.15f);
+    snow.AddComponent<Image>().color = UITheme.Glass(0.15f);
 
-            Label(prt, "Title", new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(panelW, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.7f, 0.7f))
+            Label(prt, "Title", new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(panelW, 40f), 30, TextAnchor.UpperCenter, UITheme.Health.Title)
                 .text = "HEALTH";
 
-            _painText = Label(prt, "Pain", new Vector2(0f, 1f), new Vector2(30f, -66f), new Vector2((panelW - 60f) * 0.5f, 28f), 22, TextAnchor.MiddleLeft, new Color(0.8f, 0.85f, 0.8f));
+            _painText = Label(prt, "Pain", new Vector2(0f, 1f), new Vector2(30f, -66f), new Vector2((panelW - 60f) * 0.5f, 28f), 22, TextAnchor.MiddleLeft, UITheme.Health.PainLabel);
             _painText.text = "PAIN  0%";
 
-            _panicText = Label(prt, "Panic", new Vector2(0f, 1f), new Vector2(30f + (panelW - 60f) * 0.5f, -66f), new Vector2((panelW - 60f) * 0.5f, 28f), 22, TextAnchor.MiddleLeft, new Color(0.78f, 0.78f, 0.9f));
+            _panicText = Label(prt, "Panic", new Vector2(0f, 1f), new Vector2(30f + (panelW - 60f) * 0.5f, -66f), new Vector2((panelW - 60f) * 0.5f, 28f), 22, TextAnchor.MiddleLeft, UITheme.Health.PanicLabel);
             _panicText.text = "PANIC  0%";
 
-            _thermalText = Label(prt, "Thermal", new Vector2(0f, 1f), new Vector2(30f, -92f), new Vector2(panelW - 60f, 26f), 20, TextAnchor.MiddleLeft, new Color(0.72f, 0.85f, 0.75f));
+            _thermalText = Label(prt, "Thermal", new Vector2(0f, 1f), new Vector2(30f, -92f), new Vector2(panelW - 60f, 26f), 20, TextAnchor.MiddleLeft, UITheme.Health.TempNormal);
             _thermalText.text = "TEMP  50%     \u00b7     WET  0%";
 
-            _sicknessText = Label(prt, "Sickness", new Vector2(0f, 1f), new Vector2(30f, -118f), new Vector2(panelW - 60f, 24f), 20, TextAnchor.MiddleLeft, new Color(0.72f, 0.85f, 0.72f));
+            _sicknessText = Label(prt, "Sickness", new Vector2(0f, 1f), new Vector2(30f, -118f), new Vector2(panelW - 60f, 24f), 20, TextAnchor.MiddleLeft, UITheme.Health.SicknessLow);
             _sicknessText.text = "STOMACH  0%";
 
-            _clothingText = Label(prt, "Clothing", new Vector2(0f, 1f), new Vector2(30f, -144f), new Vector2(panelW - 60f, 24f), 19, TextAnchor.MiddleLeft, new Color(0.82f, 0.85f, 0.9f));
+            _clothingText = Label(prt, "Clothing", new Vector2(0f, 1f), new Vector2(30f, -144f), new Vector2(panelW - 60f, 24f), 19, TextAnchor.MiddleLeft, UITheme.Health.ClothingHeader);
             _clothingText.text = "Clothing";
 
             // A take-off button per body slot (Head / Torso / Legs / Feet / Hands).
@@ -458,9 +440,9 @@ trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
             drt.anchorMin = drt.anchorMax = new Vector2(0.5f, 1f); drt.pivot = new Vector2(0.5f, 1f);
             drt.anchoredPosition = new Vector2(0f, -316f);
             drt.sizeDelta = new Vector2(panelW - 48f, 2f);
-            div.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.15f);
+            div.AddComponent<Image>().color = UITheme.Glass(0.15f);
 
-            _emptyText = Label(prt, "Empty", new Vector2(0.5f, 1f), new Vector2(0f, -356f), new Vector2(panelW - 60f, 30f), 20, TextAnchor.UpperCenter, new Color(0.6f, 0.85f, 0.6f));
+            _emptyText = Label(prt, "Empty", new Vector2(0.5f, 1f), new Vector2(0f, -356f), new Vector2(panelW - 60f, 30f), 20, TextAnchor.UpperCenter, UITheme.Health.NoInjuries);
             _emptyText.text = "No injuries.";
             _emptyText.enabled = false;
 
@@ -468,22 +450,22 @@ trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
             float top = -336f;
             for (int i = 0; i < MaxRows; i++)
             {
-                _rows[i] = Label(prt, "Wound" + i, new Vector2(0f, 1f), new Vector2(30f, top - i * 34f), new Vector2(panelW - 60f, 30f), 20, TextAnchor.MiddleLeft, new Color(0.9f, 0.9f, 0.92f));
+                _rows[i] = Label(prt, "Wound" + i, new Vector2(0f, 1f), new Vector2(30f, top - i * 34f), new Vector2(panelW - 60f, 30f), 20, TextAnchor.MiddleLeft, UITheme.Health.WoundRow);
                 _rows[i].enabled = false;
             }
 
             // Self-treatment button row along the foot of the panel.
-            _bandageBtn = TreatmentButton(prt, 0, "Bandage", new Color(0.24f, 0.42f, 0.30f), () => UseFirst("bandage", "rag"), out _bandageLbl);
-            _disinfectBtn = TreatmentButton(prt, 1, "Disinfect", new Color(0.22f, 0.40f, 0.44f), () => UseFirst("disinfectant"), out _disinfectLbl);
-            _painkillerBtn = TreatmentButton(prt, 2, "Painkiller", new Color(0.26f, 0.34f, 0.48f), () => UseFirst("pills"), out _painkillerLbl);
-            _antibioticBtn = TreatmentButton(prt, 3, "Antibiotic", new Color(0.38f, 0.28f, 0.46f), () => UseFirst("antibiotics"), out _antibioticLbl);
-            _firstAidBtn = TreatmentButton(prt, 4, "First Aid", new Color(0.5f, 0.26f, 0.26f), () => UseFirst("firstaid"), out _firstAidLbl);
-            _calmBtn = TreatmentButton(prt, 5, "Calm", new Color(0.30f, 0.30f, 0.52f), () => UseFirst("betablockers"), out _calmLbl);
+            _bandageBtn = TreatmentButton(prt, 0, "Bandage", UITheme.Health.Bandage, () => UseFirst("bandage", "rag"), out _bandageLbl);
+            _disinfectBtn = TreatmentButton(prt, 1, "Disinfect", UITheme.Health.Disinfect, () => UseFirst("disinfectant"), out _disinfectLbl);
+            _painkillerBtn = TreatmentButton(prt, 2, "Painkiller", UITheme.Health.Painkiller, () => UseFirst("pills"), out _painkillerLbl);
+            _antibioticBtn = TreatmentButton(prt, 3, "Antibiotic", UITheme.Health.Antibiotic, () => UseFirst("antibiotics"), out _antibioticLbl);
+            _firstAidBtn = TreatmentButton(prt, 4, "First Aid", UITheme.Health.FirstAid, () => UseFirst("firstaid"), out _firstAidLbl);
+            _calmBtn = TreatmentButton(prt, 5, "Calm", UITheme.Health.Calm, () => UseFirst("betablockers"), out _calmLbl);
 
-            Label(prt, "Hint", new Vector2(0.5f, 0f), new Vector2(0f, 16f), new Vector2(panelW, 24f), 16, TextAnchor.LowerCenter, new Color(1f, 1f, 1f, 0.55f))
+            Label(prt, "Hint", new Vector2(0.5f, 0f), new Vector2(0f, 16f), new Vector2(panelW, 24f), 16, TextAnchor.LowerCenter, UITheme.Glass(0.55f))
                 .text = "Click a treatment to use it  \u2022  click a clothing slot to take it off  \u2022  H or Esc to close";
 
-            UITheme.AddTopAccent(_panelRoot.GetComponent<RectTransform>(), new Color(0.5f, 0.68f, 0.9f, 0.6f));
+            UITheme.AddTopAccent(_panelRoot.GetComponent<RectTransform>(), UITheme.Health.TopAccent);
             _fader = _panelRoot.AddComponent<UIFader>();
         }
 
@@ -507,7 +489,7 @@ trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
             int col = index % perRow;
             int inRow = Mathf.Min(perRow, count - row * perRow);
             float x = (col - (inRow - 1) * 0.5f) * step;   // centre each row of slots
-            Button btn = MakeButton(parent, new Vector2(0.5f, 1f), new Vector2(x, -176f - row * rowStep), new Vector2(w, h), "", new Color(0.24f, 0.28f, 0.34f), onClick);
+            Button btn = MakeButton(parent, new Vector2(0.5f, 1f), new Vector2(x, -176f - row * rowStep), new Vector2(w, h), "", UITheme.Health.ClothingButton, onClick);
             label = btn.GetComponentInChildren<Text>();
             label.fontSize = 14;
             label.verticalOverflow = VerticalWrapMode.Overflow;
@@ -548,9 +530,9 @@ trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
             btn.targetGraphic = img;
             ColorBlock cb = btn.colors;
             cb.normalColor = color;
-            cb.highlightedColor = new Color(Mathf.Min(color.r + 0.12f, 1f), Mathf.Min(color.g + 0.12f, 1f), Mathf.Min(color.b + 0.12f, 1f), 1f);
-            cb.pressedColor = new Color(color.r * 0.8f, color.g * 0.8f, color.b * 0.8f, 1f);
-            cb.disabledColor = new Color(0.18f, 0.18f, 0.2f, 0.9f);
+            cb.highlightedColor = UITheme.Lift(color, 0.12f, 1f);
+            cb.pressedColor = UITheme.Shade(color, 0.8f, 1f);
+            cb.disabledColor = UITheme.Health.ButtonDisabled;
             cb.selectedColor = cb.highlightedColor;
             cb.fadeDuration = 0.06f;
             btn.colors = cb;
@@ -578,7 +560,7 @@ private void Hinge(RectTransform parent, Vector2 anchoredPos)
             rt.sizeDelta = new Vector2(6f, 6f);
             var img = go.AddComponent<Image>();
             // rust‑tinted color (brownish)
-            img.color = new Color(0.45f, 0.25f, 0.15f, 1f);
+            img.color = UITheme.Health.Hinge;
         }
         private void Rivet(RectTransform parent, Vector2 anchoredPos)
         {
@@ -590,7 +572,7 @@ private void Hinge(RectTransform parent, Vector2 anchoredPos)
             rt.anchoredPosition = anchoredPos;
             rt.sizeDelta = new Vector2(6f, 6f);
             var img = go.AddComponent<Image>();
-            img.color = new Color(0.12f, 0.10f, 0.08f, 1f);
+            img.color = UITheme.Health.Rivet;
         }
         #endregion
     }

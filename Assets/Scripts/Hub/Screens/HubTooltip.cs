@@ -26,10 +26,10 @@ namespace CloneZ
         public static HubTooltip Create(Canvas canvas)
         {
             var canvasRect = (RectTransform)canvas.transform;
-            Image bg = UIKit.Panel(canvasRect, "Tooltip", new Color(0.045f, 0.05f, 0.06f, 0.97f));
+            Image bg = UIKit.Panel(canvasRect, "Tooltip", UITheme.Hub.TooltipBack);
             bg.raycastTarget = false;
             var outline = bg.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, 0.55f);
+            outline.effectColor = UITheme.Fade(UIKit.Accent, 0.55f);
             outline.effectDistance = new Vector2(1f, -1f);
             RectTransform rt = bg.rectTransform;
             rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
@@ -124,7 +124,7 @@ namespace CloneZ
             if (go.GetComponent<Graphic>() == null)
             {
                 var hit = go.AddComponent<Image>();
-                hit.color = new Color(0f, 0f, 0f, 0f);
+                hit.color = UITheme.Clear;
             }
             var trig = go.GetComponent<HubTooltipTrigger>();
             if (trig == null) trig = go.AddComponent<HubTooltipTrigger>();
@@ -196,6 +196,6 @@ namespace CloneZ
             if (Tip != null) Tip.Hide(this);
         }
 
-        private static Color Lighten(Color c) => new Color(Mathf.Min(1f, c.r + 0.06f), Mathf.Min(1f, c.g + 0.065f), Mathf.Min(1f, c.b + 0.075f), Mathf.Max(c.a, 0.6f));
+        private static Color Lighten(Color c) => UITheme.Hub.HoverLighten(c);
     }
 }

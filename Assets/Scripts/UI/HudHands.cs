@@ -12,12 +12,6 @@ namespace CloneZ
     public sealed class HudHands
     {
         private const float Margin = 20f, Slot = 58f, Gap = 14f, Small = 40f;
-        private static readonly Color DiscColor = new Color(0.03f, 0.035f, 0.045f, 0.62f);
-        private static readonly Color RingIdle = new Color(1f, 1f, 1f, 0.55f);
-        private static readonly Color RingEmpty = new Color(1f, 1f, 1f, 0.28f);
-        private static readonly Color LightOn = new Color(1f, 0.87f, 0.38f, 1f);
-        private static readonly Color NvgOn = new Color(0.45f, 1f, 0.45f, 1f);
-        private static readonly Color AmmoColor = new Color(0.94f, 0.92f, 0.8f, 1f);
 
         private readonly HudContext _ctx;
 
@@ -49,9 +43,9 @@ namespace CloneZ
             RectTransform primary = Circle(area, "Primary", Slot * 0.5f, -Slot * 0.5f, Slot, out _weaponRing, out _, out Image _);
             _weaponIcon = HudUI.Icon(primary, "Icon", HudIcon.Fist, HudUI.Ink, new Vector2(0.5f, 0.5f), Vector2.zero, Slot * 0.74f);
             _condFill = HudUI.Bar(area, "Condition", new Vector2(0f, 1f), new Vector2(0.5f, 1f), new Vector2(Slot * 0.5f, -Slot - 5f),
-                new Vector2(40f, 4f), new Color(0f, 0f, 0f, 0.55f), HudUI.Good, out RectTransform condRt);
+                new Vector2(40f, 4f), UITheme.Ink(0.55f), HudUI.Good, out RectTransform condRt);
             _condRoot = condRt.gameObject;
-            _ammo = HudUI.Label(area, "Ammo", 14, TextAnchor.UpperCenter, AmmoColor, new Vector2(0f, 1f), new Vector2(0.5f, 1f),
+            _ammo = HudUI.Label(area, "Ammo", 14, TextAnchor.UpperCenter, UITheme.Hud.Ammo, new Vector2(0f, 1f), new Vector2(0.5f, 1f),
                 new Vector2(Slot * 0.5f, -Slot - 12f), new Vector2(120f, 18f));
             _ammo.enabled = false;
 
@@ -60,7 +54,7 @@ namespace CloneZ
             RectTransform secondary = Circle(area, "Secondary", sx, -Slot * 0.5f, Slot, out _lightRing, out _lightGlow, out Image _);
             _lightIcon = HudUI.Icon(secondary, "Icon", HudIcon.Flashlight, HudUI.Ink, new Vector2(0.5f, 0.5f), Vector2.zero, Slot * 0.72f);
             _battFill = HudUI.Bar(area, "Battery", new Vector2(0f, 1f), new Vector2(0.5f, 1f), new Vector2(sx, -Slot - 5f),
-                new Vector2(40f, 4f), new Color(0f, 0f, 0f, 0.55f), HudUI.Good, out RectTransform battRt);
+                new Vector2(40f, 4f), UITheme.Ink(0.55f), HudUI.Good, out RectTransform battRt);
             _battRoot = battRt.gameObject;
 
             // A smaller circle beneath the flashlight for the night-vision goggles.
@@ -68,7 +62,7 @@ namespace CloneZ
             _nvgIcon = HudUI.Icon(nvg, "Icon", HudIcon.Goggles, HudUI.Ink, new Vector2(0.5f, 0.5f), Vector2.zero, Small * 0.74f);
             _nvgRoot = nvg.gameObject;
 
-            _weaponRing.color = RingIdle;
+            _weaponRing.color = UITheme.Hud.RingIdle;
             HudUI.Show(_condRoot, false);
             HudUI.Show(_battRoot, false);
             HudUI.Show(_nvgRoot, false);
@@ -154,7 +148,7 @@ namespace CloneZ
                 _shownLoaded = loaded;
                 _shownReserve = _reserve;
                 _ammo.text = HudUI.Int(loaded) + " / " + HudUI.Int(_reserve);
-                _ammo.color = loaded > 0 ? AmmoColor : HudUI.Danger;
+                _ammo.color = loaded > 0 ? UITheme.Hud.Ammo : HudUI.Danger;
             }
         }
 
@@ -171,13 +165,13 @@ namespace CloneZ
                 _lightState = state;
                 _lightIcon.enabled = has;
                 // On = bright yellow ring; off but present = idle ring; absent = dim ring.
-                _lightRing.color = state == 2 ? HudUI.WithAlpha(LightOn, 0.9f) : has ? RingIdle : RingEmpty;
-                _lightIcon.color = on ? LightOn : HudUI.WithAlpha(HudUI.Ink, 0.85f);
+                _lightRing.color = state == 2 ? HudUI.WithAlpha(UITheme.Hud.LightOn, 0.9f) : has ? UITheme.Hud.RingIdle : UITheme.Hud.RingEmpty;
+                _lightIcon.color = on ? UITheme.Hud.LightOn : HudUI.WithAlpha(HudUI.Ink, 0.85f);
                 _lightGlow.enabled = on;
                 HudUI.Show(_battRoot, has);
             }
             // Subtle pulsing glow while lit (unscaledTime so it doesn't freeze in pause menus).
-            if (on) _lightGlow.color = HudUI.WithAlpha(LightOn, 0.26f + 0.06f * Mathf.Sin(Time.unscaledTime * 2.2f));
+            if (on) _lightGlow.color = HudUI.WithAlpha(UITheme.Hud.LightOn, 0.26f + 0.06f * Mathf.Sin(Time.unscaledTime * 2.2f));
             if (has)
             {
                 // Clamp charge in case of desync between gear state and HUD.
@@ -199,10 +193,10 @@ namespace CloneZ
             _nvgState = state;
             HudUI.Show(_nvgRoot, has);
             // Tinted green when active, otherwise dimmed to indicate availability without power.
-            _nvgIcon.color = on ? NvgOn : HudUI.WithAlpha(HudUI.Ink, 0.8f);
-            _nvgRing.color = on ? HudUI.WithAlpha(NvgOn, 0.9f) : RingIdle;
+            _nvgIcon.color = on ? UITheme.Hud.NvgOn : HudUI.WithAlpha(HudUI.Ink, 0.8f);
+            _nvgRing.color = on ? HudUI.WithAlpha(UITheme.Hud.NvgOn, 0.9f) : UITheme.Hud.RingIdle;
             _nvgGlow.enabled = on;
-            if (on) _nvgGlow.color = HudUI.WithAlpha(NvgOn, 0.22f);
+            if (on) _nvgGlow.color = HudUI.WithAlpha(UITheme.Hud.NvgOn, 0.22f);
         }
 
         /// <summary>The silhouette for a weapon: long gun, pistol, blade, axe, hammer, other blunt, or fists.</summary>
@@ -227,8 +221,8 @@ namespace CloneZ
             RectTransform rt = HudUI.Rect(area, name, new Vector2(0f, 1f), new Vector2(0.5f, 0.5f), new Vector2(cx, cy), new Vector2(size, size));
             glow = HudUI.Icon(rt, "Glow", HudIcon.Glow, Color.clear, new Vector2(0.5f, 0.5f), Vector2.zero, size * 1.9f, false);
             glow.enabled = false;
-            disc = HudUI.Icon(rt, "Disc", HudIcon.Disc, DiscColor, new Vector2(0.5f, 0.5f), Vector2.zero, size, false);
-            ring = HudUI.Icon(rt, "Rim", HudIcon.Ring, RingIdle, new Vector2(0.5f, 0.5f), Vector2.zero, size, false);
+            disc = HudUI.Icon(rt, "Disc", HudIcon.Disc, UITheme.Hud.HandsDisc, new Vector2(0.5f, 0.5f), Vector2.zero, size, false);
+            ring = HudUI.Icon(rt, "Rim", HudIcon.Ring, UITheme.Hud.RingIdle, new Vector2(0.5f, 0.5f), Vector2.zero, size, false);
             return rt;
         }
     }

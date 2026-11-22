@@ -69,21 +69,6 @@ namespace CloneZ
 
         private static readonly string[] s_SortTitles = { "Category", "Type", "Weight", "Status" };
 
-        private static readonly Color RowEven = new Color(1f, 1f, 1f, 0.05f);
-        private static readonly Color RowOdd = new Color(1f, 1f, 1f, 0.02f);
-        private static readonly Color RowPinned = new Color(0.45f, 0.62f, 0.85f, 0.12f);
-        private static readonly Color RowSub = new Color(0f, 0f, 0f, 0.22f);
-        private static readonly Color TextMain = new Color(0.92f, 0.92f, 0.92f);
-        private static readonly Color TextDim = new Color(0.72f, 0.74f, 0.78f);
-        private static readonly Color TextFaint = new Color(1f, 1f, 1f, 0.38f);
-        private static readonly Color CategoryText = new Color(0.6f, 0.6f, 0.8f);   // PZ's category-column tint
-        private static readonly Color WornText = new Color(0.62f, 0.8f, 1f);
-        private static readonly Color GoodCol = new Color(0.5f, 0.79f, 0.54f);
-        private static readonly Color WarnCol = new Color(0.85f, 0.76f, 0.29f);
-        private static readonly Color BadCol = new Color(0.85f, 0.41f, 0.29f);
-        private static readonly Color RottenCol = new Color(0.5f, 0.68f, 0.29f);
-        private static readonly Color AmberCol = new Color(0.88f, 0.65f, 0.24f);
-        private static readonly Color WaterCol = new Color(0.5f, 0.78f, 0.95f);
 
         // A faint rule between the catalogue tooltip and the lines about the particular item hovered.
         private const string Rule = "\n<color=#3c444e>\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</color>";
@@ -177,7 +162,7 @@ namespace CloneZ
 
             float y = 0f;
             int pinnedCount = pinned != null ? pinned.Count : 0;
-            for (int i = 0; i < pinnedCount; i++) y = AddEntryRow(list, pinned[i], y, RowPinned, sub: false);
+            for (int i = 0; i < pinnedCount; i++) y = AddEntryRow(list, pinned[i], y, UITheme.Bag.RowPinned, sub: false);
 
             List<Group> groups = GroupEntries(entries);
             SortGroups(groups, pane.Sort, pane.Descending);
@@ -187,7 +172,7 @@ namespace CloneZ
             for (int g = 0; g < groups.Count; g++)
             {
                 Group group = groups[g];
-                Color bg = g % 2 == 0 ? RowEven : RowOdd;
+                Color bg = g % 2 == 0 ? UITheme.Bag.RowEven : UITheme.Bag.RowOdd;
                 if (group.Entries.Count == 1)
                 {
                     y = AddEntryRow(list, group.Entries[0], y, bg, sub: false);
@@ -199,13 +184,13 @@ namespace CloneZ
                 anyExpanded |= open;
                 y = AddGroupRow(pane, group, y, bg, open);
                 if (!open) continue;
-                for (int e = 0; e < group.Entries.Count; e++) y = AddEntryRow(list, group.Entries[e], y, RowSub, sub: true);
+                for (int e = 0; e < group.Entries.Count; e++) y = AddEntryRow(list, group.Entries[e], y, UITheme.Bag.RowSub, sub: true);
             }
 
             // An empty bag or container reads a quiet placeholder instead of a blank void.
             if (pinnedCount == 0 && groups.Count == 0)
             {
-                Text empty = Label(list, new Vector2(0f, 1f), new Vector2(16f, -14f), new Vector2(400f, 26f), 16, TextAnchor.MiddleLeft, TextFaint);
+                Text empty = Label(list, new Vector2(0f, 1f), new Vector2(16f, -14f), new Vector2(400f, 26f), 16, TextAnchor.MiddleLeft, UITheme.Bag.TextFaint);
                 empty.text = emptyText;
                 empty.fontStyle = FontStyle.Italic;
                 empty.raycastTarget = false;
@@ -215,7 +200,7 @@ namespace CloneZ
             if (pane.ExpandAllLabel != null)
             {
                 pane.ExpandAllLabel.text = anyExpanded ? "\u2212 All" : "+ All";
-                pane.ExpandAllLabel.color = pane.Expandable.Count > 0 ? HeaderDim : new Color(1f, 1f, 1f, 0.2f);
+                pane.ExpandAllLabel.color = pane.Expandable.Count > 0 ? UITheme.Bag.HeaderDim : UITheme.Glass(0.2f);
             }
             UpdateSortLabels(pane);
 
@@ -300,11 +285,11 @@ namespace CloneZ
             RectTransform row = NewRow(pane.Content, y, RowH, bg, def, GroupInfo(g), acts.Move, menu);
 
             FlatButton(row, new Vector2(ArrowX, 0f), new Vector2(ArrowW, RowH - 8f), open ? "\u25bc" : "\u25ba", 10,
-                () => ToggleExpanded(pane, def), TextDim);
+                () => ToggleExpanded(pane, def), UITheme.Bag.ListTextDim);
             AddIcon(row, def, badge: false);
-            AddName(row, def.DisplayName, " (" + g.Units + ")", RowH, 15, TextMain, 0f);
-            AddCell(row, CatX, CatW, RowH, def.Category.ToString(), 13, CategoryText, TextAnchor.MiddleLeft);
-            AddCell(row, WeightX, WeightW, RowH, Kg(g.Weight), 13, TextDim, TextAnchor.MiddleRight);
+            AddName(row, def.DisplayName, " (" + g.Units + ")", RowH, 15, UITheme.Bag.TextMain, 0f);
+            AddCell(row, CatX, CatW, RowH, def.Category.ToString(), 13, UITheme.Bag.CategoryText, TextAnchor.MiddleLeft);
+            AddCell(row, WeightX, WeightW, RowH, Kg(g.Weight), 13, UITheme.Bag.ListTextDim, TextAnchor.MiddleRight);
             GroupStatus(g, out float fill, out Color barCol, out string text, out Color textCol);
             AddStatus(row, RowH, fill, barCol, text, textCol);
             AddButtons(row, RowH, acts, menu);
@@ -327,28 +312,28 @@ namespace CloneZ
                 // Map condition (0..1) to a gradient: good → warning → bad → rotten
                 Color edgeCol;
                 float c = s.Condition01;
-                if (c > 0.8f) edgeCol = GoodCol;
-                else if (c > 0.5f) edgeCol = WarnCol;
-                else if (c > 0.2f) edgeCol = BadCol;
-                else edgeCol = RottenCol;
+                if (c > 0.8f) edgeCol = UITheme.Bag.ListGood;
+                else if (c > 0.5f) edgeCol = UITheme.Bag.ListWarn;
+                else if (c > 0.2f) edgeCol = UITheme.Bag.ListBad;
+                else edgeCol = UITheme.Bag.ListRotten;
                 // thin vertical bar, 3 px wide, inset 2 px from the left edge, full height minus a little margin
                 NewImage(row, "WearEdge", new Vector2(0f, 0.5f), new Vector2(2f, 0f), new Vector2(3f, h - 4f), edgeCol);
             }
 
             AddIcon(row, def, badge: e.Kind == EntryKind.Worn || e.InHand, s.Condition01);
             string count = s.Count <= 1 ? "" : sub ? "  \u00d7" + s.Count : " (" + s.Count + ")";
-            AddName(row, def.DisplayName, count, h, sub ? 14 : 15, sub ? TextDim : TextMain, sub ? 12f : 0f);
+            AddName(row, def.DisplayName, count, h, sub ? 14 : 15, sub ? UITheme.Bag.ListTextDim : UITheme.Bag.TextMain, sub ? 12f : 0f);
 
             string cat;
-            Color catCol = CategoryText;
-            if (e.Kind == EntryKind.Worn) { cat = "Worn \u00b7 " + e.Slot; catCol = WornText; }
-            else if (e.InHand) { cat = "Equipped"; catCol = WornText; }
-            else if (sub) { cat = InstanceNote(s); catCol = TextFaint; }
+            Color catCol = UITheme.Bag.CategoryText;
+            if (e.Kind == EntryKind.Worn) { cat = "Worn \u00b7 " + e.Slot; catCol = UITheme.Bag.WornText; }
+            else if (e.InHand) { cat = "Equipped"; catCol = UITheme.Bag.WornText; }
+            else if (sub) { cat = InstanceNote(s); catCol = UITheme.Bag.TextFaint; }
             else cat = def.Category.ToString();
             AddCell(row, CatX, CatW, h, cat, sub ? 12 : 13, catCol, TextAnchor.MiddleLeft);
 
             // Worn clothes ride on the body rather than in the bag, so their weight reads faded.
-            AddCell(row, WeightX, WeightW, h, Kg(s.Weight), sub ? 12 : 13, e.Kind == EntryKind.Worn ? TextFaint : TextDim, TextAnchor.MiddleRight);
+            AddCell(row, WeightX, WeightW, h, Kg(s.Weight), sub ? 12 : 13, e.Kind == EntryKind.Worn ? UITheme.Bag.TextFaint : UITheme.Bag.ListTextDim, TextAnchor.MiddleRight);
 
             EntryStatus(s, out float fill, out Color barCol, out string text, out Color textCol);
             AddStatus(row, h, fill, barCol, text, textCol);
@@ -373,7 +358,7 @@ namespace CloneZ
                 new Vector2(1f, 0.5f), // anchored to the right‑center of the row
                 new Vector2(-6f, 0f), // inset 6 px from the right edge
                 new Vector2(4f, 4f), // size of the bolt
-                new Color(0.58f, 0.55f, 0.52f, 0.85f));
+                UITheme.Bag.RowBolt);
             go.AddComponent<TooltipTrigger>().Init(this, def, img, info, onDoubleClick, onRightClick);
             return rt;
         }
@@ -389,7 +374,7 @@ namespace CloneZ
             // Add badge (equipped tick) if requested
             if (badge)
             {
-                RectTransform tick = NewImage(icon, "Equipped", new Vector2(1f, 0f), new Vector2(4f, -4f), new Vector2(13f, 13f), new Color(0.24f, 0.62f, 0.32f));
+                RectTransform tick = NewImage(icon, "Equipped", new Vector2(1f, 0f), new Vector2(4f, -4f), new Vector2(13f, 13f), UITheme.Bag.EquippedTick);
                 Text t = Label(tick, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(13f, 13f), 11, TextAnchor.MiddleCenter, Color.white);
                 t.text = "\u221a";
                 t.fontStyle = FontStyle.Bold;
@@ -399,7 +384,7 @@ namespace CloneZ
             if (def.IsDamageable && condition01 < 0.5f)
             {
                 // semi‑transparent red overlay
-                NewImage(icon, "DamageScar", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(IconW, IconW), new Color(1f, 0f, 0f, 0.3f));
+                NewImage(icon, "DamageScar", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(IconW, IconW), UITheme.Bag.DamageScar);
             }
         }
 
@@ -424,7 +409,7 @@ namespace CloneZ
             float x = StatusX;
             if (fill >= 0f)
             {
-                RectTransform bar = NewImage(row, "Bar", new Vector2(0f, 0.5f), new Vector2(x, 0f), new Vector2(StatusBarW, 6f), new Color(0f, 0f, 0f, 0.55f));
+                RectTransform bar = NewImage(row, "Bar", new Vector2(0f, 0.5f), new Vector2(x, 0f), new Vector2(StatusBarW, 6f), UITheme.Ink(0.55f));
                 NewImage(bar, "Fill", new Vector2(0f, 0.5f), new Vector2(1f, 0f), new Vector2((StatusBarW - 2f) * Mathf.Clamp01(fill), 4f), barCol);
                 x += StatusBarW + 6f;
             }
@@ -436,7 +421,7 @@ namespace CloneZ
         {
             float bh = h - 8f;
             float x = -4f;
-            MakeButton(row, new Vector2(1f, 0.5f), new Vector2(x, 0f), new Vector2(MoreW, bh), "\u2026", new Color(0.26f, 0.28f, 0.32f), () => menu(), 13);
+            MakeButton(row, new Vector2(1f, 0.5f), new Vector2(x, 0f), new Vector2(MoreW, bh), "\u2026", UITheme.Bag.MoreButton, () => menu(), 13);
             x -= MoreW + ButtonGap;
             if (acts.Move != null)
             {
@@ -454,7 +439,7 @@ namespace CloneZ
         // A hairline between the pinned (worn / in hand) rows and the rest of the bag, as in PZ.
         private static float AddDivider(RectTransform list, float y)
         {
-            NewImage(list, "Divider", new Vector2(0f, 1f), new Vector2(4f, -(y + 3f)), new Vector2(ListW - 8f, 1f), new Color(1f, 1f, 1f, 0.28f));
+            NewImage(list, "Divider", new Vector2(0f, 1f), new Vector2(4f, -(y + 3f)), new Vector2(ListW - 8f, 1f), UITheme.Glass(0.28f));
             return y + 7f;
         }
 
@@ -593,15 +578,15 @@ namespace CloneZ
         {
             switch (label)
             {
-                case "Take": return new Color(0.2f, 0.4f, 0.25f);
-                case "Store": return new Color(0.28f, 0.32f, 0.4f);
-                case "Take off": return new Color(0.3f, 0.34f, 0.46f);
-                default: return new Color(0.4f, 0.28f, 0.2f);   // Drop
+                case "Take": return UITheme.Bag.TakeButton;
+                case "Store": return UITheme.Bag.StoreButton;
+                case "Take off": return UITheme.Bag.TakeOffButton;
+                default: return UITheme.Bag.DropButton;   // Drop
             }
         }
 
         private static Color UseColor(string label) =>
-            label == "Unequip" ? new Color(0.38f, 0.32f, 0.22f) : new Color(0.2f, 0.38f, 0.42f);
+            label == "Unequip" ? UITheme.Bag.UnequipButton : UITheme.Bag.EquipButton;
         #endregion
 
         #region Column titles, sorting and expanding
@@ -609,17 +594,17 @@ namespace CloneZ
         // sorts the pane; the toggle on the left expands or collapses every stacked row.
         private void BuildColumnHeader(RectTransform parent, float x, float y, Pane pane)
         {
-            RectTransform strip = Panel(parent, new Vector2(0f, 1f), new Vector2(x, y), new Vector2(ListW, ColHeaderH), new Color(0f, 0f, 0f, 0.4f));
+            RectTransform strip = Panel(parent, new Vector2(0f, 1f), new Vector2(x, y), new Vector2(ListW, ColHeaderH), UITheme.Ink(0.4f));
             pane.ExpandAllLabel = FlatButton(strip, new Vector2(ArrowX, 0f), new Vector2(IconX + IconW - ArrowX, ColHeaderH - 4f), "+ All", 11,
-                () => ToggleExpandAll(pane), HeaderDim);
+                () => ToggleExpandAll(pane), UITheme.Bag.HeaderDim);
             pane.SortLabels[(int)SortKey.Name] = FlatButton(strip, new Vector2(NameX - 4f, 0f), new Vector2(NameW + 4f, ColHeaderH - 2f), "Type", 13,
-                () => SetSort(pane, SortKey.Name), HeaderDim, TextAnchor.MiddleLeft);
+                () => SetSort(pane, SortKey.Name), UITheme.Bag.HeaderDim, TextAnchor.MiddleLeft);
             pane.SortLabels[(int)SortKey.Category] = FlatButton(strip, new Vector2(CatX - 4f, 0f), new Vector2(CatW + 2f, ColHeaderH - 2f), "Category", 13,
-                () => SetSort(pane, SortKey.Category), HeaderDim, TextAnchor.MiddleLeft);
+                () => SetSort(pane, SortKey.Category), UITheme.Bag.HeaderDim, TextAnchor.MiddleLeft);
             pane.SortLabels[(int)SortKey.Weight] = FlatButton(strip, new Vector2(WeightX - 4f, 0f), new Vector2(WeightW + 8f, ColHeaderH - 2f), "Weight", 13,
-                () => SetSort(pane, SortKey.Weight), HeaderDim, TextAnchor.MiddleRight);
+                () => SetSort(pane, SortKey.Weight), UITheme.Bag.HeaderDim, TextAnchor.MiddleRight);
             pane.SortLabels[(int)SortKey.Status] = FlatButton(strip, new Vector2(StatusX - 4f, 0f), new Vector2(StatusBarW + StatusTextW + 10f, ColHeaderH - 2f), "Status", 13,
-                () => SetSort(pane, SortKey.Status), HeaderDim, TextAnchor.MiddleLeft);
+                () => SetSort(pane, SortKey.Status), UITheme.Bag.HeaderDim, TextAnchor.MiddleLeft);
             UpdateSortLabels(pane);
         }
 
@@ -643,7 +628,7 @@ namespace CloneZ
                 if (t == null) continue;
                 bool on = (int)pane.Sort == k;
                 t.text = s_SortTitles[k] + (on ? (pane.Descending ? "  \u25bc" : "  \u25b2") : "");
-                t.color = on ? Color.white : HeaderDim;
+                t.color = on ? Color.white : UITheme.Bag.HeaderDim;
             }
         }
 
@@ -672,7 +657,7 @@ namespace CloneZ
             fill = -1f;
             barCol = Color.clear;
             text = "\u2014";
-            textCol = TextFaint;
+            textCol = UITheme.Bag.TextFaint;
             if (d.IsDamageable)
             {
                 fill = s.Condition01;
@@ -691,11 +676,11 @@ namespace CloneZ
             else if (d.IsWaterContainer)
             {
                 text = !d.HoldsWater ? "Empty" : d.WaterTainted ? "Tainted" : "Clean";
-                textCol = !d.HoldsWater ? TextFaint : d.WaterTainted ? AmberCol : WaterCol;
+                textCol = !d.HoldsWater ? UITheme.Bag.TextFaint : d.WaterTainted ? UITheme.Bag.ListAmber : UITheme.Bag.ListWater;
             }
-            else if (d.IsCanned) { text = "Sealed"; textCol = TextDim; }
-            else if (d.RawHazard) { text = "Raw"; textCol = AmberCol; }
-            else if (d.IsSeed) { text = "Seed"; textCol = GoodCol; }
+            else if (d.IsCanned) { text = "Sealed"; textCol = UITheme.Bag.ListTextDim; }
+            else if (d.RawHazard) { text = "Raw"; textCol = UITheme.Bag.ListAmber; }
+            else if (d.IsSeed) { text = "Seed"; textCol = UITheme.Bag.ListGood; }
         }
 
         // A stacked row's Status: the average wear (with its range), or the stalest food in it.
@@ -739,7 +724,7 @@ namespace CloneZ
             if (text == "\u2014")
             {
                 text = g.Entries.Count + (g.Entries[0].Kind == EntryKind.Floor ? " piles" : " stacks");
-                textCol = TextFaint;
+                textCol = UITheme.Bag.TextFaint;
             }
         }
 
@@ -806,8 +791,8 @@ namespace CloneZ
 
         private static string Kg(float kg) => kg >= 10f ? kg.ToString("0.0") : kg.ToString("0.0#");
         private static string Pct(float frac01) => Mathf.RoundToInt(frac01 * 100f) + "%";
-        private static Color ConditionColor(float c01) => c01 > 0.66f ? GoodCol : c01 > 0.33f ? WarnCol : BadCol;
-        private static Color FreshnessColor(FoodState s) => s == FoodState.Rotten ? RottenCol : s == FoodState.Stale ? WarnCol : GoodCol;
+        private static Color ConditionColor(float c01) => c01 > 0.66f ? UITheme.Bag.ListGood : c01 > 0.33f ? UITheme.Bag.ListWarn : UITheme.Bag.ListBad;
+        private static Color FreshnessColor(FoodState s) => s == FoodState.Rotten ? UITheme.Bag.ListRotten : s == FoodState.Stale ? UITheme.Bag.ListWarn : UITheme.Bag.ListGood;
 
         // A one-letter glyph for the row icon, so categories read at a glance.
         private static string CategoryGlyph(ItemCategory cat)
@@ -830,7 +815,7 @@ namespace CloneZ
         private static Color IconTextColor(Color bg)
         {
             float lum = 0.299f * bg.r + 0.587f * bg.g + 0.114f * bg.b;
-            return lum > 0.55f ? new Color(0.1f, 0.1f, 0.12f) : Color.white;
+            return lum > 0.55f ? UITheme.Bag.IconDarkText : Color.white;
         }
         #endregion
     }

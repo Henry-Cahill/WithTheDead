@@ -41,7 +41,7 @@ namespace CloneZ
                 if (d == null) continue;
                 bool visible = Trading.Visible(c, t, o);
                 if (!visible && o.Loyalty > ll + 1) continue;
-                RectTransform row = HubUI.Row(buy, 40f, i++ % 2 == 0 ? new Color(1f, 1f, 1f, 0.03f) : (Color?)null);
+                RectTransform row = HubUI.Row(buy, 40f, i++ % 2 == 0 ? UITheme.Glass(0.03f) : (Color?)null);
                 string price = o.Price > 0 ? HubUI.NeedMoney(o.Price, Carried) : "";
                 if (o.Barter != null)
                     foreach ((string id, int n) in o.Barter) price += " " + HubUI.Need(id, n, Carried);
@@ -159,7 +159,7 @@ namespace CloneZ
                 if (l.Mine || l.Sold) continue;
                 ItemDef d = ItemDatabase.Get(l.Item.Id);
                 if (d == null) continue;
-                RectTransform row = HubUI.Row(offers, 38f, i++ % 2 == 0 ? new Color(1f, 1f, 1f, 0.03f) : (Color?)null);
+                RectTransform row = HubUI.Row(offers, 38f, i++ % 2 == 0 ? UITheme.Glass(0.03f) : (Color?)null);
                 HubUI.Cell(row, HubUI.ItemName(d) + (l.Item.Count > 1 ? " x" + l.Item.Count : ""), 300f, 15);
                 HubUI.Cell(row, l.Seller, 150f, 13, UIKit.TextDim);
                 HubUI.Cell(row, HubUI.NeedMoney(l.Price, Carried), 120f, 14);

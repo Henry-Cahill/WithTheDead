@@ -21,11 +21,6 @@ namespace CloneZ
         /// <summary>True while the title screen is up (the score plays its theme under it).</summary>
         public static bool Showing { get; private set; }
 
-        private static readonly Color TitleRed = new Color(0.86f, 0.24f, 0.20f);
-        private static readonly Color PlaceColor = new Color(0.88f, 0.83f, 0.74f);
-        private static readonly Color CardColor = new Color(0.055f, 0.065f, 0.085f, 0.90f);
-        private static readonly Color CardActive = new Color(0.10f, 0.11f, 0.14f, 0.95f);
-        private static readonly Color HomeColor = new Color(0.90f, 0.72f, 0.44f);
 
         private GameBootstrapper _boot;
         private Canvas _canvas;
@@ -44,7 +39,7 @@ namespace CloneZ
             UIKit.EnsureEventSystem();
             _canvas = UIKit.CreateCanvas("MainMenu Canvas", 200, transform);
             _root = (RectTransform)_canvas.transform;
-            Image bg = UIKit.Panel(_root, "Backdrop", new Color(0.02f, 0.025f, 0.04f, 1f));
+            Image bg = UIKit.Panel(_root, "Backdrop", UITheme.Menu.Backdrop);
             UIKit.Stretch(bg.rectTransform);
             WinterBackdrop.Build(_root, 160, true);
             MenuRadio.Build(_root);
@@ -84,7 +79,7 @@ namespace CloneZ
         private void ShowBuild()
         {
             if (!BuildInfo.Stamped) return;
-            Text v = UIKit.Label(_root, "Build " + BuildInfo.Version, 13, new Color(0.55f, 0.58f, 0.64f), TextAnchor.MiddleLeft);
+            Text v = UIKit.Label(_root, "Build " + BuildInfo.Version, 13, UITheme.Menu.BuildText, TextAnchor.MiddleLeft);
             UIKit.Place(v.rectTransform, Vector2.zero, Vector2.zero, new Vector2(24f, 14f), new Vector2(560f, 20f));
         }
 
@@ -92,7 +87,7 @@ namespace CloneZ
         private void ShowUpdate()
         {
             if (_updateNote != null || _root == null || UpdateCheck.NewVersion == null) return;
-            Image card = UIKit.Panel(_root, "New build", CardActive);
+            Image card = UIKit.Panel(_root, "New build", UITheme.Menu.CardActive);
             _updateNote = UIKit.Place(card.rectTransform, Vector2.one, Vector2.one, new Vector2(-24f, -20f), new Vector2(470f, 132f));
             RectTransform col = UIKit.Column(card.rectTransform, 6f, 14);
             UIKit.Stretch(col);
@@ -128,9 +123,9 @@ namespace CloneZ
             // Clear previous UI elements to start fresh
             Clear();
             // Add title text with large font and bold styling
-            Text title = UIKit.Label(_panel, "WithTheDead", 112, TitleRed, TextAnchor.MiddleCenter, FontStyle.Bold);
+            Text title = UIKit.Label(_panel, "WithTheDead", 112, UITheme.Menu.TitleRed, TextAnchor.MiddleCenter, FontStyle.Bold);
             UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.80f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 140f));
-            Text place = UIKit.Label(_panel, Spaced("BARDSTOWN, KENTUCKY") + "      \u00b7      " + Spaced("WINTER 1993"), 22, PlaceColor, TextAnchor.MiddleCenter);
+            Text place = UIKit.Label(_panel, Spaced("BARDSTOWN, KENTUCKY") + "      \u00b7      " + Spaced("WINTER 1993"), 22, UITheme.Menu.PlaceColor, TextAnchor.MiddleCenter);
             UIKit.Place(place.rectTransform, new Vector2(0.5f, 0.715f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 34f));
             AccountProfile a = ProfileStore.Account;
             Text season = UIKit.Label(_panel, "Season " + a.Season + (a.Wipes > 0 ? "  \u00b7  " + a.Wipes + " wipes survived" : ""), 16, UIKit.TextDim, TextAnchor.MiddleCenter);
@@ -151,9 +146,9 @@ namespace CloneZ
             Small(foot, "Quit", Quit);
 
             Text hint = UIKit.Label(_panel, "You lose what you carried if you die \u2014 never what you learned, never your secure pouch.", 15,
-                new Color(0.66f, 0.70f, 0.76f), TextAnchor.MiddleCenter);
+                UITheme.Menu.HintText, TextAnchor.MiddleCenter);
             UIKit.Place(hint.rectTransform, new Vector2(0.5f, 0.07f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 26f));
-            Text osm = UIKit.Label(_panel, "Map data \u00a9 OpenStreetMap contributors", 13, new Color(0.68f, 0.71f, 0.76f), TextAnchor.MiddleRight);
+            Text osm = UIKit.Label(_panel, "Map data \u00a9 OpenStreetMap contributors", 13, UITheme.Menu.FootnoteText, TextAnchor.MiddleRight);
             UIKit.Place(osm.rectTransform, new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-24f, 44f), new Vector2(520f, 22f));
         }
 
@@ -169,7 +164,7 @@ namespace CloneZ
         // The small brand and a section heading at the top of a sub-screen.
         private void Header(string heading)
         {
-            Text brand = UIKit.Label(_panel, "WithTheDead", 44, TitleRed, TextAnchor.MiddleCenter, FontStyle.Bold);
+            Text brand = UIKit.Label(_panel, "WithTheDead", 44, UITheme.Menu.TitleRed, TextAnchor.MiddleCenter, FontStyle.Bold);
             UIKit.Place(brand.rectTransform, new Vector2(0.5f, 0.925f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(700f, 56f));
             Text h = UIKit.Label(_panel, Spaced(heading), 26, UIKit.Accent, TextAnchor.MiddleCenter, FontStyle.Bold);
             UIKit.Place(h.rectTransform, new Vector2(0.5f, 0.835f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 40f));
@@ -186,7 +181,7 @@ namespace CloneZ
         // A rounded card centred on the screen; controls go into the returned column.
         private RectTransform CenterCard(float width, float height, float y)
         {
-            Image card = UIKit.Panel(_panel, "Card", CardColor);
+            Image card = UIKit.Panel(_panel, "Card", UITheme.Menu.CardColor);
             UITheme.Round(card);
             UITheme.Elevate(card);
             UIKit.Place(card.rectTransform, new Vector2(0.5f, y), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(width, height));
@@ -258,13 +253,13 @@ namespace CloneZ
             AccountProfile a = ProfileStore.Account;
             CharacterProfile c = i < a.Characters.Count ? a.Characters[i] : null;
             bool active = c != null && !c.Dead && i == a.ActiveIndex;
-            Image card = UIKit.Panel(parent, "Slot", active ? CardActive : CardColor);
+            Image card = UIKit.Panel(parent, "Slot", active ? UITheme.Menu.CardActive : UITheme.Menu.CardColor);
             UITheme.Round(card);
             UITheme.Elevate(card);
             UIKit.Size(card.gameObject, 440f, 250f);
             // A strip along the top: the accent for the runner you last played, else their faction's colour (red for the
             // dead, faint for an empty slot).
-            Color strip = c == null ? new Color(1f, 1f, 1f, 0.08f) : c.Dead ? UIKit.Bad : active ? UIKit.Accent : Factions.Get(c.Faction).Color;
+            Color strip = c == null ? UITheme.Glass(0.08f) : c.Dead ? UIKit.Bad : active ? UIKit.Accent : Factions.Get(c.Faction).Color;
             UITheme.AddTopAccent(card.rectTransform, strip, active ? 6f : 4f, 10f);
             RectTransform col = UIKit.Column(card.rectTransform, 6f, 16);
             UIKit.Stretch(col, 0f, 0f, 0f, 4f);
@@ -283,7 +278,7 @@ namespace CloneZ
             else
             {
                 UIKit.Label(col, "Day " + c.Day + "  \u00b7  " + c.Raids + " raids  \u00b7  " + c.Extracts + " extracts", 15, UIKit.TextColor);
-                UIKit.Label(col, "At " + hub.Name + (hub.Id == HubCatalog.Kettle ? ", Bardstown" : ""), 15, HomeColor);
+                UIKit.Label(col, "At " + hub.Name + (hub.Id == HubCatalog.Kettle ? ", Bardstown" : ""), 15, UITheme.Menu.HomeColor);
             }
             RectTransform row = UIKit.Row(col, 46f, null, 8f, 0);
             row.GetComponent<LayoutElement>().flexibleHeight = 0f;   // keep to its own height, not the card's spare room
@@ -358,7 +353,7 @@ namespace CloneZ
             Text title = UIKit.Label(_panel, "A new runner", 40, UIKit.Accent, TextAnchor.MiddleCenter, FontStyle.Bold);
             UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.955f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900f, 60f));
             Text where = UIKit.Label(_panel, "You'll start at The Rusty Kettle, a roadhouse on the edge of Bardstown, Kentucky. Its front door opens onto the town.",
-                17, PlaceColor, TextAnchor.MiddleCenter);
+                17, UITheme.Menu.PlaceColor, TextAnchor.MiddleCenter);
             UIKit.Place(where.rectTransform, new Vector2(0.5f, 0.915f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 28f));
             RectTransform area = UIKit.Place(UIKit.Rect("Create", _panel), new Vector2(0.5f, 0.48f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1800f, 800f));
             RectTransform[] cols = HubUI.Columns(area, 16f, 1f, 1.2f, 1f);
@@ -409,7 +404,7 @@ namespace CloneZ
                 {
                     if (_traits.Contains(pick.Id)) _traits.Remove(pick.Id); else _traits.Add(pick.Id);
                     ShowCreate();
-                }, on ? (t.Cost > 0 ? new Color(0.3f, 0.5f, 0.3f) : new Color(0.55f, 0.3f, 0.25f)) : UIKit.ButtonColor, 15);
+                }, on ? (t.Cost > 0 ? UITheme.Menu.TraitPositive : UITheme.Menu.TraitNegative) : UIKit.ButtonColor, 15);
                 btn.interactable = !blocked;
                 UIKit.Size(btn.gameObject, -1f, 32f);
                 HubUI.Para(c, t.Blurb, 12, UIKit.TextDim);
@@ -432,7 +427,7 @@ namespace CloneZ
 
         private static Button Big(Transform parent, string text, bool enabled, System.Action onClick, float width = 230f)
         {
-            Button b = UIKit.Button(parent, text, onClick, enabled ? UIKit.ButtonColor : new Color(0.18f, 0.18f, 0.2f), 20);
+            Button b = UIKit.Button(parent, text, onClick, enabled ? UIKit.ButtonColor : UITheme.ButtonDisabled, 20);
             b.interactable = enabled;
             UIKit.Size(b.gameObject, width, 50f);
             return b;
@@ -440,7 +435,7 @@ namespace CloneZ
 
         private static void Small(Transform parent, string text, System.Action onClick)
         {
-            Button b = UIKit.Button(parent, text, onClick, new Color(0.13f, 0.15f, 0.18f, 0.92f), 16);
+            Button b = UIKit.Button(parent, text, onClick, UITheme.ButtonMuted, 16);
             UIKit.Size(b.gameObject, 170f, 36f);
         }
 

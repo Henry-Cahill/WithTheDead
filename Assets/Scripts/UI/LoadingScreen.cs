@@ -138,14 +138,14 @@ namespace CloneZ
             UIKit.Stretch(black.rectTransform);
             WinterBackdrop.Build(root, 140, true, 17);
 
-            _title = UIKit.Label(root, "", 68, new Color(0.96f, 0.92f, 0.84f), TextAnchor.MiddleCenter, FontStyle.Bold);
+            _title = UIKit.Label(root, "", 68, UITheme.Loading.Title, TextAnchor.MiddleCenter, FontStyle.Bold);
             UIKit.Place(_title.rectTransform, new Vector2(0.5f, 0.64f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1600f, 90f));
-            _subtitle = UIKit.Label(root, "", 24, new Color(0.70f, 0.74f, 0.80f), TextAnchor.MiddleCenter);
+            _subtitle = UIKit.Label(root, "", 24, UITheme.Loading.Subtitle, TextAnchor.MiddleCenter);
             UIKit.Place(_subtitle.rectTransform, new Vector2(0.5f, 0.64f), new Vector2(0.5f, 0.5f), new Vector2(0f, -62f), new Vector2(1600f, 36f));
 
             RectTransform bar = UIKit.Place(UIKit.Rect("Bar", root), new Vector2(0.5f, 0.47f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(620f, 6f));
             Image back = bar.gameObject.AddComponent<Image>();
-            back.color = new Color(1f, 1f, 1f, 0.12f);
+            back.color = UITheme.Glass(0.12f);
             back.raycastTarget = false;
             _fillImage = UIKit.Panel(bar, "Fill", UIKit.Accent);
             _fillImage.raycastTarget = false;
@@ -153,10 +153,10 @@ namespace CloneZ
             _fill.anchorMin = Vector2.zero;
             _fill.anchorMax = new Vector2(0f, 1f);
             _fill.offsetMin = _fill.offsetMax = Vector2.zero;
-            _stage = UIKit.Label(root, "", 18, new Color(0.80f, 0.82f, 0.86f), TextAnchor.MiddleCenter);
+            _stage = UIKit.Label(root, "", 18, UITheme.Loading.Stage, TextAnchor.MiddleCenter);
             UIKit.Place(_stage.rectTransform, new Vector2(0.5f, 0.47f), new Vector2(0.5f, 0.5f), new Vector2(0f, -28f), new Vector2(900f, 28f));
 
-            _tip = UIKit.Label(root, "", 18, new Color(0.62f, 0.66f, 0.72f), TextAnchor.MiddleCenter, FontStyle.Italic);
+            _tip = UIKit.Label(root, "", 18, UITheme.Loading.Tip, TextAnchor.MiddleCenter, FontStyle.Italic);
             UIKit.Place(_tip.rectTransform, new Vector2(0.5f, 0.36f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1300f, 30f));
             _tipIndex = Random.Range(0, Tips.Length);
             _tip.text = Tips[_tipIndex];
@@ -175,7 +175,7 @@ namespace CloneZ
             if (_breathing)
             {
                 float a = 0.35f + 0.35f * Mathf.Sin(Time.unscaledTime * 3f);
-                _fillImage.color = new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, a);
+                _fillImage.color = UITheme.Fade(UIKit.Accent, a);
             }
             else
                 _fillImage.color = UIKit.Accent;

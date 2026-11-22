@@ -41,13 +41,13 @@ namespace CloneZ
     public static class HudUI
     {
         // Palette.
-        public static readonly Color Ink = new Color(0.95f, 0.95f, 0.95f, 0.94f);
-        public static readonly Color Amber = new Color(1f, 0.70f, 0.22f, 1f);
-        public static readonly Color Danger = new Color(1f, 0.30f, 0.24f, 1f);
-        public static readonly Color Good = new Color(0.42f, 0.88f, 0.42f, 1f);
-        public static readonly Color Teal = new Color(0.247f, 0.824f, 0.78f, 1f);
-        public static readonly Color PanelColor = new Color(0.025f, 0.03f, 0.04f, 0.74f);
-        public static readonly Color FrameColor = new Color(1f, 1f, 1f, 0.14f);
+        public static readonly Color Ink = UITheme.Hud.Text;
+        public static readonly Color Amber = UITheme.Hud.Amber;
+        public static readonly Color Danger = UITheme.Hud.Danger;
+        public static readonly Color Good = UITheme.Hud.Good;
+        public static readonly Color Teal = UITheme.Hud.Teal;
+        public static readonly Color PanelColor = UITheme.Hud.Panel;
+        public static readonly Color FrameColor = UITheme.Hud.Frame;
 
         private static Font _font;
         /// <summary>The built-in legacy UI font.</summary>
