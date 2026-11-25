@@ -401,5 +401,59 @@ class FallbackTest(unittest.TestCase):
         self.assertIn("/api/version", local)
 
 
+class OllamaTokenTest(unittest.TestCase):
+    """The Spark's Ollama proxy (port 11435) wants a bearer token; the token never goes on a command line or in a file
+    in git."""
+
+    TOKEN = "s3cret-token"
+
+    def setUp(self):
+        mock.patch.dict(ns.os.environ, {"NIGHTSHIFT_OLLAMA_TOKEN": self.TOKEN}).start()
+        mock.patch.object(ns, "SSH_KEY", Path(__file__)).start()  # any file that exists
+        self.addCleanup(mock.patch.stopall)
+
+    def test_requests_to_ollama_carry_the_token(self):
+        seen = []
+
+        def urlopen(req, timeout=None):
+            seen.append((req.full_url, req.get_header("Authorization")))
+            if req.full_url.endswith("/api/tags"):
+                return io.BytesIO(b'{"models": [{"name": "gpt-oss:120b"}]}')
+            return io.BytesIO(json.dumps({"choices": [{"message": {"content": "Fine"}}]}).encode())
+
+        with mock.patch.object(ns.urllib.request, "urlopen", urlopen):
+            self.assertTrue(ns.has_model("http://spark:11435", FALLBACK))
+            self.assertEqual("Fine", ns.ask_model("http://spark:11435", FALLBACK, "Plan."))
+            ns.warm_model("http://spark:11435", FALLBACK)
+        self.assertEqual(3, len(seen))
+        self.assertTrue(all(auth == f"Bearer {self.TOKEN}" for _, auth in seen))
+
+    def test_opencode_takes_the_token_from_the_environment(self):
+        options = ns.opencode_config("http://spark:11435", FALLBACK, 131072, Path("repo"))["provider"]["ollama"]["options"]
+        self.assertEqual("{env:NIGHTSHIFT_OLLAMA_TOKEN}", options["apiKey"])
+        with mock.patch.dict(ns.os.environ, {"NIGHTSHIFT_OLLAMA_TOKEN": ""}), \
+                mock.patch.object(ns, "OLLAMA_TOKEN_FILE", Path(tempfile.gettempdir(), "no-such-nightshift-token")):
+            options = ns.opencode_config("http://ollama:11434", FALLBACK, 131072, Path("repo"))["provider"]["ollama"]["options"]
+        self.assertNotIn("apiKey", options)
+
+    def test_a_helper_gets_the_token_through_stdin(self):
+        sent = []
+
+        def run(cmd, **kwargs):
+            sent.append((cmd, kwargs.get("input")))
+            return subprocess.CompletedProcess(cmd, 0, "READY\n", "")
+
+        w = ns.Worker("hts", "user@hts", dict(ns.DEFAULTS, NIGHTSHIFT_MODEL=FALLBACK, NIGHTSHIFT_HELPER_MODEL=""), "x")
+        with mock.patch.object(ns.subprocess, "run", run):
+            self.assertIsNone(w.prepare())
+        (copy, token), (check, _) = sent
+        self.assertEqual(self.TOKEN, token)
+        self.assertIn("umask 077", copy[-1])
+        check_script = base64.b64decode(re.fullmatch(r"echo (\S+) \| base64 -d \| bash", check[-1]).group(1)).decode()
+        self.assertIn("curl -sf -K -", check_script)  # a wrong token fails the check
+        for cmd in (copy, check, [check_script]):
+            self.assertNotIn(self.TOKEN, " ".join(cmd))
+
+
 if __name__ == "__main__":
     unittest.main()

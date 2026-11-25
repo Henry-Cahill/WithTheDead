@@ -62,6 +62,9 @@ REPORTS = HERE / "reports"
 STATUS_FILE = STATE / "status.json"
 FINISH_FLAG = STATE / "finish-requested"
 HELPERS_FILE = STATE / "helpers.txt"  # written by NightShift.ps1 helpers: one user@host per line
+# The bearer token for the Spark's Ollama proxy (port 11435), the only way in from the LAN. Kept out of git: here, in the
+# NIGHTSHIFT_OLLAMA_TOKEN environment variable, or on a helper in ~/<NIGHTSHIFT_HELPER_DIR>/ollama-token.
+OLLAMA_TOKEN_FILE = STATE / "ollama-token"
 SSH_KEY = STATE / "ssh" / "id_ed25519"
 SSH_KNOWN_HOSTS = STATE / "ssh" / "known_hosts"
 RESULT_MARK = "NIGHTSHIFT_RESULT "
@@ -79,7 +82,7 @@ DEFAULTS = {
     "NIGHTSHIFT_FIX_ROUNDS": "2",
     "NIGHTSHIFT_CONTEXT": "131072",
     "NIGHTSHIFT_LOCAL_WORKER": "1",
-    "NIGHTSHIFT_HELPER_OLLAMA_URL": "http://192.168.1.252:11434",
+    "NIGHTSHIFT_HELPER_OLLAMA_URL": "http://192.168.1.252:11435",
     "NIGHTSHIFT_HELPER_DIR": "clonez-nightshift",
     "NIGHTSHIFT_AUTOPLAN": "0",
     "NIGHTSHIFT_AUTOPLAN_FOCUS": "graphics,fixes,perf,graphics,features,flavour,docs",
@@ -200,6 +203,27 @@ def default_gateway() -> str | None:
     return None
 
 
+def ollama_token() -> str:
+    """The Ollama proxy's token, or "" when there is none (Ollama itself, on the Spark, needs none)."""
+    token = os.environ.get("NIGHTSHIFT_OLLAMA_TOKEN", "").strip()
+    if not token:
+        try:
+            token = OLLAMA_TOKEN_FILE.read_text(encoding="utf-8").strip()
+        except OSError:
+            return ""
+        if token:  # for the work processes, which run in clones without the file
+            os.environ["NIGHTSHIFT_OLLAMA_TOKEN"] = token
+    return token
+
+
+def ollama_request(url: str, body: bytes | None = None) -> urllib.request.Request:
+    headers = {"Content-Type": "application/json"} if body is not None else {}
+    token = ollama_token()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return urllib.request.Request(url, body, headers)
+
+
 def find_ollama(cfg: dict) -> str:
     candidates = [cfg["OLLAMA_URL"]] if cfg.get("OLLAMA_URL") else []
     gateway = default_gateway()
@@ -209,7 +233,7 @@ def find_ollama(cfg: dict) -> str:
     for url in candidates:
         url = url.rstrip("/")
         try:
-            with urllib.request.urlopen(url + "/api/version", timeout=5) as r:
+            with urllib.request.urlopen(ollama_request(url + "/api/version"), timeout=5) as r:
                 json.load(r)
             return url
         except Exception:
@@ -226,7 +250,7 @@ def uses_ollama(cfg: dict) -> bool:
 
 
 def ollama_models(base: str) -> set[str]:
-    with urllib.request.urlopen(base + "/api/tags", timeout=15) as r:
+    with urllib.request.urlopen(ollama_request(base + "/api/tags"), timeout=15) as r:
         return {m["name"] for m in json.load(r).get("models", [])}
 
 
@@ -244,8 +268,7 @@ def warm_model(base: str, model: str) -> None:
         ask_opencode(model, "Reply with the single word OK.", timeout=300)
         return
     body = json.dumps({"model": model, "prompt": "", "keep_alive": "8h"}).encode()
-    req = urllib.request.Request(base + "/api/generate", body, {"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=900) as r:
+    with urllib.request.urlopen(ollama_request(base + "/api/generate", body), timeout=900) as r:
         r.read()
 
 
@@ -438,6 +461,9 @@ def opencode_config(base_url: str, model: str, context: int, repo: Path) -> dict
     for pattern in ("*.meta", "*.unity", "*ProjectSettings/*", "*Packages/*", f"*{REL}/tasks.md", f"*{REL}/*.py",
                     f"*{REL}/*.sh", f"*{REL}/*.ps1", f"*{REL}/*.env"):
         edit[pattern] = "deny"
+    options = {"baseURL": base_url.rstrip("/") + "/v1"}
+    if ollama_token():  # OpenCode fills it in from the environment, so the token stays out of the file
+        options["apiKey"] = "{env:NIGHTSHIFT_OLLAMA_TOKEN}"
     return {
         "$schema": "https://opencode.ai/config.json",
         "autoupdate": False,
@@ -447,7 +473,7 @@ def opencode_config(base_url: str, model: str, context: int, repo: Path) -> dict
         "small_model": opencode_model(model),
         "instructions": [str(repo / LESSONS_REL), str(repo / MAP_REL)],
         "provider": {"ollama": {"npm": "@ai-sdk/openai-compatible", "name": "Ollama (DGX Spark)",
-                                "options": {"baseURL": base_url.rstrip("/") + "/v1"}, "models": models}},
+                                "options": options, "models": models}},
         "permission": {"*": "allow", "external_directory": "deny", "doom_loop": "deny", "question": "deny",
                        "websearch": "deny", "bash": bash, "edit": edit},
     }
@@ -2006,8 +2032,7 @@ def ask_model(base: str, model: str, prompt: str, timeout: float = 900) -> str:
     if is_cloud(model):
         return ask_opencode(model, prompt, timeout)
     body = json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}], "stream": False}).encode()
-    req = urllib.request.Request(base.rstrip("/") + "/v1/chat/completions", body, {"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
+    with urllib.request.urlopen(ollama_request(base.rstrip("/") + "/v1/chat/completions", body), timeout=timeout) as r:
         reply = json.load(r)
     content = ((reply.get("choices") or [{}])[0].get("message") or {}).get("content") or ""
     return re.sub(r"<think>.*?</think>", "", content, flags=re.S).strip()
@@ -2379,6 +2404,19 @@ class Worker:
     def _git_env(self) -> dict | None:
         return git_env() if self.target else None
 
+    def send_token(self) -> str | None:
+        """Copies the Ollama proxy's token to the helper, through ssh's stdin. Returns why it couldn't, or None."""
+        home_dir = shlex.quote(self.cfg["NIGHTSHIFT_HELPER_DIR"])
+        script = f"umask 077 && mkdir -p {home_dir} && cat > {home_dir}/ollama-token"
+        try:
+            r = subprocess.run(ssh_command() + [self.target, script], input=ollama_token(), capture_output=True,
+                               text=True, timeout=60)
+        except subprocess.TimeoutExpired:
+            return "timed out copying the Ollama token"
+        if r.returncode != 0:
+            return "couldn't copy the Ollama token: " + ((r.stderr or r.stdout).strip()[-300:] or f"exit {r.returncode}")
+        return None
+
     def prepare(self) -> str | None:
         """Returns why this worker can't be used, or None when it is ready. It also finds out whether a helper runs Windows
         (through Git Bash, see WindowsHelper.ps1) and, if so, which command runs Python 3 there."""
@@ -2389,8 +2427,16 @@ class Worker:
         fallback = self.cfg.get("NIGHTSHIFT_FALLBACK_MODEL", "").strip()
         reach = []
         if not is_cloud(self.model) or (fallback and not is_cloud(fallback)):
-            reach.append(f"curl -s --max-time 5 {shlex.quote(self.ollama)}/api/version >/dev/null || "
-                         f"{{ echo \"can't reach Ollama at {self.ollama}\"; exit 1; }}")
+            check = f"curl -s --max-time 5 {shlex.quote(self.ollama)}/api/version >/dev/null"
+            if self.target and ollama_token():
+                why = self.send_token()
+                if why:
+                    return why
+                # curl reads the header from its config on stdin, so the token never shows on a command line.
+                check = ('printf \'header = "Authorization: Bearer %s"\\n\' "$(cat "$HOME/'
+                         f'{self.cfg["NIGHTSHIFT_HELPER_DIR"]}/ollama-token")" | curl -sf -K - --max-time 5 '
+                         f"{shlex.quote(self.ollama)}/api/version >/dev/null")
+            reach.append(f"{check} || {{ echo \"can't reach Ollama at {self.ollama}\"; exit 1; }}")
         if is_cloud(self.model) or is_cloud(fallback):
             reach.append("curl -s --max-time 10 -o /dev/null https://opencode.ai || "
                          "{ echo \"can't reach opencode.ai, where OpenCode's own models run\"; exit 1; }")
@@ -2430,6 +2476,8 @@ echo READY"""
         exports = 'PATH="$HOME/.local/bin:$HOME/.opencode/bin:$HOME/.dotnet:/opt/dotnet:$PATH"'
         if self.windows:  # UTF-8 whatever the code page: OpenCode's events, git's output and the result line
             exports += " PYTHONUTF8=1"
+        if self.target:  # the Ollama proxy's token, from the file send_token wrote (empty without one)
+            exports += f' NIGHTSHIFT_OLLAMA_TOKEN="$(cat "$HOME/{self.cfg["NIGHTSHIFT_HELPER_DIR"]}/ollama-token" 2>/dev/null)"'
         # On Windows the probed command may be "py -3", so it isn't quoted.
         python = self.python if self.windows else shlex.quote(self.python)
         # exec makes the worker's Python the session leader, so its pid is the process group that reap() kills.

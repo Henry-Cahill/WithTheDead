@@ -320,7 +320,7 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     g = sub.add_parser("generate", help="generate models with the LLM")
-    g.add_argument("--host", default=os.environ.get("OLLAMA_HOST_URL", "http://192.168.1.252:11434"))
+    g.add_argument("--host", default=os.environ.get("OLLAMA_HOST_URL", "http://192.168.1.252:11435"))
     g.add_argument("--model", default="gpt-oss:120b")
     g.add_argument("--think", default="medium", choices=["low", "medium", "high"])
     g.add_argument("--num-ctx", type=int, default=16384, help="keep constant between runs to avoid model reloads")

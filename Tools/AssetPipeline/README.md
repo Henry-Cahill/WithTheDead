@@ -46,8 +46,11 @@ python pipeline.py generate --match "Dress_*" "Skirt_*"
 python pipeline.py preview                                   # re-render previews + gallery
 ```
 
-`--host` defaults to `http://192.168.1.252:11434`. You can override it with the
-`OLLAMA_HOST_URL` environment variable.
+`--host` defaults to `http://192.168.1.252:11435`, the Spark's token proxy. Set the token in the
+`OLLAMA_TOKEN` environment variable (it is `OLLAMA_TOKEN` in `~/ollama-auth/.env` on the Spark).
+Ollama's own port, 11434, accepts only the Spark itself (`AssetPipeline.ps1` runs there and uses
+`http://127.0.0.1:11434` without a token). You can override the host with the `OLLAMA_HOST_URL`
+environment variable.
 
 ## Spark / Ollama setup
 

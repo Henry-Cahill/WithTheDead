@@ -404,7 +404,8 @@ else
     rm -f /tmp/nightshift-dotnet-install.sh
   fi
 fi
-curl -fs --max-time 5 http://${SparkIp}:11434/api/version >/dev/null || { echo "can't reach Ollama on the Spark"; exit 1; }
+# Only checks the Ollama proxy answers: the coordinator copies its token over and checks with it (Worker.prepare).
+curl -s --max-time 5 -o /dev/null http://${SparkIp}:11435/api/version || { echo "can't reach Ollama on the Spark"; exit 1; }
 name="`$(hostname)"; [ -z "`$win" ] || name="`$(echo "`$name" | tr '[:upper:]' '[:lower:]')"
 echo "READY `$name opencode `$("`$HOME/.local/bin/opencode" --version) dotnet `$("`$HOME/.dotnet/dotnet" --version)`${win:+ (Windows)}"
 "@ $target

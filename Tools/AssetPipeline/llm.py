@@ -2,6 +2,7 @@
 import base64
 import io
 import json
+import os
 import time
 import urllib.error
 import urllib.request
@@ -40,19 +41,26 @@ CRITIC_SCHEMA = {
 
 
 class Ollama:
-    def __init__(self, host, model, think="medium", num_ctx=16384, keep_alive="2h", timeout=1800):
+    def __init__(self, host, model, think="medium", num_ctx=16384, keep_alive="2h", timeout=1800, token=None):
         self.host = host.rstrip("/")
         self.model = model
+        self.token = token if token is not None else os.environ.get("OLLAMA_TOKEN", "").strip()
         self.think = think
         self.num_ctx = num_ctx  # keep constant: a different num_ctx forces Ollama to reload the model
         self.keep_alive = keep_alive
         self.timeout = timeout
 
+    def _headers(self, body=False):
+        headers = {"Content-Type": "application/json"} if body else {}
+        if self.token:
+            headers["Authorization"] = f"Bearer {self.token}"
+        return headers
+
     def _post(self, path, body, retries=4):
         data = json.dumps(body).encode("utf-8")
         for attempt in range(retries):
             try:
-                req = urllib.request.Request(self.host + path, data, {"Content-Type": "application/json"})
+                req = urllib.request.Request(self.host + path, data, self._headers(body=True))
                 with urllib.request.urlopen(req, timeout=self.timeout) as r:
                     return json.load(r)
             except (urllib.error.URLError, TimeoutError, ConnectionError):
@@ -80,7 +88,7 @@ class Ollama:
         return json.loads(content), content, stats
 
     def ping(self):
-        with urllib.request.urlopen(self.host + "/api/tags", timeout=10) as r:
+        with urllib.request.urlopen(urllib.request.Request(self.host + "/api/tags", headers=self._headers()), timeout=10) as r:
             names = [m["name"] for m in json.load(r)["models"]]
         return names
 
